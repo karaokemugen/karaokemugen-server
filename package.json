@@ -1,0 +1,33 @@
+{
+  "name": "karaokemugen-server",
+  "version": "1.0.0",
+  "description": "Karaoke Mugen online server component",
+  "main": "src/index.js",
+  "repository": "https://lab.shelter.moe/karaokemugen/karaokemugen-server.git",
+  "author": "Guillaume Lebigot <axel@teri-chan.net>",
+  "license": "MIT",
+  "homepage": "https://mugen.karaokes.moe",
+  "scripts": {
+    "start": "babel-node src/index.js --"
+  },
+  "bugs": {
+    "url": "https://lab.shelter.moe/karaokemugen/karaokemugen-server/issues",
+    "email": "axel@teri-chan.net"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.0.1",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-stage-2": "^6.24.1",
+    "eslint": "^4.11.0",
+    "eslint-plugin-react": "^7.4.0"
+  },
+  "dependencies": {
+    "minimist": "^1.2.0",
+    "winston": "^2.4.1",
+    "winston-daily-rotate-file": "^1.7.2"
+  }
+}
