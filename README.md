@@ -10,7 +10,7 @@ With a bit of time, it'll allow us to centralize stats from many Karaoke Mugen i
 
 Make sure node and yarn are up to dat
 
-* node 8 or later
+* node 8.4 or later
 * yarn 1 or later
 
 Clone this repository and install dependencies
@@ -26,6 +26,12 @@ git clone https://github.com/localtunnel/server.git localtunnel-server
 cd localtunnel-server
 yarn install
 cd ..
+```
+
+## Build
+
+```sh
+yarn buildReact
 ```
 
 ## Launch

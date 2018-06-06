@@ -13,4 +13,6 @@ karaokemugen*.log
 *.ini
 *.bak
 bin/
-localtunnel-server
+localtunnel-server/
+react_site/node_modules
+react_site/build
