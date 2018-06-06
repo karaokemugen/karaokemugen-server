@@ -2,9 +2,10 @@ import minimist from 'minimist';
 import {initConfig} from './config';
 import logger from 'winston';
 import {createServer} from 'net';
-const pjson = require('../package.json');
 import {join} from 'path';
 import {launchTunnelServer} from './tunnel';
+import {argv} from 'yargs';
+const pjson = require('../package.json');
 const appPath = join(__dirname,'../');
 	
 main().catch(err => {
@@ -13,7 +14,6 @@ main().catch(err => {
 });
 
 function main() {
-	const argv = parseArgs();
 	initConfig(appPath, argv);
 	console.log('--------------------------------------------------------------------');
 	console.log(`Karaoke Mugen Server ${pjson.version}`);
@@ -28,7 +28,7 @@ function main() {
 	
 	verifyOpenPort(opts.port);
 	logger.info(`Port ${opts.port} is available`);
-	launchTunnelServer(opts);
+	//launchTunnelServer(opts);
 	process.exit(0);
 }
 
@@ -46,10 +46,3 @@ function verifyOpenPort(port) {
 	server.listen(port);
 }
 
-function parseArgs() {
-	if (process.argv.indexOf('--') >= 0) {
-		return minimist(process.argv.slice(3));
-	} else {
-		return minimist(process.argv.slice(2));
-	}
-}

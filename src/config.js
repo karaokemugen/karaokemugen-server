@@ -1,6 +1,6 @@
 import logger from 'winston';
-require('winston-daily-rotate-file');
 import {resolve} from 'path';
+require('winston-daily-rotate-file');
 
 export function initConfig(appPath, argv) {
 	configureLogger(appPath, argv.debug);

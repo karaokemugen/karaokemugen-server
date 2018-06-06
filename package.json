@@ -26,8 +26,8 @@
     "eslint-plugin-react": "^7.4.0"
   },
   "dependencies": {
-    "minimist": "^1.2.0",
     "winston": "^2.4.1",
-    "winston-daily-rotate-file": "^1.7.2"
+    "winston-daily-rotate-file": "^1.7.2",
+    "yargs": "^11.0.0"
   }
 }

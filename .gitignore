@@ -13,4 +13,4 @@ karaokemugen*.log
 *.ini
 *.bak
 bin/
-
+localtunnel-server
