@@ -1,7 +1,7 @@
 {
   "name": "karaokemugen-server",
   "version": "1.0.0",
-  "description": "Karaoke Mugen online server component",
+  "description": "Karaoke Mugen online server",
   "main": "src/index.js",
   "repository": "https://lab.shelter.moe/karaokemugen/karaokemugen-server.git",
   "author": "Guillaume Lebigot <axel@teri-chan.net>",
@@ -10,7 +10,7 @@
   "scripts": {
     "start": "babel-node src/index.js --",
     "buildReact": "cd react_site && yarn build",
-    "startReact": "cd react_client && yarn start"
+    "startReact": "cd react_site && yarn start"
   },
   "bugs": {
     "url": "https://lab.shelter.moe/karaokemugen/karaokemugen-server/issues",
