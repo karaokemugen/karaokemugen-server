@@ -75,6 +75,7 @@ async function loadConfig(configFile) {
 	try {
 		verifyConfig(newConfig);
 		config = {...newConfig};
+		//logger.debug('[Config] New configuration : '+JSON.stringify(config,null,2));
 	} catch(err) {
 		throw err;
 	}
