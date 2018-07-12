@@ -11,6 +11,7 @@ karaokemugen*.log
 \.DS_Store
 *.backup
 *.ini
+*.yml
 *.bak
 bin/
 localtunnel-server/

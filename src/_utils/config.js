@@ -1,7 +1,7 @@
 /** Centralized configuration management for Karaoke Mugen. */
 
 import {resolve} from 'path';
-import {parse, stringify} from 'ini';
+import {safeLoad, safeDump} from 'js-yml';
 import osLocale from 'os-locale';
 import logger from 'winston';
 import uuidV4 from 'uuid/v4';
@@ -12,7 +12,7 @@ import {configureLogger} from './logger';
 
 /** Object containing all config */
 let config = {};
-let configFile = 'config.ini';
+let configFile = 'config.yml';
 let savingSettings = false;
 /**
  * We return a copy of the configuration data so the original one can't be modified
@@ -70,11 +70,12 @@ async function loadConfig(configFile) {
 	logger.debug(`[Config] Reading configuration file ${configFile}`);
 	await asyncRequired(configFile);
 	const content = await asyncReadFile(configFile, 'utf-8');
-	const parsedContent = parse(content);
+	const parsedContent = safeLoad(content);
 	const newConfig = {...config, ...parsedContent};
 	try {
 		verifyConfig(newConfig);
 		config = {...newConfig};
+		//logger.debug('[Config] New configuration : '+JSON.stringify(config,null,2));
 	} catch(err) {
 		throw err;
 	}
@@ -97,7 +98,7 @@ export async function updateConfig(newConfig) {
             && (filteredConfig[k] = v);
 	});
 	logger.debug('[Config] Settings being saved : '+JSON.stringify(filteredConfig));
-	await asyncWriteFile(resolve(config.appPath, configFile), stringify(filteredConfig), 'utf-8');
+	await asyncWriteFile(resolve(config.appPath, configFile), safeDump(filteredConfig), 'utf-8');
 	savingSettings = false;
 }
 
