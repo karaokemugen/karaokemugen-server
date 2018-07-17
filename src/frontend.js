@@ -7,7 +7,7 @@ import adminController from './_controllers/admin';
 import authController from './_controllers/auth';
 import KSController from './_controllers/karaserv';
 import {configurePassport} from './_utils/passport_manager';
-improt {getConfig} from './_utils/config';
+import {getConfig} from './_utils/config';
 
 /**
  * Starting express which will serve our app.

@@ -1,13 +1,10 @@
-import minimist from 'minimist';
 import {initConfig} from './_utils/config';
 import logger from 'winston';
-import {createServer} from 'net';
 import {join} from 'path';
-import {launchTunnelServer} from './tunnel';
 import {initFrontend} from './frontend';
 import {argv} from 'yargs';
 import detect from 'detect-port';
-import {db, initDB} from './_dao/database';
+import {initDB} from './_dao/database';
 
 const pjson = require('../package.json');
 const appPath = join(__dirname,'../');
