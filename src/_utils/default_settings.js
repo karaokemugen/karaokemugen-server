@@ -9,6 +9,13 @@ export const defaults = {
 		User: 'karaokemugen_server',
 		Pass: '',
 		Base: 'karaokemugen_server'
+	},
+	Paths: {
+		Downloads: {
+			Karas: 'data/karas',
+			Lyrics: 'data/lyrics',
+			Medias: 'data/medias'
+		}
 	}
 
 };

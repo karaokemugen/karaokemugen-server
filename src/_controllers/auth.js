@@ -11,7 +11,7 @@ const loginErr = {
 };
 
 async function checkLogin(username, password) {
-	const config = getConfig();	
+	const config = getConfig();
 	if (!await findUserByName(username)) throw false;
 	if (!await checkPassword(username, password)) throw false;
 	const role = await getRole(username);
@@ -23,12 +23,12 @@ async function checkLogin(username, password) {
 }
 
 
-module.exports = function authController(router) {
+export default function authController(router) {
 
 	const requireAuth = passport.authenticate('jwt', { session: false });
 
-	router.post('/login', async (req, res) => {		
-		if (!req.body.password) req.body.password = '';		
+	router.post('/login', async (req, res) => {
+		if (!req.body.password) req.body.password = '';
 		try {
 			const token = await checkLogin(req.body.username, req.body.password);
 			res.send(token);
@@ -40,7 +40,7 @@ module.exports = function authController(router) {
 	router.get('/checkauth', requireAuth, (req, res) => {
 		res.send(decodeJwtToken(req.get('authorization')));
 	});
-};
+}
 
 function createJwtToken(username, role, config) {
 	const conf = config || getConfig();

@@ -13,9 +13,15 @@ export function up(knex) {
 			t.timestamps(true).notNullable();
 		}),
 		knex.schema.createTable('serie', t => {
-			t.increments('pk_id_seri').unsigned().primary();
+			t.increments('pk_id_serie').unsigned().primary();
+			t.foreign('pk_id_serie').references('serie_lang.fk_id_serie');
 			t.text('name').notNullable();
 			t.text('aliases').notNullable();
+		}),
+		knex.schema.createTable('serie_lang', t => {
+			t.increments('pk_id_serie_lang').unsigned().primary();
+			t.integer('fk_id_serie').unsigned().index();
+
 		})
 	]);
 }
