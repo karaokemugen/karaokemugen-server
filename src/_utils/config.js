@@ -1,7 +1,7 @@
 /** Centralized configuration management for Karaoke Mugen. */
 
 import {resolve} from 'path';
-import {safeLoad, safeDump} from 'js-yml';
+import {safeLoad, safeDump} from 'js-yaml';
 import osLocale from 'os-locale';
 import logger from 'winston';
 import uuidV4 from 'uuid/v4';
@@ -9,6 +9,7 @@ import {check} from './validators';
 import {asyncWriteFile, asyncExists, asyncReadFile, asyncRequired} from './files';
 import {configConstraints, defaults} from './default_settings.js';
 import {configureLogger} from './logger';
+import merge from 'lodash.merge';
 
 /** Object containing all config */
 let config = {};
@@ -71,10 +72,10 @@ async function loadConfig(configFile) {
 	await asyncRequired(configFile);
 	const content = await asyncReadFile(configFile, 'utf-8');
 	const parsedContent = safeLoad(content);
-	const newConfig = {...config, ...parsedContent};
+	const newConfig = merge(config, parsedContent);
 	try {
 		verifyConfig(newConfig);
-		config = {...newConfig};
+		config = merge(config, newConfig);
 		//logger.debug('[Config] New configuration : '+JSON.stringify(config,null,2));
 	} catch(err) {
 		throw err;
