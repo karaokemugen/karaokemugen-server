@@ -27,9 +27,9 @@ export function initFrontend(listenPort) {
 	// Serve static files from the React app
 	app.use(express.static(resolve(__dirname, '../react_site/build')));
 
-	app.use('/downloads/karas', express.static(resolve(conf.appPath, conf.Path.Downloads.Karas)));
-	app.use('/downloads/lyrics', express.static(resolve(conf.appPath, conf.Path.Downloads.Lyrics)));
-	app.use('/downloads/medias', express.static(resolve(conf.appPath, conf.Path.Downloads.Medias)));
+	app.use('/downloads/karas', express.static(resolve(conf.appPath, conf.Path.Karas)));
+	app.use('/downloads/lyrics', express.static(resolve(conf.appPath, conf.Path.Lyrics)));
+	app.use('/downloads/medias', express.static(resolve(conf.appPath, conf.Path.Medias)));
 	// API router
 	app.use('/api', apiRouter());
 	// The "catchall" handler: for any request that doesn't

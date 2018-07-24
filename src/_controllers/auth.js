@@ -1,7 +1,7 @@
 import passport from 'passport';
 import {encode, decode} from 'jwt-simple';
 import {getConfig} from '../_utils/config';
-import {findUserByName, checkPassword} from '../user';
+import {findUserByName, checkPassword} from '../_services/user';
 
 const loginErr = {
 	code: 'LOG_ERROR',

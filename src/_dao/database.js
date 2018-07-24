@@ -1,7 +1,5 @@
 import {getConfig} from '../_utils/config';
-import knex from 'knex';
-import {join} from 'path';
-import logger from 'winston';
+import {Pool} from 'pg';
 
 let database;
 
@@ -9,42 +7,50 @@ export function db() {
 	return database;
 }
 
+export async function transaction(queries) {
+	const client = await database.connect();
+	try {
+		await client.query('BEGIN');
+		for (const query of queries) {
+			for (const param of query.params) {
+				console.log('Ran query : '+query.sql+' with params '+param.join(','));await client.query(query.sql, param);
+			}
+		}
+		await client.query('COMMIT');
+	} catch (e) {
+		console.log(e);
+		await client.query('ROLLBACK');
+	} finally {
+		await client.release();
+	}
+}
+
 export async function initDB() {
-	connectDatabase();
-	await migration();
+	await connectDatabase();
 }
 
-export async function migration() {
-	const mConfig = {
-		directory: join(__dirname,'migrations'),
-		tableName: 'migrations'
-	};
-	let version = await database.migrate.currentVersion(mConfig);
-	logger.debug(`[DB] Database version : ${version}`);
-	await database.migrate.latest(mConfig);
-	version = await database.migrate.currentVersion(mConfig);
-	logger.debug(`[DB] Migrated to version : ${version}`);
-
-}
-
-export function connectDatabase() {
+export async function connectDatabase() {
 	const conf = getConfig();
 	const dbConfig = {
-		client: 'pg',
-		connection: {
-			host: conf.Database.Host,
-			user: conf.Database.User,
-			password: conf.Database.Pass,
-			database: conf.Database.Base
-		},
-		migrations: {
-			tableName: 'migrations'
-		}
+		host: conf.Database.Host,
+		user: conf.Database.User,
+		password: conf.Database.Pass,
+		database: conf.Database.Base
 	};
+	database = new Pool(dbConfig);
 	try {
-		database = knex(dbConfig);
+		await database.connect();
+		database.on('error', (err, client) => {
+			console.log(err);
+			console.log(client);
+		});
 	} catch(err) {
 		console.log(err);
 		throw err;
 	}
+}
+
+
+export async function closeDatabase() {
+	return await database.end();
 }

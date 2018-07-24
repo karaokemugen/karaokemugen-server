@@ -5,6 +5,7 @@ import {initFrontend} from './frontend';
 import {argv} from 'yargs';
 import detect from 'detect-port';
 import {initDB} from './_dao/database';
+import {run} from './_dao/generation';
 
 const pjson = require('../package.json');
 const appPath = join(__dirname,'../');
@@ -18,6 +19,7 @@ process.on('unhandledRejection', (reason, p) => {
 });
 
 main().catch(err => {
+	console.log(err);
 	logger.error(`[Launcher] Error during launch : ${err}`);
 	process.exit(1);
 });
@@ -41,5 +43,6 @@ async function main() {
 	//launchTunnelServer(opts);
 	initFrontend(opts.port);
 	await initDB();
+	await run();
 }
 

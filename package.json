@@ -8,6 +8,7 @@
   "license": "MIT",
   "homepage": "https://mugen.karaokes.moe",
   "scripts": {
+	"prestart": "node node_modules/db-migrate/bin/db-migrate sync [all] --migrations-dir src/_dao/migrations",
     "start": "babel-node src/index.js --",
     "buildReact": "cd react_site && yarn build",
     "startReact": "cd react_site && yarn start"
@@ -32,7 +33,10 @@
     "eslint-plugin-react": "^7.10.0"
   },
   "dependencies": {
+    "async-await-parallel": "^1.0.0",
     "body-parser": "^1.18.3",
+    "db-migrate": "^0.11.1",
+    "db-migrate-pg": "^0.4.0",
     "detect-port": "^1.2.3",
     "express": "^4.16.3",
     "fs-extra": "^6.0.1",
@@ -40,7 +44,6 @@
     "is-valid-json": "^1.0.2",
     "js-yaml": "^3.12.0",
     "jwt-simple": "^0.5.1",
-    "knex": "^0.15.0",
     "langs": "^2.0.0",
     "lodash.merge": "^4.6.1",
     "os-locale": "^2.1.0",
@@ -48,7 +51,7 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "pg": "^7.4.3",
-    "uuid": "^3.2.1",
+    "uuid": "^3.3.2",
     "validate.js": "^0.12.0",
     "winston": "^3.0.0",
     "winston-daily-rotate-file": "^3.2.3",

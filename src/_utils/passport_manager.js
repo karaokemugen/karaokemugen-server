@@ -1,7 +1,7 @@
 import passport from 'passport';
 import {decode} from 'jwt-simple';
 import {getConfig} from './config';
-import {hashPassword, findUserByName} from '../user';
+import {hashPassword, findUserByName} from '../_services/user';
 import {ExtractJwt, Strategy} from 'passport-jwt';
 import LocalStrategy from 'passport-local';
 
@@ -16,7 +16,7 @@ export const requireValidUser = (req, res, next) => {
 				res.status(403).send('User logged in unknown');
 			} else {
 				next();
-			}			
+			}
 		})
 		.catch(() => {
 			res.status(403).send('User logged in unknown');
@@ -56,11 +56,11 @@ function localPassportStrategy() {
 				//User is not a guest, and password mismatches
 				if (hash !== userdata.password) return done(null, false);
 				//Everything's daijoubu
-				done(null, username); 
-			}) 
-			.catch(() => done(null, false)); 
-	}); 
-} 
+				done(null, username);
+			})
+			.catch(() => done(null, false));
+	});
+}
 
 function jwtPassportStrategy(config) {
 

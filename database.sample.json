@@ -1,0 +1,12 @@
+{
+	"sql-file": true,
+	"defaultEnv": "prod",
+	"prod": {
+		"driver": "pg",
+		"user": "karaokemugen_server",
+		"password": "",
+		"host": "localhost",
+		"database": "karaokemugen_server",
+		"schema": "public"
+	  }
+}
