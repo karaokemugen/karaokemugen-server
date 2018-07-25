@@ -328,7 +328,6 @@ export async function run(config) {
 
 		// Inserting data in a transaction
 
-		console.log(sqlInsertTags);
 		await transaction([
 			{sql: insertKaras, params: sqlInsertKaras},
 			{sql: insertSeries, params: sqlInsertSeries},
@@ -340,6 +339,7 @@ export async function run(config) {
 		]);
 		// These tables do not exist yet
 		//await checkUserdbIntegrity(null, conf);
+		logger.info('[Gen] Done generating database');
 		return error;
 	} catch (err) {
 		console.log(err);

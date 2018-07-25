@@ -1,15 +1,17 @@
 import {requireAuth, requireValidUser, updateUserLoginTime, requireAdmin} from '../_controllers/passport_manager';
-import {getLang} from '../_controllers/lang';
+import {getLang} from './lang';
 import logger from 'winston';
+import {getAllKaras} from '../_services/kara';
 
-export default function KSControllerAdmin(router) {
+export default function KSController(router) {
 	router.route('/karas/songs')
 		.get(getLang, async (req, res) => {
 			// Sends command to shutdown the app.
 			try {
-				const karas = await getAllKaras(req.query.filter,req.lang);
+				const karas = await getAllKaras(req.query.filter,req.lang,req.query.from, req.query.size);
 				res.json(karas);
 			} catch(err) {
+				console.log(err);
 				logger.error(err);
 				res.statusCode = 500;
 				res.json(err);

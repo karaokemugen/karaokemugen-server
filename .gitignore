@@ -13,6 +13,7 @@ karaokemugen*.log
 *.ini
 *.yml
 *.bak
+database.json
 bin/
 localtunnel-server/
 react_site/node_modules

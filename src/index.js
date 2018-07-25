@@ -4,7 +4,7 @@ import {join} from 'path';
 import {initFrontend} from './frontend';
 import {argv} from 'yargs';
 import detect from 'detect-port';
-import {initDB} from './_dao/database';
+import {initDB, closeDB} from './_dao/database';
 import {run} from './_dao/generation';
 
 const pjson = require('../package.json');
@@ -32,17 +32,24 @@ async function main() {
 	console.log('\n');
 
 	const opts = {
-		maxSockets: argv['max-sockets'] || 15,
 		port: argv.port || 1350,
-		secure: argv.secure || false
 	};
 
-	const port = await detect(opts.port);
-	opts.port = port;
-	logger.info(`Port ${opts.port} is available`);
-	//launchTunnelServer(opts);
-	initFrontend(opts.port);
 	await initDB();
-	await run();
+	if (argv.generate) {
+		await run();
+		exit();
+	}
+	opts.port = await detect(opts.port);
+	logger.debug(`[Launcher] Port ${opts.port} is available`);
+	initFrontend(opts.port);
 }
 
+function exit(rc) {
+	// Closing database
+	closeDB().then(() => {
+		process.exit(rc || 0);
+	}).catch(() => {
+		process;exit(1);
+	});
+}

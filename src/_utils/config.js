@@ -3,6 +3,7 @@
 import {resolve} from 'path';
 import {safeLoad, safeDump} from 'js-yaml';
 import osLocale from 'os-locale';
+import i18n from 'i18n';
 import logger from 'winston';
 import uuidV4 from 'uuid/v4';
 import {check} from './validators';
@@ -57,7 +58,20 @@ export async function initConfig(appPath, argv) {
 	config = {...config, locale: osLocale.sync().substring(0, 2)};
 	await loadConfigFiles(appPath);
 	if (config.JwtSecret === 'Change me') setConfig( {JwtSecret: uuidV4() });
+	configureLocale();
 	return getConfig();
+}
+
+function configureLocale() {
+	i18n.configure({
+		directory: resolve(__dirname, '../_locales'),
+		defaultLocale: 'en',
+		cookie: 'locale',
+		register: global
+	});
+	const detectedLocale = osLocale.sync().substring(0, 2);
+	i18n.setLocale(detectedLocale);
+	config = {...config, EngineDefaultLocale: detectedLocale };
 }
 
 async function loadConfigFiles(appPath) {
