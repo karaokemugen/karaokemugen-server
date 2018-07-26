@@ -1,6 +1,6 @@
 // SQL for kara management
 
-export const getAllKaras = (filterClauses, lang) => `SELECT ak.kara_id AS kara_id,
+export const getAllKaras = (filterClauses, lang, typeClauses) => `SELECT ak.kara_id AS kara_id,
   ak.kid AS kid,
   ak.title AS title,
   ak.songorder AS songorder,
@@ -10,6 +10,7 @@ export const getAllKaras = (filterClauses, lang) => `SELECT ak.kara_id AS kara_i
 	  ak.serie) AS serie,
   ak.serie_altname AS serie_altname,
   ak.serie_i18n AS serie_i18n,
+  ak.serie_id AS serie_id,
   ak.singer AS singer,
   ak.songtype AS songtype,
   ak.creator AS creator,
@@ -27,6 +28,7 @@ export const getAllKaras = (filterClauses, lang) => `SELECT ak.kara_id AS kara_i
 FROM all_karas AS ak
 WHERE 1 = 1
   ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
+  ${typeClauses}
 ORDER BY language, ak.serie IS NULL, lower(unaccent(serie)), ak.songtype DESC, ak.songorder, lower(unaccent(singer)), lower(unaccent(ak.title))
 `;
 

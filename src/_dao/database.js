@@ -2,11 +2,29 @@ import {getConfig} from '../_utils/config';
 import {Pool} from 'pg';
 import deburr from 'lodash.deburr';
 import langs from 'langs';
+import logger from 'winston';
 
 let database;
 
 export function db() {
 	return database;
+}
+
+
+export function buildClausesSeries(filter) {
+	return deburr(filter)
+		.toLowerCase()
+		.replace('\'', '')
+		.replace(',', '')
+		.split(' ')
+		.filter(s => !('' === s))
+		.map(word => {
+			return `lower(unaccent(s.name)) LIKE '%${word}%' OR
+			lower(unaccent(s.altname)) LIKE '%${word}%' OR
+			lower(unaccent(s.i18n::varchar)) LIKE '%${word}%'
+			`;
+		}
+		);
 }
 
 export async function transaction(queries) {
@@ -20,7 +38,7 @@ export async function transaction(queries) {
 		}
 		await client.query('COMMIT');
 	} catch (e) {
-		console.log(e);
+		logger.error(`[DB] Transaction error : ${e}`);
 		await client.query('ROLLBACK');
 	} finally {
 		await client.release();
@@ -34,10 +52,10 @@ export async function initDB() {
 export async function connectDB() {
 	const conf = getConfig();
 	const dbConfig = {
-		host: conf.Database.Host,
-		user: conf.Database.User,
-		password: conf.Database.Pass,
-		database: conf.Database.Base
+		host: conf.Database.host,
+		user: conf.Database.user,
+		password: conf.Database.password,
+		database: conf.Database.database
 	};
 	database = new Pool(dbConfig);
 	try {
@@ -57,7 +75,23 @@ export async function closeDB() {
 }
 
 
-export function buildClauses(filter,source) {
+export function buildTypeClauses(mode, value) {
+	if (mode === 'recent') {
+		let date = new Date();
+		date.setMonth(date.getMonth()-1);
+		return ` AND ak.created_at >= '${date.getFullYear()}-${(date.getMonth()+1)}-${date.getDate()}'`;
+	}
+	if (mode === 'tag') {
+		return ` AND kt.fk_id_tag = ${value}
+		AND kt.fk_id_kara = ak.kara_id`;
+	}
+	if (mode === 'serie') {
+		return ` AND ak.serie_id = ${value}`;
+	}
+	return '';
+}
+
+export function buildClauses(filter) {
 	return deburr(filter)
 		.toLowerCase()
 		.replace('\'', '')

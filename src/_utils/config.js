@@ -11,6 +11,7 @@ import {asyncWriteFile, asyncExists, asyncReadFile, asyncRequired} from './files
 import {configConstraints, defaults} from './default_settings.js';
 import {configureLogger} from './logger';
 import merge from 'lodash.merge';
+import testJSON from 'is-valid-json';
 
 /** Object containing all config */
 let config = {};
@@ -76,9 +77,22 @@ function configureLocale() {
 
 async function loadConfigFiles(appPath) {
 	const overrideConfigFile = resolve(appPath, configFile);
+	const databaseConfigFile = resolve(appPath, 'database.json');
 	config = {...config, ...defaults};
 	config.appPath = appPath;
 	if (await asyncExists(overrideConfigFile)) await loadConfig(overrideConfigFile);
+	const dbConfig = await loadDBConfig(databaseConfigFile);
+	config.Database = {...dbConfig.prod};
+}
+
+async function loadDBConfig(configFile) {
+	if (!await asyncExists(configFile)) throw 'Unable to find database.json!';
+	const configData = await asyncReadFile(configFile, 'utf-8');
+	if (!testJSON(configData)) {
+		logger.error('[Config] Database config file is not valid JSON');
+		throw 'Syntax error in database.json';
+	}
+	return JSON.parse(configData);
 }
 
 async function loadConfig(configFile) {
@@ -105,7 +119,7 @@ export async function setConfig(configPart) {
 export async function updateConfig(newConfig) {
 	if (savingSettings) return false;
 	savingSettings = true;
-	const forbiddenConfigPrefix = ['os','locale','appPath'];
+	const forbiddenConfigPrefix = ['os','locale','appPath','Database'];
 	const filteredConfig = {};
 	Object.entries(newConfig).forEach(([k, v]) => {
 		forbiddenConfigPrefix.every(prefix => !k.startsWith(prefix))
