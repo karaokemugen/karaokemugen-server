@@ -19,9 +19,9 @@ export function formatKaraList(karaList, lang, from, count) {
 	};
 }
 
-export async function getAllKaras(filter, lang, from = 0, size = 99999999999, mode) {
+export async function getAllKaras(filter, lang, from = 0, size = 99999999999, mode, modeValue) {
 	try {
-		const pl = await selectAllKaras(filter, lang, mode);
+		const pl = await selectAllKaras(filter, lang, mode, modeValue);
 		return formatKaraList(pl.slice(from, from + size), lang, from, pl.length);
 	} catch(err) {
 		throw err;

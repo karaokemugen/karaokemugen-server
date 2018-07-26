@@ -8,10 +8,9 @@ SELECT s.pk_id_serie AS serie_id,
 		(SELECT sl.name FROM serie_lang sl WHERE sl.fk_id_serie = s.pk_id_serie AND sl.lang = ${lang.fallback}),
 		s.name)
 	AS i18n_name,
-	s.altname AS aliases,
-	array_to_json(array_agg(json_build_object('lang', sl.lang, 'name', sl.name))) as i18n
+	s.aliases AS aliases
 	FROM serie s
 	WHERE 1 = 1
 	${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
-	ORDER BY name;
+	ORDER BY i18n_name;
 	`;

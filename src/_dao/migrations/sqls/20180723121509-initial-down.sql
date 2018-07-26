@@ -1,5 +1,3 @@
-/* Replace with your SQL commands */
-
 DROP TABLE settings;
 DROP TABLE kara_serie;
 DROP TABLE kara_tag;

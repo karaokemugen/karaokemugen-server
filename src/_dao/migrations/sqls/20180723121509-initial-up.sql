@@ -1,5 +1,3 @@
-/* Replace with your SQL commands */
-
 CREATE TABLE settings
 (
     option character varying COLLATE pg_catalog."default" NOT NULL,

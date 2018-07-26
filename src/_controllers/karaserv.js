@@ -13,7 +13,6 @@ export default function KSController(router) {
 				res.json(karas);
 			} catch(err) {
 				console.log(err);
-				logger.error(err);
 				res.statusCode = 500;
 				res.json(err);
 			}
@@ -24,7 +23,6 @@ export default function KSController(router) {
 				const karas = await getAllKaras(req.query.filter,req.lang,req.query.from, req.query.size,'recent');
 				res.json(karas);
 			} catch(err) {
-				logger.error(err);
 				res.statusCode = 500;
 				res.json(err);
 			}
@@ -35,7 +33,6 @@ export default function KSController(router) {
 				const tags = await getTags(req.lang,req.params.tagtype);
 				res.json(tags);
 			} catch(err) {
-				logger.error(err);
 				res.statusCode = 500;
 				res.json(err);
 			}
@@ -43,34 +40,29 @@ export default function KSController(router) {
 	router.route('/karas/tag/:tag([0-9]+)')
 		.get(getLang, async (req, res) => {
 			try {
-				const karas = await getAllKaras(req.params.lang,req.query.filter,req.lang,'tag',req.query.tag);
+				const karas = await getAllKaras(req.query.filter,req.lang,req.query.from,req.query.size,'tag',req.params.tag);
 				res.json(karas);
 			} catch(err) {
-				logger.error(err);
 				res.statusCode = 500;
 				res.json(err);
 			}
 		});
 	router.route('/karas/series')
 		.get(getLang, async (req, res) => {
-			// Sends command to shutdown the app.
 			try {
 				const series = await getAllSeries(req.query.filter,req.lang);
 				res.json(series);
 			} catch(err) {
-				logger.error(err);
 				res.statusCode = 500;
 				res.json(err);
 			}
 		});
 	router.route('/karas/series/:sid([0-9]+)')
 		.get(getLang, async (req, res) => {
-			// Sends command to shutdown the app.
 			try {
 				const karas = await getAllKaras(req.query.filter,req.lang,req.query.from,req.query.size,'serie',req.params.sid);
 				res.json(karas);
 			} catch(err) {
-				logger.error(err);
 				res.statusCode = 500;
 				res.json(err);
 			}

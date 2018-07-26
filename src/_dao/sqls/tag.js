@@ -3,8 +3,9 @@
 
 export const getTags = `
 SELECT pk_id_tag AS tag_id,
-	name
-FROM karasdb.tag
-ORDER BY name
+	name,
+	tagtype AS type
+FROM tag
 WHERE tagtype = $1
+ORDER BY name
 `;
