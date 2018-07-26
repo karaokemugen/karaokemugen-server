@@ -1,6 +1,6 @@
 import {uuidRegexp, subFileRegexp, karaTypesArray, mediaFileRegexp, karaTypes} from './constants';
 import {check, initValidators} from '../_utils/validators';
-import {selectAllKaras} from '../_dao/kara';
+import {selectAllKaras, selectAllYears} from '../_dao/kara';
 import {getConfig} from '../_utils/config';
 import langs from 'langs';
 import {getLanguage} from 'iso-countries-languages';
@@ -17,6 +17,10 @@ export function formatKaraList(karaList, lang, from, count) {
 		},
 		content: karaList
 	};
+}
+
+export async function getAllYears() {
+	return await selectAllYears();
 }
 
 export async function getAllKaras(filter, lang, from = 0, size = 99999999999, mode, modeValue) {

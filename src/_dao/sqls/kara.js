@@ -32,3 +32,4 @@ WHERE 1 = 1
 ORDER BY language, ak.serie IS NULL, lower(unaccent(serie)), ak.songtype DESC, ak.songorder, lower(unaccent(singer)), lower(unaccent(ak.title))
 `;
 
+export const getYears = 'SELECT DISTINCT year FROM all_karas ORDER BY year';
