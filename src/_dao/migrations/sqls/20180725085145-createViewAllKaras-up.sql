@@ -1,5 +1,12 @@
-CREATE VIEW all_karas AS SELECT
-  k.pk_id_kara AS kara_id,
+CREATE VIEW all_karas AS
+WITH series_i18n(serie_id, serie_langs) AS (
+     SELECT sl.fk_id_serie, array_to_json(array_agg(json_build_object('lang', sl.lang, 'name', sl.name)))
+     FROM serie_lang sl
+     GROUP BY sl.fk_id_serie
+)
+
+SELECT
+ k.pk_id_kara AS kara_id,
   k.kid,
   k.title,
   k.duration,
@@ -12,7 +19,7 @@ CREATE VIEW all_karas AS SELECT
   k.songorder,
   k.karafile,
   k.mediasize,
-  array_to_json(array_agg(json_build_object('lang', sl.lang, 'name', sl.name))) AS serie_i18n,
+  array_to_json(array_agg(DISTINCT(s18.serie_langs::varchar))) AS serie_i18n,
   string_agg(DISTINCT(s.name),',') AS serie,
   json_agg(DISTINCT(s.aliases)) AS serie_altname,
   array_agg(DISTINCT(s.pk_id_serie)) AS serie_id,
@@ -26,8 +33,8 @@ CREATE VIEW all_karas AS SELECT
   array_agg(DISTINCT(kt.fk_id_tag)) AS all_tags_id
 FROM kara k
 LEFT JOIN kara_serie ks ON k.pk_id_kara = ks.fk_id_kara
-LEFT JOIN serie_lang sl ON ks.fk_id_serie = sl.fk_id_serie
 LEFT JOIN serie s ON ks.fk_id_serie = s.pk_id_serie
+LEFT JOIN series_i18n s18 ON s18.serie_id = ks.fk_id_serie
 LEFT JOIN kara_tag kt ON k.pk_id_kara = kt.fk_id_kara
 LEFT JOIN tag t_singer ON kt.fk_id_tag = t_singer.pk_id_tag AND t_singer.tagtype = 2
 LEFT JOIN tag t_songtype ON kt.fk_id_tag = t_songtype.pk_id_tag AND t_songtype.tagtype = 3
