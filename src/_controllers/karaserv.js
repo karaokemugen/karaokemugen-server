@@ -6,7 +6,7 @@ import {getTags} from '../_services/tag';
 import {getAllSeries} from '../_services/series';
 
 export default function KSController(router) {
-	router.route('/karas/songs')
+	router.route('/karas')
 		.get(getLang, async (req, res) => {
 			try {
 				const karas = await getAllKaras(req.query.filter,req.lang,req.query.from, req.query.size);
@@ -17,7 +17,7 @@ export default function KSController(router) {
 				res.json(err);
 			}
 		});
-	router.route('/karas/songs/recent')
+	router.route('/karas/recent')
 		.get(getLang, async (req, res) => {
 			try {
 				const karas = await getAllKaras(req.query.filter,req.lang,req.query.from, req.query.size,'recent');

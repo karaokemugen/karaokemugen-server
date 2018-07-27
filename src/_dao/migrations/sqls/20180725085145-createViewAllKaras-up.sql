@@ -19,9 +19,9 @@ SELECT
   k.songorder,
   k.karafile,
   k.mediasize,
-  array_to_json(array_agg(DISTINCT(s18.serie_langs::varchar))) AS serie_i18n,
+  jsonb_agg(DISTINCT(s18.serie_langs)::jsonb) as serie_i18n,
   string_agg(DISTINCT(s.name),',') AS serie,
-  json_agg(DISTINCT(s.aliases)) AS serie_altname,
+  jsonb_agg(DISTINCT(s.aliases)) AS serie_altname,
   array_agg(DISTINCT(s.pk_id_serie)) AS serie_id,
   string_agg(DISTINCT(t_singer.name),',') AS singer,
   string_agg(DISTINCT(t_songtype.name),',') AS songtype,
@@ -30,6 +30,7 @@ SELECT
   string_agg(DISTINCT(t_author.name),',') AS author,
   string_agg(DISTINCT(t_misc.name),',') AS misc,
   string_agg(DISTINCT(t_songwriter.name),',') AS songwriter,
+  string_agg(DISTINCT(t_group.name),',') AS group,
   array_agg(DISTINCT(kt.fk_id_tag)) AS all_tags_id
 FROM kara k
 LEFT JOIN kara_serie ks ON k.pk_id_kara = ks.fk_id_kara

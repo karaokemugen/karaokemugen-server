@@ -1,6 +1,6 @@
 // SQL for kara management
 
-export const getAllKaras = (filterClauses, lang, typeClauses) => `SELECT ak.kara_id AS kara_id,
+export const getAllKaras = (filterClauses, lang, typeClauses, limitClauses, orderClauses) => `SELECT ak.kara_id AS kara_id,
   ak.kid AS kid,
   ak.title AS title,
   ak.songorder AS songorder,
@@ -29,7 +29,8 @@ FROM all_karas AS ak
 WHERE 1 = 1
   ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
   ${typeClauses}
-ORDER BY language, ak.serie IS NULL, lower(unaccent(serie)), ak.songtype DESC, ak.songorder, lower(unaccent(singer)), lower(unaccent(ak.title))
+ORDER BY ${orderClauses} language, ak.serie IS NULL, lower(unaccent(serie)), ak.songtype DESC, ak.songorder, lower(unaccent(singer)), lower(unaccent(ak.title))
+  ${limitClauses}
 `;
 
 export const getYears = 'SELECT DISTINCT year FROM all_karas ORDER BY year';

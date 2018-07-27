@@ -11,20 +11,21 @@ export async function selectAllKaras(filter, lang, mode, modeValue) {
 
 	const filterClauses = filter ? buildClauses(filter) : [];
 	const typeClauses = mode ? buildTypeClauses(mode, modeValue) : '';
-	const query = sql.getAllKaras(filterClauses, langSelector(lang), typeClauses);
+	let orderClauses = '';
+	let limitClauses = '';
+	if (mode === 'recent') {
+		orderClauses = 'ak.created_at DESC, ';
+		limitClauses = 'LIMIT 200';
+	}
+	const query = sql.getAllKaras(filterClauses, langSelector(lang), typeClauses, limitClauses, orderClauses);
 	const res = await db().query(query);
 	return res.rows;
 }
 
 export function buildTypeClauses(mode, value) {
-	if (mode === 'recent') {
-		let date = new Date();
-		date.setMonth(date.getMonth()-1);
-		return ` AND ak.created_at >= '${date.getFullYear()}-${(date.getMonth()+1)}-${date.getDate()}'`;
-	}
 	if (mode === 'year') return ` AND year = ${value}`;
 	if (mode === 'tag') return ` AND all_tags_id @> ARRAY[${value}]`;
-	if (mode === 'serie') return ` AND ak.serie_id @> ARRAY[${value}::smallint]`;
+	if (mode === 'serie') return ` AND serie_id @> ARRAY[${value}::smallint]`;
 	return '';
 }
 
