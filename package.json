@@ -11,11 +11,11 @@
     "prestart": "node node_modules/db-migrate/bin/db-migrate sync [all] --migrations-dir src/_dao/migrations",
     "start": "babel-node src/index.js --",
     "buildReact": "cd react_site && yarn build",
-	"startReact": "cd react_site && yarn start",
-	"generate": "babel-node src/index.js -- --generate",
-	"migrate": "node node_modules/db-migrate/bin/db-migrate sync [all] --migrations-dir src/_dao/migrations",
-	"migrateDown": "node node_modules/db-migrate/bin/db-migrate down --migrations-dir src/_dao/migrations",
-	"migrateUp": "node node_modules/db-migrate/bin/db-migrate up --migrations-dir src/_dao/migrations"
+    "startReact": "cd react_site && yarn start",
+    "generate": "babel-node src/index.js -- --generate",
+    "migrate": "node node_modules/db-migrate/bin/db-migrate sync [all] --migrations-dir src/_dao/migrations",
+    "migrateDown": "node node_modules/db-migrate/bin/db-migrate down --migrations-dir src/_dao/migrations",
+    "migrateUp": "node node_modules/db-migrate/bin/db-migrate up --migrations-dir src/_dao/migrations"
   },
   "bugs": {
     "url": "https://lab.shelter.moe/karaokemugen/karaokemugen-server/issues",
@@ -58,6 +58,7 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "pg": "^7.4.3",
+    "sql-injection": "^0.0.6",
     "uuid": "^3.3.2",
     "validate.js": "^0.12.0",
     "winston": "^3.0.0",
