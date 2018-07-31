@@ -1,6 +1,7 @@
 import {langSelector, db} from './database';
 const sql = require('./sqls/kara');
 import deburr from 'lodash.deburr';
+import { selectViewcountKaras } from './sqls/generation';
 
 export async function selectAllYears() {
 	const res = await db().query(sql.getAllYears);
@@ -26,6 +27,13 @@ export function buildTypeClauses(mode, value) {
 	if (mode === 'year') return ` AND year = ${value}`;
 	if (mode === 'tag') return ` AND all_tags_id @> ARRAY[${value}]`;
 	if (mode === 'serie') return ` AND serie_id @> ARRAY[${value}::smallint]`;
+	if (mode === 'ids') {
+		let selection = [];
+		for (const val of value.split(',')) {
+			selection.push(` OR ak.kara_id = '${val}' `);
+		}
+		return selection.join(' ');
+	}
 	return '';
 }
 
