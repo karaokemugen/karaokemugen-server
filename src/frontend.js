@@ -8,7 +8,7 @@ import authController from './_controllers/auth';
 import KSController from './_controllers/karaserv';
 import {configurePassport} from './_utils/passport_manager';
 import {getConfig} from './_utils/config';
-import sqlInjection from 'sql-injection';
+import protect from 'protect';
 
 /**
  * Starting express which will serve our app.
@@ -23,7 +23,10 @@ export function initFrontend(listenPort) {
 	app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 	app.use(passport.initialize());
-	app.use(sqlInjection);
+	app.use(protect.express.sqlInjection({
+		body: true,
+		loggerFunction: logger.error
+	}));
 	configurePassport();
 
 	// Serve static files from the React app
