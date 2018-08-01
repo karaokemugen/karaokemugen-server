@@ -27,13 +27,7 @@ export function buildTypeClauses(mode, value) {
 	if (mode === 'year') return ` AND year = ${value}`;
 	if (mode === 'tag') return ` AND all_tags_id @> ARRAY[${value}]`;
 	if (mode === 'serie') return ` AND serie_id @> ARRAY[${value}::smallint]`;
-	if (mode === 'ids') {
-		let selection = [];
-		for (const val of value.split(',')) {
-			selection.push(` OR ak.kara_id = '${val}' `);
-		}
-		return selection.join(' ');
-	}
+	if (mode === 'ids') return ` AND kara_id IN (${value})`;
 	return '';
 }
 
