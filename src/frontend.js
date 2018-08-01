@@ -6,6 +6,7 @@ import passport from 'passport';
 import adminController from './_controllers/admin';
 import authController from './_controllers/auth';
 import KSController from './_controllers/karaserv';
+import ShortenerController from './controllers/shortener';
 import {configurePassport} from './_utils/passport_manager';
 import {getConfig} from './_utils/config';
 import protect from 'protect';
@@ -19,6 +20,7 @@ export function initFrontend(listenPort) {
 	const conf = getConfig();
 	const app = express();
 
+	app.enable('trust proxy');
 	app.use(bodyParser.json()); // support json encoded bodies
 	app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
@@ -39,6 +41,7 @@ export function initFrontend(listenPort) {
 	app.use('/api', apiRouter());
 	// The "catchall" handler: for any request that doesn't
 	// match one above, send back React's index.html file.
+	app.get('/', (req, res) => res.redirect('/api/shortener'));
 	app.get('*', (req, res) => {
 		res.sendFile(resolve(__dirname, '../build/index.html'));
 	});
@@ -58,6 +61,7 @@ function apiRouter() {
 	adminController(apiRouter);
 	// Adding KaraServ routes
 	KSController(apiRouter);
+	ShortenerController(apiRouter);
 
 	return apiRouter;
 }

@@ -1,6 +1,5 @@
 import {requireAuth, requireValidUser, updateUserLoginTime, requireAdmin} from '../_controllers/passport_manager';
 import {getLang} from './lang';
-import logger from 'winston';
 import {getAllKaras, getAllYears} from '../_services/kara';
 import {getTags} from '../_services/tag';
 import {getAllSeries} from '../_services/series';

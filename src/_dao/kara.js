@@ -1,7 +1,6 @@
 import {langSelector, db} from './database';
 const sql = require('./sqls/kara');
 import deburr from 'lodash.deburr';
-import { selectViewcountKaras } from './sqls/generation';
 
 export async function selectAllYears() {
 	const res = await db().query(sql.getAllYears);
