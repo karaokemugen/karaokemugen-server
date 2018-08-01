@@ -5,5 +5,5 @@ CREATE TABLE short_url
 	remote_ip inet NOT NULL,
 	local_ip inet NOT NULL,
 	local_port integer DEFAULT(1337),
-	instance_id uuid NOT NULL,
+	instance_id uuid NOT NULL
 );
