@@ -40,6 +40,7 @@
     "@risingstack/protect": "^1.2.0",
     "async-await-parallel": "^1.0.0",
     "body-parser": "^1.18.3",
+    "commander": "^2.16.0",
     "db-migrate": "^0.11.1",
     "db-migrate-pg": "^0.4.0",
     "detect-port": "^1.2.3",
@@ -63,7 +64,6 @@
     "uuid": "^3.3.2",
     "validate.js": "^0.12.0",
     "winston": "^3.0.0",
-    "winston-daily-rotate-file": "^3.2.3",
-    "yargs": "^12.0.1"
+    "winston-daily-rotate-file": "^3.2.3"
   }
 }
