@@ -5,7 +5,11 @@ export default function ShortenerController(router) {
 		.get(async (req, res) => {
 			try {
 				const ret = await getInstance(req.ip);
-				res.redirect(`http://${ret.local_ip}:${ret.local_port}`);
+				if (ret) {
+					res.redirect(`http://${ret.local_ip}:${ret.local_port}`);
+				} else {
+					res.status(404).send('No Karaoke Mugen instance runs on your local network.');
+				}
 			} catch(err) {
 				res.statusCode = 500;
 				res.json(err);

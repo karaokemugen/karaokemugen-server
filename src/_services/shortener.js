@@ -33,5 +33,5 @@ export async function publishInstance(ip, data) {
 export async function getInstance(ip) {
 	const instance = await selectInstance(ip);
 	if (instance.length > 0) return instance[0];
-	throw 'No Karaoke Mugen instance runs on your local network.';
+	return false;
 }

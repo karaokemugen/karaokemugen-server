@@ -7,7 +7,7 @@ SELECT pk_id_shorturl AS shorturl_id,
 	remote_ip,
 	local_ip,
 	local_port,
-	instance_id,
+	instance_id
 FROM short_url
 WHERE remote_ip = $1
 `;
