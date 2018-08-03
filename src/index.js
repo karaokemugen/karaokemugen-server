@@ -2,7 +2,7 @@ import {initConfig} from './_utils/config';
 import logger from 'winston';
 import {join} from 'path';
 import {initFrontend} from './frontend';
-import {argv} from 'yargs';
+import yargs from 'yargs';
 import detect from 'detect-port';
 import {initDB, closeDB} from './_dao/database';
 import {run} from './_dao/generation';
@@ -10,7 +10,7 @@ import {run} from './_dao/generation';
 const pjson = require('../package.json');
 const appPath = join(__dirname,'../');
 
-process.on('uncaughtException', function (exception) {
+process.on('uncaughtException', (exception) => {
 	console.log(exception);
 });
 
@@ -25,6 +25,7 @@ main().catch(err => {
 });
 
 async function main() {
+	const argv = yargs.argv;
 	await initConfig(appPath, argv);
 	console.log('--------------------------------------------------------------------');
 	console.log(`Karaoke Mugen Server ${pjson.version}`);
@@ -34,7 +35,6 @@ async function main() {
 	const opts = {
 		port: argv.port || 1350,
 	};
-
 	await initDB();
 	if (argv.generate) {
 		await run();
@@ -50,6 +50,6 @@ function exit(rc) {
 	closeDB().then(() => {
 		process.exit(rc || 0);
 	}).catch(() => {
-		process;exit(1);
+		process.exit(1);
 	});
 }
