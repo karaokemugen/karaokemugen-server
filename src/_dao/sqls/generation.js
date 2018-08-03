@@ -22,3 +22,12 @@ export const selectRequestKaras = 'SELECT fk_id_kara AS id_kara, kid FROM reques
 export const selectKaras = 'SELECT kara_id AS id_kara, kid FROM all_karas;';
 
 export const selectViewcountKaras = 'SELECT fk_id_kara AS id_kara, kid FROM viewcount;';
+
+export const deleteAll = `
+TRUNCATE kara_tag RESTART IDENTITY;
+TRUNCATE kara_serie RESTART IDENTITY;
+TRUNCATE tag RESTART IDENTITY;
+TRUNCATE serie RESTART IDENTITY;
+TRUNCATE serie_lang RESTART IDENTITY;
+TRUNCATE kara RESTART IDENTITY;
+`;

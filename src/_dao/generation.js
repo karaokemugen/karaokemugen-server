@@ -6,7 +6,7 @@ import {getConfig} from '../_utils/config';
 import {getDataFromKaraFile} from './karafile';
 import {transaction, db} from './database';
 import {
-	insertKaras, insertKaraSeries, insertKaraTags, insertSeries, insertTags, inserti18nSeries, selectKaras, selectViewcountKaras, selectRequestKaras, updateSeriesAltNames
+	insertKaras, insertKaraSeries, insertKaraTags, insertSeries, insertTags, inserti18nSeries, selectKaras, selectViewcountKaras, selectRequestKaras, updateSeriesAltNames, deleteAll
 } from './sqls/generation';
 import {karaTypesMap} from '../_services/constants';
 import {serieRequired, verifyKaraData} from '../_services/kara';
@@ -15,16 +15,6 @@ import parallel from 'async-await-parallel';
 import {findSeries, readSeriesFile} from '../_dao/seriesfile';
 
 let error = false;
-
-async function emptyDatabase() {
-	await db().query('DELETE FROM kara_tag;');
-	await db().query('DELETE FROM kara_serie;');
-	await db().query('DELETE FROM tag;');
-	await db().query('DELETE FROM serie;');
-	await db().query('DELETE FROM serie_lang;');
-	await db().query('DELETE FROM kara;');
-	await db().query('VACUUM;');
-}
 
 async function extractKaraFiles() {
 	const conf = getConfig();
@@ -331,7 +321,6 @@ export async function run(config) {
 
 		logger.info('[Gen] Starting database generation');
 		logger.info('[Gen] GENERATING DATABASE CAN TAKE A WHILE, PLEASE WAIT.');
-		await emptyDatabase();
 		const karaFiles = await extractKaraFiles();
 		const karas = await readAllKaras(karaFiles);
 		// Preparing data to insert
@@ -349,6 +338,7 @@ export async function run(config) {
 		// Inserting data in a transaction
 
 		await transaction([
+			{sql: deleteAll},
 			{sql: insertKaras, params: sqlInsertKaras},
 			{sql: insertSeries, params: sqlInsertSeries},
 			{sql: insertTags, params: sqlInsertTags},

@@ -15,8 +15,12 @@ export async function transaction(queries) {
 	try {
 		await client.query('BEGIN');
 		for (const query of queries) {
-			for (const param of query.params) {
-				await client.query(query.sql, param);
+			if (Array.isArray(query.params)) {
+				for (const param of query.params) {
+					await client.query(query.sql, param);
+				}
+			} else {
+				await client.query(query.sql);
 			}
 		}
 		await client.query('COMMIT');
