@@ -1705,6 +1705,13 @@ expect-ct@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/expect-ct/-/expect-ct-0.1.0.tgz#52735678de18530890d8d7b95f0ac63640958094"
 
+express-range@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/express-range/-/express-range-2.0.1.tgz#aa4cf2b08c75383f360a8d30119c9d559dcf330a"
+  dependencies:
+    http-content-range-format "^1.0.0"
+    http-range-parse "^1.0.0"
+
 express@^4.16.3:
   version "4.16.3"
   resolved "https://registry.yarnpkg.com/express/-/express-4.16.3.tgz#6af8a502350db3246ecc4becf6b5a34d22f7ed53"
@@ -2173,6 +2180,10 @@ hsts@2.0.0:
   dependencies:
     core-util-is "1.0.2"
 
+http-content-range-format@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/http-content-range-format/-/http-content-range-format-1.0.0.tgz#1fa2851f24d297575af7a1488d63de02e4b84378"
+
 http-errors@1.6.2:
   version "1.6.2"
   resolved "https://registry.yarnpkg.com/http-errors/-/http-errors-1.6.2.tgz#0a002cc85707192a7e7946ceedc11155f60ec736"
@@ -2190,6 +2201,10 @@ http-errors@1.6.3, http-errors@~1.6.2, http-errors@~1.6.3:
     inherits "2.0.3"
     setprototypeof "1.1.0"
     statuses ">= 1.4.0 < 2"
+
+http-range-parse@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/http-range-parse/-/http-range-parse-1.0.0.tgz#481582bdb5c38838d78496bfdf956a716b8b9952"
 
 http-signature@~1.1.0:
   version "1.1.1"

@@ -10,6 +10,7 @@ import ShortenerController from './_controllers/shortener';
 import {configurePassport} from './_utils/passport_manager';
 import {getConfig} from './_utils/config';
 import protect from '@risingstack/protect';
+import range from 'express-range';
 
 /**
  * Starting express which will serve our app.
@@ -30,7 +31,7 @@ export function initFrontend(listenPort) {
 		loggerFunction: logger.error
 	}));
 	configurePassport();
-
+	app.use(range());
 	// Serve static files from the React app
 	app.use(express.static(resolve(__dirname, '../react_site/build')));
 
@@ -39,9 +40,9 @@ export function initFrontend(listenPort) {
 	app.use('/downloads/medias', express.static(resolve(conf.appPath, conf.Path.Medias)));
 	// API router
 	app.use('/api', apiRouter());
+	app.get('/', (req, res) => res.redirect('/api/shortener'));
 	// The "catchall" handler: for any request that doesn't
 	// match one above, send back React's index.html file.
-	app.get('/', (req, res) => res.redirect('/api/shortener'));
 	app.get('*', (req, res) => {
 		res.sendFile(resolve(__dirname, '../build/index.html'));
 	});
