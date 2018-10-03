@@ -9,7 +9,6 @@ import KSController from './_controllers/karaserv';
 import ShortenerController from './_controllers/shortener';
 import {configurePassport} from './_utils/passport_manager';
 import {getConfig} from './_utils/config';
-import protect from '@risingstack/protect';
 import range from 'express-range';
 
 /**
@@ -26,10 +25,6 @@ export function initFrontend(listenPort) {
 	app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 	app.use(passport.initialize());
-	app.use(protect.express.sqlInjection({
-		body: true,
-		loggerFunction: logger.error
-	}));
 	configurePassport();
 	app.use(range());
 	// Serve static files from the React app

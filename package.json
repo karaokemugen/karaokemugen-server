@@ -37,7 +37,6 @@
     "eslint-plugin-react": "^7.11.1"
   },
   "dependencies": {
-    "@risingstack/protect": "^1.2.0",
     "async-await-parallel": "^1.0.0",
     "body-parser": "^1.18.3",
     "commander": "^2.18.0",
