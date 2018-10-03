@@ -12,12 +12,9 @@ export async function selectAllKaras(filter, lang, mode, modeValue) {
 	const filterClauses = filter ? buildClauses(filter) : [];
 	const typeClauses = mode ? buildTypeClauses(mode, modeValue) : '';
 	let orderClauses = '';
-	let limitClauses = '';
-	if (mode === 'recent') {
-		orderClauses = 'ak.created_at DESC, ';
-		limitClauses = 'LIMIT 200';
-	}
-	const query = sql.getAllKaras(filterClauses, langSelector(lang), typeClauses, limitClauses, orderClauses);
+	if (mode === 'recent') orderClauses = 'created_at DESC, ';
+	if (mode === 'popular') orderClauses = 'requested DESC, ';
+	const query = sql.getAllKaras(filterClauses, langSelector(lang), typeClauses, orderClauses);
 	const res = await db().query(query);
 	return res.rows;
 }

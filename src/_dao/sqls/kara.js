@@ -30,7 +30,6 @@ WHERE 1 = 1
   ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
   ${typeClauses}
 ORDER BY ${orderClauses} language, ak.serie IS NULL, lower(unaccent(serie)), ak.songtype DESC, ak.songorder, lower(unaccent(singer)), lower(unaccent(ak.title))
-  ${limitClauses}
 `;
 
 export const getYears = 'SELECT DISTINCT year FROM all_karas ORDER BY year';
