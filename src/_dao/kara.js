@@ -1,5 +1,6 @@
 import {langSelector, db} from './database';
 const sql = require('./sqls/kara');
+import {pg as yesql} from 'yesql';
 import deburr from 'lodash.deburr';
 
 export async function selectAllYears() {
@@ -9,13 +10,14 @@ export async function selectAllYears() {
 
 export async function selectAllKaras(filter, lang, mode, modeValue) {
 
-	const filterClauses = filter ? buildClauses(filter) : [];
+	const filterClauses = filter ? buildClauses(filter) : {sql: [], params: {}};
 	const typeClauses = mode ? buildTypeClauses(mode, modeValue) : '';
 	let orderClauses = '';
 	if (mode === 'recent') orderClauses = 'created_at DESC, ';
 	if (mode === 'popular') orderClauses = 'requested DESC, ';
-	const query = sql.getAllKaras(filterClauses, langSelector(lang), typeClauses, orderClauses);
-	const res = await db().query(query);
+	const query = sql.getAllKaras(filterClauses.sql, langSelector(lang), typeClauses, orderClauses);
+	const params = filterClauses.params;
+	const res = await db().query(yesql(query)(params));
 	return res.rows;
 }
 
@@ -27,25 +29,41 @@ export function buildTypeClauses(mode, value) {
 	return '';
 }
 
-export function buildClauses(filter) {
-	return deburr(filter)
+export function paramWords(filter) {
+	let params = {};
+	const words = deburr(filter)
 		.toLowerCase()
 		.replace('\'', '')
 		.replace(',', '')
 		.split(' ')
 		.filter(s => !('' === s))
 		.map(word => {
-			let extraClauses = '';
-			return `lower(unaccent(ak.misc)) LIKE '%${word}%' OR
-			lower(unaccent(ak.title)) LIKE '%${word}%' OR
-			lower(unaccent(ak.author)) LIKE '%${word}%' OR
-			lower(unaccent(ak.serie)) LIKE '%${word}%' OR
-			lower(unaccent(ak.serie_altname::varchar)) LIKE '%${word}%' OR
-			lower(unaccent(ak.singer)) LIKE '%${word}%' OR
-			lower(unaccent(ak.songwriter)) LIKE '%${word}%' OR
-			lower(unaccent(ak.creator)) LIKE '%${word}%' OR
-			lower(unaccent(ak.language)) LIKE '%${word}%'
-			${extraClauses}`;
-		}
-		);
+			return `${word}`;
+		});
+	for (const i in words) {
+		params[`word${i}`] = `%${words[i]}%`;
+	}
+	return params;
+}
+
+export function buildClauses(words) {
+	const params = paramWords(words);
+	let sql = [];
+	let extraClauses = '';
+	for (const i in words.split(' ').filter(s => !('' === s))) {
+		sql.push(`lower(unaccent(ak.misc)) LIKE :word${i} OR
+		lower(unaccent(ak.title)) LIKE :word${i} OR
+		lower(unaccent(ak.author)) LIKE :word${i} OR
+		lower(unaccent(ak.serie)) LIKE :word${i} OR
+		lower(unaccent(ak.serie_altname::varchar)) LIKE :word${i} OR
+		lower(unaccent(ak.singer)) LIKE :word${i} OR
+		lower(unaccent(ak.songwriter)) LIKE :word${i} OR
+		lower(unaccent(ak.creator)) LIKE :word${i} OR
+		lower(unaccent(ak.language)) LIKE :word${i}
+		${extraClauses}`);
+	}
+	return {
+		sql: sql,
+		params: params
+	};
 }

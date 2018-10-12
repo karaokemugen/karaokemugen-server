@@ -1,6 +1,6 @@
 // SQL for kara management
 
-export const getAllKaras = (filterClauses, lang, typeClauses, limitClauses, orderClauses) => `SELECT ak.kara_id AS kara_id,
+export const getAllKaras = (filterClauses, lang, typeClauses, orderClauses) => `SELECT ak.kara_id AS kara_id,
   ak.kid AS kid,
   ak.title AS title,
   ak.songorder AS songorder,
