@@ -14,7 +14,7 @@ export const defaults = {
 		Karas: 'data/karas',
 		Lyrics: 'data/lyrics',
 		Medias: 'data/medias',
-		Series: 'data/series.json'
+		Series: 'data/series'
 	}
 
 };

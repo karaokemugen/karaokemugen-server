@@ -16,7 +16,6 @@ process.on('uncaughtException', (exception) => {
 });
 
 main().catch(err => {
-	console.log(err);
 	logger.error(`[Launcher] Error during launch : ${err}`);
 	process.exit(1);
 });
@@ -53,13 +52,6 @@ function exit(rc) {
 }
 
 function parseArgs() {
-	/*
-	if (process.argv.indexOf('--') >= 0) {
-		return process.argv.slice(3);
-	} else {
-		return process.argv.slice(2);
-	}
-	*/
 	const argv = process.argv.filter(e => e !== '--');
 	return cli
 		.command('kmserver.sh')

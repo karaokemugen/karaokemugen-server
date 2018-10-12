@@ -12,7 +12,7 @@ import {karaTypesMap} from '../_services/constants';
 import {serieRequired, verifyKaraData} from '../_services/kara';
 import {basename} from 'path';
 import parallel from 'async-await-parallel';
-import {findSeries, readSeriesFile} from '../_dao/seriesfile';
+import {findSeries, getDataFromSeriesFile} from '../_dao/seriesfile';
 
 let error = false;
 
@@ -33,7 +33,7 @@ async function extractKaraFiles() {
 export async function readAllKaras(karafiles) {
 	const karaPromises = [];
 	for (const karafile of karafiles) {
-		karaPromises.push(() => readKarafile(karafile));
+		karaPromises.push(() => readKaraFile(karafile));
 	}
 	const karas = await parallel(karaPromises, 16);
 	// Errors are non-blocking
@@ -43,7 +43,7 @@ export async function readAllKaras(karafiles) {
 	return karas;
 }
 
-async function readKarafile(karafile) {
+async function readKaraFile(karafile) {
 	const karaData = await getDataFromKaraFile(karafile);
 	try {
 		verifyKaraData(karaData);
@@ -53,6 +53,33 @@ async function readKarafile(karafile) {
 	}
 	return karaData;
 }
+
+async function extractSeriesFiles() {
+	const conf = getConfig();
+	const seriesDir = resolve(conf.appPath, conf.Path.Series);
+	const seriesFiles = [];
+	const dirListing = await asyncReadDir(seriesDir);
+	for (const file of dirListing) {
+		if (file.endsWith('.series.json') && !file.startsWith('.')) {
+			seriesFiles.push(resolve(seriesDir, file));
+		}
+	}
+	if (seriesFiles.length === 0) throw 'No series files found';
+	return seriesFiles;
+}
+
+export async function readAllSeries(seriesfiles) {
+	const seriesPromises = [];
+	for (const seriesfile of seriesfiles) {
+		seriesPromises.push(() => processSeriesFile(seriesfile));
+	}
+	return await parallel(seriesPromises, 16);
+}
+
+async function processSeriesFile(seriesFile) {
+	return await getDataFromSeriesFile(seriesFile);
+}
+
 
 function prepareKaraInsertData(kara, index) {
 	return [
@@ -101,7 +128,7 @@ function getSeries(kara) {
 /**
  * Returns a Map<String, Array>, linking a series to the karaoke indexes involved.
  */
-function getAllSeries(karas) {
+function getAllSeries(karas, seriesData) {
 	const map = new Map();
 	karas.forEach((kara, index) => {
 		const karaIndex = index + 1;
@@ -113,7 +140,11 @@ function getAllSeries(karas) {
 			}
 		});
 	});
-
+	for (const serie of seriesData) {
+		if (!map.has(serie.name)) {
+			map.set(serie.name, [0]);
+		}
+	}
 	return map;
 }
 
@@ -153,12 +184,12 @@ function prepareAllKarasSeriesInsertData(mapSeries) {
 	return data;
 }
 
-async function prepareAltSeriesInsertData(altSeriesFile, mapSeries) {
+async function prepareAltSeriesInsertData(seriesData, mapSeries) {
 
 	const altNameData = [];
 	const i18nData = [];
-	const seriesData = await readSeriesFile(altSeriesFile);
-	for (const serie of seriesData.series) {
+
+	for (const serie of seriesData) {
 		if (serie.aliases) altNameData.push([
 			JSON.stringify(serie.aliases),
 			serie.name
@@ -242,7 +273,7 @@ function getKaraTags(kara, allTags) {
 	}
 	if (kara.group) kara.group.split(',').forEach(group => result.add(getTagId(group.trim() + ',9', allTags)));
 	if (kara.lang) kara.lang.split(',').forEach(lang => {
-		if (lang === 'und' || lang === 'mul' || hasLang('2B', lang)) {
+		if (lang === 'zxx' || lang === 'und' || lang === 'mul' || hasLang('2B', lang)) {
 			result.add(getTagId(lang.trim() + ',5', allTags));
 		}
 	});
@@ -314,24 +345,23 @@ function prepareTagsKaraInsertData(tagsByKara) {
 	return data;
 }
 
-export async function run(config) {
+export async function run() {
 	try {
-		const conf = config || getConfig();
-		const seriesFile = resolve(conf.appPath, conf.Path.Series);
-
 		logger.info('[Gen] Starting database generation');
 		logger.info('[Gen] GENERATING DATABASE CAN TAKE A WHILE, PLEASE WAIT.');
 		const karaFiles = await extractKaraFiles();
 		const karas = await readAllKaras(karaFiles);
+		const seriesFiles = await extractSeriesFiles();
+		const seriesData = await readAllSeries(seriesFiles);
 		// Preparing data to insert
 		const sqlInsertKaras = prepareAllKarasInsertData(karas);
-		const seriesMap = getAllSeries(karas);
+		const seriesMap = getAllSeries(karas, seriesData);
 		const sqlInsertSeries = prepareAllSeriesInsertData(seriesMap);
 		const sqlInsertKarasSeries = prepareAllKarasSeriesInsertData(seriesMap);
 		const tags = getAllKaraTags(karas);
 		const sqlInsertTags = prepareAllTagsInsertData(tags.allTags);
 		const sqlInsertKarasTags = prepareTagsKaraInsertData(tags.tagsByKara);
-		const seriesAltNamesData = await prepareAltSeriesInsertData(seriesFile, seriesMap);
+		const seriesAltNamesData = await prepareAltSeriesInsertData(seriesData, seriesMap);
 		const sqlUpdateSeriesAltNames = seriesAltNamesData.altNameData;
 		const sqlInserti18nSeries = seriesAltNamesData.i18nData;
 

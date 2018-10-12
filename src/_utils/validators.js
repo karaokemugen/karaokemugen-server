@@ -7,15 +7,15 @@ function integerValidator(value) {
 		if (!isNaN(value)) return null;
 		return ` '${value}' is invalid`;
 	}
-	return null;			
+	return null;
 }
 
 function langValidator(value) {
 	const langs = value.replace('"', '').split(',');
 	let result = null;
-	for (const lang of langs) {		
-		if (!(lang === 'und' || lang === 'mul' || hasLang('2B', lang))) {
-			result = `Lang '${lang}' is invalid`;
+	for (const lang of langs) {
+		if (!(lang === 'zxx' || lang === 'und' || lang === 'mul' || hasLang('2B', lang))) {
+			result = `'${lang}' is invalid`;
 			break;
 		}
 	}
@@ -23,13 +23,13 @@ function langValidator(value) {
 }
 
 function boolIntValidator(value) {
-	if (value && +value !== 0 && +value !== 1) return ` '${value}' is invalid`;	
+	if (value && +value !== 0 && +value !== 1) return ` '${value}' is invalid`;
 	return null;
 }
 
 function isJSON(value) {
 	if (testJSON(value)) return null;
-	return ` '${value}' is invalid JSON`;	
+	return ` '${value}' is invalid JSON`;
 }
 
 function isNumber(value) {
@@ -37,15 +37,15 @@ function isNumber(value) {
 }
 
 function numbersArrayValidator(value) {
-	if (value) {		
+	if (value) {
 		value = '' + value;
 		if (value.includes(',')) {
 			const array = value.split(',');
 			if (array.every(isNumber)) return null;
-			return ` '${value}' is invalid`;	
+			return ` '${value}' is invalid`;
 		}
 		if (!isNaN(value)) return null;
-		return ` '${value}' is invalid`;	
+		return ` '${value}' is invalid`;
 	}
 	return ` '${value}' is invalid`;
 }
@@ -62,6 +62,22 @@ export function unescape(str) {
 		.replace(/&amp;/g, '&');
 }
 
+function seriesi18nValidator(value) {
+	if (typeof value !== 'object') return `i18n data (${value}) is not an object`;
+	for (const lang of Object.keys(value)) {
+		if (!(lang === 'und' || lang === 'mul' || hasLang('2B', lang))) {
+			return `i18n data invalid : '${lang}' is an invalid ISO639-2B code`;
+		}
+	}
+	return null;
+}
+
+function seriesAliasesValidator(value) {
+	if (!value) return null;
+	if (!Array.isArray(value)) return ` '${value}' is invalid (not an array)`;
+	return null;
+}
+
 // Init
 
 export function initValidators() {
@@ -70,6 +86,8 @@ export function initValidators() {
 	if (!validate.validators.integerValidator) validate.validators.integerValidator = integerValidator;
 	if (!validate.validators.isJSON) validate.validators.isJSON = isJSON;
 	if (!validate.validators.langValidator) validate.validators.langValidator = langValidator;
+	if (!validate.validators.seriesi18nValidator) validate.validators.seriesi18nValidator = seriesi18nValidator;
+	if (!validate.validators.seriesAliasesValidator) validate.validators.seriesAliasesValidator = seriesAliasesValidator;
 }
 
 export function check(obj, constraints) {

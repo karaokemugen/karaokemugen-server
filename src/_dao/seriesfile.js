@@ -1,26 +1,51 @@
 import {asyncExists, asyncReadFile} from '../_utils/files';
 import testJSON from 'is-valid-json';
-import logger from 'winston';
 import {getConfig} from '../_utils/config';
 import {resolve} from 'path';
+import {initValidators, check} from '../_utils/validators';
 
-export async function readSeriesFile() {
+const header = {
+	version: 2,
+	description: 'Karaoke Mugen Series File'
+};
+
+const seriesConstraintsV2 = {
+	name: {presence: {allowEmpty: false}},
+	aliases: {seriesAliasesValidator: true},
+	i18n: {seriesi18nValidator: true}
+};
+
+export async function readSeriesFile(seriesFile) {
+	let file;
 	const conf = getConfig();
-	const seriesFile = resolve(conf.appPath, conf.Path.Series);
-	if (!await asyncExists(seriesFile)) {
-		logger.error('[Series] No alternative series names file found!');
-		throw 'No series file found';
+	try {
+		file = resolve(conf.appPath, conf.Path.Series, seriesFile);
+		await asyncExists(file);
+	} catch(err) {
+		throw `No series file found : ${file}`;
 	}
-	let seriesData = await asyncReadFile(seriesFile, 'utf-8');
-	if (!testJSON(seriesData)) {
-		logger.error('[Series] Alternative series names file contains errors!');
-		throw 'Syntax error in series.json';
-	}
-	return JSON.parse(seriesData);
+	return await getDataFromSeriesFile(file);
 }
 
-export function findSeries(serie, seriesFile) {
-	return seriesFile.series.find(s => {
+export async function getDataFromSeriesFile(file) {
+	const seriesFileData = await asyncReadFile(file, 'utf-8');
+	if (!testJSON(seriesFileData)) throw `Syntax error in file ${file}`;
+	const seriesData = JSON.parse(seriesFileData);
+	if (header > +seriesData.header) throw `Series file is too old (version found: ${seriesData.header.version}, expected version: ${header.version})`;
+	const validationErrors = seriesDataValidationErrors(seriesData.series);
+	if (validationErrors) {
+		throw `Series data is not valid: ${JSON.stringify(validationErrors)}`;
+	}
+	return seriesData.series;
+}
+
+export function seriesDataValidationErrors(seriesData) {
+	initValidators();
+	return check(seriesData, seriesConstraintsV2);
+}
+
+export function findSeries(serie, seriesData) {
+	return seriesData.find(s => {
 		return s.name === serie;
 	});
 }
