@@ -3,7 +3,7 @@ import {Layout} from 'antd';
 import KaraForm from './KaraForm';
 import axios from 'axios/index';
 import {connect} from 'react-redux';
-import {push} from 'react-router-redux';
+import {push} from 'connected-react-router';
 import {errorMessage, infoMessage, loading} from '../../actions/navigation';
 import timestamp from 'unix-timestamp';
 

@@ -1,5 +1,5 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import { routerReducer, routerMiddleware } from 'react-router-redux';
+import { connectRouter, routerMiddleware } from 'connected-react-router';
 import createHistory from 'history/createBrowserHistory';
 
 import navigation from './reducers/navigation';
@@ -14,7 +14,7 @@ const middleware = [
 ];
 
 export const store = createStore(
-	combineReducers({ navigation, auth, router: routerReducer }),
+	connectRouter(history)(combineReducers({ navigation, auth })),
 	initialState,
 	compose(...middleware)
 );

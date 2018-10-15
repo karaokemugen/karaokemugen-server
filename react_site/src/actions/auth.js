@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {stringify} from 'qs';
-import {goBack} from 'react-router-redux';
+import {goBack} from 'connected-react-router';
 
 export const AUTH_USER = 'auth_user';
 export const UNAUTH_USER = 'unauth_user';
