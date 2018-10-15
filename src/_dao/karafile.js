@@ -1,16 +1,28 @@
 import {getConfig} from '../_utils/config';
-import {asyncExists, asyncReadFile} from '../_utils/files';
+import {asyncWriteFile, asyncStat, checksum, asyncExists, asyncReadFile} from '../_utils/files';
 import {parse as parseini} from 'ini';
 import logger from 'winston';
 import {resolve} from 'path';
+import {extractSubtitles, getMediaInfo} from '../_utils/ffmpeg';
+import {formatKara} from '../_services/kara';
 
 let error = false;
-
 
 export async function parseKara(karaFile) {
 	let data = await asyncReadFile(karaFile, 'utf-8');
 	data = data.replace(/\r/g, '');
 	return parseini(data);
+}
+
+export async function writeKara(karafile, karaData) {
+	const infosToWrite = (formatKara(karaData));
+	if (karaData.isKaraModified === false) {
+		return;
+	}
+	infosToWrite.datemodif = timestamp.now();
+	delete infosToWrite.karafile;
+	karaData.datemodif = infosToWrite.datemodif;
+	await asyncWriteFile(karafile, stringify(infosToWrite));
 }
 
 export async function getDataFromKaraFile(karafile) {
@@ -39,4 +51,41 @@ export async function getDataFromKaraFile(karafile) {
 	if (error) karaData.error = true;
 
 	return karaData;
+}
+
+export async function extractAssInfos(subFile, karaData) {
+	if (subFile) {
+		karaData.ass = await asyncReadFile(subFile, {encoding: 'utf8'});
+		karaData.ass = karaData.ass.replace(/\r/g, '');
+		const subChecksum = checksum(karaData.ass);
+		if (subChecksum !== karaData.subchecksum) {
+			karaData.isKaraModified = true;
+			karaData.subchecksum = subChecksum;
+		}
+	} else {
+		karaData.ass = '';
+	}
+	return karaData;
+}
+
+export async function extractVideoSubtitles(videoFile, kid) {
+	const extractFile = resolve(getConfig().Path.Temp, `kara_extract.${kid}.ass`);
+	try {
+		await extractSubtitles(videoFile, extractFile);
+		return extractFile;
+	} catch (err) {
+		throw err;
+	}
+}
+
+export async function extractMediaTechInfos(mediaFile, karaData) {
+	const mediaStats = await asyncStat(mediaFile);
+	if (mediaStats.size !== +karaData.mediasize) {
+		karaData.isKaraModified = true;
+		karaData.mediasize = mediaStats.size;
+		const mediaData = await getMediaInfo(mediaFile);
+		if (mediaData.error) error = true;
+		karaData.mediagain = mediaData.audiogain;
+		karaData.mediaduration = mediaData.duration;
+	}
 }

@@ -65,7 +65,7 @@ export function unescape(str) {
 function seriesi18nValidator(value) {
 	if (typeof value !== 'object') return `i18n data (${value}) is not an object`;
 	for (const lang of Object.keys(value)) {
-		if (!(lang === 'und' || lang === 'mul' || hasLang('2B', lang))) {
+		if (!(lang === 'zxx' || lang === 'und' || lang === 'mul' || hasLang('2B', lang))) {
 			return `i18n data invalid : '${lang}' is an invalid ISO639-2B code`;
 		}
 	}

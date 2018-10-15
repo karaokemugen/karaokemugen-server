@@ -28,7 +28,8 @@ export const tagTypes = Object.freeze({
 	lang: 5,
 	author: 6,
 	misc: 7,
-	songwriter: 8
+	songwriter: 8,
+	groups: 9
 });
 
 /** Map used for database generation */
@@ -52,7 +53,7 @@ export function getType(types) {
 export const tags = [
 	'SPECIAL',
 	'REMIX',
-	'VOICELESS',
+	'SOUNDONLY',
 	'CONCERT',
 	'PARODY',
 	'HUMOR',

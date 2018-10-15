@@ -1,10 +1,11 @@
-import {initConfig} from './_utils/config';
+import {getConfig, initConfig} from './_utils/config';
 import logger from 'winston';
 import {join} from 'path';
 import {initFrontend} from './frontend';
 import cli from 'commander';
 import detect from 'detect-port';
 import {initDB, closeDB} from './_dao/database';
+import {initMailer} from './_utils/mailer';
 import {run} from './_dao/generation';
 import sudoBlock from 'sudo-block';
 
@@ -40,6 +41,7 @@ async function main() {
 	opts.port = await detect(opts.port);
 	logger.debug(`[Launcher] Port ${opts.port} is available`);
 	initFrontend(opts.port);
+	if (getConfig().Mail.Enabled) initMailer();
 }
 
 function exit(rc) {

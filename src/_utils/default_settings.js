@@ -14,7 +14,26 @@ export const defaults = {
 		Karas: 'data/karas',
 		Lyrics: 'data/lyrics',
 		Medias: 'data/medias',
-		Series: 'data/series'
+		Series: 'data/series',
+		Temp: 'data/temp',
+		Inbox: 'data/inbox',
+		Bin: {
+			ffmpeg: '/usr/bin/ffmpeg'
+		}
+	},
+	Mail: {
+		Enabled: false,
+		Host: '',
+		Port: 25,
+		Secure: false,
+		Auth: {
+			User: '',
+			Password: '',
+		},
+		From: '[KMServer]',
+		FromMail: 'karaokemugen@localhost',
+		To: '',
+		ToMail: '',
 	}
 
 };
