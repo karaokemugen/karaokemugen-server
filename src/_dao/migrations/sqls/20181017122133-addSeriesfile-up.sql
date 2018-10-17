@@ -24,7 +24,7 @@ SELECT
   k.songorder,
   k.karafile,
   k.mediasize,
-  s.seriefile,
+  jsonb_agg(DISTINCT(s.seriefile)) AS seriefiles,
   jsonb_agg(DISTINCT(s18.serie_langs)::jsonb) as serie_i18n,
   string_agg(DISTINCT(s.name),',') AS serie,
   jsonb_agg(DISTINCT(s.aliases)) AS serie_altname,
@@ -51,5 +51,5 @@ LEFT JOIN tag t_author ON kt.fk_id_tag = t_author.pk_id_tag AND t_author.tagtype
 LEFT JOIN tag t_misc ON kt.fk_id_tag = t_misc.pk_id_tag AND t_misc.tagtype = 7
 LEFT JOIN tag t_group ON kt.fk_id_tag = t_group.pk_id_tag AND t_group.tagtype = 9
 LEFT JOIN tag t_songwriter ON kt.fk_id_tag = t_songwriter.pk_id_tag AND t_songwriter.tagtype = 8
-GROUP BY k.pk_id_kara, s.pk_id_serie
+GROUP BY k.pk_id_kara
 ORDER BY language, serie, singer, songtype DESC, songorder;

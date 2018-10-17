@@ -59,7 +59,7 @@ function parseArgs() {
 		.command('kmserver.sh')
 		.description('Starts Karaoke Mugen Server')
 		.version(pjson.version)
-		.option('-p, --port [port]', 'specify which port to listen to', 'port')
-		.option('-g, --generate', 'generate karaoke database')
+		.option('--port [port]', 'specify which port to listen to', 'port')
+		.option('--generate', 'generate karaoke database')
 		.parse(argv);
 }

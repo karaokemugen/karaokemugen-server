@@ -1,7 +1,7 @@
 import {langSelector, db} from './database';
-const sql = require('./sqls/kara');
 import {pg as yesql} from 'yesql';
 import deburr from 'lodash.deburr';
+const sql = require('./sqls/kara');
 
 export async function selectAllYears() {
 	const res = await db().query(sql.getAllYears);

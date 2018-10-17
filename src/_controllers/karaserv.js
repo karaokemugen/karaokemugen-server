@@ -11,7 +11,6 @@ export default function KSController(router) {
 				const karas = await getAllKaras(req.query.filter,req.lang,req.query.from, req.query.size);
 				res.json(karas);
 			} catch(err) {
-				console.log(err);
 				res.statusCode = 500;
 				res.json(err);
 			}

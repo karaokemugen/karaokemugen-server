@@ -186,15 +186,23 @@ function prepareAllKarasSeriesInsertData(mapSeries) {
 
 async function prepareAltSeriesInsertData(seriesData, mapSeries) {
 
-	const altNameData = [];
+	const data = [];
 	const i18nData = [];
 
 	for (const serie of seriesData) {
-		if (serie.aliases) altNameData.push([
-			JSON.stringify(serie.aliases),
-			serie.name,
-			serie.seriefile,
-		]);
+		if (serie.aliases) {
+			data.push([
+				JSON.stringify(serie.aliases),
+				serie.name,
+				serie.seriefile,
+			]);
+		} else {
+			data.push([
+				null,
+				serie.name,
+				serie.seriefile,
+			]);
+		}
 		if (serie.i18n) {
 			for (const lang of Object.keys(serie.i18n)) {
 				i18nData.push([
@@ -205,12 +213,12 @@ async function prepareAltSeriesInsertData(seriesData, mapSeries) {
 			}
 		}
 	}
-	// Checking if some series present in .kara files are not present in the series file
+	// Checking if some series present in .kara files are not present in the series files
 	for (const serie of mapSeries.keys()) {
 		if (!findSeries(serie, seriesData)) {
 			// Print a warning and push some basic data so the series can be searchable at least
 			logger.warn(`[Gen] Series "${serie}" is not in any series file`);
-			altNameData.push([
+			data.push([
 				null,
 				serie,
 				null,
@@ -223,7 +231,7 @@ async function prepareAltSeriesInsertData(seriesData, mapSeries) {
 		}
 	}
 	return {
-		altNameData: altNameData,
+		data: data,
 		i18nData: i18nData
 	};
 }
@@ -365,7 +373,7 @@ export async function run() {
 		const sqlInsertTags = prepareAllTagsInsertData(tags.allTags);
 		const sqlInsertKarasTags = prepareTagsKaraInsertData(tags.tagsByKara);
 		const seriesAltNamesData = await prepareAltSeriesInsertData(seriesData, seriesMap);
-		const sqlUpdateSeriesAltNames = seriesAltNamesData.altNameData;
+		const sqlUpdateSeries = seriesAltNamesData.data;
 		const sqlInserti18nSeries = seriesAltNamesData.i18nData;
 
 		// Inserting data in a transaction
@@ -378,7 +386,7 @@ export async function run() {
 			{sql: insertKaraTags, params: sqlInsertKarasTags},
 			{sql: insertKaraSeries, params: sqlInsertKarasSeries},
 			{sql: inserti18nSeries, params: sqlInserti18nSeries},
-			{sql: updateSeries, params: sqlUpdateSeriesAltNames}
+			{sql: updateSeries, params: sqlUpdateSeries}
 		]);
 		// These tables do not exist yet
 		//await checkUserdbIntegrity(null, conf);
