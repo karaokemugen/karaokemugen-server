@@ -30,6 +30,18 @@ export function initFrontend(listenPort) {
 	// Serve static files from the React app
 	app.use(express.static(resolve(__dirname, '../react_site/build')));
 
+	app.use((req, res, next) => {
+		res.setHeader('Access-Control-Allow-Origin', '*');
+		res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+		res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Authorization, Accept, Key');
+		if (req.method === 'OPTIONS') {
+			res.statusCode = 200;
+			res.json();
+		} else {
+			// Pass to next layer of middleware
+			next();
+		}
+	});
 	app.use('/downloads/karas', express.static(resolve(conf.appPath, conf.Path.Karas)));
 	app.use('/downloads/lyrics', express.static(resolve(conf.appPath, conf.Path.Lyrics)));
 	app.use('/downloads/medias', express.static(resolve(conf.appPath, conf.Path.Medias)));
