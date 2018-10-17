@@ -11,6 +11,8 @@ export const getAllKaras = (filterClauses, lang, typeClauses, orderClauses) => `
   ak.serie_altname AS serie_altname,
   ak.serie_i18n AS serie_i18n,
   ak.serie_id AS serie_id,
+  ak.seriefile AS seriefile,
+  ak.subfile AS subfile,
   ak.singer AS singer,
   ak.songtype AS songtype,
   ak.creator AS creator,

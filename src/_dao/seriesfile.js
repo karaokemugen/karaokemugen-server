@@ -1,7 +1,7 @@
 import {asyncExists, asyncReadFile} from '../_utils/files';
 import testJSON from 'is-valid-json';
 import {getConfig} from '../_utils/config';
-import {resolve} from 'path';
+import {basename, resolve} from 'path';
 import {initValidators, check} from '../_utils/validators';
 
 const header = {
@@ -36,6 +36,7 @@ export async function getDataFromSeriesFile(file) {
 	if (validationErrors) {
 		throw `Series data is not valid: ${JSON.stringify(validationErrors)}`;
 	}
+	seriesData.series.seriefile = basename(file);
 	return seriesData.series;
 }
 

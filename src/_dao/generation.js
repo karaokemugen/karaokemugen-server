@@ -6,7 +6,7 @@ import {getConfig} from '../_utils/config';
 import {getDataFromKaraFile} from './karafile';
 import {transaction, db} from './database';
 import {
-	insertKaras, insertKaraSeries, insertKaraTags, insertSeries, insertTags, inserti18nSeries, selectKaras, selectViewcountKaras, selectRequestKaras, updateSeriesAltNames, deleteAll
+	insertKaras, insertKaraSeries, insertKaraTags, insertSeries, insertTags, inserti18nSeries, selectKaras, selectViewcountKaras, selectRequestKaras, updateSeries, deleteAll
 } from './sqls/generation';
 import {karaTypesMap} from '../_services/constants';
 import {serieRequired, verifyKaraData} from '../_services/kara';
@@ -192,7 +192,8 @@ async function prepareAltSeriesInsertData(seriesData, mapSeries) {
 	for (const serie of seriesData) {
 		if (serie.aliases) altNameData.push([
 			JSON.stringify(serie.aliases),
-			serie.name
+			serie.name,
+			serie.seriefile,
 		]);
 		if (serie.i18n) {
 			for (const lang of Object.keys(serie.i18n)) {
@@ -208,9 +209,11 @@ async function prepareAltSeriesInsertData(seriesData, mapSeries) {
 	for (const serie of mapSeries.keys()) {
 		if (!findSeries(serie, seriesData)) {
 			// Print a warning and push some basic data so the series can be searchable at least
-			logger.warn(`[Gen] Series "${serie}" is not in the series file`);
+			logger.warn(`[Gen] Series "${serie}" is not in any series file`);
 			altNameData.push([
-				serie
+				null,
+				serie,
+				null,
 			]);
 			i18nData.push([
 				'jpn',
@@ -375,7 +378,7 @@ export async function run() {
 			{sql: insertKaraTags, params: sqlInsertKarasTags},
 			{sql: insertKaraSeries, params: sqlInsertKarasSeries},
 			{sql: inserti18nSeries, params: sqlInserti18nSeries},
-			{sql: updateSeriesAltNames, params: sqlUpdateSeriesAltNames}
+			{sql: updateSeries, params: sqlUpdateSeriesAltNames}
 		]);
 		// These tables do not exist yet
 		//await checkUserdbIntegrity(null, conf);
@@ -415,8 +418,8 @@ export async function checkUserdbIntegrity() {
 
 	// Deleting records which aren't in our KID list
 	await Promise.all([
-		db().query(`DELETE FROM viewcount WHERE kid NOT IN (${karaKIDs});`),
-		db().query(`DELETE FROM request WHERE kid NOT IN (${karaKIDs});`),
+		db().query(`UPDATE viewcount SET fk_kara_id = 0 WHERE kid NOT IN (${karaKIDs});`),
+		db().query(`UPDATE request SET fk_kara_id = 0 WHERE kid NOT IN (${karaKIDs});`),
 	]);
 	const karaIdByKid = new Map();
 	allKaras.rows.forEach(k => karaIdByKid.set(k.kid, k.id_kara));

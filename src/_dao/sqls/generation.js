@@ -15,7 +15,7 @@ export const insertKaraTags = 'INSERT INTO kara_tag(fk_id_tag, fk_id_kara) VALUE
 
 export const insertKaraSeries = 'INSERT INTO kara_serie(fk_id_serie, fk_id_kara) VALUES($1, $2);';
 
-export const updateSeriesAltNames = 'UPDATE serie SET aliases = $1 WHERE name = $2 ;';
+export const updateSeries = 'UPDATE serie SET aliases = $1, seriefile = $3 WHERE name = $2 ;';
 
 export const selectRequestKaras = 'SELECT fk_id_kara AS id_kara, kid FROM request;';
 
