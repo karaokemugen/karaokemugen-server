@@ -4,7 +4,7 @@ import {join} from 'path';
 import {initFrontend} from './frontend';
 import cli from 'commander';
 import detect from 'detect-port';
-import {initDB, closeDB} from './_dao/database';
+import {initDB} from './_dao/database';
 import {initMailer} from './_utils/mailer';
 import {run} from './_dao/generation';
 import sudoBlock from 'sudo-block';
@@ -45,12 +45,7 @@ async function main() {
 }
 
 function exit(rc) {
-	// Closing database
-	closeDB().then(() => {
-		process.exit(rc || 0);
-	}).catch(() => {
-		process.exit(1);
-	});
+	process.exit(rc || 0);
 }
 
 function parseArgs() {

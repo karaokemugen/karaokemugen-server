@@ -47,18 +47,13 @@ export async function connectDB() {
 	database = new Pool(dbConfig);
 	try {
 		await database.connect();
-		database.on('error', (err) => {
+		database.on('error', err => {
 			console.log(err);
 		});
 	} catch(err) {
-		console.log(err);
+		logger.error(`[DB] Connection to database server failed : ${err}`);
 		throw err;
 	}
-}
-
-
-export async function closeDB() {
-	return await database.end();
 }
 
 export function langSelector(lang) {
