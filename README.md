@@ -28,7 +28,7 @@ yarn buildReact
 
 ## Setup database
 
-Setup a PostgreSQL user and database, by default `karaokemugen_server`. Define a password and edit `config.yml` (use `config.yml.sample` as template) to set credentials and such.
+Setup a PostgreSQL user and database, by default `karaokemugen_server`. Define a password and edit `database.json` to set credentials and such.
 
 As a PostgreSQL super user, get into the newly created database and create the `unaccent` extension.
 
