@@ -22,6 +22,7 @@ export const getAllKaras = (filterClauses, lang, typeClauses, orderClauses) => `
   ak.author AS author,
   ak.misc AS misc,
   ak.mediafile AS mediafile,
+  ak.karafile AS karafile,
   ak.duration AS duration,
   ak.gain AS gain,
   ak.created_at AS created_at,
