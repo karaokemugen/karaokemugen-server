@@ -2,17 +2,21 @@
 
 This is the online server component of Karaoke Mugen.
 
-It allows for creation of local tunnels to reach isolated Karaoke Mugen instances.
+For now it allows to :
+
+- Publish instance IP addresses to a domain name KM Server listens to (ex. kara.moe) so people who go to kara.moe are redirected to their local network's KM App instance.
+- Offer access to the karaoke database online through an API similar to KM App. Also serves associated files.
+- More to come, check issues.
 
 With a bit of time, it'll allow us to centralize stats from many Karaoke Mugen instances.
 
 ## Installation
 
-Make sure node and yarn are up to dat
+Make sure node and yarn are up to date
 
-* node 8.10 or later
-* yarn 1 or later
-* PostgreSQL 10
+- node 10.13.0 or later
+- yarn 1 or later
+- PostgreSQL 10
 
 Clone this repository and install dependencies
 
@@ -34,7 +38,7 @@ As a PostgreSQL super user, get into the newly created database and create the `
 
 Example with a database called karaokemugen_server :
 
-```sh
+```pg
 postgres=# \c karaokemugen_server
 karaokemugen_server=# CREATE EXTENSION unaccent;
 CREATE EXTENSION
