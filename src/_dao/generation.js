@@ -195,12 +195,14 @@ async function prepareAltSeriesInsertData(seriesData, mapSeries) {
 				JSON.stringify(serie.aliases),
 				serie.name,
 				serie.seriefile,
+				serie.sid
 			]);
 		} else {
 			data.push([
 				null,
 				serie.name,
 				serie.seriefile,
+				serie.sid
 			]);
 		}
 		if (serie.i18n) {
@@ -216,18 +218,8 @@ async function prepareAltSeriesInsertData(seriesData, mapSeries) {
 	// Checking if some series present in .kara files are not present in the series files
 	for (const serie of mapSeries.keys()) {
 		if (!findSeries(serie, seriesData)) {
-			// Print a warning and push some basic data so the series can be searchable at least
-			logger.warn(`[Gen] Series "${serie}" is not in any series file`);
-			data.push([
-				null,
-				serie,
-				null,
-			]);
-			i18nData.push([
-				'jpn',
-				serie,
-				serie
-			]);
+			logger.error(`[Gen] Series "${serie}" is not in any series file`);
+			error = true;
 		}
 	}
 	return {
@@ -359,7 +351,6 @@ function prepareTagsKaraInsertData(tagsByKara) {
 export async function run() {
 	try {
 		logger.info('[Gen] Starting database generation');
-		logger.info('[Gen] GENERATING DATABASE CAN TAKE A WHILE, PLEASE WAIT.');
 		const karaFiles = await extractKaraFiles();
 		const karas = await readAllKaras(karaFiles);
 		const seriesFiles = await extractSeriesFiles();
@@ -395,7 +386,7 @@ export async function run() {
 	} catch (err) {
 		console.log(err);
 		logger.error(`[Gen] Generation error: ${err}`);
-		return error;
+		return false;
 	}
 }
 

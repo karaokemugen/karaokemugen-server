@@ -11,17 +11,6 @@ export async function extractSubtitles(videofile, extractfile) {
 	return await asyncRequired(extractfile);
 }
 
-export async function createPreview(videopreview) {
-	try {
-		return await execa(getConfig().Path.Bin.ffmpeg, ['-y', '-i', videopreview.videofile, '-ss', '0', '-c:v' , 'libx264', '-preset', 'ultrafast', '-tune', 'animation', '-vf', 'scale=-2:240', '-crf', '35', '-c:a', 'aac', '-b:a', '96k', '-threads', '1', '-t', '15', videopreview.previewfile], {encoding: 'utf8'});
-	} catch(err) {
-		logger.error(`[ffmpeg] Video ${videopreview.videofile} not generated : ${err.code} (${err.message}`);
-		logger.error(`[ffmpeg] STDOUT: ${err.stdout}`);
-		logger.error(`[ffmpeg] STDERR: ${err.stderr}`);
-		throw err;
-	}
-}
-
 export async function getMediaInfo(mediafile) {
 	try {
 		const result = await execa(getConfig().Path.Bin.ffmpeg, ['-i', mediafile, '-vn', '-af', 'replaygain', '-f','null', '-'], { encoding : 'utf8' });

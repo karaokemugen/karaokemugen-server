@@ -3,15 +3,17 @@ import testJSON from 'is-valid-json';
 import {getConfig} from '../_utils/config';
 import {basename, resolve} from 'path';
 import {initValidators, check} from '../_utils/validators';
+import {uuidRegexp} from '../_services/constants';
 
 const header = {
-	version: 2,
+	version: 3,
 	description: 'Karaoke Mugen Series File'
 };
 
 const seriesConstraintsV2 = {
 	name: {presence: {allowEmpty: false}},
 	aliases: {seriesAliasesValidator: true},
+	sid: {presence: true, format: uuidRegexp},
 	i18n: {seriesi18nValidator: true}
 };
 

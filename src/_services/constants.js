@@ -55,6 +55,7 @@ export const tags = [
 	'REMIX',
 	'SOUNDONLY',
 	'CONCERT',
+	'IDOL',
 	'PARODY',
 	'HUMOR',
 	'R18',
@@ -92,5 +93,6 @@ export const tags = [
 	'PC',
 	'SEGACD',
 	'SATURN',
-	'WII'
+	'WII',
+	'SWITCH'
 ];

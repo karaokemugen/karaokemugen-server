@@ -9,6 +9,7 @@ SELECT s.pk_id_serie AS serie_id,
 		s.name)
 	AS i18n_name,
 	s.aliases AS aliases,
+	s.sid AS sid,
 	jsonb_agg(DISTINCT(sl.serie_langs)::jsonb) as i18n,
 	s.seriefile AS seriefile
 	FROM serie s, serie_lang sl

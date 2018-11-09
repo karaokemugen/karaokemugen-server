@@ -28,7 +28,7 @@ export function initFrontend(listenPort) {
 	configurePassport();
 	app.use(range());
 	// Serve static files from the React app
-	app.use(express.static(resolve(__dirname, '../react_site/build')));
+	app.use('/site', express.static(resolve(__dirname, '../react_site/build')));
 
 	app.use((req, res, next) => {
 		res.setHeader('Access-Control-Allow-Origin', '*');
@@ -47,7 +47,7 @@ export function initFrontend(listenPort) {
 	app.use('/downloads/medias', express.static(resolve(conf.appPath, conf.Path.Medias)));
 	app.use('/downloads/series', express.static(resolve(conf.appPath, conf.Path.Series)));
 	// API router
-	app.use('/api', apiRouter());
+	app.use('/api', api());
 	app.get('/', (req, res) => res.redirect('/api/shortener'));
 	// The "catchall" handler: for any request that doesn't
 	// match one above, send back React's index.html file.
@@ -61,7 +61,7 @@ export function initFrontend(listenPort) {
 	logger.info(`[App] App listening on ${port}`);
 }
 
-function apiRouter() {
+function api() {
 	const apiRouter = express.Router();
 
 	// Adding identification routes
