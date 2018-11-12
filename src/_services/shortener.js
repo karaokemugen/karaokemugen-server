@@ -1,5 +1,6 @@
 import {cleanupInstances, insertInstance, updateInstance, selectInstance} from '../_dao/shortener';
 import logger from 'winston';
+import {getConfig} from '../_utils/config';
 
 export async function publishInstance(ip, data) {
 	const currentDate = new Date();
@@ -35,7 +36,7 @@ export async function getInstance(ip) {
 	return false;
 }
 
-async function initShortener() {
+export async function initShortener() {
 	setInterval(cleanInstances, 60 * 1000 * 1000 * 24 * getConfig().Shortener.ExpireTimeDays);
 }
 

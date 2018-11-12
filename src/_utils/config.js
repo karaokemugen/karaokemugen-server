@@ -17,6 +17,7 @@ import testJSON from 'is-valid-json';
 let config = {};
 let configFile = 'config.yml';
 let savingSettings = false;
+
 /**
  * We return a copy of the configuration data so the original one can't be modified
  * without passing by this module's functions.

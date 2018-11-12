@@ -31,15 +31,39 @@ export const defaults = {
 			Password: '',
 		},
 		From: '[KMServer]',
-		FromMail: 'karaokemugen@localhost',
-		To: '',
-		ToMail: '',
+		FromMail: 'karaokemugen@localhost.localdomain',
+		To: 'Karaoke Mugen',
+		ToMail: 'karaokemugen@localhost.localdomain',
 	},
 	Shortener: {
 		ExpireTimeDays: 1
 	}
 };
 
-export const configConstraints = {
+const bools = [true, false];
 
+export const configConstraints = {
+	JwtSecret: { presence: {allowEmpty: false}},
+	'Database.User': { presence: {allowEmpty: false}},
+	'Database.Pass': { presence: true },
+	'Database.Host': { presence: {allowEmpty: false}},
+	'Database.Base': { presence: {allowEmpty: false}},
+	'Path.Karas': { presence: {allowEmpty: false}},
+	'Path.Lyrics': { presence: {allowEmpty: false}},
+	'Path.Medias': { presence: {allowEmpty: false}},
+	'Path.Series': { presence: {allowEmpty: false}},
+	'Path.Temp': { presence: {allowEmpty: false}},
+	'Path.Inbox': { presence: {allowEmpty: false}},
+	'Path.Bin.ffmpeg': { presence: {allowEmpty: false}},
+	'Shortener.ExpireTimeDays': { numericality: { greaterThan: 0 }},
+	'Mail.Enabled': { inclusion: bools },
+	'Mail.Host': { presence: true },
+	'Mail.Port': { numericality: { greaterThan: 0 }},
+	'Mail.Secure': { inclusion: bools },
+	'Mail.Auth.User': { presence: { allowEmpty: true } },
+	'Mail.Auth.Password': { presence: { allowEmpty: true } },
+	'Mail.From': { presence: true },
+	'Mail.To': { presence: true },
+	'Mail.FromMail': { email: true },
+	'Mail.ToMail': { email: true },
 };

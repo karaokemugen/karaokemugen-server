@@ -6,6 +6,7 @@ import cli from 'commander';
 import detect from 'detect-port';
 import {initDB} from './_dao/database';
 import {initMailer} from './_utils/mailer';
+import {initShortener} from './_services/shortener';
 import {run} from './_dao/generation';
 import sudoBlock from 'sudo-block';
 
