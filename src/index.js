@@ -42,6 +42,7 @@ async function main() {
 	logger.debug(`[Launcher] Port ${opts.port} is available`);
 	initFrontend(opts.port);
 	if (getConfig().Mail.Enabled) initMailer();
+	initShortener();
 }
 
 function exit(rc) {

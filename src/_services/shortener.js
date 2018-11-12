@@ -1,4 +1,4 @@
-import {insertInstance, updateInstance, selectInstance} from '../_dao/shortener';
+import {cleanupInstances, insertInstance, updateInstance, selectInstance} from '../_dao/shortener';
 import logger from 'winston';
 
 export async function publishInstance(ip, data) {
@@ -33,4 +33,17 @@ export async function getInstance(ip) {
 	logger.debug(`[Shortener] Found instance data ${JSON.stringify(instance)}`);
 	if (instance.length > 0) return instance[0];
 	return false;
+}
+
+async function initShortener() {
+	setInterval(cleanInstances, 60 * 1000 * 1000 * 24 * getConfig().Shortener.ExpireTimeDays);
+}
+
+async function cleanInstances() {
+	// Unflag online accounts from database if they expired
+	try {
+		await cleanupInstances(getConfig().Shortener.ExpireTime);
+	} catch(err) {
+		logger.error(`[Shortener] Expiring instances failed (better luck next time) : ${err}`);
+	}
 }

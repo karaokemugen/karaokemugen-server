@@ -12,6 +12,11 @@ FROM short_url
 WHERE remote_ip = $1
 `;
 
+export const cleanupInstances = `
+DELETE FROM short_url
+WHERE modified_at < NOW() - INTERVAL '$1 days'
+`;
+
 export const updateInstance = `
 UPDATE short_url
 SET modified_at = $1,

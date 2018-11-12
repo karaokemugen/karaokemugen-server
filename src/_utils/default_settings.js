@@ -34,8 +34,10 @@ export const defaults = {
 		FromMail: 'karaokemugen@localhost',
 		To: '',
 		ToMail: '',
+	},
+	Shortener: {
+		ExpireTimeDays: 1
 	}
-
 };
 
 export const configConstraints = {

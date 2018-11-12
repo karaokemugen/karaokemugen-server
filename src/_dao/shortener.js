@@ -25,3 +25,7 @@ export async function insertInstance(data) {
 		data.instance_id
 	]);
 }
+
+export async function cleanupInstances(time) {
+	return await db().query(sql.cleanupInstances,[time]);
+}
