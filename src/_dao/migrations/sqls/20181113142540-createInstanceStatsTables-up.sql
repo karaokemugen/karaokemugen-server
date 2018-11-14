@@ -26,7 +26,6 @@ CREATE TABLE favorite
 CREATE TABLE instance
 (
     pk_id_instance smallserial NOT NULL,
-	created_at timestamp NOT NULL,
 	modified_at timestamp NOT NULL,
 	instance_id uuid NOT NULL UNIQUE,
 	version character varying NOT NULL,
