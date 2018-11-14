@@ -33,6 +33,7 @@ CREATE TABLE instance
 	locale char(2),
 	screens smallint DEFAULT(1),
 	cpu_manufacturer character varying,
+	cpu_model character varying,
 	cpu_speed character varying,
 	cpu_cores smallint,
 	memory integer,
