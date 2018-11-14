@@ -7,14 +7,18 @@ CREATE TABLE played
 	played_at timestamp NOT NULL
 );
 
+CREATE UNIQUE INDEX idx_played_instanceid_startedat_kid_playedat ON played (fk_id_instance, session_started_at, kid, played_at);
+
 CREATE TABLE requested
 (
 	pk_id_requested serial NOT NULL,
 	fk_id_instance integer NOT NULL,
 	session_started_at timestamp NOT NULL,
 	kid uuid NOT NULL,
-	played_at timestamp NOT NULL
+	requested_at timestamp NOT NULL
 );
+
+CREATE UNIQUE INDEX idx_requested_instanceid_startedat_kid_requestedat ON requested (fk_id_instance, session_started_at, kid, requested_at);
 
 CREATE TABLE favorite
 (
@@ -22,6 +26,8 @@ CREATE TABLE favorite
 	fk_id_instance integer NOT NULL,
 	kid uuid NOT NULL
 );
+
+CREATE UNIQUE INDEX idx_favorite_instanceid_kid ON favorite (fk_id_instance, kid);
 
 CREATE TABLE instance
 (
