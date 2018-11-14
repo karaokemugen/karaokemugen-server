@@ -57,6 +57,7 @@
     "langs": "^2.0.0",
     "lodash.deburr": "^4.1.0",
     "lodash.merge": "^4.6.1",
+    "multer": "^1.4.1",
     "nodemailer": "^4.6.8",
     "os-locale": "^3.0.1",
     "passport": "^0.4.0",

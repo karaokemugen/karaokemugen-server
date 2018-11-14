@@ -6,6 +6,8 @@ import passport from 'passport';
 import adminController from './_controllers/admin';
 import authController from './_controllers/auth';
 import KSController from './_controllers/karaserv';
+import KIController from './_controllers/karaimport';
+import StatsController from './_controllers/stats';
 import ShortenerController from './_controllers/shortener';
 import {configurePassport} from './_utils/passport_manager';
 import {getConfig} from './_utils/config';
@@ -70,7 +72,11 @@ function api() {
 	adminController(apiRouter);
 	// Adding KaraServ routes
 	KSController(apiRouter);
+	KIController(apiRouter);
+	// Shortener/kara.moe route
 	ShortenerController(apiRouter);
+	// Stats
+	StatsController(apiRouter);
 
 	return apiRouter;
 }
