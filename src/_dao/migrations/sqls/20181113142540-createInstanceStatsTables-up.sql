@@ -2,7 +2,7 @@ CREATE TABLE played
 (
 	pk_id_played serial NOT NULL,
 	fk_id_instance integer NOT NULL,
-	session_id uuid NOT NULL,
+	session_started_at timestamp NOT NULL,
 	kid uuid NOT NULL,
 	played_at timestamp NOT NULL
 );
@@ -11,7 +11,7 @@ CREATE TABLE requested
 (
 	pk_id_requested serial NOT NULL,
 	fk_id_instance integer NOT NULL,
-	session_id uuid NOT NULL,
+	session_started_at timestamp NOT NULL,
 	kid uuid NOT NULL,
 	played_at timestamp NOT NULL
 );
