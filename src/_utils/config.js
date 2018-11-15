@@ -41,9 +41,7 @@ export function profile(func) {
 
 export function verifyConfig(conf) {
 	const validationErrors = check(conf, configConstraints);
-	if (validationErrors) {
-		throw `Config is not valid: ${JSON.stringify(validationErrors)}`;
-	}
+	if (validationErrors) throw `Config is not valid: ${JSON.stringify(validationErrors)}`;
 }
 
 export async function mergeConfig(oldConfig, newConfig) {

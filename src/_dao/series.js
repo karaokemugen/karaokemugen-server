@@ -1,6 +1,6 @@
 import {langSelector, db} from './database';
-const sql = require('./sqls/series');
 import deburr from 'lodash.deburr';
+const sql = require('./sqls/series');
 
 export async function selectAllSeries(filter, lang) {
 
