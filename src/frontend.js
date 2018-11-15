@@ -28,6 +28,7 @@ export function initFrontend(listenPort) {
 
 	app.use(passport.initialize());
 	configurePassport();
+	// Server allows resuming file downloads :
 	app.use(range());
 	// Serve static files from the React app
 	app.use('/site', express.static(resolve(__dirname, '../react_site/build')));

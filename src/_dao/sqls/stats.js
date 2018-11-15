@@ -24,7 +24,7 @@ INSERT INTO instance(
 	cpu_manufacturer = $6,
 	cpu_model = $7,
 	cpu_speed = $8,
-	cpu_cores = $9
+	cpu_cores = $9,
 	memory = $10,
 	total_disk_space = $11,
 	os_platform = $12,

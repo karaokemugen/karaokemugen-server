@@ -2,6 +2,7 @@ import { uuidRegexp } from './constants';
 import testJSON from 'is-valid-json';
 import { check } from '../_utils/validators';
 import { upsertInstance, replaceFavorites, upsertViewcounts, upsertRequests } from '../_dao/stats';
+import logger from 'winston';
 
 const payloadConstraints = {
 	'instance.instance_id': {presence: true, format: uuidRegexp},
@@ -10,14 +11,20 @@ const payloadConstraints = {
 };
 
 export async function processStatsPayload(payload) {
-	if (!testJSON(payload)) throw 'Syntax error in JSON data';
-	console.log(payload);
-	const validationErrors = check(payload, payloadConstraints);
-	if (validationErrors) throw `Payload is not valid: ${JSON.stringify(validationErrors)}`;
-	await Promise.all([
-		upsertInstance(payload.instance),
-		replaceFavorites(payload.instance.instance_id, payload.favorites),
-		upsertViewcounts(payload.instance.instance_id, payload.viewcounts),
-		upsertRequests(payload.instance.instance_id, payload.requests)
-	]);
+	try {
+		if (!testJSON(payload)) throw 'Syntax error in JSON data';
+		const validationErrors = check(payload, payloadConstraints);
+		if (validationErrors) throw `Payload is not valid: ${JSON.stringify(validationErrors)}`;
+		await Promise.all([
+			upsertInstance(payload.instance),
+			replaceFavorites(payload.instance.instance_id, payload.favorites),
+			upsertViewcounts(payload.instance.instance_id, payload.viewcounts),
+			upsertRequests(payload.instance.instance_id, payload.requests)
+		]);
+		logger.info(`[Stats] Received payload from instance ${payload.instance.instance_id}`);
+	} catch(err) {
+		logger.error(`[Stats] Error with payload from ${payload.instance.instance_id} : ${err}`);
+		logger.debug(`[Stats] Payload in error : ${JSON.stringify(payload,null,2)}`);
+		throw err;
+	}
 }
