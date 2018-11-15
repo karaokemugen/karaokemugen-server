@@ -37,7 +37,7 @@ export function formatKara(karaData) {
 	};
 }
 
-export function formatKaraList(karaList, lang, from, count) {
+export function formatKaraList(karaList, from, count) {
 	return {
 		infos: {
 			count: count,
@@ -55,7 +55,7 @@ export async function getAllYears() {
 export async function getAllKaras(filter, lang, from = 0, size = 99999999999, mode, modeValue) {
 	try {
 		const pl = await selectAllKaras(filter, lang, mode, modeValue);
-		return formatKaraList(pl.slice(from, from + size), lang, from, pl.length);
+		return formatKaraList(pl.slice(+from, +from + +size), +from, pl.length);
 	} catch(err) {
 		throw err;
 	}
