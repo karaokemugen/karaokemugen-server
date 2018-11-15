@@ -9,7 +9,6 @@ export async function configureLogger(appPath, debug) {
 	const consoleLogLevel = debug ? 'debug' : 'info';
 	const logDir = resolve(appPath, 'logs');
 	await asyncCheckOrMkdir(logDir);
-
 	logger.add(
 		new logger.transports.Console({
 			level: consoleLogLevel,
@@ -19,7 +18,7 @@ export async function configureLogger(appPath, debug) {
 				logger.format.printf(info => {
 					let duration = '';
 					if (info.durationMs) duration = `duration: ${info.durationMs} ms`;
-					return `${time()} - ${info.level}: ${info.message} ${duration}`;
+					return `${new Date()} - ${info.level}: ${info.message} ${duration}`;
 				})
 			)
 		})
