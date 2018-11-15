@@ -1,5 +1,5 @@
 Path:
-  Karas: app/data/karas
-  Lyrics: app/data/lyrics
-  Medias: app/data/medias
-  Series: app/data/series.json
+    Karas: app/data/karas
+    Lyrics: app/data/lyrics
+    Medias: app/data/medias
+    Series: app/data/series
