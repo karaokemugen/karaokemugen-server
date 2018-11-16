@@ -28,7 +28,7 @@ export async function replaceFavorites(instance_id, favorites) {
 	if (favorites.length > 0) await transaction([{sql: sql.insertFavorite, params: params}]);
 }
 
-export async function upsertViewcounts(instance_id, viewcounts) {
+export async function upsertPlayed(instance_id, viewcounts) {
 	const params = [];
 	viewcounts.forEach(v => params.push([
 		instance_id,
@@ -48,4 +48,16 @@ export async function upsertRequests(instance_id, requests) {
 		new Date(r.requested_at * 1000)
 	]));
 	if (requests.length > 0) await transaction([{sql: sql.insertRequested, params: params}]);
+}
+
+export async function getFavoritesStats() {
+	return await db().query(sql.getFavoritesStats);
+}
+
+export async function getRequestedStats() {
+	return await db().query(sql.getRequestedStats);
+}
+
+export async function getPlayedStats() {
+	return await db().query(sql.getPlayedStats);
 }

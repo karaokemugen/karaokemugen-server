@@ -1,7 +1,14 @@
 import { uuidRegexp } from './constants';
 import testJSON from 'is-valid-json';
 import { check } from '../_utils/validators';
-import { upsertInstance, replaceFavorites, upsertViewcounts, upsertRequests } from '../_dao/stats';
+import {
+	upsertInstance,
+	replaceFavorites,
+	upsertPlayed,
+	upsertRequests,
+	getFavoritesStats as dbGetFavoritesStats,
+	getRequestedStats as dbGetRequestedStats,
+	getPlayedStats as dbGetPlayedStats } from '../_dao/stats';
 import logger from 'winston';
 
 const payloadConstraints = {
@@ -18,7 +25,7 @@ export async function processStatsPayload(payload) {
 		await Promise.all([
 			upsertInstance(payload.instance),
 			replaceFavorites(payload.instance.instance_id, payload.favorites),
-			upsertViewcounts(payload.instance.instance_id, payload.viewcounts),
+			upsertPlayed(payload.instance.instance_id, payload.viewcounts),
 			upsertRequests(payload.instance.instance_id, payload.requests)
 		]);
 		logger.info(`[Stats] Received payload from instance ${payload.instance.instance_id}`);
@@ -27,4 +34,16 @@ export async function processStatsPayload(payload) {
 		logger.debug(`[Stats] Payload in error : ${JSON.stringify(payload,null,2)}`);
 		throw err;
 	}
+}
+
+export async function getFavoritesStats() {
+	return await dbGetFavoritesStats();
+}
+
+export async function getRequestedStats() {
+	return await dbGetRequestedStats();
+}
+
+export async function getPlayedStats() {
+	return await dbGetPlayedStats();
 }

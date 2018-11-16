@@ -1,4 +1,4 @@
-import {processStatsPayload} from '../_services/stats';
+import {getInstanceStats, getRequestedStats, getFavoritesStats, getPlayedStats, processStatsPayload} from '../_services/stats';
 
 export default function statsController(router) {
 	router.post('/stats', async (req, res) => {
@@ -7,6 +7,34 @@ export default function statsController(router) {
 			res.status(200).json('Stats payload accepted');
 		} catch(err) {
 			res.status(500).json(`Error while processing stats payload : ${err}`);
+		}
+	});
+	router.get('/stats/instances', async (req, res) => {
+		try {
+			res.status(200).json(await getInstanceStats());
+		} catch(err) {
+			res.status(500).json(`Error while retrieving instance Stats : ${err}`);
+		}
+	});
+	router.get('/stats/played', async (req, res) => {
+		try {
+			res.status(200).json(await getPlayedStats());
+		} catch(err) {
+			res.status(500).json(`Error while retrieving played stats : ${err}`);
+		}
+	});
+	router.get('/stats/favorites', async (req, res) => {
+		try {
+			res.status(200).json(await getFavoritesStats());
+		} catch(err) {
+			res.status(500).json(`Error while retrieving favorites : ${err}`);
+		}
+	});
+	router.get('/stats/requested', async (req, res) => {
+		try {
+			res.status(200).json(await getRequestedStats());
+		} catch(err) {
+			res.status(500).json(`Error while retrieving requested stats : ${err}`);
 		}
 	});
 }

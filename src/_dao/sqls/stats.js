@@ -67,3 +67,45 @@ VALUES(
 )
 ON CONFLICT (fk_id_instance, kid, session_started_at, requested_at) DO NOTHING;
 `;
+
+export const getPlayedStats = `
+SELECT ak.title AS title,
+	ak.songorder AS songorder,
+	ak.serie AS serie,
+	ak.serie_i18n AS serie_i18n,
+	ak.singer AS singer,
+    ak.songtype AS songtype,
+    ak.language AS language,
+	(SELECT COUNT(pk_id_played) FROM played WHERE kid = ak.kid) AS played
+FROM all_karas AS ak
+WHERE played > 0
+ORDER BY played DESC
+`;
+
+export const getRequestedStats = `
+SELECT ak.title AS title,
+	ak.songorder AS songorder,
+	ak.serie AS serie,
+	ak.serie_i18n AS serie_i18n,
+	ak.singer AS singer,
+    ak.songtype AS songtype,
+    ak.language AS language,
+	(SELECT COUNT(pk_id_requested) FROM requested WHERE kid = ak.kid) AS requested
+FROM all_karas AS ak
+WHERE requested > 0
+ORDER BY requested DESC
+`;
+
+export const getFavoritesStats = `
+SELECT ak.title AS title,
+	ak.songorder AS songorder,
+	ak.serie AS serie,
+	ak.serie_i18n AS serie_i18n,
+	ak.singer AS singer,
+    ak.songtype AS songtype,
+    ak.language AS language,
+	(SELECT COUNT(pk_id_favorite) FROM favorite WHERE kid = ak.kid) AS favorites
+FROM all_karas AS ak
+WHERE favorites > 0
+ORDER BY favorites DESC
+`;
