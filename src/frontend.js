@@ -23,8 +23,11 @@ export function initFrontend(listenPort) {
 	const app = express();
 
 	app.enable('trust proxy');
-	app.use(bodyParser.json()); // support json encoded bodies
-	app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+	app.use(bodyParser.json({limit: '100mb'})); // support json encoded bodies
+	app.use(bodyParser.urlencoded({
+		limit: '100mb',
+		extended: true
+	})); // support encoded bodies
 
 	app.use(passport.initialize());
 	configurePassport();
