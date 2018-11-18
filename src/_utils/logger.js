@@ -2,7 +2,6 @@ import logger from 'winston';
 import dailyRotateFile from  'winston-daily-rotate-file';
 import {asyncCheckOrMkdir} from './files';
 import {resolve} from 'path';
-import {time} from './date';
 import {getConfig} from './config';
 
 export async function configureLogger(appPath, debug) {
@@ -34,7 +33,7 @@ export async function configureLogger(appPath, debug) {
 				logger.format.printf(info => {
 					let duration = '';
 					if (info.durationMs) duration = `duration: ${info.durationMs} ms`;
-					return `${time()} - ${info.level}: ${info.message} ${duration}`;
+					return `${new Date()} - ${info.level}: ${info.message} ${duration}`;
 				})
 			)
 		})
