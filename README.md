@@ -2,13 +2,12 @@
 
 This is the online server component of Karaoke Mugen.
 
-For now it allows to :
+Features :
 
 - Publish instance IP addresses to a domain name KM Server listens to (ex. kara.moe) so people who go to kara.moe are redirected to their local network's KM App instance.
 - Offer access to the karaoke database online through an API similar to KM App. Also serves associated files.
-- More to come, check issues.
-
-With a bit of time, it'll allow us to centralize stats from many Karaoke Mugen instances.
+- Centralize stats uploaded by Karaoke Mugen instances
+- More news at 11.
 
 ## Installation
 
