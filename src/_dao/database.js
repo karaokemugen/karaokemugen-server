@@ -48,7 +48,7 @@ export async function connectDB() {
 	try {
 		await database.connect();
 		database.on('error', err => {
-			console.log(err);
+			logger.error(`[DB] ${err}`);
 		});
 	} catch(err) {
 		logger.error(`[DB] Connection to database server failed : ${err}`);
@@ -57,6 +57,6 @@ export async function connectDB() {
 }
 
 export function langSelector(lang) {
-	const userLocale = langs.where('1',lang || getConfig().EngineDefaultLocale);
+	const userLocale = langs.where('1',lang || getConfig().locale);
 	return {main: `'${userLocale['2B']}'`, fallback: '\'eng\''};
 }
