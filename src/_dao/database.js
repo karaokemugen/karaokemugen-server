@@ -2,6 +2,7 @@ import {getConfig} from '../_utils/config';
 import {Pool} from 'pg';
 import langs from 'langs';
 import logger from 'winston';
+import deburr from 'lodash.deburr';
 
 let database;
 
@@ -59,4 +60,21 @@ export async function connectDB() {
 export function langSelector(lang) {
 	const userLocale = langs.where('1',lang || getConfig().locale);
 	return {main: `'${userLocale['2B']}'`, fallback: '\'eng\''};
+}
+
+export function paramWords(filter) {
+	let params = {};
+	const words = deburr(filter)
+		.toLowerCase()
+		.replace('\'', '')
+		.replace(',', '')
+		.split(' ')
+		.filter(s => !('' === s))
+		.map(word => {
+			return `${word}`;
+		});
+	for (const i in words) {
+		params[`word${i}`] = `%${words[i]}%`;
+	}
+	return params;
 }

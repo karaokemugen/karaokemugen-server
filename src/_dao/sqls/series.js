@@ -1,6 +1,7 @@
 // SQL for series
 
 export const getSeries = (filterClauses, lang) => `
+SELECT * FROM (
 SELECT s.pk_id_serie AS serie_id,
 	s.name AS name,
 	COALESCE(
@@ -10,10 +11,13 @@ SELECT s.pk_id_serie AS serie_id,
 	AS i18n_name,
 	s.aliases AS aliases,
 	s.sid AS sid,
-	jsonb_agg(DISTINCT(sl.serie_langs)::jsonb) as i18n,
+	array_to_json(array_agg(json_build_object('lang', sl.lang, 'name', sl.name))) as i18n,
+	string_agg(sl.name,' ') as search,
 	s.seriefile AS seriefile
-	FROM serie s, serie_lang sl
-	WHERE s.pk_id_serie = sl.fk_id_serie
+	FROM serie s
+	LEFT JOIN serie_lang sl ON sl.fk_id_serie = s.pk_id_serie
+	GROUP BY s.pk_id_serie
+	ORDER BY i18n_name) AS sub_request
+	WHERE 1 = 1
 	${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
-	ORDER BY i18n_name;
 	`;

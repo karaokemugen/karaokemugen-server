@@ -1,6 +1,5 @@
-import {langSelector, db} from './database';
+import {paramWords, langSelector, db} from './database';
 import {pg as yesql} from 'yesql';
-import deburr from 'lodash.deburr';
 const sql = require('./sqls/kara');
 
 export async function selectAllYears() {
@@ -16,8 +15,7 @@ export async function selectAllKaras(filter, lang, mode, modeValue) {
 	if (mode === 'recent') orderClauses = 'created_at DESC, ';
 	if (mode === 'popular') orderClauses = 'requested DESC, ';
 	const query = sql.getAllKaras(filterClauses.sql, langSelector(lang), typeClauses, orderClauses);
-	const params = filterClauses.params;
-	const res = await db().query(yesql(query)(params));
+	const res = await db().query(yesql(query)(filterClauses.params));
 	return res.rows;
 }
 
@@ -29,27 +27,9 @@ export function buildTypeClauses(mode, value) {
 	return '';
 }
 
-export function paramWords(filter) {
-	let params = {};
-	const words = deburr(filter)
-		.toLowerCase()
-		.replace('\'', '')
-		.replace(',', '')
-		.split(' ')
-		.filter(s => !('' === s))
-		.map(word => {
-			return `${word}`;
-		});
-	for (const i in words) {
-		params[`word${i}`] = `%${words[i]}%`;
-	}
-	return params;
-}
-
 export function buildClauses(words) {
 	const params = paramWords(words);
 	let sql = [];
-	let extraClauses = '';
 	for (const i in words.split(' ').filter(s => !('' === s))) {
 		sql.push(`lower(unaccent(ak.misc)) LIKE :word${i} OR
 		lower(unaccent(ak.title)) LIKE :word${i} OR
@@ -60,7 +40,7 @@ export function buildClauses(words) {
 		lower(unaccent(ak.songwriter)) LIKE :word${i} OR
 		lower(unaccent(ak.creator)) LIKE :word${i} OR
 		lower(unaccent(ak.language)) LIKE :word${i}
-		${extraClauses}`);
+		`);
 	}
 	return {
 		sql: sql,
