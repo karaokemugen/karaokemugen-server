@@ -3,7 +3,7 @@ import {pg as yesql} from 'yesql';
 const sql = require('./sqls/kara');
 
 export async function selectAllYears() {
-	const res = await db().query(sql.getAllYears);
+	const res = await db().query(sql.getYears);
 	return res.rows;
 }
 
