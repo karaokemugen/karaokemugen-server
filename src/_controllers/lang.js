@@ -1,7 +1,7 @@
+import {getConfig} from '../_utils/config';
+
 export const getLang = (req, res, next) => {
 	const langs = req.get('accept-language');
-	if (langs) {
-		req.lang = langs.split(',')[0].substring(0,2);
-	}
+	langs ?	req.lang = langs.split(',')[0].substring(0,2) : req.lang = getConfig().locale;
 	next();
 };
