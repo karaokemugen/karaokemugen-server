@@ -189,6 +189,7 @@ async function generateAndMoveFiles(mediaPath, subPath, karaData) {
 	} catch (err) {
 		throw `Error while moving files. Maybe destination files (${mediaDest} or ${subDest} already exist? (${err})`;
 	}
+	karaData.isKaraModified = true;
 	await writeKara(karaPath, karaData);
 	return {
 		data: karaData,

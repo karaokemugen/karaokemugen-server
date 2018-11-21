@@ -58,7 +58,7 @@ export function initFrontend(listenPort) {
 	// The "catchall" handler: for any request that doesn't
 	// match one above, send back React's index.html file.
 	app.get('*', (req, res) => {
-		res.sendFile(resolve(__dirname, '../build/index.html'));
+		res.status(404).send('Not found');
 	});
 
 	const port = listenPort || 5000;

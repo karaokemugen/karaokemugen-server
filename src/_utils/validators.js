@@ -1,6 +1,7 @@
 import validate from 'validate.js';
 import testJSON from 'is-valid-json';
 import {has as hasLang} from 'langs';
+import {uuidRegexp} from '../_services/constants';
 
 function integerValidator(value) {
 	if (value) {
@@ -50,6 +51,35 @@ function numbersArrayValidator(value) {
 	return ` '${value}' is invalid`;
 }
 
+
+function seriesAliasesValidator(value) {
+	if (!value) return ` '${value} is not present`;
+	if (!Array.isArray(value)) return ` '${value}' is invalid (not an array)`;
+	return null;
+}
+
+function songItemValidator(value) {
+	if (!value) return ` '${value} is not present`;
+	if (!Array.isArray(value)) return ` '${value}' is invalid (not an array)`;
+	const uuid = new RegExp(uuidRegexp);
+	for (const item of value) {
+		if (!uuid.test(item.kid)) return ` '${value} is invalid (not a valid KID)`;
+		if (isNaN(item.requested_at)) return ` '${value} is invalid (not a valid requested_at time)`;
+		if (isNaN(item.session_started_at)) return ` '${value} is invalid (not a valid session_started_at time)`;
+	}
+	return null;
+}
+
+function favoritesValidator(value) {
+	if (!value) return ` '${value} is not present`;
+	if (!Array.isArray(value)) return ` '${value}' is invalid (not an array)`;
+	const uuid = new RegExp(uuidRegexp);
+	for (const item of value) {
+		if (!uuid.test(item.kid)) return ` '${value} is invalid (not a valid KID)`;
+	}
+	return null;
+}
+
 // Sanitizers
 
 export function unescape(str) {
@@ -72,11 +102,6 @@ function seriesi18nValidator(value) {
 	return null;
 }
 
-function seriesAliasesValidator(value) {
-	if (!value) return null;
-	if (!Array.isArray(value)) return ` '${value}' is invalid (not an array)`;
-	return null;
-}
 
 // Init
 
@@ -88,6 +113,8 @@ export function initValidators() {
 	if (!validate.validators.langValidator) validate.validators.langValidator = langValidator;
 	if (!validate.validators.seriesi18nValidator) validate.validators.seriesi18nValidator = seriesi18nValidator;
 	if (!validate.validators.seriesAliasesValidator) validate.validators.seriesAliasesValidator = seriesAliasesValidator;
+	if (!validate.validators.songItemValidator) validate.validators.songItemValidator = songItemValidator;
+	if (!validate.validators.favoritesValidator) validate.validators.favoritesValidator = favoritesValidator;
 }
 
 export function check(obj, constraints) {

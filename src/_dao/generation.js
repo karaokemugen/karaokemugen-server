@@ -4,9 +4,9 @@ import {has as hasLang} from 'langs';
 import {asyncReadDir} from '../_utils/files';
 import {getConfig} from '../_utils/config';
 import {getDataFromKaraFile} from './karafile';
-import {transaction, db} from './database';
+import {transaction} from './database';
 import {
-	insertKaras, insertKaraSeries, insertKaraTags, insertSeries, insertTags, inserti18nSeries, selectKaras, selectViewcountKaras, selectRequestKaras, updateSeries, deleteAll
+	insertKaras, insertKaraSeries, insertKaraTags, insertSeries, insertTags, inserti18nSeries, updateSeries, deleteAll
 } from './sqls/generation';
 import {karaTypesMap} from '../_services/constants';
 import {serieRequired, verifyKaraData} from '../_services/kara';
@@ -166,7 +166,7 @@ function prepareAllSeriesInsertData(mapSeries) {
 }
 
 /**
- * Warning : we iterate on keys and not on map entries to get the right order and thus the same indexes as the function prepareAllSeriesInsertData. This is the historical way of doing it and should be improved sometimes.tre améliorée.
+ * Warning : we iterate on keys and not on map entries to get the right order and thus the same indexes as the function prepareAllSeriesInsertData. This is the historical way of doing it and should be improved sometime.
  */
 function prepareAllKarasSeriesInsertData(mapSeries) {
 	const data = [];
@@ -379,8 +379,6 @@ export async function run() {
 			{sql: inserti18nSeries, params: sqlInserti18nSeries},
 			{sql: updateSeries, params: sqlUpdateSeries}
 		]);
-		// These tables do not exist yet
-		//await checkUserdbIntegrity(null, conf);
 		logger.info('[Gen] Done generating database');
 		return error;
 	} catch (err) {
@@ -391,51 +389,3 @@ export async function run() {
 }
 
 
-/**
- * @function run_userdb_integrity_checks
- * Get all karas from all_karas view
- * Get all karas in playlist_content, blacklist, viewcount, whitelist
- * Parse karas in playlist_content, search for the KIDs in all_karas
- * If id_kara is different, write a UPDATE query.
- */
-export async function checkUserdbIntegrity() {
-
-	logger.info('[Gen] Running user database integrity checks');
-
-	const [
-		allKaras,
-		viewcountKaras,
-		requestKaras,
-	] = await Promise.all([
-		db().query(selectKaras),
-		db().query(selectViewcountKaras),
-		db().query(selectRequestKaras),
-	]);
-
-	// Listing existing KIDs
-	const karaKIDs = allKaras.rows.map(k => `'${k.kid}'`).join(',');
-
-	// Deleting records which aren't in our KID list
-	await Promise.all([
-		db().query(`UPDATE viewcount SET fk_kara_id = 0 WHERE kid NOT IN (${karaKIDs});`),
-		db().query(`UPDATE request SET fk_kara_id = 0 WHERE kid NOT IN (${karaKIDs});`),
-	]);
-	const karaIdByKid = new Map();
-	allKaras.rows.forEach(k => karaIdByKid.set(k.kid, k.id_kara));
-	let sql = '';
-
-	viewcountKaras.forEach(vck => {
-		if (karaIdByKid.has(vck.kid) && karaIdByKid.get(vck.kid) !== vck.id_kara) {
-			sql += `UPDATE viewcount SET fk_id_kara = ${karaIdByKid.get(vck.kid)} WHERE kid = '${vck.kid}';`;
-		}
-	});
-	requestKaras.forEach(rqk => {
-		if (karaIdByKid.has(rqk.kid) && karaIdByKid.get(rqk.kid) !== rqk.id_kara) {
-			sql += `UPDATE request SET fk_id_kara = ${karaIdByKid.get(rqk.kid)} WHERE kid = '${rqk.kid}';`;
-		}
-	});
-
-	if (sql !== '') await db().query(sql);
-
-	logger.info('[Gen] Integrity checks complete, database generated');
-}

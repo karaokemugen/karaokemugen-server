@@ -5,6 +5,8 @@ import logger from 'winston';
 import {resolve} from 'path';
 import {extractSubtitles, getMediaInfo} from '../_utils/ffmpeg';
 import {formatKara} from '../_services/kara';
+import {now} from 'unix-timestamp';
+import {stringify} from 'ini';
 
 let error = false;
 
@@ -15,13 +17,10 @@ export async function parseKara(karaFile) {
 }
 
 export async function writeKara(karafile, karaData) {
+	if (!karaData.isKaraModified) return;
 	const infosToWrite = (formatKara(karaData));
-	if (karaData.isKaraModified === false) {
-		return;
-	}
-	infosToWrite.datemodif = timestamp.now();
+	infosToWrite.datemodif = now();
 	delete infosToWrite.karafile;
-	karaData.datemodif = infosToWrite.datemodif;
 	await asyncWriteFile(karafile, stringify(infosToWrite));
 }
 
@@ -29,11 +28,6 @@ export async function getDataFromKaraFile(karafile) {
 	const conf = getConfig();
 	const karaData = await parseKara(karafile);
 
-	// Code to keep compatibility with v2 kara files.
-	karaData.mediafile = karaData.mediafile || karaData.videofile;
-	karaData.mediasize = karaData.mediasize || karaData.videosize;
-	karaData.mediagain = karaData.mediagain || karaData.videogain;
-	karaData.mediaduration = karaData.mediaduration || karaData.videoduration;
 	karaData.karafile = karafile;
 	try {
 		await asyncExists(resolve(conf.appPath, conf.Path.Medias, karaData.mediafile));

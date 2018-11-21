@@ -1,7 +1,6 @@
-import {asyncExists, asyncReadFile} from '../_utils/files';
+import {asyncReadFile} from '../_utils/files';
 import testJSON from 'is-valid-json';
-import {getConfig} from '../_utils/config';
-import {basename, resolve} from 'path';
+import {basename} from 'path';
 import {initValidators, check} from '../_utils/validators';
 import {uuidRegexp} from '../_services/constants';
 
@@ -17,20 +16,13 @@ const seriesConstraintsV2 = {
 	i18n: {seriesi18nValidator: true}
 };
 
-export async function readSeriesFile(seriesFile) {
-	let file;
-	const conf = getConfig();
-	try {
-		file = resolve(conf.appPath, conf.Path.Series, seriesFile);
-		await asyncExists(file);
-	} catch(err) {
-		throw `No series file found : ${file}`;
-	}
-	return await getDataFromSeriesFile(file);
-}
-
 export async function getDataFromSeriesFile(file) {
-	const seriesFileData = await asyncReadFile(file, 'utf-8');
+	let seriesFileData;
+	try {
+		seriesFileData = await asyncReadFile(file, 'utf-8');
+	} catch(err) {
+		throw `Unable to read series file : ${file}`;
+	}
 	if (!testJSON(seriesFileData)) throw `Syntax error in file ${file}`;
 	const seriesData = JSON.parse(seriesFileData);
 	if (header > +seriesData.header) throw `Series file is too old (version found: ${seriesData.header.version}, expected version: ${header.version})`;

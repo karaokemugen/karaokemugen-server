@@ -14,7 +14,10 @@ import logger from 'winston';
 const payloadConstraints = {
 	'instance.instance_id': {presence: true, format: uuidRegexp},
 	'instance.version': {presence: {allowEmpty: false }},
-	'instance.config': {presence: {allowEmpty: false }}
+	'instance.config': {presence: {allowEmpty: false }},
+	favorites: {favoritesValidator: true},
+	viewcounts: {songItemValidator: true},
+	requests: {songItemValidator: true}
 };
 
 export async function processStatsPayload(payload) {
