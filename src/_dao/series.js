@@ -20,7 +20,7 @@ export function buildClausesSeries(words) {
 	for (const i in words.split(' ').filter(s => !('' === s))) {
 		sql.push(`lower(unaccent(name)) LIKE :word${i} OR
 		lower(unaccent(aliases::varchar)) LIKE :word${i} OR
-		lower(unaccent(i18n::varchar)) LIKE :word${i}
+		lower(unaccent(search::varchar)) LIKE :word${i}
 		`);
 	}
 	return {
