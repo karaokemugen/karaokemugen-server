@@ -14,7 +14,7 @@ import {configurePassport} from './_utils/passport_manager';
 import {getConfig} from './_utils/config';
 import range from 'express-range';
 import vhost from 'vhost';
-import {getInstanceRoom} from '../_dao/proxy';
+import {getInstanceRoom} from './_dao/proxy';
 import proxy from 'express-http-proxy';
 import {createServer} from 'http';
 
@@ -72,7 +72,7 @@ export function initFrontend(listenPort) {
 		res.status(404).send('Not found');
 	});
 
-	app.use(vhost(`*.${conf.KMProxy.Host}`), getKMRoom, proxy(redirectKMRoom, {
+	app.use(vhost(`*.${conf.KMProxy.Host}`, getKMRoom), proxy(redirectKMRoom, {
 		memoizeHost: false
 	}));
 

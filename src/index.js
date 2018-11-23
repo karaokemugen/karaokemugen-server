@@ -46,7 +46,7 @@ async function main() {
 	logger.debug(`[Launcher] Port ${port} is available`);
 	if (getConfig().Mail.Enabled) initMailer();
 	initShortener();
-	await initFrontend(port);
+	initFrontend(port);
 	logger.info('[Launcher] Karaoke Mugen Server is READY');
 }
 
