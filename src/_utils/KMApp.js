@@ -2,10 +2,12 @@ import pm2 from 'pm2';
 import {promisify} from 'util';
 import { getConfig } from './config';
 import {resolve} from 'path';
-import {asyncWriteFile, asyncMove} from './files';
+import {asyncWriteFile, asyncMove, asyncExists, asyncUnlink} from './files';
 import {stringify} from 'ini';
 import {generate} from 'randomstring';
 import fp from 'find-free-port';
+import io from 'socket.io';
+import {createServer} from 'net';
 
 function connect(...args) {
 	return promisify(pm2.connect)(...args);
@@ -33,6 +35,9 @@ export default class KMApp {
 			charset: 'alphabetic',
 			capitalization: 'uppercase'
 		});
+		this.mpvSocket = null;
+		this.localSocket = null;
+		this.websocket = null;
 	}
 
 	setup = async(files, instanceConfig) => {
@@ -63,6 +68,32 @@ export default class KMApp {
 		};
 		this.appConfig = {...instanceConfig, ...onlineConfig};
 		await asyncWriteFile(resolve(this.appPath, `config-${this.id}.ini`), stringify(this.appConfig), 'utf-8');
+
+		// Socket dance.
+		// First we create a UNIX socket for mpv
+		const mpvSocketPath = resolve(this.appPath, `socket-${this.id}`);
+		if (await asyncExists(mpvSocketPath)) await asyncUnlink(mpvSocketPath);
+		this.mpvSocket = createServer( (socket) => {
+			this.localSocket = socket;
+			socket.on('data', (data) => {
+				const messages = data.toString().split('\n');
+				for (const message of messages) {
+					if (message.length > 0) {
+						this.websocket.emit('fromMPV', message);
+					}
+				}
+			});
+		});
+		this.mpvSocket.listen(mpvSocketPath);
+		this.websocket = io.connect(`http://localhost:${this.conf.Frontend.Port}`);
+		this.websocket.on('connect', () => {
+			this.websocket.emit('room', this.id);
+		});
+		// When receiving a message to mpv, write it to the unix socket
+		this.websocket.on('toMPV', (data) => {
+			this.localSocket.write(data + '\n');
+		});
+
 		return {
 			room: this.room,
 			port: this.port
@@ -84,7 +115,6 @@ export default class KMApp {
 			]
 		});
 		await disconnect();
-
 	}
 
 	stop = async() => {

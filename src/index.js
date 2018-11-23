@@ -1,4 +1,4 @@
-import {getConfig, initConfig} from './_utils/config';
+import {getConfig, initConfig, setConfig} from './_utils/config';
 import logger from 'winston';
 import {join} from 'path';
 import {initFrontend} from './frontend';
@@ -26,24 +26,27 @@ async function main() {
 	sudoBlock('You should not run Karaoke Mugen Server with root permissions, it\'s dangerous.');
 	const argv = parseArgs();
 	await initConfig(appPath, cli);
+	const conf = getConfig();
 	console.log('--------------------------------------------------------------------');
 	console.log(`Karaoke Mugen Server ${pjson.version}`);
 	console.log('--------------------------------------------------------------------');
 	console.log('\n');
 
-	const opts = {
-		port: +argv.port || 1350,
-	};
 	await initDB();
 	if (argv.generate) {
 		await run();
 		exit();
 	}
-	opts.port = await detect(opts.port);
-	logger.debug(`[Launcher] Port ${opts.port} is available`);
+	const port = await detect(+argv.port || conf.Frontend.Port);
+	if (port !== conf.Frontend.Port) setConfig({
+		Frontend: {
+			Port: port
+		}
+	});
+	logger.debug(`[Launcher] Port ${port} is available`);
 	if (getConfig().Mail.Enabled) initMailer();
 	initShortener();
-	await initFrontend(opts.port);
+	await initFrontend(port);
 	logger.info('[Launcher] Karaoke Mugen Server is READY');
 }
 

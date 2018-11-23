@@ -41,6 +41,9 @@ export const defaults = {
 	},
 	KMProxy: {
 		Host: 'kara.moe'
+	},
+	Frontend: {
+		Port: 1350
 	}
 };
 
@@ -71,5 +74,6 @@ export const configConstraints = {
 	'Mail.To': { presence: true },
 	'Mail.FromMail': { email: true },
 	'Mail.ToMail': { email: true },
-	'KMProxy.Host': { presence: true}
+	'KMProxy.Host': { presence: true},
+	'Frontend.Port': { numericality: true}
 };

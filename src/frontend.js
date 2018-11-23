@@ -16,6 +16,13 @@ import range from 'express-range';
 import vhost from 'vhost';
 import {getInstanceRoom} from '../_dao/proxy';
 import proxy from 'express-http-proxy';
+import {createServer} from 'http';
+
+let ws;
+
+export function getWS() {
+	return ws;
+}
 
 /**
  * Starting express which will serve our app.
@@ -70,9 +77,11 @@ export function initFrontend(listenPort) {
 	}));
 
 	const port = listenPort || 5000;
-	app.listen(port);
-
-	logger.info(`[App] App listening on ${port}`);
+	const server = createServer(app);
+	ws = require('socket.io').listen(server);
+	server.listen(port, () => {
+		logger.info(`[App] App listening on ${port}`);
+	});
 }
 
 function api() {
