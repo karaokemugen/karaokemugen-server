@@ -9,9 +9,13 @@ import KSController from './_controllers/karaserv';
 import KIController from './_controllers/karaimport';
 import StatsController from './_controllers/stats';
 import ShortenerController from './_controllers/shortener';
+import ProxyController from './_controllers/proxy';
 import {configurePassport} from './_utils/passport_manager';
 import {getConfig} from './_utils/config';
 import range from 'express-range';
+import vhost from 'vhost';
+import {getInstanceRoom} from '../_dao/proxy';
+import proxy from 'express-http-proxy';
 
 /**
  * Starting express which will serve our app.
@@ -61,6 +65,10 @@ export function initFrontend(listenPort) {
 		res.status(404).send('Not found');
 	});
 
+	app.use(vhost(`*.${conf.KMProxy.Host}`), getKMRoom, proxy(redirectKMRoom, {
+		memoizeHost: false
+	}));
+
 	const port = listenPort || 5000;
 	app.listen(port);
 
@@ -81,6 +89,22 @@ function api() {
 	ShortenerController(apiRouter);
 	// Stats
 	StatsController(apiRouter);
+	// Online Mode for KM App
+	ProxyController(apiRouter);
 
 	return apiRouter;
+}
+
+function getKMRoom(req, res, next) {
+	const instance = getInstanceRoom(req.vhost[0]);
+	if (!instance) {
+		res.status(404).send('No room exists by this name');
+	} else {
+		req.KMAppPort = instance.port;
+		next();
+	}
+}
+
+function redirectKMRoom(req) {
+	return `http://localhost:${req.KMAppPort}`;
 }

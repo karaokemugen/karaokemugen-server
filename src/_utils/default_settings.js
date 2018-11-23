@@ -17,6 +17,7 @@ export const defaults = {
 		Series: 'data/series',
 		Temp: 'data/temp',
 		Inbox: 'data/inbox',
+		KaraokeMugenApp: 'KMApp',
 		Bin: {
 			ffmpeg: '/usr/bin/ffmpeg'
 		}
@@ -37,6 +38,9 @@ export const defaults = {
 	},
 	Shortener: {
 		ExpireTimeDays: 1
+	},
+	KMProxy: {
+		Host: 'kara.moe'
 	}
 };
 
@@ -54,6 +58,7 @@ export const configConstraints = {
 	'Path.Series': { presence: {allowEmpty: false}},
 	'Path.Temp': { presence: {allowEmpty: false}},
 	'Path.Inbox': { presence: {allowEmpty: false}},
+	'Path.KaraokeMugenApp': { presence: {allowEmpty: false}},
 	'Path.Bin.ffmpeg': { presence: {allowEmpty: false}},
 	'Shortener.ExpireTimeDays': { numericality: { greaterThan: 0 }},
 	'Mail.Enabled': { inclusion: bools },
@@ -66,4 +71,5 @@ export const configConstraints = {
 	'Mail.To': { presence: true },
 	'Mail.FromMail': { email: true },
 	'Mail.ToMail': { email: true },
+	'KMProxy.Host': { presence: true}
 };
