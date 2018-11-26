@@ -75,11 +75,13 @@ export default class KMApp {
 		if (await asyncExists(mpvSocketPath)) await asyncUnlink(mpvSocketPath);
 		this.mpvSocket = createServer( (socket) => {
 			this.localSocket = socket;
+			// When we receive data on the unix socket, we send it to the websocket
+			// So local MPV can receive and interpret data.
 			socket.on('data', (data) => {
 				const messages = data.toString().split('\n');
 				for (const message of messages) {
 					if (message.length > 0) {
-						this.websocket.emit('fromMPV', message);
+						this.websocket.emit('server', message);
 					}
 				}
 			});
@@ -89,8 +91,9 @@ export default class KMApp {
 		this.websocket.on('connect', () => {
 			this.websocket.emit('room', this.id);
 		});
-		// When receiving a message to mpv, write it to the unix socket
-		this.websocket.on('toMPV', (data) => {
+		// When receiving a message to mpv, write it to the unix socket so
+		// spawned KM App can interpret it.
+		this.websocket.on('client', (data) => {
 			this.localSocket.write(data + '\n');
 		});
 
@@ -105,14 +108,17 @@ export default class KMApp {
 		await connect(true);
 		await start({
 			name: this.id,
-			script: 'dist/index.js',
+			script: 'src/index.js',
 			cwd: this.appPath,
 			args: [
 				'--config',
 				resolve(this.appPath, `config-${this.id}.ini`),
 				'--noCheck',
 				'--spawn'
-			]
+			],
+			pid: resolve(this.appPath, `app-${this.id}.pid`),
+			killTimeout: 5000,
+			interpreter: 'babel-node'
 		});
 		await disconnect();
 	}
@@ -121,6 +127,8 @@ export default class KMApp {
 		await connect(true);
 		await delete(this.id);
 		await disconnect();
+		// Signal the local KM App that it can get its database back.
+		this.websocket.emit('terminated', this.id);
 	}
 
 }
