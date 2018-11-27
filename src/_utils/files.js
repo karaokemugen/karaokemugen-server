@@ -7,6 +7,8 @@ import deburr from 'lodash.deburr';
 import sanitizeFilename from 'sanitize-filename';
 import {mediaFileRegexp} from '../_services/constants';
 import {createHash} from 'crypto';
+import fileType from 'file-type';
+import readChunk from 'read-chunk';
 
 /** Function used to verify a file exists with a Promise.*/
 export function asyncExists(file) {
@@ -129,4 +131,10 @@ export function checksum(str, algorithm, encoding) {
 	return createHash(algorithm || 'md5')
 		.update(str, 'utf8')
 		.digest(encoding || 'hex');
+}
+
+export async function detectFileType(file) {
+	const buffer = await readChunk(file, 0, 4100);
+	const detected = fileType(buffer);
+	return detected.ext;
 }

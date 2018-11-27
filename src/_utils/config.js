@@ -44,10 +44,6 @@ export function verifyConfig(conf) {
 	if (validationErrors) throw `Config is not valid: ${JSON.stringify(validationErrors)}`;
 }
 
-export async function mergeConfig(oldConfig, newConfig) {
-	return setConfig(newConfig);
-}
-
 /** Initializing configuration */
 export async function initConfig(appPath, argv) {
 	if (argv.config) configFile = argv.config;
@@ -108,7 +104,7 @@ async function loadConfig(configFile) {
 }
 
 export async function setConfig(configPart) {
-	config = {...config, ...configPart};
+	config = merge(config, configPart);
 	updateConfig(config);
 	return getConfig();
 }
