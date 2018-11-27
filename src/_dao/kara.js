@@ -24,6 +24,7 @@ export function buildTypeClauses(mode, value) {
 	if (mode === 'tag') return ` AND all_tags_id @> ARRAY[${value}]`;
 	if (mode === 'serie') return ` AND serie_id @> ARRAY[${value}::smallint]`;
 	if (mode === 'ids') return ` AND kara_id IN (${value})`;
+	if (mode === 'kid') return ` AND kid = '${value}'`;
 	return '';
 }
 
