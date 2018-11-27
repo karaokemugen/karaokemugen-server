@@ -21,12 +21,20 @@ export async function spawnInstance(instance, dataFiles) {
 	}
 	// Checks complete
 	// Moving files in place
+	// If instance is already running, don't try to spawn a new KMApp
+	const existingInstance = getInstance(id);
+	if (existingInstance) return {
+		id: instance.config.appInstanceID,
+		room: existingInstance.room,
+		port: existingInstance.port
+	};
 	const app = new KMApp(instance.config.appInstanceID);
 	let info = await app.setup(dataFiles, instance.config);
 	info.id = instance.config.appInstanceID;
+	const res = {...info};
 	info.app = app;
 	upsertInstance(info);
-	return info;
+	return res;
 }
 
 export async function killInstance(id) {
