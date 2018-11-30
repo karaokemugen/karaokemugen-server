@@ -6,7 +6,7 @@ import {asyncWriteFile, asyncMove, asyncExists, asyncUnlink} from './files';
 import {stringify} from 'ini';
 import {generate} from 'randomstring';
 import fp from 'find-free-port';
-import io from 'socket.io';
+import {connect as connectSocket} from 'socket.io';
 import {createServer} from 'net';
 
 function connect(...args) {
@@ -35,6 +35,7 @@ export default class KMApp {
 			charset: 'alphabetic',
 			capitalization: 'uppercase'
 		});
+		this.mpvSocketPath = resolve('/tmp/',`km-node-mpvsocket-${this.id}`);
 		this.mpvSocket = null;
 		this.localSocket = null;
 		this.websocket = null;
@@ -71,8 +72,7 @@ export default class KMApp {
 
 		// Socket dance.
 		// First we create a UNIX socket for mpv
-		const mpvSocketPath = resolve(this.appPath, `socket-${this.id}`);
-		if (await asyncExists(mpvSocketPath)) await asyncUnlink(mpvSocketPath);
+		if (await asyncExists(this.mpvSocketPath)) await asyncUnlink(this.mpvSocketPath);
 		this.mpvSocket = createServer( (socket) => {
 			this.localSocket = socket;
 			// When we receive data on the unix socket, we send it to the websocket
@@ -86,8 +86,8 @@ export default class KMApp {
 				}
 			});
 		});
-		this.mpvSocket.listen(mpvSocketPath);
-		this.websocket = io.connect(`http://localhost:${this.conf.Frontend.Port}`);
+		this.mpvSocket.listen(this.mpvSocketPath);
+		this.websocket = connect(`http://localhost:${this.conf.Frontend.Port}`);
 		this.websocket.on('connect', () => {
 			this.websocket.emit('room', this.id);
 		});
@@ -127,6 +127,7 @@ export default class KMApp {
 		await connect(true);
 		await delete(this.id);
 		await disconnect();
+		await asyncUnlink(this.mpvSocketPath);
 		// Signal the local KM App that it can get its database back.
 		this.websocket.emit('terminated', this.id);
 	}
