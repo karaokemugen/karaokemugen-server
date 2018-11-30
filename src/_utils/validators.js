@@ -64,7 +64,7 @@ function songItemValidator(value) {
 	const uuid = new RegExp(uuidRegexp);
 	for (const item of value) {
 		if (!uuid.test(item.kid)) return ` '${value} is invalid (not a valid KID)`;
-		if (isNaN(item.requested_at)) return ` '${value} is invalid (not a valid requested_at time)`;
+		if (isNaN(+item.requested_at)) return ` '${value} is invalid (not a valid requested_at time)`;
 		if (isNaN(item.session_started_at)) return ` '${value} is invalid (not a valid session_started_at time)`;
 	}
 	return null;
