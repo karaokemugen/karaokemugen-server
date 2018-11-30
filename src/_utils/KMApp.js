@@ -87,7 +87,7 @@ export default class KMApp {
 			});
 		});
 		this.mpvSocket.listen(this.mpvSocketPath);
-		this.websocket = connect(`http://localhost:${this.conf.Frontend.Port}`);
+		this.websocket = connectSocket(`http://localhost:${this.conf.Frontend.Port}`);
 		this.websocket.on('connect', () => {
 			this.websocket.emit('room', this.id);
 		});
