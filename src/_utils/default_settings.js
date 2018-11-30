@@ -4,6 +4,7 @@
 // you can change the default settings by using config.ini to bypass the default value .
 export const defaults = {
 	JwtSecret: 'Change me',
+	AdminPassword: '',
 	Database: {
 		Host: 'localhost',
 		User: 'karaokemugen_server',
@@ -51,6 +52,7 @@ const bools = [true, false];
 
 export const configConstraints = {
 	JwtSecret: { presence: {allowEmpty: false}},
+	AdminPassword: { presence: {allowEmpty: false}},
 	'Database.User': { presence: {allowEmpty: false}},
 	'Database.Pass': { presence: true },
 	'Database.Host': { presence: {allowEmpty: false}},

@@ -25,12 +25,20 @@ export const requireValidUser = (req, res, next) => {
 
 
 export const requireAdmin = (req, res, next) => {
+	// temporary code until we get a proper user system
+	if (req.headers.password === getConfig().AdminPassword) {
+		next();
+	} else {
+		res.status(403).send('Only admin can use this function');
+	}
+	/*
 	const token = decode(req.get('authorization'), getConfig().JwtSecret);
 	if (token.role === 'admin') {
 		next();
 	} else {
 		res.status(403).send('Only admin can use this function');
 	}
+	*/
 };
 
 export function configurePassport(conf) {

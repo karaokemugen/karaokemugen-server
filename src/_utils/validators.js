@@ -53,7 +53,7 @@ function numbersArrayValidator(value) {
 
 
 function seriesAliasesValidator(value) {
-	if (!value) return ` '${value} is not present`;
+	if (!value) return null;
 	if (!Array.isArray(value)) return ` '${value}' is invalid (not an array)`;
 	return null;
 }
