@@ -6,7 +6,7 @@ INSERT INTO settings (
 	value
 ) VALUES($1, $2)
 ON CONFLICT (option) DO UPDATE SET
-	setting_value = $2;
+	value = $2;
 `
 
 export const selectSettings = 'SELECT option, value FROM settings;'
