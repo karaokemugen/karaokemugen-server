@@ -2,11 +2,11 @@
 
 export const upsertSetting = `
 INSERT INTO settings (
-	setting,
-	setting_value
+	option,
+	value
 ) VALUES($1, $2)
-ON CONFLICT (setting) DO UPDATE SET
+ON CONFLICT (option) DO UPDATE SET
 	setting_value = $2;
 `
 
-export const selectSettings = 'SELECT setting, setting_value FROM settings;'
+export const selectSettings = 'SELECT option, value FROM settings;'

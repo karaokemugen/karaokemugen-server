@@ -6,7 +6,7 @@ export async function getSettings() {
 	const settings = {};
 	const settingsArray = await selectSettings();
 	for (const data of settingsArray) {
-		settings[data.setting] = data.setting_value;
+		settings[data.option] = data.value;
 	}
 	return settings;
 }
