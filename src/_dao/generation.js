@@ -13,6 +13,7 @@ import {serieRequired, verifyKaraData} from '../_services/kara';
 import {basename} from 'path';
 import parallel from 'async-await-parallel';
 import {findSeries, getDataFromSeriesFile} from '../_dao/seriesfile';
+import {updateSetting} from '../_util/settings';
 
 let error = false;
 
@@ -379,6 +380,7 @@ export async function run() {
 			{sql: inserti18nSeries, params: sqlInserti18nSeries},
 			{sql: updateSeries, params: sqlUpdateSeries}
 		]);
+		updateSetting('lastGeneration', new Date());
 		logger.info('[Gen] Done generating database');
 		return error;
 	} catch (err) {
