@@ -13,7 +13,7 @@ import {serieRequired, verifyKaraData} from '../_services/kara';
 import {basename} from 'path';
 import parallel from 'async-await-parallel';
 import {findSeries, getDataFromSeriesFile} from '../_dao/seriesfile';
-import {updateSetting} from '../_util/settings';
+import {updateSetting} from '../_utils/settings';
 
 let error = false;
 
