@@ -2,7 +2,7 @@ import {db} from './database';
 const sql = require('./sqls/settings');
 
 export async function selectSettings() {
-	return await db().query(sql.selectSettings);
+	return await db().query(sql.selectSettings).rows;
 }
 
 export async function upsertSetting(setting, value) {
