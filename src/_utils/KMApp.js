@@ -1,32 +1,21 @@
 import pm2 from 'pm2';
-import {promisify} from 'util';
 import { getConfig } from './config';
 import {resolve} from 'path';
-import {asyncWriteFile, asyncMove, asyncExists, asyncUnlink} from './files';
+import {asyncWriteFile, asyncMove} from './files';
 import {stringify} from 'ini';
 import {generate} from 'randomstring';
 import fp from 'find-free-port';
-import {connect as connectSocket} from 'socket.io';
+import {connect} from 'socket.io-client';
 import {createServer} from 'net';
-
-function connect(...args) {
-	return promisify(pm2.connect)(...args);
-}
-
-function start(...args) {
-	return promisify(pm2.start)(...args);
-}
-
-function disconnect(...args) {
-	return promisify(pm2.disconnect)(...args);
-}
+import logger from 'winston';
 
 export default class KMApp {
 
 	constructor (opts) {
-		this.id = opts.id;
+		this.id = opts;
 		this.conf = getConfig();
 		this.port = 0;
+		this.app = null;
 		this.appConfig = {};
 		this.appPath = resolve(this.conf.appPath, this.conf.Path.KaraokeMugenApp);
 		this.room = generate({
@@ -35,30 +24,33 @@ export default class KMApp {
 			charset: 'alphabetic',
 			capitalization: 'uppercase'
 		});
-		this.mpvSocketPath = resolve('/tmp/',`km-node-mpvsocket-${this.id}`);
+		//this.mpvSocketPath = resolve('/tmp/',`km-node-mpvsocket-${this.id}`);
+		this.mpvSocketPath = `\\\\.\\pipe\\mpv-server-socket-${this.id}`;
 		this.mpvSocket = null;
 		this.localSocket = null;
 		this.websocket = null;
 	}
 
 	setup = async(files, instanceConfig) => {
+		logger.info(`[Spawn] [${this.id}] Setup start`);
 		for (const file of files) {
-			await asyncMove(file.path, resolve(this.conf.appPath, this.conf.Path.KaraokeMugenApp,'app/db/',`${this.id}-${file.fieldname}.sqlite3`), {overwrite: true});
+			await asyncMove(file, resolve(this.conf.appPath, this.conf.Path.KaraokeMugenApp,'app/db/'), {overwrite: true});
 		}
+		logger.info(`[Spawn] [${this.id}] Moved databases in place`);
 		this.port = await fp(13337, 14337);
 		const onlineConfig = {
 			appFirstRun: 0,
 			appInstanceID: this.id,
-			appFrontendPort: this.port,
+			appFrontendPort: this.port[0],
 			OnlineMode: 0,
 			PathBin: 'app/bin',
-			PathKaras: 'app/data/karas',
-			PathMedias: 'app/data/medias',
-			PathSubs: 'app/data/lyrics',
+			PathKaras: resolve(this.conf.appPath, this.conf.Path.Karas),
+			PathMedias: resolve(this.conf.appPath, this.conf.Path.Medias),
+			PathSubs: resolve(this.conf.appPath, this.conf.Path.Lyrics),
 			PathDB: 'app/db',
-			PathDBKarasFile: `${this.id}-karaDB.sqlite3`,
-			PathDBUserFile: `${this.id}-userDB.sqlite3`,
-			PathSeries: 'app/data/series',
+			PathDBKarasFile: `karas-${this.id}.sqlite3`,
+			PathDBUserFile: `userdata-${this.id}.sqlite3`,
+			PathSeries: resolve(this.conf.appPath, this.conf.Path.Series),
 			PathBackgrounds: 'app/backgrounds',
 			PathJingles: 'app/jingles',
 			PathTemp: 'app/temp',
@@ -66,13 +58,20 @@ export default class KMApp {
 			PathImport: 'app/import',
 			PathAvatars: 'app/avatars',
 			PathMediasHTTP: '',
+			BinPlayerLinux: './config.sample.ini',
+			BinffmpegLinux: './config.sample.ini',
 		};
+		delete instanceConfig.VersionNo;
+		delete instanceConfig.VersionName;
+		delete instanceConfig.VersionImage;
+		delete instanceConfig.os;
+		delete instanceConfig.appPath;
 		this.appConfig = {...instanceConfig, ...onlineConfig};
 		await asyncWriteFile(resolve(this.appPath, `config-${this.id}.ini`), stringify(this.appConfig), 'utf-8');
-
+		logger.info(`[Spawn] [${this.id}] Wrote config`);
 		// Socket dance.
 		// First we create a UNIX socket for mpv
-		if (await asyncExists(this.mpvSocketPath)) await asyncUnlink(this.mpvSocketPath);
+		//if (await asyncExists(this.mpvSocketPath)) await asyncUnlink(this.mpvSocketPath);
 		this.mpvSocket = createServer( (socket) => {
 			this.localSocket = socket;
 			// When we receive data on the unix socket, we send it to the websocket
@@ -87,7 +86,8 @@ export default class KMApp {
 			});
 		});
 		this.mpvSocket.listen(this.mpvSocketPath);
-		this.websocket = connectSocket(`http://localhost:${this.conf.Frontend.Port}`);
+		logger.info(`[Spawn] [${this.id}] mpv Socket created`);
+		this.websocket = connect(`http://localhost:${this.conf.Frontend.Port}`);
 		this.websocket.on('connect', () => {
 			this.websocket.emit('room', this.id);
 		});
@@ -96,7 +96,7 @@ export default class KMApp {
 		this.websocket.on('client', (data) => {
 			this.localSocket.write(data + '\n');
 		});
-
+		logger.info(`[Spawn] [${this.id}] Web Socket created`);
 		return {
 			room: this.room,
 			port: this.port
@@ -104,32 +104,59 @@ export default class KMApp {
 	}
 
 	start = async() => {
+		return new Promise((resolve, reject) => {
+			pm2.connect(true, (err) => {
+				if (err) {
+					reject(err);
+				} else {
+					logger.info(`[Spawn] [${this.id}] connected to PM2`);
+					pm2.start({
+						name: this.id,
+						script: 'dist/index.js',
+						cwd: this.appPath,
+						args: [
+							'--config',
+							resolve(this.appPath, `config-${this.id}.ini`),
+							'--noCheck',
+							'--spawn'
+						],
+						pid: resolve(this.appPath, `app-${this.id}.pid`),
+						killTimeout: 10000
+					}, (err, apps) => {
+						if (err) {
+							reject(err);
+						} else {
+							this.app = apps;
+							logger.info(`[Spawn] [${this.id}] Started KM App`);
+							pm2.disconnect();
+						}
+					});
+				}
 
-		await connect(true);
-		await start({
-			name: this.id,
-			script: 'src/index.js',
-			cwd: this.appPath,
-			args: [
-				'--config',
-				resolve(this.appPath, `config-${this.id}.ini`),
-				'--noCheck',
-				'--spawn'
-			],
-			pid: resolve(this.appPath, `app-${this.id}.pid`),
-			killTimeout: 5000,
-			interpreter: 'babel-node'
+			});
 		});
-		await disconnect();
 	}
 
 	stop = async() => {
-		await connect(true);
-		await delete(this.id);
-		await disconnect();
-		await asyncUnlink(this.mpvSocketPath);
-		// Signal the local KM App that it can get its database back.
-		this.websocket.emit('terminated', this.id);
+		return new Promise((resolve, reject) => {
+			pm2.connect(true, (err) => {
+				if (err) {
+					reject(err);
+				} else {
+					pm2.delete(this.id, (err) => {
+						if (err) {
+							reject(err);
+						} else {
+							pm2.disconnect();
+							this.mpvSocket.close();
+							// Signal the local KM App that it can get its database back.
+							this.websocket.emit('terminated', this.id);
+							this.websocket.close();
+						}
+					});
+				}
+			});
+		});
 	}
 
 }

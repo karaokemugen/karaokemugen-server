@@ -12,13 +12,13 @@ export const defaults = {
 		Base: 'karaokemugen_server'
 	},
 	Path: {
-		Karas: 'data/karas',
-		Lyrics: 'data/lyrics',
-		Medias: 'data/medias',
-		Series: 'data/series',
-		Temp: 'data/temp',
-		Inbox: 'data/inbox',
-		KaraokeMugenApp: 'KMApp',
+		Karas: 'app/data/karas',
+		Lyrics: 'app/data/lyrics',
+		Medias: 'app/data/medias',
+		Series: 'app/data/series',
+		Temp: 'app/temp',
+		Inbox: 'app/inbox',
+		KaraokeMugenApp: 'karaokemugen-app/',
 		Bin: {
 			ffmpeg: '/usr/bin/ffmpeg'
 		}
