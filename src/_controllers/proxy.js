@@ -18,7 +18,7 @@ export default function ProxyController(router) {
 		.get(async (req, res) => {
 			try {
 				const conf = getConfig();
-				res.status(200).download(resolve(resolve(conf.appPath, conf.Path.KaraokeMugenApp,'app/db/', `${req.params.instance}-userDB.sqlite3`)));
+				res.status(200).download(resolve(resolve(conf.appPath, conf.Path.KaraokeMugenApp,'app/db/', `userdata-${req.params.instance}.sqlite3`)));
 			} catch(err) {
 				console.log(err);
 				res.status(500).json(err);
