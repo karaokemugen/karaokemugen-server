@@ -43,6 +43,8 @@ export default class KMApp {
 			appInstanceID: this.id,
 			appFrontendPort: this.port[0],
 			OnlineMode: 0,
+			OnlineHost: 'localhost',
+			OnlinePort: this.conf.Frontend.Port,
 			PathBin: 'app/bin',
 			PathKaras: resolve(this.conf.appPath, this.conf.Path.Karas),
 			PathMedias: resolve(this.conf.appPath, this.conf.Path.Medias),
@@ -90,6 +92,9 @@ export default class KMApp {
 		this.websocket = connect(`http://localhost:${this.conf.Frontend.Port}`);
 		this.websocket.on('connect', () => {
 			this.websocket.emit('room', this.id);
+		});
+		this.websocket.on('shutdown', () => {
+		    this.stop();
 		});
 		// When receiving a message to mpv, write it to the unix socket so
 		// spawned KM App can interpret it.
@@ -152,6 +157,7 @@ export default class KMApp {
 							// Signal the local KM App that it can get its database back.
 							this.websocket.emit('terminated', this.id);
 							this.websocket.close();
+							resolve();
 						}
 					});
 				}
