@@ -10,6 +10,7 @@ import KIController from './_controllers/karaimport';
 import StatsController from './_controllers/stats';
 import ShortenerController from './_controllers/shortener';
 import ProxyController from './_controllers/proxy';
+import UserController from'./_controllers/user';
 import {configurePassport} from './_utils/passport_manager';
 import {getConfig} from './_utils/config';
 import range from 'express-range';
@@ -17,6 +18,7 @@ import vhost from 'vhost';
 import {getInstanceRoom} from './_dao/proxy';
 import proxy from 'express-http-proxy';
 import {createServer} from 'http';
+import helmet from 'helmet';
 
 let ws;
 
@@ -34,6 +36,7 @@ export function initFrontend(listenPort) {
 	const app = express();
 
 	app.enable('trust proxy');
+	app.use(helmet());
 	app.use(bodyParser.json({limit: '100mb'})); // support json encoded bodies
 	app.use(bodyParser.urlencoded({
 		limit: '100mb',
@@ -100,6 +103,7 @@ function api() {
 	StatsController(apiRouter);
 	// Online Mode for KM App
 	ProxyController(apiRouter);
+	UserController(apiRouter);
 
 	return apiRouter;
 }

@@ -7,10 +7,14 @@
 		"node": true,
 		"mocha":true
     },
-    "extends": "react-app",
+    "extends": [
+		"react-app",
+		"plugin:security/recommended"
+	],
     "plugins": [
-        "react"
-    ],
+		"react",
+		"security"
+	],
     "rules": {
 		"jsx-a11y/href-no-hash": [0],
         "brace-style": [
