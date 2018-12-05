@@ -6,15 +6,15 @@ import {findUserByName, checkPassword} from '../_services/user';
 const loginErr = {
 	code: 'LOG_ERROR',
 	message: 'Incorrect credentials',
-	data: {
-	}
+	data: {}
 };
 
 async function checkLogin(username, password) {
 	const config = getConfig();
-	if (!await findUserByName(username)) throw false;
-	if (!await checkPassword(username, password)) throw false;
-	const role = await getRole(username);
+	const user = await findUserByName(username);
+	if (!user) throw false;
+	if (!checkPassword(user, password)) throw false;
+	const role = getRole(user);
 	return {
 		token: createJwtToken(username, role, config),
 		username: username,
@@ -27,7 +27,7 @@ export default function authController(router) {
 
 	const requireAuth = passport.authenticate('jwt', { session: false });
 
-	router.post('/login', async (req, res) => {
+	router.post('/auth/login', async (req, res) => {
 		if (!req.body.password) req.body.password = '';
 		try {
 			const token = await checkLogin(req.body.username, req.body.password);
@@ -37,7 +37,7 @@ export default function authController(router) {
 		}
 	});
 
-	router.get('/checkauth', requireAuth, (req, res) => {
+	router.get('/auth/check', requireAuth, (req, res) => {
 		res.send(decodeJwtToken(req.get('authorization')));
 	});
 }
@@ -56,8 +56,7 @@ function decodeJwtToken(token, config) {
 	return decode(token, conf.JwtSecret);
 }
 
-async function getRole(username) {
-	const user = await findUserByName(username);
-	if (+user.flag_admin === 1) return 'admin';
+function getRole(user) {
+	if (user.type === 2) return 'admin';
 	return 'user';
 }

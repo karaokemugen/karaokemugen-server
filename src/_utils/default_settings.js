@@ -18,6 +18,7 @@ export const defaults = {
 		Series: 'app/data/series',
 		Temp: 'app/temp',
 		Inbox: 'app/inbox',
+		Avatars: 'app/avatars',
 		KaraokeMugenApp: 'karaokemugen-app/',
 		Bin: {
 			ffmpeg: '/usr/bin/ffmpeg'

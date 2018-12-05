@@ -10,7 +10,6 @@ export default function ProxyController(router) {
 				res.status(200).json(info);
 			} catch(err) {
 				res.statusCode = 500;
-				console.log(err);
 				res.json(err);
 			}
 		});

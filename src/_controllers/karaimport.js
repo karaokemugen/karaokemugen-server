@@ -1,4 +1,3 @@
-import {requireAuth, requireValidUser, updateUserLoginTime, requireAdmin} from '../_controllers/passport_manager';
 import {createKara} from '../_services/kara';
 import multer from 'multer';
 import {getConfig} from '../_utils/config';

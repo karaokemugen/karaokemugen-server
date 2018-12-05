@@ -1,9 +1,9 @@
+import { decode } from 'jwt-simple';
 import passport from 'passport';
-import {decode} from 'jwt-simple';
-import {getConfig} from './config';
-import {hashPassword, findUserByName} from '../_services/user';
-import {ExtractJwt, Strategy} from 'passport-jwt';
+import { ExtractJwt, Strategy } from 'passport-jwt';
 import LocalStrategy from 'passport-local';
+import { findUserByName, hashPassword } from '../_services/user';
+import { getConfig } from './config';
 
 export const requireAuth = passport.authenticate('jwt', { session: false });
 
@@ -25,20 +25,13 @@ export const requireValidUser = (req, res, next) => {
 
 
 export const requireAdmin = (req, res, next) => {
-	// temporary code until we get a proper user system
-	if (req.headers.password === getConfig().AdminPassword) {
-		next();
-	} else {
-		res.status(403).send('Only admin can use this function');
-	}
-	/*
 	const token = decode(req.get('authorization'), getConfig().JwtSecret);
 	if (token.role === 'admin') {
 		next();
 	} else {
 		res.status(403).send('Only admin can use this function');
 	}
-	*/
+
 };
 
 export function configurePassport(conf) {
@@ -61,7 +54,7 @@ function localPassportStrategy() {
 			.then((userdata) => {
 				//User not found
 				if (!userdata) return done(null, false);
-				//User is not a guest, and password mismatches
+				//User is found but password mismatches
 				if (hash !== userdata.password) return done(null, false);
 				//Everything's daijoubu
 				done(null, username);
