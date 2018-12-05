@@ -36,16 +36,14 @@ export function checkPassword(user,password) {
 	return user.password === hashPassword(password);
 }
 
-export async function createUser(user) {
+export async function createUser(user, opts = {}) {
 
-	user.type = user.type || 1;
 	user.nickname = user.nickname || user.login;
 	user.avatar_file = user.avatar_file || 'blank.png';
 	user.bio = user.bio || null;
 	user.url = user.url || null;
 	user.email = user.email || null;
-	user.type = 1;
-
+	opts.admin ? user.type = 2 : user.type = 1;
 	if (!user.password) throw { code: 'USER_EMPTY_PASSWORD'};
 	if (!user.login) throw { code: 'USER_EMPTY_LOGIN'};
 	// Check if login or nickname already exists.
