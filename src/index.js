@@ -10,6 +10,7 @@ import {initShortener} from './_services/shortener';
 import {createUser} from './_services/user';
 import {run} from './_dao/generation';
 import sudoBlock from 'sudo-block';
+import {asyncCheckOrMkdir} from './_utils/files';
 
 const pjson = require('../package.json');
 const appPath = join(__dirname,'../');
@@ -32,6 +33,17 @@ async function main() {
 	console.log(`Karaoke Mugen Server ${pjson.version}`);
 	console.log('--------------------------------------------------------------------');
 	console.log('\n');
+
+	await Promise.all([
+		asyncCheckOrMkdir(appPath, conf.Path.Medias),
+		asyncCheckOrMkdir(appPath, conf.Path.Series),
+		asyncCheckOrMkdir(appPath, conf.Path.Karas),
+		asyncCheckOrMkdir(appPath, conf.Path.Lyrics),
+		asyncCheckOrMkdir(appPath, conf.Path.Inbox),
+		asyncCheckOrMkdir(appPath, conf.Path.Temp),
+		asyncCheckOrMkdir(appPath, conf.Path.Previews),
+		asyncCheckOrMkdir(appPath, conf.Path.Avatars)
+	]);
 
 	await initDB();
 	if (argv.generate) {
@@ -73,4 +85,6 @@ function parseArgs() {
 		.option('--createAdmin [user],[password]', 'Create a new admin user', login)
 		.parse(argv);
 }
+
+
 
