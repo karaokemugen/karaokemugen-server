@@ -3,12 +3,25 @@ import logger from 'winston';
 import {asyncRequired} from './files';
 import {getConfig} from './config';
 import {timeToSeconds} from './date';
+import {resolve} from 'path';
 
 export async function extractSubtitles(videofile, extractfile) {
 	await execa(getConfig().Path.Bin.ffmpeg, ['-y', '-i', videofile, extractfile], {encoding: 'utf8'});
 
 	// Verify if the subfile exists. If it doesn't, it means ffmpeg didn't extract anything
 	return await asyncRequired(extractfile);
+}
+
+export async function createThumbnail(mediafile, percent, mediaduration, mediasize, uuid) {
+	try {
+		const conf = getConfig();
+		const thumbnailWidth = 600;
+		const time = Math.floor(mediaduration * (percent / 100));
+		const previewfile = resolve(conf.appPath, conf.Path.Previews, `${uuid}.${mediasize}.${percent}.png`);
+		await execa(getConfig().Path.Bin.ffmpeg, ['-ss', time, '-i', mediafile,  '-vframes', '1', '-filter:v', 'scale=\'min('+thumbnailWidth+',iw):-1\'', previewfile ], { encoding : 'utf8' });
+	} catch(err) {
+		logger.warn(`[ffmpeg] Unable to create preview for ${mediafile} : ${err.code}`);
+	}
 }
 
 export async function getMediaInfo(mediafile) {

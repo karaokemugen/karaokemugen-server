@@ -4,6 +4,7 @@ import {has as hasLang} from 'langs';
 import {asyncReadDir} from '../_utils/files';
 import {getConfig} from '../_utils/config';
 import {getDataFromKaraFile} from './karafile';
+import {createVideoPreviews} from '../_utils/previews';
 import {transaction} from './database';
 import {
 	insertKaras, insertKaraSeries, insertKaraTags, insertSeries, insertTags, inserti18nSeries, updateSeries, deleteAll
@@ -381,6 +382,7 @@ export async function run() {
 			{sql: updateSeries, params: sqlUpdateSeries}
 		]);
 		updateSetting('lastGeneration', new Date());
+		createVideoPreviews();
 		logger.info('[Gen] Done generating database');
 		return error;
 	} catch (err) {
