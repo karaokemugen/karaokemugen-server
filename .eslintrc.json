@@ -16,6 +16,7 @@
 		"security"
 	],
     "rules": {
+		"detect-object-injection": 0,
 		"jsx-a11y/href-no-hash": [0],
         "brace-style": [
             "error",
