@@ -17,7 +17,7 @@ export async function createThumbnail(mediafile, percent, mediaduration, mediasi
 		const conf = getConfig();
 		const thumbnailWidth = 600;
 		const time = Math.floor(mediaduration * (percent / 100));
-		const previewfile = resolve(conf.appPath, conf.Path.Previews, `${uuid}.${mediasize}.${percent}.png`);
+		const previewfile = resolve(conf.appPath, conf.Path.Previews, `${uuid}.${mediasize}.${percent}.jpg`);
 		await execa(getConfig().Path.Bin.ffmpeg, ['-ss', time, '-i', mediafile,  '-vframes', '1', '-filter:v', 'scale=\'min('+thumbnailWidth+',iw):-1\'', previewfile ], { encoding : 'utf8' });
 	} catch(err) {
 		logger.warn(`[ffmpeg] Unable to create preview for ${mediafile} : ${err.code}`);
