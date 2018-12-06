@@ -18,3 +18,5 @@ bin/
 localtunnel-server/
 react_site/node_modules
 react_site/build
+app/
+!app/avatars/blank.png
