@@ -5,7 +5,11 @@ import {resolve} from 'path';
 import { createThumbnail } from './ffmpeg';
 import logger from 'winston';
 
+let creatingThumbnails = false;
+
 export async function createVideoPreviews() {
+	if (creatingThumbnails) throw 'Creating video previews in progress, please wait a moment and try again later';
+	creatingThumbnails = true;
 	const conf = getConfig();
 	const karas = await getAllKaras();
 	const previewFiles = await asyncReadDir(resolve(conf.appPath, conf.Path.Previews));
@@ -30,8 +34,9 @@ export async function createVideoPreviews() {
 	// Now create non-existing previews
 	for (const index in karas.content) {
 		const kara = karas.content[index];
+		const counter = +index + 1;
 		if (!await asyncExists(resolve(conf.appPath, conf.Path.Previews, `${kara.kid}.${kara.mediasize}.25.png`)) && !kara.mediafile.endsWith('.mp3')) {
-			logger.info(`[Previews] Creating thumnbails for ${kara.mediafile} (${index + 1}/${karas.content.length})`);
+			logger.info(`[Previews] Creating thumnbails for ${kara.mediafile} (${counter}/${karas.content.length})`);
 			const creates = [
 				createThumbnail(
 					resolve(conf.appPath, conf.Path.Medias, kara.mediafile),
@@ -59,4 +64,5 @@ export async function createVideoPreviews() {
 		}
 	};
 	logger.info('[Previews] Finished generating thumbnails');
+	creatingThumbnails = false;
 }

@@ -17,6 +17,7 @@ import {findSeries, getDataFromSeriesFile} from '../_dao/seriesfile';
 import {updateSetting} from '../_utils/settings';
 
 let error = false;
+let generating = false;
 
 async function extractKaraFiles() {
 	const conf = getConfig();
@@ -352,6 +353,8 @@ function prepareTagsKaraInsertData(tagsByKara) {
 
 export async function run() {
 	try {
+		if (generating) throw 'Generation already in progress, try again later)';
+		generating = true;
 		logger.info('[Gen] Starting database generation');
 		const karaFiles = await extractKaraFiles();
 		const karas = await readAllKaras(karaFiles);
@@ -389,6 +392,8 @@ export async function run() {
 		console.log(err);
 		logger.error(`[Gen] Generation error: ${err}`);
 		return false;
+	} finally {
+		generating = false;
 	}
 }
 
