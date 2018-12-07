@@ -35,7 +35,7 @@ export async function createVideoPreviews() {
 	for (const index in karas.content) {
 		const kara = karas.content[index];
 		const counter = +index + 1;
-		if (!await asyncExists(resolve(conf.appPath, conf.Path.Previews, `${kara.kid}.${kara.mediasize}.25.png`)) && !kara.mediafile.endsWith('.mp3')) {
+		if (!await asyncExists(resolve(conf.appPath, conf.Path.Previews, `${kara.kid}.${kara.mediasize}.25.jpg`)) && !kara.mediafile.endsWith('.mp3')) {
 			logger.info(`[Previews] Creating thumnbails for ${kara.mediafile} (${counter}/${karas.content.length})`);
 			const creates = [
 				createThumbnail(
