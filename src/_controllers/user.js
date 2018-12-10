@@ -66,6 +66,4 @@ export default function userController(router) {
 				res.status(400).json(validationErrors);
 			}
 		});
-
-
 }

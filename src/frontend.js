@@ -5,12 +5,13 @@ import bodyParser from 'body-parser';
 import passport from 'passport';
 import adminController from './_controllers/admin';
 import authController from './_controllers/auth';
-import KSController from './_controllers/karaserv';
-import KIController from './_controllers/karaimport';
-import StatsController from './_controllers/stats';
-import ShortenerController from './_controllers/shortener';
-import ProxyController from './_controllers/proxy';
-import UserController from'./_controllers/user';
+import KServerController from './_controllers/karaserv';
+import KImportController from './_controllers/karaimport';
+import statsController from './_controllers/stats';
+import shortenerController from './_controllers/shortener';
+import proxyController from './_controllers/proxy';
+import userController from './_controllers/user';
+import favoritesController from './_controllers/favorites';
 import {configurePassport} from './_utils/passport_manager';
 import {getConfig} from './_utils/config';
 import range from 'express-range';
@@ -96,16 +97,16 @@ function api() {
 	// Adding admin routes
 	adminController(apiRouter);
 	// Adding KaraServ routes
-	KSController(apiRouter);
-	KIController(apiRouter);
+	KServerController(apiRouter);
+	KImportController(apiRouter);
 	// Shortener/kara.moe route
-	ShortenerController(apiRouter);
+	shortenerController(apiRouter);
 	// Stats
-	StatsController(apiRouter);
+	statsController(apiRouter);
 	// Online Mode for KM App
-	ProxyController(apiRouter);
-	UserController(apiRouter);
-
+	proxyController(apiRouter);
+	userController(apiRouter);
+	favoritesController(apiRouter);
 	return apiRouter;
 }
 
