@@ -9,7 +9,6 @@
     "creator_plural": "Studios/Créateurs",
     "language": "Langues",
     "language_plural": "Langues",
-    "loading_database": "Chargement de la base de données",
     "serie": "Série",
     "serie_plural": "Séries",
     "singer": "Interprète",
@@ -41,7 +40,9 @@
     "size": "Taille des médias",
     "duration": "Durée de tous les karaokés",
     "{{days}}d{{hours}}h{{minutes}}m{{seconds}}s": "{{days}} jours {{hours}} heures {{minutes}} minutes {{seconds}} secondes",
-    "karasFrom{{minYear}}to{{maxYear}}": "Des karaokés de {{minYear}} à {{maxYear}}"
+    "karasFrom{{minYear}}to{{maxYear}}": "Des karaokés de {{minYear}} à {{maxYear}}",
+    "karasUpdateTime": "Dernière mise à jour ",
+    "title": "STATISTIQUES"
   },
   "syntax": {
     "colon": " :"
@@ -61,5 +62,9 @@
     "bad_time_eg": "Karaoké décalé, police trop petite ou illisible, erreur dans les paroles, choix des couleurs douteux...",
     "bad_quality": "Média de mauvaise qualité :",
     "bad_quality_eg": "Vidéo en basse résolution, pixélisée, son ignoble, metadata foireuses..."
+  },
+  "page": {
+    "loader_title": "Chargement",
+    "homepage_title": "Accueil"
   }
 }

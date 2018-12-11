@@ -157,11 +157,11 @@ class RouteComponent extends Component {
             </li>
             <li>
                 <b>{i18next.t("kara.creation_date")}{i18next.t("syntax.colon")} </b>
-                {fecha.format(Date.parse(kara.created_at),'YYYY-MM-dd')}
+                {fecha.format(Date.parse(kara.created_at),'YYYY-MM-DD')}
             </li>
             <li>
                 <b>{i18next.t("kara.last_update")}{i18next.t("syntax.colon")} </b>
-                {fecha.format(Date.parse(kara.modified_at),'YYYY-MM-dd')}
+                {fecha.format(Date.parse(kara.modified_at),'YYYY-MM-DD')}
             </li>
             <li>
                 <b>{i18next.t("kara.kid")}{i18next.t("syntax.colon")} </b>

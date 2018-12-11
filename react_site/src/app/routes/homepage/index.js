@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Page from '../../components/page';
 import logo from '../../assets/logo.png';
 import i18next from 'i18next';
+import fecha from 'fecha';
 
 class Karas extends Component {
 
@@ -32,11 +33,11 @@ class Karas extends Component {
 			});
 			let colonChar = i18next.t("syntax.colon")
 			return (
-				<Page id="homepage">
+				<Page id="homepage" title={i18next.t("page.homepage_title")}>
 					<p><img src={logo} alt="Homepage" style={{ width: '400px' }} /></p>
 					<dl className="stats">
-						<dt>STATISTIQUES</dt>
-						<dd key="update_time"><span>{i18next.t("stats.karasUpdateTime")+colonChar}</span> <strong>{karas.update_time}</strong></dd>
+						<dt>{i18next.t("stats.title")}</dt>
+						<dd key="update_time"><span>{i18next.t("stats.karasUpdateTime")+colonChar}</span> <strong>{fecha.format((new Date).setTime(karas.update_time),'YYYY-MM-DD HH:mm')}</strong></dd>
 						<dd key="karas"><span>{i18next.t("stats.karasCount")+colonChar}</span> <Link to="/kara">{karas.count}</Link></dd>
 						<dd key="singers"><span>{i18next.t("stats.singersCount")+colonChar}</span> <Link to="/kara/singer">{karas.singers.length}</Link></dd>
 						<dd key="languages"><span>{i18next.t("stats.languagesCount")+colonChar}</span> <Link to="/kara/language">{karas.languages.length}</Link></dd>

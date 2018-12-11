@@ -2,7 +2,7 @@
   "progress": {
     "check_ls_version": "Vérification du format de base de données",
     "check_ls_update": "Vérification de la date de mise à jour",
-    "retrieve_needed": "Téléchargement d'une nouvelle version nécéssaire",
+    "retrieve_needed": "Téléchargement d'une nouvelle version nécessaire",
     "check_ls_ok": "Base de données à jour",
     "check_ls_fail": "La base de données est obsolète",
     "download_in_progress": "Téléchargement en cours",

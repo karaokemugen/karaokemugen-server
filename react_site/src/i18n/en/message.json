@@ -8,7 +8,6 @@
     "serie": "Serie/Singer",
     "title": "Title",
     "tag": "Tags",
-    "loading_database": "Loading database",
     "year": "Year",
     "singer_plural": "Singers",
     "language_plural": "Languages",
@@ -41,7 +40,9 @@
     "size": "Media size",
     "duration": "Duration of all karaokes",
     "{{days}}d{{hours}}h{{minutes}}m{{seconds}}s": "{{days}} days {{hours}} hours {{minutes}} minutes {{seconds}} seconds",
-    "karasFrom{{minYear}}to{{maxYear}}": "Karaokes from {{minYear}} to {{maxYear}}"
+    "karasFrom{{minYear}}to{{maxYear}}": "Karaokes from {{minYear}} to {{maxYear}}",
+    "karasUpdateTime": null,
+    "title": null
   },
   "syntax": {
     "colon": ":"
@@ -61,5 +62,9 @@
     "bad_time_eg": "Shifted or Wrong lyrics, font too small, ugly colors...",
     "bad_quality": "Bad media quality:",
     "bad_quality_eg": "Low resolution video, video artefact, bad sound, lousy metadata..."
+  },
+  "page": {
+    "loader_title": null,
+    "homepage_title": null
   }
 }
