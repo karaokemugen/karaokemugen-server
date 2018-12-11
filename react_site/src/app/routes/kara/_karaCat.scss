@@ -1,0 +1,71 @@
+/* All categories pages */
+#karaCat {
+	.kara-cat-head {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		& > *:last-child {
+			width: 30%;
+		}
+	}
+	.kara-cat-table {
+		background: $main-bg;
+		th {
+			background: $alt-bg;
+			color: $text-color;
+			font-size: 0.95rem;
+		}
+		td {
+			border-bottom: 1px solid #666;
+			color: $text-color;
+			font-size: 0.95rem;
+			.ant-tag {
+				background: $alt-bg;
+				color: $text-color;
+				border: none;
+			}
+			small {
+				color:$link-color;
+			}
+		}
+		tr:hover td {
+			background: $alt-bg;
+		}
+		.ant-table-tbody {
+			display: flex;
+			flex-wrap: wrap;
+			& > * {
+				min-width: 1%;
+				padding: 1em;
+				> * {
+					display: block;
+				}
+			}
+		}
+	}
+}
+
+.kara-cat-head {
+	padding-bottom: 2em;
+}
+
+.kara-cat-body {
+	.list dd {
+		display: inline-block;
+		background: darken($alt-bg,10%);
+		color: $text-color;
+		border: none;
+		padding: 0.5em;
+		margin:  0 1em 1em 0;
+		border-radius: 0.25em;
+		transition: all ease 0.5s;
+		font-size: 0.9em;
+		a {
+			color: inherit;
+		}
+		&:hover {
+			background: $link-color;
+			color: $text-color;
+		}
+	}
+}

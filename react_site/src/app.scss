@@ -1,0 +1,174 @@
+@import '~antd/dist/antd.css';
+
+
+// ------------------------------------------------------------
+// Vars
+
+$main-bg : #1a2530;
+$alt-bg : #34495e;
+$link-color : #718f8e;
+$text-color : #ffffff;
+$hilight : #e74c3c;
+
+
+// ------------------------------------------------------------
+// Generic styles
+
+body {
+	  margin: 0;
+	padding: 0;
+	font-family: sans-serif;
+	position: relative;
+	background: $main-bg;
+	color: $text-color ;
+	font-size: 16px;
+}
+
+a {
+	color:$link-color;
+	&:hover {
+		color:lighten($link-color,10%);
+	}
+}
+
+h1, h2, h3, h4, h5, h6, p {
+	color:#fff;
+}
+
+#app {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+
+	nav#navigation {
+		background: $main-bg;
+		border-bottom: 1px solid $alt-bg;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		padding: 0 2em;
+		ul {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+			display: flex;
+			flex-direction: row;
+
+			&.nav-main li {
+				a {
+					display: block;
+					padding: 1em;
+					transition: all ease 0.5s;
+					svg {
+						margin-right: 0.5em;
+					}
+				}
+				&:hover a {
+					background: rgba($alt-bg,0.5);
+				}
+				&.active a {
+					background: $alt-bg;
+					color: #fff;
+				}
+			}
+
+			&.nav-lng {
+				li {
+					span {
+						display: block;
+						padding: 1em 0.5em;
+						cursor: pointer;
+						color: $link-color;
+					}
+					&.active span {
+						background: $alt-bg;
+						color: #FFF;
+					}
+				}
+			}
+		}
+	}
+
+	#content {
+		flex:1;
+		display: flex;
+		flex-direction: column;
+		justify-content: stretch;
+		align-items: stretch;
+		padding: 2em;
+	}
+
+
+	#loader {
+		// centering loader component in viewport
+		max-width: 600px;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin: auto;
+	}
+}
+
+// ------------------------------------------------------------
+// ANTD override
+
+.ant-btn {
+	background: darken($alt-bg,10%);
+	color: $text-color;
+	border: none;
+	&:hover {
+		background: $link-color;
+		color: $text-color;
+	}
+}
+.ant-btn.ant-btn-primary {
+	background: $alt-bg;
+	color: $text-color;
+	&:hover {
+		background: $link-color;
+		color: $text-color;
+	}
+}
+.ant-btn-danger {
+	background: desaturate($hilight,30%);
+	color:$text-color;
+	&:hover {
+		background: $hilight;
+		color:$text-color;
+	}
+}
+
+.ant-table-pagination {
+	color: $text-color;
+	a {
+		color: inherit;
+	}
+	.ant-pagination-item-link-icon,
+	.ant-pagination-item-ellipsis{
+		color: $text-color !important;
+	}
+	.ant-pagination-item-link,
+	.ant-pagination-item {
+		background: $alt-bg;
+		border: none;
+		color: $text-color !important;
+		a {
+			color: inherit;
+		}
+		&:hover {
+			background: $link-color;
+		}
+	}
+}
+
+// ------------------------------------------------------------
+// Dedicated components styles
+
+@import './app/routes/homepage/index.scss';
+@import './app/routes/kara/_karaCat.scss';
+@import './app/routes/kara/index.scss';
+@import './app/routes/kara/detail.scss';
+@import './app/components/km/karaDownloader.scss';

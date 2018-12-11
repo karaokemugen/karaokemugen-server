@@ -1,0 +1,16 @@
+{
+  "progress": {
+    "check_ls_version": null,
+    "check_ls_update": null,
+    "retrieve_needed": null,
+    "check_ls_ok": null,
+    "check_ls_fail": null,
+    "download_in_progress": null,
+    "building_in_progress": null
+  },
+  "status": {
+    "pending": null,
+    "success": null,
+    "fail": null
+  }
+}

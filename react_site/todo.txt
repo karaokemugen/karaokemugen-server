@@ -1,0 +1,3 @@
+- Fiche détaillé d'une série
+- gérer les tag NO_DATA comme filtre sur la page Karas
+  (idem dans tout les champs sur la fiché détaillé)

@@ -20,3 +20,4 @@ react_site/node_modules
 react_site/build
 app/
 !app/avatars/blank.png
+!react_site/src/app
