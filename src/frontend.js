@@ -68,6 +68,7 @@ export function initFrontend(listenPort) {
 	app.use('/downloads/medias', express.static(resolve(conf.appPath, conf.Path.Medias)));
 	app.use('/downloads/series', express.static(resolve(conf.appPath, conf.Path.Series)));
 	app.use('/previews', express.static(resolve(conf.appPath, conf.Path.Previews)));
+	app.use('/avatars', express.static(resolve(conf.appPath, conf.Path.Avatars)));
 	// API router
 	app.use('/api', api());
 	app.get('/', (req, res) => res.redirect('/api/shortener'));

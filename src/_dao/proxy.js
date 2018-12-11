@@ -18,7 +18,7 @@ export function findInstance(id) {
 
 export function getInstance(id) {
 	const index = findInstance(id);
-	if (index) return instances[index];
+	if (index !== null) return instances[index];
 	return null;
 }
 
@@ -33,7 +33,7 @@ export function getInstanceRoom(room) {
 
 export function upsertInstance(id, port, room) {
 	const index = findInstance(id);
-	if (index) delete instances[index];
+	if (index !== null) delete instances[index];
 	instances.push({
 		id: id,
 		room: room,

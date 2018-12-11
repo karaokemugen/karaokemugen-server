@@ -28,7 +28,6 @@ export default function authController(router) {
 	const requireAuth = passport.authenticate('jwt', { session: false });
 
 	router.post('/auth/login', async (req, res) => {
-		if (!req.body.password) req.body.password = '';
 		try {
 			const token = await checkLogin(req.body.username, req.body.password);
 			res.send(token);
