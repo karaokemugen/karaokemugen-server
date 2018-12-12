@@ -17,10 +17,10 @@ languagesConverter.registerLocale(require("@cospired/i18n-iso-languages/langs/fr
 class RouteComponent extends Component {
 
 	kara_languages_i18n() {
-	let languages =  this.props.karas ? this.props.karas.languages.map((v,i) => {
-		let t = languagesConverter.getName(v,this.props.currentLocale);
+	let languages =  this.props.karas ? this.props.karas.languages_count.map((v,i) => {
+		let t = languagesConverter.getName(v.key,this.props.currentLocale);
 		if(t)
-			return {key:v, value:t}
+			return {key:v.key, value:t,q:v.q}
 		return null;
 	}) : [];
 	return languages.filter(function(t,ti){ return t!==null; }).sort(function(a,b){ return a.value.localeCompare(b.value); });

@@ -50,17 +50,23 @@ class KaraCat extends Component {
 			else
 				v = value;
 
-			if(v && v!=="NO_TAG")
+			if(v && v!=="no_tag")
 			{
 				if(q.length>0)
-					return normalizeString(v).indexOf(q) >= 0
+					return v.indexOf(q) >= 0
 				return true;
 			}
 			return false;
 		});
 		filtered = filtered.map(function(value,i){
 			if(value && value.key)
+			{
+				if(value.q)
+				{
+					return {key:value.key, value:(<span>{value.value} <small>{value.q}</small></span>)};
+				}
 				return value;
+			}
 			return {key:normalizeString(value), value:value}
 		})
 		return filtered;

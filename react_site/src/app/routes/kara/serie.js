@@ -15,7 +15,7 @@ import KaraCat from './_karaCat.js';
 class RouteComponent extends Component {
 	render() {
 		return (
-			<KaraCat page_icon={icons.serie} page_title={i18next.t('kara.serie_plural')} data={this.props.karas.series} data_type="serie"/>
+			<KaraCat page_icon={icons.serie} page_title={i18next.t('kara.serie_plural')} data={this.props.karas.series_count} data_type="serie"/>
 		);
 	}
 }

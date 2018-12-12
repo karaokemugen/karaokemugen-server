@@ -25,7 +25,11 @@
 				border: none;
 			}
 			small {
-				color:$link-color;
+				font-size: 0.7em;
+				background:$link-color;
+				color:$main-bg;
+				padding: 0.3em;
+				border-radius: 0.3em;
 			}
 		}
 		tr:hover td {

@@ -10,7 +10,7 @@ localForage.config({
     description : 'Karas database cache'
 });
 
-const required_version = 1.7;
+const required_version = 1.71;
 
 const print3State = function(v)
 {
@@ -32,18 +32,50 @@ const _compileMultiple = function(list,string,lowercase = false)
 
 const _compileSingle = function(list,t,lowercase = false)
 {
-  if(t)
-  {
-    if(typeof t =='string')
-    {
-      t = t.trim();
-      if(lowercase)
-        t = t.toLowerCase();
-    }
-    if(list.indexOf(t)<0 && t!=='no_tag' && t!=='tag_space')
-      list.push(t);
-  }
-  return list;
+	if(t)
+	{
+		if(typeof t =='string')
+		{
+			t = t.trim();
+			if(lowercase)
+			t = t.toLowerCase();
+		}
+		if(t!=='no_tag' && t!=='tag_space')
+		{
+			if(typeof list[t] != "undefined")
+			{
+				list[t].q++;
+			}
+			else
+			{
+				list[t] = {
+					key:normalizeString(t),
+					value:t,
+					q:1
+				}
+			}
+		}
+	}
+	return list;
+}
+
+const _extractValueArray = function(countList)
+{
+	var r = [];
+	for(let k in countList)
+	{
+		r.push(countList[k].value);
+	}
+	return r;
+}
+const _extractObjectArray = function(countList)
+{
+	var r = [];
+	for(let k in countList)
+	{
+		r.push(countList[k]);
+	}
+	return r;
 }
 
 class KaraDownloader extends Component {
@@ -146,14 +178,23 @@ class KaraDownloader extends Component {
 						hash: JSON.stringify(karas_raw).split('').reduce((prevHash, currVal) => (((prevHash << 5) - prevHash) + currVal.charCodeAt(0))|0, 0),
 						list: karas_raw,
 						tags: [],
+						tags_count: {},
 						types: [],
+						types_count: {},
 						languages: [],
+						languages_count: {},
 						singers: [],
+						singers_count: {},
 						songwriters: [],
+						songwriters_count: {},
 						authors: [],
+						authors_count: {},
 						creators: [],
+						creators_count: {},
 						series: [],
+						series_count: {},
 						years: [],
+						years_count: {},
 						size: 0,
 						duration: 0,
 						count: 0,
@@ -173,9 +214,10 @@ class KaraDownloader extends Component {
 	}
 
 	compileKaras(karas) {
-		let loopSize = 500; // batch size
+		let loopSize = 1000; // batch size
 		let count = karas.count + 0;
-		for(let ki = karas.count; ki < Math.min(karas.count + loopSize, karas.list.length); ki++)
+		let EndLoop = karas.list.length
+		for(let ki = karas.count; ki < Math.min(karas.count + loopSize, EndLoop); ki++)
 		{
 			let kara = karas.list[ki];
 			let t = null;
@@ -188,15 +230,15 @@ class KaraDownloader extends Component {
 			karas.list[ki].songwriter_normalized = normalizeString(kara.songwriter,true);
 			karas.list[ki].creator_normalized = normalizeString(kara.creator,true);
 
-			karas.tags = _compileMultiple(karas.tags,kara.misc,true);
-			karas.types = _compileMultiple(karas.types,kara.songtype,true);
-			karas.languages = _compileMultiple(karas.languages,kara.language,true);
-			karas.singers = _compileMultiple(karas.singers,kara.singer,false);
-			karas.songwriters = _compileMultiple(karas.songwriters,kara.songwriter,false);
-			karas.authors = _compileMultiple(karas.authors,kara.author,false);
-			karas.creators = _compileMultiple(karas.creators,kara.creator,false);
-			karas.series = _compileSingle(karas.series,kara.serie,false);
-			karas.years = _compileSingle(karas.years,kara.year,false);
+			karas.tags_count = _compileMultiple(karas.tags_count,kara.misc,true);
+			karas.types_count = _compileMultiple(karas.types_count,kara.songtype,true);
+			karas.languages_count = _compileMultiple(karas.languages_count,kara.language,true);
+			karas.singers_count = _compileMultiple(karas.singers_count,kara.singer,false);
+			karas.songwriters_count = _compileMultiple(karas.songwriters_count,kara.songwriter,false);
+			karas.authors_count = _compileMultiple(karas.authors_count,kara.author,false);
+			karas.creators_count = _compileMultiple(karas.creators_count,kara.creator,false);
+			karas.series_count = _compileSingle(karas.series_count,kara.serie,false);
+			karas.years_count = _compileSingle(karas.years_count,kara.year,false);
 
 			karas.duration += kara.duration;
 			karas.size += kara.mediasize;
@@ -205,9 +247,9 @@ class KaraDownloader extends Component {
 		}
 		karas.count  = count;
 
-		if(karas.count >= karas.list.length)
+		if(karas.count >= EndLoop)
 		{
-			console.log(karas.list.length, karas.count);
+			console.log(EndLoop, karas.count);
 			// final sort
 			// tri sur les titre des karas
 			// karas_raw = karas_raw.sort(function(a,b){ return a.title_sort.localeCompare(b.title_sort); })
@@ -215,6 +257,43 @@ class KaraDownloader extends Component {
 			//karas.list = karas.list.sort(function(a,b){ return b.kara_id - a.kara_id; })
 			karas.list = karas.list.sort(function(a,b){ return Date.parse(b.created_at) - Date.parse(a.created_at); })
 
+			karas.tags_count = JSON.parse(JSON.stringify(karas.tags_count));
+			karas.tags = _extractValueArray(karas.tags_count);
+			karas.tags_count = _extractObjectArray(karas.tags_count);
+
+			karas.types_count = JSON.parse(JSON.stringify(karas.types_count));
+			karas.types = _extractValueArray(karas.types_count);
+			karas.types_count = _extractObjectArray(karas.types_count);
+
+			karas.languages_count = JSON.parse(JSON.stringify(karas.languages_count));
+			karas.languages = _extractValueArray(karas.languages_count);
+			karas.languages_count = _extractObjectArray(karas.languages_count);
+
+			karas.singers_count = JSON.parse(JSON.stringify(karas.singers_count));
+			karas.singers = _extractValueArray(karas.singers_count);
+			karas.singers_count = _extractObjectArray(karas.singers_count);
+
+			karas.songwriters_count = JSON.parse(JSON.stringify(karas.songwriters_count));
+			karas.songwriters = _extractValueArray(karas.songwriters_count);
+			karas.songwriters_count = _extractObjectArray(karas.songwriters_count);
+
+			karas.authors_count = JSON.parse(JSON.stringify(karas.authors_count));
+			karas.authors = _extractValueArray(karas.authors_count);
+			karas.authors_count = _extractObjectArray(karas.authors_count);
+
+			karas.creators_count = JSON.parse(JSON.stringify(karas.creators_count));
+			karas.creators = _extractValueArray(karas.creators_count);
+			karas.creators_count = _extractObjectArray(karas.creators_count);
+
+			karas.series_count = JSON.parse(JSON.stringify(karas.series_count));
+			karas.series = _extractValueArray(karas.series_count);
+			karas.series_count = _extractObjectArray(karas.series_count);
+
+			karas.years_count = JSON.parse(JSON.stringify(karas.years_count));
+			karas.years = _extractValueArray(karas.years_count);
+			karas.years_count = _extractObjectArray(karas.years_count);
+
+			/*
 			karas.tags = karas.tags.sort(function(a,b){ return a.localeCompare(b); })
 			karas.types = karas.types.sort(function(a,b){ return a.localeCompare(b); })
 			karas.languages = karas.languages.sort(function(a,b){ return a.localeCompare(b); })
@@ -224,6 +303,7 @@ class KaraDownloader extends Component {
 			karas.creators = karas.creators.sort(function(a,b){ return a.localeCompare(b); })
 			karas.series = karas.series.sort(function(a,b){ return a.localeCompare(b); })
 			karas.years = karas.years.sort(function(a,b){ return a - b; })
+			*/
 
 			this.setState({ retrieve_build: 100 });
 
@@ -238,7 +318,7 @@ class KaraDownloader extends Component {
 		}
 		else
 		{
-			let percentCompleted = Math.floor((karas.count * 100) / karas.list.length);
+			let percentCompleted = Math.floor((karas.count * 100) / EndLoop);
 			this.setState({ retrieve_build: percentCompleted });
 			setTimeout(() => {
 				this.compileKaras(karas);
