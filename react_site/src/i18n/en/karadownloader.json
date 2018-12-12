@@ -1,16 +1,16 @@
 {
   "progress": {
-    "check_ls_version": null,
-    "check_ls_update": null,
-    "retrieve_needed": null,
-    "check_ls_ok": null,
-    "check_ls_fail": null,
-    "download_in_progress": null,
-    "building_in_progress": null
+    "check_ls_version": "Checking database format",
+    "check_ls_update": "Checking last database update",
+    "retrieve_needed": "A new database is available. Download needed !",
+    "check_ls_ok": "Database up to date",
+    "check_ls_fail": "Database out of sync",
+    "download_in_progress": "Download in progress",
+    "building_in_progress": "Data formating in progress"
   },
   "status": {
-    "pending": null,
-    "success": null,
-    "fail": null
+    "pending": "...",
+    "success": "OK",
+    "fail": "Fail"
   }
 }

@@ -58,7 +58,7 @@
     "pv": "Promotional video"
   },
   "language": {
-    "MUL": null,
-    "UNKNOWN": null
+    "MUL": "🌍",
+    "UNKNOWN": "Unknown"
   }
 }

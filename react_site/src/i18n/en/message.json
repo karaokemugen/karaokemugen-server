@@ -41,8 +41,8 @@
     "duration": "Duration of all karaokes",
     "{{days}}d{{hours}}h{{minutes}}m{{seconds}}s": "{{days}} days {{hours}} hours {{minutes}} minutes {{seconds}} seconds",
     "karasFrom{{minYear}}to{{maxYear}}": "Karaokes from {{minYear}} to {{maxYear}}",
-    "karasUpdateTime": null,
-    "title": null
+     "karasUpdateTime": "Last update",
+    "title": "STATISTICS"
   },
   "syntax": {
     "colon": ":"
@@ -64,7 +64,7 @@
     "bad_quality_eg": "Low resolution video, video artefact, bad sound, lousy metadata..."
   },
   "page": {
-    "loader_title": null,
-    "homepage_title": null
+    "loader_title": "Loading",
+    "homepage_title": "Home"
   }
 }

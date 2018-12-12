@@ -109,7 +109,7 @@ class RouteComponent extends Component {
                 {
                   this.renderComaSeparatedItems(kara.misc.split(',').map( (t,ti) => {
                     t = t.toLowerCase();
-                    return <Link key={ti} to={process.env.PUBLIC_URL+"/kara/tag/"+t}>{i18next.t('map:'+t.replace('tag_','tag.'))}</Link>
+                    return <Link key={ti} to={process.env.PUBLIC_URL+"/kara/tag/"+t.replace('tag_','')}>{i18next.t('map:'+t.replace('tag_','tag.'))}</Link>
                   }))
                 }
             </li>
