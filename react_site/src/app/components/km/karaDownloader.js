@@ -81,7 +81,7 @@ class KaraDownloader extends Component {
 					},250);
 				});
 			}
-			else if(this.state.check_ls_version && this.state.check_ls_update===null)
+			else if(this.state.check_ls_version!==null && this.state.check_ls_update===null)
 			{
 				localForage.getItem('karas_updated_at').then(async karas_updated_at => {
 					var official_update_response = await axios.get('http://kara.moe/api/karas/lastUpdate')
