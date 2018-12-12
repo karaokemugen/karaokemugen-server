@@ -70,6 +70,8 @@ class RouteComponent extends Component {
     if(!kara)
       return null;
 
+    let instance_url = this.props.karas.instance_url;
+
     return (
       <Page id="karaDetail">
         <section className="content">
@@ -79,7 +81,7 @@ class RouteComponent extends Component {
             {
               this.renderComaSeparatedItems(kara.songtype.split(',').map( (t,ti) => {
                 t = t.toLowerCase();
-                return <Link key={ti} to={"/kara/songtype/"+t.replace('type_','')}><Tag>{i18next.t('map:'+t.replace('type_','type.'))}</Tag></Link>
+                return <Link key={ti} to={process.env.PUBLIC_URL+"/kara/songtype/"+t.replace('type_','')}><Tag>{i18next.t('map:'+t.replace('type_','type.'))}</Tag></Link>
               }))
             }
           </p>
@@ -98,7 +100,7 @@ class RouteComponent extends Component {
                 <b>{i18next.t("kara.language")}{i18next.t("syntax.colon")}</b>
                 {
                   this.renderComaSeparatedItems(kara.language.split(',').map((t,ti) => {
-                    return <Link key={ti} to={"/kara/language/"+t}>{languagesConverter.getName(kara.language,this.props.currentLocale)}</Link>
+                    return <Link key={ti} to={process.env.PUBLIC_URL+"/kara/language/"+t}>{languagesConverter.getName(kara.language,this.props.currentLocale)}</Link>
                   }))
                 }
             </li>
@@ -107,23 +109,23 @@ class RouteComponent extends Component {
                 {
                   this.renderComaSeparatedItems(kara.misc.split(',').map( (t,ti) => {
                     t = t.toLowerCase();
-                    return <Link key={ti} to={"/kara/tag/"+t}>{i18next.t('map:'+t.replace('tag_','tag.'))}</Link>
+                    return <Link key={ti} to={process.env.PUBLIC_URL+"/kara/tag/"+t}>{i18next.t('map:'+t.replace('tag_','tag.'))}</Link>
                   }))
                 }
             </li>
             <li>
                 <b>{i18next.t("kara.serie")}{i18next.t("syntax.colon")} </b>
-                <Link to={"/kara/serie/"+kara.serie_normalized}>{kara.serie}</Link>
+                <Link to={process.env.PUBLIC_URL+"/kara/serie/"+kara.serie_normalized}>{kara.serie}</Link>
             </li>
             <li>
                 <b>{i18next.t("kara.year")}{i18next.t("syntax.colon")} </b>
-                <Link to={"/kara/year/"+kara.year}>{kara.year}</Link>
+                <Link to={process.env.PUBLIC_URL+"/kara/year/"+kara.year}>{kara.year}</Link>
             </li>
             <li>
                 <b>{i18next.t("kara.singer_plural")}{i18next.t("syntax.colon")} </b>
                 {
                   this.renderComaSeparatedItems(kara.singer.split(',').map( (t,ti) => {
-                    return <Link key={ti} to={"/kara/singer/"+normalizeString(t)}>{t}</Link>
+                    return <Link key={ti} to={process.env.PUBLIC_URL+"/kara/singer/"+normalizeString(t)}>{t}</Link>
                   }))
                 }
             </li>
@@ -131,7 +133,7 @@ class RouteComponent extends Component {
                 <b>{i18next.t("kara.songwriter_plural")}{i18next.t("syntax.colon")} </b>
                 {
                   this.renderComaSeparatedItems(kara.songwriter.split(',').map( (t,ti) => {
-                    return <Link key={ti} to={"/kara/songwriter/"+normalizeString(t)}>{t}</Link>
+                    return <Link key={ti} to={process.env.PUBLIC_URL+"/kara/songwriter/"+normalizeString(t)}>{t}</Link>
                   }))
                 }
             </li>
@@ -139,7 +141,7 @@ class RouteComponent extends Component {
                 <b>{i18next.t("kara.creator_plural")}{i18next.t("syntax.colon")} </b>
                 {
                   this.renderComaSeparatedItems(kara.creator.split(',').map( (t,ti) => {
-                    return <Link key={ti} to={"/kara/creator/"+normalizeString(t)}>{t}</Link>
+                    return <Link key={ti} to={process.env.PUBLIC_URL+"/kara/creator/"+normalizeString(t)}>{t}</Link>
                   }))
                 }
             </li>
@@ -147,7 +149,7 @@ class RouteComponent extends Component {
                 <b>{i18next.t("kara.author")}{i18next.t("syntax.colon")} </b>
                 {
                   this.renderComaSeparatedItems(kara.author.split(',').map( (t,ti) => {
-                    return <Link key={ti} to={"/kara/author/"+normalizeString(t)}>{t}</Link>
+                    return <Link key={ti} to={process.env.PUBLIC_URL+"/kara/author/"+normalizeString(t)}>{t}</Link>
                   }))
                 }
             </li>
@@ -169,23 +171,23 @@ class RouteComponent extends Component {
             </li>
             <li>
                 <b>{i18next.t("kara.subfile")}{i18next.t("syntax.colon")} </b>
-                <a href={"http://kara.moe/downloads/lyrics/"+kara.subfile}>{kara.subfile}</a>
+                <a href={instance_url+"/downloads/lyrics/"+kara.subfile}>{kara.subfile}</a>
             </li>
             <li>
                 <b>{i18next.t("kara.mediafile")}{i18next.t("syntax.colon")} </b>
-                <a href={"http://kara.moe/downloads/medias/"+kara.mediafile}>{kara.mediafile}</a>
+                <a href={instance_url+"/downloads/medias/"+kara.mediafile}>{kara.mediafile}</a>
                 {' ('+Math.round(kara.mediasize/(1024*1024))+' Mo)'}
             </li>
             <li>
                 <b>{i18next.t("kara.karafile")}{i18next.t("syntax.colon")} </b>
-                <a href={"http://kara.moe/downloads/karas/"+kara.karafile}>{kara.karafile}</a>
+                <a href={instance_url+"/downloads/karas/"+kara.karafile}>{kara.karafile}</a>
             </li>
             <li>
               <b>{i18next.t("kara.seriefiles")}{i18next.t("syntax.colon")} </b>
               {
               kara.seriefiles.map(function(t,ti){
                 return (
-                    <a key={ti} href={"http://kara.moe/downloads/series/"+t}>{t}</a>
+                    <a key={ti} href={instance_url+"/downloads/series/"+t}>{t}</a>
                   )
                 })
               }
@@ -194,9 +196,9 @@ class RouteComponent extends Component {
         </section>
 
         <section className="media">
-          <img key="25" src={"http://kara.moe/previews/"+kara.kid+"."+kara.mediasize+".25.jpg"} />
-          <img key="33" src={"http://kara.moe/previews/"+kara.kid+"."+kara.mediasize+".33.jpg"} />
-          <img key="50" src={"http://kara.moe/previews/"+kara.kid+"."+kara.mediasize+".50.jpg"} />
+          <img key="25" src={instance_url+"/previews/"+kara.kid+"."+kara.mediasize+".25.jpg"} />
+          <img key="33" src={instance_url+"/previews/"+kara.kid+"."+kara.mediasize+".33.jpg"} />
+          <img key="50" src={instance_url+".moe/previews/"+kara.kid+"."+kara.mediasize+".50.jpg"} />
         </section>
 
         <section className="issue">

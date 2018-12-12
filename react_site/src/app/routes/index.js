@@ -81,28 +81,28 @@ class Bootstrap extends Component {
 
   render() {
     return (
-      <Switch>
-        <Route exact path="/" component={Homepage} />
-        <Route exact path="/kara" component={KaraIndex} />
-        <Route exact path="/kara/singer" component={KaraSinger} />
-        <Route exact path="/kara/language" component={KaraLanguage} />
-        <Route exact path="/kara/songwriter" component={KaraSongwriter} />
-        <Route exact path="/kara/author" component={KaraAuthor} />
-        <Route exact path="/kara/creator" component={KaraCreator} />
-        <Route exact path="/kara/serie" component={KaraSerie} />
-        <Route exact path="/kara/tag/:tag" component={KaraIndex} />
-        <Route exact path="/kara/songtype/:songtype" component={KaraIndex} />
-        <Route exact path="/kara/singer/:singer" component={KaraIndex} />
-        <Route exact path="/kara/language/:language" component={KaraIndex} />
-        <Route exact path="/kara/songwriter/:songwriter" component={KaraIndex} />
-        <Route exact path="/kara/author/:author" component={KaraIndex} />
-        <Route exact path="/kara/creator/:creator" component={KaraIndex} />
-        <Route exact path="/kara/serie/:serie" component={KaraIndex} />
-        <Route exact path="/kara/year/:year" component={KaraIndex} />
-        <Route exact path="/kara/:kid" component={KaraDetail} />
-        <UnauthenticatedRoute exact path="/login" component={Login} />
-        <AuthenticatedRoute exact path="/logout" component={Logout} />
-        <AuthenticatedRoute exact path="/private" component={Private} />
+      <Switch basename={process.env.PUBLIC_URL}>
+        <Route exact path={process.env.PUBLIC_URL+"/"} component={Homepage} />
+        <Route exact path={process.env.PUBLIC_URL+"/kara"} component={KaraIndex} />
+        <Route exact path={process.env.PUBLIC_URL+"/kara/singer"} component={KaraSinger} />
+        <Route exact path={process.env.PUBLIC_URL+"/kara/language"} component={KaraLanguage} />
+        <Route exact path={process.env.PUBLIC_URL+"/kara/songwriter"} component={KaraSongwriter} />
+        <Route exact path={process.env.PUBLIC_URL+"/kara/author"} component={KaraAuthor} />
+        <Route exact path={process.env.PUBLIC_URL+"/kara/creator"} component={KaraCreator} />
+        <Route exact path={process.env.PUBLIC_URL+"/kara/serie"} component={KaraSerie} />
+        <Route exact path={process.env.PUBLIC_URL+"/kara/tag/:tag"} component={KaraIndex} />
+        <Route exact path={process.env.PUBLIC_URL+"/kara/songtype/:songtype"} component={KaraIndex} />
+        <Route exact path={process.env.PUBLIC_URL+"/kara/singer/:singer"} component={KaraIndex} />
+        <Route exact path={process.env.PUBLIC_URL+"/kara/language/:language"} component={KaraIndex} />
+        <Route exact path={process.env.PUBLIC_URL+"/kara/songwriter/:songwriter"} component={KaraIndex} />
+        <Route exact path={process.env.PUBLIC_URL+"/kara/author/:author"} component={KaraIndex} />
+        <Route exact path={process.env.PUBLIC_URL+"/kara/creator/:creator"} component={KaraIndex} />
+        <Route exact path={process.env.PUBLIC_URL+"/kara/serie/:serie"} component={KaraIndex} />
+        <Route exact path={process.env.PUBLIC_URL+"/kara/year/:year"} component={KaraIndex} />
+        <Route exact path={process.env.PUBLIC_URL+"/kara/:kid"} component={KaraDetail} />
+        <UnauthenticatedRoute exact path={process.env.PUBLIC_URL+"/login"} component={Login} />
+        <AuthenticatedRoute exact path={process.env.PUBLIC_URL+"/logout"} component={Logout} />
+        <AuthenticatedRoute exact path={process.env.PUBLIC_URL+"/private"} component={Private} />
         <Route component={NotFound} />
       </Switch>
     );

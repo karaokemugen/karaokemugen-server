@@ -38,13 +38,13 @@ class Karas extends Component {
 					<dl className="stats">
 						<dt>{i18next.t("stats.title")}</dt>
 						<dd key="update_time"><span>{i18next.t("stats.karasUpdateTime")+colonChar}</span> <strong>{fecha.format((new Date).setTime(karas.update_time),'YYYY-MM-DD HH:mm')}</strong></dd>
-						<dd key="karas"><span>{i18next.t("stats.karasCount")+colonChar}</span> <Link to="/kara">{karas.count}</Link></dd>
-						<dd key="singers"><span>{i18next.t("stats.singersCount")+colonChar}</span> <Link to="/kara/singer">{karas.singers.length}</Link></dd>
-						<dd key="languages"><span>{i18next.t("stats.languagesCount")+colonChar}</span> <Link to="/kara/language">{karas.languages.length}</Link></dd>
-						<dd key="songwriters"><span>{i18next.t("stats.songwritersCount")}:</span> <Link to="/kara/songwriter">{karas.songwriters.length}</Link></dd>
-						<dd key="authors"><span>{i18next.t("stats.authorsCount")+colonChar}</span> <Link to="/kara/author">{karas.authors.length}</Link></dd>
-						<dd key="creators"><span>{i18next.t("stats.creatorsCount")+colonChar}</span> <Link to="/kara/creator">{karas.creators.length}</Link></dd>
-						<dd key="series"><span>{i18next.t("stats.seriesCount")+colonChar}</span> <Link to="/kara/serie">{karas.series.length}</Link></dd>
+						<dd key="karas"><span>{i18next.t("stats.karasCount")+colonChar}</span> <Link to={process.env.PUBLIC_URL+"/kara"}>{karas.count}</Link></dd>
+						<dd key="singers"><span>{i18next.t("stats.singersCount")+colonChar}</span> <Link to={process.env.PUBLIC_URL+"/kara/singer"}>{karas.singers.length}</Link></dd>
+						<dd key="languages"><span>{i18next.t("stats.languagesCount")+colonChar}</span> <Link to={process.env.PUBLIC_URL+"/kara/language"}>{karas.languages.length}</Link></dd>
+						<dd key="songwriters"><span>{i18next.t("stats.songwritersCount")}:</span> <Link to={process.env.PUBLIC_URL+"/kara/songwriter"}>{karas.songwriters.length}</Link></dd>
+						<dd key="authors"><span>{i18next.t("stats.authorsCount")+colonChar}</span> <Link to={process.env.PUBLIC_URL+"/kara/author"}>{karas.authors.length}</Link></dd>
+						<dd key="creators"><span>{i18next.t("stats.creatorsCount")+colonChar}</span> <Link to={process.env.PUBLIC_URL+"/kara/creator"}>{karas.creators.length}</Link></dd>
+						<dd key="series"><span>{i18next.t("stats.seriesCount")+colonChar}</span> <Link to={process.env.PUBLIC_URL+"/kara/serie"}>{karas.series.length}</Link></dd>
 						<dd key="years"><strong>{i18next.t("stats.karasFrom{{minYear}}to{{maxYear}}",{minYear:minYear,maxYear:maxYear})}</strong></dd>
 						<dd key="size"><span>{i18next.t("stats.size")+colonChar}</span> <strong>{Math.round(karas.size/(1024*1024*1024))} Go</strong></dd>
 						<dd key="duration"><span>{i18next.t("stats.duration")+colonChar}</span> <strong>{duration}</strong></dd>

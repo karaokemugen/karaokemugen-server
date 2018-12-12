@@ -130,7 +130,7 @@ class KaraCat extends Component {
 				title: this.props.page_title,
 				dataIndex: 'value',
 				key: 'key',
-				render: (value, record)=> <Link to={"/kara/"+this.props.data_type+"/"+record.key}>{value}</Link>,
+				render: (value, record)=> <Link to={process.env.PUBLIC_URL+"/kara/"+this.props.data_type+"/"+record.key}>{value}</Link>,
 				sorter: (a, b) => -a.key.localeCompare(b.key),
 				// defaultSortOrder: "ascend",
 			}

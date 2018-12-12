@@ -179,15 +179,15 @@ class Karas extends Component {
 		return (
 			<Page id="karas">
 				<div className="tagRestriction">
-					{this.tagRestriction() ? <Link to="/kara"><Button icon="close" type="danger" size="large"><span>{i18next.t('kara.tag')+i18next.t('syntax.colon')}</span>&nbsp;<strong>{i18next.t('map:tag.'+this.tagRestriction())}</strong></Button></Link> : null }
-					{this.songtypeRestriction() ? <Link to="/kara"><Button icon="close" type="danger" size="large"><span>{i18next.t('kara.songtype')+i18next.t('syntax.colon')}</span>&nbsp;<strong>{i18next.t('map:type.'+this.songtypeRestriction())}</strong></Button></Link> : null }
-					{this.singerRestriction() ? <Link to="/kara"><Button icon="close" type="danger" size="large"><span>{i18next.t('kara.singer')+i18next.t('syntax.colon')}</span>&nbsp;<strong>{this.singerRestriction()}</strong></Button></Link> : null }
-					{this.serieRestriction() ? <Link to="/kara"><Button icon="close" type="danger" size="large"><span>{i18next.t('kara.serie')+i18next.t('syntax.colon')}</span>&nbsp;<strong>{this.serieRestriction()}</strong></Button></Link> : null }
-					{this.authorRestriction() ? <Link to="/kara"><Button icon="close" type="danger" size="large"><span>{i18next.t('kara.author')+i18next.t('syntax.colon')}</span>&nbsp;<strong>{this.authorRestriction()}</strong></Button></Link> : null }
-					{this.songwriterRestriction() ? <Link to="/kara"><Button icon="close" type="danger" size="large"><span>{i18next.t('kara.songwriter')+i18next.t('syntax.colon')}</span>&nbsp;<strong>{this.songwriterRestriction()}</strong></Button></Link> : null }
-					{this.creatorRestriction() ? <Link to="/kara"><Button icon="close" type="danger" size="large"><span>{i18next.t('kara.creator')+i18next.t('syntax.colon')}</span>&nbsp;<strong>{this.creatorRestriction()}</strong></Button></Link> : null }
-					{this.languageRestriction() ? <Link to="/kara"><Button icon="close" type="danger" size="large"><span>{i18next.t('kara.language')+i18next.t('syntax.colon')}</span>&nbsp;<strong>{this.languageRestriction()}</strong></Button></Link> : null }
-					{this.yearRestriction() ? <Link to="/kara"><Button icon="close" type="danger" size="large"><span>{i18next.t('kara.year')+i18next.t('syntax.colon')}</span>&nbsp;<strong>{this.yearRestriction()}</strong></Button></Link> : null }
+					{this.tagRestriction() ? <Link to={process.env.PUBLIC_URL+"/kara"}><Button icon="close" type="danger" size="large"><span>{i18next.t('kara.tag')+i18next.t('syntax.colon')}</span>&nbsp;<strong>{i18next.t('map:tag.'+this.tagRestriction())}</strong></Button></Link> : null }
+					{this.songtypeRestriction() ? <Link to={process.env.PUBLIC_URL+"/kara"}><Button icon="close" type="danger" size="large"><span>{i18next.t('kara.songtype')+i18next.t('syntax.colon')}</span>&nbsp;<strong>{i18next.t('map:type.'+this.songtypeRestriction())}</strong></Button></Link> : null }
+					{this.singerRestriction() ? <Link to={process.env.PUBLIC_URL+"/kara"}><Button icon="close" type="danger" size="large"><span>{i18next.t('kara.singer')+i18next.t('syntax.colon')}</span>&nbsp;<strong>{this.singerRestriction()}</strong></Button></Link> : null }
+					{this.serieRestriction() ? <Link to={process.env.PUBLIC_URL+"/kara"}><Button icon="close" type="danger" size="large"><span>{i18next.t('kara.serie')+i18next.t('syntax.colon')}</span>&nbsp;<strong>{this.serieRestriction()}</strong></Button></Link> : null }
+					{this.authorRestriction() ? <Link to={process.env.PUBLIC_URL+"/kara"}><Button icon="close" type="danger" size="large"><span>{i18next.t('kara.author')+i18next.t('syntax.colon')}</span>&nbsp;<strong>{this.authorRestriction()}</strong></Button></Link> : null }
+					{this.songwriterRestriction() ? <Link to={process.env.PUBLIC_URL+"/kara"}><Button icon="close" type="danger" size="large"><span>{i18next.t('kara.songwriter')+i18next.t('syntax.colon')}</span>&nbsp;<strong>{this.songwriterRestriction()}</strong></Button></Link> : null }
+					{this.creatorRestriction() ? <Link to={process.env.PUBLIC_URL+"/kara"}><Button icon="close" type="danger" size="large"><span>{i18next.t('kara.creator')+i18next.t('syntax.colon')}</span>&nbsp;<strong>{this.creatorRestriction()}</strong></Button></Link> : null }
+					{this.languageRestriction() ? <Link to={process.env.PUBLIC_URL+"/kara"}><Button icon="close" type="danger" size="large"><span>{i18next.t('kara.language')+i18next.t('syntax.colon')}</span>&nbsp;<strong>{this.languageRestriction()}</strong></Button></Link> : null }
+					{this.yearRestriction() ? <Link to={process.env.PUBLIC_URL+"/kara"}><Button icon="close" type="danger" size="large"><span>{i18next.t('kara.year')+i18next.t('syntax.colon')}</span>&nbsp;<strong>{this.yearRestriction()}</strong></Button></Link> : null }
 				</div>
 				<div className="searchBar">
 					<Input.Search
@@ -254,7 +254,7 @@ class Karas extends Component {
 							<a target="_blank" href={"http://live.karaokes.moe/?video="+record.kid}><FontAwesomeIcon icon={icons.play} /></a>
 						);
 					}
-					return <span><em><Link to={"/kara/"+record.kid}>{title}</Link></em>{btnPlay}</span>
+					return <span><em><Link to={process.env.PUBLIC_URL+"/kara/"+record.kid}>{title}</Link></em>{btnPlay}</span>
 				},
 				sorter: (a, b) => a.title_sort.localeCompare(b.title_sort),
 				//defaultSortOrder:'ascend', // [ascend|descend]
@@ -269,7 +269,7 @@ class Karas extends Component {
 						let r = [];
 						type.split(',').forEach( (t,ti) => {
 							t = t.toLowerCase();
-							r.push(<Link key={ti} to={"/kara/songtype/"+t.replace('type_','')}><Tag>{i18next.t('map:'+t.replace('type_','type.'))}</Tag></Link>)
+							r.push(<Link key={ti} to={process.env.PUBLIC_URL+"/kara/songtype/"+t.replace('type_','')}><Tag>{i18next.t('map:'+t.replace('type_','type.'))}</Tag></Link>)
 						});
 						if(record.songorder)
 							r.push(<small key="songorder">{record.songorder}</small>);
@@ -291,14 +291,14 @@ class Karas extends Component {
 					if(singer)
 					{
 						singer = this.renderComaSeparatedItems(record.singer.split(',').map(function(t,ti){
-							return <Link key={ti} to={"/kara/singer/"+normalizeString(t)}>{t}</Link>;
+							return <Link key={ti} to={process.env.PUBLIC_URL+"/kara/singer/"+normalizeString(t)}>{t}</Link>;
 						}))
 					}
 
 					if(serie && singer)
-						return <span><Link to={"/kara/serie/"+normalizeString(serie)}>{serie}</Link><br /><small>{singer}</small></span>
+						return <span><Link to={process.env.PUBLIC_URL+"/kara/serie/"+normalizeString(serie)}>{serie}</Link><br /><small>{singer}</small></span>
 					else if(serie)
-						return <span><Link to={"/kara/serie/"+normalizeString(serie)}>{serie}</Link></span>
+						return <span><Link to={process.env.PUBLIC_URL+"/kara/serie/"+normalizeString(serie)}>{serie}</Link></span>
 					else if(singer)
 						return <span><small>{singer}</small></span>
 					else
@@ -316,7 +316,7 @@ class Karas extends Component {
 						let r = [];
 						tag.split(',').forEach( (t,ti) => {
 							t = t.toLowerCase();
-							r.push(<Link key={ti} to={"/kara/tag/"+t.replace('tag_','')}><Tag>{i18next.t('map:'+t.replace('tag_','tag.'))}</Tag></Link>)
+							r.push(<Link key={ti} to={process.env.PUBLIC_URL+"/kara/tag/"+t.replace('tag_','')}><Tag>{i18next.t('map:'+t.replace('tag_','tag.'))}</Tag></Link>)
 						});
 						return r;
 					},
@@ -331,7 +331,7 @@ class Karas extends Component {
 					dataIndex: 'year',
 					key: 'year',
 					className:"year",
-					render: (year) => ( <Link to={"/kara/year/"+year}>{year}</Link> ),
+					render: (year) => ( <Link to={process.env.PUBLIC_URL+"/kara/year/"+year}>{year}</Link> ),
 					sorter: (a, b) => a.year - b.year,
 					filters: this.kara_years(),
 					filterMultiple: true,
