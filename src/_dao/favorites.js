@@ -13,3 +13,8 @@ export async function insertFavorite(username, kid) {
 export async function deleteFavorite(username, kid) {
 	return await db().query(sql.deleteFavorite, [username, kid]);
 }
+
+export async function selectAllFavorites() {
+	const res = await db().query(sql.selectAllFavorites);
+	return res.rows;
+}

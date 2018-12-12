@@ -3,6 +3,7 @@ import {Pool} from 'pg';
 import langs from 'langs';
 import logger from 'winston';
 import deburr from 'lodash.deburr';
+import { upsertInstance } from './stats';
 
 let database;
 
@@ -35,6 +36,12 @@ export async function transaction(queries) {
 
 export async function initDB() {
 	await connectDB();
+	// Inserting instance data for server
+	await upsertInstance({
+		version: 'Server',
+		instance_id: getConfig().ServerID,
+		config: {}
+	});
 }
 
 export async function connectDB() {

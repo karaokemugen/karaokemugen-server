@@ -5,6 +5,11 @@ WHERE uf.fk_id_user = u.pk_id_user
   AND u.login = $1
 `;
 
+export const selectAllFavorites = `
+SELECT uf.kid AS kid
+FROM  users_favorites uf
+`;
+
 export const insertFavorite = `
 INSERT INTO users_favorites (fk_id_user, kid)
 VALUES((SELECT pk_id_user FROM users WHERE login = $1), $2)

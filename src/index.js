@@ -7,6 +7,7 @@ import detect from 'detect-port';
 import {initDB} from './_dao/database';
 import {initMailer} from './_utils/mailer';
 import {initShortener} from './_services/shortener';
+import {initFavorites} from './_services/favorites';
 import {createUser} from './_services/user';
 import {run} from './_dao/generation';
 import sudoBlock from 'sudo-block';
@@ -61,9 +62,13 @@ async function main() {
 		}
 	});
 	logger.debug(`[Launcher] Port ${port} is available`);
-	if (getConfig().Mail.Enabled) initMailer();
-	initShortener();
-	initFrontend(port);
+	const inits = [];
+
+	if (getConfig().Mail.Enabled) inits.push(initMailer());
+	inits.push(initShortener());
+	inits.push(initFrontend(port));
+	inits.push(initFavorites());
+	await Promise.all(inits);
 	logger.info('[Launcher] Karaoke Mugen Server is READY');
 }
 
