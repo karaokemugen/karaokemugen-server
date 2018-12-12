@@ -53,6 +53,7 @@ export async function initConfig(appPath, argv) {
 	config = {...config, os: process.platform};
 	await loadConfigFiles(appPath);
 	if (config.JwtSecret === 'Change me') setConfig( {JwtSecret: uuidV4() });
+	if (config.ServerID === 'Change me') setConfig( {ServerID: uuidV4() });
 	configureLocale();
 	return getConfig();
 }
