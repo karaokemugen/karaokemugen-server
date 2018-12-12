@@ -91,6 +91,7 @@ class KaraDownloader extends Component {
 			karas_raw: null,
 			karas: null,
 			karas_update_time: null,
+			instance_url: null,
 		}
 		this.bubbleKaras = this.bubbleKaras.bind(this);
 	}
@@ -103,7 +104,18 @@ class KaraDownloader extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if(this.state.check_ls===null)
+		if(this.state.instance_url===null)
+		{
+			var instance_path = window.location.protocol+'//'+window.location.hostname+(window.location.port ? ':'+window.location.port: '');
+			axios.get(instance_path+'/api/karas/lastUpdate')
+				.then(response => {
+					this.setState({instance_url:instance_path});
+				})
+				.catch(()=>{
+					this.setState({instance_url:'http://kara.moe'});
+				})
+		}
+		else if(this.state.check_ls===null)
 		{
 			if(this.state.check_ls_version===null)
 			{
@@ -116,7 +128,7 @@ class KaraDownloader extends Component {
 			else if(this.state.check_ls_version!==null && this.state.check_ls_update===null)
 			{
 				localForage.getItem('karas_updated_at').then(async karas_updated_at => {
-					var official_update_response = await axios.get('http://kara.moe/api/karas/lastUpdate')
+					var official_update_response = await axios.get(this.state.instance_url+'/api/karas/lastUpdate')
 					var official_update_time = Date.parse(official_update_response.data)
 					if(!official_update_time)
 						official_update_time = (new Date()).getTime() - 3600*1000*24;
@@ -156,7 +168,7 @@ class KaraDownloader extends Component {
 				// starting download database from api
 
 				this.setState({retrieve_download: 0});
-				axios.get('http://kara.moe/api/karas',{
+				axios.get(this.state.instance_url+'/api/karas',{
 					onDownloadProgress: progressEvent => {
 						let percentCompleted = Math.floor((progressEvent.loaded * 100) / progressEvent.total);
 						this.setState({ retrieve_download: percentCompleted });
@@ -175,6 +187,7 @@ class KaraDownloader extends Component {
 					let karas_raw = this.state.karas_raw;
 					let karas = {
 						update_time:this.state.karas_update_time,
+						instance_url:this.state.instance_url,
 						hash: JSON.stringify(karas_raw).split('').reduce((prevHash, currVal) => (((prevHash << 5) - prevHash) + currVal.charCodeAt(0))|0, 0),
 						list: karas_raw,
 						tags: [],
@@ -365,55 +378,3 @@ class KaraDownloader extends Component {
 }
 
 export default KaraDownloader
-
-/*
-console.info('establishKaras :: Start');
-   new Promise(async (resolve) => {
-    var required_version = 1.61;
-    var db_version = await localForage.getItem('db_version');
-    var force_update = (!db_version || db_version < required_version)
-
-    var karas_updated_at = await localForage.getItem('karas_updated_at');
-    var karas_raw = false;
-    var karas = false;
-
-    dispatch(setProgress('initializing'));
-
-    var official_update_response = await axios.get('http://kara.moe/api/karas/lastUpdate')
-    var official_update_time = Date.parse(official_update_response.data)
-
-    if(!official_update_time)
-      official_update_time = (new Date()).getTime() - 3600*1000*24;
-
-    if(!force_update && karas_updated_at > official_update_time)
-    {
-      console.info('establishKaras :: Local storage seems up to date');
-      karas = await localForage.getItem('karas')
-      if(!karas)
-      {
-        console.info('establishKaras :: Local storage error, fall back on API');
-      }
-    }
-    if(force_update || !karas)
-    {
-      console.info('establishKaras :: Retrieve from API');
-      dispatch(setProgress('loading'));
-      karas_raw = await loadKaras()
-      dispatch(setProgress('compiling'));
-      karas = await compileData(karas_raw)
-    }
-    if(karas)
-    {
-      console.info('establishKaras :: Karas are now available');
-      localForage.setItem('db_version',required_version);
-      dispatch(setKaras(karas));
-      //resolve(karas);
-    }
-    else
-    {
-      console.info('establishKaras :: Unable to retrieve karas from API');
-      dispatch(setKaras(karas));
-      //resolve({});
-    }
-  });
-*/

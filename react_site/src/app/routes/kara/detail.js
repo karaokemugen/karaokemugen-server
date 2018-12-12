@@ -70,6 +70,8 @@ class RouteComponent extends Component {
     if(!kara)
       return null;
 
+    let instance_url = this.props.karas.instance_url;
+
     return (
       <Page id="karaDetail">
         <section className="content">
@@ -169,23 +171,23 @@ class RouteComponent extends Component {
             </li>
             <li>
                 <b>{i18next.t("kara.subfile")}{i18next.t("syntax.colon")} </b>
-                <a href={"http://kara.moe/downloads/lyrics/"+kara.subfile}>{kara.subfile}</a>
+                <a href={instance_url+"/downloads/lyrics/"+kara.subfile}>{kara.subfile}</a>
             </li>
             <li>
                 <b>{i18next.t("kara.mediafile")}{i18next.t("syntax.colon")} </b>
-                <a href={"http://kara.moe/downloads/medias/"+kara.mediafile}>{kara.mediafile}</a>
+                <a href={instance_url+"/downloads/medias/"+kara.mediafile}>{kara.mediafile}</a>
                 {' ('+Math.round(kara.mediasize/(1024*1024))+' Mo)'}
             </li>
             <li>
                 <b>{i18next.t("kara.karafile")}{i18next.t("syntax.colon")} </b>
-                <a href={"http://kara.moe/downloads/karas/"+kara.karafile}>{kara.karafile}</a>
+                <a href={instance_url+"/downloads/karas/"+kara.karafile}>{kara.karafile}</a>
             </li>
             <li>
               <b>{i18next.t("kara.seriefiles")}{i18next.t("syntax.colon")} </b>
               {
               kara.seriefiles.map(function(t,ti){
                 return (
-                    <a key={ti} href={"http://kara.moe/downloads/series/"+t}>{t}</a>
+                    <a key={ti} href={instance_url+"/downloads/series/"+t}>{t}</a>
                   )
                 })
               }
@@ -194,9 +196,9 @@ class RouteComponent extends Component {
         </section>
 
         <section className="media">
-          <img key="25" src={"http://kara.moe/previews/"+kara.kid+"."+kara.mediasize+".25.jpg"} />
-          <img key="33" src={"http://kara.moe/previews/"+kara.kid+"."+kara.mediasize+".33.jpg"} />
-          <img key="50" src={"http://kara.moe/previews/"+kara.kid+"."+kara.mediasize+".50.jpg"} />
+          <img key="25" src={instance_url+"/previews/"+kara.kid+"."+kara.mediasize+".25.jpg"} />
+          <img key="33" src={instance_url+"/previews/"+kara.kid+"."+kara.mediasize+".33.jpg"} />
+          <img key="50" src={instance_url+".moe/previews/"+kara.kid+"."+kara.mediasize+".50.jpg"} />
         </section>
 
         <section className="issue">
