@@ -257,43 +257,33 @@ class KaraDownloader extends Component {
 			//karas.list = karas.list.sort(function(a,b){ return b.kara_id - a.kara_id; })
 			karas.list = karas.list.sort(function(a,b){ return Date.parse(b.created_at) - Date.parse(a.created_at); })
 
-			karas.tags_count = JSON.parse(JSON.stringify(karas.tags_count));
 			karas.tags = _extractValueArray(karas.tags_count);
 			karas.tags_count = _extractObjectArray(karas.tags_count);
 
-			karas.types_count = JSON.parse(JSON.stringify(karas.types_count));
 			karas.types = _extractValueArray(karas.types_count);
 			karas.types_count = _extractObjectArray(karas.types_count);
 
-			karas.languages_count = JSON.parse(JSON.stringify(karas.languages_count));
 			karas.languages = _extractValueArray(karas.languages_count);
 			karas.languages_count = _extractObjectArray(karas.languages_count);
 
-			karas.singers_count = JSON.parse(JSON.stringify(karas.singers_count));
 			karas.singers = _extractValueArray(karas.singers_count);
 			karas.singers_count = _extractObjectArray(karas.singers_count);
 
-			karas.songwriters_count = JSON.parse(JSON.stringify(karas.songwriters_count));
 			karas.songwriters = _extractValueArray(karas.songwriters_count);
 			karas.songwriters_count = _extractObjectArray(karas.songwriters_count);
 
-			karas.authors_count = JSON.parse(JSON.stringify(karas.authors_count));
 			karas.authors = _extractValueArray(karas.authors_count);
 			karas.authors_count = _extractObjectArray(karas.authors_count);
 
-			karas.creators_count = JSON.parse(JSON.stringify(karas.creators_count));
 			karas.creators = _extractValueArray(karas.creators_count);
 			karas.creators_count = _extractObjectArray(karas.creators_count);
 
-			karas.series_count = JSON.parse(JSON.stringify(karas.series_count));
 			karas.series = _extractValueArray(karas.series_count);
 			karas.series_count = _extractObjectArray(karas.series_count);
 
-			karas.years_count = JSON.parse(JSON.stringify(karas.years_count));
 			karas.years = _extractValueArray(karas.years_count);
 			karas.years_count = _extractObjectArray(karas.years_count);
 
-			/*
 			karas.tags = karas.tags.sort(function(a,b){ return a.localeCompare(b); })
 			karas.types = karas.types.sort(function(a,b){ return a.localeCompare(b); })
 			karas.languages = karas.languages.sort(function(a,b){ return a.localeCompare(b); })
@@ -303,7 +293,16 @@ class KaraDownloader extends Component {
 			karas.creators = karas.creators.sort(function(a,b){ return a.localeCompare(b); })
 			karas.series = karas.series.sort(function(a,b){ return a.localeCompare(b); })
 			karas.years = karas.years.sort(function(a,b){ return a - b; })
-			*/
+
+			karas.tags_count = karas.tags_count.sort(function(a,b){ return a.key.localeCompare(b.key); })
+			karas.types_count = karas.types_count.sort(function(a,b){ return a.key.localeCompare(b.key); })
+			karas.languages_count = karas.languages_count.sort(function(a,b){ return a.key.localeCompare(b.key); })
+			karas.singers_count = karas.singers_count.sort(function(a,b){ return a.key.localeCompare(b.key); })
+			karas.songwriters_count = karas.songwriters_count.sort(function(a,b){ return a.key.localeCompare(b.key); })
+			karas.authors_count = karas.authors_count.sort(function(a,b){ return a.key.localeCompare(b.key); })
+			karas.creators_count = karas.creators_count.sort(function(a,b){ return a.key.localeCompare(b.key); })
+			karas.series_count = karas.series_count.sort(function(a,b){ return a.key.localeCompare(b.key); })
+			karas.years_count = karas.years_count.sort(function(a,b){ return a.key - b.key; })
 
 			this.setState({ retrieve_build: 100 });
 
