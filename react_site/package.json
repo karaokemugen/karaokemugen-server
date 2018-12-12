@@ -1,7 +1,7 @@
 {
   "name": "karaokemugen-server-website",
   "description": "Karaoke Mugen online server / React Website",
-  "homepage": "/",
+  "homepage": "/site",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

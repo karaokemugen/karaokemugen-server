@@ -81,7 +81,7 @@ class RouteComponent extends Component {
             {
               this.renderComaSeparatedItems(kara.songtype.split(',').map( (t,ti) => {
                 t = t.toLowerCase();
-                return <Link key={ti} to={"/kara/songtype/"+t.replace('type_','')}><Tag>{i18next.t('map:'+t.replace('type_','type.'))}</Tag></Link>
+                return <Link key={ti} to={process.env.PUBLIC_URL+"/kara/songtype/"+t.replace('type_','')}><Tag>{i18next.t('map:'+t.replace('type_','type.'))}</Tag></Link>
               }))
             }
           </p>
@@ -100,7 +100,7 @@ class RouteComponent extends Component {
                 <b>{i18next.t("kara.language")}{i18next.t("syntax.colon")}</b>
                 {
                   this.renderComaSeparatedItems(kara.language.split(',').map((t,ti) => {
-                    return <Link key={ti} to={"/kara/language/"+t}>{languagesConverter.getName(kara.language,this.props.currentLocale)}</Link>
+                    return <Link key={ti} to={process.env.PUBLIC_URL+"/kara/language/"+t}>{languagesConverter.getName(kara.language,this.props.currentLocale)}</Link>
                   }))
                 }
             </li>
@@ -109,23 +109,23 @@ class RouteComponent extends Component {
                 {
                   this.renderComaSeparatedItems(kara.misc.split(',').map( (t,ti) => {
                     t = t.toLowerCase();
-                    return <Link key={ti} to={"/kara/tag/"+t}>{i18next.t('map:'+t.replace('tag_','tag.'))}</Link>
+                    return <Link key={ti} to={process.env.PUBLIC_URL+"/kara/tag/"+t}>{i18next.t('map:'+t.replace('tag_','tag.'))}</Link>
                   }))
                 }
             </li>
             <li>
                 <b>{i18next.t("kara.serie")}{i18next.t("syntax.colon")} </b>
-                <Link to={"/kara/serie/"+kara.serie_normalized}>{kara.serie}</Link>
+                <Link to={process.env.PUBLIC_URL+"/kara/serie/"+kara.serie_normalized}>{kara.serie}</Link>
             </li>
             <li>
                 <b>{i18next.t("kara.year")}{i18next.t("syntax.colon")} </b>
-                <Link to={"/kara/year/"+kara.year}>{kara.year}</Link>
+                <Link to={process.env.PUBLIC_URL+"/kara/year/"+kara.year}>{kara.year}</Link>
             </li>
             <li>
                 <b>{i18next.t("kara.singer_plural")}{i18next.t("syntax.colon")} </b>
                 {
                   this.renderComaSeparatedItems(kara.singer.split(',').map( (t,ti) => {
-                    return <Link key={ti} to={"/kara/singer/"+normalizeString(t)}>{t}</Link>
+                    return <Link key={ti} to={process.env.PUBLIC_URL+"/kara/singer/"+normalizeString(t)}>{t}</Link>
                   }))
                 }
             </li>
@@ -133,7 +133,7 @@ class RouteComponent extends Component {
                 <b>{i18next.t("kara.songwriter_plural")}{i18next.t("syntax.colon")} </b>
                 {
                   this.renderComaSeparatedItems(kara.songwriter.split(',').map( (t,ti) => {
-                    return <Link key={ti} to={"/kara/songwriter/"+normalizeString(t)}>{t}</Link>
+                    return <Link key={ti} to={process.env.PUBLIC_URL+"/kara/songwriter/"+normalizeString(t)}>{t}</Link>
                   }))
                 }
             </li>
@@ -141,7 +141,7 @@ class RouteComponent extends Component {
                 <b>{i18next.t("kara.creator_plural")}{i18next.t("syntax.colon")} </b>
                 {
                   this.renderComaSeparatedItems(kara.creator.split(',').map( (t,ti) => {
-                    return <Link key={ti} to={"/kara/creator/"+normalizeString(t)}>{t}</Link>
+                    return <Link key={ti} to={process.env.PUBLIC_URL+"/kara/creator/"+normalizeString(t)}>{t}</Link>
                   }))
                 }
             </li>
@@ -149,7 +149,7 @@ class RouteComponent extends Component {
                 <b>{i18next.t("kara.author")}{i18next.t("syntax.colon")} </b>
                 {
                   this.renderComaSeparatedItems(kara.author.split(',').map( (t,ti) => {
-                    return <Link key={ti} to={"/kara/author/"+normalizeString(t)}>{t}</Link>
+                    return <Link key={ti} to={process.env.PUBLIC_URL+"/kara/author/"+normalizeString(t)}>{t}</Link>
                   }))
                 }
             </li>

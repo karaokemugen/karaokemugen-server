@@ -49,49 +49,49 @@ class Navigation extends React.Component {
 	render() {
 		let links = [
 			{
-				to:"/",
+				to:process.env.PUBLIC_URL+"/",
 				pattern:/^\/$/,
 				title:i18next.t("nav.homepage"),
 				icon:icons.homepage,
 			},
 			{
-				to:"/kara",
+				to:process.env.PUBLIC_URL+"/kara",
 				pattern:/^\/kara$/,
 				title:i18next.t("nav.karas"),
 				icon:icons.karas,
 			},
 			{
-				to:"/kara/singer",
+				to:process.env.PUBLIC_URL+"/kara/singer",
 				pattern:/^\/kara\/singer/,
 				title:i18next.t("kara.singer_plural"),
 				icon:icons.singer,
 			},
 			{
-				to:"/kara/serie",
+				to:process.env.PUBLIC_URL+"/kara/serie",
 				pattern:/^\/kara\/serie/,
 				title:i18next.t("kara.serie_plural"),
 				icon:icons.serie,
 			},
 			{
-				to:"/kara/songwriter",
+				to:process.env.PUBLIC_URL+"/kara/songwriter",
 				pattern:/^\/kara\/songwriter/,
 				title:i18next.t("kara.songwriter_plural"),
 				icon:icons.songwriter,
 			},
 			{
-				to:"/kara/creator",
+				to:process.env.PUBLIC_URL+"/kara/creator",
 				pattern:/^\/kara\/creator/,
 				title:i18next.t("kara.creator_plural"),
 				icon:icons.creator,
 			},
 			{
-				to:"/kara/author",
+				to:process.env.PUBLIC_URL+"/kara/author",
 				pattern:/^\/kara\/author/,
 				title:i18next.t("kara.author_plural"),
 				icon:icons.author,
 			},
 			{
-				to:"/kara/language",
+				to:process.env.PUBLIC_URL+"/kara/language",
 				pattern:/^\/kara\/language/,
 				title:i18next.t("kara.language_plural"),
 				icon:icons.language,
