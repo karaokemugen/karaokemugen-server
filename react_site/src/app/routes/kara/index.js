@@ -264,6 +264,7 @@ class Karas extends Component {
 					else
 						return ;
 				},
+				//defaultSortOrder:'ascend', // [ascend|descend]
 			})
 
 		if(!this.songtypeRestriction())

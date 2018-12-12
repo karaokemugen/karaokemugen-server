@@ -10,7 +10,7 @@ localForage.config({
     description : 'Karas database cache'
 });
 
-const required_version = 1.63;
+const required_version = 1.7;
 
 const print3State = function(v)
 {
@@ -110,7 +110,7 @@ class KaraDownloader extends Component {
 			localForage.getItem('karas').then((karas) => {
 				setTimeout(()=>{
 					this.bubbleKaras(karas);
-				},1000)
+				},250)
 			})
 		}
 		else if(this.state.check_ls===false && this.state.retrieve_needed===null )
@@ -212,7 +212,8 @@ class KaraDownloader extends Component {
 			// tri sur les titre des karas
 			// karas_raw = karas_raw.sort(function(a,b){ return a.title_sort.localeCompare(b.title_sort); })
 			// tri sur les ID
-			karas.list = karas.list.sort(function(a,b){ return b.kara_id - a.kara_id; })
+			//karas.list = karas.list.sort(function(a,b){ return b.kara_id - a.kara_id; })
+			karas.list = karas.list.sort(function(a,b){ return Date.parse(b.created_at) - Date.parse(a.created_at); })
 
 			karas.tags = karas.tags.sort(function(a,b){ return a.localeCompare(b); })
 			karas.types = karas.types.sort(function(a,b){ return a.localeCompare(b); })
@@ -228,7 +229,7 @@ class KaraDownloader extends Component {
 
 			setTimeout(()=>{
 				this.bubbleKaras(karas);
-			},1000)
+			},250)
 
 			// update LocalStorage
 			localForage.setItem('karas', karas)
