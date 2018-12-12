@@ -1,0 +1,72 @@
+#karas {
+	.searchBar {
+		padding: 1em 0;
+	}
+
+	.karasTable {
+		background: $main-bg;
+		th {
+			background: $alt-bg;
+			color: $text-color;
+			font-size: 0.95rem;
+			white-space: nowrap;
+		}
+		td {
+			border-bottom: 1px solid #666;
+			color: $text-color;
+			font-size: 0.95rem;
+			.ant-tag {
+				background: $alt-bg;
+				color: $text-color;
+				border: none;
+			}
+			em {
+				font-style: normal;
+				color: lighten($link-color,20%);
+				a {
+					color: lighten($link-color,20%);
+				}
+			}
+			small {
+				color:$link-color;
+				opacity: 0.7;
+			}
+			a {
+				text-decoration: underline;
+			}
+
+			&.title span {
+				display: block;
+				position: relative;
+				> em {
+					a {
+						display: block;
+						border-bottom:2px solid $extra-color;
+						background: $alt-bg;
+						color: $extra-color-contrast;
+						padding: 0.5em;
+						text-decoration: none;
+						border-radius: 0.25em;
+						transition:background ease 0.25s;
+					}
+				}
+				&:hover > em a {
+					background: lighten($extra-color,10%);
+				}
+				> a {
+					position: absolute;
+					right: 0.5em;
+					top: 0.5em;
+					display: block;
+					text-align: center;
+					&:hover{
+						color: $extra-color-contrast;
+					}
+				}
+			}
+		}
+		tr:hover td {
+			background: $alt-bg;
+		}
+	}
+}

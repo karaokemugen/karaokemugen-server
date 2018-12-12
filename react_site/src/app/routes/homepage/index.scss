@@ -1,0 +1,21 @@
+#homepage {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex: 1;
+
+	dl.stats {
+		dt {
+			font-weight: bold;
+			font-size: 1.5em;
+			color: $link-color;
+			margin-bottom: .75em;
+		}
+
+		dd {
+			strong {
+				color: $link-color;
+			}
+		}
+	}
+}

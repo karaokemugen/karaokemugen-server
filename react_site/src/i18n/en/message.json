@@ -1,0 +1,70 @@
+{
+  "btn": {
+    "search": "Search"
+  },
+  "kara": {
+    "language": "Language",
+    "songtype": "Type",
+    "serie": "Serie/Singer",
+    "title": "Title",
+    "tag": "Tags",
+    "year": "Year",
+    "singer_plural": "Singers",
+    "language_plural": "Languages",
+    "songwriter_plural": "Songwriters",
+    "author_plural": "Authors",
+    "creator_plural": "Studios/Creators",
+    "serie_plural": "Series",
+    "singer": "Singer",
+    "author": "Author",
+    "songwriter": "Songwriter",
+    "creator": "Creator",
+    "tag_plural": "Tags",
+    "duration": "Duration",
+    "creation_date": "Creation date",
+    "last_update": "Last update",
+    "kid": "Karaoke ID",
+    "subfile": "Subtitle file",
+    "mediafile": "Media file",
+    "karafile": "Metadata file",
+    "seriefiles": "Serie files"
+  },
+  "stats": {
+    "karasCount": "Karaokes",
+    "singersCount": "Singers",
+    "languagesCount": "Languages",
+    "songwritersCount": "Song Writers",
+    "authorsCount": "Karaokes Author",
+    "creatorsCount": "Studios/Creators",
+    "seriesCount": "Series",
+    "size": "Media size",
+    "duration": "Duration of all karaokes",
+    "{{days}}d{{hours}}h{{minutes}}m{{seconds}}s": "{{days}} days {{hours}} hours {{minutes}} minutes {{seconds}} seconds",
+    "karasFrom{{minYear}}to{{maxYear}}": "Karaokes from {{minYear}} to {{maxYear}}",
+    "karasUpdateTime": null,
+    "title": null
+  },
+  "syntax": {
+    "colon": ":"
+  },
+  "nav": {
+    "homepage": "Homepage",
+    "karas": "Karas"
+  },
+  "karadetail": {
+    "sing_now": "Sing this Karaoke now!",
+    "live_version_available": "Karaoke Mugen Live version available",
+    "test_this_kara_on_your_browser": "Test this karaoke from your browser",
+    "informations": "INFORMATIONS",
+    "an_issue": "An issue?",
+    "an_issue_in_this_kara_let_us_now": "Something wrong width this karaoke? Let us now:",
+    "bad_time": "Bad timing:",
+    "bad_time_eg": "Shifted or Wrong lyrics, font too small, ugly colors...",
+    "bad_quality": "Bad media quality:",
+    "bad_quality_eg": "Low resolution video, video artefact, bad sound, lousy metadata..."
+  },
+  "page": {
+    "loader_title": null,
+    "homepage_title": null
+  }
+}

@@ -1,0 +1,66 @@
+#karaDetail {
+	.back {
+		float: right;
+	}
+
+	display: grid;
+	grid-gap: 10px;
+	grid-template-rows: auto;
+	grid-template-columns: 1.3fr 1fr;
+	grid-template-areas:
+		'C M'
+		'I M';
+
+	section.content {
+		grid-area: C;
+		h1 {
+			color: tomato;
+			font-weight: bold;
+			font-size: 2em;
+		}
+		h3 {
+			color: #fcc540;
+		}
+	}
+	section.media {
+		grid-area: M;
+		img {
+			margin: 0 0 1em 1em;
+			width: calc(50% - 1em);
+			&:first-child {
+				width: calc(100% - 1em);
+			}
+		}
+	}
+	section.issue {
+		grid-area: I;
+		h3 {
+			color: tomato;
+		}
+	}
+
+	@media screen and (max-width:1400px) {
+		grid-template-areas:
+			'C M'
+			'I I';
+	}
+
+	@media screen and (max-width:1100px) {
+		grid-template-columns: 2fr 1fr;
+		section.media img {
+			width: calc(100% - 1em) !important;
+		}
+	}
+
+	@media screen and (max-width:640px) {
+		grid-template-columns: auto;
+		grid-template-areas:
+			'C'
+			'M'
+			'I';
+		section.media img {
+			margin: 0 0 1em;
+			width: 100% !important;
+		}
+	}
+}

@@ -1,0 +1,70 @@
+{
+  "btn": {
+    "search": "Chercher"
+  },
+  "kara": {
+    "author": "Auteur",
+    "author_plural": "Auteurs",
+    "creator": "Studio/Créateur",
+    "creator_plural": "Studios/Créateurs",
+    "language": "Langues",
+    "language_plural": "Langues",
+    "serie": "Série",
+    "serie_plural": "Séries",
+    "singer": "Interprète",
+    "singer_plural": "Interprètes",
+    "songtype": "Type",
+    "songwriter": "Compositeur",
+    "songwriter_plural": "Compositeurs",
+    "tag": "Tag",
+    "tag_plural": "Tags",
+    "title": "Titre",
+    "year": "Année",
+    "duration": "Durée",
+    "creation_date": "Date de création",
+    "last_update": "Date de dernière mise à jour",
+    "kid": "Identifiant du Karaoke (KID)",
+    "subfile": "Fichier de paroles",
+    "mediafile": "Fichier média",
+    "karafile": "Fichier métadonnées",
+    "seriefiles": "Fichiers de série"
+  },
+  "stats": {
+    "karasCount": "Nombre de karaokés",
+    "singersCount": "Nombre de chanteurs",
+    "languagesCount": "Nombre de langues",
+    "songwritersCount": "Nombre de compositeurs",
+    "authorsCount": "Nombre d'auteurs de karaoké",
+    "creatorsCount": "Nombre de studios/créateurs",
+    "seriesCount": "Nombre de séries",
+    "size": "Taille des médias",
+    "duration": "Durée de tous les karaokés",
+    "{{days}}d{{hours}}h{{minutes}}m{{seconds}}s": "{{days}} jours {{hours}} heures {{minutes}} minutes {{seconds}} secondes",
+    "karasFrom{{minYear}}to{{maxYear}}": "Des karaokés de {{minYear}} à {{maxYear}}",
+    "karasUpdateTime": "Dernière mise à jour ",
+    "title": "STATISTIQUES"
+  },
+  "syntax": {
+    "colon": " :"
+  },
+  "nav": {
+    "homepage": "Accueil",
+    "karas": "Karas"
+  },
+  "karadetail": {
+    "sing_now": "CHANTEZ SUR CE KARAOKÉ MAINTENANT !",
+    "live_version_available": "Version Karaoke Mugen Live disponible !",
+    "test_this_kara_on_your_browser": "Testez ce karaoké depuis votre navigateur !",
+    "informations": "INFORMATIONS",
+    "an_issue": "UN PROBLÈME ?",
+    "an_issue_in_this_kara_let_us_now": "Un souci avec ce karaoké ? Faites-le nous savoir :",
+    "bad_time": "Erreur de time :",
+    "bad_time_eg": "Karaoké décalé, police trop petite ou illisible, erreur dans les paroles, choix des couleurs douteux...",
+    "bad_quality": "Média de mauvaise qualité :",
+    "bad_quality_eg": "Vidéo en basse résolution, pixélisée, son ignoble, metadata foireuses..."
+  },
+  "page": {
+    "loader_title": "Chargement",
+    "homepage_title": "Accueil"
+  }
+}
