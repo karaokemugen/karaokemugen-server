@@ -131,7 +131,7 @@ class KaraCat extends Component {
 				dataIndex: 'value',
 				key: 'key',
 				render: (value, record)=> <Link to={"/kara/"+this.props.data_type+"/"+record.key}>{value}</Link>,
-				sorter: (a, b) => a.key.localeCompare(b.key),
+				sorter: (a, b) => -a.key.localeCompare(b.key),
 				// defaultSortOrder: "ascend",
 			}
 		]

@@ -297,11 +297,11 @@ class KaraDownloader extends Component {
 			karas.tags_count = karas.tags_count.sort(function(a,b){ return a.key.localeCompare(b.key); })
 			karas.types_count = karas.types_count.sort(function(a,b){ return a.key.localeCompare(b.key); })
 			karas.languages_count = karas.languages_count.sort(function(a,b){ return a.key.localeCompare(b.key); })
-			karas.singers_count = karas.singers_count.sort(function(a,b){ return a.key.localeCompare(b.key); })
-			karas.songwriters_count = karas.songwriters_count.sort(function(a,b){ return a.key.localeCompare(b.key); })
-			karas.authors_count = karas.authors_count.sort(function(a,b){ return a.key.localeCompare(b.key); })
-			karas.creators_count = karas.creators_count.sort(function(a,b){ return a.key.localeCompare(b.key); })
-			karas.series_count = karas.series_count.sort(function(a,b){ return a.key.localeCompare(b.key); })
+			karas.singers_count = karas.singers_count.sort(function(a,b){ return  - (a.q - b.q) })
+			karas.songwriters_count = karas.songwriters_count.sort(function(a,b){ return  - (a.q - b.q) })
+			karas.authors_count = karas.authors_count.sort(function(a,b){ return  - (a.q - b.q) })
+			karas.creators_count = karas.creators_count.sort(function(a,b){ return  - (a.q - b.q) })
+			karas.series_count = karas.series_count.sort(function(a,b){ return - (a.q - b.q) })
 			karas.years_count = karas.years_count.sort(function(a,b){ return a.key - b.key; })
 
 			this.setState({ retrieve_build: 100 });
