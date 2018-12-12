@@ -62,7 +62,7 @@ export function initFrontend(listenPort) {
 	});
 	// Serve static files from the React app
 	app.use('/base', express.static(resolve(__dirname, '../react_site/build')));
-	app.get('/base/*', (req, res) => res.redirect('/base/index.html'));
+	app.use('/base/*', express.static(resolve(__dirname, '../react_site/build')));
 	app.use('/downloads/karas', express.static(resolve(conf.appPath, conf.Path.Karas)));
 	app.use('/downloads/lyrics', express.static(resolve(conf.appPath, conf.Path.Lyrics)));
 	app.use('/downloads/medias', express.static(resolve(conf.appPath, conf.Path.Medias)));
