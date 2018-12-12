@@ -34,6 +34,36 @@
 			a {
 				text-decoration: underline;
 			}
+
+			&.title span {
+				display: block;
+				position: relative;
+				> em {
+					a {
+						display: block;
+						border-bottom:2px solid $extra-color;
+						background: $alt-bg;
+						color: $extra-color-contrast;
+						padding: 0.5em;
+						text-decoration: none;
+						border-radius: 0.25em;
+						transition:background ease 0.25s;
+					}
+				}
+				&:hover > em a {
+					background: lighten($extra-color,10%);
+				}
+				> a {
+					position: absolute;
+					right: 0.5em;
+					top: 0.5em;
+					display: block;
+					text-align: center;
+					&:hover{
+						color: $extra-color-contrast;
+					}
+				}
+			}
 		}
 		tr:hover td {
 			background: $alt-bg;

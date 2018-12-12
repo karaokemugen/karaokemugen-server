@@ -230,7 +230,8 @@ class Karas extends Component {
 				title: i18next.t('kara.language'),
 				dataIndex: 'language',
 				key: 'language',
-				render: language => {
+				className:"language",
+				render: (language, record) => {
 					if(language.indexOf(',')>=0)
 						return i18next.t('map:language.MUL');
 						let t = languagesConverter.getName(language,this.props.currentLocale)
@@ -242,28 +243,20 @@ class Karas extends Component {
 			})
 
 		r.push({
-				title: i18next.t('kara.serie')+'/'+i18next.t('kara.singer'),
-				dataIndex: 'serie',
-				key: 'serie',
-				render: (serie, record) => {
-					let singer = record.singer && record.singer!=='NO_TAG' ? record.singer : false;
-
-					if(singer)
-					{
-						singer = this.renderComaSeparatedItems(record.singer.split(',').map(function(t,ti){
-							return <Link key={ti} to={"/kara/singer/"+normalizeString(t)}>{t}</Link>;
-						}))
+				title: i18next.t('kara.title'),
+				dataIndex: 'title',
+				key: 'title',
+				className:"title",
+				render: (title, record) => {
+					let btnPlay = null;
+					if(record.mediafile.indexOf('.mp4')>=0 && record.misc.indexOf('TAG_R18') < 0) {
+						btnPlay = (
+							<a target="_blank" href={"http://live.karaokes.moe/?video="+record.kid}><FontAwesomeIcon icon={icons.play} /></a>
+						);
 					}
-
-					if(serie && singer)
-						return <span><Link to={"/kara/serie/"+normalizeString(serie)}>{serie}</Link><br /><small>{singer}</small></span>
-					else if(serie)
-						return <span><Link to={"/kara/serie/"+normalizeString(serie)}>{serie}</Link></span>
-					else if(singer)
-						return <span><small>{singer}</small></span>
-					else
-						return ;
+					return <span><em><Link to={"/kara/"+record.kid}>{title}</Link></em>{btnPlay}</span>
 				},
+				sorter: (a, b) => a.title_sort.localeCompare(b.title_sort),
 				//defaultSortOrder:'ascend', // [ascend|descend]
 			})
 
@@ -288,12 +281,29 @@ class Karas extends Component {
 				})
 
 		r.push({
-				title: i18next.t('kara.title'),
-				dataIndex: 'title',
-				key: 'title',
-				render: (title, record) => ( <em><Link to={"/kara/"+record.kid}>{title}</Link></em> ),
-				sorter: (a, b) => a.title_sort.localeCompare(b.title_sort),
-				defaultSortOrder:'ascend', // [ascend|descend]
+				title: i18next.t('kara.serie')+'/'+i18next.t('kara.singer'),
+				dataIndex: 'serie',
+				key: 'serie',
+				className:"serie",
+				render: (serie, record) => {
+					let singer = record.singer && record.singer!=='NO_TAG' ? record.singer : false;
+
+					if(singer)
+					{
+						singer = this.renderComaSeparatedItems(record.singer.split(',').map(function(t,ti){
+							return <Link key={ti} to={"/kara/singer/"+normalizeString(t)}>{t}</Link>;
+						}))
+					}
+
+					if(serie && singer)
+						return <span><Link to={"/kara/serie/"+normalizeString(serie)}>{serie}</Link><br /><small>{singer}</small></span>
+					else if(serie)
+						return <span><Link to={"/kara/serie/"+normalizeString(serie)}>{serie}</Link></span>
+					else if(singer)
+						return <span><small>{singer}</small></span>
+					else
+						return ;
+				},
 			})
 
 		if(!this.tagRestriction())
@@ -301,6 +311,7 @@ class Karas extends Component {
 					title: i18next.t('kara.tag'),
 					dataIndex: 'misc',
 					key: 'tag',
+					className:"tag",
 					render: tag => {
 						let r = [];
 						tag.split(',').forEach( (t,ti) => {
@@ -319,6 +330,7 @@ class Karas extends Component {
 					title: i18next.t('kara.year'),
 					dataIndex: 'year',
 					key: 'year',
+					className:"year",
 					render: (year) => ( <Link to={"/kara/year/"+year}>{year}</Link> ),
 					sorter: (a, b) => a.year - b.year,
 					filters: this.kara_years(),

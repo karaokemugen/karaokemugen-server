@@ -7,6 +7,7 @@ import {
 	faCubes,
 	faGhost,
 	faLanguage,
+	faPlay,
 } from '@fortawesome/free-solid-svg-icons'
 
 export default {
@@ -18,4 +19,5 @@ export default {
 	creator: faCubes,
 	author: faGhost,
 	language: faLanguage,
+	play: faPlay,
 }
