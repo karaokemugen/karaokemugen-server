@@ -198,7 +198,7 @@ class RouteComponent extends Component {
         <section className="media">
           <img key="25" src={instance_url+"/previews/"+kara.kid+"."+kara.mediasize+".25.jpg"} />
           <img key="33" src={instance_url+"/previews/"+kara.kid+"."+kara.mediasize+".33.jpg"} />
-          <img key="50" src={instance_url+".moe/previews/"+kara.kid+"."+kara.mediasize+".50.jpg"} />
+          <img key="50" src={instance_url+"/previews/"+kara.kid+"."+kara.mediasize+".50.jpg"} />
         </section>
 
         <section className="issue">
