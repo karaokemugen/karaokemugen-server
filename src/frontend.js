@@ -62,7 +62,7 @@ export function initFrontend(listenPort) {
 	});
 	// Serve static files from the React app
 	app.use('/base', express.static(resolve(__dirname, '../react_site/build')));
-	app.use('/base/*', express.static(resolve(__dirname, '../react_site/build')));
+	app.use('/base/*', (req, res) => res.sendFile(resolve(__dirname+'/../react_site/build/index.html')));
 	app.use('/downloads/karas', express.static(resolve(conf.appPath, conf.Path.Karas)));
 	app.use('/downloads/lyrics', express.static(resolve(conf.appPath, conf.Path.Lyrics)));
 	app.use('/downloads/medias', express.static(resolve(conf.appPath, conf.Path.Medias)));
@@ -71,7 +71,7 @@ export function initFrontend(listenPort) {
 	app.use('/avatars', express.static(resolve(conf.appPath, conf.Path.Avatars)));
 	// API router
 	app.use('/api', api());
-	app.get('/', (req, res) => res.redirect('/api/shortener'));
+	app.get('/', (req, res) => { res.redirect('/api/shortener'); return ; });
 	// The "catchall" handler: for any request that doesn't
 	// match one above, send back React's index.html file.
 	app.get('*', (req, res) => {
