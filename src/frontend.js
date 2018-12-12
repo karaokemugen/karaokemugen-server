@@ -49,7 +49,7 @@ export function initFrontend(listenPort) {
 	// Server allows resuming file downloads :
 	app.use(range());
 	// Serve static files from the React app
-	app.use('/site', express.static(resolve(__dirname, '../react_site/build')));
+	app.use('/base', express.static(resolve(__dirname, '../react_site/build')));
 
 	app.use((req, res, next) => {
 		res.setHeader('Access-Control-Allow-Origin', '*');
