@@ -2,9 +2,28 @@ import {createHash} from 'crypto';
 import {updateUser, updateUserPassword, insertUser, selectUser, selectAllUsers} from '../_dao/user';
 import logger from 'winston';
 import {getConfig} from '../_utils/config';
-import {asyncExists, asyncUnlink, asyncMove, detectFileType} from '../_utils/files';
+import {asyncReadDir, asyncExists, asyncUnlink, asyncMove, detectFileType} from '../_utils/files';
 import uuidV4 from 'uuid/v4';
 import {resolve} from 'path';
+
+export async function initUsers() {
+	cleanupAvatars();
+	setInterval(cleanupAvatars, 60 * 60 * 1000);
+}
+
+async function cleanupAvatars() {
+	// This is done because updating avatars generate a new name for the file. So unused avatar files are now cleaned up.
+	const users = await getAllUsers();
+	const avatars = [];
+	for (const user of users) {
+		if (!avatars.includes(user.avatar_file)) avatars.push(user.avatar_file);
+	}
+	const conf = getConfig();
+	const avatarFiles = await asyncReadDir(resolve(conf.appPath, conf.PathAvatars));
+	for (const file of avatarFiles) {
+		if (!avatars.includes(file) && file !== 'blank.png') asyncUnlink(resolve(conf.appPath, conf.PathAvatars, file));
+	}
+}
 
 export function hashPassword(password) {
 	const hash = createHash('sha256');
