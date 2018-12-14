@@ -44,7 +44,8 @@
     "xboxone": "Xbox One",
     "yaoi": "Yaoi",
     "yuri": "Yuri",
-    "3ds": "3DS"
+	"3ds": "3DS",
+	"creditless": "Creditless"
   },
   "type": {
     "op": "Opening",

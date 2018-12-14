@@ -95,5 +95,6 @@ export const tags = [
 	'SEGACD',
 	'SATURN',
 	'WII',
+	'CREDITLESS',
 	'SWITCH'
 ];
