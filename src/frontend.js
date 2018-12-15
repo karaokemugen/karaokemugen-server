@@ -35,6 +35,7 @@ export function initFrontend(listenPort) {
 
 	const conf = getConfig();
 	const app = express();
+	const mainApp = express();
 
 	app.enable('trust proxy');
 	app.use(helmet());
@@ -60,24 +61,25 @@ export function initFrontend(listenPort) {
 			next();
 		}
 	});
+	app.use(vhost(`${conf.KMProxy.Host}`, mainApp))
 	app.use(vhost(`*.${conf.KMProxy.Host}`, getKMRoom), proxy(redirectKMRoom, {
 		memoizeHost: false
 	}));
 	// Serve static files from the React app
-	app.use('/base', express.static(resolve(__dirname, '../react_site/build')));
-	app.use('/base/*', (req, res) => res.sendFile(resolve(__dirname+'/../react_site/build/index.html')));
-	app.use('/downloads/karas', express.static(resolve(conf.appPath, conf.Path.Karas)));
-	app.use('/downloads/lyrics', express.static(resolve(conf.appPath, conf.Path.Lyrics)));
-	app.use('/downloads/medias', express.static(resolve(conf.appPath, conf.Path.Medias)));
-	app.use('/downloads/series', express.static(resolve(conf.appPath, conf.Path.Series)));
-	app.use('/previews', express.static(resolve(conf.appPath, conf.Path.Previews)));
-	app.use('/avatars', express.static(resolve(conf.appPath, conf.Path.Avatars)));
+	mainApp.use('/base', express.static(resolve(__dirname, '../react_site/build')));
+	mainApp.use('/base/*', (req, res) => res.sendFile(resolve(__dirname+'/../react_site/build/index.html')));
+	mainApp.use('/downloads/karas', express.static(resolve(conf.appPath, conf.Path.Karas)));
+	mainApp.use('/downloads/lyrics', express.static(resolve(conf.appPath, conf.Path.Lyrics)));
+	mainApp.use('/downloads/medias', express.static(resolve(conf.appPath, conf.Path.Medias)));
+	mainApp.use('/downloads/series', express.static(resolve(conf.appPath, conf.Path.Series)));
+	mainApp.use('/previews', express.static(resolve(conf.appPath, conf.Path.Previews)));
+	mainApp.use('/avatars', express.static(resolve(conf.appPath, conf.Path.Avatars)));
 	// API router
-	app.use('/api', api());
-	app.get('/', (req, res) => { res.redirect('/api/shortener'); return ; });
+	mainApp.use('/api', api());
+	mainApp.get('/', (req, res) => { res.redirect('/api/shortener'); return ; });
 	// The "catchall" handler: for any request that doesn't
 	// match one above, send back React's index.html file.
-	app.get('*', (req, res) => {
+	mainApp.get('*', (req, res) => {
 		res.status(404).send('Not found');
 	});
 
