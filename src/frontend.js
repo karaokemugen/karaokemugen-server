@@ -60,6 +60,9 @@ export function initFrontend(listenPort) {
 			next();
 		}
 	});
+	app.use(vhost(`*.${conf.KMProxy.Host}`, getKMRoom), proxy(redirectKMRoom, {
+		memoizeHost: false
+	}));
 	// Serve static files from the React app
 	app.use('/base', express.static(resolve(__dirname, '../react_site/build')));
 	app.use('/base/*', (req, res) => res.sendFile(resolve(__dirname+'/../react_site/build/index.html')));
@@ -77,10 +80,6 @@ export function initFrontend(listenPort) {
 	app.get('*', (req, res) => {
 		res.status(404).send('Not found');
 	});
-
-	app.use(vhost(`*.${conf.KMProxy.Host}`, getKMRoom), proxy(redirectKMRoom, {
-		memoizeHost: false
-	}));
 
 	const port = listenPort || 5000;
 	const server = createServer(app);
