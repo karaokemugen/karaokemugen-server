@@ -42,11 +42,9 @@ export const defaults = {
 	Shortener: {
 		ExpireTimeDays: 1
 	},
-	KMProxy: {
-		Host: 'kara.moe'
-	},
 	Frontend: {
-		Port: 1350
+		Port: 1350,
+		Host: 'localhost'
 	}
 };
 
@@ -78,6 +76,6 @@ export const configConstraints = {
 	'Mail.To': { presence: true },
 	'Mail.FromMail': { email: true },
 	'Mail.ToMail': { email: true },
-	'KMProxy.Host': { presence: true},
+	'Frontend.Host': { presence: { allowEmpty: false } },
 	'Frontend.Port': { numericality: true}
 };

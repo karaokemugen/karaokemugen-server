@@ -61,8 +61,8 @@ export function initFrontend(listenPort) {
 			next();
 		}
 	});
-	app.use(vhost(`${conf.KMProxy.Host}`, mainApp))
-	app.use(vhost(`*.${conf.KMProxy.Host}`, getKMRoom), proxy(redirectKMRoom, {
+	app.use(vhost(`${conf.Frontend.Host}`, mainApp));
+	app.use(vhost(`*.${conf.Frontend.Host}`, getKMRoom), proxy(redirectKMRoom, {
 		memoizeHost: false
 	}));
 	// Serve static files from the React app

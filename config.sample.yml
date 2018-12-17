@@ -1,6 +1,9 @@
 AdminPassword: lol
 Path:
-    Karas: app/data/karas
-    Lyrics: app/data/lyrics
-    Medias: app/data/medias
-    Series: app/data/series
+  Karas: app/data/karas
+  Lyrics: app/data/lyrics
+  Medias: app/data/medias
+  Series: app/data/series
+Frontend:
+  Host: kara.moe
+  Port: 1350
