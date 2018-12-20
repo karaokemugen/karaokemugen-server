@@ -7,14 +7,26 @@ export async function selectAllYears() {
 	return res.rows;
 }
 
-export async function selectAllKaras(filter, lang, mode, modeValue) {
+export async function countKaras(filter, mode, modeValue) {
+	const filterClauses = filter ? buildClauses(filter) : {sql: [], params: {}};
+	const typeClauses = mode ? buildTypeClauses(mode, modeValue) : '';
+	const query = sql.countKaras(filterClauses.sql, typeClauses);
+	const res = await db().query(yesql(query)(filterClauses.params));
+	return res.rows[0].count;
+}
+
+export async function selectAllKaras(filter, lang, mode, modeValue, from, size) {
 
 	const filterClauses = filter ? buildClauses(filter) : {sql: [], params: {}};
 	const typeClauses = mode ? buildTypeClauses(mode, modeValue) : '';
 	let orderClauses = '';
+	let limitClause = '';
+	let  offsetClause = '';
 	if (mode === 'recent') orderClauses = 'created_at DESC, ';
 	if (mode === 'popular') orderClauses = 'requested DESC, ';
-	const query = sql.getAllKaras(filterClauses.sql, langSelector(lang), typeClauses, orderClauses);
+	if (from && from > 0) offsetClause = `OFFSET ${from} `;
+	if (size && size > 0) limitClause = `LIMIT ${size} `;
+	const query = sql.getAllKaras(filterClauses.sql, langSelector(lang), typeClauses, orderClauses, limitClause, offsetClause);
 	const res = await db().query(yesql(query)(filterClauses.params));
 	return res.rows;
 }
