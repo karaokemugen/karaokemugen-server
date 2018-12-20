@@ -20,5 +20,6 @@ localtunnel-server/
 react_site/node_modules
 react_site/build
 app/
+logs/
 !app/avatars/blank.png
 !react_site/src/app
