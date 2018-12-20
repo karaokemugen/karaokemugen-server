@@ -7,6 +7,10 @@ export async function selectAllYears() {
 	return res.rows;
 }
 
+export async function refreshKaras() {
+	return await db().query('REFRESH MATERIALIZED VIEW all_karas');
+}
+
 export async function countKaras(filter, mode, modeValue) {
 	const filterClauses = filter ? buildClauses(filter) : {sql: [], params: {}};
 	const typeClauses = mode ? buildTypeClauses(mode, modeValue) : '';
