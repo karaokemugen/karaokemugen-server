@@ -27,7 +27,6 @@ export async function selectAllKaras(filter, lang, mode, modeValue, from, size) 
 	let limitClause = '';
 	let  offsetClause = '';
 	if (mode === 'recent') orderClauses = 'created_at DESC, ';
-	if (mode === 'popular') orderClauses = 'requested DESC, ';
 	if (from && from > 0) offsetClause = `OFFSET ${from} `;
 	if (size && size > 0) limitClause = `LIMIT ${size} `;
 	const query = sql.getAllKaras(filterClauses.sql, langSelector(lang), typeClauses, orderClauses, limitClause, offsetClause);
