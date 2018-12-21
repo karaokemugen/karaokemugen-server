@@ -1,5 +1,6 @@
 import {paramWords, langSelector, db} from './database';
 import {pg as yesql} from 'yesql';
+import {tagTypes} from '../_services/constants';
 const sql = require('./sqls/kara');
 
 export async function selectAllYears() {
@@ -29,7 +30,7 @@ export async function selectAllKaras(filter, lang, mode, modeValue, from, size) 
 	const typeClauses = mode ? buildTypeClauses(mode, modeValue) : '';
 	let orderClauses = '';
 	let limitClause = '';
-	let  offsetClause = '';
+	let offsetClause = '';
 	if (mode === 'recent') orderClauses = 'created_at DESC, ';
 	if (from && from > 0) offsetClause = `OFFSET ${from} `;
 	if (size && size > 0) limitClause = `LIMIT ${size} `;
@@ -39,10 +40,18 @@ export async function selectAllKaras(filter, lang, mode, modeValue, from, size) 
 }
 
 export function buildTypeClauses(mode, value) {
-	if (mode === 'year') return ` AND year = ${value}`;
-	if (mode === 'tag') return ` AND all_tags_id @> ARRAY[${value}]`;
-	if (mode === 'serie') return ` AND serie_id @> ARRAY[${value}::smallint]`;
-	if (mode === 'ids') return ` AND kara_id IN (${value})`;
+	if (mode === 'search') {
+		let search = '';
+		const criterias = value.split('!');
+		for (const c of criterias) {
+			const type = c.split(/:(.+)/)[0];
+			const values = c.split(/:(.+)/)[1];
+			if (type === 's') search = `${search} AND serie_id @> ARRAY[${values}]`;
+			if (type === 'y') search = `${search} AND year IN (${values})`;
+			if (type === 't') search = `${search} AND all_tags_id @> ARRAY[${values}]`;
+		}
+		return search;
+	}
 	if (mode === 'kid') return ` AND kid = '${value}'`;
 	return '';
 }

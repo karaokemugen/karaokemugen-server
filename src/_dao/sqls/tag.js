@@ -1,14 +1,14 @@
 // Tags SQL
 
 
-export const getTags = (limitClause, offsetClause) => `
+export const getTags = (limitClause, offsetClause, whereClause) => `
 SELECT tag_id,
 	name,
 	tagtype AS type,
 	slug,
 	karacount::integer
 FROM all_tags
-WHERE tagtype = $1
+${whereClause}
 ${limitClause}
 ${offsetClause}
 `;
