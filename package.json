@@ -35,8 +35,8 @@
     "eslint-plugin-flowtype": "^3.2.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "6.1.2",
-	"eslint-plugin-react": "^7.11.1",
-	"eslint-plugin-security": "^1.4.0"
+    "eslint-plugin-react": "^7.11.1",
+    "eslint-plugin-security": "^1.4.0"
   },
   "dependencies": {
     "async-await-parallel": "^1.0.0",
@@ -73,6 +73,7 @@
     "randomstring": "^1.1.5",
     "read-chunk": "^3.0.0",
     "sanitize-filename": "^1.6.1",
+    "slug": "^0.9.3",
     "socket.io": "^2.2.0",
     "sudo-block": "^2.0.0",
     "unix-timestamp": "^0.2.0",
