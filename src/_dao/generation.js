@@ -6,7 +6,7 @@ import {getConfig} from '../_utils/config';
 import {getDataFromKaraFile} from './karafile';
 import {createVideoPreviews} from '../_utils/previews';
 import {transaction} from './database';
-import {refreshKaras} from './kara';
+import {refreshKaras, refreshYears} from './kara';
 import {
 	insertKaras, insertKaraSeries, insertKaraTags, insertSeries, insertTags, inserti18nSeries, updateSeries, deleteAll
 } from './sqls/generation';
@@ -388,6 +388,7 @@ export async function run() {
 		]);
 		refreshKaras();
 		refreshSeries();
+		refreshYears();
 		updateSetting('lastGeneration', new Date());
 		createVideoPreviews();
 		logger.info('[Gen] Done generating database');
