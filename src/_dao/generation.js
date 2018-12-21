@@ -16,6 +16,7 @@ import {basename} from 'path';
 import parallel from 'async-await-parallel';
 import {findSeries, getDataFromSeriesFile} from '../_dao/seriesfile';
 import {updateSetting} from '../_utils/settings';
+import { refreshSeries } from './series';
 
 let error = false;
 let generating = false;
@@ -386,6 +387,7 @@ export async function run() {
 			{sql: updateSeries, params: sqlUpdateSeries},
 		]);
 		refreshKaras();
+		refreshSeries();
 		updateSetting('lastGeneration', new Date());
 		createVideoPreviews();
 		logger.info('[Gen] Done generating database');

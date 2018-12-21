@@ -1,6 +1,6 @@
 // SQL for kara management
 
-export const countKaras = (filterClauses, typeClauses, orderClauses) => `
+export const countKaras = (filterClauses, typeClauses) => `
 SELECT COUNT(kara_id) AS count
 FROM all_karas AS ak
 WHERE 1 = 1

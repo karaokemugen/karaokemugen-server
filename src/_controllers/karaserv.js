@@ -68,7 +68,7 @@ export default function KSController(router) {
 	router.route('/karas/series')
 		.get(getLang, async (req, res) => {
 			try {
-				const series = await getAllSeries(req.query.filter,req.lang);
+				const series = await getAllSeries(req.query.filter,req.lang,req.query.from,req.query.size);
 				res.json(series);
 			} catch(err) {
 				res.statusCode = 500;
