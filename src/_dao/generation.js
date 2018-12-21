@@ -17,9 +17,18 @@ import parallel from 'async-await-parallel';
 import {findSeries, getDataFromSeriesFile} from '../_dao/seriesfile';
 import {updateSetting} from '../_utils/settings';
 import { refreshSeries } from './series';
+import { refreshTags } from './tag';
+import slug from 'slug';
+import {createHash} from 'crypto';
 
 let error = false;
 let generating = false;
+
+function hash(string) {
+	const hash = createHash('sha1');
+	hash.update(string);
+	return hash.digest('hex');
+}
 
 async function extractKaraFiles() {
 	const conf = getConfig();
@@ -324,14 +333,25 @@ function getTagId(tagName, tags) {
 
 function prepareAllTagsInsertData(allTags) {
 	const data = [];
+	const slugs = [];
 	allTags.forEach((tag, index) => {
 		const tagParts = tag.split(',');
 		const tagName = tagParts[0];
 		const tagType = tagParts[1];
+		slug.defaults.mode = 'rfc3986';
+		let tagSlug = slug(tagName, {
+			lower: true,
+		});
+		if (slugs.includes(`${tagType} ${tagSlug}`)) {
+			tagSlug = `${tagSlug}-${hash(tagName)}`;
+		}
+		if (slugs.includes(`${tagType} ${tagSlug}`)) console.log(`Duplicate: ${tagType} ${tagSlug} ${tagName}`);
+		slugs.push(`${tagType} ${tagSlug}`);
 		data.push([
 			index + 1,
 			tagType,
-			tagName
+			tagName,
+			tagSlug
 		]);
 	});
 
@@ -389,6 +409,7 @@ export async function run() {
 		refreshKaras();
 		refreshSeries();
 		refreshYears();
+		refreshTags();
 		updateSetting('lastGeneration', new Date());
 		createVideoPreviews();
 		logger.info('[Gen] Done generating database');

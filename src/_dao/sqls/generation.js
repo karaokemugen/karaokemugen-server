@@ -8,8 +8,8 @@ export const inserti18nSeries = 'INSERT INTO serie_lang(fk_id_serie, lang, name)
 
 export const insertSeries = 'INSERT INTO serie(pk_id_serie, name) VALUES($1, $2);';
 
-export const insertTags = `INSERT INTO tag(pk_id_tag, tagtype, name)
-	VALUES($1, $2, $3);`;
+export const insertTags = `INSERT INTO tag(pk_id_tag, tagtype, name, slug)
+	VALUES($1, $2, $3, $4);`;
 
 export const insertKaraTags = 'INSERT INTO kara_tag(fk_id_tag, fk_id_kara) VALUES($1, $2);';
 
