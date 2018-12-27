@@ -22,7 +22,7 @@ export const getAllKaras = (filterClauses, lang, typeClauses, orderClauses, limi
   ak.seriefiles AS seriefiles,
   ak.subfile AS subfile,
   ak.singers AS singers,
-  ak.songtype AS songtype,
+  ak.songtypes AS songtype,
   ak.creators AS creators,
   ak.songwriters AS songwriters,
   ak.year AS year,
@@ -35,13 +35,12 @@ export const getAllKaras = (filterClauses, lang, typeClauses, orderClauses, limi
   ak.gain AS gain,
   ak.created_at AS created_at,
   ak.modified_at AS modified_at,
-  ak.mediasize AS mediasize,
-  ak.tags AS tags
+  ak.mediasize AS mediasize
 FROM all_karas AS ak
 WHERE 1 = 1
   ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
   ${typeClauses}
-ORDER BY ${orderClauses} ak.languages, ak.serie IS NULL, lower(unaccent(serie)), ak.songtype DESC, ak.songorder, lower(unaccent(singers)), lower(unaccent(ak.title))
+ORDER BY ${orderClauses} ak.languages_sortable, ak.serie IS NULL, lower(unaccent(serie)), ak.songtypes_sortable DESC, ak.songorder, lower(unaccent(singers_sortable)), lower(unaccent(ak.title))
 ${limitClause}
 ${offsetClause}
 `;

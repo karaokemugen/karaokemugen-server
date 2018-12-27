@@ -23,7 +23,7 @@ export async function countKaras(filter, mode, modeValue) {
 	return res.rows[0].count;
 }
 
-export async function selectAllKaras(filter, lang, mode, modeValue, from, size) {
+export async function selectAllKaras(filter, lang, mode, modeValue, from = 0, size = 0) {
 
 	const filterClauses = filter ? buildClauses(filter) : {sql: [], params: {}};
 	const typeClauses = mode ? buildTypeClauses(mode, modeValue) : '';
@@ -31,8 +31,8 @@ export async function selectAllKaras(filter, lang, mode, modeValue, from, size) 
 	let limitClause = '';
 	let offsetClause = '';
 	if (mode === 'recent') orderClauses = 'created_at DESC, ';
-	if (from && from > 0) offsetClause = `OFFSET ${from} `;
-	if (size && size > 0) limitClause = `LIMIT ${size} `;
+	if (from > 0) offsetClause = `OFFSET ${from} `;
+	if (size > 0) limitClause = `LIMIT ${size} `;
 	const query = sql.getAllKaras(filterClauses.sql, langSelector(lang), typeClauses, orderClauses, limitClause, offsetClause);
 	const res = await db().query(yesql(query)(filterClauses.params));
 	return res.rows;
@@ -60,15 +60,10 @@ export function buildClauses(words) {
 	const params = paramWords(words);
 	let sql = [];
 	for (const i in words.split(' ').filter(s => !('' === s))) {
-		sql.push(`lower(unaccent(ak.misc_tags)) LIKE :word${i} OR
+		sql.push(`lower(unaccent(ak.tags)) LIKE :word${i} OR
 		lower(unaccent(ak.title)) LIKE :word${i} OR
-		lower(unaccent(ak.authors)) LIKE :word${i} OR
 		lower(unaccent(ak.serie)) LIKE :word${i} OR
-		lower(unaccent(ak.serie_altname::varchar)) LIKE :word${i} OR
-		lower(unaccent(ak.singers)) LIKE :word${i} OR
-		lower(unaccent(ak.songwriters)) LIKE :word${i} OR
-		lower(unaccent(ak.creators)) LIKE :word${i} OR
-		lower(unaccent(ak.languages)) LIKE :word${i}
+		lower(unaccent(ak.serie_altname::varchar)) LIKE :word${i}
 		`);
 	}
 	return {
