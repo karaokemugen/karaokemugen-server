@@ -1,6 +1,5 @@
 import {paramWords, langSelector, db} from './database';
 import {pg as yesql} from 'yesql';
-import {tagTypes} from '../_services/constants';
 const sql = require('./sqls/kara');
 
 export async function selectAllYears() {
@@ -44,6 +43,7 @@ export function buildTypeClauses(mode, value) {
 		let search = '';
 		const criterias = value.split('!');
 		for (const c of criterias) {
+			// Splitting only after the first ":"
 			const type = c.split(/:(.+)/)[0];
 			const values = c.split(/:(.+)/)[1];
 			if (type === 's') search = `${search} AND serie_id @> ARRAY[${values}]`;
@@ -60,15 +60,15 @@ export function buildClauses(words) {
 	const params = paramWords(words);
 	let sql = [];
 	for (const i in words.split(' ').filter(s => !('' === s))) {
-		sql.push(`lower(unaccent(ak.misc)) LIKE :word${i} OR
+		sql.push(`lower(unaccent(ak.misc_tags)) LIKE :word${i} OR
 		lower(unaccent(ak.title)) LIKE :word${i} OR
-		lower(unaccent(ak.author)) LIKE :word${i} OR
+		lower(unaccent(ak.authors)) LIKE :word${i} OR
 		lower(unaccent(ak.serie)) LIKE :word${i} OR
 		lower(unaccent(ak.serie_altname::varchar)) LIKE :word${i} OR
-		lower(unaccent(ak.singer)) LIKE :word${i} OR
-		lower(unaccent(ak.songwriter)) LIKE :word${i} OR
-		lower(unaccent(ak.creator)) LIKE :word${i} OR
-		lower(unaccent(ak.language)) LIKE :word${i}
+		lower(unaccent(ak.singers)) LIKE :word${i} OR
+		lower(unaccent(ak.songwriters)) LIKE :word${i} OR
+		lower(unaccent(ak.creators)) LIKE :word${i} OR
+		lower(unaccent(ak.languages)) LIKE :word${i}
 		`);
 	}
 	return {
