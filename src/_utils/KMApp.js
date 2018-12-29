@@ -60,8 +60,6 @@ export default class KMApp {
 			PathImport: 'app/import',
 			PathAvatars: 'app/avatars',
 			PathMediasHTTP: '',
-			BinPlayerLinux: './config.sample.ini',
-			BinffmpegLinux: './config.sample.ini',
 		};
 		delete instanceConfig.VersionNo;
 		delete instanceConfig.VersionName;
