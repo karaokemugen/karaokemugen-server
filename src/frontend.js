@@ -37,7 +37,12 @@ export function initFrontend(listenPort) {
 	const app = express();
 	const mainApp = express();
 
-	app.enable('trust proxy');
+	app.enable('trust proxy', ip => {
+		if (ip === '127.0.0.1' ||
+			ip === '::ffff:127.0.0.1'
+	 	) return true;
+		return false;
+	});
 	app.use(helmet());
 	app.use(bodyParser.json({limit: '100mb'})); // support json encoded bodies
 	app.use(bodyParser.urlencoded({
@@ -113,14 +118,15 @@ function api() {
 }
 
 function getKMRoom(req, res, next) {
-	const instance = getInstanceRoom(req.vhost[0]);
-	if (!instance) {
-		res.status(404).send('No room exists by this name');
-	} else {
-		req.KMAppPort = instance.port;
-		next();
-	}
+    const instance = getInstanceRoom(req.vhost[0]);
+    if (!instance) {
+        res.status(404).send('No room exists by this name');
+    } else {
+        req.KMAppPort = instance.port;
+        next();
+    }
 }
+
 
 function redirectKMRoom(req) {
 	return `http://localhost:${req.KMAppPort}`;
