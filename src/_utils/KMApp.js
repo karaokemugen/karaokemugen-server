@@ -1,13 +1,14 @@
 import pm2 from 'pm2';
 import { getConfig } from './config';
 import {resolve} from 'path';
-import {asyncWriteFile, asyncMove} from './files';
+import {asyncWriteFile, asyncMove, asyncExists, asyncUnlink} from './files';
 import {stringify} from 'ini';
 import {generate} from 'randomstring';
 import fp from 'find-free-port';
 import {connect} from 'socket.io-client';
 import {createServer} from 'net';
 import logger from 'winston';
+import { basename } from 'path';
 
 export default class KMApp {
 
@@ -22,7 +23,7 @@ export default class KMApp {
 			length: 4,
 			readable: true,
 			charset: 'alphabetic',
-			capitalization: 'uppercase'
+			capitalization: 'lowercase'
 		});
 		//this.mpvSocketPath = resolve('/tmp/',`km-node-mpvsocket-${this.id}`);
 		this.mpvSocketPath = `\\\\.\\pipe\\mpv-server-socket-${this.id}`;
@@ -33,8 +34,13 @@ export default class KMApp {
 
 	setup = async(files, instanceConfig) => {
 		logger.info(`[Spawn] [${this.id}] Setup start`);
+		try {
+			await asyncUnlink(this.mpvSocketPath);
+		} catch(err) {
+			//Do nothing.
+		}
 		for (const file of files) {
-			await asyncMove(file, resolve(this.conf.appPath, this.conf.Path.KaraokeMugenApp,'app/db/'), {overwrite: true});
+			await asyncMove(file, resolve(this.conf.appPath, this.conf.Path.KaraokeMugenApp,`app/db/${basename(file)}`), {overwrite: true});
 		}
 		logger.info(`[Spawn] [${this.id}] Moved databases in place`);
 		this.port = await fp(13337, 14337);
