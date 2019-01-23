@@ -406,11 +406,13 @@ export async function run() {
 			{sql: inserti18nSeries, params: sqlInserti18nSeries},
 			{sql: updateSeries, params: sqlUpdateSeries},
 		]);
-		refreshKaras();
-		refreshSeries();
-		refreshYears();
-		refreshTags();
-		updateSetting('lastGeneration', new Date());
+		await Promise.all([
+			refreshKaras(),
+			refreshSeries(),
+			refreshYears(),
+			refreshTags(),
+			updateSetting('lastGeneration', new Date())
+		]);
 		createVideoPreviews();
 		logger.info('[Gen] Done generating database');
 		return error;
