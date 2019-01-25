@@ -385,18 +385,13 @@ export async function run() {
 			{sql: inserti18nSeries, params: sqlInserti18nSeries},
 			{sql: updateSeries, params: sqlUpdateSeries},
 		]);
-<<<<<<< HEAD
 		await Promise.all([
 			refreshKaras(),
-			refreshSeries(),
-			refreshYears(),
+			//refreshSeries(),
+			//refreshYears(),
 			//refreshTags(),
 			updateSetting('lastGeneration', new Date())
 		]);
-=======
-		refreshKaras();
-		updateSetting('lastGeneration', new Date());
->>>>>>> parent of fecd1df... Added karacount and materialized view for years (#11)
 		createVideoPreviews();
 		logger.info('[Gen] Done generating database');
 		return error;
