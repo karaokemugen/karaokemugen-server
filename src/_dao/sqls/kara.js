@@ -1,6 +1,6 @@
 // SQL for kara management
 
-export const countKaras = (filterClauses, typeClauses) => `
+export const countKaras = (filterClauses, typeClauses, orderClauses) => `
 SELECT COUNT(kara_id) AS count
 FROM all_karas AS ak
 WHERE 1 = 1
@@ -21,14 +21,14 @@ export const getAllKaras = (filterClauses, lang, typeClauses, orderClauses, limi
   ak.serie_id AS serie_id,
   ak.seriefiles AS seriefiles,
   ak.subfile AS subfile,
-  ak.singers AS singers,
-  ak.songtypes AS songtype,
-  ak.creators AS creators,
-  ak.songwriters AS songwriters,
+  ak.singer AS singer,
+  ak.songtype AS songtype,
+  ak.creator AS creator,
+  ak.songwriter AS songwriter,
   ak.year AS year,
-  ak.languages AS languages,
-  ak.authors AS authors,
-  ak.misc_tags AS misc_tags,
+  ak.language AS language,
+  ak.author AS author,
+  ak.misc AS misc,
   ak.mediafile AS mediafile,
   ak.karafile AS karafile,
   ak.duration AS duration,
@@ -40,9 +40,9 @@ FROM all_karas AS ak
 WHERE 1 = 1
   ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
   ${typeClauses}
-ORDER BY ${orderClauses} ak.languages_sortable, ak.serie IS NULL, lower(unaccent(serie)), ak.songtypes_sortable DESC, ak.songorder, lower(unaccent(singers_sortable)), lower(unaccent(ak.title))
+ORDER BY ${orderClauses} ak.language, ak.serie IS NULL, lower(unaccent(serie)), ak.songtype DESC, ak.songorder, lower(unaccent(singer)), lower(unaccent(ak.title))
 ${limitClause}
 ${offsetClause}
 `;
 
-export const getYears = 'SELECT year, karacount FROM all_years';
+export const getYears = 'SELECT DISTINCT year FROM all_karas ORDER BY year';
