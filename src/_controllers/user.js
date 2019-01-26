@@ -22,7 +22,7 @@ export default function userController(router) {
 		})
 		.delete(requireAuth, requireValidUser, async (req, res) => {
 			try {
-				await deleteUser(req.authToken.username);
+				await removeUser(req.authToken.username);
 				res.send('User deleted');
 			} catch(err) {
 				res.status(500).send(err);
