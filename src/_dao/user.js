@@ -12,6 +12,10 @@ export async function selectAllUsers() {
 	return res.rows;
 }
 
+export async function deleteUser(username) {
+	return await db().query(sql.deleteUser, [username]);
+}
+
 export async function insertUser(user) {
 	return await db().query(sql.insertUser, [
 		user.login,

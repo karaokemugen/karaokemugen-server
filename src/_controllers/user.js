@@ -1,4 +1,4 @@
-import {editUser, createUser, findUserByName, getAllUsers} from '../_services/user';
+import {removeUser, editUser, createUser, findUserByName, getAllUsers} from '../_services/user';
 import {check, unescape} from '../_utils/validators';
 import multer from 'multer';
 import {getConfig} from '../_utils/config';
@@ -18,6 +18,14 @@ export default function userController(router) {
 			} catch(err) {
 				res.statusCode = 500;
 				res.json(err);
+			}
+		})
+		.delete(requireAuth, requireValidUser, async (req, res) => {
+			try {
+				await deleteUser(req.authToken.username);
+				res.send('User deleted');
+			} catch(err) {
+				res.status(500).send(err);
 			}
 		})
 		.post(async (req, res) => {
