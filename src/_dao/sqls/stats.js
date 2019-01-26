@@ -43,7 +43,7 @@ INSERT INTO favorite(fk_id_instance, kid)
 VALUES(
 	(SELECT pk_id_instance FROM instance WHERE instance_id = $1),
 	$2
-)
+) ON CONFLICT DO NOTHING;
 `;
 
 export const insertViewcount = `
