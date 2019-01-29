@@ -1,24 +1,24 @@
 // SQL for kara management
 
 export const countKaras = (filterClauses, typeClauses) => `
-SELECT COUNT(kara_id) AS count
+SELECT COUNT(kid) AS count
 FROM all_karas AS ak
 WHERE 1 = 1
   ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
   ${typeClauses}
 `;
 
-export const getAllKaras = (filterClauses, lang, typeClauses, orderClauses, limitClause, offsetClause) => `SELECT ak.kara_id AS kara_id,
+export const getAllKaras = (filterClauses, lang, typeClauses, orderClauses, limitClause, offsetClause) => `SELECT
   ak.kid AS kid,
   ak.title AS title,
   ak.songorder AS songorder,
   COALESCE(
-	  (SELECT sl.name FROM serie_lang sl, kara_serie ks WHERE sl.fk_id_serie = ks.fk_id_serie AND ks.fk_id_kara = kara_id AND sl.lang = ${lang.main}),
-	  (SELECT sl.name FROM serie_lang sl, kara_serie ks WHERE sl.fk_id_serie = ks.fk_id_serie AND ks.fk_id_kara = kara_id AND sl.lang = ${lang.fallback}),
+	  (SELECT sl.name FROM serie_lang sl, kara_serie ks WHERE sl.fk_sid = ks.fk_sid AND ks.fk_kid = kid AND sl.lang = ${lang.main}),
+	  (SELECT sl.name FROM serie_lang sl, kara_serie ks WHERE sl.fk_sid = ks.fk_sid AND ks.fk_kid = kid AND sl.lang = ${lang.fallback}),
 	  ak.serie) AS serie,
   ak.serie_altname AS serie_altname,
   ak.serie_i18n AS serie_i18n,
-  ak.serie_id AS serie_id,
+  ak.sid AS sid,
   ak.seriefiles AS seriefiles,
   ak.subfile AS subfile,
   ak.singers AS singers,

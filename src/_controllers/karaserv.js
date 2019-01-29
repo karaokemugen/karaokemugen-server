@@ -21,8 +21,7 @@ export default function KSController(router) {
 				const karas = await getAllKaras(req.query.filter,req.lang,req.query.from, req.query.size);
 				res.json(karas);
 			} catch(err) {
-				res.statusCode = 500;
-				res.json(err);
+				res.status(500).json(err);
 			}
 		});
 	router.route('/karas/search')
@@ -31,8 +30,7 @@ export default function KSController(router) {
 				const karas = await getAllKaras(req.query.filter,req.lang,req.query.from, req.query.size,'search',req.query.q);
 				res.json(karas);
 			} catch(err) {
-				res.statusCode = 500;
-				res.json(err);
+				res.status(500).json(err);
 			}
 		});
 	router.route('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})')
@@ -41,8 +39,7 @@ export default function KSController(router) {
 				const kara = await getAllKaras(req.query.filter,req.lang,req.query.from, req.query.size, 'kid', req.params.kid);
 				res.json(kara);
 			} catch(err) {
-				res.statusCode = 500;
-				res.json(err);
+				res.status(500).json(err);
 			}
 		});
 	router.route('/karas/recent')
@@ -60,8 +57,7 @@ export default function KSController(router) {
 				const tags = await getTags(req.lang,req.params.tagtype,req.query.from,req.query.size);
 				res.json(tags);
 			} catch(err) {
-				res.statusCode = 500;
-				res.json(err);
+				res.status(500).json(err);
 			}
 		});
 	router.route('/karas/tags')
@@ -70,8 +66,7 @@ export default function KSController(router) {
 				const tags = await getTags(req.lang,null,req.query.from,req.query.size);
 				res.json(tags);
 			} catch(err) {
-				res.statusCode = 500;
-				res.json(err);
+				res.status(500).json(err);
 			}
 		});
 	router.route('/karas/series')
@@ -80,8 +75,7 @@ export default function KSController(router) {
 				const series = await getAllSeries(req.query.filter,req.lang,req.query.from,req.query.size);
 				res.json(series);
 			} catch(err) {
-				res.statusCode = 500;
-				res.json(err);
+				res.status(500).json(err);
 			}
 		});
 	router.route('/karas/years')
@@ -90,8 +84,7 @@ export default function KSController(router) {
 				const years = await getAllYears();
 				res.json(years);
 			} catch(err) {
-				res.statusCode = 500;
-				res.json(err);
+				res.status(500).json(err);
 			}
 		});
 }

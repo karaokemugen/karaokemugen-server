@@ -47,7 +47,7 @@ export function verifyConfig(conf) {
 /** Initializing configuration */
 export async function initConfig(appPath, argv) {
 	if (argv.config) configFile = argv.config;
-	configureLogger(appPath, !!argv.debug);
+	await configureLogger(appPath, !!argv.debug);
 
 	config = {...config, appPath: appPath};
 	config = {...config, os: process.platform};

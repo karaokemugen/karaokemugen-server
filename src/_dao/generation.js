@@ -1,17 +1,16 @@
 import logger from 'winston';
-import {resolve} from 'path';
 import {has as hasLang} from 'langs';
-import {asyncReadDir} from '../_utils/files';
 import {getConfig} from '../_utils/config';
+import {resolve} from 'path';
+import {asyncReadDirFilter} from '../_utils/files';
 import {getDataFromKaraFile} from './karafile';
 import {createVideoPreviews} from '../_utils/previews';
-import {transaction} from './database';
+import {db, transaction} from './database';
 import {refreshKaras, refreshYears} from './kara';
 import {
-	insertKaras, insertKaraSeries, insertKaraTags, insertSeries, insertTags, inserti18nSeries, updateSeries, deleteAll
+	insertKaras, insertKaraSeries, insertKaraTags, insertSeries, insertTags, inserti18nSeries, deleteAll
 } from './sqls/generation';
 import {karaTypesMap} from '../_services/constants';
-import {serieRequired, verifyKaraData} from '../_services/kara';
 import {basename} from 'path';
 import parallel from 'async-await-parallel';
 import {findSeries, getDataFromSeriesFile} from '../_dao/seriesfile';
@@ -20,6 +19,7 @@ import { refreshSeries } from './series';
 import { refreshTags } from './tag';
 import slug from 'slug';
 import {createHash} from 'crypto';
+
 
 let error = false;
 let generating = false;
@@ -30,24 +30,24 @@ function hash(string) {
 	return hash.digest('hex');
 }
 
-async function extractKaraFiles() {
+async function emptyDatabase() {
+	await db().query(deleteAll);
+}
+
+export async function extractAllSeriesFiles() {
 	const conf = getConfig();
-	const karaDir = resolve(conf.appPath, conf.Path.Karas);
-	const karaFiles = [];
-	const dirListing = await asyncReadDir(karaDir);
-	for (const file of dirListing) {
-		if (file.endsWith('.kara') && !file.startsWith('.')) {
-			karaFiles.push(resolve(karaDir, file));
-		}
-	}
-	if (karaFiles.length === 0) throw 'No kara files found';
-	return karaFiles;
+	return await asyncReadDirFilter(resolve(conf.appPath, conf.Path.Series), '.series.json');
+}
+
+export async function extractAllKaraFiles() {
+	const conf = getConfig();
+	return await asyncReadDirFilter(resolve(conf.appPath, conf.Path.Karas), '.kara');
 }
 
 export async function readAllKaras(karafiles) {
 	const karaPromises = [];
 	for (const karafile of karafiles) {
-		karaPromises.push(() => readKaraFile(karafile));
+		karaPromises.push(() => getDataFromKaraFile(karafile));
 	}
 	const karas = await parallel(karaPromises, 16);
 	// Errors are non-blocking
@@ -57,47 +57,16 @@ export async function readAllKaras(karafiles) {
 	return karas;
 }
 
-async function readKaraFile(karafile) {
-	const karaData = await getDataFromKaraFile(karafile);
-	try {
-		verifyKaraData(karaData);
-	} catch (err) {
-		logger.warn(`[Gen] Kara file ${karafile} is invalid/incomplete : ${err}`);
-		error = true;
-	}
-	return karaData;
-}
-
-async function extractSeriesFiles() {
-	const conf = getConfig();
-	const seriesDir = resolve(conf.appPath, conf.Path.Series);
-	const seriesFiles = [];
-	const dirListing = await asyncReadDir(seriesDir);
-	for (const file of dirListing) {
-		if (file.endsWith('.series.json') && !file.startsWith('.')) {
-			seriesFiles.push(resolve(seriesDir, file));
-		}
-	}
-	if (seriesFiles.length === 0) throw 'No series files found';
-	return seriesFiles;
-}
-
-export async function readAllSeries(seriesfiles) {
+export async function readAllSeries(seriesFiles) {
 	const seriesPromises = [];
-	for (const seriesfile of seriesfiles) {
-		seriesPromises.push(() => processSeriesFile(seriesfile));
+	for (const seriesFile of seriesFiles) {
+		seriesPromises.push(() => getDataFromSeriesFile(seriesFile));
 	}
 	return await parallel(seriesPromises, 16);
 }
 
-async function processSeriesFile(seriesFile) {
-	return await getDataFromSeriesFile(seriesFile);
-}
-
-
-function prepareKaraInsertData(kara, index) {
+function prepareKaraInsertData(kara) {
 	return [
-		index,
 		kara.KID,
 		kara.title,
 		kara.year || null,
@@ -114,111 +83,128 @@ function prepareKaraInsertData(kara, index) {
 }
 
 function prepareAllKarasInsertData(karas) {
-	// Remember JS indexes start at 0.
-	return karas.map((kara, index) => prepareKaraInsertData(kara, index + 1));
+	return karas.map(kara => prepareKaraInsertData(kara));
 }
 
-function getSeries(kara) {
-	const series = new Set();
-
-	// Extracted series names from kara files
-	if (kara.series && kara.series.trim()) {
-		kara.series.split(',').forEach(serie => {
-			if (serie.trim()) {
-				series.add(serie.trim());
-			}
+function checkDuplicateKIDs(karas) {
+	let searchKaras = [];
+	let errors = [];
+	for (const kara of karas) {
+		// Find out if our kara exists in our list, if not push it.
+		const search = searchKaras.find(k => {
+			return k.KID === kara.KID;
 		});
+		if (search) {
+			// One KID is duplicated, we're going to throw an error.
+			errors.push({
+				KID: kara.KID,
+				kara1: kara.karafile,
+				kara2: search.karafile
+			});
+		}
+		searchKaras.push({ KID: kara.KID, karafile: kara.karafile });
 	}
+	if (errors.length > 0) throw `One or several KIDs are duplicated in your database : ${JSON.stringify(errors,null,2)}. Please fix this by removing the duplicated karaoke(s) and retry generating your database.`;
+}
 
-	// At least one series is mandatory if kara is not LIVE/MV type
-	if (serieRequired(kara.type) && !series) {
-		logger.error(`Karaoke series cannot be detected! (${JSON.stringify(kara)})`);
-		error = true;
+function checkDuplicateSeries(series) {
+	let searchSeries = [];
+	let errors = [];
+	for (const serie of series) {
+		// Find out if our series exists in our list, if not push it.
+		const search = searchSeries.find(s => {
+			return s.name === serie.name;
+		});
+		if (search) {
+			// One series is duplicated, we're going to throw an error.
+			errors.push({
+				name: serie.name
+			});
+		}
+		searchSeries.push({ name: serie.name });
 	}
+	if (errors.length > 0) throw `One or several series are duplicated in your database : ${JSON.stringify(errors,null,2)}. Please fix this by removing the duplicated series file(s) and retry generating your database.`;
+}
 
-	return series;
+function checkDuplicateSIDs(series) {
+	let searchSeries = [];
+	let errors = [];
+	for (const serie of series) {
+		// Find out if our kara exists in our list, if not push it.
+		const search = searchSeries.find(s => {
+			return s.sid === serie.sid;
+		});
+		if (search) {
+			// One SID is duplicated, we're going to throw an error.
+			errors.push({
+				sid: serie.sid,
+				serie1: serie.seriefile,
+				serie2: search.seriefile
+			});
+		}
+		searchSeries.push({ sid: serie.sid, karafile: serie.seriefile });
+	}
+	if (errors.length > 0) throw `One or several SIDs are duplicated in your database : ${JSON.stringify(errors,null,2)}. Please fix this by removing the duplicated serie(s) and retry generating your database.`;
 }
 
 /**
  * Returns a Map<String, Array>, linking a series to the karaoke indexes involved.
  */
 function getAllSeries(karas, seriesData) {
-	const map = new Map();
-	karas.forEach((kara, index) => {
-		const karaIndex = index + 1;
-		getSeries(kara).forEach(serie => {
-			if (map.has(serie)) {
-				map.get(serie).push(karaIndex);
-			} else {
-				map.set(serie, [karaIndex]);
-			}
-		});
-	});
+	const series = {};
+	logger.profile('getAllSeries');
 	for (const serie of seriesData) {
-		if (!map.has(serie.name)) {
-			map.set(serie.name, [0]);
+		series[serie.name] = {
+			sid: serie.sid
+		};
+		for (const kara of karas) {
+			const karaSeries = kara.series.split(',');
+			if (!series[serie.name].kids) series[serie.name].kids = [];
+			if (karaSeries.includes(serie.name)) {
+				series[serie.name].kids.push(kara.KID);
+			}
 		}
 	}
-	return map;
+	return series;
 }
 
-function prepareSerieInsertData(serie, index) {
+function prepareSerieInsertData(serie, data) {
 	return [
-		index,
-		serie
+		serie,
+		JSON.stringify(data.aliases || []),
+		data.sid,
+		data.seriefile
 	];
 }
 
-function prepareAllSeriesInsertData(mapSeries) {
+function prepareAllSeriesInsertData(mapSeries, seriesData) {
 	const data = [];
-	let index = 1;
-	for (const serie of mapSeries.keys()) {
-		data.push(prepareSerieInsertData(serie, index));
-		index++;
+	for (const serie of Object.keys(mapSeries)) {
+		const serieData = seriesData.filter(e => e.name === serie);
+		data.push(prepareSerieInsertData(serie, serieData[0]));
 	}
 	return data;
 }
 
 /**
- * Warning : we iterate on keys and not on map entries to get the right order and thus the same indexes as the function prepareAllSeriesInsertData. This is the historical way of doing it and should be improved sometime.
+ * Warning : we iterate on keys and not on map entries to get the right order and thus the same indexes as the function prepareAllSeriesInsertData. This is the historical way of doing it and should be improved sometimes.
  */
 function prepareAllKarasSeriesInsertData(mapSeries) {
 	const data = [];
-	let index = 1;
-	for (const serie of mapSeries.keys()) {
-		for (const karaIndex of mapSeries.get(serie)) {
+	for (const serie of Object.keys(mapSeries)) {
+		for (const kid of mapSeries[serie].kids) {
 			data.push([
-				index,
-				karaIndex
+				mapSeries[serie].sid,
+				kid
 			]);
 		}
-		index++;
 	}
-
 	return data;
 }
 
 async function prepareAltSeriesInsertData(seriesData, mapSeries) {
-
-	const data = [];
 	const i18nData = [];
-
 	for (const serie of seriesData) {
-		if (serie.aliases) {
-			data.push([
-				JSON.stringify(serie.aliases),
-				serie.name,
-				serie.seriefile,
-				serie.sid
-			]);
-		} else {
-			data.push([
-				null,
-				serie.name,
-				serie.seriefile,
-				serie.sid
-			]);
-		}
 		if (serie.i18n) {
 			for (const lang of Object.keys(serie.i18n)) {
 				i18nData.push([
@@ -230,16 +216,18 @@ async function prepareAltSeriesInsertData(seriesData, mapSeries) {
 		}
 	}
 	// Checking if some series present in .kara files are not present in the series files
-	for (const serie of mapSeries.keys()) {
+	for (const serie of Object.keys(mapSeries)) {
 		if (!findSeries(serie, seriesData)) {
-			logger.error(`[Gen] Series "${serie}" is not in any series file`);
-			error = true;
+			// Print a warning and push some basic data so the series can be searchable at least
+			logger.warn(`[Gen] Series "${serie}" is not in any series file`);
+			i18nData.push([
+				'jpn',
+				serie,
+				serie
+			]);
 		}
 	}
-	return {
-		data: data,
-		i18nData: i18nData
-	};
+	return i18nData;
 }
 
 function getAllKaraTags(karas) {
@@ -248,8 +236,8 @@ function getAllKaraTags(karas) {
 
 	const tagsByKara = new Map();
 
-	karas.forEach((kara, index) => {
-		const karaIndex = index + 1;
+	karas.forEach(kara => {
+		const karaIndex = kara.KID;
 		tagsByKara.set(karaIndex, getKaraTags(kara, allTags));
 	});
 
@@ -288,9 +276,9 @@ function getKaraTags(kara, allTags) {
 	} else {
 		result.add(getTagId('NO_TAG,8', allTags));
 	}
-	if (kara.group) kara.group.split(',').forEach(group => result.add(getTagId(group.trim() + ',9', allTags)));
+	if (kara.groups) kara.groups.split(',').forEach(group => result.add(getTagId(group.trim() + ',9', allTags)));
 	if (kara.lang) kara.lang.split(',').forEach(lang => {
-		if (lang === 'zxx' || lang === 'und' || lang === 'mul' || hasLang('2B', lang)) {
+		if (lang === 'und' || lang === 'mul' || lang === 'zxx' || hasLang('2B', lang)) {
 			result.add(getTagId(lang.trim() + ',5', allTags));
 		}
 	});
@@ -312,7 +300,7 @@ function getTypes(kara, allTags) {
 	});
 
 	if (result.size === 0) {
-		logger.warn(`[Gen] Karaoke type cannot be detected (${kara.type}) in kara :  ${JSON.stringify(kara)}`);
+		logger.warn(`[Gen] Karaoke type cannot be detected (${kara.type}) in kara :  ${JSON.stringify(kara, null, 2)}`);
 		error = true;
 	}
 
@@ -334,6 +322,7 @@ function getTagId(tagName, tags) {
 function prepareAllTagsInsertData(allTags) {
 	const data = [];
 	const slugs = [];
+
 	allTags.forEach((tag, index) => {
 		const tagParts = tag.split(',');
 		const tagName = tagParts[0];
@@ -345,13 +334,16 @@ function prepareAllTagsInsertData(allTags) {
 		if (slugs.includes(`${tagType} ${tagSlug}`)) {
 			tagSlug = `${tagSlug}-${hash(tagName)}`;
 		}
-		if (slugs.includes(`${tagType} ${tagSlug}`)) console.log(`Duplicate: ${tagType} ${tagSlug} ${tagName}`);
+		if (slugs.includes(`${tagType} ${tagSlug}`)) {
+			logger.error(`[Gen] Duplicate: ${tagType} ${tagSlug} ${tagName}`);
+			error = true;
+		}
 		slugs.push(`${tagType} ${tagSlug}`);
 		data.push([
 			index + 1,
 			tagType,
 			tagName,
-			tagSlug
+			tagSlug,
 		]);
 	});
 
@@ -361,11 +353,11 @@ function prepareAllTagsInsertData(allTags) {
 function prepareTagsKaraInsertData(tagsByKara) {
 	const data = [];
 
-	tagsByKara.forEach((tags, karaIndex) => {
+	tagsByKara.forEach((tags, kid) => {
 		tags.forEach(tagId => {
 			data.push([
 				tagId,
-				karaIndex
+				kid
 			]);
 		});
 	});
@@ -375,38 +367,47 @@ function prepareTagsKaraInsertData(tagsByKara) {
 
 export async function run() {
 	try {
-		if (generating) throw 'Generation already in progress, try again later)';
+		if (generating) throw 'A database generation is already in progress';
 		generating = true;
+
 		logger.info('[Gen] Starting database generation');
-		const karaFiles = await extractKaraFiles();
+		const karaFiles = await extractAllKaraFiles();
+		logger.debug(`[Gen] Number of .karas found : ${karaFiles.length}`);
+		if (karaFiles.length === 0) throw 'No kara files found';
+
 		const karas = await readAllKaras(karaFiles);
-		const seriesFiles = await extractSeriesFiles();
+		logger.debug(`[Gen] Number of karas read : ${karas.length}`);
+		// Check if we don't have two identical KIDs
+		checkDuplicateKIDs(karas);
+		// Series data
+
+		const seriesFiles = await extractAllSeriesFiles();
+		if (seriesFiles.length === 0) throw 'No series files found';
 		const seriesData = await readAllSeries(seriesFiles);
+		checkDuplicateSeries(seriesData);
+		checkDuplicateSIDs(seriesData);
 		// Preparing data to insert
+		logger.info('[Gen] Data files processed, creating database');
 		const sqlInsertKaras = prepareAllKarasInsertData(karas);
 		const seriesMap = getAllSeries(karas, seriesData);
-		const sqlInsertSeries = prepareAllSeriesInsertData(seriesMap);
+		const sqlInsertSeries = prepareAllSeriesInsertData(seriesMap, seriesData);
 		const sqlInsertKarasSeries = prepareAllKarasSeriesInsertData(seriesMap);
+		const sqlSeriesi18nData = await prepareAltSeriesInsertData(seriesData, seriesMap);
 		const tags = getAllKaraTags(karas);
 		const sqlInsertTags = prepareAllTagsInsertData(tags.allTags);
 		const sqlInsertKarasTags = prepareTagsKaraInsertData(tags.tagsByKara);
-		const seriesAltNamesData = await prepareAltSeriesInsertData(seriesData, seriesMap);
-		const sqlUpdateSeries = seriesAltNamesData.data;
-		const sqlInserti18nSeries = seriesAltNamesData.i18nData;
-
+		await emptyDatabase();
 		// Inserting data in a transaction
-
 		await transaction([
-			{sql: deleteAll},
 			{sql: insertKaras, params: sqlInsertKaras},
 			{sql: insertSeries, params: sqlInsertSeries},
 			{sql: insertTags, params: sqlInsertTags},
 			{sql: insertKaraTags, params: sqlInsertKarasTags},
 			{sql: insertKaraSeries, params: sqlInsertKarasSeries},
-			{sql: inserti18nSeries, params: sqlInserti18nSeries},
-			{sql: updateSeries, params: sqlUpdateSeries},
+			{sql: inserti18nSeries, params: sqlSeriesi18nData}
 		]);
 		await Promise.all([
+			db().query('VACUUM ANALYZE;'),
 			refreshKaras(),
 			refreshSeries(),
 			refreshYears(),
@@ -414,12 +415,10 @@ export async function run() {
 			updateSetting('lastGeneration', new Date())
 		]);
 		createVideoPreviews();
-		logger.info('[Gen] Done generating database');
-		return error;
+		if (error) throw 'Error during generation. Find out why in the messages above.';
 	} catch (err) {
-		console.log(err);
 		logger.error(`[Gen] Generation error: ${err}`);
-		return false;
+		throw err;
 	} finally {
 		generating = false;
 	}

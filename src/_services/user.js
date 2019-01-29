@@ -107,7 +107,6 @@ export async function editUser(username,user,avatar,token) {
 	try {
 		const currentUser = await findUserByName(username);
 		if (!currentUser) throw 'User unknown';
-		user.id = currentUser.id;
 		user.login = username;
 		if (!user.type) user.type = currentUser.type;
 		if (!user.bio) user.bio = null;

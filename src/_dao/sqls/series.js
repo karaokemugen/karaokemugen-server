@@ -1,22 +1,21 @@
 // SQL for series
 
 export const countKaras = (filterClauses) => `
-SELECT COUNT(serie_id) AS count
+SELECT COUNT(sid) AS count
 FROM all_series
 WHERE 1 = 1
   ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
 `;
 
 export const getSeries = (filterClauses, lang, limitClause, offsetClause) => `
-SELECT aseries.serie_id AS serie_id,
+SELECT aseries.sid AS sid,
 	aseries.name AS name,
 	COALESCE(
-		(SELECT sl.name FROM serie_lang sl WHERE sl.fk_id_serie = aseries.serie_id AND sl.lang = ${lang.main}),
-		(SELECT sl.name FROM serie_lang sl WHERE sl.fk_id_serie = aseries.serie_id AND sl.lang = ${lang.fallback}),
+		(SELECT sl.name FROM serie_lang sl WHERE sl.fk_sid = aseries.sid AND sl.lang = ${lang.main}),
+		(SELECT sl.name FROM serie_lang sl WHERE sl.fk_sid = aseries.sid AND sl.lang = ${lang.fallback}),
 		aseries.name)
 	AS i18n_name,
 	aseries.aliases AS aliases,
-	aseries.sid AS sid,
 	aseries.i18n AS i18n,
 	aseries.search AS search,
 	aseries.seriefile AS seriefile,

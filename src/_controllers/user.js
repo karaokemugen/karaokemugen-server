@@ -16,8 +16,7 @@ export default function userController(router) {
 				const info = await getAllUsers({public: true});
 				res.status(200).json(info);
 			} catch(err) {
-				res.statusCode = 500;
-				res.json(err);
+				res.status(500).json(err);
 			}
 		})
 		.post(async (req, res) => {
@@ -36,8 +35,7 @@ export default function userController(router) {
 				const info = await findUserByName(req.params.user, {public: true});
 				res.status(200).json(info);
 			} catch(err) {
-				res.statusCode = 500;
-				res.json(err);
+				res.status(500).json(err);
 			}
 		})
 		.put(upload.single('avatarfile'), requireAuth, requireValidUser,  async (req, res) => {

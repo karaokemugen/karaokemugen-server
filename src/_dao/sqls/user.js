@@ -2,7 +2,7 @@
 
 export const insertUser = `
 INSERT INTO users(
-	login,
+	pk_login,
 	nickname,
 	password,
 	type,
@@ -14,8 +14,8 @@ INSERT INTO users(
 `;
 
 export const selectUser = `
-SELECT pk_id_user AS id,
-	login,
+SELECT
+	pk_login AS login,
 	nickname,
 	password,
 	type,
@@ -27,7 +27,7 @@ FROM users
 `;
 
 export const updateUserPassword = `
-UPDATE users SET password = $2 WHERE login = $1
+UPDATE users SET password = $2 WHERE pk_login = $1
 `;
 
 export const updateUser = `
@@ -38,5 +38,5 @@ UPDATE users SET
 	email = $4,
 	avatar_file = $5,
 	type = $6
-WhERE login = $7
+WhERE pk_login = $7
 `;

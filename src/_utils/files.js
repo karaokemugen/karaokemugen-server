@@ -138,3 +138,8 @@ export async function detectFileType(file) {
 	const detected = fileType(buffer);
 	return detected.ext;
 }
+
+export async function asyncReadDirFilter(dir, ext) {
+	const dirListing = await asyncReadDir(dir);
+	return dirListing.filter(file => file.endsWith(ext) && !file.startsWith('.')).map(file => resolve(dir, file));
+}
