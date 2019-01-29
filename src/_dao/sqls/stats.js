@@ -78,7 +78,7 @@ SELECT ak.title AS title,
     ak.language AS language,
 	(SELECT COUNT(pk_id_played) FROM played WHERE kid = ak.kid) AS played
 FROM all_karas AS ak
-WHERE played > 0
+HAVING played > 1
 ORDER BY played DESC
 `;
 
@@ -92,7 +92,7 @@ SELECT ak.title AS title,
     ak.language AS language,
 	(SELECT COUNT(pk_id_requested) FROM requested WHERE kid = ak.kid) AS requested
 FROM all_karas AS ak
-WHERE requested > 0
+HAVING requested > 1
 ORDER BY requested DESC
 `;
 
@@ -106,6 +106,6 @@ SELECT ak.title AS title,
     ak.language AS language,
 	(SELECT COUNT(pk_id_favorite) FROM favorite WHERE kid = ak.kid) AS favorites
 FROM all_karas AS ak
-WHERE favorites > 0
+HAVING favorites > 1
 ORDER BY favorites DESC
 `;
