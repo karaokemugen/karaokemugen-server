@@ -68,44 +68,122 @@ VALUES(
 ON CONFLICT (fk_iid, fk_kid, session_started_at, requested_at) DO NOTHING;
 `;
 
-export const getPlayedStats = `
-SELECT ak.title AS title,
-	ak.songorder AS songorder,
-	ak.serie AS serie,
-	ak.serie_i18n AS serie_i18n,
-	ak.singer AS singer,
-    ak.songtype AS songtype,
-    ak.language AS language,
-	(SELECT COUNT(*) FROM played WHERE fk_kid = ak.kid) AS played
+export const getPlayedStats = (filterClauses, lang, limitClause, offsetClause) => `
+WITH p AS (SELECT fk_kid, COUNT(*) AS nb FROM played GROUP BY fk_kid)
+SELECT
+  ak.kid AS kid,
+  ak.title AS title,
+  ak.songorder AS songorder,
+  COALESCE(
+	  (SELECT sl.name FROM serie_lang sl, kara_serie ks WHERE sl.fk_sid = ks.fk_sid AND ks.fk_kid = kid AND sl.lang = ${lang.main}),
+	  (SELECT sl.name FROM serie_lang sl, kara_serie ks WHERE sl.fk_sid = ks.fk_sid AND ks.fk_kid = kid AND sl.lang = ${lang.fallback}),
+	  ak.serie) AS serie,
+  ak.serie_altname AS serie_altname,
+  ak.serie_i18n AS serie_i18n,
+  ak.sid AS sid,
+  ak.seriefiles AS seriefiles,
+  ak.subfile AS subfile,
+  ak.singers AS singers,
+  ak.songtypes AS songtype,
+  ak.creators AS creators,
+  ak.songwriters AS songwriters,
+  ak.year AS year,
+  ak.languages AS languages,
+  ak.authors AS authors,
+  ak.misc_tags AS misc_tags,
+  ak.mediafile AS mediafile,
+  ak.karafile AS karafile,
+  ak.duration AS duration,
+  ak.gain AS gain,
+  ak.created_at AS created_at,
+  ak.modified_at AS modified_at,
+  ak.mediasize AS mediasize,
+  p.nb AS played
 FROM all_karas AS ak
-WHERE played > 0
-ORDER BY played DESC
+INNER JOIN p ON ak.kid = p.fk_kid
+WHERE p.nb > 1
+  ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
+ORDER BY p.nb DESC, ak.languages_sortable, ak.serie IS NULL, lower(unaccent(serie)), ak.songtypes_sortable DESC, ak.songorder, lower(unaccent(singers_sortable)), lower(unaccent(ak.title))
+${limitClause}
+${offsetClause}
 `;
 
-export const getRequestedStats = `
-SELECT ak.title AS title,
-	ak.songorder AS songorder,
-	ak.serie AS serie,
-	ak.serie_i18n AS serie_i18n,
-	ak.singer AS singer,
-    ak.songtype AS songtype,
-    ak.language AS language,
-	(SELECT COUNT(*) FROM requested WHERE fk_kid = ak.kid) AS requested
+export const getRequestedStats = (filterClauses, lang, limitClause, offsetClause) => `
+WITH rq AS (SELECT fk_kid, COUNT(*) AS nb FROM requested GROUP BY fk_kid)
+SELECT
+  ak.kid AS kid,
+  ak.title AS title,
+  ak.songorder AS songorder,
+  COALESCE(
+	  (SELECT sl.name FROM serie_lang sl, kara_serie ks WHERE sl.fk_sid = ks.fk_sid AND ks.fk_kid = kid AND sl.lang = ${lang.main}),
+	  (SELECT sl.name FROM serie_lang sl, kara_serie ks WHERE sl.fk_sid = ks.fk_sid AND ks.fk_kid = kid AND sl.lang = ${lang.fallback}),
+	  ak.serie) AS serie,
+  ak.serie_altname AS serie_altname,
+  ak.serie_i18n AS serie_i18n,
+  ak.sid AS sid,
+  ak.seriefiles AS seriefiles,
+  ak.subfile AS subfile,
+  ak.singers AS singers,
+  ak.songtypes AS songtype,
+  ak.creators AS creators,
+  ak.songwriters AS songwriters,
+  ak.year AS year,
+  ak.languages AS languages,
+  ak.authors AS authors,
+  ak.misc_tags AS misc_tags,
+  ak.mediafile AS mediafile,
+  ak.karafile AS karafile,
+  ak.duration AS duration,
+  ak.gain AS gain,
+  ak.created_at AS created_at,
+  ak.modified_at AS modified_at,
+  ak.mediasize AS mediasize,
+  rq.nb AS requested
 FROM all_karas AS ak
-WHERE requested > 0
-ORDER BY requested DESC
+INNER JOIN rq ON ak.kid = rq.fk_kid
+WHERE rq.nb > 1
+  ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
+ORDER BY rq.nb DESC, ak.languages_sortable, ak.serie IS NULL, lower(unaccent(serie)), ak.songtypes_sortable DESC, ak.songorder, lower(unaccent(singers_sortable)), lower(unaccent(ak.title))
+${limitClause}
+${offsetClause}
 `;
 
-export const getFavoritesStats = `
-SELECT ak.title AS title,
-	ak.songorder AS songorder,
-	ak.serie AS serie,
-	ak.serie_i18n AS serie_i18n,
-	ak.singer AS singer,
-    ak.songtype AS songtype,
-    ak.language AS language,
-	(SELECT COUNT(*) FROM favorite WHERE fk_kid = ak.kid) AS favorites
+export const getFavoritesStats = (filterClauses, lang, limitClause, offsetClause) => `
+WITH fav AS (SELECT fk_kid, COUNT(*) AS nb FROM favorites GROUP BY fk_kid)
+SELECT
+  ak.kid AS kid,
+  ak.title AS title,
+  ak.songorder AS songorder,
+  COALESCE(
+	  (SELECT sl.name FROM serie_lang sl, kara_serie ks WHERE sl.fk_sid = ks.fk_sid AND ks.fk_kid = kid AND sl.lang = ${lang.main}),
+	  (SELECT sl.name FROM serie_lang sl, kara_serie ks WHERE sl.fk_sid = ks.fk_sid AND ks.fk_kid = kid AND sl.lang = ${lang.fallback}),
+	  ak.serie) AS serie,
+  ak.serie_altname AS serie_altname,
+  ak.serie_i18n AS serie_i18n,
+  ak.sid AS sid,
+  ak.seriefiles AS seriefiles,
+  ak.subfile AS subfile,
+  ak.singers AS singers,
+  ak.songtypes AS songtype,
+  ak.creators AS creators,
+  ak.songwriters AS songwriters,
+  ak.year AS year,
+  ak.languages AS languages,
+  ak.authors AS authors,
+  ak.misc_tags AS misc_tags,
+  ak.mediafile AS mediafile,
+  ak.karafile AS karafile,
+  ak.duration AS duration,
+  ak.gain AS gain,
+  ak.created_at AS created_at,
+  ak.modified_at AS modified_at,
+  ak.mediasize AS mediasize,
+  fav.nb AS favorited
 FROM all_karas AS ak
-WHERE favorites > 0
-ORDER BY favorites DESC
+INNER JOIN fav ON ak.kid = fav.fk_kid
+WHERE fav.nb > 1
+  ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
+ORDER BY fav.nb DESC, ak.languages_sortable, ak.serie IS NULL, lower(unaccent(serie)), ak.songtypes_sortable DESC, ak.songorder, lower(unaccent(singers_sortable)), lower(unaccent(ak.title))
+${limitClause}
+${offsetClause}
 `;

@@ -1,4 +1,6 @@
-import {db, transaction} from './database';
+import {langSelector, db, transaction} from './database';
+import {buildClauses} from './kara';
+import {pg as yesql} from 'yesql';
 const sql = require('./sqls/stats');
 
 export async function upsertInstance(i) {
@@ -50,14 +52,35 @@ export async function upsertRequests(instance_id, requests) {
 	if (requests.length > 0) await transaction([{sql: sql.insertRequested, params: params}]);
 }
 
-export async function getFavoritesStats() {
-	return await db().query(sql.getFavoritesStats);
+export async function getPlayedStats(filter, lang, from = 0, size = 0) {
+	const filterClauses = filter ? buildClauses(filter) : {sql: [], params: {}};
+	let limitClause = '';
+	let offsetClause = '';
+	if (from > 0) offsetClause = `OFFSET ${from} `;
+	if (size > 0) limitClause = `LIMIT ${size} `;
+	const query = sql.getPlayedStats(filterClauses.sql, langSelector(lang), limitClause, offsetClause);
+	const res = await db().query(yesql(query)(filterClauses.params));
+	return res.rows;
 }
 
-export async function getRequestedStats() {
-	return await db().query(sql.getRequestedStats);
+export async function getFavoritesStats(filter, lang, from = 0, size = 0) {
+	const filterClauses = filter ? buildClauses(filter) : {sql: [], params: {}};
+	let limitClause = '';
+	let offsetClause = '';
+	if (from > 0) offsetClause = `OFFSET ${from} `;
+	if (size > 0) limitClause = `LIMIT ${size} `;
+	const query = sql.getFavoritesStats(filterClauses.sql, langSelector(lang), limitClause, offsetClause);
+	const res = await db().query(yesql(query)(filterClauses.params));
+	return res.rows;
 }
 
-export async function getPlayedStats() {
-	return await db().query(sql.getPlayedStats);
+export async function getRequestedStats(filter, lang, from = 0, size = 0) {
+	const filterClauses = filter ? buildClauses(filter) : {sql: [], params: {}};
+	let limitClause = '';
+	let offsetClause = '';
+	if (from > 0) offsetClause = `OFFSET ${from} `;
+	if (size > 0) limitClause = `LIMIT ${size} `;
+	const query = sql.getRequestedStats(filterClauses.sql, langSelector(lang), limitClause, offsetClause);
+	const res = await db().query(yesql(query)(filterClauses.params));
+	return res.rows;
 }

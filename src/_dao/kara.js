@@ -24,7 +24,6 @@ export async function countKaras(filter, mode, modeValue) {
 }
 
 export async function selectAllKaras(filter, lang, mode, modeValue, from = 0, size = 0) {
-
 	const filterClauses = filter ? buildClauses(filter) : {sql: [], params: {}};
 	const typeClauses = mode ? buildTypeClauses(mode, modeValue) : '';
 	let orderClauses = '';
