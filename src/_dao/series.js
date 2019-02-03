@@ -34,7 +34,7 @@ export function buildClausesSeries(words) {
 	let sql = [];
 	for (const i in words.split(' ').filter(s => !('' === s))) {
 		sql.push(`lower(unaccent(name)) LIKE :word${i} OR
-		lower(unaccent(aliases::varchar)) LIKE :word${i} OR
+		lower(unaccent(search_aliases::varchar)) LIKE :word${i} OR
 		lower(unaccent(search::varchar)) LIKE :word${i}
 		`);
 	}
