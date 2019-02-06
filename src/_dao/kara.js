@@ -33,6 +33,8 @@ export async function selectAllKaras(filter, lang, mode, modeValue, from = 0, si
 	if (from > 0) offsetClause = `OFFSET ${from} `;
 	if (size > 0) limitClause = `LIMIT ${size} `;
 	const query = sql.getAllKaras(filterClauses.sql, langSelector(lang), typeClauses, orderClauses, limitClause, offsetClause);
+	// uncomment to survey SQL query
+	//console.log(yesql(query)(filterClauses.params));
 	const res = await db().query(yesql(query)(filterClauses.params));
 	return res.rows;
 }
@@ -44,8 +46,8 @@ export function buildTypeClauses(mode, value) {
 		for (const c of criterias) {
 			// Splitting only after the first ":"
 			const type = c.split(/:(.+)/)[0];
-			const values = c.split(/:(.+)/)[1];
-			if (type === 's') search = `${search} AND serie_id @> ARRAY['${values}'::uuid]`;
+			const values = c.split(/:(.+)/)[1].split(',').map((v) => { return "'"+v+"'::uuid"});
+			if (type === 's') search = `${search} AND serie_id <@ ARRAY[${values}]`;
 			if (type === 'y') search = `${search} AND year IN (${values})`;
 			if (type === 't') search = `${search} AND all_tags_id @> ARRAY[${values}]`;
 		}
