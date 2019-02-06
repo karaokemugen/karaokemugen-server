@@ -45,7 +45,7 @@ export function buildTypeClauses(mode, value) {
 			// Splitting only after the first ":"
 			const type = c.split(/:(.+)/)[0];
 			const values = c.split(/:(.+)/)[1];
-			if (type === 's') search = `${search} AND serie_id @> ARRAY[${values}]`;
+			if (type === 's') search = `${search} AND serie_id @> ARRAY['${values}'::uuid]`;
 			if (type === 'y') search = `${search} AND year IN (${values})`;
 			if (type === 't') search = `${search} AND all_tags_id @> ARRAY[${values}]`;
 		}
