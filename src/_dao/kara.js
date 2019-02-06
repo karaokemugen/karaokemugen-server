@@ -49,16 +49,15 @@ export function buildTypeClauses(mode, value) {
 
 			if (type === 's')
 			{
-				const values = c.split(/:(.+)/)[1].split(',').map((v) => { return "'"+v+"'::uuid"});
+				const values = c.split(/:(.+)/)[1].split(',').map((v) => { return `'${v}'::uuid` });
 				search = `${search} AND serie_id <@ ARRAY[${values}]`;
 			}
 			else
 			{
 				const values = c.split(/:(.+)/)[1];
+				if (type === 'y') search = `${search} AND year IN (${values})`;
+				if (type === 't') search = `${search} AND all_tags_id @> ARRAY[${values}]`;
 			}
-
-			if (type === 'y') search = `${search} AND year IN (${values})`;
-			if (type === 't') search = `${search} AND all_tags_id @> ARRAY[${values}]`;
 		}
 		return search;
 	}
