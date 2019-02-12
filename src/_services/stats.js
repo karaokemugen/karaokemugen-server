@@ -25,6 +25,16 @@ export async function processStatsPayload(payload) {
 		if (!testJSON(payload)) throw 'Syntax error in JSON data';
 		const validationErrors = check(payload, payloadConstraints);
 		if (validationErrors) throw `Payload is not valid: ${JSON.stringify(validationErrors)}`;
+		// If payload is version 1, it's going to be transformed a bit
+		if (!payload.payloadVersion) {
+			payload.viewcounts = payload.viewcounts.map(v => {
+				return {
+					kid: v.kid,
+					played_at: v.modified_at,
+					session_started_at: v.session_started_at
+				};
+			});
+		}
 		await Promise.all([
 			upsertInstance(payload.instance),
 			replaceFavorites(payload.instance.instance_id, payload.favorites),

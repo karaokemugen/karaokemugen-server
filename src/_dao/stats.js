@@ -33,8 +33,8 @@ export async function upsertPlayed(instance_id, viewcounts) {
 	viewcounts.forEach(v => params.push([
 		instance_id,
 		v.kid,
-		new Date(v.session_started_at * 1000),
-		new Date(v.modified_at * 1000)
+		v.session_started_at,
+		v.played_at
 	]));
 	if (viewcounts.length > 0) await transaction([{sql: sql.insertViewcount, params: params}]);
 }
@@ -44,8 +44,8 @@ export async function upsertRequests(instance_id, requests) {
 	requests.forEach(r => params.push([
 		instance_id,
 		r.kid,
-		new Date(r.session_started_at * 1000),
-		new Date(r.requested_at * 1000)
+		r.session_started_at,
+		r.requested_at
 	]));
 	if (requests.length > 0) await transaction([{sql: sql.insertRequested, params: params}]);
 }
