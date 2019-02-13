@@ -10,8 +10,8 @@
   "scripts": {
     "prestart": "node node_modules/db-migrate/bin/db-migrate sync [all] --migrations-dir src/_dao/migrations",
     "start": "babel-node src/index.js --",
-    "buildReact": "cd react_site && yarn build",
-    "startReact": "cd react_site && yarn start",
+    "buildReact": "echo 'NO MORE BUILD'",
+    "startReact": "cd react_site && node server.js --mode=kms",
     "generate": "babel-node src/index.js -- --generate",
     "migrate": "node node_modules/db-migrate/bin/db-migrate sync [all] --migrations-dir src/_dao/migrations",
     "migrateDown": "node node_modules/db-migrate/bin/db-migrate down --migrations-dir src/_dao/migrations",
