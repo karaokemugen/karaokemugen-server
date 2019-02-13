@@ -7,18 +7,15 @@ const nextI18next = require('./i18n')
 const app = next({ dev: process.env.NODE_ENV !== 'production' })
 const handle = app.getRequestHandler();
 
-var mode = 'dev';
-if(process.argv.indexOf('--mode=kms')>=0)
-	mode = 'kms';
-if(process.argv.indexOf('--mode=kma')>=0)
-	mode = 'kma';
-
 var PORT = 3000;
-switch(mode) {
-	case "kms": // karaokemugen server environment
-		PORT = 1351;
-		break;
-}
+
+process.argv.forEach( function(element, index) {
+  if(element.indexOf('--port=')>=0)
+  {
+    PORT = parseInt(element.replace(/.*--port=([0-9]+)/,'$1'));
+  }
+});
+console.log(PORT);
 
 (async () => {
   await app.prepare()

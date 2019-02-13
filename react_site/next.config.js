@@ -4,22 +4,18 @@ const withSass = require('@zeit/next-sass')
 var BASE_URL = '/base';
 var API_URL = 'http://localhost:1350';
 
-var mode = 'dev';
-if(process.argv.indexOf('--mode=kms')>=0)
-	mode = 'kms';
-if(process.argv.indexOf('--mode=kma')>=0)
-	mode = 'kma';
-
-switch(mode) {
-	case "kms": // karaokemugen server environment
-		BASE_URL = '/base';
-		API_URL = 'http://localhost:1350';
-		break;
-	case "kma": // karaokemugen app environment
-		BASE_URL = '/base';
-		API_URL = 'http://localhost:1350';
-		break;
-}
+process.argv.forEach( function(element, index) {
+  if(element.indexOf('--api=')>=0)
+  {
+    API_URL = element.replace(/--api=(.*)/,'$1');
+  }
+  else if(element.indexOf('--path=')>=0)
+  {
+    BASE_URL = element.replace(/--path=(.*)/,'$1');
+  }
+});
+console.log(API_URL);
+console.log(BASE_URL);
 
 module.exports = withSass({
 	assetPrefix: BASE_URL,
