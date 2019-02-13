@@ -15,7 +15,7 @@ Make sure node and yarn are up to date
 
 - node 10.13.0 or later
 - yarn 1 or later
-- PostgreSQL 10
+- PostgreSQL 10.6
 
 Clone this repository and install dependencies
 
