@@ -43,7 +43,7 @@ INSERT INTO favorite(fk_iid, fk_kid)
 VALUES(
 	$1,
 	$2
-)
+) ON CONFLICT DO NOTHING;
 `;
 
 export const insertViewcount = `
@@ -100,10 +100,10 @@ SELECT
   ak.mediasize AS mediasize,
   p.nb AS played
 FROM all_karas AS ak
-INNER JOIN p ON ak.kid = p.fk_kid
-WHERE p.nb > 1
+WHERE 1 = 1
   ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
-ORDER BY p.nb DESC, ak.languages_sortable, ak.serie IS NULL, lower(unaccent(serie)), ak.songtypes_sortable DESC, ak.songorder, lower(unaccent(singers_sortable)), lower(unaccent(ak.title))
+HAVING played > 1
+ORDER BY played DESC
 ${limitClause}
 ${offsetClause}
 `;
@@ -140,10 +140,10 @@ SELECT
   ak.mediasize AS mediasize,
   rq.nb AS requested
 FROM all_karas AS ak
-INNER JOIN rq ON ak.kid = rq.fk_kid
-WHERE rq.nb > 1
+WHERE 1 = 1
   ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
-ORDER BY rq.nb DESC, ak.languages_sortable, ak.serie IS NULL, lower(unaccent(serie)), ak.songtypes_sortable DESC, ak.songorder, lower(unaccent(singers_sortable)), lower(unaccent(ak.title))
+HAVING requested > 1
+ORDER BY requested DESC
 ${limitClause}
 ${offsetClause}
 `;
@@ -180,10 +180,10 @@ SELECT
   ak.mediasize AS mediasize,
   fav.nb AS favorited
 FROM all_karas AS ak
-INNER JOIN fav ON ak.kid = fav.fk_kid
-WHERE fav.nb > 1
+WHERE 1 = 1
   ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
-ORDER BY fav.nb DESC, ak.languages_sortable, ak.serie IS NULL, lower(unaccent(serie)), ak.songtypes_sortable DESC, ak.songorder, lower(unaccent(singers_sortable)), lower(unaccent(ak.title))
+HAVING favorites > 1
+ORDER BY favorites DESC
 ${limitClause}
 ${offsetClause}
 `;

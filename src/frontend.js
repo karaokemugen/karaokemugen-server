@@ -83,7 +83,10 @@ export function initFrontend(listenPort) {
 	mainApp.use('/avatars', express.static(resolve(conf.appPath, conf.Path.Avatars)));
 	// API router
 	mainApp.use('/api', api());
-	mainApp.get('/', (req, res) => { res.redirect('/api/shortener'); return ; });
+	mainApp.get('/', (req, res) => {
+		res.redirect('/api/shortener');
+		return;
+	});
 	// The "catchall" handler: for any request that doesn't
 	// match one above, send back React's index.html file.
 	mainApp.get('*', (req, res) => {

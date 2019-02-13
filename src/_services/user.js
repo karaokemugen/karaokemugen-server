@@ -1,5 +1,5 @@
 import {createHash} from 'crypto';
-import {updateUser, updateUserPassword, insertUser, selectUser, selectAllUsers} from '../_dao/user';
+import {updateUser, updateUserPassword, insertUser, selectUser, selectAllUsers, deleteUser} from '../_dao/user';
 import logger from 'winston';
 import {getConfig} from '../_utils/config';
 import {asyncReadDir, asyncExists, asyncUnlink, asyncMove, detectFileType} from '../_utils/files';
@@ -39,6 +39,10 @@ export async function findUserByName(username, opts = {}) {
 		delete user.email;
 	}
 	return user;
+}
+
+export async function removeUser(username) {
+	return await deleteUser(username);
 }
 
 export async function getAllUsers(opts = {}) {

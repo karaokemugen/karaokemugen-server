@@ -26,6 +26,11 @@ SELECT
 FROM users
 `;
 
+export const deleteUser = `
+DELETE FROM user
+WHERE login = $1;
+`;
+
 export const updateUserPassword = `
 UPDATE users SET password = $2 WHERE pk_login = $1
 `;

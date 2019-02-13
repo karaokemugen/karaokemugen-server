@@ -36,7 +36,7 @@ export async function upsertPlayed(instance_id, viewcounts) {
 		instance_id,
 		v.kid,
 		v.session_started_at,
-		v.modified_at
+		v.played_at
 	]));
 	if (viewcounts.length > 0) await transaction([{sql: sql.insertViewcount, params: params}]);
 }
