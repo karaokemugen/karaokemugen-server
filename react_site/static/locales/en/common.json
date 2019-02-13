@@ -1,0 +1,55 @@
+{
+  "category": {
+    "author": "Author",
+    "authors": "Authors",
+    "creator": "Creator",
+    "creators": "Creators",
+    "karas": "Karas",
+    "language": "Language",
+    "languages": "Languages",
+    "serie": "Serie",
+    "series": "Series",
+    "singer": "Singer",
+    "singers": "Singers",
+    "songwriter": "Songwriter",
+    "songwriters": "Songwriters",
+    "tag": "Tag",
+    "tags": "Tags",
+    "year": "Year",
+    "years": "Years"
+  },
+  "error-with-status": null,
+  "error-without-status": null,
+  "form": {
+    "karas_keywords_placeholder": null,
+    "tags_keywords_placeholder": null
+  },
+  "kara": {
+    "creation_date": "Creation date",
+    "duration": "Duration",
+    "informations": "INFORMATIONS",
+    "karafile": "Kara File",
+    "karaoke_id": "Karaoke ID (KID)",
+    "live_version_available": "Karaoke Mugen Live version available!",
+    "mediafile": "Media File",
+    "modification_date": "Modication date",
+    "play_in_your_browser": "Test this karaoké from your browser!",
+    "seriefile": "Serie File",
+    "sing_now": "SING ON THIS KARAOKE NOW !",
+    "subfile": "Lyrics File",
+    "unknown": "Unknown"
+  },
+  "karaissue": {
+    "badquality": null,
+    "badquality_explain": null,
+    "badtiming": null,
+    "badtiming_explain": null,
+    "baseline": null,
+    "title": null
+  },
+  "karalist": {
+    "no_data": null,
+    "upade_in_progress": null
+  },
+  "sitename": null
+}

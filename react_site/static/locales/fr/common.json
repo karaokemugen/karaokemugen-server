@@ -1,0 +1,55 @@
+{
+  "category": {
+    "author": "Auteur",
+    "authors": "Auteurs",
+    "creator": "Studio/Créateur",
+    "creators": "Studios/Créateurs",
+    "karas": "Karas",
+    "language": "Langue",
+    "languages": "Langues",
+    "serie": "Série",
+    "series": "Séries",
+    "singer": "Interprête",
+    "singers": "Interprêtes",
+    "songwriter": "Compositeur",
+    "songwriters": "Compositeurs",
+    "tag": "Tags",
+    "tags": "Tags",
+    "year": "Year",
+    "years": "Years"
+  },
+  "error-with-status": null,
+  "error-without-status": null,
+  "form": {
+    "karas_keywords_placeholder": "titre, interprête, série, ...",
+    "tags_keywords_placeholder": "Filtrer par mots clés"
+  },
+  "kara": {
+    "creation_date": "Date de création",
+    "duration": "Durée",
+    "informations": "INFORMATIONS",
+    "karafile": "Fichier de métadonnées",
+    "karaoke_id": "Identifiant du karaoke (KID)",
+    "live_version_available": "Version Karaoke Mugen Live disponible !",
+    "mediafile": "Fichier de média",
+    "modification_date": "Date de modification",
+    "play_in_your_browser": "Testez ce karaoké depuis votre navigateur !",
+    "seriefile": "Fichier de série",
+    "sing_now": "CHANTEZ SUR CE KARAOKÉ MAINTENANT !",
+    "subfile": "Fichier de paroles",
+    "unknown": "Kara inconnu"
+  },
+  "karaissue": {
+    "badquality": "Média de mauvaise qualité",
+    "badquality_explain": "Vidéo en basse résolution, pixélisée, son ignoble, metadata foireuses...",
+    "badtiming": "Erreur de time",
+    "badtiming_explain": "Karaoké décalé, police trop petite ou illisible, erreur dans les paroles, choix des couleurs douteux...",
+    "baseline": "Un souci avec ce karaoké ? Faites-le nous savoir :",
+    "title": "UN PROBLÈME ?"
+  },
+  "karalist": {
+    "no_data": "Aucun résultat",
+    "upade_in_progress": "Mise à jour en cours"
+  },
+  "sitename": "Karaoke Mugen"
+}
