@@ -149,7 +149,7 @@ ${offsetClause}
 `;
 
 export const getFavoritesStats = (filterClauses, lang, limitClause, offsetClause) => `
-WITH fav AS (SELECT fk_kid, COUNT(*) AS nb FROM favorite GROUP BY fk_kid)
+WITH fav AS (SELECT fk_kid, COUNT(*) AS nb FROM favorites GROUP BY fk_kid)
 SELECT
   ak.kid AS kid,
   ak.title AS title,
