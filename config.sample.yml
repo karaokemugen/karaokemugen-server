@@ -7,3 +7,6 @@ Path:
 Frontend:
   Host: kara.moe
   Port: 1350
+KaraExplorer:
+  Port: 1351
+  Path: /base

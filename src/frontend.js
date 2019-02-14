@@ -21,9 +21,6 @@ import proxy from 'express-http-proxy';
 import {createServer} from 'http';
 import helmet from 'helmet';
 
-var exec = require('child_process').exec;
-exec('node ./server.js --api=http://localhost:1350 --port=1351 --path=/base',{shell:true,cwd: __dirname+'/../react_site'},function(error, stdout, stderr) {});
-
 let ws;
 
 export function getWS() {

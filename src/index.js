@@ -12,6 +12,7 @@ import {createUser} from './_services/user';
 import {run} from './_dao/generation';
 import sudoBlock from 'sudo-block';
 import {asyncCheckOrMkdir} from './_utils/files';
+import KaraExplorer from './karaExplorer';
 
 const pjson = require('../package.json');
 const appPath = join(__dirname,'../');
@@ -64,10 +65,18 @@ async function main() {
 	logger.debug(`[Launcher] Port ${port} is available`);
 	const inits = [];
 
+	var kmx = new KaraExplorer({
+		api:'http://'+conf.Frontend.Host+(conf.Frontend.Port != 80 ? ':'+conf.Frontend.Port:''),
+		port:conf.KaraExplorer.Port,
+		path:conf.KaraExplorer.Path,
+	});
+	kmx.start();
+
 	if (getConfig().Mail.Enabled) inits.push(initMailer());
 	inits.push(initShortener());
 	inits.push(initFrontend(port));
 	inits.push(initFavorites());
+//	inits.push();
 	await Promise.all(inits);
 	logger.info('[Launcher] Karaoke Mugen Server is READY');
 }
