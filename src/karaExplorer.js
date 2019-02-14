@@ -30,7 +30,7 @@ export default class KaraExplorer {
 					pm2.start({
 						name: `kmx-${this.id}`,
 						script: 'server.js',
-						cwd: __dirname+'/../react_site/',
+						cwd: resolve(this.appPath,'react_site/'),
 						args: [
 							'--api='+this.api,
 							'--port='+this.port,
