@@ -34,12 +34,12 @@ INSERT INTO instance(
 `;
 
 export const deleteFavorites = `
-DELETE FROM favorite
+DELETE FROM favorites
 WHERE fk_iid = $1;
 `;
 
 export const insertFavorite = `
-INSERT INTO favorite(fk_iid, fk_kid)
+INSERT INTO favorites(fk_iid, fk_kid)
 VALUES(
 	$1,
 	$2
