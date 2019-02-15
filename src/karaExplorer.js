@@ -15,9 +15,9 @@ export default class KaraExplorer {
 		this.app = null;
 
 		this.id = uniqid();
-		this.api = opts.api ? opts.api : 'http://localhost:1350';
-		this.port = opts.port ? opts.port : 3000;
-		this.path = opts.path ? opts.path : '/';
+		this.api = opts.api || 'http://localhost:1350';
+		this.port = opts.port || 3000;
+		this.path = opts.path || '/';
 	}
 
 	start = async() => {

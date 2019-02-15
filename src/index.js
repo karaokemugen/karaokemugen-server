@@ -66,9 +66,9 @@ async function main() {
 	const inits = [];
 
 	var kmx = new KaraExplorer({
-		api:'http://'+conf.Frontend.Host+(conf.Frontend.Port != 80 ? ':'+conf.Frontend.Port:''),
-		port:conf.KaraExplorer.Port,
-		path:conf.KaraExplorer.Path,
+		api: conf.KaraExplorer.Api,
+		port: conf.KaraExplorer.Port,
+		path: conf.KaraExplorer.Path,
 	});
 	kmx.start();
 

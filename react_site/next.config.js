@@ -14,8 +14,8 @@ process.argv.forEach( function(element, index) {
     BASE_URL = element.replace(/--path=(.*)/,'$1');
   }
 });
-console.log(API_URL);
-console.log(BASE_URL);
+console.log(`API_URL = ${API_URL}`);
+console.log(`BASE_URL = ${BASE_URL}`);
 
 module.exports = withSass({
 	assetPrefix: BASE_URL,

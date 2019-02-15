@@ -7,15 +7,16 @@ const nextI18next = require('./i18n')
 const app = next({ dev: process.env.NODE_ENV !== 'production' })
 const handle = app.getRequestHandler();
 
+// default DEV settings
 var PORT = 3000;
 
 process.argv.forEach( function(element, index) {
   if(element.indexOf('--port=')>=0)
   {
-    PORT = parseInt(element.replace(/.*--port=([0-9]+)/,'$1'));
+    PORT = parseInt(element.replace(/--port=(.*)/,'$1'));
   }
 });
-console.log(PORT);
+console.log(`KaraExplorer PORT = ${PORT}`);
 
 (async () => {
   await app.prepare()
