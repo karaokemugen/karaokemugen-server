@@ -84,7 +84,7 @@ class MyApp extends App {
 				for(let i in lsTagsToRetrieve)
 				{
 					let el = lsTagsToRetrieve[i];
-					console.log(el.code,API_URL+'/api/karas/tags/'+el.id)
+					//console.log(el.code,API_URL+'/api/karas/tags/'+el.id)
 					var response = await axios.get(API_URL+'/api/karas/tags/'+el.id)
 					if(response.status===200 && response.data!==null && response.data.content)
 					{

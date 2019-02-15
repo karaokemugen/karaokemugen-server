@@ -98,7 +98,7 @@ class Karaitem extends React.Component {
 
 		let year =kara.year ? <Link href={quickTagUrl('year',kara.year)} key="year"><a data-type="year" ><i className="fa fa-calendar"></i> {kara.year}</a></Link> : null;
 
-		console.log(kara);
+		//console.log(kara);
 
 		return (
 			<div className="kmx-kara-detail">
