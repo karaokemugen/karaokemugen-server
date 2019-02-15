@@ -88,7 +88,7 @@ class Page extends React.Component {
 					total={total}
 					size={pageSize}
 					current={page}
-					renderUrl={(i) => { return "/singers?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
+					renderUrl={(i) => { return "/series?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
 					/>
 
 				<DedicatedTagtList type="series" tags={serieList} />

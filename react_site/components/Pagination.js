@@ -1,5 +1,6 @@
 import React from 'react'
-import { i18n, Link, withNamespaces } from '../i18n'
+import { i18n, withNamespaces } from '../i18n'
+import Link from '../utils/I18nLink';
 
 class Pagination extends React.Component {
 	render() {
