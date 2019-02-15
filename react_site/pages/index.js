@@ -1,5 +1,6 @@
 import React from 'react'
-import { i18n, Link, Router, withNamespaces } from '../i18n'
+import { i18n, Router, withNamespaces } from '../i18n'
+import Link from '../utils/I18nLink';
 import i18nRouterPush from '../utils/i18nRouterPush'
 import Head from 'next/head'
 import axios from 'axios'
@@ -125,7 +126,7 @@ class Homepage extends React.Component {
       else if(item.code=='language')
         name = isoLanguages(name, i18n.language)
 
-      return <Link href={url} as={BASE_URL+url} key={'tag_'+id}><a data-type={item.code} className="tag">{name}</a></Link>
+      return <Link href={url} key={'tag_'+id}><a data-type={item.code} className="tag">{name}</a></Link>
     }
     return null;
   }
@@ -145,7 +146,7 @@ class Homepage extends React.Component {
         });
       }
       var url = "/?"+querystring.stringify(filterTools.reset().removeTag('serie',id).getQuery())
-      return <Link href={url} as={BASE_URL+url} key={'serie_'+id}><a data-type="serie" className="tag">{real_name}</a></Link>
+      return <Link href={url} key={'serie_'+id}><a data-type="serie" className="tag">{real_name}</a></Link>
     }
     return null;
   }
@@ -155,7 +156,7 @@ class Homepage extends React.Component {
     let filterSerie = (() => {
       let url = "/?"+querystring.stringify(filterTools.reset().removeTag('year',filterTools.params.year).getQuery());
       return filterTools.params.year
-        ? <Link href={url} as={BASE_URL+url} key="year"><a data-type="year" className="tag">{filterTools.params.year}</a></Link>
+        ? <Link href={url} key="year"><a data-type="year" className="tag">{filterTools.params.year}</a></Link>
         : null
     })();
 

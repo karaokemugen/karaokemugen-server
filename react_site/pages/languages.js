@@ -1,5 +1,5 @@
 import React from 'react'
-import { i18n, Link, withNamespaces } from '../i18n'
+import { i18n, withNamespaces } from '../i18n'
 import i18nRouterPush from '../utils/i18nRouterPush'
 import isoLanguages from '../components/isoLanguages';
 import Head from 'next/head'

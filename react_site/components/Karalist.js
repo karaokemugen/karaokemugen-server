@@ -1,5 +1,5 @@
 import React from 'react'
-import { i18n, Link, withNamespaces } from '../i18n'
+import { i18n, withNamespaces } from '../i18n'
 
 import Karaitem from './Karaitem';
 
