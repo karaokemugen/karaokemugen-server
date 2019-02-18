@@ -23,12 +23,6 @@ Clone this repository and install dependencies
 yarn install
 ```
 
-## Build
-
-```sh
-yarn buildReact
-```
-
 ## Setup database
 
 Setup a PostgreSQL user and database, by default `karaokemugen_server`. Define a password and edit `database.json` to set credentials and such.
