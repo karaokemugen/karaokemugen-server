@@ -21,7 +21,7 @@ deploy_prod:
     url: https://kara.moe
   only:
   - master
-  - 11-karas-api-enhancement-proposal
+
 
 deploy_dev:
   stage: deploy
@@ -31,4 +31,4 @@ deploy_dev:
     name: dev
     url: https://dev.kara.moe
   only:
-  - master
+  - dev 
