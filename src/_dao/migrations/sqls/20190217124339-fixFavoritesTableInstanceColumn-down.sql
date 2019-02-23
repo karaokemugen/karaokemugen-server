@@ -1,0 +1,1 @@
+ALTER TABLE favorites ADD COLUMN fk_id_instance INTEGER NOT NULL

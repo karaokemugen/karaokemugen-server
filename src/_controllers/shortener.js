@@ -11,8 +11,7 @@ export default function ShortenerController(router) {
 					res.status(404).send('No Karaoke Mugen instance runs on your local network.');
 				}
 			} catch(err) {
-				res.statusCode = 500;
-				res.json(err);
+				res.status(500).json(err);
 			}
 		})
 		.post(async (req, res) => {
@@ -20,8 +19,7 @@ export default function ShortenerController(router) {
 				await publishInstance(req.headers['x-forwarded-for'], req.body);
 				res.status(200).send('Update OK');
 			} catch(err) {
-				res.statusCode = 500;
-				res.send(err);
+				res.status(500).send(err);
 			}
 		});
 }

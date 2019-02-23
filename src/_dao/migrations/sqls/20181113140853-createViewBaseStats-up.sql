@@ -1,5 +1,3 @@
-/* Replace with your SQL commands */
-
 CREATE VIEW stats AS
 SELECT
 (SELECT COUNT(pk_id_tag) FROM tag WHERE tagtype=2) AS singers,

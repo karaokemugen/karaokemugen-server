@@ -71,8 +71,10 @@ export function initFrontend(listenPort) {
 		memoizeHost: false
 	}));
 	// Serve static files from the React app
-	mainApp.use('/base', express.static(resolve(__dirname, '../react_site/build')));
-	mainApp.use('/base/*', (req, res) => res.sendFile(resolve(__dirname+'/../react_site/build/index.html')));
+	mainApp.use('/base', proxy('http://127.0.0.1:1351'));
+	// fix bad behavior of next-i18next - language file are not prefixed correctly
+	mainApp.get('/static/locales/*', (req, res) => { res.redirect('/base'+req.url); return ; });
+
 	mainApp.use('/downloads/karas', express.static(resolve(conf.appPath, conf.Path.Karas)));
 	mainApp.use('/downloads/lyrics', express.static(resolve(conf.appPath, conf.Path.Lyrics)));
 	mainApp.use('/downloads/medias', express.static(resolve(conf.appPath, conf.Path.Medias)));

@@ -45,6 +45,10 @@ export const defaults = {
 	Frontend: {
 		Port: 1350,
 		Host: 'localhost'
+	},
+	KaraExplorer: {
+		Port: 1351,
+		Path: '/base'
 	}
 };
 

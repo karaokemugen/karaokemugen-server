@@ -16,12 +16,12 @@ export default function userController(router) {
 				const info = await getAllUsers({public: true});
 				res.status(200).json(info);
 			} catch(err) {
-				res.statusCode = 500;
-				res.json(err);
+				res.status(500).json(err);
 			}
 		})
 		.delete(requireAuth, requireValidUser, async (req, res) => {
 			try {
+				console.log(res.authToken);
 				await removeUser(req.authToken.username);
 				res.send('User deleted');
 			} catch(err) {
@@ -44,8 +44,7 @@ export default function userController(router) {
 				const info = await findUserByName(req.params.user, {public: true});
 				res.status(200).json(info);
 			} catch(err) {
-				res.statusCode = 500;
-				res.json(err);
+				res.status(500).json(err);
 			}
 		})
 		.put(upload.single('avatarfile'), requireAuth, requireValidUser,  async (req, res) => {

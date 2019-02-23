@@ -1,13 +1,13 @@
 /** Centralized configuration management for Karaoke Mugen. */
 
 import {resolve} from 'path';
-import {safeLoad, safeDump} from 'js-yaml';
+import {safeLoad} from 'js-yaml';
 import osLocale from 'os-locale';
 import i18n from 'i18n';
 import logger from 'winston';
 import uuidV4 from 'uuid/v4';
 import {check} from './validators';
-import {asyncWriteFile, asyncExists, asyncReadFile, asyncRequired} from './files';
+import {asyncExists, asyncReadFile, asyncRequired} from './files';
 import {configConstraints, defaults} from './default_settings.js';
 import {configureLogger} from './logger';
 import merge from 'lodash.merge';
@@ -16,7 +16,6 @@ import testJSON from 'is-valid-json';
 /** Object containing all config */
 let config = {};
 let configFile = 'config.yml';
-let savingSettings = false;
 
 /**
  * We return a copy of the configuration data so the original one can't be modified
@@ -47,7 +46,7 @@ export function verifyConfig(conf) {
 /** Initializing configuration */
 export async function initConfig(appPath, argv) {
 	if (argv.config) configFile = argv.config;
-	configureLogger(appPath, !!argv.debug);
+	await configureLogger(appPath, !!argv.debug);
 
 	config = {...config, appPath: appPath};
 	config = {...config, os: process.platform};
@@ -106,22 +105,6 @@ async function loadConfig(configFile) {
 
 export async function setConfig(configPart) {
 	config = merge(config, configPart);
-	updateConfig(config);
 	return getConfig();
-}
-
-export async function updateConfig(newConfig) {
-	if (savingSettings) return false;
-	savingSettings = true;
-	const forbiddenConfigPrefix = ['os','locale','appPath','Database'];
-	const filteredConfig = {};
-	Object.entries(newConfig).forEach(([k, v]) => {
-		forbiddenConfigPrefix.every(prefix => !k.startsWith(prefix))
-			&& (newConfig[k] !== defaults[k])
-            && (filteredConfig[k] = v);
-	});
-	logger.debug('[Config] Settings being saved : '+JSON.stringify(filteredConfig));
-	await asyncWriteFile(resolve(config.appPath, configFile), safeDump(filteredConfig), 'utf-8');
-	savingSettings = false;
 }
 

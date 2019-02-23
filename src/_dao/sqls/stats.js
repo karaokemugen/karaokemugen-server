@@ -1,7 +1,7 @@
 export const upsertInstance = `
 INSERT INTO instance(
 	modified_at,
-	instance_id,
+	pk_iid,
 	version,
 	locale,
 	screens,
@@ -16,7 +16,7 @@ INSERT INTO instance(
 	os_release,
 	config)
 	VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
-	ON CONFLICT (instance_id) DO UPDATE SET
+	ON CONFLICT (pk_iid) DO UPDATE SET
 	modified_at = $1,
 	version = $3,
 	locale = $4,
@@ -34,78 +34,156 @@ INSERT INTO instance(
 `;
 
 export const deleteFavorites = `
-DELETE FROM favorite
-WHERE fk_id_instance = (SELECT pk_id_instance FROM instance WHERE instance_id = $1);
+DELETE FROM favorites
+WHERE fk_iid = $1;
 `;
 
 export const insertFavorite = `
-INSERT INTO favorite(fk_id_instance, kid)
+INSERT INTO favorites(fk_iid, fk_kid)
 VALUES(
-	(SELECT pk_id_instance FROM instance WHERE instance_id = $1),
+	$1,
 	$2
 ) ON CONFLICT DO NOTHING;
 `;
 
 export const insertViewcount = `
-INSERT INTO played(fk_id_instance, kid, session_started_at, played_at)
+INSERT INTO played(fk_iid, fk_kid, session_started_at, played_at)
 VALUES(
-	(SELECT pk_id_instance FROM instance WHERE instance_id = $1),
+	$1,
 	$2,
 	$3,
 	$4
 )
-ON CONFLICT (fk_id_instance, kid, session_started_at, played_at) DO NOTHING;
+ON CONFLICT (fk_iid, fk_kid, session_started_at, played_at) DO NOTHING;
 `;
 
 export const insertRequested = `
-INSERT INTO requested(fk_id_instance, kid, session_started_at, requested_at)
+INSERT INTO requested(fk_iid, fk_kid, session_started_at, requested_at)
 VALUES(
-	(SELECT pk_id_instance FROM instance WHERE instance_id = $1),
+	$1,
 	$2,
 	$3,
 	$4
 )
-ON CONFLICT (fk_id_instance, kid, session_started_at, requested_at) DO NOTHING;
+ON CONFLICT (fk_iid, fk_kid, session_started_at, requested_at) DO NOTHING;
 `;
 
-export const getPlayedStats = `
-SELECT ak.title AS title,
-	ak.songorder AS songorder,
-	ak.serie AS serie,
-	ak.serie_i18n AS serie_i18n,
-	ak.singer AS singer,
-    ak.songtype AS songtype,
-    ak.language AS language,
-	(SELECT COUNT(pk_id_played) FROM played WHERE kid = ak.kid) AS played
+export const getPlayedStats = (filterClauses, lang, limitClause, offsetClause) => `
+WITH p AS (SELECT fk_kid, COUNT(*) AS nb FROM played GROUP BY fk_kid)
+SELECT
+  ak.kid AS kid,
+  ak.title AS title,
+  ak.songorder AS songorder,
+  COALESCE(
+		(SELECT name FROM all_kara_serie_langs WHERE kid = ak.kid AND lang = ${lang.main}),
+		(SELECT name FROM all_kara_serie_langs WHERE kid = ak.kid AND lang = ${lang.fallback}),
+	  ak.serie) AS serie,
+  ak.serie_altname AS serie_altname,
+  ak.serie_i18n AS serie_i18n,
+  ak.sid AS sid,
+  ak.seriefiles AS seriefiles,
+  ak.subfile AS subfile,
+  ak.singers AS singers,
+  ak.songtypes AS songtype,
+  ak.creators AS creators,
+  ak.songwriters AS songwriters,
+  ak.year AS year,
+  ak.languages AS languages,
+  ak.authors AS authors,
+  ak.misc_tags AS misc_tags,
+  ak.mediafile AS mediafile,
+  ak.karafile AS karafile,
+  ak.duration AS duration,
+  ak.gain AS gain,
+  ak.created_at AS created_at,
+  ak.modified_at AS modified_at,
+  ak.mediasize AS mediasize,
+  p.nb AS played
 FROM all_karas AS ak
+WHERE 1 = 1
+  ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
 HAVING played > 1
 ORDER BY played DESC
+${limitClause}
+${offsetClause}
 `;
 
-export const getRequestedStats = `
-SELECT ak.title AS title,
-	ak.songorder AS songorder,
-	ak.serie AS serie,
-	ak.serie_i18n AS serie_i18n,
-	ak.singer AS singer,
-    ak.songtype AS songtype,
-    ak.language AS language,
-	(SELECT COUNT(pk_id_requested) FROM requested WHERE kid = ak.kid) AS requested
+export const getRequestedStats = (filterClauses, lang, limitClause, offsetClause) => `
+WITH rq AS (SELECT fk_kid, COUNT(*) AS nb FROM requested GROUP BY fk_kid)
+SELECT
+  ak.kid AS kid,
+  ak.title AS title,
+  ak.songorder AS songorder,
+  COALESCE(
+		(SELECT name FROM all_kara_serie_langs WHERE kid = ak.kid AND lang = ${lang.main}),
+		(SELECT name FROM all_kara_serie_langs WHERE kid = ak.kid AND lang = ${lang.fallback}),
+	  ak.serie) AS serie,
+  ak.serie_altname AS serie_altname,
+  ak.serie_i18n AS serie_i18n,
+  ak.sid AS sid,
+  ak.seriefiles AS seriefiles,
+  ak.subfile AS subfile,
+  ak.singers AS singers,
+  ak.songtypes AS songtype,
+  ak.creators AS creators,
+  ak.songwriters AS songwriters,
+  ak.year AS year,
+  ak.languages AS languages,
+  ak.authors AS authors,
+  ak.misc_tags AS misc_tags,
+  ak.mediafile AS mediafile,
+  ak.karafile AS karafile,
+  ak.duration AS duration,
+  ak.gain AS gain,
+  ak.created_at AS created_at,
+  ak.modified_at AS modified_at,
+  ak.mediasize AS mediasize,
+  rq.nb AS requested
 FROM all_karas AS ak
+WHERE 1 = 1
+  ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
 HAVING requested > 1
 ORDER BY requested DESC
+${limitClause}
+${offsetClause}
 `;
 
-export const getFavoritesStats = `
-SELECT ak.title AS title,
-	ak.songorder AS songorder,
-	ak.serie AS serie,
-	ak.serie_i18n AS serie_i18n,
-	ak.singer AS singer,
-    ak.songtype AS songtype,
-    ak.language AS language,
-	(SELECT COUNT(pk_id_favorite) FROM favorite WHERE kid = ak.kid) AS favorites
+export const getFavoritesStats = (filterClauses, lang, limitClause, offsetClause) => `
+WITH fav AS (SELECT fk_kid, COUNT(*) AS nb FROM favorites GROUP BY fk_kid)
+SELECT
+  ak.kid AS kid,
+  ak.title AS title,
+  ak.songorder AS songorder,
+  COALESCE(
+		(SELECT name FROM all_kara_serie_langs WHERE kid = ak.kid AND lang = ${lang.main}),
+		(SELECT name FROM all_kara_serie_langs WHERE kid = ak.kid AND lang = ${lang.fallback}),
+	  ak.serie) AS serie,
+  ak.serie_altname AS serie_altname,
+  ak.serie_i18n AS serie_i18n,
+  ak.sid AS sid,
+  ak.seriefiles AS seriefiles,
+  ak.subfile AS subfile,
+  ak.singers AS singers,
+  ak.songtypes AS songtype,
+  ak.creators AS creators,
+  ak.songwriters AS songwriters,
+  ak.year AS year,
+  ak.languages AS languages,
+  ak.authors AS authors,
+  ak.misc_tags AS misc_tags,
+  ak.mediafile AS mediafile,
+  ak.karafile AS karafile,
+  ak.duration AS duration,
+  ak.gain AS gain,
+  ak.created_at AS created_at,
+  ak.modified_at AS modified_at,
+  ak.mediasize AS mediasize,
+  fav.nb AS favorited
 FROM all_karas AS ak
+WHERE 1 = 1
+  ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
 HAVING favorites > 1
 ORDER BY favorites DESC
+${limitClause}
+${offsetClause}
 `;
