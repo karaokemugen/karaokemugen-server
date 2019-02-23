@@ -112,7 +112,7 @@ class KaraDownloader extends Component {
 					this.setState({instance_url:instance_path});
 				})
 				.catch(()=>{
-					this.setState({instance_url:'http://kara.moe'});
+					this.setState({instance_url:'https://kara.moe'});
 				})
 		}
 		else if(this.state.check_ls===null)
