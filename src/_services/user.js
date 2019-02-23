@@ -32,7 +32,7 @@ export function hashPassword(password) {
 }
 
 export async function findUserByName(username, opts = {}) {
-	const user = await selectUser('login', username);
+	const user = await selectUser('pk_login', username);
 	if (!user) return false;
 	if (opts.public) {
 		delete user.password;
@@ -70,7 +70,7 @@ export async function createUser(user, opts = {}) {
 	if (!user.password) throw { code: 'USER_EMPTY_PASSWORD'};
 	if (!user.login) throw { code: 'USER_EMPTY_LOGIN'};
 	// Check if login or nickname already exists.
-	if (await selectUser('login',user.login) || await selectUser('nickname', user.login)) {
+	if (await selectUser('pk_login',user.login) || await selectUser('nickname', user.login)) {
 		logger.error(`[User] User/nickname ${user.login} already exists, cannot create it`);
 		throw { code: 'USER_ALREADY_EXISTS', data: {username: user.login}};
 	}
@@ -111,7 +111,6 @@ export async function editUser(username,user,avatar,token) {
 	try {
 		const currentUser = await findUserByName(username);
 		if (!currentUser) throw 'User unknown';
-		user.id = currentUser.id;
 		user.login = username;
 		if (!user.type) user.type = currentUser.type;
 		if (!user.bio) user.bio = null;

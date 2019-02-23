@@ -46,12 +46,7 @@ export async function initDB() {
 
 export async function connectDB() {
 	const conf = getConfig();
-	const dbConfig = {
-		host: conf.Database.host,
-		user: conf.Database.user,
-		password: conf.Database.password,
-		database: conf.Database.database
-	};
+	const dbConfig = {...conf.Database};
 	database = new Pool(dbConfig);
 	try {
 		await database.connect();

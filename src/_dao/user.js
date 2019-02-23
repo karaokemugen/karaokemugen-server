@@ -13,6 +13,7 @@ export async function selectAllUsers() {
 }
 
 export async function deleteUser(username) {
+	console.log(username);
 	return await db().query(sql.deleteUser, [username]);
 }
 

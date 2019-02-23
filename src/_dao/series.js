@@ -2,10 +2,28 @@ import {paramWords, langSelector, db} from './database';
 import {pg as yesql} from 'yesql';
 const sql = require('./sqls/series');
 
-export async function selectAllSeries(filter, lang) {
+export async function refreshSeries() {
+	return Promise.all([
+		await db().query('REFRESH MATERIALIZED VIEW all_series'),
+		await db().query('REFRESH MATERIALIZED VIEW all_kara_serie_langs')
+	]);
+}
+
+export async function countSeries(filter) {
+	const filterClauses = filter ? buildClausesSeries(filter) : {sql: [], params: {}};
+	const query = sql.countKaras(filterClauses.sql);
+	const res = await db().query(yesql(query)(filterClauses.params));
+	return res.rows[0].count;
+}
+
+export async function selectAllSeries(filter, lang, from, size) {
 
 	const filterClauses = filter ? buildClausesSeries(filter) : {sql: [], params: {}};
-	const query = sql.getSeries(filterClauses.sql, langSelector(lang));
+	let offsetClause = '';
+	let limitClause = '';
+	if (from && from > 0) offsetClause = `OFFSET ${from} `;
+	if (size && size > 0) limitClause = `LIMIT ${size} `;
+	const query = sql.getSeries(filterClauses.sql, langSelector(lang), limitClause, offsetClause);
 	const q = yesql(query)(filterClauses.params);
 	const series = await db().query(q);
 	for (const i in series.rows) {
@@ -19,7 +37,7 @@ export function buildClausesSeries(words) {
 	let sql = [];
 	for (const i in words.split(' ').filter(s => !('' === s))) {
 		sql.push(`lower(unaccent(name)) LIKE :word${i} OR
-		lower(unaccent(aliases::varchar)) LIKE :word${i} OR
+		lower(unaccent(search_aliases::varchar)) LIKE :word${i} OR
 		lower(unaccent(search::varchar)) LIKE :word${i}
 		`);
 	}

@@ -1,0 +1,118 @@
+.kmx-kara-detail {
+  position: relative;
+  margin: .5em;
+  padding: 1em;
+  border-left: 3px solid $kara_item_border_color;
+  background: $kara_item_bg;
+  width: 100%;
+
+  .captions {
+    width: 40%;
+    float: right;
+    div {
+      width: calc(50% - 1em);
+      padding-top: 28%;
+      margin: 0 0 1em 1em;
+      float: right;
+      background-size: cover;
+      background-position: center center;
+      &:first-child {
+        width: calc(100% - 1em);
+        padding-top: 56%;
+      }
+    }
+  }
+
+  .title {
+    color:#ff6347;
+    font-size: 2em;
+    font-weight: bold;
+    margin: 0 0 .25em;
+    a {
+      color: inherit;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  h2 {
+    color: #FFCD43;
+    font-weight: normal;
+    font-size: 1.3em;
+  }
+
+  .songtypes {
+    margin: 0 0 .5em;
+    font-size: .8em;
+    opacity: 0.7;
+  }
+
+  .tags {
+    font-size: 0.8em;
+    strong {
+      font-weight: normal;
+      font-size: 1.25em;
+    }
+    a {
+      display: inline-block;
+      text-decoration: none;
+      padding: .5em;
+      margin: 0 .25em .25em 0;
+      border-radius: .4em;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .extra {
+    font-size: 0.8em;
+    margin: .5em 0;
+    padding: .5em;
+    color: $kara_item_extra_color;
+    border-radius: .4em;
+    dd {
+      margin: 0 0 .25em;
+      padding: 0;
+    }
+  }
+
+  .files {
+    display: flex;
+    flex-direction: row;
+    margin: .5em 0 0 0;
+    padding: 0;
+    dd {
+      margin: 0;
+      padding: 0;
+      a {
+        font-size: 0.9em;
+        display: inline-block;
+        background: $kara_item_files_bg;
+        color: $kara_item_files_color;
+        text-decoration: none;
+        padding: 0.25em .5em;
+        margin: 0 .25em .25em 0;
+        border-radius: .4em;
+        &:hover {
+          background: $kara_item_files_over_bg;
+          color: $kara_item_files_over_color;
+        }
+      }
+    }
+  }
+
+  blockquote {
+    background: #36393F;
+    padding: 1em;
+    margin: 1em 0 0;
+    h2 {
+      color: #ff6347;
+    }
+    a {
+      text-decoration: none;
+    }
+  }
+}

@@ -1,0 +1,241 @@
+@import  "vars.scss";
+
+body {
+  margin: 0;
+  background:$body_bg;
+  color:$body_color;
+  padding: 1em;
+  font-family: $main_font;
+  font-size: 16px;
+  input, button, textarea, select {
+    font-family: $main_font;
+    font-size: 1em;
+  }
+
+  a {
+    color:$link_color;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.svg-inline--fa {
+  width: 0;
+}
+
+.kmx-language-menu,
+.kmx-filters-menu {
+  dl {
+    display: flex;
+    flex-direction: row;
+    flex-wrap:wrap;
+    margin: 0;
+
+    dd {
+      padding: 0;
+      margin: 0 .5em .5em 0;
+      a {
+        display: block;
+        padding: 0.5em 1em;
+        margin: 0;
+        background:$filter_btn_bg;
+        color:$filter_btn_color;
+        text-decoration: none;
+        border-radius:0.25em;
+        text-align:center;
+        &.active,
+        &:hover {
+          background: $filter_btn_over_bg;
+          color:$filter_btn_over_color;
+        }
+      }
+    }
+  }
+}
+.kmx-language-menu {
+  float: right;
+}
+
+.kmx-filter-keyword {
+  background: $keyword_bg;
+  color: $keyword_color;
+  border-radius:.25em;
+  margin: 0 0 .5em;
+  form {
+    display: flex;
+    flex-direction: row;
+    input {
+      display: block;
+      flex:1;
+      background: none;
+      border:none;
+      margin: 0;
+      padding: 1em;
+      color:inherit;
+    }
+    button {
+      display: block;
+      background: none;
+      border: none;
+      color:inherit;
+      opacity: 0.7;
+      margin: 0;
+      padding: 1em;
+      cursor: pointer;
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.kmx-dedicated-taglist {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 1em 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    margin: 0 .5em .5em 0;
+    padding: 0;
+    list-style: none;
+    background: $dedicated_tag_placeholder_bg;
+    border-radius: 1em;
+    overflow: hidden;
+    a {
+      display: block;
+      padding: 0;
+      margin: 0;
+      text-decoration: none;
+      overflow: hidden;
+      height: 3em;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      span.out {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        vertical-align: bottom;
+        background: $dedicated_tag_default_bg;
+        color:$dedicated_tag_default_color;
+        line-height: 0;
+        span.in {
+          display: block;
+          padding: 0.5em 1em;
+          line-height: 1.1em;
+          em {
+            font-size: 0.7em;
+            opacity: 0.6;
+          }
+        }
+      }
+    }
+    &:hover {
+      background: lighten($dedicated_tag_placeholder_bg,10%);
+      span.out {
+        background: $dedicated_tag_over_bg;
+        color: $dedicated_tag_over_color;
+      }
+    }
+  }
+  &[data-type="years"] a { height: 10em; em { display: block; } }
+  &[data-type="languages"] a { height: 5em; em { display: block; } }
+}
+
+.kmx-filter-panel {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+
+  a.tag {
+    display: block;
+    padding: 0;
+    margin: 0 .5em .5em 0;
+    background: $filter_panel_tag_default_bg;
+    color:$filter_panel_tag_default_color;
+    text-decoration: none;
+    padding: 0.5em 1em;
+    border-radius: 1em;
+    order:99;
+
+    &:hover {
+        background: $filter_panel_tag_over_bg;
+        color: $filter_panel_tag_over_color;
+      }
+
+    &[data-type="serie"] {
+      order:1;
+      background: $filter_panel_tag_serie_bg;
+      color: $filter_panel_tag_serie_color;
+      &:hover {
+        background: $filter_panel_tag_over_bg;
+        color: $filter_panel_tag_over_color;
+      }
+    }
+    &[data-type="singer"] {
+      order:2;
+      background: $filter_panel_tag_singer_bg;
+      color: $filter_panel_tag_singer_color;
+      &:hover {
+        background: $filter_panel_tag_over_bg;
+        color: $filter_panel_tag_over_color;
+      }
+    }
+    &[data-type="misc"] {
+      order:3;
+      background: $filter_panel_tag_misc_bg;
+      color: $filter_panel_tag_misc_color;
+      &:hover {
+        background: $filter_panel_tag_over_bg;
+        color: $filter_panel_tag_over_color;
+      }
+    }
+
+    &:after {
+      content:'×';
+      margin-left: 0.5em;
+      margin-right: -0.3em;
+      background: none;
+      background:$filter_panel_tag_remove_bg;
+      color:$filter_panel_tag_remove_color;
+      width: 1em;
+      height: 1em;
+      line-height: 1em;
+      display: inline-block;
+      text-align: center;
+      border-radius: 50%;
+    }
+  }
+  a.add {
+    display: block;
+    padding: 0;
+    margin: 0 .5em .5em 0;
+    background: $filter_panel_tag_default_bg;
+    color:$filter_panel_tag_default_color;
+    text-decoration: none;
+    padding: 0.5em 1em;
+    border-radius: 1em;
+    &:hover {
+      background: lighten($filter_panel_tag_default_bg,10%);
+    }
+  }
+}
+
+.kmx-karas-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap:wrap;
+  margin: 0 -.5em;
+}
+
+@import "karaitem.scss";
+@import "karadetail.scss";
+@import "pagination.scss";

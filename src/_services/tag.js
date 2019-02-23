@@ -4,10 +4,17 @@ import {resolve} from 'path';
 import {getLanguage} from 'iso-countries-languages';
 import {selectTags} from '../_dao/tag';
 
-export async function getTags(lang, type) {
-	let tags = await selectTags(type);
+export async function getTags(lang, type, from = 0, size = 999999999999999) {
+	let tags = await selectTags(type, +from, +size);
 	tags = await translateTags(tags, lang);
-	return tags;
+	return {
+		content: tags,
+		infos: {
+			count: tags.length,
+			from: +from,
+			to: +from + tags.length
+		}
+	};
 }
 
 

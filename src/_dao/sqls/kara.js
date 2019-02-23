@@ -1,34 +1,34 @@
 // SQL for kara management
 
-export const countKaras = (filterClauses, typeClauses, orderClauses) => `
-SELECT COUNT(kara_id) AS count
+export const countKaras = (filterClauses, typeClauses) => `
+SELECT COUNT(kid) AS count
 FROM all_karas AS ak
 WHERE 1 = 1
   ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
   ${typeClauses}
 `;
 
-export const getAllKaras = (filterClauses, lang, typeClauses, orderClauses, limitClause, offsetClause) => `SELECT ak.kara_id AS kara_id,
+export const getAllKaras = (filterClauses, lang, typeClauses, orderClauses, limitClause, offsetClause) => `SELECT
   ak.kid AS kid,
   ak.title AS title,
   ak.songorder AS songorder,
   COALESCE(
-	  (SELECT sl.name FROM serie_lang sl, kara_serie ks WHERE sl.fk_id_serie = ks.fk_id_serie AND ks.fk_id_kara = kara_id AND sl.lang = ${lang.main}),
-	  (SELECT sl.name FROM serie_lang sl, kara_serie ks WHERE sl.fk_id_serie = ks.fk_id_serie AND ks.fk_id_kara = kara_id AND sl.lang = ${lang.fallback}),
+	  (SELECT sl.name FROM serie_lang sl, kara_serie ks WHERE sl.fk_sid = ks.fk_sid AND ks.fk_kid = kid AND sl.lang = ${lang.main}),
+	  (SELECT sl.name FROM serie_lang sl, kara_serie ks WHERE sl.fk_sid = ks.fk_sid AND ks.fk_kid = kid AND sl.lang = ${lang.fallback}),
 	  ak.serie) AS serie,
   ak.serie_altname AS serie_altname,
   ak.serie_i18n AS serie_i18n,
-  ak.serie_id AS serie_id,
+  ak.sid AS sid,
   ak.seriefiles AS seriefiles,
   ak.subfile AS subfile,
-  ak.singer AS singer,
-  ak.songtype AS songtype,
-  ak.creator AS creator,
-  ak.songwriter AS songwriter,
+  ak.singers AS singers,
+  ak.songtypes AS songtype,
+  ak.creators AS creators,
+  ak.songwriters AS songwriters,
   ak.year AS year,
-  ak.language AS language,
-  ak.author AS author,
-  ak.misc AS misc,
+  ak.languages AS languages,
+  ak.authors AS authors,
+  ak.misc_tags AS misc_tags,
   ak.mediafile AS mediafile,
   ak.karafile AS karafile,
   ak.duration AS duration,
@@ -40,9 +40,9 @@ FROM all_karas AS ak
 WHERE 1 = 1
   ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
   ${typeClauses}
-ORDER BY ${orderClauses} ak.language, ak.serie IS NULL, lower(unaccent(serie)), ak.songtype DESC, ak.songorder, lower(unaccent(singer)), lower(unaccent(ak.title))
+ORDER BY ${orderClauses} ak.languages_sortable, ak.serie IS NULL, lower(unaccent(serie)), ak.songtypes_sortable DESC, ak.songorder, lower(unaccent(singers_sortable)), lower(unaccent(ak.title))
 ${limitClause}
 ${offsetClause}
 `;
 
-export const getYears = 'SELECT DISTINCT year FROM all_karas ORDER BY year';
+export const getYears = 'SELECT year, karacount FROM all_years';

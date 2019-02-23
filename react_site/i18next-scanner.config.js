@@ -1,24 +1,34 @@
 module.exports = {
     options: {
         debug: false,
+        sort: true,
         plural : true,
         removeUnusedKeys:true,
         func: {
-            list: ['i18next.t', 'i18n.t'],
+            list: ['i18next.t', 'this.props.t', 't'],
             extensions: ['.js']
+        },
+        trans: {
+            component: 'Trans',
+            i18nKey: 'i18nKey',
+            defaultsKey: 'defaults',
+            extensions: ['.js', '.jsx'],
+            fallbackKey: function(ns, value) {
+                // Returns a hash value as the fallback key
+                return sha1(value);
+            }
         },
         lngs: ['en','fr'],
         ns: [
-            'message',
-            'map',
-            'karadownloader',
+            'common',
+            'tag',
         ],
         defaultLng: 'en',
-        defaultNs: 'message',
+        defaultNs: 'common',
         defaultValue: null,
         resource: {
-            loadPath: 'src/i18n/{{lng}}/{{ns}}.json',
-            savePath: 'src/i18n/{{lng}}/{{ns}}.json',
+            loadPath: 'static/locales/{{lng}}/{{ns}}.json',
+            savePath: 'static/locales/{{lng}}/{{ns}}.json',
             jsonIndent: 2,
             lineEnding: '\n'
         },

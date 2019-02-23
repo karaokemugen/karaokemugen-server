@@ -23,3 +23,5 @@ app/
 logs/
 !app/avatars/blank.png
 !react_site/src/app
+
+react_site/\.next/

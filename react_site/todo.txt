@@ -1,5 +1,0 @@
-- gérer les tag NO_DATA comme filtre sur la page Karas
-  (idem dans tout les champs sur la fiché détaillé)
-- Remettre en place le filtre Alphabetique sur les page KaraCat
-- RWD (mobile friendly)
-- Réintégrer le formulaire de dépot de kara
