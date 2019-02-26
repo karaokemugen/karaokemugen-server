@@ -76,6 +76,7 @@ async function main() {
 	inits.push(initShortener());
 	inits.push(initFrontend(port));
 	inits.push(initFavorites());
+//	inits.push();
 	await Promise.all(inits);
 	logger.info('[Launcher] Karaoke Mugen Server is READY');
 }

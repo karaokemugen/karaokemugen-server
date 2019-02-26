@@ -4,6 +4,8 @@
     "authors": "Authors",
     "creator": "Creator",
     "creators": "Creators",
+    "group": null,
+    "home": "Home",
     "karas": "Karas",
     "language": "Language",
     "languages": "Languages",
@@ -11,6 +13,7 @@
     "series": "Series",
     "singer": "Singer",
     "singers": "Singers",
+    "songtype": null,
     "songwriter": "Songwriter",
     "songwriters": "Songwriters",
     "tag": "Tag",
@@ -21,8 +24,8 @@
   "error-with-status": null,
   "error-without-status": null,
   "form": {
-    "karas_keywords_placeholder": "title, singer, serie, ...",
-    "tags_keywords_placeholder": "Filter by keywords"
+    "karas_keywords_placeholder": null,
+    "tags_keywords_placeholder": null
   },
   "kara": {
     "creation_date": "Creation date",
@@ -33,23 +36,23 @@
     "live_version_available": "Karaoke Mugen Live version available!",
     "mediafile": "Media File",
     "modification_date": "Modication date",
-    "play_in_your_browser": "Test this karaoke from your browser!",
+    "play_in_your_browser": "Test this karaoké from your browser!",
     "seriefile": "Serie File",
     "sing_now": "SING ON THIS KARAOKE NOW !",
     "subfile": "Lyrics File",
     "unknown": "Unknown"
   },
   "karaissue": {
-    "badquality": "Bad media quality",
-    "badquality_explain": "Low resolution video, video artefact, bad sound, lousy metadata...",
-    "badtiming": "Bad timing",
-    "badtiming_explain": "Shifted or Wrong lyrics, font too small, ugly colors...",
-    "baseline": "A problem with this karaoke? Tell us :",
-    "title": "A PROBLEM?"
+    "badquality": null,
+    "badquality_explain": null,
+    "badtiming": null,
+    "badtiming_explain": null,
+    "baseline": null,
+    "title": null
   },
   "karalist": {
-    "no_data": "No result",
-    "upade_in_progress": "Update in progress"
+    "no_data": null,
+    "upade_in_progress": null
   },
-  "sitename": "Karaoke Mugen"
+  "sitename": null
 }

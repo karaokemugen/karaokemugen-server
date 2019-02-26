@@ -65,7 +65,7 @@ class Page extends React.Component {
 				key: tag.tag_id,
 				name : tag.real_name,
 				karacount : tag.karacount,
-				link : "/?"+querystring.stringify(filterTools.clear().addTag('misc',tag.tag_id).getQuery()),
+				link : "/karas?"+querystring.stringify(filterTools.clear().addTag('misc',tag.tag_id).getQuery()),
 				height : 100 * tag.karacount / kmax
 			};
 		})

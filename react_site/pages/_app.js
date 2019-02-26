@@ -66,6 +66,19 @@ class MyApp extends App {
 			await localForage.setItem('tag_lastupdate',now);
 			var tag_uptodate = tag_lastupdate > now - 3600*1000*1;
 
+			var stats = await localForage.getItem('stats');
+			if(stats===null || stats===undefined || !tag_uptodate)
+			{
+				var response = await axios.get(API_URL+'/api/karas/stats')
+				if(response.status===200 && response.data!==null)
+				{
+					stats = response.data;
+				}
+				localForage.setItem('stats',stats)
+			}
+			if(stats!=null)
+				this.setState({stats:stats});
+
 			// Recupération des Tags si nécéssaire
 			var lsTagsToRetrieve = [
 				{code:'singer', id:tagsMap.singer.id},
@@ -146,7 +159,7 @@ class MyApp extends App {
 					<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
 				</Head>
 				<Header {...pageProps} />
-				<Component {...pageProps} tags={this.state.tags} series={this.state.series} years={this.state.years}  />
+				<Component {...pageProps} stats={this.state.stats} tags={this.state.tags} series={this.state.series} years={this.state.years}  />
 			</Container>
 		)
 	}
