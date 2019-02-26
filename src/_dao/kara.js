@@ -80,3 +80,8 @@ export function buildClauses(words) {
 		params: params
 	};
 }
+
+export async function selectBaseStats() {
+	const res = await db().query(sql.getBaseStats);
+	return res.rows[0];
+}

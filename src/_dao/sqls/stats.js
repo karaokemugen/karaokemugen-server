@@ -187,3 +187,4 @@ ORDER BY favorites DESC
 ${limitClause}
 ${offsetClause}
 `;
+
