@@ -82,6 +82,6 @@ export function buildClauses(words) {
 }
 
 export async function selectBaseStats() {
-	const res = await db().query(sql.getBaseStats);
+	const res = await db().query(sql.selectBaseStats);
 	return res.rows[0];
 }
