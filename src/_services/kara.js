@@ -1,12 +1,16 @@
 import {uuidRegexp, subFileRegexp, karaTypesArray, mediaFileRegexp, karaTypes} from './constants';
 import {check, initValidators} from '../_utils/validators';
-import {countKaras, selectAllKaras, selectAllYears} from '../_dao/kara';
+import {countKaras, selectAllKaras, selectAllYears, selectBaseStats} from '../_dao/kara';
 import {getConfig} from '../_utils/config';
 import langs from 'langs';
 import {getLanguage} from 'iso-countries-languages';
 import {resolve} from 'path';
 import timestamp from 'unix-timestamp';
 import uuidV4 from 'uuid/v4';
+
+export function getBaseStats() {
+	return selectBaseStats();
+}
 
 export function formatKara(karaData) {
 	timestamp.round = true;

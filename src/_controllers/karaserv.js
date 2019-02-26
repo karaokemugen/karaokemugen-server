@@ -1,5 +1,5 @@
 import {getLang} from './lang';
-import {getAllKaras, getAllYears} from '../_services/kara';
+import {getBaseStats, getAllKaras, getAllYears} from '../_services/kara';
 import {getTags} from '../_services/tag';
 import {getAllSeries} from '../_services/series';
 import {getSettings} from '../_utils/settings';
@@ -20,6 +20,14 @@ export default function KSController(router) {
 			try {
 				const karas = await getAllKaras(req.query.filter,req.lang,req.query.from, req.query.size);
 				res.json(karas);
+			} catch(err) {
+				res.status(500).json(err);
+			}
+		});
+	router.route('/karas/stats')
+		.get(async (req, res) => {
+			try {
+				res.json(await getBaseStats());
 			} catch(err) {
 				res.status(500).json(err);
 			}
