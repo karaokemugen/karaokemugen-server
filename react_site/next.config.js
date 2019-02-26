@@ -1,4 +1,6 @@
 const withSass = require('@zeit/next-sass')
+const withImages = require('next-images')
+module.exports = withImages()
 
 // default DEV settings
 var BASE_URL = '/base';
@@ -17,10 +19,10 @@ process.argv.forEach( function(element, index) {
 console.log(`API_URL = ${API_URL}`);
 console.log(`BASE_URL = ${BASE_URL}`);
 
-module.exports = withSass({
+module.exports = withImages(withSass({
 	assetPrefix: BASE_URL,
 	publicRuntimeConfig: { // Will be available on both server and client
 		BASE_URL: BASE_URL,
 		API_URL: API_URL,
 	},
-})
+}))

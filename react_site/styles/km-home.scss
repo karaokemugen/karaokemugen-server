@@ -1,0 +1,26 @@
+.km-home {
+	.km-home--logo {
+		display: block;
+		margin: 2em auto;
+		max-width: 600px;
+		width: 100%;
+	}
+	.km-home--stats {
+		width: 100%;
+		max-width: 600px;
+		padding: 0;
+		margin: auto;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		list-style: none;
+		li {
+			padding: .5em;
+			width: calc(50% - 1em);
+			background: #6d82ce;
+			color: #fff;
+			margin: .5em;
+			border-radius: .25em;
+		}
+	}
+}
