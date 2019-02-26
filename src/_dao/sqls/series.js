@@ -11,8 +11,8 @@ export const getSeries = (filterClauses, lang, limitClause, offsetClause) => `
 SELECT aseries.sid AS sid,
 	aseries.name AS name,
 	COALESCE(
-		(SELECT name FROM all_kara_serie_langs WHERE lang = ${lang.main}),
-	  	(SELECT name FROM all_kara_serie_langs WHERE lang = ${lang.fallback}),
+		(SELECT name FROM serie_lang sl WHERE aseries.sid = sl.fk_sid AND lang = ${lang.main}),
+		(SELECT name FROM serie_lang sl WHERE aseries.sid = sl.fk_sid AND lang = ${lang.fallback}),
 		aseries.name)
 	AS i18n_name,
 	aseries.aliases AS aliases,
