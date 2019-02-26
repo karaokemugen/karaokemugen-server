@@ -133,8 +133,8 @@ class Karaitem extends React.Component {
 				</ul>
 				<dl key="extra" className="extra">
 					<dd key="duration" data-type="duration"><i className="fa fa-clock-o"></i> {i18n.t("kara.duration")} {Math.floor(kara.duration/60)+'m '+(kara.duration%60)+'s'}</dd>
-					<dd key="ctime" data-type="ctime">{i18n.t("kara.creation_date")} {kara.created_at}</dd>
-					<dd key="mtime" data-type="mtime">{i18n.t("kara.modification_date")} {kara.modified_at}</dd>
+					<dd key="ctime" data-type="ctime">{i18n.t("kara.creation_date")} {kara.created_at.toLocaleDateString()}</dd>
+					<dd key="mtime" data-type="mtime">{i18n.t("kara.modification_date")} {kara.modified_at.toLocaleDateString()}</dd>
 					<dd key="kid" data-type="kid">{i18n.t('kara.karaoke_id')} : {kara.kid}</dd>
 				</dl>
 				<dl key="files" className="files">
