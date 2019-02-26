@@ -25,3 +25,5 @@ logs/
 !react_site/src/app
 
 react_site/\.next/
+
+/*.pid

@@ -51,7 +51,7 @@ class Page extends React.Component {
 				key: tag.year,
 				name : tag.year,
 				karacount : tag.karacount,
-				link : "/?"+querystring.stringify(filterTools.clear().addTag('year',tag.year).getQuery()),
+				link : "/karas?"+querystring.stringify(filterTools.clear().addTag('year',tag.year).getQuery()),
 				height : height
 			};
 		})

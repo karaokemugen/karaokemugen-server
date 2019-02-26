@@ -1,38 +1,27 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faIgloo, faTags, faTag, faMicrophoneAlt, faTv, faSignature,faChalkboardTeacher, faUserSecret, faLanguage, faCalendarAlt, faGlobe } from '@fortawesome/free-solid-svg-icons'
-
-library.add(faPlay)
-library.add(faIgloo)
-library.add(faTags)
-library.add(faTag)
-library.add(faMicrophoneAlt)
-library.add(faTv)
-library.add(faSignature)
-library.add(faChalkboardTeacher)
-library.add(faUserSecret)
-library.add(faLanguage)
-library.add(faGlobe)
-library.add(faCalendarAlt)
+import { faCreativeCommonsSampling } from '@fortawesome/free-brands-svg-icons'
 
 export default {
-	karas: <FontAwesomeIcon icon="igloo" />,
-	kara: <FontAwesomeIcon icon="igloo" />,
-	tags: <FontAwesomeIcon icon="tags" />,
-	tag: <FontAwesomeIcon icon="tag" />,
-	singers: <FontAwesomeIcon icon="microphone-alt" />,
-	singer: <FontAwesomeIcon icon="microphone-alt" />,
-	series: <FontAwesomeIcon icon="tv" />,
-	serie: <FontAwesomeIcon icon="tv" />,
-	songwriters: <FontAwesomeIcon icon="signature" />,
-	songwriter: <FontAwesomeIcon icon="signature" />,
-	creators: <FontAwesomeIcon icon="chalkboard-teacher" />,
-	creator: <FontAwesomeIcon icon="chalkboard-teacher" />,
-	authors: <FontAwesomeIcon icon="user-secret" />,
-	author: <FontAwesomeIcon icon="user-secret" />,
-	languages: <FontAwesomeIcon icon="language" />,
-	language: <FontAwesomeIcon icon="globe" />,
-	years: <FontAwesomeIcon icon="calendar-alt" />,
-	year: <FontAwesomeIcon icon="calendar-alt" />,
-	video_play: <FontAwesomeIcon icon="play" />,
+	home: <FontAwesomeIcon icon={faIgloo} />,
+	karas: <FontAwesomeIcon icon={faCreativeCommonsSampling} />,
+	kara: <FontAwesomeIcon icon={faCreativeCommonsSampling} />,
+	tags: <FontAwesomeIcon icon={faTags} />,
+	tag: <FontAwesomeIcon icon={faTag} />,
+	singers: <FontAwesomeIcon icon={faMicrophoneAlt} />,
+	singer: <FontAwesomeIcon icon={faMicrophoneAlt} />,
+	series: <FontAwesomeIcon icon={faTv} />,
+	serie: <FontAwesomeIcon icon={faTv} />,
+	songwriters: <FontAwesomeIcon icon={faSignature} />,
+	songwriter: <FontAwesomeIcon icon={faSignature} />,
+	creators: <FontAwesomeIcon icon={faChalkboardTeacher} />,
+	creator: <FontAwesomeIcon icon={faChalkboardTeacher} />,
+	authors: <FontAwesomeIcon icon={faUserSecret} />,
+	author: <FontAwesomeIcon icon={faUserSecret} />,
+	languages: <FontAwesomeIcon icon={faLanguage} />,
+	language: <FontAwesomeIcon icon={faGlobe} />,
+	years: <FontAwesomeIcon icon={faCalendarAlt} />,
+	year: <FontAwesomeIcon icon={faCalendarAlt} />,
+	video_play: <FontAwesomeIcon icon={faPlay} />,
 }

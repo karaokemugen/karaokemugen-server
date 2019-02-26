@@ -2,6 +2,10 @@
   "author_label": null,
   "creator_label": null,
   "group_label": null,
+  "language": {
+    "und": "?",
+    "zxx": "-"
+  },
   "language_label": null,
   "misc": {
     "TAG_3DS": "3DS",
