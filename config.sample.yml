@@ -8,6 +8,6 @@ Frontend:
   Host: kara.moe
   Port: 1350
 KaraExplorer:
-  Api: http://localhost:1350
+  Api: https://localhost:1350
   Port: 1351
   Path: /base

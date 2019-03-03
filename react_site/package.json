@@ -7,8 +7,8 @@
     "node": ">=8"
   },
   "scripts": {
-    "dev": "node server.js --api=http://localhost:1350 --port=3000 --path=/",
-    "kms": "node server.js --api=http://localhost:1350 --port=1351 --path=/base",
+    "dev": "node server.js --api=https://localhost:1350 --port=3000 --path=/",
+    "kms": "node server.js --api=https://localhost:1350 --port=1351 --path=/base",
     "i18n": "i18next-scanner --config i18next-scanner.config.js \"{components,pages}/**.js\""
   },
   "devDependencies": {

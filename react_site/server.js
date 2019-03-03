@@ -33,5 +33,5 @@ console.log(`KaraExplorer PORT = ${PORT}`);
   })
 
   await server.listen(PORT)
-  console.log('> Ready on http://localhost:'+PORT)
+  console.log('> Ready on https://localhost:'+PORT)
 })()
