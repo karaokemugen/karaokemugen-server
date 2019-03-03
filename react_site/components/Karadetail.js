@@ -115,7 +115,7 @@ class Karaitem extends React.Component {
 					? (
 						<div>
 							<h2>{i18n.t('kara.sing_now')}</h2>
-							<p>{i18n.t('kara.live_version_available')} <a target="_blank" href={"https://live.karaokes.moe/?video="+kara.kid}>{i18n.t('kara.play_in_your_browser')}</a></p>
+							<p>{i18n.t('kara.live_version_available')} <a target="_blank" href={"http://live.karaokes.moe/?video="+kara.kid}>{i18n.t('kara.play_in_your_browser')}</a></p>
 						</div>
 					)
 					: null

@@ -93,7 +93,7 @@ export default class KMApp {
 		});
 		this.mpvSocket.listen(this.mpvSocketPath);
 		logger.info(`[Spawn] [${this.id}] mpv Socket created`);
-		this.websocket = connect(`https://localhost:${this.conf.Frontend.Port}`);
+		this.websocket = connect(`http://localhost:${this.conf.Frontend.Port}`);
 		this.websocket.on('connect', () => {
 			this.websocket.emit('room', this.id);
 		});

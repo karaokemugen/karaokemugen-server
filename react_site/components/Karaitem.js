@@ -98,7 +98,7 @@ class Karaitem extends React.Component {
 		var caption = <span className="caption" style={captionStyle}></span>
 		if(kara.mediafile.match(/\.mp4$/))
 		{
-			caption = <a className="caption" style={captionStyle} target="_blank" href={"https://live.karaokes.moe/?video="+kara.kid}><span>{icons.video_play}</span></a>
+			caption = <a className="caption" style={captionStyle} target="_blank" href={"http://live.karaokes.moe/?video="+kara.kid}><span>{icons.video_play}</span></a>
 		}
 
 		return (

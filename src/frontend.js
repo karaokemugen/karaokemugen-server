@@ -71,7 +71,7 @@ export function initFrontend(listenPort) {
 		memoizeHost: false
 	}));
 	// Serve static files from the React app
-	mainApp.use('/base', proxy(`https://127.0.0.1:${conf.KaraExplorer.Port}`));
+	mainApp.use('/base', proxy(`http://127.0.0.1:${conf.KaraExplorer.Port}`));
 	// fix bad behavior of next-i18next - language file are not prefixed correctly
 	mainApp.get('/static/locales/*', (req, res) => { res.redirect('/base'+req.url); return ; });
 
@@ -134,5 +134,5 @@ function getKMRoom(req, res, next) {
 
 
 function redirectKMRoom(req) {
-	return `https://localhost:${req.KMAppPort}`;
+	return `http://localhost:${req.KMAppPort}`;
 }
