@@ -4,7 +4,7 @@ module.exports = withImages()
 
 // default DEV settings
 var BASE_URL = '/base';
-var API_URL = 'http://localhost:1350';
+var API_URL = 'https://localhost:1350';
 
 process.argv.forEach( function(element, index) {
   if(element.indexOf('--api=')>=0)
