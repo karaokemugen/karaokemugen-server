@@ -21,6 +21,13 @@
     "year": "Année",
     "years": "Années"
   },
+  "duration": {
+    "all_duration" : "Durée de tous les karas",
+    "days": "jours",
+    "hours": "heures",
+    "minutes": "minutes",
+    "seconds": "secondes"
+  },
   "error-with-status": null,
   "error-without-status": null,
   "form": {
