@@ -65,9 +65,9 @@ class MyApp extends App {
 			if(response.status===200 && response.data!==null)
 			{
 				var tag_lastupdate = await localForage.getItem('tag_lastupdate');
-				tag_uptodate = tag_lastupdate !== null && tag_lastupdate.getTime() === new Date(response.data).getTime();
+				tag_uptodate = typeof(tag_lastupdate) === 'object' && tag_lastupdate === new Date(response.data).getTime();
 				if (!tag_uptodate)
-					await localForage.setItem('tag_lastupdate', new Date(response.data));
+					await localForage.setItem('tag_lastupdate', new Date(response.data).getTime());
 			}
 
 			var stats = await localForage.getItem('stats');
