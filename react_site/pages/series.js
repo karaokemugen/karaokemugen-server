@@ -94,6 +94,13 @@ class Page extends React.Component {
 					/>
 
 				<DedicatedTagtList type="series" tags={serieList} />
+
+				<Pagination
+					total={total}
+					size={pageSize}
+					current={page}
+					renderUrl={(i) => { return "/singers?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
+					/>
 			</div>
 			)
 	}
