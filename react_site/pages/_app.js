@@ -60,7 +60,7 @@ class MyApp extends App {
 				name        : 'KaraokeXplorer',
 				description : 'KaraokeXplorer tags cache'
 			});
-			var tag_uptodate = true;
+			var tag_uptodate = false;
 			var response = await axios.get(API_URL+'/api/karas/lastUpdate')
 			if(response.status===200 && response.data!==null)
 			{
