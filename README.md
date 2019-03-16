@@ -21,24 +21,51 @@ Clone this repository and install dependencies
 
 ```sh
 yarn install
+cd react_site
+yarn install
 ```
 
 ## Setup database
 
-Setup a PostgreSQL user and database, by default `karaokemugen_server`. Define a password and edit `database.json` to set credentials and such.
+Use the supplied `database.sample.json` file and copy it to `database.json`. Edit it and fill in the blanks (username, password, port, host and database name of your choosing.). It should look like this :
 
-As a PostgreSQL super user, get into the newly created database and create the `unaccent` extension.
+```JSON
+{
+  "sql-file": true,
+  "defaultEnv": "prod",
+  "prod": {
+    "driver": "pg",
+    "user": "karaokemugen_server",
+    "password": "musubi",
+    "host": "localhost",
+    "database": "karaokemugen_server",
+    "schema": "public"
+  }
+}
+```
+
+As a superuser on PostgreSQL, you need to create the database properly. Use the `psql` command-line tool to connect to your PostgreSQL database. Example with the `database.json` above :
 
 Example with a database called karaokemugen_server :
+```SQL
+CREATE DATABASE karaokemugen_server ENCODING 'UTF8';
+CREATE USER karaokemugen_server WITH ENCRYPTED PASSWORD 'musubi';
+GRANT ALL PRIVILEGES ON DATABASE karaokemugen_server TO karaokemugen_server;
+```
 
-```pg
-postgres=# \c karaokemugen_server
-karaokemugen_server=# CREATE EXTENSION unaccent;
-CREATE EXTENSION
-karaokemugen_server=# \q
+Switch to the newly created database and enable the `unaccent` extension.
+
+```SQL
+\c karaokemugen_server
+CREATE EXTENSION unaccent;
 ```
 
 Karaoke Mugen Server will create tables and such on first run.
+
+Use the supplied `config.sample.yml` file and copy it to `config.yml`. Edit it and fill in the blanks (Karas, Lyrics, Medias, Series and host of your choosing.). And use the command above to generate the database :
+```sh
+yarn start --generate
+```
 
 ## Launch
 
@@ -47,3 +74,5 @@ Run
 ```sh
 yarn start
 ```
+
+This link should works now : http://localhost:1350/base
