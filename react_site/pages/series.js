@@ -23,6 +23,7 @@ class Page extends React.Component {
 		super(props)
 		this.state = {
 			searchKeywords:"",
+			orderBy:"alpha",
 		}
 		filterTools.setParams(props.filterParams);
 	}
@@ -36,6 +37,12 @@ class Page extends React.Component {
 	    filterTools.reset().setKeywords(event.target.value).save();
 	    this.setState({
 	    	searchKeywords: event.target.value,
+	    })
+	}
+
+	updateOrder(mode) {
+	    this.setState({
+	    	orderBy: mode,
 	    })
 	}
 
@@ -57,8 +64,11 @@ class Page extends React.Component {
 		}
 		let total = serieList.length
 
-		serieList.sort(function(a,b){
-			return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+		serieList.sort((a,b) =>{
+			if(this.state.orderBy=='alpha')
+				return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+			else
+				return b.karacount - a.karacount;
 		})
 
 		serieList = serieList.slice(page*pageSize,page*pageSize+pageSize);
@@ -84,6 +94,13 @@ class Page extends React.Component {
 						<input type="text" value={keywords} onChange={(event) => this.updateKeyword(event)} placeholder={i18n.t('form.tags_keywords_placeholder')} />
 						<button type="submit"><i className="fa fa-search"></i></button>
 					</form>
+				</div>
+
+				<div className="kmx-filter-order">
+					<ul>
+						<li key="alpha" onClick={(event) => this.updateOrder('alpha')} >A-Z</li>
+						<li key="quantity" onClick={(event) => this.updateOrder('quantity')} >Kara count</li>
+					</ul>
 				</div>
 
 				<Pagination
