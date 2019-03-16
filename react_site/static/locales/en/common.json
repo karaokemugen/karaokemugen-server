@@ -22,11 +22,14 @@
     "years": "Years"
   },
   "duration": {
-    "all_duration": "Duration of all karas",
     "days": "days",
     "hours": "hours",
     "minutes": "minutes",
     "seconds": "seconds"
+  },
+  "stats": {
+    "all_duration": "Duration of all karas",
+    "last_generation" : "Last update"
   },
   "error-with-status": null,
   "error-without-status": null,
