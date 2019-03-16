@@ -4,12 +4,27 @@ import querystring from 'querystring';
 import FilterTools from '../utils/filterTools';
 import RuntimeConfig from '../utils/RuntimeConfig';
 import icons from '../components/Icons';
+import Help from '../components/Help';
 import Link from '../utils/I18nLink';
 
 const BASE_URL = RuntimeConfig.BASE_URL;
 const filterTools = new FilterTools();
 
 class Header extends React.Component {
+
+	constructor (props) {
+		super(props)
+		this.state = {
+			help:false,
+		}
+	}
+
+	displayHelp(){
+		this.setState({help:true})
+	}
+	hideHelp(){
+		this.setState({help:false})
+	}
 
 	render() {
 		var current_route = this.props.router ? this.props.router.route : '/';
@@ -19,11 +34,17 @@ class Header extends React.Component {
 		var query = querystring.stringify(filterTools.reset().setPage(0).getQuery());
 		return (
 			<div>
+				{this.state.help ? <Help onClose={() => this.hideHelp()} />:null}
 				<header>
 					<div className="kmx-language-menu">
 						<dl>
 							<dd key="lng-en"><a onClick={() => i18n.changeLanguage('en')} className={i18n.language=="en" ? "active":""}>EN</a></dd>
 							<dd key="lng-fr"><a onClick={() => i18n.changeLanguage('fr')} className={i18n.language=="fr" ? "active":""}>FR</a></dd>
+						</dl>
+					</div>
+					<div className="kmx-help-menu">
+						<dl>
+							<dd key="help"><a onClick={() => this.displayHelp('en')}>Aide</a></dd>
 						</dl>
 					</div>
 					<div className="kmx-filters-menu">

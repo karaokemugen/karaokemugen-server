@@ -25,6 +25,7 @@ body {
   width: 0;
 }
 
+.kmx-help-menu,
 .kmx-language-menu,
 .kmx-filters-menu {
   dl {
@@ -53,6 +54,9 @@ body {
       }
     }
   }
+}
+.kmx-help-menu {
+  float: right;
 }
 .kmx-language-menu {
   float: right;
@@ -235,6 +239,8 @@ body {
   flex-wrap:wrap;
   margin: 0 -.5em;
 }
+
+@import "help-panel.scss";
 
 @import "karaitem.scss";
 @import "karadetail.scss";
