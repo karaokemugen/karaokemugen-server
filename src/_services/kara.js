@@ -7,13 +7,9 @@ import {getLanguage} from 'iso-countries-languages';
 import {resolve} from 'path';
 import timestamp from 'unix-timestamp';
 import uuidV4 from 'uuid/v4';
-import {getSettings} from '../_utils/settings';
 
-export async function getBaseStats() {
-	const settings = await getSettings();
-	const stats = await selectBaseStats();
-	stats.lastGeneration = settings.lastGeneration;
-	return stats;
+export function getBaseStats() {
+	return selectBaseStats();
 }
 
 export function formatKara(karaData) {

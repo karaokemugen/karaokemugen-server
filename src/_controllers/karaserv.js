@@ -2,8 +2,18 @@ import {getLang} from './lang';
 import {getBaseStats, getAllKaras, getAllYears} from '../_services/kara';
 import {getTags} from '../_services/tag';
 import {getAllSeries} from '../_services/series';
+import {getSettings} from '../_utils/settings';
 
 export default function KSController(router) {
+	router.route('/karas/lastUpdate')
+		.get(async (req, res) => {
+			try {
+				const settings = await getSettings();
+				res.send(settings.lastGeneration);
+			} catch(err) {
+				res.status(500).json(err);
+			}
+		});
 
 	router.route('/karas')
 		.get(getLang, async (req, res) => {

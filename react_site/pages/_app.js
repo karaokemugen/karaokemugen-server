@@ -60,11 +60,15 @@ class MyApp extends App {
 				name        : 'KaraokeXplorer',
 				description : 'KaraokeXplorer tags cache'
 			});
-
-			var tag_lastupdate = await localForage.getItem('tag_lastupdate');
-			var now = new Date().getTime();
-			await localForage.setItem('tag_lastupdate',now);
-			var tag_uptodate = tag_lastupdate > now - 3600*1000*1;
+			var tag_uptodate = true;
+			var response = await axios.get(API_URL+'/api/karas/lastUpdate')
+			if(response.status===200 && response.data!==null)
+			{
+				var tag_lastupdate = await localForage.getItem('tag_lastupdate');
+				tag_uptodate = tag_lastupdate !== null && tag_lastupdate.getTime() === new Date(response.data).getTime();
+				if (!tag_uptodate)
+					await localForage.setItem('tag_lastupdate', new Date(response.data));
+			}
 
 			var stats = await localForage.getItem('stats');
 			if(stats===null || stats===undefined || !tag_uptodate)
@@ -73,6 +77,7 @@ class MyApp extends App {
 				if(response.status===200 && response.data!==null)
 				{
 					stats = response.data;
+					stats.lastGeneration = await localForage.getItem('tag_lastupdate');
 				}
 				localForage.setItem('stats',stats)
 			}
