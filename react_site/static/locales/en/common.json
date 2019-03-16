@@ -24,8 +24,8 @@
   "error-with-status": null,
   "error-without-status": null,
   "form": {
-    "karas_keywords_placeholder": null,
-    "tags_keywords_placeholder": null
+    "karas_keywords_placeholder": "title, singer, serie, ...",
+    "tags_keywords_placeholder": "Filter by keywords"
   },
   "kara": {
     "creation_date": "Creation date",
@@ -43,16 +43,16 @@
     "unknown": "Unknown"
   },
   "karaissue": {
-    "badquality": null,
-    "badquality_explain": null,
-    "badtiming": null,
-    "badtiming_explain": null,
-    "baseline": null,
-    "title": null
+    "badquality": "Bad media quality",
+    "badquality_explain": "Low resolution video, video artefact, bad sound, lousy metadata...",
+    "badtiming": "Bad timing",
+    "badtiming_explain": "Shifted or Wrong lyrics, font too small, ugly colors...",
+    "baseline": "A problem with this karaoke? Tell us :",
+    "title": "A PROBLEM?"
   },
   "karalist": {
-    "no_data": null,
-    "upade_in_progress": null
+    "no_data": "No result",
+    "upade_in_progress": "Update in progress"
   },
-  "sitename": null
+  "sitename": "Karaoke Mugen"
 }
