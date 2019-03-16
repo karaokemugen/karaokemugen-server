@@ -81,7 +81,7 @@ class Page extends React.Component {
 						<li key="author"><strong>{count.author>0 ? count.author : '-'}</strong> <span>{i18n.t("category.authors")}</span></li>
 						<li key="misc"><strong>{count.misc>0 ? count.misc : '-'}</strong> <span>{i18n.t("category.tags")}</span></li>
 						<li key="songwriter"><strong>{count.songwriter>0 ? count.songwriter : '-'}</strong> <span>{i18n.t("category.songwriters")}</span></li>
-						<li className="km-home--stats--wide" key="lastGeneration"><span>{i18n.t("stats.last_generation")}</span> : <strong>{new Date(count.lastGeneration).toLocaleString()}</strong></li>
+						<li className="km-home--stats--wide" key="lastGeneration"><span>{i18n.t("stats.last_generation")}</span> : <strong>{count.duration>0 ? new Date(count.lastGeneration).toLocaleString() : '-'}</strong></li>
 						<li className="km-home--stats--wide" key="duration"><span>{i18n.t("stats.all_duration")} :</span> <strong>{count.duration>0 ? duration(count.duration) : '-'}</strong></li>
 					</ul>
 				</div>
