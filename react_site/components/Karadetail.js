@@ -133,8 +133,8 @@ class Karaitem extends React.Component {
 				</ul>
 				<dl key="extra" className="extra">
 					<dd key="duration" data-type="duration"><i className="fa fa-clock-o"></i> {i18n.t("kara.duration")} {Math.floor(kara.duration/60)+'m '+(kara.duration%60)+'s'}</dd>
-					<dd key="ctime" data-type="ctime">{i18n.t("kara.creation_date")} {kara.created_at}</dd>
-					<dd key="mtime" data-type="mtime">{i18n.t("kara.modification_date")} {kara.modified_at}</dd>
+					<dd key="ctime" data-type="ctime">{i18n.t("kara.creation_date")} {new Date(kara.created_at).toLocaleDateString()}</dd>
+					<dd key="mtime" data-type="mtime">{i18n.t("kara.modification_date")} {new Date(kara.modified_at).toLocaleDateString()}</dd>
 					<dd key="kid" data-type="kid">{i18n.t('kara.karaoke_id')} : {kara.kid}</dd>
 				</dl>
 				<dl key="files" className="files">
@@ -154,37 +154,4 @@ class Karaitem extends React.Component {
 		)
 	}
 }
-
-/*
-Ema Dance
-Insert
-
-CHANTEZ SUR CE KARAOKÉ MAINTENANT !
-Version Karaoke Mugen Live disponible ! Testez ce karaoké depuis votre navigateur !
-
-INFORMATIONS
-Langues :
-Tags : Animé, Série TV
-Série : Shirobako
-Année : 2014
-Interprètes : Haruka Yoshimura, Manami Numakura
-Compositeurs : NO_TAG
-Studios/Créateurs : P.A.Works
-Auteur : Kmeuh
-Durée : 0m 39s
-Date de création : 2019-02-06
-Date de dernière mise à jour : 2019-02-06
-Identifiant du Karaoke (KID) : efe9785f-4697-47f8-b601-8c91def683df
-Fichier de paroles : MUL - Shirobako - IN - Ema Dance.ass
-Fichier média : MUL - Shirobako - IN - Ema Dance.mp4 (9 Mo)
-Fichier métadonnées : MUL - Shirobako - IN - Ema Dance.kara
-Fichiers de série : Shirobako.series.json
-
-UN PROBLÈME ?
-Un souci avec ce karaoké ? Faites-le nous savoir :
-
-Erreur de time : Karaoké décalé, police trop petite ou illisible, erreur dans les paroles, choix des couleurs douteux...
-Média de mauvaise qualité : Vidéo en basse résolution, pixélisée, son ignoble, metadata foireuses...
-*/
-
 export default withNamespaces('common')(Karaitem)
