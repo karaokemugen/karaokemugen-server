@@ -69,5 +69,6 @@
     "TYPE_PV": "Promotional video"
   },
   "songtype_label": null,
-  "songwriter_label": null
+  "songwriter_label": null,
+  "no_tag": "No information"
 }

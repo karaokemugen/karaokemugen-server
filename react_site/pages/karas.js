@@ -119,7 +119,9 @@ class Homepage extends React.Component {
     {
       var url = "/karas?"+querystring.stringify(filterTools.reset().removeTag('misc',id).getQuery())
       let name = item.name;
-      if(item.code=='misc')
+      if(name === 'NO_TAG')
+        name = i18n.t("tag:no_tag");
+      else if(item.code=='misc')
         name = i18n.t("tag:misc."+name);
       else if(item.code=='songtype')
         name = i18n.t("tag:songtype."+name);
