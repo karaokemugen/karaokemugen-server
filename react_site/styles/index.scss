@@ -95,6 +95,40 @@ body {
   }
 }
 
+.kmx-filter-line {
+  background: $line_bg;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1em;
+  border-radius: .25em;
+  .pagination {
+    margin-top: 0em;
+  }
+}
+
+.kmx-filter-order {
+  padding: 0.5em;
+  display: flex;
+  flex-direction: row;
+  div {
+    padding: .25em;
+    a {
+      padding: 0.5em 1em;
+      margin: 0em .25em;
+      background:$filter_order_btn_bg;
+      color:$filter_order_btn_color;
+      text-decoration: none;
+      border-radius:0.25em;
+      text-align:center;
+      &.active,
+      &:hover {
+        background: $filter_order_btn_over_bg;
+        color:$filter_order_btn_over_color;
+      }
+    }
+  }
+}
+
 .kmx-dedicated-taglist {
   display: flex;
   flex-direction: row;

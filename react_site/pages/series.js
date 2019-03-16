@@ -64,15 +64,6 @@ class Page extends React.Component {
 		}
 		let total = serieList.length
 
-		serieList.sort((a,b) =>{
-			if(this.state.orderBy=='alpha')
-				return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-			else
-				return b.karacount - a.karacount;
-		})
-
-		serieList = serieList.slice(page*pageSize,page*pageSize+pageSize);
-
 		serieList = serieList.map(function(serie){
 			return {
 				key: serie.sid,
@@ -96,21 +87,24 @@ class Page extends React.Component {
 					</form>
 				</div>
 
-				<div className="kmx-filter-order">
-					<ul>
-						<li key="alpha" onClick={(event) => this.updateOrder('alpha')} >A-Z</li>
-						<li key="quantity" onClick={(event) => this.updateOrder('quantity')} >Kara count</li>
-					</ul>
+				
+				<div className="kmx-filter-line">
+					<Pagination
+						total={total}
+						size={pageSize}
+						current={page}
+						renderUrl={(i) => { return "/series?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
+						/>
+					<div className="kmx-filter-order">
+						<div>Order By :</div>
+						<div>
+							<a key="alpha" onClick={(event) => this.updateOrder('alpha')} >A-Z</a>
+							<a key="quantity" onClick={(event) => this.updateOrder('quantity')} >Kara count</a>
+						</div>
+					</div>
 				</div>
 
-				<Pagination
-					total={total}
-					size={pageSize}
-					current={page}
-					renderUrl={(i) => { return "/series?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
-					/>
-
-				<DedicatedTagtList type="series" tags={serieList} />
+				<DedicatedTagtList type="series" tags={serieList} pageSize={pageSize} page={page} orderBy={this.state.orderBy}/>
 
 				<Pagination
 					total={total}
