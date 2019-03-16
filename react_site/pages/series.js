@@ -42,7 +42,7 @@ class Page extends React.Component {
 	render() {
 
 		let kmax = 1;
-		let pageSize = 50;
+		let pageSize = 100;
 		let page = filterTools.getPage()
 		let keywords = this.state.searchKeywords;
 
