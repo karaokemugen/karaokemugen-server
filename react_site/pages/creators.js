@@ -23,6 +23,7 @@ class Page extends React.Component {
 		super(props)
 		this.state = {
 			searchKeywords:"",
+			orderBy:"quantity",
 		}
 		filterTools.setParams(props.filterParams);
 	}
@@ -36,6 +37,12 @@ class Page extends React.Component {
 	    filterTools.reset().setKeywords(event.target.value).save();
 	    this.setState({
 	    	searchKeywords: event.target.value,
+	    })
+	}
+
+	updateOrder(mode) {
+	    this.setState({
+	    	orderBy: mode,
 	    })
 	}
 
@@ -58,12 +65,6 @@ class Page extends React.Component {
 			}
 		}
 		let total = tagList.length
-
-		tagList.sort(function(a,b){
-			return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-		})
-
-		tagList = tagList.slice(page*pageSize,page*pageSize+pageSize);
 
 		tagList = tagList.map(function(tag){
 			return {
@@ -88,14 +89,23 @@ class Page extends React.Component {
 					</form>
 				</div>
 
-				<Pagination
-					total={total}
-					size={pageSize}
-					current={page}
-					renderUrl={(i) => { return "/creators?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
-					/>
+				<div className="kmx-filter-line">
+					<Pagination
+						total={total}
+						size={pageSize}
+						current={page}
+						renderUrl={(i) => { return "/creators?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
+						/>
+				<div className="kmx-filter-order">
+						<div>{i18n.t('form.order_by')} :</div>
+						<div>
+							<a key="alpha" onClick={(event) => this.updateOrder('alpha')} className={this.state.orderBy=="alpha" ? "active":""} >A-Z</a>
+							<a key="quantity" onClick={(event) => this.updateOrder('quantity')} className={this.state.orderBy=="quantity" ? "active":""} >{i18n.t('form.kara_count')}</a>
+						</div>
+					</div>
+				</div>
 
-				<DedicatedTagtList type="creators" tags={tagList} />
+				<DedicatedTagtList type="creators" tags={tagList} pageSize={pageSize} page={page} orderBy={this.state.orderBy}/>
 
 				<Pagination
 					total={total}

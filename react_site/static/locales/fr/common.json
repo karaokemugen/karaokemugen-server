@@ -35,7 +35,10 @@
   "error-without-status": null,
   "form": {
     "karas_keywords_placeholder": "titre, interprête, série, ...",
-    "tags_keywords_placeholder": "Filtrer par mots clés"
+    "tags_keywords_placeholder": "Filtrer par mots clés",
+    "order_by": "Tri",
+    "kara_count": "Nombre de karas",
+    "updated": "Mise à jour récente"
   },
   "kara": {
     "creation_date": "Date de création",
@@ -62,7 +65,7 @@
   },
   "karalist": {
     "no_data": "Aucun résultat",
-    "upade_in_progress": "Mise à jour en cours"
+    "update_in_progress": "Mise à jour en cours"
   },
   "sitename": "Karaoke Mugen"
 }

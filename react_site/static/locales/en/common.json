@@ -35,7 +35,10 @@
   "error-without-status": null,
   "form": {
     "karas_keywords_placeholder": "title, singer, serie, ...",
-    "tags_keywords_placeholder": "Filter by keywords"
+    "tags_keywords_placeholder": "Filter by keywords",
+    "order_by": "Order by",
+    "kara_count": "Kara count",
+    "updated": "Updated"
   },
   "kara": {
     "creation_date": "Creation date",
@@ -62,7 +65,7 @@
   },
   "karalist": {
     "no_data": "No result",
-    "upade_in_progress": "Update in progress"
+    "update_in_progress": "Update in progress"
   },
   "sitename": "Karaoke Mugen"
 }
