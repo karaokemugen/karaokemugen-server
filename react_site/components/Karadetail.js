@@ -109,7 +109,7 @@ class Karaitem extends React.Component {
 				</div>
 
 				<h1 className="title">{kara.title}</h1>
-				<p className="songtypes">{songtypes}</p>
+				<p className="songtypes">{songtypes} {kara.songorder}</p>
 				{
 					kara.mediafile.match(/\.mp4$/)
 					? (

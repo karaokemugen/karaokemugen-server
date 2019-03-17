@@ -105,7 +105,7 @@ class Karaitem extends React.Component {
 			<div className="kmx-kara-item" data-mode={renderMode}>
 				{caption}
 				<h2 className="title"><Link href={'/kara?kid='+kara.kid} key="detail"><a>{kara.title}</a></Link></h2>
-				<p className="songtypes">{songtypes}</p>
+				<p className="songtypes">{songtypes} {kara.songorder}</p>
 				<div className="tags">
 					{languages}
 					{tags}
