@@ -62,7 +62,7 @@ export default class KaraExplorer {
 				if (err) {
 					reject(err);
 				} else {
-					pm2.delete(this.id, (err) => {
+					pm2.delete(`kmx-${this.id}`, (err) => {
 						if (err) {
 							reject(err);
 						} else {

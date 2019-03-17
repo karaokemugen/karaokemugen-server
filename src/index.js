@@ -22,7 +22,9 @@ process.on('uncaughtException', (exception) => {
 	console.log(exception);
 });
 process.once('SIGTERM', async (code) => {
+	logger.info('[Launcher] Received SIGTERM, terminating properly.');
 	await kmx.stop();
+	process.exit();
 });
 
 main().catch(err => {
