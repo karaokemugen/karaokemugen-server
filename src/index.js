@@ -21,11 +21,20 @@ let kmx = {};
 process.on('uncaughtException', (exception) => {
 	console.log(exception);
 });
-process.once('SIGTERM', (code) => {
+process.once('SIGTERM', code => {
 	logger.info('[Launcher] Received SIGTERM, terminating properly.');
+	exit();
+});
+
+process.once('SIGINT', code => {
+	logger.info('[Launcher] Received SIGINT, terminating properly.');
+	exit();
+});
+
+function exit() {
 	kmx.stop();
 	process.exit();
-});
+};
 
 main().catch(err => {
 	logger.error(`[Launcher] Error during launch : ${JSON.stringify(err)}`);
