@@ -23,7 +23,7 @@ class Page extends React.Component {
 		super(props)
 		this.state = {
 			searchKeywords:"",
-			orderBy:"alpha",
+			orderBy:"quantity",
 		}
 		filterTools.setParams(props.filterParams);
 	}
@@ -96,10 +96,10 @@ class Page extends React.Component {
 						renderUrl={(i) => { return "/series?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
 						/>
 					<div className="kmx-filter-order">
-						<div>Order By :</div>
+						<div>{i18n.t('form.order_by')} :</div>
 						<div>
-							<a key="alpha" onClick={(event) => this.updateOrder('alpha')} >A-Z</a>
-							<a key="quantity" onClick={(event) => this.updateOrder('quantity')} >Kara count</a>
+							<a key="alpha" onClick={(event) => this.updateOrder('alpha')} className={this.state.orderBy=="alpha" ? "active":""} >A-Z</a>
+							<a key="quantity" onClick={(event) => this.updateOrder('quantity')} className={this.state.orderBy=="quantity" ? "active":""} >{i18n.t('form.kara_count')}</a>
 						</div>
 					</div>
 				</div>

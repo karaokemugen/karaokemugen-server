@@ -9,7 +9,7 @@ class Karalist extends React.Component {
 		{
 			return (
 				<div className="kmx-karas-list">
-					<p className="info">{i18n.t('karalist.upade_in_progress')}</p>
+					<p className="info">{i18n.t('karalist.update_in_progress')}</p>
 				</div>
 			)
 		}
