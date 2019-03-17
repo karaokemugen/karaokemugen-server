@@ -27,8 +27,8 @@ class Homepage extends React.Component {
     const searchTags = query.t ? query.t : '';
 
     const pageSize = 24;
-
-    const karas = await axios.get(API_URL+'/api/karas/search?'+querystring.stringify(filterTools.getApiQuery(pageSize)))
+    const orderBy = filterTools.getOrderBy();
+    const karas = await axios.get(API_URL+'/api/karas/'+orderBy+'?'+querystring.stringify(filterTools.getApiQuery(pageSize)))
 
     let karaStatus = null;
     let karaPage = 0;
@@ -57,7 +57,7 @@ class Homepage extends React.Component {
     let namespacesRequired = ['common', 'tag'];
 
     // on renvoi ici les props qui seront disponible dans le composant monté
-    return { updateTime, namespacesRequired, searchKeywords, searchTags, karaStatus, karaPage, karaCount, karaList, pageSize, filterParams}
+    return { updateTime, namespacesRequired, searchKeywords, searchTags, karaStatus, karaPage, karaCount, karaList, pageSize, filterParams, orderBy}
   }
 
   constructor (props) {
@@ -67,6 +67,7 @@ class Homepage extends React.Component {
       loading:false,
       updateTime:props.updateTime,
       searchKeywords:props.searchKeywords,
+      orderBy : props.orderBy
     }
 
     // on restaure les paramètres d'url coté client
@@ -83,6 +84,7 @@ class Homepage extends React.Component {
         loading: false,
         updateTime: nextProps.updateTime,
         searchKeywords: nextProps.searchKeywords,
+        orderBy: nextProps.orderBy
       });
     }
   }
@@ -105,6 +107,13 @@ class Homepage extends React.Component {
       searchKeywords: event.target.value,
     })
   }
+  
+	updateOrder(mode) {
+   this.setState({
+    orderBy: mode,
+  })
+  i18nRouterPush("/karas", filterTools.reset().setOrderBy(mode).getQuery());
+}
 
   getTagDetail(id){
     return this.props.tags && this.props.tags[id] ? this.props.tags[id] : null;
@@ -183,12 +192,21 @@ class Homepage extends React.Component {
 
         <p>{this.props.karaCount} Karas</p>
 
-        <Pagination
-          total={this.props.karaCount}
-          size={this.props.pageSize}
-          current={this.props.karaPage}
-          renderUrl={(i) => { return "/karas?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
-          />
+        <div className="kmx-filter-line">
+          <Pagination
+            total={this.props.karaCount}
+            size={this.props.pageSize}
+            current={this.props.karaPage}
+            renderUrl={(i) => { return "/karas?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
+            />
+         	<div className="kmx-filter-order">
+						<div>{i18n.t('form.order_by')} :</div>
+						<div>
+							<a key="search" onClick={(event) => this.updateOrder('search')} className={this.state.orderBy=="search" ? "active":""} >A-Z</a>
+							<a key="recent" onClick={(event) => this.updateOrder('recent')} className={this.state.orderBy=="recent" ? "active":""} >{i18n.t('form.updated')}</a>
+						</div>
+					</div>
+				</div>
 
         <Karalist updating={this.state.loading} data={this.props.karaList} filterTools={filterTools}/>
 
