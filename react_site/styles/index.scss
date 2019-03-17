@@ -110,16 +110,26 @@ body {
   padding: 0.5em;
   display: flex;
   flex-direction: row;
+  div > a {
+    padding: 0.5em 1em;
+    margin: 0em .25em;
+    background:$filter_order_btn_bg;
+    color:$filter_order_btn_color;
+    text-decoration: none;
+    border-radius:0.25em;
+    text-align:center;
+    &.active,
+    &:hover {
+      background: $filter_order_btn_over_bg;
+      color:$filter_order_btn_over_color;
+    }
+  }
   div {
     padding: .25em;
+    flex-direction: row;
     a {
-      padding: 0.5em 1em;
-      margin: 0em .25em;
-      background:$filter_order_btn_bg;
       color:$filter_order_btn_color;
       text-decoration: none;
-      border-radius:0.25em;
-      text-align:center;
       &.active,
       &:hover {
         background: $filter_order_btn_over_bg;

@@ -114,8 +114,7 @@ class Homepage extends React.Component {
     this.setState({
       orderBy: mode,
     })
-    i18nRouterPush("/karas", filterTools.reset().setOrderBy(mode).getQuery());
-}
+  }
 
   getTagDetail(id){
     return this.props.tags && this.props.tags[id] ? this.props.tags[id] : null;
@@ -164,6 +163,11 @@ class Homepage extends React.Component {
     return null;
   }
 
+  buildFilterOrder(order, text){
+    let url = "/karas?"+querystring.stringify(filterTools.reset().setOrderBy(order).getQuery());
+    return <Link href={url}>{text}</Link>
+  }
+
   render() {
 
     let filterSerie = (() => {
@@ -204,8 +208,8 @@ class Homepage extends React.Component {
          	<div className="kmx-filter-order">
 						<div>{i18n.t('form.order_by')} :</div>
 						<div>
-							<a key="search" onClick={(event) => this.updateOrder(event, 'search')} className={this.state.orderBy=="search" ? "active":""} >A-Z</a>
-							<a key="recent" onClick={(event) => this.updateOrder(event, 'recent')} className={this.state.orderBy=="recent" ? "active":""} >{i18n.t('form.updated')}</a>
+							<a key="search" onClick={(event) => this.updateOrder(event, 'search')} className={this.state.orderBy=="search" ? "active":""} >{this.buildFilterOrder('search', "A-Z")}</a>
+							<a key="recent" onClick={(event) => this.updateOrder(event, 'recent')} className={this.state.orderBy=="recent" ? "active":""} >{this.buildFilterOrder('recent',i18n.t('form.updated'))}</a>
 						</div>
 					</div>
 				</div>
