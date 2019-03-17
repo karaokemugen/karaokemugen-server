@@ -27,8 +27,8 @@ deploy_dev:
   stage: deploy
   script:
     - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd kmserver-dev; mirror -Rnev --parallel=10 --exclude .git --exclude app/ --exclude config.yml --exclude .pid --exclude database.json --exclude karaokemugen-app/ --exclude logs/ --exclude node_modules/ --exclude .next/ "
-    - ssh -l $USERNAME $HOST 'cd kmserver-dev ; yarn install ; yarn build ; cd react_site ; yarn install ; rm -Rf .next ; npx next build'
-    - ssh -l $USERNAME $HOST 'sudo systemctl restart karaokemugen-server-dev'
+    - ssh -l $USERNAME $HOST 'cd kmserver-dev ; yarn install ; yarn build ; cd react_site ; yarn install ; rm -Rf .next ; npx next build --api=https://localhost:1450'
+    - ssh -l $USERNAME $HOST 'sudo systemctl stop karaokemugen-server-dev ; netstat -tulpn '
   environment:
     name: dev
     url: https://dev.kara.moe
