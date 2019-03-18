@@ -110,7 +110,10 @@ body {
   padding: 0.5em;
   display: flex;
   flex-direction: row;
-  div > a {
+  dd {
+    padding: 0.5em;
+  }
+  div {
     padding: 0.5em 1em;
     margin: 0em .25em;
     background:$filter_order_btn_bg;
@@ -123,10 +126,6 @@ body {
       background: $filter_order_btn_over_bg;
       color:$filter_order_btn_over_color;
     }
-  }
-  div {
-    padding: .25em;
-    flex-direction: row;
     a {
       color:$filter_order_btn_color;
       text-decoration: none;

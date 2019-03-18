@@ -165,7 +165,7 @@ class Homepage extends React.Component {
 
   buildFilterOrder(order, text){
     let url = "/karas?"+querystring.stringify(filterTools.reset().setOrderBy(order).getQuery());
-    return <Link href={url}>{text}</Link>
+    return <Link href={url}><a>{text}</a></Link>
   }
 
   render() {
@@ -206,11 +206,9 @@ class Homepage extends React.Component {
             renderUrl={(i) => { return "/karas?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
             />
          	<div className="kmx-filter-order">
-						<div>{i18n.t('form.order_by')} :</div>
-						<div>
-							<a key="search" onClick={(event) => this.updateOrder(event, 'search')} className={this.state.orderBy=="search" ? "active":""} >{this.buildFilterOrder('search', "A-Z")}</a>
-							<a key="recent" onClick={(event) => this.updateOrder(event, 'recent')} className={this.state.orderBy=="recent" ? "active":""} >{this.buildFilterOrder('recent',i18n.t('form.updated'))}</a>
-						</div>
+						<dd>{i18n.t('form.order_by')} :</dd>
+						<div key="search" onClick={(event) => this.updateOrder(event, 'search')} className={this.state.orderBy=="search" ? "active kmx-filter-order-div":"kmx-filter-order-div"} >{this.buildFilterOrder('search', "A-Z")}</div>
+						<div key="recent" onClick={(event) => this.updateOrder(event, 'recent')} className={this.state.orderBy=="recent" ? "active kmx-filter-order-div":"kmx-filter-order-div"} >{this.buildFilterOrder('recent',i18n.t('form.updated'))}</div>
 					</div>
 				</div>
 
