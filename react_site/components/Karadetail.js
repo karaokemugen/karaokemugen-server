@@ -65,9 +65,13 @@ class Karaitem extends React.Component {
 				return <Link href={url} key={'language'+i}><a data-type="language" data-id={v.pk_id_tag}>{icons.language} {isoLanguages(v.name, i18n.language)}</a></Link>
 			}
 		});
+		let r18 = false;
 		let tags = kara.misc_tags.map((v,i) => {
 			if(v.name!=='NO_TAG')
 			{
+				if (v.name === 'TAG_R18')
+					r18 = true;
+				console.log(kara.misc_tags)
 				let url = quickTagUrl('tag',v.pk_id_tag);
 				return <Link href={url} key={'tags'+i}><a data-type="misc" data-id={v.pk_id_tag}>{icons.tag} {i18n.t("tag:misc."+v.name)}</a></Link>
 			}
@@ -111,7 +115,7 @@ class Karaitem extends React.Component {
 				<h1 className="title">{kara.title}</h1>
 				<p className="songtypes">{songtypes} {kara.songorder}</p>
 				{
-					kara.mediafile.match(/\.mp4$/)
+					kara.mediafile.match(/\.mp4$/) && !r18
 					? (
 						<div>
 							<h2>{i18n.t('kara.sing_now')}</h2>
