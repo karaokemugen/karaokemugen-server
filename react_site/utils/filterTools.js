@@ -16,6 +16,7 @@ export default class FilterTools {
 			year : null,
 			serie : null,
 			tags : [],
+			slug : null,
 			orderBy : 'recent'
 		}
 		this.params ={
@@ -24,6 +25,7 @@ export default class FilterTools {
 			year : null,
 			serie : null,
 			tags : [],
+			slug : null,
 			orderBy : 'recent'
 		}
 		this.liveParams ={
@@ -32,10 +34,12 @@ export default class FilterTools {
 			year : null,
 			serie : null,
 			tags : [],
+			slug : null,
 			orderBy : 'recent'
 		}
 	}
 	init(query){
+		var slug = query.slug ? query.slug : null;
 		var page = parseInt(query.p ? query.p : 0);
 		var keywords = query.filter ? ''+query.filter : '';
 		var extra = query.q ? '!'+query.q : '!';
@@ -64,6 +68,7 @@ export default class FilterTools {
 			year : year,
 			serie : serie,
 			tags : dedup_tags,
+			slug : slug,
 			orderBy : orderBy
 		}
 		this.reset()
@@ -116,7 +121,8 @@ export default class FilterTools {
 		if(this.liveParams)
 			return this.liveParams.orderBy;
 	}
-	addTag(type,value){
+	addTag(type,value,slug=null){
+		this.liveParams.slug=""+slug;
 		this.liveParams.orderBy='search';
 		//console.log(type,value,this.liveParams.tags)
 		if(type!='serie')
@@ -155,6 +161,7 @@ export default class FilterTools {
 			filter:this.liveParams.keywords,
 			order: this.liveParams.orderBy,
 			q:q.join('!'),
+			slug:this.liveParams.slug,
 		}
 	}
 	getApiQuery(pageSize){

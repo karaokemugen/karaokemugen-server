@@ -69,7 +69,7 @@ class Page extends React.Component {
 				key: serie.sid,
 				name : serie.name,
 				karacount : serie.karacount,
-				link : "/karas?"+querystring.stringify(filterTools.clear().addTag('serie',serie.sid).getQuery()),
+				link : "/karas?"+querystring.stringify(filterTools.clear().addTag('serie',serie.sid,serie.name).getQuery()),
 				height : 100 * serie.karacount / kmax
 			};
 		})
