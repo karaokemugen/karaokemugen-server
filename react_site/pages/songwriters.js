@@ -97,7 +97,7 @@ class Page extends React.Component {
 						renderUrl={(i) => { return "/songwriters?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
 						/>
 					<div className="kmx-filter-order">
-						<dd>{i18n.t('form.order_by')} :</dd>
+						<label>{i18n.t('form.order_by')} :</label>
 						<div key="alpha" onClick={(event) => this.updateOrder('alpha')} className={this.state.orderBy=="alpha" ? "active":""} >A-Z</div>
 						<div key="quantity" onClick={(event) => this.updateOrder('quantity')} className={this.state.orderBy=="quantity" ? "active":""} >{i18n.t('form.kara_count')}</div>
 					</div>
