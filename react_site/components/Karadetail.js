@@ -71,7 +71,6 @@ class Karaitem extends React.Component {
 			{
 				if (v.name === 'TAG_R18')
 					r18 = true;
-				console.log(kara.misc_tags)
 				let url = quickTagUrl('tag',v.pk_id_tag);
 				return <Link href={url} key={'tags'+i}><a data-type="misc" data-id={v.pk_id_tag}>{icons.tag} {i18n.t("tag:misc."+v.name)}</a></Link>
 			}
