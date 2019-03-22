@@ -3,8 +3,8 @@
   "creator_label": null,
   "group_label": null,
   "language": {
-    "und": null,
-    "zxx": null
+    "und": "Undefined",
+    "zxx": "No lyrics"
   },
   "language_label": null,
   "misc": {
@@ -69,5 +69,6 @@
     "TYPE_PV": "Promotional video"
   },
   "songtype_label": null,
-  "songwriter_label": null
+  "songwriter_label": null,
+  "no_tag": "No information"
 }

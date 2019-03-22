@@ -23,6 +23,7 @@ class Page extends React.Component {
 		super(props)
 		this.state = {
 			searchKeywords:"",
+			orderBy:"quantity",
 		}
 		filterTools.setParams(props.filterParams);
 	}
@@ -39,9 +40,15 @@ class Page extends React.Component {
 	    })
 	}
 
+	updateOrder(mode) {
+	    this.setState({
+	    	orderBy: mode,
+	    })
+	}
+
 	render() {
 		let kmax = 1;
-		let pageSize = 50;
+		let pageSize = 100;
 		let page = filterTools.getPage()
 		let keywords = this.state.searchKeywords;
 
@@ -50,6 +57,8 @@ class Page extends React.Component {
 			let tag = this.props.tags[id];
 			if(tag.code=="singer")
 			{
+				if (tag.name === 'NO_TAG')
+					tag.name = i18n.t('tag:no_tag');
 				kmax = Math.max(kmax,tag.karacount);
 				if(keywords.length==0 || filterTools.keywordSearch(tag.name,keywords))
 					tagList.push(tag);
@@ -57,18 +66,12 @@ class Page extends React.Component {
 		}
 		let total = tagList.length
 
-		tagList.sort(function(a,b){
-			return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-		})
-
-		tagList = tagList.slice(page*pageSize,page*pageSize+pageSize);
-
 		tagList = tagList.map(function(tag){
 			return {
 				key: tag.tag_id,
 				name : tag.name,
 				karacount : tag.karacount,
-				link : "/karas?"+querystring.stringify(filterTools.clear().addTag('singer',tag.tag_id).getQuery()),
+				link : "/karas?"+querystring.stringify(filterTools.clear().addTag('singer',tag.tag_id,tag.slug).getQuery()),
 				height : 100 * tag.karacount / kmax
 			};
 		})
@@ -86,14 +89,28 @@ class Page extends React.Component {
 					</form>
 				</div>
 
+				<div className="kmx-filter-line">
+					<Pagination
+						total={total}
+						size={pageSize}
+						current={page}
+						renderUrl={(i) => { return "/singers?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
+						/>
+					<div className="kmx-filter-order">
+						<label>{i18n.t('form.order_by')} :</label>
+						<div key="alpha" onClick={(event) => this.updateOrder('alpha')} className={this.state.orderBy=="alpha" ? "active":""} >A-Z</div>
+						<div key="quantity" onClick={(event) => this.updateOrder('quantity')} className={this.state.orderBy=="quantity" ? "active":""} >{i18n.t('form.kara_count')}</div>
+					</div>
+				</div>
+
+				<DedicatedTagtList type="singers" tags={tagList} pageSize={pageSize} page={page} orderBy={this.state.orderBy}/>
+
 				<Pagination
 					total={total}
 					size={pageSize}
 					current={page}
 					renderUrl={(i) => { return "/singers?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
 					/>
-
-				<DedicatedTagtList type="singers" tags={tagList} />
 			</div>
 			)
 	}

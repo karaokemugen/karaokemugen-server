@@ -8,6 +8,7 @@ import DedicatedTagtList from '../components/DedicatedTagList';
 import tagsMap from '../components/tagsMap.js';
 import querystring from 'querystring';
 import FilterTools from '../utils/filterTools';
+import duration from '../utils/date';
 const filterTools = new FilterTools();
 
 class Page extends React.Component {
@@ -36,6 +37,8 @@ class Page extends React.Component {
 			group:0,
 			songwriter:0,
 			serie:0,
+			karas:0,
+			duration:0
 		};
 		if(this.props.stats)
 		{
@@ -45,6 +48,9 @@ class Page extends React.Component {
 			count.author = this.props.stats.authors;
 			count.songwriter = this.props.stats.songwriters;
 			count.serie = this.props.stats.series;
+			count.karas = this.props.stats.karas;
+			count.duration = this.props.stats.duration;
+			count.lastGeneration = this.props.stats.lastGeneration;
 		}
 		if(this.props.tags)
 		{
@@ -56,12 +62,7 @@ class Page extends React.Component {
 				if(t.code==='group') count.group++;
 			}
 		}
-		/*
-		if(this.props.series)
-		{
-			count.serie = Object.keys(this.props.series).length;
-		}
-		*/
+
 		return (
 			<div>
 				<Head>
@@ -72,6 +73,7 @@ class Page extends React.Component {
 					<img className="km-home--logo" src={require('../static/images/km-logo.png')} />
 
 					<ul className="km-home--stats">
+						<li key="karas"><strong>{count.karas>0 ? count.karas : '-'}</strong> <span>{i18n.t("category.karas")}</span></li>
 						<li key="serie"><strong>{count.serie>0 ? count.serie : '-'}</strong> <span>{i18n.t("category.series")}</span></li>
 						<li key="singer"><strong>{count.singer>0 ? count.singer : '-'}</strong> <span>{i18n.t("category.singers")}</span></li>
 						<li key="creator"><strong>{count.creator>0 ? count.creator : '-'}</strong> <span>{i18n.t("category.creators")}</span></li>
@@ -79,6 +81,8 @@ class Page extends React.Component {
 						<li key="author"><strong>{count.author>0 ? count.author : '-'}</strong> <span>{i18n.t("category.authors")}</span></li>
 						<li key="misc"><strong>{count.misc>0 ? count.misc : '-'}</strong> <span>{i18n.t("category.tags")}</span></li>
 						<li key="songwriter"><strong>{count.songwriter>0 ? count.songwriter : '-'}</strong> <span>{i18n.t("category.songwriters")}</span></li>
+						<li className="km-home--stats--wide" key="lastGeneration"><span>{i18n.t("stats.last_generation")}</span> : <strong>{count.duration>0 ? new Date(count.lastGeneration).toLocaleString() : '-'}</strong></li>
+						<li className="km-home--stats--wide" key="duration"><span>{i18n.t("stats.all_duration")} :</span> <strong>{count.duration>0 ? duration(count.duration) : '-'}</strong></li>
 					</ul>
 				</div>
 			</div>

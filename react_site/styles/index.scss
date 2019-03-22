@@ -25,6 +25,7 @@ body {
   width: 0;
 }
 
+.kmx-help-menu,
 .kmx-language-menu,
 .kmx-filters-menu {
   dl {
@@ -53,6 +54,9 @@ body {
       }
     }
   }
+}
+.kmx-help-menu {
+  float: right;
 }
 .kmx-language-menu {
   float: right;
@@ -86,6 +90,49 @@ body {
       cursor: pointer;
       &:hover {
         opacity: 1;
+      }
+    }
+  }
+}
+
+.kmx-filter-line {
+  background: $line_bg;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1em;
+  border-radius: .25em;
+  .pagination {
+    margin-top: 0em;
+  }
+}
+
+.kmx-filter-order {
+  padding: 0.5em;
+  display: flex;
+  flex-direction: row;
+  label {
+    padding: 0.5em;
+  }
+  div {
+    padding: 0.5em 1em;
+    margin: 0em .25em;
+    background:$filter_order_btn_bg;
+    color:$filter_order_btn_color;
+    text-decoration: none;
+    border-radius:0.25em;
+    text-align:center;
+    &.active,
+    &:hover {
+      background: $filter_order_btn_over_bg;
+      color:$filter_order_btn_over_color;
+    }
+    a {
+      color:$filter_order_btn_color;
+      text-decoration: none;
+      &.active,
+      &:hover {
+        background: $filter_order_btn_over_bg;
+        color:$filter_order_btn_over_color;
       }
     }
   }
@@ -235,6 +282,8 @@ body {
   flex-wrap:wrap;
   margin: 0 -.5em;
 }
+
+@import "help-panel.scss";
 
 @import "karaitem.scss";
 @import "karadetail.scss";

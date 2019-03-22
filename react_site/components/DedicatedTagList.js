@@ -8,7 +8,18 @@ const API_URL = RuntimeConfig.API_URL;
 class DedicatedTagList extends React.Component {
 	render() {
 
-		let tagList = this.props.tags.map((tag) => {
+		let tagList = this.props.tags;
+		tagList.sort((a,b) =>{
+			if(this.props.orderBy=='alpha')
+				return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+			else
+				return b.karacount - a.karacount;
+		})
+		if (typeof this.props.page === 'number' && typeof this.props.pageSize === 'number') {
+			tagList = tagList.slice(this.props.page*this.props.pageSize,this.props.page*this.props.pageSize+this.props.pageSize);
+		}
+
+		tagList = tagList.map((tag) => {
 			return (
 				<li key={tag.key}>
 					<Link href={tag.link}>

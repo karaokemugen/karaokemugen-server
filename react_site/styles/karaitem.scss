@@ -125,6 +125,12 @@
         background: $kara_item_tag_language_bg;
         color: $kara_item_tag_language_color;
       }
+
+      &:hover {
+        background: $kara_item_tag_over_bg;
+        color:$kara_item_tag_over_color;
+      }
+
     }
   }
 }

@@ -56,23 +56,8 @@ export default class KaraExplorer {
 		});
 	}
 
-	stop = async() => {
-		return new Promise((resolve, reject) => {
-			pm2.connect(true, (err) => {
-				if (err) {
-					reject(err);
-				} else {
-					pm2.delete(this.id, (err) => {
-						if (err) {
-							reject(err);
-						} else {
-							pm2.disconnect();
-							resolve();
-						}
-					});
-				}
-			});
-		});
+	stop = () => {
+		pm2.delete(`kmx-${this.id}`);
+		pm2.disconnect();
 	}
-
 }

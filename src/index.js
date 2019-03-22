@@ -16,10 +16,25 @@ import KaraExplorer from './karaExplorer';
 
 const pjson = require('../package.json');
 const appPath = join(__dirname,'../');
+let kmx = {};
 
 process.on('uncaughtException', (exception) => {
 	console.log(exception);
 });
+process.once('SIGTERM', code => {
+	logger.info('[Launcher] Received SIGTERM, terminating properly.');
+	exit();
+});
+
+process.once('SIGINT', code => {
+	logger.info('[Launcher] Received SIGINT, terminating properly.');
+	exit();
+});
+
+function exit() {
+	kmx.stop();
+	process.exit();
+};
 
 main().catch(err => {
 	logger.error(`[Launcher] Error during launch : ${JSON.stringify(err)}`);
@@ -65,7 +80,7 @@ async function main() {
 	logger.debug(`[Launcher] Port ${port} is available`);
 	const inits = [];
 
-	var kmx = new KaraExplorer({
+	kmx = new KaraExplorer({
 		api: conf.KaraExplorer.Api,
 		port: conf.KaraExplorer.Port,
 		path: conf.KaraExplorer.Path,

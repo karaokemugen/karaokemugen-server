@@ -27,8 +27,8 @@ class Homepage extends React.Component {
     const searchTags = query.t ? query.t : '';
 
     const pageSize = 24;
-
-    const karas = await axios.get(API_URL+'/api/karas/search?'+querystring.stringify(filterTools.getApiQuery(pageSize)))
+    const orderBy = filterTools.getOrderBy();
+    const karas = await axios.get(API_URL+'/api/karas/'+orderBy+'?'+querystring.stringify(filterTools.getApiQuery(pageSize)))
 
     let karaStatus = null;
     let karaPage = 0;
@@ -57,7 +57,7 @@ class Homepage extends React.Component {
     let namespacesRequired = ['common', 'tag'];
 
     // on renvoi ici les props qui seront disponible dans le composant monté
-    return { updateTime, namespacesRequired, searchKeywords, searchTags, karaStatus, karaPage, karaCount, karaList, pageSize, filterParams}
+    return { updateTime, namespacesRequired, searchKeywords, searchTags, karaStatus, karaPage, karaCount, karaList, pageSize, filterParams, orderBy}
   }
 
   constructor (props) {
@@ -67,6 +67,7 @@ class Homepage extends React.Component {
       loading:false,
       updateTime:props.updateTime,
       searchKeywords:props.searchKeywords,
+      orderBy : props.orderBy
     }
 
     // on restaure les paramètres d'url coté client
@@ -83,6 +84,7 @@ class Homepage extends React.Component {
         loading: false,
         updateTime: nextProps.updateTime,
         searchKeywords: nextProps.searchKeywords,
+        orderBy: nextProps.orderBy
       });
     }
   }
@@ -105,7 +107,7 @@ class Homepage extends React.Component {
       searchKeywords: event.target.value,
     })
   }
-
+  
   getTagDetail(id){
     return this.props.tags && this.props.tags[id] ? this.props.tags[id] : null;
   }
@@ -119,7 +121,9 @@ class Homepage extends React.Component {
     {
       var url = "/karas?"+querystring.stringify(filterTools.reset().removeTag('misc',id).getQuery())
       let name = item.name;
-      if(item.code=='misc')
+      if(name === 'NO_TAG')
+        name = i18n.t("tag:no_tag");
+      else if(item.code=='misc')
         name = i18n.t("tag:misc."+name);
       else if(item.code=='songtype')
         name = i18n.t("tag:songtype."+name);
@@ -149,6 +153,11 @@ class Homepage extends React.Component {
       return <Link href={url} key={'serie_'+id}><a data-type="serie" className="tag">{real_name}</a></Link>
     }
     return null;
+  }
+
+  buildFilterOrder(order, text){
+    let url = "/karas?"+querystring.stringify(filterTools.reset().setOrderBy(order).getQuery());
+    return <Link href={url}><a>{text}</a></Link>
   }
 
   render() {
@@ -181,12 +190,19 @@ class Homepage extends React.Component {
 
         <p>{this.props.karaCount} Karas</p>
 
-        <Pagination
-          total={this.props.karaCount}
-          size={this.props.pageSize}
-          current={this.props.karaPage}
-          renderUrl={(i) => { return "/karas?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
-          />
+        <div className="kmx-filter-line">
+          <Pagination
+            total={this.props.karaCount}
+            size={this.props.pageSize}
+            current={this.props.karaPage}
+            renderUrl={(i) => { return "/karas?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
+            />
+         	<div className="kmx-filter-order">
+						<label>{i18n.t('form.order_by')} :</label>
+						<div key="search" className={this.state.orderBy=="search" ? "active":""} >{this.buildFilterOrder('search', "A-Z")}</div>
+						<div key="recent" className={this.state.orderBy=="recent" ? "active":""} >{this.buildFilterOrder('recent',i18n.t('form.updated'))}</div>
+					</div>
+				</div>
 
         <Karalist updating={this.state.loading} data={this.props.karaList} filterTools={filterTools}/>
 

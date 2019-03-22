@@ -23,6 +23,7 @@ class Page extends React.Component {
 		super(props)
 		this.state = {
 			searchKeywords:"",
+			orderBy:"quantity",
 		}
 		filterTools.setParams(props.filterParams);
 	}
@@ -39,34 +40,36 @@ class Page extends React.Component {
 	    })
 	}
 
+	updateOrder(mode) {
+	    this.setState({
+	    	orderBy: mode,
+	    })
+	}
+
 	render() {
 
 		let kmax = 1;
-		let pageSize = 50;
+		let pageSize = 100;
 		let page = filterTools.getPage()
 		let keywords = this.state.searchKeywords;
 
 		let serieList = [];
 		for (let id in this.props.series) {
 			let serie = this.props.series[id];
+			if (serie.name === 'NO_TAG')
+				serie.name = i18n.t('tag:no_tag');
 			kmax = Math.max(kmax,serie.karacount);
 			if(keywords.length==0 || filterTools.keywordSearch(serie.name,keywords))
 				serieList.push(serie);
 		}
 		let total = serieList.length
 
-		serieList.sort(function(a,b){
-			return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-		})
-
-		serieList = serieList.slice(page*pageSize,page*pageSize+pageSize);
-
 		serieList = serieList.map(function(serie){
 			return {
 				key: serie.sid,
 				name : serie.name,
 				karacount : serie.karacount,
-				link : "/karas?"+querystring.stringify(filterTools.clear().addTag('serie',serie.sid).getQuery()),
+				link : "/karas?"+querystring.stringify(filterTools.clear().addTag('serie',serie.sid,serie.name).getQuery()),
 				height : 100 * serie.karacount / kmax
 			};
 		})
@@ -84,14 +87,29 @@ class Page extends React.Component {
 					</form>
 				</div>
 
+				
+				<div className="kmx-filter-line">
+					<Pagination
+						total={total}
+						size={pageSize}
+						current={page}
+						renderUrl={(i) => { return "/series?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
+						/>
+					<div className="kmx-filter-order">
+						<label>{i18n.t('form.order_by')} :</label>
+						<div key="alpha" onClick={(event) => this.updateOrder('alpha')} className={this.state.orderBy=="alpha" ? "active":""} >A-Z</div>
+						<div key="quantity" onClick={(event) => this.updateOrder('quantity')} className={this.state.orderBy=="quantity" ? "active":""} >{i18n.t('form.kara_count')}</div>
+					</div>
+				</div>
+
+				<DedicatedTagtList type="series" tags={serieList} pageSize={pageSize} page={page} orderBy={this.state.orderBy}/>
+
 				<Pagination
 					total={total}
 					size={pageSize}
 					current={page}
-					renderUrl={(i) => { return "/series?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
+					renderUrl={(i) => { return "/singers?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
 					/>
-
-				<DedicatedTagtList type="series" tags={serieList} />
 			</div>
 			)
 	}
