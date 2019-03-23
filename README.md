@@ -21,7 +21,7 @@ Clone this repository and install dependencies
 
 ```sh
 yarn install
-cd react_site
+cd kmexplorer
 yarn install
 ```
 
