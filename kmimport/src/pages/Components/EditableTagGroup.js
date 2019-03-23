@@ -40,20 +40,13 @@ export default class EditableTagGroup extends React.Component {
 		this.props.onChange && this.props.onChange(tags);
 	};
 
-	getTags = async (filter, type) => {
-		let API_URL = 'https://localhost:1350';
-		if (filter === '') {
-			return ({data: []});
-		}
-		return axios.get(API_URL+'/api/karas/tags/'+type, {
-			params: {
-				filter: filter
-			}
-		});
+	getTags = async (type) => {
+		let API_URL = 'http://localhost:1350';
+		return axios.get(API_URL+'/api/karas/tags/'+type);
 	};
 
 	getSeries = async (filter) => {
-		let API_URL = 'https://localhost:1350';
+		let API_URL = 'http://localhost:1350';
 		if (filter === '') {
 			return ({data: []});
 		}
@@ -86,12 +79,12 @@ export default class EditableTagGroup extends React.Component {
 	};
 
 	searchTags = (val) => {
-		this.getTags(val, this.props.tagType).then(tags => {
+		this.getTags(this.props.tagType).then(tags => {
 			let result = tags.data.content.map(tag => {
 				// Lazyness just scored a 12 with 2d6 on me
 				// We'll only display the english version of the tag name for now.
 				// Maybe when a hero will come and fix issue #263 we'll have true i18n and evil will be vanquished for the next 1000 years.
-				return { value: tag.name, text: tag.i18n.en ? tag.i18n.en : tag.name };
+				return { value: tag.name, text: tag.name_i18n ? tag.name_i18n : tag.name };
 			}) || [];
 			result = this.sortByProp(result, 'text');
 			this.setState({ DS: result });
@@ -119,7 +112,7 @@ export default class EditableTagGroup extends React.Component {
 							{
 								this.state.DS.map((tag) => {
 									return (
-										<Col align='left' span={8}>
+										<Col key={tag.value} align='left' span={8}>
 											<Checkbox value={tag.value}>{tag.text}
 											</Checkbox>
 										</Col>
