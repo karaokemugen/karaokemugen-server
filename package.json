@@ -13,8 +13,11 @@
     "generate": "babel-node src/index.js -- --generate",
     "migrate": "node node_modules/db-migrate/bin/db-migrate sync [all] --migrations-dir src/_dao/migrations",
     "migrateDown": "node node_modules/db-migrate/bin/db-migrate down --migrations-dir src/_dao/migrations",
-	"migrateUp": "node node_modules/db-migrate/bin/db-migrate up --migrations-dir src/_dao/migrations",
-	"build": "rm -Rf dist && babel --source-maps --copy-files -d dist/ src/"
+	  "migrateUp": "node node_modules/db-migrate/bin/db-migrate up --migrations-dir src/_dao/migrations",
+    "build": "rm -Rf dist && babel --source-maps --copy-files -d dist/ src/ && yarn buildKmimport && yarn buildKmexplorer",
+    "install": "cd kmimport && yarn install && cd ../kmexplorer && yarn install",
+    "buildKmimport": "cd kmimport && yarn build",
+    "buildKmexplorer": "cd kmexplorer && rm -Rf .next && npx next build"
   },
   "bugs": {
     "url": "https://lab.shelter.moe/karaokemugen/karaokemugen-server/issues",

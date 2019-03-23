@@ -75,6 +75,11 @@ export function initFrontend(listenPort) {
 	// fix bad behavior of next-i18next - language file are not prefixed correctly
 	mainApp.get('/static/locales/*', (req, res) => { res.redirect('/base'+req.url); return ; });
 
+	mainApp.use('/import',  express.static(resolve(conf.appPath, '../kmimport/build')));
+	mainApp.get('/import/*', (req, res) => {
+		res.sendFile(resolve(conf.appPath, '../kmimport/build/index.html'));
+	});
+
 	mainApp.use('/downloads/karas', express.static(resolve(conf.appPath, conf.Path.Karas)));
 	mainApp.use('/downloads/lyrics', express.static(resolve(conf.appPath, conf.Path.Lyrics)));
 	mainApp.use('/downloads/medias', express.static(resolve(conf.appPath, conf.Path.Medias)));

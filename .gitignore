@@ -25,5 +25,6 @@ logs/
 !kmexplorer/src/app
 
 kmexplorer/\.next/
+kmimport/build
 
 /*.pid
