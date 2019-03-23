@@ -23,6 +23,7 @@ Clone this repository and install dependencies
 yarn install
 cd react_site
 yarn install
+cd ..
 ```
 
 ## Setup database
