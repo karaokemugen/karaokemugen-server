@@ -86,7 +86,8 @@ async function generateKara(kara, opts) {
 		kara.author.forEach((e,i) => kara.author[i] = e.trim());
 		if (!kara.order) kara.order = '';
 		const newKara = await importKara(newMediaFile, newSubFile, kara);
-		sendMail(`[KMServer] New karaoke uploaded by ${newKara.data.author.join(', ')}`,'Check your inbox folder');
+		if (getConfig().Mail.Enabled)
+			sendMail(`[KMServer] New karaoke uploaded by ${newKara.data.author}`,'Check your inbox folder');
 		return newKara;
 	} catch(err) {
 		logger.error(`[Karagen] Error during generation : ${err}`);

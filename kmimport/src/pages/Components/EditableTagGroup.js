@@ -41,16 +41,14 @@ export default class EditableTagGroup extends React.Component {
 	};
 
 	getTags = async (type) => {
-		let API_URL = 'http://localhost:1350';
-		return axios.get(API_URL+'/api/karas/tags/'+type);
+		return axios.get('/api/karas/tags/'+type);
 	};
 
 	getSeries = async (filter) => {
-		let API_URL = 'http://localhost:1350';
 		if (filter === '') {
 			return ({data: []});
 		}
-		return axios.get(API_URL+'/api/karas/series', {
+		return axios.get('/api/karas/series', {
 			params: {
 				filter: filter
 			}

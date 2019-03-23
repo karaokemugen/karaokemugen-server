@@ -33,8 +33,7 @@ class KaraForm extends Component {
 		e.preventDefault();
 		this.props.form.validateFields((err, values) => {
 			if (!err) {
-				let API_URL = 'http://localhost:1350';
-				axios.post(API_URL+'/api/karas/', values);
+				axios.post('/api/karas/', values);
 			};
 		});
 	};
@@ -121,7 +120,7 @@ class KaraForm extends Component {
 					wrapperCol={{ span: 6, offset: 0 }}
 				>
 					<Upload
-						action='http://localhost:1350/api/karas/importfile'
+						action='/api/karas/importfile'
 						accept='video/*,audio/*'
 						multiple={false}
 						onChange={this.onMediaUploadChange}
@@ -137,7 +136,7 @@ class KaraForm extends Component {
 					wrapperCol={{ span: 6, offset: 0 }}
 				>
 					<Upload
-						action='http://localhost:1350/api/karas/importfile'
+						action='/api/karas/importfile'
 						multiple={false}
 						onChange={this.onSubUploadChange}
 						fileList={this.state.subfileList}
