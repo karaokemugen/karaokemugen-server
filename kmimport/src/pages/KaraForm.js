@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {message, Tooltip, Button, Form, Icon, Input, InputNumber, Select, Upload} from 'antd';
 import EditableTagGroup from './Components/EditableTagGroup';
+import axios from 'axios/index';
 
 class KaraForm extends Component {
 
@@ -31,7 +32,10 @@ class KaraForm extends Component {
 	handleSubmit = (e) => {
 		e.preventDefault();
 		this.props.form.validateFields((err, values) => {
-			if (!err) this.setState({ values: values });
+			if (!err) {
+				let API_URL = 'http://localhost:1350';
+				axios.post(API_URL+'/api/karas/', values);
+			};
 		});
 	};
 
@@ -58,11 +62,12 @@ class KaraForm extends Component {
 		fileList = fileList.slice(-1);
 		this.setState({ mediafileList: fileList });
 		if (info.file.status === 'uploading') {
-			this.props.form.setFieldsValue({ mediafile: null });
+			this.props.form.setFieldsValue({ mediafile: null, mediafile_orig: null });
 		} else if (info.file.status === 'done') {
 			if (this.isMediaFile(info.file.name)) {
 				this.props.form.setFieldsValue({
-					mediafile: info.file.response.filename
+					mediafile: info.file.response.filename,
+					mediafile_orig: info.file.response.originalname
 				});
 				message.success(`${info.file.name} file added successfully`);
 			} else {
@@ -72,7 +77,7 @@ class KaraForm extends Component {
 				this.setState({ mediafileList: [] });
 			}
 		} else if (info.file.status === 'error') {
-			this.props.form.setFieldsValue({ mediafile: null});
+			this.props.form.setFieldsValue({ mediafile: null, mediafile_orig: null });
 			this.setState({ mediafileList: [] });
 		}
 	};
@@ -82,15 +87,16 @@ class KaraForm extends Component {
 		fileList = fileList.slice(-1);
 		this.setState({ subfileList: fileList });
 		if (info.file.status === 'uploading') {
-			this.props.form.setFieldsValue({ subfile: null});
+			this.props.form.setFieldsValue({ subfile: null, subfile_orig: null });
 		} else if (info.file.status === 'done') {
 			if (info.file.name.endsWith('.ass')) {
 				this.props.form.setFieldsValue({
-					subfile: info.file.response.filename
+					subfile: info.file.response.filename,
+					subfile_orig: info.file.response.originalname
 				});
 				message.success(`${info.file.name} file added successfully`);
 			} else {
-				this.props.form.setFieldsValue({ subfile: null});
+				this.props.form.setFieldsValue({ subfile: null, subfile_orig: null });
 				message.error(`${info.file.name} is not a subs file`);
 				info.file.status = 'error';
 				this.setState({ subfileList: [] });
@@ -115,7 +121,7 @@ class KaraForm extends Component {
 					wrapperCol={{ span: 6, offset: 0 }}
 				>
 					<Upload
-						action='/api/system/karas/importfile'
+						action='http://localhost:1350/api/karas/importfile'
 						accept='video/*,audio/*'
 						multiple={false}
 						onChange={this.onMediaUploadChange}
@@ -131,7 +137,7 @@ class KaraForm extends Component {
 					wrapperCol={{ span: 6, offset: 0 }}
 				>
 					<Upload
-						action='/api/system/karas/importfile'
+						action='http://localhost:1350/api/karas/importfile'
 						multiple={false}
 						onChange={this.onSubUploadChange}
 						fileList={this.state.subfileList}
@@ -393,6 +399,16 @@ class KaraForm extends Component {
 				<Form.Item>
 					{getFieldDecorator('mediafile', {
 						initialValue: this.state.mediafile
+					})(<Input type="hidden" />)}
+				</Form.Item>
+				<Form.Item>
+					{getFieldDecorator('mediafile_orig', {
+						initialValue: null
+					})(<Input type="hidden" />)}
+				</Form.Item>
+				<Form.Item>
+					{getFieldDecorator('subfile_orig', {
+						initialValue: null
 					})(<Input type="hidden" />)}
 				</Form.Item>
 				<Form.Item>

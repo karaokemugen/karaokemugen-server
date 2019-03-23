@@ -5,7 +5,7 @@
 import logger from 'winston';
 import {extname, resolve} from 'path';
 import {getConfig} from '../_utils/config';
-import {sanitizeFile, asyncCopy, asyncUnlink, asyncExists, asyncMove, replaceExt} from '../_common/utils/files';
+import {sanitizeFile, asyncCopy, asyncUnlink, asyncExists, asyncMove, replaceExt} from '../_utils/files';
 import {
 	extractAssInfos, extractVideoSubtitles, extractMediaTechInfos, karaFilenameInfos, writeKara
 } from '../_dao/karafile';
