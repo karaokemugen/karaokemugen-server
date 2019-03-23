@@ -37,6 +37,7 @@ function exit() {
 };
 
 main().catch(err => {
+	console.log(err);
 	logger.error(`[Launcher] Error during launch : ${JSON.stringify(err)}`);
 	process.exit(1);
 });
@@ -80,12 +81,14 @@ async function main() {
 	logger.debug(`[Launcher] Port ${port} is available`);
 	const inits = [];
 
+	/*
 	kmx = new KaraExplorer({
 		api: conf.KaraExplorer.Api,
 		port: conf.KaraExplorer.Port,
 		path: conf.KaraExplorer.Path,
 	});
 	kmx.start();
+	*/
 
 	if (getConfig().Mail.Enabled) inits.push(initMailer());
 	inits.push(initShortener());

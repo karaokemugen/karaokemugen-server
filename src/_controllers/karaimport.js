@@ -10,8 +10,10 @@ export default function KIController(router) {
 	router.post('/karas', async (req, res) => {
 		try {
 			await createKara(req.body);
+			console.log('Yeah');
 			res.status(200).send('Kara successfully generated');
 		} catch(err) {
+			console.log(err);
 			res.status(500).send(`Error while generating kara : ${err}`);
 		}
 	});

@@ -1,7 +1,21 @@
 import validate from 'validate.js';
 import testJSON from 'is-valid-json';
 import {has as hasLang} from 'langs';
-import {uuidRegexp} from '../_services/constants';
+import {uuidRegexp, karaTypes, tags} from '../_services/constants';
+
+function typeValidator(value) {
+	if (!karaTypes[value]) return `${value} is an invalid song type`;
+	return null;
+}
+
+function arrayNoCommaValidator(value) {
+	if (!Array.isArray(value)) return `${value} is not an array`;
+	value = value.map((value) => value.trim());
+	for (const elem of value) {
+		if (elem.includes(',')) return `'${value}' contains an element with a comma (${elem})`;
+	}
+	return null;
+}
 
 function integerValidator(value) {
 	if (value) {
@@ -12,16 +26,25 @@ function integerValidator(value) {
 }
 
 function langValidator(value) {
-	const langs = value.replace('"', '').split(',');
-	let result = null;
-	for (const lang of langs) {
-		if (!(lang === 'zxx' || lang === 'und' || lang === 'mul' || hasLang('2B', lang))) {
-			result = `'${lang}' is invalid`;
-			break;
-		}
-	}
-	return result;
+	if (!Array.isArray(value)) value = value.replace(/"/g, '').split(',');
+	value = value.map((value) => value.trim());
+
+	const firstInvalidLang = value.find((lang) => !(lang === 'und' || lang === 'mul' || lang === 'zxx' || hasLang('2B', lang)));
+	if (firstInvalidLang) return `'${firstInvalidLang}' is invalid ISO639-2B code`;
+
+	return null;
 }
+
+function tagsValidator(value) {
+	if (!Array.isArray(value)) value = value.replace(/"/g, '').split(',');
+	value = value.map((value) => value.trim());
+
+	const firstInvalidTag = value.find((tag) => !tags.includes(tag.replace(/TAG_/,'')));
+	if (firstInvalidTag) return `list '${firstInvalidTag}' is invalid (not a known tag)`;
+
+	return null;
+}
+
 
 function boolIntValidator(value) {
 	if (value && +value !== 0 && +value !== 1) return ` '${value}' is invalid`;
@@ -105,15 +128,18 @@ function seriesi18nValidator(value) {
 // Init
 
 export function initValidators() {
-	if (!validate.validators.boolIntValidator) validate.validators.boolIntValidator = boolIntValidator;
-	if (!validate.validators.numbersArrayValidator) validate.validators.numbersArrayValidator = numbersArrayValidator;
-	if (!validate.validators.integerValidator) validate.validators.integerValidator = integerValidator;
-	if (!validate.validators.isJSON) validate.validators.isJSON = isJSON;
-	if (!validate.validators.langValidator) validate.validators.langValidator = langValidator;
-	if (!validate.validators.seriesi18nValidator) validate.validators.seriesi18nValidator = seriesi18nValidator;
-	if (!validate.validators.seriesAliasesValidator) validate.validators.seriesAliasesValidator = seriesAliasesValidator;
-	if (!validate.validators.songItemValidator) validate.validators.songItemValidator = songItemValidator;
-	if (!validate.validators.favoritesValidator) validate.validators.favoritesValidator = favoritesValidator;
+	validate.validators.boolIntValidator = boolIntValidator;
+	validate.validators.numbersArrayValidator = numbersArrayValidator;
+	validate.validators.integerValidator = integerValidator;
+	validate.validators.isJSON = isJSON;
+	validate.validators.langValidator = langValidator;
+	validate.validators.seriesi18nValidator = seriesi18nValidator;
+	validate.validators.seriesAliasesValidator = seriesAliasesValidator;
+	validate.validators.songItemValidator = songItemValidator;
+	validate.validators.favoritesValidator = favoritesValidator;
+	validate.validators.arrayNoCommaValidator = arrayNoCommaValidator;
+	validate.validators.tagsValidator = tagsValidator;
+	validate.validators.typeValidator = typeValidator;
 }
 
 export function check(obj, constraints) {
