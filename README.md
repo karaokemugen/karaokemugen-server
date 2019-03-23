@@ -23,6 +23,7 @@ Clone this repository and install dependencies
 yarn install
 cd kmexplorer
 yarn install
+cd ..
 ```
 
 ## Setup database

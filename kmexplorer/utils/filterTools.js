@@ -16,6 +16,8 @@ export default class FilterTools {
 			year : null,
 			serie : null,
 			tags : [],
+			slug : null,
+			orderBy : 'recent'
 		}
 		this.params ={
 			page : 0,
@@ -23,6 +25,8 @@ export default class FilterTools {
 			year : null,
 			serie : null,
 			tags : [],
+			slug : null,
+			orderBy : 'recent'
 		}
 		this.liveParams ={
 			page : 0,
@@ -30,12 +34,16 @@ export default class FilterTools {
 			year : null,
 			serie : null,
 			tags : [],
+			slug : null,
+			orderBy : 'recent'
 		}
 	}
 	init(query){
+		var slug = query.slug ? query.slug : null;
 		var page = parseInt(query.p ? query.p : 0);
 		var keywords = query.filter ? ''+query.filter : '';
 		var extra = query.q ? '!'+query.q : '!';
+		var orderBy = query.order ? ''+query.order : 'recent'
 		//console.log(extra);
 		var year = null;
 		var serie = null;
@@ -60,6 +68,8 @@ export default class FilterTools {
 			year : year,
 			serie : serie,
 			tags : dedup_tags,
+			slug : slug,
+			orderBy : orderBy
 		}
 		this.reset()
 		return this.params;
@@ -102,7 +112,18 @@ export default class FilterTools {
 		if(this.liveParams)
 			return this.liveParams.keywords;
 	}
-	addTag(type,value){
+	setOrderBy(v){
+		if(this.liveParams)
+			this.liveParams.orderBy = v;
+		return this;
+	}
+	getOrderBy(){
+		if(this.liveParams)
+			return this.liveParams.orderBy;
+	}
+	addTag(type,value,slug=null){
+		this.liveParams.slug=""+slug;
+		this.liveParams.orderBy='search';
 		//console.log(type,value,this.liveParams.tags)
 		if(type!='serie')
 			value = parseInt(value);
@@ -126,17 +147,21 @@ export default class FilterTools {
 	}
 	getQuery(){
 		let q = [];
-		if(this.liveParams.year)
-			q.push('y:'+this.liveParams.year);
-		if(this.liveParams.serie)
-			q.push('s:'+this.liveParams.serie);
-		if(this.liveParams.tags && this.liveParams.tags.length>0)
-			q.push('t:'+this.liveParams.tags.join(','));
+		if (this.liveParams.orderBy !== 'recent') {
+			if(this.liveParams.year)
+				q.push('y:'+this.liveParams.year);
+			if(this.liveParams.serie)
+				q.push('s:'+this.liveParams.serie);
+			if(this.liveParams.tags && this.liveParams.tags.length>0)
+				q.push('t:'+this.liveParams.tags.join(','));
+		}
 
 		return {
 			p:this.liveParams.page,
 			filter:this.liveParams.keywords,
+			order: this.liveParams.orderBy,
 			q:q.join('!'),
+			slug:this.liveParams.slug,
 		}
 	}
 	getApiQuery(pageSize){

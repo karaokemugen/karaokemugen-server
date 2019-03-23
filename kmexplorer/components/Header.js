@@ -44,7 +44,7 @@ class Header extends React.Component {
 					</div>
 					<div className="kmx-help-menu">
 						<dl>
-							<dd key="help"><a onClick={() => this.displayHelp('en')}>Aide</a></dd>
+							<dd hidden={true} key="help"><a onClick={() => this.displayHelp('en')}>Aide</a></dd>
 						</dl>
 					</div>
 					<div className="kmx-filters-menu">

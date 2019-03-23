@@ -71,7 +71,7 @@ class Page extends React.Component {
 				key: tag.tag_id,
 				name : tag.name,
 				karacount : tag.karacount,
-				link : "/karas?"+querystring.stringify(filterTools.clear().addTag('author',tag.tag_id).getQuery()),
+				link : "/karas?"+querystring.stringify(filterTools.clear().addTag('author',tag.tag_id,tag.slug).getQuery()),
 				height : 100 * tag.karacount / kmax
 			};
 		})
@@ -97,11 +97,9 @@ class Page extends React.Component {
 						renderUrl={(i) => { return "/authors?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
 						/>
 				<div className="kmx-filter-order">
-						<div>{i18n.t('form.order_by')} :</div>
-						<div>
-							<a key="alpha" onClick={(event) => this.updateOrder('alpha')} className={this.state.orderBy=="alpha" ? "active":""} >A-Z</a>
-							<a key="quantity" onClick={(event) => this.updateOrder('quantity')} className={this.state.orderBy=="quantity" ? "active":""} >{i18n.t('form.kara_count')}</a>
-						</div>
+						<label>{i18n.t('form.order_by')} :</label>
+						<div key="alpha" onClick={(event) => this.updateOrder('alpha')} className={this.state.orderBy=="alpha" ? "active":""} >A-Z</div>
+						<div key="quantity" onClick={(event) => this.updateOrder('quantity')} className={this.state.orderBy=="quantity" ? "active":""} >{i18n.t('form.kara_count')}</div>
 					</div>
 				</div>
 
