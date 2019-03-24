@@ -1,6 +1,7 @@
 {
 	"HOME": "Back to KM Explorer",
 	"LANG" : "Choice of language:",
+	"DESCRIPTION": "This form allow to submit a karaoke to the Karaoke Mugen Team. It will not be immediately integrated in the karaoke database because it require a preleminary validation.",
 	"SUBMIT": "Import karaoke",
 	"ADD": "Add",
 	"ADD_SUCCESS": "Karaoke added successfully",

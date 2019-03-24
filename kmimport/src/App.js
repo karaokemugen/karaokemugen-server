@@ -22,6 +22,7 @@ function MyApp() {
 					<Menu.Item key="lng-fr" onClick={() => i18n.changeLanguage('fr')}>FR</Menu.Item>
 				</Menu>
 			</Layout.Header>
+			<div className="description"><label>{t('DESCRIPTION')}</label></div>
 			<KaraForm translation={t}/>
 		</div>
 	);

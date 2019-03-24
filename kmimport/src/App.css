@@ -20,15 +20,7 @@
   background: #36393f;
 }
 
-.ant-form-item-label > label {
-  color: #fff;
-}
-
-.ant-upload-list-item-info > span {
-  color: #fff;
-}
-
-.ant-checkbox-wrapper > span {
+.ant-form-item-label > label, .ant-upload-list-item-info > span, .ant-checkbox-wrapper > span {
   color: #fff;
 }
 
@@ -38,4 +30,10 @@
 
 .lang-label {
   margin-left: 25%;
+}
+
+.description {
+  color: #fff;
+  margin: 1em;
+  font-size: medium;
 }

@@ -1,6 +1,7 @@
 {
 	"HOME": "Retour à KM Explorer",
 	"LANG": "Choix de la langue :",
+	"DESCRIPTION": "Ce formulaire permet d'envoyer un karaoke à l'équipe de Karaoke Mugen. Il ne sera pas intégré immédiatement dans la base de karaokés car il nécessite une validation préalable.",
 	"SUBMIT": "Import du karaoké",
 	"ADD": "Ajout",
 	"ADD_SUCCESS": "Karaoké ajouté avec succès",
