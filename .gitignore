@@ -17,13 +17,14 @@ database.json
 sftp-config.json
 bin/
 localtunnel-server/
-react_site/node_modules
-react_site/build
+kmexplorer/node_modules
+kmexplorer/build
 app/
 logs/
 !app/avatars/blank.png
-!react_site/src/app
+!kmexplorer/src/app
 
-react_site/\.next/
+kmexplorer/\.next/
+kmimport/build
 
 /*.pid

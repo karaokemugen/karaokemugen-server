@@ -59,6 +59,7 @@ class Header extends React.Component {
 							<dd key="authors"    ><Link href={ "/authors?"     + query }><a className={current_route=="/authors"     ? "active":"inactive"}>{icons.authors} {i18n.t('category.authors')}</a></Link></dd>
 							<dd key="languages"  ><Link href={ "/languages?"   + query }><a className={current_route=="/languages"   ? "active":"inactive"}>{icons.languages} {i18n.t('category.languages')}</a></Link></dd>
 							<dd key="years"      ><Link href={ "/years?"       + query }><a className={current_route=="/years"       ? "active":"inactive"}>{icons.years} {i18n.t('category.years')}</a></Link></dd>
+							<dd key="karaimport" ><a href={ "/import" }>{icons.kara_import} {i18n.t('category.kara_import')}</a></dd>
 						</dl>
 					</div>
 				</header>

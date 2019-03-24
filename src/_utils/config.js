@@ -72,7 +72,7 @@ function configureLocale() {
 async function loadConfigFiles(appPath) {
 	const overrideConfigFile = resolve(appPath, configFile);
 	const databaseConfigFile = resolve(appPath, 'database.json');
-	config = {...config, ...defaults};
+	config = merge(config,defaults);
 	config.appPath = appPath;
 	if (await asyncExists(overrideConfigFile)) await loadConfig(overrideConfigFile);
 	const dbConfig = await loadDBConfig(databaseConfigFile);
