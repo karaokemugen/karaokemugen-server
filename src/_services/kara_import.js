@@ -93,6 +93,7 @@ async function generateKara(kara, opts) {
 			delete newKara.data.isKaraModified;
 			sendMail(`[A intégrer] ${newKara.data.lang.split(',')[0]} - ${newKara.data.series.split(',')[0]} - ${newKara.data.type}${newKara.data.order || ''} - ${newKara.data.title}`,`
 Un nouveau karaoké a été envoyé dans l'inbox de l'équipe Karaoké Mugen. Merci de l'intégrer dés que possible s'il répond aux critères de qualité exigés.
+Les fichiers (.kara, vidéo, ass et série si nécessaire) sont présents à l'emplacement suivant : kmpublic/inbox
 
 # Données du karaoké
 
