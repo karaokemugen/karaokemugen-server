@@ -3,7 +3,7 @@
  */
 
 import logger from 'winston';
-import {extname, resolve} from 'path';
+import {extname, resolve,basename} from 'path';
 import {getConfig} from '../_utils/config';
 import {sanitizeFile, asyncExists, asyncMove, replaceExt} from '../_utils/files';
 import {
@@ -96,7 +96,7 @@ Un nouveau karaoké a été envoyé dans l'inbox de l'équipe Karaoké Mugen. Me
 
 # Données du karaoké
 
-**Fichier** : ${newKara.file}
+**Fichier** : ${basename(newKara.file)}
 
 **Auteur(s)** : ${newKara.data.author}
 
