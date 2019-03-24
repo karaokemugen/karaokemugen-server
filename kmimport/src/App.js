@@ -8,6 +8,7 @@ import './App.css';
 
 function MyApp() {
 	const { t, i18n } = useTranslation();
+	global.t = t;
 
 	return (
 		<div className="import-kara">

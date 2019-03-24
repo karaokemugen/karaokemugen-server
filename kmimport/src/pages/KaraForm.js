@@ -34,11 +34,11 @@ class KaraForm extends Component {
 		this.props.form.validateFields((err, values) => {
 			if (!err) {
 				axios.post('/api/karas/', values).then(function (response) {
-					message.success(this.props.translation('ADD_SUCCESS'));
+					message.success(global.t('ADD_SUCCESS'));
 				  })
 				  .catch(function (error) {
 					console.log(error)
-					message.error(this.props.translation('ADD_ERROR'));
+					message.error(global.t('ADD_ERROR'));
 				  });
 			};
 		});
