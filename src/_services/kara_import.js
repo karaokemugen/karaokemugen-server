@@ -89,7 +89,7 @@ async function generateKara(kara, opts) {
 		const newKara = await importKara(newMediaFile, newSubFile, kara);
 		if (getConfig().Mail.Enabled)
 		{
-			delete newKara.ass;
+			delete newKara.data.ass;
 			delete newKara.data.isKaraModified;
 			sendMail(`[A intégrer] ${newKara.data.lang.split(',')[0]} - ${newKara.data.series.split(',')[0]} - ${newKara.data.type}${newKara.data.order || ''} - ${newKara.data.title}`,`
 Un nouveau karaoké a été envoyé dans l'inbox de l'équipe Karaoké Mugen. Merci de l'intégrer dés que possible s'il répond aux critères de qualité exigés.
