@@ -17,6 +17,7 @@ import {sendMail} from '../_utils/mailer';
 import { selectAllSeries } from '../_dao/series';
 import uuidV4 from 'uuid/v4';
 import {writeSeriesFile} from '../_dao/seriesfile';
+import {duration} from '../_utils/date';
 
 export async function createKara(kara) {
 	return await generateKara(kara);
@@ -89,13 +90,38 @@ async function generateKara(kara, opts) {
 		if (getConfig().Mail.Enabled)
 		{
 			delete newKara.ass;
-			sendMail(`[A intégrer] ${newKara.data.lang.split(',')[0]} - ${newKara.data.series.split(',')[0]} - ${newKara.data.type}${newKara.data.order || ''} - ${newKara.data.title}`,`Fichier : ${newKara.file}
+			delete newKara.data.isKaraModified;
+			sendMail(`[A intégrer] ${newKara.data.lang.split(',')[0]} - ${newKara.data.series.split(',')[0]} - ${newKara.data.type}${newKara.data.order || ''} - ${newKara.data.title}`,`
+Un nouveau karaoké a été envoyé dans l'inbox de l'équipe Karaoké Mugen. Merci de l'intégrer dés que possible s'il répond aux critères de qualité exigés.
 
-			Données du karaoké :
+# Données du karaoké
 
-			\`\`\`
-			${JSON.stringify(newKara.data,null,2)}
-			\`\`\``);
+**Fichier** : ${newKara.file}
+
+**Auteur(s)** : ${newKara.data.author}
+
+**Titre** : ${newKara.data.title}
+
+**Série** : ${newKara.data.series}
+
+**Type** : ${newKara.data.type}${newKara.data.order || ''}
+
+**Langue** : ${newKara.data.lang}
+
+**Année** : ${newKara.data.year}
+
+**Chanteur(s)** : ${newKara.data.singer}
+
+**Tag(s)** : ${newKara.data.tags}
+
+**Compositeur(s)** : ${newKara.data.songwriter}
+
+**Créateur(s)** : ${newKara.data.creator}
+
+**Groupe(s)** : ${newKara.data.groups}
+
+**Durée** : ${duration(newKara.data.duration)}
+`);
 		}
 		return newKara;
 	} catch(err) {
