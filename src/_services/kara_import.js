@@ -120,7 +120,7 @@ Un nouveau karaoké a été envoyé dans l'inbox de l'équipe Karaoké Mugen. Me
 
 **Groupe(s)** : ${newKara.data.groups}
 
-**Durée** : ${duration(newKara.data.duration)}
+**Durée** : ${duration(newKara.data.mediaduration)}
 `);
 		}
 		return newKara;
