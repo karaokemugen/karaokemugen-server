@@ -61,7 +61,7 @@ class Page extends React.Component {
 				<Head>
 				<title key="title">{i18n.t('sitename')} - {i18n.t('category.years')}</title>
 				</Head>
-				<DedicatedTagtList type="years" tags={tagList} />
+				<DedicatedTagtList type="years" tags={tagList} orderBy='alpha' />
 			</div>
 			)
 	}
