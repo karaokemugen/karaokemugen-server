@@ -93,7 +93,9 @@ async function generateKara(kara, opts) {
 
 			Données du karaoké :
 
-			\`\`\`${JSON.stringify(newKara.data,null,2)}\`\`\``);
+			\`\`\`
+			${JSON.stringify(newKara.data,null,2)}
+			\`\`\``);
 		}
 		return newKara;
 	} catch(err) {
