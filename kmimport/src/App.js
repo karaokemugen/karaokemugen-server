@@ -17,19 +17,17 @@ function MyApp() {
 					mode="horizontal"
 				>
 					<Menu.Item href="/base">{t('HOME')}</Menu.Item>
-					<label className='label-lang'>Languages :</label>
+					<label className='label-lang'>{t('LANG')}</label>
 					<Menu.Item key="lng-en" onClick={() => i18n.changeLanguage('en')}>EN</Menu.Item>
 					<Menu.Item key="lng-fr" onClick={() => i18n.changeLanguage('fr')}>FR</Menu.Item>
 				</Menu>
 			</Layout.Header>
-			<KaraForm />
+			<KaraForm translation={t}/>
 		</div>
 	);
 }
 
-export default App;
-
-function App() {
+export default function App() {
 	return (
 	  <Suspense fallback={<Spinner />}>
 		<MyApp />

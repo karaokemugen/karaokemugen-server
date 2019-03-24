@@ -113,6 +113,7 @@ class KaraForm extends Component {
 
 	render() {
 		const {getFieldDecorator} = this.props.form;
+		const t = this.props.translation;
 
 		return (
 			<Form
@@ -120,7 +121,7 @@ class KaraForm extends Component {
 				className='kara-form'
 			>
 				<Form.Item hasFeedback
-					label="Media file"
+					label={t('KARA.MEDIA_FILE')}
 					labelCol={{ span: 3 }}
 					wrapperCol={{ span: 6, offset: 0 }}
 				>
@@ -132,11 +133,11 @@ class KaraForm extends Component {
 						fileList={this.state.mediafileList}
 					>
 						<Button>
-							<Icon type="upload" />Media File
+							<Icon type="upload" />{t('KARA.MEDIA_FILE')}
 						</Button>
 					</Upload></Form.Item>
 				<Form.Item
-					label="Lyrics file"
+					label={t('KARA.LYRICS_FILE')}
 					labelCol={{ span: 3 }}
 					wrapperCol={{ span: 6, offset: 0 }}
 				>
@@ -147,12 +148,12 @@ class KaraForm extends Component {
 						fileList={this.state.subfileList}
 					>
 						<Button>
-							<Icon type="upload" />Lyrics File
+							<Icon type="upload" />{t('KARA.LYRICS_FILE')}
 						</Button>
 					</Upload></Form.Item>
 				<Form.Item hasFeedback
 					label={(
-						<span>Song title&nbsp;
+						<span>{t('KARA.TITLE')}&nbsp;
 							<Tooltip title="If you don't know, put the name of the series here as well">
 								<Icon type="question-circle-o" />
 							</Tooltip>
@@ -169,13 +170,13 @@ class KaraForm extends Component {
 						}],
 					})(<Input
 						onPressEnter={this.handleSubmit}
-						placeholder='Song Title'
-						label='Song title'
+						placeholder={t('KARA.TITLE')}
+						label={t('KARA.TITLE')}
 					/>)}
 				</Form.Item>
 				<Form.Item hasFeedback
 					label={(
-						<span>Serie(s)&nbsp;
+						<span>{t('KARA.SERIES')}&nbsp;
 							<Tooltip title="If type is MV or LIVE, series is not mandatory, except if it is related to a particular anime series (Love Live, Idolmaster, etc.)">
 								<Icon type="question-circle-o" />
 							</Tooltip>
@@ -193,10 +194,11 @@ class KaraForm extends Component {
 					})(<EditableTagGroup
 						search={'serie'}
 						onChange={ (tags) => this.props.form.setFieldsValue({ series: tags.join(',') }) }
+						translation={t}
 					/>)}
 				</Form.Item>
 				<Form.Item
-					label="Song type"
+					label={t('KARA.TYPE')}
 					labelCol={{ span: 3 }}
 					wrapperCol={{ span: 3, offset: 0 }}
 				>
@@ -206,20 +208,20 @@ class KaraForm extends Component {
 					})(<Select placeholder={'Song type'}
 						onChange={ this.onChangeType }
 					>
-						<Select.Option value='AMV'>AMV</Select.Option>
-						<Select.Option value='CM'>Commercial</Select.Option>
-						<Select.Option value='ED'>Ending</Select.Option>
-						<Select.Option value='IN'>Insert Song</Select.Option>
-						<Select.Option value='OT'>Other</Select.Option>
-						<Select.Option value='PV'>Promotional Video</Select.Option>
-						<Select.Option value='LIVE'>Concert</Select.Option>
-						<Select.Option value='OP'>Opening</Select.Option>
-						<Select.Option value='MV'>Music video</Select.Option>
+						<Select.Option value='AMV'>{t('TYPES.TYPE_AMV')}</Select.Option>
+						<Select.Option value='CM'>{t('TYPES.TYPE_CM')}</Select.Option>
+						<Select.Option value='ED'>{t('TYPES.TYPE_ED')}</Select.Option>
+						<Select.Option value='IN'>{t('TYPES.TYPE_IN')}</Select.Option>
+						<Select.Option value='OT'>{t('TYPES.TYPE_OT')}</Select.Option>
+						<Select.Option value='PV'>{t('TYPES.TYPE_PV')}</Select.Option>
+						<Select.Option value='LIVE'>{t('TYPES.TYPE_LIVE')}</Select.Option>
+						<Select.Option value='OP'>{t('TYPES.TYPE_OP')}</Select.Option>
+						<Select.Option value='MV'>{t('TYPES.TYPE_MV')}</Select.Option>
 					</Select>)}
 				</Form.Item>
 				<Form.Item hasFeedback
 					label={(
-						<span>Song order&nbsp;
+						<span>{t('KARA.ORDER')}&nbsp;
 							<Tooltip title="If this is the only opening/ending in the series, leave blank.">
 								<Icon type="question-circle-o" />
 							</Tooltip>
@@ -237,7 +239,7 @@ class KaraForm extends Component {
 				</Form.Item>
 				<Form.Item hasFeedback
 					label={(
-						<span>Language(s)&nbsp;
+						<span>{t('KARA.LANGUAGES')}(s)&nbsp;
 							<Tooltip title={(<a href="https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes">See ISO639-2B codes</a>)}>
 								<Icon type="question-circle-o" />
 							</Tooltip>
@@ -252,11 +254,12 @@ class KaraForm extends Component {
 					})(<EditableTagGroup
 						search={'lang'}
 						onChange={ (tags) => this.props.form.setFieldsValue({ lang: tags.join(',') }) }
+						translation={t}
 					/>)}
 				</Form.Item>
 				<Form.Item hasFeedback
 					label={(
-						<span>Broadcast Year&nbsp;
+						<span>{t('KARA.YEAR')}&nbsp;
 							<Tooltip title="Year when the series was broadcasted. Leave blank if you don't know">
 								<Icon type="question-circle-o" />
 							</Tooltip>
@@ -276,7 +279,7 @@ class KaraForm extends Component {
 					/>)}
 				</Form.Item>
 				<Form.Item hasFeedback
-					label="Singer(s)"
+					label={t('KARA.SINGERS')}
 					labelCol={{ span: 3 }}
 					wrapperCol={{ span: 6, offset: 0 }}
 				>
@@ -290,11 +293,12 @@ class KaraForm extends Component {
 						tagType={2}
 						search={'tag'}
 						onChange={ (tags) => this.props.form.setFieldsValue({ singer: tags.join(',') }) }
+						translation={t}
 					/>)}
 				</Form.Item>
 				<Form.Item
 					label={(
-						<span>Songwriter(s)&nbsp;
+						<span>{t('KARA.SONGWRITERS')}&nbsp;
 							<Tooltip title="Songwriters compose lyrics AND music.">
 								<Icon type="question-circle-o" />
 							</Tooltip>
@@ -309,11 +313,12 @@ class KaraForm extends Component {
 						tagType={8}
 						search={'tag'}
 						onChange={ (tags) => this.props.form.setFieldsValue({ songwriter: tags.join(',') }) }
+						translation={t}
 					/>)}
 				</Form.Item>
 				<Form.Item
 					label={(
-						<span>Creator(s)&nbsp;
+						<span>{t('KARA.CREATORS')}&nbsp;
 							<Tooltip title="Entity that created the series. Can be animation studio, movie studio, or game studio">
 								<Icon type="question-circle-o" />
 							</Tooltip>
@@ -328,11 +333,12 @@ class KaraForm extends Component {
 						tagType={4}
 						search={'tag'}
 						onChange={ (tags) => this.props.form.setFieldsValue({ creator: tags.join(',') }) }
+						translation={t}
 					/>)}
 				</Form.Item>
 				<Form.Item hasFeedback
 					label={(
-						<span>Karaoke Author(s)&nbsp;
+						<span>{t('KARA.KARA_AUTHORS')}&nbsp;
 							<Tooltip title="Is that you? :) When heavily modifying a karaoke, you should add yourself here">
 								<Icon type="question-circle-o" />
 							</Tooltip>
@@ -347,11 +353,12 @@ class KaraForm extends Component {
 						tagType={6}
 						search={'tag'}
 						onChange={ (tags) => this.props.form.setFieldsValue({ author: tags.join(',') }) }
+						translation={t}
 					/>)}
 				</Form.Item>
 				<Form.Item
 					label={(
-						<span>Tag(s)&nbsp;
+						<span>{t('KARA.TAGS')}&nbsp;
 							<Tooltip title={(<a href="http://mugen.karaokes.moe/docs/fr/contrib-guide/tags/">See tag list</a>)}>
 								<Icon type="question-circle-o" />
 							</Tooltip>
@@ -366,12 +373,13 @@ class KaraForm extends Component {
 						tagType={7}
 						checkboxes={true}
 						search={'tag'}
-						onChange={ (tags) => this.props.form.setFieldsValue({ tags: tags.join(',') }) }
+						onChange={ (tags) => this.props.form.setFieldsValue({ tags: tags.join(',') })}
+						translation={t}
 					/>)}
 				</Form.Item>
 				<Form.Item
 					label={(
-						<span>Group(s)&nbsp;
+						<span>{t('KARA.GROUPS')}&nbsp;
 							<Tooltip title="Download groups for this song">
 								<Icon type="question-circle-o" />
 							</Tooltip>
@@ -386,14 +394,13 @@ class KaraForm extends Component {
 						tagType={9}
 						search={'tag'}
 						onChange={ (tags) => this.props.form.setFieldsValue({ groups: tags.join(',') }) }
+						translation={t}
 					/>)}
 				</Form.Item>
 				<Form.Item
 					wrapperCol={{ span: 8, offset: 1 }}
 				>
-					<Button type='primary' htmlType='submit' className='login-form-button'>
-						Import karaoke
-					</Button>
+					<Button type='primary' htmlType='submit' className='login-form-button'>{t('SUBMIT')}</Button>
 				</Form.Item>
 				<Form.Item>
 					{getFieldDecorator('karafile', {

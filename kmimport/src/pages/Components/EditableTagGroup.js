@@ -101,6 +101,7 @@ export default class EditableTagGroup extends React.Component {
 
 	render() {
 		const { value, inputVisible } = this.state;
+		const t = this.props.translation;
 		if (this.props.checkboxes) {
 			return (
 				<div>
@@ -109,12 +110,14 @@ export default class EditableTagGroup extends React.Component {
 						<Row>
 							{
 								this.state.DS.map((tag) => {
-									return (
-										<Col key={tag.value} align='left' span={8}>
-											<Checkbox value={tag.value}>{tag.text}
-											</Checkbox>
-										</Col>
-									);
+									if (tag.value !== 'NO_TAG')
+										return (
+											<Col key={tag.value} align='left' span={8}>
+												<Checkbox value={tag.value}>{t('TAGS.'+tag.text)}
+												</Checkbox>
+											</Col>
+										);
+									else return null;
 								})
 							}
 						</Row>
@@ -150,7 +153,7 @@ export default class EditableTagGroup extends React.Component {
 							</AutoComplete>
 							<Button type='primary' onClick={() => this.handleInputConfirm(this.currentVal)}
 								className='login-form-button'>
-						Add...
+								{t('ADD')}
 							</Button>
 						</Form.Item>
 					)}
@@ -159,7 +162,7 @@ export default class EditableTagGroup extends React.Component {
 							onClick={this.showInput}
 							style={{ background: '#fff', borderStyle: 'dashed' }}
 						>
-							<Icon type="plus" /> Add
+							<Icon type="plus" />{t('ADD')}
 						</Tag>
 					)}
 				</div>
