@@ -87,7 +87,7 @@ async function generateKara(kara, opts) {
 		if (!kara.order) kara.order = '';
 		const newKara = await importKara(newMediaFile, newSubFile, kara);
 		if (getConfig().Mail.Enabled)
-			sendMail(`[A intégrer] ${newKara.langs.split(',')[0]} - ${newKara.data.series.split(',')[0]} - ${newKara.data.type}${newKara.data.order || ''} - ${newKara.data.title}`,`Fichier : ${newKara.file}
+			sendMail(`[A intégrer] ${newKara.lang.split(',')[0]} - ${newKara.data.series.split(',')[0]} - ${newKara.data.type}${newKara.data.order || ''} - ${newKara.data.title}`,`Fichier : ${newKara.file}
 
 			Données du karaoké :
 
