@@ -11,13 +11,13 @@ function MyApp() {
 
 	return (
 		<div className="import-kara">
-			<Layout.Header style={{height: '56px'}}>
+			<Layout.Header style={{height: '48px'}}>
 				<Menu
 					theme="dark"
 					mode="horizontal"
 				>
 					<Menu.Item><a href="/base">{t('HOME')}</a></Menu.Item>
-					<Menu.Item className='label-lang' disabled>{<label>{t('LANG')}</label>}</Menu.Item>
+					<Menu.Item className='lang-label' disabled>{<label>{t('LANG')}</label>}</Menu.Item>
 					<Menu.Item key="lng-en" onClick={() => i18n.changeLanguage('en')}>EN</Menu.Item>
 					<Menu.Item key="lng-fr" onClick={() => i18n.changeLanguage('fr')}>FR</Menu.Item>
 				</Menu>

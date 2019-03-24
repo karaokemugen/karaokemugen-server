@@ -34,10 +34,11 @@ class KaraForm extends Component {
 		this.props.form.validateFields((err, values) => {
 			if (!err) {
 				axios.post('/api/karas/', values).then(function (response) {
-					message.success(`Karaoke added successfully`);
+					message.success(this.props.translation('ADD_SUCCESS'));
 				  })
 				  .catch(function (error) {
-					message.error(`An error has occured, karaoke has not been added`);
+					console.log(error)
+					message.error(this.props.translation('ADD_ERROR'));
 				  });
 			};
 		});
@@ -73,10 +74,10 @@ class KaraForm extends Component {
 					mediafile: info.file.response.filename,
 					mediafile_orig: info.file.response.originalname
 				});
-				message.success(`${info.file.name} file added successfully`);
+				message.success(this.props.translation('KARA.ADD_FILE_SUCCESS', {name: info.file.name}));
 			} else {
 				this.props.form.setFieldsValue({ mediafile: null });
-				message.error(`${info.file.name} is not a media file`);
+				message.error(this.props.translation('KARA.ADD_FILE_MEDIA_ERROR', {name: info.file.name}));
 				info.file.status = 'error';
 				this.setState({ mediafileList: [] });
 			}
@@ -98,10 +99,10 @@ class KaraForm extends Component {
 					subfile: info.file.response.filename,
 					subfile_orig: info.file.response.originalname
 				});
-				message.success(`${info.file.name} file added successfully`);
+				message.success(this.props.translation('KARA.ADD_FILE_SUCCESS', {name: info.file.name}));
 			} else {
 				this.props.form.setFieldsValue({ subfile: null, subfile_orig: null });
-				message.error(`${info.file.name} is not a subs file`);
+				message.error(this.props.translation('KARA.ADD_FILE_LYRICS_ERROR', {name: info.file.name}));
 				info.file.status = 'error';
 				this.setState({ subfileList: [] });
 			}
@@ -154,7 +155,7 @@ class KaraForm extends Component {
 				<Form.Item hasFeedback
 					label={(
 						<span>{t('KARA.TITLE')}&nbsp;
-							<Tooltip title="If you don't know, put the name of the series here as well">
+							<Tooltip title={t('KARA.TITLE_TOOLTIP')}>
 								<Icon type="question-circle-o" />
 							</Tooltip>
 						</span>
@@ -166,7 +167,7 @@ class KaraForm extends Component {
 						initialValue: this.state.title,
 						rules: [{
 							required: true,
-							message: 'Please enter a song title'
+							message: t('KARA.TITLE_REQUIRED')
 						}],
 					})(<Input
 						onPressEnter={this.handleSubmit}
@@ -177,7 +178,7 @@ class KaraForm extends Component {
 				<Form.Item hasFeedback
 					label={(
 						<span>{t('KARA.SERIES')}&nbsp;
-							<Tooltip title="If type is MV or LIVE, series is not mandatory, except if it is related to a particular anime series (Love Live, Idolmaster, etc.)">
+							<Tooltip title={t('KARA.SERIES_TOOLTIP')}>
 								<Icon type="question-circle-o" />
 							</Tooltip>
 						</span>
@@ -189,7 +190,7 @@ class KaraForm extends Component {
 						initialValue: this.state.series,
 						rules: [{
 							required: this.state.seriesRequired,
-							message: 'Series is mandatory if song type is not MV or LIVE'
+							message: t('KARA.SERIES_REQUIRED')
 						}]
 					})(<EditableTagGroup
 						search={'serie'}
@@ -222,7 +223,7 @@ class KaraForm extends Component {
 				<Form.Item hasFeedback
 					label={(
 						<span>{t('KARA.ORDER')}&nbsp;
-							<Tooltip title="If this is the only opening/ending in the series, leave blank.">
+							<Tooltip title={t('KARA.ORDER_TOOLTIP')}>
 								<Icon type="question-circle-o" />
 							</Tooltip>
 						</span>
@@ -238,13 +239,7 @@ class KaraForm extends Component {
 					/>)}
 				</Form.Item>
 				<Form.Item hasFeedback
-					label={(
-						<span>{t('KARA.LANGUAGES')}(s)&nbsp;
-							<Tooltip title={(<a href="https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes">See ISO639-2B codes</a>)}>
-								<Icon type="question-circle-o" />
-							</Tooltip>
-						</span>
-					)}
+					label={t('KARA.LANGUAGES')}
 					labelCol={{ span: 3 }}
 					wrapperCol={{ span: 6, offset: 0 }}
 				>
@@ -260,7 +255,7 @@ class KaraForm extends Component {
 				<Form.Item hasFeedback
 					label={(
 						<span>{t('KARA.YEAR')}&nbsp;
-							<Tooltip title="Year when the series was broadcasted. Leave blank if you don't know">
+							<Tooltip title={t('KARA.YEAR_TOOLTIP')}>
 								<Icon type="question-circle-o" />
 							</Tooltip>
 						</span>
@@ -287,7 +282,7 @@ class KaraForm extends Component {
 						initialValue: this.state.singers,
 						rules: [{
 							required: !this.state.seriesRequired,
-							message: 'Singer is mandatory if song type is MV or LIVE'
+							message: t('KARA.SINGERS_REQUIRED')
 						}]
 					})(<EditableTagGroup
 						tagType={2}
@@ -299,7 +294,7 @@ class KaraForm extends Component {
 				<Form.Item
 					label={(
 						<span>{t('KARA.SONGWRITERS')}&nbsp;
-							<Tooltip title="Songwriters compose lyrics AND music.">
+							<Tooltip title={t('KARA.SONGWRITERS_TOOLTIP')}>
 								<Icon type="question-circle-o" />
 							</Tooltip>
 						</span>
@@ -319,7 +314,7 @@ class KaraForm extends Component {
 				<Form.Item
 					label={(
 						<span>{t('KARA.CREATORS')}&nbsp;
-							<Tooltip title="Entity that created the series. Can be animation studio, movie studio, or game studio">
+							<Tooltip title={t('KARA.CREATORS_TOOLTIP')}>
 								<Icon type="question-circle-o" />
 							</Tooltip>
 						</span>
@@ -339,7 +334,7 @@ class KaraForm extends Component {
 				<Form.Item hasFeedback
 					label={(
 						<span>{t('KARA.KARA_AUTHORS')}&nbsp;
-							<Tooltip title="Is that you? :) When heavily modifying a karaoke, you should add yourself here">
+							<Tooltip title={t('KARA.KARA_AUTHORS_TOOLTIP')}>
 								<Icon type="question-circle-o" />
 							</Tooltip>
 						</span>
@@ -359,7 +354,7 @@ class KaraForm extends Component {
 				<Form.Item
 					label={(
 						<span>{t('KARA.TAGS')}&nbsp;
-							<Tooltip title={(<a href="http://mugen.karaokes.moe/docs/fr/contrib-guide/tags/">See tag list</a>)}>
+							<Tooltip title={(<a href="http://mugen.karaokes.moe/docs/fr/contrib-guide/tags/">{t('KARA.TAGS_TOOLTIP')}</a>)}>
 								<Icon type="question-circle-o" />
 							</Tooltip>
 						</span>
@@ -380,7 +375,7 @@ class KaraForm extends Component {
 				<Form.Item
 					label={(
 						<span>{t('KARA.GROUPS')}&nbsp;
-							<Tooltip title="Download groups for this song">
+							<Tooltip title={t('KARA.GROUPS_TOOLTIP')}>
 								<Icon type="question-circle-o" />
 							</Tooltip>
 						</span>
