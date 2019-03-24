@@ -25,7 +25,7 @@ export function initMailer() {
 }
 
 export function sendMail(subject, message) {
-	transporter.SendMail({...mailOptions,
+	transporter.sendMail({...mailOptions,
 		subject: subject,
 		text: message
 	}, (error, info) => {
