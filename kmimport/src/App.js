@@ -7,7 +7,9 @@ class App extends Component {
 
 	render() {
 		return (
-			<KaraForm />
+			<div className="import-kara">
+				<KaraForm />
+			</div>
 		);
 	}
 }

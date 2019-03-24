@@ -33,7 +33,12 @@ class KaraForm extends Component {
 		e.preventDefault();
 		this.props.form.validateFields((err, values) => {
 			if (!err) {
-				axios.post('/api/karas/', values);
+				axios.post('/api/karas/', values).then(function (response) {
+					message.success(`Karaoke added successfully`);
+				  })
+				  .catch(function (error) {
+					message.error(`An error has occured, karaoke has not been added`);
+				  });
 			};
 		});
 	};
@@ -384,10 +389,10 @@ class KaraForm extends Component {
 					/>)}
 				</Form.Item>
 				<Form.Item
-					wrapperCol={{ span: 8, offset: 0 }}
+					wrapperCol={{ span: 8, offset: 1 }}
 				>
 					<Button type='primary' htmlType='submit' className='login-form-button'>
-						Save and generate .kara file
+						Import karaoke
 					</Button>
 				</Form.Item>
 				<Form.Item>

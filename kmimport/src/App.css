@@ -16,11 +16,15 @@
   opacity: 0.5;
 }
 
-.kara-form {
+.import-kara,html {
   background: #36393f;
 }
 
 .ant-form-item-label > label {
+  color: #fff;
+}
+
+.ant-upload-list-item-info > span {
   color: #fff;
 }
 
