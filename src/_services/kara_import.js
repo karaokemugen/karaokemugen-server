@@ -87,11 +87,14 @@ async function generateKara(kara, opts) {
 		if (!kara.order) kara.order = '';
 		const newKara = await importKara(newMediaFile, newSubFile, kara);
 		if (getConfig().Mail.Enabled)
+		{
+			delete newKara.ass;
 			sendMail(`[A intégrer] ${newKara.data.lang.split(',')[0]} - ${newKara.data.series.split(',')[0]} - ${newKara.data.type}${newKara.data.order || ''} - ${newKara.data.title}`,`Fichier : ${newKara.file}
 
 			Données du karaoké :
 
-			${JSON.stringify(newKara,null,2)}`);
+			\`\`\`${JSON.stringify(newKara.data,null,2)}\`\`\``);
+		}
 		return newKara;
 	} catch(err) {
 		logger.error(`[Karagen] Error during generation : ${err}`);
