@@ -5,7 +5,7 @@
 import logger from 'winston';
 import {extname, resolve} from 'path';
 import {getConfig} from '../_utils/config';
-import {sanitizeFile, asyncCopy, asyncExists, asyncMove, replaceExt} from '../_utils/files';
+import {sanitizeFile, asyncExists, asyncMove, replaceExt} from '../_utils/files';
 import {
 	extractAssInfos, extractVideoSubtitles, extractMediaTechInfos, writeKara
 } from '../_dao/karafile';
@@ -16,7 +16,7 @@ import timestamp from 'unix-timestamp';
 import {sendMail} from '../_utils/mailer';
 import { selectAllSeries } from '../_dao/series';
 import uuidV4 from 'uuid/v4';
-import {writeSeriesFile} from '../_dao/seriesFile';
+import {writeSeriesFile} from '../_dao/seriesfile';
 
 export async function createKara(kara) {
 	return await generateKara(kara);
@@ -87,7 +87,11 @@ async function generateKara(kara, opts) {
 		if (!kara.order) kara.order = '';
 		const newKara = await importKara(newMediaFile, newSubFile, kara);
 		if (getConfig().Mail.Enabled)
-			sendMail(`[KMServer] New karaoke uploaded by ${newKara.data.author}`,'Check your inbox folder');
+			sendMail(`[A intégrer] ${newKara.langs.split(',')[0]} - ${newKara.data.series.split(',')[0]} - ${newKara.data.type}${newKara.data.order || ''} - ${newKara.data.title}`,`Fichier : ${newKara.file}
+
+			Données du karaoké :
+
+			${JSON.stringify(newKara,null,2)}`);
 		return newKara;
 	} catch(err) {
 		logger.error(`[Karagen] Error during generation : ${err}`);
