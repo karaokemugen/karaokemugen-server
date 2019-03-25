@@ -91,9 +91,10 @@ async function generateKara(kara, opts) {
 		{
 			delete newKara.data.ass;
 			delete newKara.data.isKaraModified;
-			sendMail(`[A intégrer] ${newKara.data.lang.split(',')[0]} - ${newKara.data.series.split(',')[0]} - ${newKara.data.type}${newKara.data.order || ''} - ${newKara.data.title}`,`
+			sendMail(`[Inbox] ${newKara.data.lang.split(',')[0]} - ${newKara.data.series.split(',')[0]} - ${newKara.data.type}${newKara.data.order || ''} - ${newKara.data.title}`,`
 Un nouveau karaoké a été envoyé dans l'inbox de l'équipe Karaoké Mugen. Merci de l'intégrer dés que possible s'il répond aux critères de qualité exigés.
-Les fichiers (.kara, vidéo, ass et série si nécessaire) sont présents à l'emplacement suivant : kmpublic/inbox
+
+Les fichiers (.kara, vidéo, .ass et série si nécessaire) sont présents à l'emplacement suivant de votre compte FTP : kmpublic/inbox
 
 # Données du karaoké
 
@@ -127,10 +128,6 @@ Les fichiers (.kara, vidéo, ass et série si nécessaire) sont présents à l'e
 		return newKara;
 	} catch(err) {
 		logger.error(`[Karagen] Error during generation : ${err}`);
-		/*
-		if (await asyncExists(newMediaFile)) await asyncUnlink(newMediaFile);
-		if (newSubFile) if (await asyncExists(newSubFile)) await asyncUnlink(newSubFile);
-		*/
 		throw err;
 	}
 }

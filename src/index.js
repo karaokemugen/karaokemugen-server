@@ -1,6 +1,6 @@
 import {getConfig, initConfig, setConfig} from './_utils/config';
 import logger from 'winston';
-import {join} from 'path';
+import {resolve, join} from 'path';
 import {initFrontend} from './frontend';
 import cli from 'commander';
 import detect from 'detect-port';
@@ -11,7 +11,7 @@ import {initFavorites} from './_services/favorites';
 import {createUser} from './_services/user';
 import {run} from './_dao/generation';
 import sudoBlock from 'sudo-block';
-import {asyncCheckOrMkdir} from './_utils/files';
+import {asyncExists, asyncRemove, asyncCheckOrMkdir} from './_utils/files';
 import KaraExplorer from './karaExplorer';
 
 const pjson = require('../package.json');
@@ -31,9 +31,9 @@ process.once('SIGINT', code => {
 	exit();
 });
 
-function exit() {
+function exit(rc) {
 	kmx.stop();
-	process.exit();
+	process.exit(rc || 0);
 };
 
 main().catch(err => {
@@ -50,6 +50,8 @@ async function main() {
 	console.log(`Karaoke Mugen Server ${pjson.version}`);
 	console.log('--------------------------------------------------------------------');
 	console.log('\n');
+
+	if (await asyncExists(resolve(appPath, conf.Path.Temp))) await asyncRemove(resolve(appPath, conf.Path.Temp));
 
 	await Promise.all([
 		asyncCheckOrMkdir(appPath, conf.Path.Medias),
@@ -93,14 +95,10 @@ async function main() {
 	inits.push(initShortener());
 	inits.push(initFrontend(port));
 	inits.push(initFavorites());
-//	inits.push();
 	await Promise.all(inits);
 	logger.info('[Launcher] Karaoke Mugen Server is READY');
 }
 
-function exit(rc) {
-	process.exit(rc || 0);
-}
 
 function parseArgs() {
 	const argv = process.argv.filter(e => e !== '--');

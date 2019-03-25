@@ -25,30 +25,27 @@ export async function upsertInstance(i) {
 
 export async function replaceFavorites(instance_id, favorites) {
 	await db().query(sql.deleteFavorites, [instance_id]);
-	const params = [];
-	favorites.forEach(f => params.push([instance_id, f.kid]));
+	const params = favorites.map(f => [instance_id, f.kid]);
 	if (favorites.length > 0) await transaction([{sql: sql.insertFavorite, params: params}]);
 }
 
 export async function upsertPlayed(instance_id, viewcounts) {
-	const params = [];
-	viewcounts.forEach(v => params.push([
+	const params = viewcounts.map(v => [
 		instance_id,
 		v.kid,
 		v.session_started_at,
 		v.played_at
-	]));
+	]);
 	if (viewcounts.length > 0) await transaction([{sql: sql.insertViewcount, params: params}]);
 }
 
 export async function upsertRequests(instance_id, requests) {
-	const params = [];
-	requests.forEach(r => params.push([
+	const params = requests.map(r => [
 		instance_id,
 		r.kid,
 		r.session_started_at,
 		r.requested_at
-	]));
+	]);
 	if (requests.length > 0) await transaction([{sql: sql.insertRequested, params: params}]);
 }
 
