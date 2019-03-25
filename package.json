@@ -1,6 +1,6 @@
 {
   "name": "karaokemugen-server",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Karaoke Mugen online server",
   "main": "src/index.js",
   "repository": "https://lab.shelter.moe/karaokemugen/karaokemugen-server.git",
@@ -8,12 +8,12 @@
   "license": "MIT",
   "homepage": "https://mugen.karaokes.moe",
   "scripts": {
-    "prestart": "node node_modules/db-migrate/bin/db-migrate sync [all] --migrations-dir src/_dao/migrations",
+    "prestart": "node node_modules/db-migrate/bin/db-migrate sync [all]",
     "start": "babel-node src/index.js --",
     "generate": "babel-node src/index.js -- --generate",
-    "migrate": "node node_modules/db-migrate/bin/db-migrate sync [all] --migrations-dir src/_dao/migrations",
-    "migrateDown": "node node_modules/db-migrate/bin/db-migrate down --migrations-dir src/_dao/migrations",
-	  "migrateUp": "node node_modules/db-migrate/bin/db-migrate up --migrations-dir src/_dao/migrations",
+    "migrate": "node node_modules/db-migrate/bin/db-migrate sync [all]",
+    "migrateDown": "node node_modules/db-migrate/bin/db-migrate down",
+    "migrateUp": "node node_modules/db-migrate/bin/db-migrate up",
     "build": "rm -Rf dist && babel --source-maps --copy-files -d dist/ src/ && yarn buildKmimport && yarn buildKmexplorer",
     "install": "cd kmimport && npm install && cd ../kmexplorer && npm install",
     "buildKmimport": "cd kmimport && yarn build",
@@ -37,8 +37,8 @@
     "eslint-plugin-flowtype": "^3.2.1",
     "eslint-plugin-import": "^2.15.0",
     "eslint-plugin-jsx-a11y": "6.2.0",
-	"eslint-plugin-react": "^7.12.4",
-	"eslint-plugin-security": "^1.4.0"
+    "eslint-plugin-react": "^7.12.4",
+    "eslint-plugin-security": "^1.4.0"
   },
   "dependencies": {
     "async-await-parallel": "^1.0.0",
@@ -53,6 +53,7 @@
     "express-range": "^2.0.1",
     "file-type": "^10.7.1",
     "find-free-port": "^2.0.0",
+    "find-remove": "^1.2.2",
     "fs-extra": "^7.0.1",
     "helmet": "^3.15.0",
     "i18n": "^0.8.3",

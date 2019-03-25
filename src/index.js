@@ -1,6 +1,6 @@
 import {getConfig, initConfig, setConfig} from './_utils/config';
 import logger from 'winston';
-import {join} from 'path';
+import {resolve, join} from 'path';
 import {initFrontend} from './frontend';
 import cli from 'commander';
 import detect from 'detect-port';
@@ -12,7 +12,8 @@ import {createUser} from './_services/user';
 import {run} from './_dao/generation';
 import sudoBlock from 'sudo-block';
 import {asyncCheckOrMkdir} from './_utils/files';
-import KaraExplorer from './karaExplorer';
+import KMExplorer from './_services/kmExplorer';
+import findRemoveSync from 'find-remove';
 
 const pjson = require('../package.json');
 const appPath = join(__dirname,'../');
@@ -31,9 +32,9 @@ process.once('SIGINT', code => {
 	exit();
 });
 
-function exit() {
+function exit(rc) {
 	kmx.stop();
-	process.exit();
+	process.exit(rc || 0);
 };
 
 main().catch(err => {
@@ -81,26 +82,24 @@ async function main() {
 	const inits = [];
 
 
-	kmx = new KaraExplorer({
+	kmx = new KMExplorer({
 		api: conf.KaraExplorer.Api,
 		port: conf.KaraExplorer.Port,
 		path: conf.KaraExplorer.Path,
 	});
 	kmx.start();
 
+	// Clean temp periodically of files older than two hours
+	setInterval(findRemoveSync.bind(this, resolve(conf.appPath, conf.Path.Temp), {age: {seconds: 7200}}), 2 * 60 * 60 * 1000);
 
 	if (getConfig().Mail.Enabled) inits.push(initMailer());
 	inits.push(initShortener());
 	inits.push(initFrontend(port));
 	inits.push(initFavorites());
-//	inits.push();
 	await Promise.all(inits);
 	logger.info('[Launcher] Karaoke Mugen Server is READY');
 }
 
-function exit(rc) {
-	process.exit(rc || 0);
-}
 
 function parseArgs() {
 	const argv = process.argv.filter(e => e !== '--');
@@ -116,6 +115,4 @@ function parseArgs() {
 		.option('--createAdmin [user],[password]', 'Create a new admin user', login)
 		.parse(argv);
 }
-
-
 

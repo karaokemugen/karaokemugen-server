@@ -3,7 +3,7 @@
  */
 
 import logger from 'winston';
-import {extname, resolve} from 'path';
+import {extname, resolve,basename} from 'path';
 import {getConfig} from '../_utils/config';
 import {sanitizeFile, asyncExists, asyncMove, replaceExt} from '../_utils/files';
 import {
@@ -91,12 +91,14 @@ async function generateKara(kara, opts) {
 		{
 			delete newKara.data.ass;
 			delete newKara.data.isKaraModified;
-			sendMail(`[A intégrer] ${newKara.data.lang.split(',')[0]} - ${newKara.data.series.split(',')[0]} - ${newKara.data.type}${newKara.data.order || ''} - ${newKara.data.title}`,`
+			sendMail(`[Inbox] ${newKara.data.lang.split(',')[0]} - ${newKara.data.series.split(',')[0]} - ${newKara.data.type}${newKara.data.order || ''} - ${newKara.data.title}`,`
 Un nouveau karaoké a été envoyé dans l'inbox de l'équipe Karaoké Mugen. Merci de l'intégrer dés que possible s'il répond aux critères de qualité exigés.
+
+Les fichiers (.kara, vidéo, .ass et série si nécessaire) sont présents à l'emplacement suivant de votre compte FTP : kmpublic/inbox
 
 # Données du karaoké
 
-**Fichier** : ${newKara.file}
+**Fichier** : ${basename(newKara.file)}
 
 **Auteur(s)** : ${newKara.data.author}
 
@@ -120,16 +122,12 @@ Un nouveau karaoké a été envoyé dans l'inbox de l'équipe Karaoké Mugen. Me
 
 **Groupe(s)** : ${newKara.data.groups}
 
-**Durée** : ${duration(newKara.data.duration)}
+**Durée** : ${duration(newKara.data.mediaduration)}
 `);
 		}
 		return newKara;
 	} catch(err) {
 		logger.error(`[Karagen] Error during generation : ${err}`);
-		/*
-		if (await asyncExists(newMediaFile)) await asyncUnlink(newMediaFile);
-		if (newSubFile) if (await asyncExists(newSubFile)) await asyncUnlink(newSubFile);
-		*/
 		throw err;
 	}
 }
