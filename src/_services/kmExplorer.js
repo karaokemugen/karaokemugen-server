@@ -1,5 +1,5 @@
 import pm2 from 'pm2';
-import { getConfig } from './_utils/config';
+import { getConfig } from '../_utils/config';
 import {resolve} from 'path';
 import logger from 'winston';
 
@@ -26,11 +26,11 @@ export default class KaraExplorer {
 				if (err) {
 					NOK(err);
 				} else {
-					logger.info(`[Spawn] [${this.id}] connected to PM2`);
+					logger.info(`[KMExplorer] [${this.id}] connected to PM2`);
 					pm2.start({
 						name: `kmx-${this.id}`,
 						script: 'server.js',
-						cwd: resolve(__dirname,'../kmexplorer/'),
+						cwd: resolve(__dirname, '../../kmexplorer/'),
 						args: [
 							'--api='+this.api,
 							'--port='+this.port,
@@ -45,7 +45,7 @@ export default class KaraExplorer {
 							NOK(err);
 						} else {
 							this.app = apps;
-							logger.info(`[Spawn] Started [${this.id}]`);
+							logger.info(`[KMExplorer] Started [${this.id}]`);
 							pm2.disconnect();
 							OK();
 						}

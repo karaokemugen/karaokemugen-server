@@ -12,7 +12,7 @@ import {createUser} from './_services/user';
 import {run} from './_dao/generation';
 import sudoBlock from 'sudo-block';
 import {asyncCheckOrMkdir} from './_utils/files';
-import KaraExplorer from './karaExplorer';
+import KMExplorer from './_services/kmExplorer';
 import findRemoveSync from 'find-remove';
 
 const pjson = require('../package.json');
@@ -82,7 +82,7 @@ async function main() {
 	const inits = [];
 
 
-	kmx = new KaraExplorer({
+	kmx = new KMExplorer({
 		api: conf.KaraExplorer.Api,
 		port: conf.KaraExplorer.Port,
 		path: conf.KaraExplorer.Path,
