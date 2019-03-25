@@ -44,22 +44,27 @@ async function generateKara(kara, opts) {
 	}
 	*/
 	if (!opts) opts = {};
-	if ((kara.type !== 'MV' && kara.type !== 'LIVE') && kara.series.length === 0) throw 'Series cannot be empty if type is not MV or LIVE';
-	if (!kara.mediafile) throw 'No media file uploaded';
-	const validationErrors = check(kara, {
-		year: {integerValidator: true},
-		lang: {langValidator: true},
-		tags: {tagsValidator: true},
-		type: {typeValidator: true},
-		order: {integerValidator: true},
-		series: {arrayNoCommaValidator: true},
-		singer: {arrayNoCommaValidator: true},
-		author: {arrayNoCommaValidator: true},
-		songwriter: {arrayNoCommaValidator: true},
-		creator: {arrayNoCommaValidator: true},
-		groups: {arrayNoCommaValidator: true},
-		title: {presence: true}
-	});
+	try {
+		if ((kara.type !== 'MV' && kara.type !== 'LIVE') && kara.series.length === 0) throw 'Series cannot be empty if type is not MV or LIVE';
+		if (!kara.mediafile) throw 'No media file uploaded';
+		const validationErrors = check(kara, {
+			year: {integerValidator: true},
+			lang: {langValidator: true},
+			tags: {tagsValidator: true},
+			type: {typeValidator: true},
+			order: {integerValidator: true},
+			series: {arrayNoCommaValidator: true},
+			singer: {arrayNoCommaValidator: true},
+			author: {arrayNoCommaValidator: true},
+			songwriter: {arrayNoCommaValidator: true},
+			creator: {arrayNoCommaValidator: true},
+			groups: {arrayNoCommaValidator: true},
+			title: {presence: true}
+		});
+	} catch(err) {
+		logger.error(`[KaraImport] Karaoke failed validations: ${err}`);
+		throw err;
+	}
 	// Move files from temp directory to import, depending on the different cases.
 	// First name media files and subfiles according to their extensions
 	// Since temp files don't have any extension anymore
