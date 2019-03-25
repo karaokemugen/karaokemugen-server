@@ -11,8 +11,9 @@ import {initFavorites} from './_services/favorites';
 import {createUser} from './_services/user';
 import {run} from './_dao/generation';
 import sudoBlock from 'sudo-block';
-import {asyncExists, asyncRemove, asyncCheckOrMkdir} from './_utils/files';
+import {asyncCheckOrMkdir} from './_utils/files';
 import KaraExplorer from './karaExplorer';
+import findRemoveSync from 'find-remove';
 
 const pjson = require('../package.json');
 const appPath = join(__dirname,'../');
@@ -51,8 +52,6 @@ async function main() {
 	console.log('--------------------------------------------------------------------');
 	console.log('\n');
 
-	if (await asyncExists(resolve(appPath, conf.Path.Temp))) await asyncRemove(resolve(appPath, conf.Path.Temp));
-
 	await Promise.all([
 		asyncCheckOrMkdir(appPath, conf.Path.Medias),
 		asyncCheckOrMkdir(appPath, conf.Path.Series),
@@ -90,6 +89,8 @@ async function main() {
 	});
 	kmx.start();
 
+	// Clean temp periodically of files older than two hours
+	setInterval(findRemoveSync.bind(this, resolve(conf.appPath, conf.Path.Temp), {age: {seconds: 7200}}), 2 * 60 * 60 * 1000);
 
 	if (getConfig().Mail.Enabled) inits.push(initMailer());
 	inits.push(initShortener());
@@ -114,6 +115,4 @@ function parseArgs() {
 		.option('--createAdmin [user],[password]', 'Create a new admin user', login)
 		.parse(argv);
 }
-
-
 
