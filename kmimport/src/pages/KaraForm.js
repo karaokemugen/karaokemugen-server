@@ -122,7 +122,13 @@ class KaraForm extends Component {
 				className='kara-form'
 			>
 				<Form.Item hasFeedback
-					label={t('KARA.MEDIA_FILE')}
+					label={(
+						<span>{t('KARA.MEDIA_FILE')}&nbsp;
+							<Tooltip title={t('KARA.MEDIA_FILE_TOOLTIP')}>
+								<Icon type="question-circle-o" />
+							</Tooltip>
+						</span>
+					)}
 					labelCol={{ span: 3 }}
 					wrapperCol={{ span: 6, offset: 0 }}
 				>
@@ -136,9 +142,16 @@ class KaraForm extends Component {
 						<Button>
 							<Icon type="upload" />{t('KARA.MEDIA_FILE')}
 						</Button>
-					</Upload></Form.Item>
+					</Upload>
+				</Form.Item>
 				<Form.Item
-					label={t('KARA.LYRICS_FILE')}
+					label={(
+						<span>{t('KARA.LYRICS_FILE')}&nbsp;
+							<Tooltip title={t('KARA.LYRICS_FILE_TOOLTIP')}>
+								<Icon type="question-circle-o" />
+							</Tooltip>
+						</span>
+					)}
 					labelCol={{ span: 3 }}
 					wrapperCol={{ span: 6, offset: 0 }}
 				>
@@ -151,7 +164,8 @@ class KaraForm extends Component {
 						<Button>
 							<Icon type="upload" />{t('KARA.LYRICS_FILE')}
 						</Button>
-					</Upload></Form.Item>
+					</Upload>
+				</Form.Item>
 				<Form.Item hasFeedback
 					label={(
 						<span>{t('KARA.TITLE')}&nbsp;
