@@ -33,7 +33,7 @@ export function sendMail(subject, message) {
 			logger.debug(`[Mailer] Error sending mail : ${error}`);
 			throw error;
 		}
-		logger.debug(`[Mailer] Sent mail : ${JSON.Stringify(info, null, 2)}`);
+		logger.debug(`[Mailer] Sent mail : ${JSON.stringify(info, null, 2)}`);
 	});
 }
 
