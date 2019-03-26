@@ -11,7 +11,7 @@ class DedicatedTagList extends React.Component {
 		let tagList = this.props.tags;
 		tagList.sort((a,b) =>{
 			if(this.props.orderBy=='alpha')
-				return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+				return typeof a.name === 'String' ? a.name.toLowerCase().localeCompare(b.name.toLowerCase()) : a.name > b.name;
 			else
 				return b.karacount - a.karacount;
 		})

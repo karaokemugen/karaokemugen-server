@@ -17,7 +17,6 @@ export async function countSeries(filter) {
 }
 
 export async function selectAllSeries(filter, lang, from, size) {
-
 	const filterClauses = filter ? buildClausesSeries(filter) : {sql: [], params: {}};
 	let offsetClause = '';
 	let limitClause = '';

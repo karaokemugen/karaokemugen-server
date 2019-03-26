@@ -25,15 +25,16 @@ export function initMailer() {
 }
 
 export function sendMail(subject, message) {
-	transporter.SendMail({...mailOptions,
+	transporter.sendMail({...mailOptions,
 		subject: subject,
 		text: message
 	}, (error, info) => {
 		if (error) {
 			logger.debug(`[Mailer] Error sending mail : ${error}`);
 			throw error;
+		} else {
+			logger.debug(`[Mailer] Sent mail : ${JSON.stringify(info, null, 2)}`);
 		}
-		logger.debug(`[Mailer] Sent mail : ${JSON.Stringify(info, null, 2)}`);
 	});
 }
 

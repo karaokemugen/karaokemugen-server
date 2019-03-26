@@ -1,4 +1,4 @@
-import {createKara} from '../_services/kara';
+import {createKara} from '../_services/kara_import';
 import multer from 'multer';
 import {getConfig} from '../_utils/config';
 import {resolve} from 'path';
