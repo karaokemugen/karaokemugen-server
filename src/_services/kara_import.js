@@ -73,6 +73,7 @@ async function generateKara(kara, opts) {
 	// Let's move baby.
 	try {
 		if (validationErrors) throw JSON.stringify(validationErrors);
+		timestamp.round = true;
 		kara.dateadded = timestamp.now();
 		kara.songwriter.sort();
 		kara.singer.sort();
