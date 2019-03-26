@@ -32,8 +32,9 @@ export function sendMail(subject, message) {
 		if (error) {
 			logger.debug(`[Mailer] Error sending mail : ${error}`);
 			throw error;
+		} else {
+			logger.debug(`[Mailer] Sent mail : ${JSON.stringify(info, null, 2)}`);
 		}
-		logger.debug(`[Mailer] Sent mail : ${JSON.Stringify(info, null, 2)}`);
 	});
 }
 

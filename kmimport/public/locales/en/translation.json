@@ -8,7 +8,9 @@
 	"ADD_ERROR": "An error has occurred, karaoke has not been sent properly",
 	"KARA" : {
 		"MEDIA_FILE": "Media file",
+		"MEDIA_FILE_TOOLTIP": "Supported file formats: .avi .mkv .mp4 .webm .mov .wmv .mpg .ogg .m4a .mp3",
 		"LYRICS_FILE": "Lyrics file",
+		"LYRICS_FILE_TOOLTIP": "Supported file formats: .ass",
 		"ADD_FILE_SUCCESS": "{{name}} file added successfully",
 		"ADD_FILE_MEDIA_ERROR": "{{name}} is not a media file",
 		"ADD_FILE_LYRICS_ERROR": "{{name}} is not a subtitle file",
