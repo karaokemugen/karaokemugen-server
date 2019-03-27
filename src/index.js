@@ -17,7 +17,7 @@ import findRemoveSync from 'find-remove';
 
 const pjson = require('../package.json');
 const appPath = join(__dirname,'../');
-let kmx = {};
+let kmx;
 
 process.on('uncaughtException', (exception) => {
 	console.log(exception);
