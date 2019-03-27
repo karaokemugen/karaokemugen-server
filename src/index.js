@@ -33,12 +33,13 @@ process.once('SIGINT', code => {
 });
 
 function exit(rc) {
-	kmx.stop();
+	if (kmx) kmx.stop();
 	process.exit(rc || 0);
 };
 
 main().catch(err => {
 	logger.error(`[Launcher] Error during launch : ${JSON.stringify(err)}`);
+	console.log(err);
 	process.exit(1);
 });
 
