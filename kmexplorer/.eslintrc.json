@@ -30,7 +30,7 @@
         ],
         "linebreak-style": [
             "error",
-            "linux"
+            "windows"
         ],
         "quotes": [
             "error",

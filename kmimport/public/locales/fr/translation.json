@@ -97,6 +97,8 @@
 		"TAG_SOUNDONLY": "Audio uniquement",
 		"TAG_HARDMODE": "Difficile",
 		"TAG_DUO": "Duo",
-		"TAG_CREDITLESS": "Creditless"
+		"TAG_CREDITLESS": "Creditless",
+		"TAG_COVER": "Cover",
+		"TAG_DRAMA": "Drama"
 	}
 }

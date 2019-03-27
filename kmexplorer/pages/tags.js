@@ -53,7 +53,7 @@ class Page extends React.Component {
 					tag.real_name = i18n.t('tag:no_tag');
 				else
 					tag.real_name = i18n.t('tag:misc.'+tag.name);
-				
+
 				if(keywords.length==0 || filterTools.keywordSearch(tag.real_name,keywords))
 					tagList.push(tag);
 			}
