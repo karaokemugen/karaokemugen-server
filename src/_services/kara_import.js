@@ -43,11 +43,12 @@ async function generateKara(kara, opts) {
 		subfile_orig = Original name from the user's computer
 	}
 	*/
+	let validationErrors;
 	if (!opts) opts = {};
 	try {
 		if ((kara.type !== 'MV' && kara.type !== 'LIVE') && kara.series.length === 0) throw 'Series cannot be empty if type is not MV or LIVE';
 		if (!kara.mediafile) throw 'No media file uploaded';
-		const validationErrors = check(kara, {
+		validationErrors = check(kara, {
 			year: {integerValidator: true},
 			lang: {langValidator: true},
 			tags: {tagsValidator: true},

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import deburr from 'lodash.deburr';
-import {Checkbox, Row, Col, Button, Form, AutoComplete, Icon, Tag, Tooltip} from 'antd';
+import {Checkbox, Row, Col, Button, Form, AutoComplete, Icon, Tag, Tooltip, Input} from 'antd';
 import axios from 'axios/index';
 import langs from 'langs';
 
@@ -99,6 +99,11 @@ export default class EditableTagGroup extends React.Component {
 		});
 	}
 
+	onKeyEnter = (e) => {
+		if (e.keyCode === 13)
+			this.handleInputConfirm(this.currentVal)
+	}
+
 	render() {
 		const { value, inputVisible } = this.state;
 		const t = this.props.translation;
@@ -150,6 +155,7 @@ export default class EditableTagGroup extends React.Component {
 								onChange={ val => this.currentVal = val }
 								filterOption={(inputValue, option) => deburr(option.props.children.toUpperCase()).indexOf(deburr(inputValue).toUpperCase()) !== -1}
 							>
+							 <Input onKeyDown={this.onKeyEnter} />
 							</AutoComplete>
 							<Button type='primary' onClick={() => this.handleInputConfirm(this.currentVal)}
 								className='login-form-button'>

@@ -184,7 +184,6 @@ class KaraForm extends Component {
 							message: t('KARA.TITLE_REQUIRED')
 						}],
 					})(<Input
-						onPressEnter={this.handleSubmit}
 						placeholder={t('KARA.TITLE')}
 						label={t('KARA.TITLE')}
 					/>)}
@@ -281,7 +280,6 @@ class KaraForm extends Component {
 						initialValue: this.state.year || 2010,
 						rules: [{required: true}]
 					})(<InputNumber
-						onPressEnter={this.handleSubmit}
 						min={0}
 						placeholder='Year'
 						style={{ width: '100%' }}
