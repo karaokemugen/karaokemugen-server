@@ -10,8 +10,8 @@ class DedicatedTagList extends React.Component {
 
 		let tagList = this.props.tags;
 		tagList.sort((a,b) =>{
-			if(this.props.orderBy=='alpha')
-				return typeof a.name === 'String' ? a.name.toLowerCase().localeCompare(b.name.toLowerCase()) : a.name > b.name;
+			if(this.props.orderBy === 'alpha')
+				return typeof a.name === 'string' ? a.name.toLowerCase().localeCompare(b.name.toLowerCase()) : a.name > b.name;
 			else
 				return b.karacount - a.karacount;
 		})
@@ -31,7 +31,7 @@ class DedicatedTagList extends React.Component {
 					</Link>
 				</li>
 			);
-		})
+		});
 
 		return (
 			<ul className="kmx-dedicated-taglist" data-type={this.props.type}>
