@@ -48,10 +48,6 @@ class KaraForm extends Component {
 		return new RegExp('^.+\\.(avi|mkv|mp4|webm|mov|wmv|mpg|ogg|m4a|mp3)$').test(filename);
 	};
 
-	onChangeOverwrite = (e) => {
-		this.props.form.setFieldsValue({ overwrite: e.target.checked});
-	};
-
 	onChangeType = (e) => {
 		this.setState({
 			seriesRequired: !(e === 'MV' || e === 'LIVE')
