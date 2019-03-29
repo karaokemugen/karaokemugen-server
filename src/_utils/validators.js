@@ -8,6 +8,11 @@ function typeValidator(value) {
 	return null;
 }
 
+function arrayValidator(value) {
+	if (!Array.isArray(value)) return `${value} is not an array`;
+	return null;
+}
+
 function arrayNoCommaValidator(value) {
 	if (!Array.isArray(value)) return `${value} is not an array`;
 	value = value.map((value) => value.trim());
@@ -140,6 +145,7 @@ export function initValidators() {
 	validate.validators.arrayNoCommaValidator = arrayNoCommaValidator;
 	validate.validators.tagsValidator = tagsValidator;
 	validate.validators.typeValidator = typeValidator;
+	validate.validators.arrayValidator = arrayValidator;
 }
 
 export function check(obj, constraints) {

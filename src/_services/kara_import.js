@@ -18,6 +18,7 @@ import { selectAllSeries } from '../_dao/series';
 import uuidV4 from 'uuid/v4';
 import {writeSeriesFile} from '../_dao/seriesfile';
 import {duration} from '../_utils/date';
+import got from 'got';
 
 export async function createKara(kara) {
 	return await generateKara(kara);
@@ -94,45 +95,52 @@ async function generateKara(kara, opts) {
 		kara.author.forEach((e,i) => kara.author[i] = e.trim());
 		if (!kara.order) kara.order = '';
 		const newKara = await importKara(newMediaFile, newSubFile, kara);
-		if (getConfig().Mail.Enabled)
-		{
-			delete newKara.data.ass;
-			delete newKara.data.isKaraModified;
-			sendMail(`[Inbox] ${newKara.data.lang.split(',')[0].toUpperCase()} - ${newKara.data.series.split(',')[0]} - ${newKara.data.type}${newKara.data.order || ''} - ${newKara.data.title}`,`
-Un nouveau karaoké a été envoyé dans l'inbox de l'équipe Karaoké Mugen. Merci de l'intégrer dés que possible s'il répond aux critères de qualité exigés.
-
-Les fichiers (.kara, vidéo, .ass et série si nécessaire) sont présents à l'emplacement suivant de votre compte FTP : kmpublic/inbox
-
-# Données du karaoké
-
-**Fichier** : ${basename(newKara.file)}
-
-**Auteur(s)** : ${newKara.data.author}
-
-**Titre** : ${newKara.data.title}
-
-**Série** : ${newKara.data.series}
-
-**Type** : ${newKara.data.type}${newKara.data.order || ''}
-
-**Langue** : ${newKara.data.lang}
-
-**Année** : ${newKara.data.year}
-
-**Chanteur(s)** : ${newKara.data.singer}
-
-**Tag(s)** : ${newKara.data.tags}
-
-**Compositeur(s)** : ${newKara.data.songwriter}
-
-**Créateur(s)** : ${newKara.data.creator}
-
-**Groupe(s)** : ${newKara.data.groups}
-
-**Durée** : ${duration(newKara.data.mediaduration)}
-`);
+		delete newKara.data.ass;
+		delete newKara.data.isKaraModified;
+		// Construct template
+		const conf = getConfig();
+		const karaName = `${newKara.data.lang.split(',')[0].toUpperCase()} - ${newKara.data.series.split(',')[0]} - ${newKara.data.type}${newKara.data.order || ''} - ${newKara.data.title}`;
+		let title = conf.Import.Template.Title || 'New kara: $kara';
+		title = title.replace('$kara', karaName);
+		let desc = conf.Import.Template.Description || '';
+		desc = desc.replace('$file', basename(newKara.file))
+			.replace('$author', newKara.data.author)
+			.replace('$title', newKara.data.title)
+			.replace('$series', newKara.data.series)
+			.replace('$type', newKara.data.type)
+			.replace('$order', newKara.data.order || '')
+			.replace('$lang', newKara.data.lang)
+			.replace('$year', newKara.data.year)
+			.replace('$singer', newKara.data.singer)
+			.replace('$tags', newKara.data.tags)
+			.replace('$songwriter', newKara.data.songwriter)
+			.replace('$creator', newKara.data.creator)
+			.replace('$groups', newKara.data.groups)
+			.replace('$duration', duration(newKara.data.mediaduration))
+		try {
+			if (conf.Mail.Enabled && conf.Import.Mail.Enabled) sendMail(title, desc, conf.Import.Mail.To);
+		} catch(err) {
+			logger.error(`[KaraImport] Could not send mail : ${err}`);
 		}
-		return newKara;
+		try {
+			if (conf.Import.Gitlab.Enabled) {
+				const gitlab = conf.Import.Gitlab;
+				const params = new URLSearchParams([
+					['id', gitlab.ProjectID],
+					['title', title],
+					['description', desc],
+					['labels', gitlab.Labels.join(',')]
+				]);
+				const res = await got(`https://${gitlab.URL}/api/v4/projects/${gitlab.ProjectID}/issues?${params.toString()}`, {
+					headers: {
+						'PRIVATE-TOKEN': gitlab.AccessToken
+					}
+				});
+				return res.body.web_url;
+			}
+		} catch(err) {
+			logger.error(`[KaraImport] Call to Gitlab API failed : ${err}`);
+		}
 	} catch(err) {
 		logger.error(`[Karagen] Error during generation : ${err}`);
 		throw err;
