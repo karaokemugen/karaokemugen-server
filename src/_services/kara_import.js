@@ -131,7 +131,7 @@ async function generateKara(kara, opts) {
 					['description', desc],
 					['labels', gitlab.Labels.join(',')]
 				]);
-				const res = await got(`https://${gitlab.URL}/api/v4/projects/${gitlab.ProjectID}/issues?${params.toString()}`, {
+				const res = await got.post(`https://${gitlab.URL}/api/v4/projects/${gitlab.ProjectID}/issues?${params.toString()}`, {
 					headers: {
 						'PRIVATE-TOKEN': gitlab.AccessToken
 					}
