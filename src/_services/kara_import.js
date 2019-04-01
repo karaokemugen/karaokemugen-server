@@ -136,7 +136,7 @@ async function generateKara(kara, opts) {
 						'PRIVATE-TOKEN': gitlab.AccessToken
 					}
 				});
-				return res.body.web_url;
+				return JSON.parse(res.body).web_url;
 			}
 		} catch(err) {
 			logger.error(`[KaraImport] Call to Gitlab API failed : ${err}`);

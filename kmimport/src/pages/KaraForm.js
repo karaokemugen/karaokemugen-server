@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {message, Tooltip, Button, Form, Icon, Input, InputNumber, Select, Upload} from 'antd';
+import {message, Modal, Tooltip, Button, Form, Icon, Input, InputNumber, Select, Upload} from 'antd';
 import EditableTagGroup from './Components/EditableTagGroup';
 import axios from 'axios/index';
 
@@ -24,6 +24,14 @@ class KaraForm extends Component {
 		};
 	}
 
+	emptyForm() {
+		this.setState({
+			subfileList: [],
+			mediafileList: []
+		});
+		this.props.form.resetFields();
+	}
+
 	componentDidMount() {
 		this.onChangeType(this.state.songtype);
 		this.props.form.validateFields();
@@ -33,12 +41,19 @@ class KaraForm extends Component {
 		e.preventDefault();
 		this.props.form.validateFields((err, values) => {
 			if (!err) {
+				const form = this;
 				axios.post('/api/karas/', values).then(function (response) {
-					message.success(global.t('ADD_SUCCESS'));
+					Modal.success({
+						title: global.t('ADD_SUCCESS'),
+						content: <div><label>{global.t('ADD_SUCCESS_DESCRIPTION')}</label><a href={response.data}>{response.data}</a></div>,
+					  });
+					form.emptyForm();
 				  })
 				  .catch(function (error) {
-					console.log(error)
-					message.error(global.t('ADD_ERROR'));
+					Modal.error({
+						title: global.t('ADD_ERROR'),
+						content: error.response.data,
+					  });
 				  });
 			};
 		});
