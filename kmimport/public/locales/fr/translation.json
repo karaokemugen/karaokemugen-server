@@ -4,7 +4,8 @@
 	"DESCRIPTION": "Ce formulaire permet d'envoyer un karaoké à l'équipe de Karaoke Mugen. Il ne sera pas intégré immédiatement dans la base de karaokés car il nécessite une validation préalable. Aussi, votre karaoké peut être modifié par l'équipe de Karaoke Mugen s'il ne convient pas aux normes. Reportez-vous à la documentation pour plus d'information.",
 	"SUBMIT": "Envoyer ce karaoké",
 	"ADD": "Ajout",
-	"ADD_SUCCESS": "Karaoké envoyé avec succès",
+	"ADD_SUCCESS": "Karaoké envoyé avec succès.",
+	"ADD_SUCCESS_DESCRIPTION": "Un ticket a été crée sur notre outil de suivi. Vous pouvez consulter l'avancement de l'intégration de votre karaoké : ",
 	"ADD_ERROR": "Une erreur a eu lieu, le karaoké n'a pas pu être envoyé",
 	"KARA" : {
 		"MEDIA_FILE": "Fichier vidéo",

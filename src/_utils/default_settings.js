@@ -34,10 +34,25 @@ export const defaults = {
 			User: '',
 			Password: '',
 		},
-		From: '[KMServer]',
-		FromMail: 'karaokemugen@localhost.localdomain',
-		To: 'Karaoke Mugen',
-		ToMail: 'karaokemugen@localhost.localdomain',
+		From: 'KMServer <karaokemugen@localhost.localdomain>',
+		To: 'Karaoke Mugen <karaokemugen@localhost.localdomain>',
+	},
+	Import: {
+		Template: {
+			Title: undefined,
+			Description: undefined
+		},
+		Mail: {
+			Enabled: false,
+			To: undefined,
+		},
+		Gitlab: {
+			Enabled: false,
+			AccessToken: undefined,
+			URL: undefined,
+			ProjectID: undefined,
+			Labels: []
+		}
 	},
 	Shortener: {
 		ExpireTimeDays: 1
@@ -57,6 +72,9 @@ const bools = [true, false];
 export const configConstraints = {
 	JwtSecret: { presence: {allowEmpty: false}},
 	ServerID: { presence: {allowEmpty: false}},
+	'Import.Mail.Enabled': { inclusion: bools },
+	'Import.Gitlab.Enabled': { inclusion: bools },
+	'Import.Gitlab.Labels': { arrayValidator: true },
 	'Database.User': { presence: {allowEmpty: false}},
 	'Database.Pass': { presence: true },
 	'Database.Host': { presence: {allowEmpty: false}},
@@ -78,8 +96,6 @@ export const configConstraints = {
 	'Mail.Auth.Password': { presence: { allowEmpty: true } },
 	'Mail.From': { presence: true },
 	'Mail.To': { presence: true },
-	'Mail.FromMail': { email: true },
-	'Mail.ToMail': { email: true },
 	'Frontend.Host': { presence: { allowEmpty: false } },
 	'Frontend.Port': { numericality: true}
 };

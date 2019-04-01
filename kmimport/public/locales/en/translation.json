@@ -4,7 +4,8 @@
 	"DESCRIPTION": "This form allows you to submit a karaoke to the Karaoke Mugen team. It will not be immediately integrated in the karaoke database because it requires a validation. Please be patient. Your karaoke may be modified if it doesn't comply to KM's rules.",
 	"SUBMIT": "Send karaoke",
 	"ADD": "Add",
-	"ADD_SUCCESS": "Karaoke sent successfully",
+	"ADD_SUCCESS": "Karaoke sent successfully.",
+	"ADD_SUCCESS_DESCRIPTION": "An issue has been created on our tracker. You can check its progression at : ",
 	"ADD_ERROR": "An error has occurred, karaoke has not been sent properly",
 	"KARA" : {
 		"MEDIA_FILE": "Media file",
