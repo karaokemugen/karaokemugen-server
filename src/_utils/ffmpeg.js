@@ -24,6 +24,17 @@ export async function createThumbnail(mediafile, percent, mediaduration, mediasi
 	}
 }
 
+export async function webOptimize(source, destination) {
+	try {
+		return await execa(getConfig().Path.Bin.ffmpeg, ['-y', '-i', source, '-movflags', 'faststart', '-acodec' , 'copy', '-vcodec', 'copy', destination], {encoding: 'utf8'});
+	} catch(err) {
+		logger.error(`[ffmpeg] Video ${source} could not be faststarted : ${err.code} (${err.message}`);
+		logger.error(`[ffmpeg] STDOUT: ${err.stdout}`);
+		logger.error(`[ffmpeg] STDERR: ${err.stderr}`);
+		throw err;
+	}
+}
+
 export async function getMediaInfo(mediafile) {
 	try {
 		const result = await execa(getConfig().Path.Bin.ffmpeg, ['-i', mediafile, '-vn', '-af', 'replaygain', '-f','null', '-'], { encoding : 'utf8' });

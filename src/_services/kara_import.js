@@ -3,12 +3,13 @@
  */
 
 import logger from 'winston';
-import {extname, resolve,basename} from 'path';
+import {extname, resolve, basename} from 'path';
 import {getConfig} from '../_utils/config';
-import {sanitizeFile, asyncExists, asyncMove, replaceExt} from '../_utils/files';
+import {sanitizeFile, asyncUnlink, asyncExists, asyncMove, replaceExt} from '../_utils/files';
 import {
 	extractAssInfos, extractVideoSubtitles, extractMediaTechInfos, writeKara
 } from '../_dao/karafile';
+import {webOptimize} from '../_utils/ffmpeg';
 import {getType} from '../_services/constants';
 import {formatKara} from '../_services/kara';
 import {check} from '../_utils/validators';
@@ -116,7 +117,7 @@ async function generateKara(kara, opts) {
 			.replace('$songwriter', newKara.data.songwriter)
 			.replace('$creator', newKara.data.creator)
 			.replace('$groups', newKara.data.groups)
-			.replace('$duration', duration(newKara.data.mediaduration))
+			.replace('$duration', duration(newKara.data.mediaduration));
 		try {
 			if (conf.Mail.Enabled && conf.Import.Mail.Enabled) sendMail(title, desc, conf.Import.Mail.To);
 		} catch(err) {
@@ -212,7 +213,6 @@ async function importKara(mediaFile, subFile, data) {
 
 	try {
 		if (subPath !== 'dummy.ass') await extractAssInfos(subPath, karaData);
-		await extractMediaTechInfos(mediaPath, karaData);
 		await processSeries(data);
 		return await generateAndMoveFiles(mediaPath, subPath, karaData);
 	} catch(err) {
@@ -284,9 +284,16 @@ async function generateAndMoveFiles(mediaPath, subPath, karaData) {
 	if (subPath && karaData.subfile !== 'dummy.ass') subDest = resolve(conf.Path.Inbox, karaData.subfile);
 	try {
 		// Moving media
-		await asyncMove(mediaPath, mediaDest, { overwrite: karaData.overwrite });
+		if (extname(mediaDest).toLowerCase() === '.mp4') {
+			await webOptimize(mediaPath, mediaDest);
+			await asyncUnlink(mediaPath);
+		} else {
+			await asyncMove(mediaPath, mediaDest, { overwrite: true });
+		}
+		// Extracting media info here and now because we migth have had to weboptimize it earlier.
+		await extractMediaTechInfos(mediaDest, karaData);
 		// Moving subfile
-		if (subDest) await asyncMove(subPath, subDest, { overwrite: karaData.overwrite });
+		if (subDest) await asyncMove(subPath, subDest, { overwrite: true });
 		delete karaData.overwrite;
 	} catch (err) {
 		throw `Error while moving files. Maybe destination files (${mediaDest} or ${subDest} already exist? (${err})`;
