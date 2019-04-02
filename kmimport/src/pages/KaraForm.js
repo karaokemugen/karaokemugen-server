@@ -41,15 +41,14 @@ class KaraForm extends Component {
 		e.preventDefault();
 		this.props.form.validateFields((err, values) => {
 			if (!err) {
-				const form = this;
-				axios.post('/api/karas/', values).then(function (response) {
+				axios.post('/api/karas/', values).then((response) => {
 					Modal.success({
 						title: global.t('ADD_SUCCESS'),
 						content: <div><label>{global.t('ADD_SUCCESS_DESCRIPTION')}</label><a href={response.data}>{response.data}</a></div>,
 					  });
-					form.emptyForm();
+					  this.emptyForm();
 				  })
-				  .catch(function (error) {
+				  .catch((error) => {
 					Modal.error({
 						title: global.t('ADD_ERROR'),
 						content: error.response.data,
