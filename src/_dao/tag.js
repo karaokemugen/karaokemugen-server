@@ -16,3 +16,16 @@ export async function selectTags(type, from, size) {
 export async function refreshTags() {
 	return await db().query('REFRESH MATERIALIZED VIEW all_tags');
 }
+
+export async function refreshKaraTags() {
+	await Promise.all([
+		db().query('REFRESH MATERIALIZED VIEW author'),
+		db().query('REFRESH MATERIALIZED VIEW creator'),
+		db().query('REFRESH MATERIALIZED VIEW group_tags'),
+		db().query('REFRESH MATERIALIZED VIEW language'),
+		db().query('REFRESH MATERIALIZED VIEW singer'),
+		db().query('REFRESH MATERIALIZED VIEW misc'),
+		db().query('REFRESH MATERIALIZED VIEW songtype'),
+		db().query('REFRESH MATERIALIZED VIEW songwriter')
+	]);
+}

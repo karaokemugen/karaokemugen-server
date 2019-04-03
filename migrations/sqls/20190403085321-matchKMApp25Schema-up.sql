@@ -14,6 +14,34 @@ DROP MATERIALIZED VIEW all_series;
 DROP MATERIALIZED VIEW all_tags;
 DROP MATERIALIZED VIEW all_years;
 
+DROP TABLE serie;
+
+CREATE TABLE serie
+(
+    pk_sid uuid NOT NULL,
+    name character varying NOT NULL,
+    aliases jsonb,
+    seriefile character varying,
+    CONSTRAINT serie_pkey PRIMARY KEY (pk_sid),
+    CONSTRAINT serie_name_key UNIQUE (name)
+);
+
+CREATE INDEX idx_serie_name ON serie(name);
+
+DROP TABLE serie_lang;
+
+CREATE TABLE serie_lang
+(
+    pk_id_serie_lang serial,
+	fk_sid uuid,
+    lang character(3) NOT NULL,
+    name character varying NOT NULL,
+    CONSTRAINT serielang_pkey PRIMARY KEY (pk_id_serie_lang)
+);
+
+CREATE INDEX idx_serie_lang_fk_sid ON serie_lang(fk_sid);
+CREATE INDEX idx_sl_lang ON serie_lang(lang);
+
 CREATE MATERIALIZED VIEW series_i18n AS
 SELECT sl.fk_sid AS fk_sid, array_to_json(array_agg(json_build_object('lang', sl.lang, 'name', sl.name))) AS serie_langs
 FROM serie_lang sl
@@ -214,3 +242,4 @@ CREATE MATERIALIZED VIEW all_kara_serie_langs AS
 	INNER JOIN kara_serie ks ON sl.fk_sid = ks.fk_sid;
 
 CREATE INDEX idx_akls_kid_lang ON all_kara_serie_langs(kid, lang);
+

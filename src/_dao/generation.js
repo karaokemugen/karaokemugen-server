@@ -1,25 +1,19 @@
 import logger from 'winston';
 import {has as hasLang} from 'langs';
 import {getConfig} from '../_utils/config';
-import {resolve} from 'path';
+import {join, resolve} from 'path';
 import {asyncReadDirFilter} from '../_utils/files';
 import {getDataFromKaraFile} from './karafile';
 import {createVideoPreviews} from '../_utils/previews';
-import {db, transaction} from './database';
-import {refreshKaras, refreshYears} from './kara';
-import {
-	insertKaras, insertKaraSeries, insertKaraTags, insertSeries, insertTags, inserti18nSeries, deleteAll
-} from './sqls/generation';
-import {karaTypesMap} from '../_services/constants';
+import {copyFromData, db, refreshAll} from './database';
+import {tags as karaTags, karaTypesMap} from '../_services/constants';
 import {basename} from 'path';
 import parallel from 'async-await-parallel';
 import {findSeries, getDataFromSeriesFile} from '../_dao/seriesfile';
 import {updateSetting} from '../_utils/settings';
-import { refreshSeries } from './series';
-import { refreshTags } from './tag';
-import slug from 'slug';
+import slugify from 'slugify';
 import {createHash} from 'crypto';
-
+import uuidV4 from 'uuid/v4';
 
 let error = false;
 let generating = false;
@@ -31,7 +25,16 @@ function hash(string) {
 }
 
 async function emptyDatabase() {
-	await db().query(deleteAll);
+	await db().query(`
+	BEGIN;
+	TRUNCATE kara_tag CASCADE;
+	TRUNCATE kara_serie CASCADE;
+	TRUNCATE tag RESTART IDENTITY CASCADE;
+	TRUNCATE serie RESTART IDENTITY CASCADE;
+	TRUNCATE serie_lang RESTART IDENTITY CASCADE;
+	TRUNCATE kara RESTART IDENTITY CASCADE;
+	COMMIT;
+	`);
 }
 
 export async function extractAllSeriesFiles() {
@@ -44,28 +47,53 @@ export async function extractAllKaraFiles() {
 	return await asyncReadDirFilter(resolve(conf.appPath, conf.Path.Karas), '.kara');
 }
 
-export async function readAllKaras(karafiles) {
+export async function readAllKaras(karafiles, seriesMap) {
 	const karaPromises = [];
 	for (const karafile of karafiles) {
-		karaPromises.push(() => getDataFromKaraFile(karafile));
+		karaPromises.push(() => readAndCompleteKarafile(karafile, seriesMap));
 	}
 	const karas = await parallel(karaPromises, 16);
 	// Errors are non-blocking
-	if (karas.some((kara) => {
-		return kara.error;
-	})) error = true;
-	return karas;
+	if (karas.some(kara => kara.error)) error = true;
+	return karas.filter(kara => !kara.error);
+}
+
+async function readAndCompleteKarafile(karafile, seriesMap) {
+	const karaData = await getDataFromKaraFile(karafile);
+	if (karaData.series) {
+		for (const serie of karaData.series.split(',')) {
+			const seriesData = seriesMap.get(serie);
+			if (seriesData) {
+				seriesData.kids.push(karaData.KID);
+				seriesMap.set(serie, seriesData);
+			} else {
+				error = true;
+				karaData.error = true;
+				logger.error(`[Gen] Series ${serie} was not found in your series.json files (Kara file : ${karafile})`);
+			}
+		}
+	}
+	return karaData;
 }
 
 export async function readAllSeries(seriesFiles) {
 	const seriesPromises = [];
+	const seriesMap = new Map();
 	for (const seriesFile of seriesFiles) {
-		seriesPromises.push(() => getDataFromSeriesFile(seriesFile));
+		seriesPromises.push(() => processSerieFile(seriesFile, seriesMap));
 	}
-	return await parallel(seriesPromises, 16);
+	const seriesData = await parallel(seriesPromises, 16);
+	return { data: seriesData, map: seriesMap };
 }
 
-function prepareKaraInsertData(kara) {
+async function processSerieFile(seriesFile, map) {
+	const data = await getDataFromSeriesFile(seriesFile);
+	data.seriefile = basename(seriesFile);
+	map.set(data.name, { sid: data.sid, kids: [] });
+	return data;
+}
+
+function prepareKaraInsertData(kara, index) {
 	return [
 		kara.KID,
 		kara.title,
@@ -73,12 +101,12 @@ function prepareKaraInsertData(kara) {
 		kara.order || null,
 		kara.mediafile,
 		kara.subfile,
-		new Date(kara.dateadded * 1000),
-		new Date(kara.datemodif * 1000),
-		kara.mediagain,
-		kara.mediaduration,
 		basename(kara.karafile),
-		kara.mediasize
+		kara.mediaduration,
+		kara.mediasize,
+		kara.mediagain,
+		new Date(kara.dateadded * 1000).toISOString(),
+		new Date(kara.datemodif * 1000).toISOString()
 	];
 }
 
@@ -147,41 +175,23 @@ function checkDuplicateSIDs(series) {
 	if (errors.length > 0) throw `One or several SIDs are duplicated in your database : ${JSON.stringify(errors,null,2)}. Please fix this by removing the duplicated serie(s) and retry generating your database.`;
 }
 
-/**
- * Returns a Map<String, Array>, linking a series to the karaoke indexes involved.
- */
-function getAllSeries(karas, seriesData) {
-	const series = {};
-	logger.profile('getAllSeries');
-	for (const serie of seriesData) {
-		series[serie.name] = {
-			sid: serie.sid
-		};
-		for (const kara of karas) {
-			const karaSeries = kara.series.split(',');
-			if (!series[serie.name].kids) series[serie.name].kids = [];
-			if (karaSeries.includes(serie.name)) {
-				series[serie.name].kids.push(kara.KID);
-			}
-		}
-	}
-	return series;
-}
-
 function prepareSerieInsertData(serie, data) {
+	if (data.aliases) data.aliases.forEach((d,i) => {
+		data.aliases[i] = d.replace(/"/g,'\\"');
+	});
 	return [
+		data.sid,
 		serie,
 		JSON.stringify(data.aliases || []),
-		data.sid,
 		data.seriefile
 	];
 }
 
 function prepareAllSeriesInsertData(mapSeries, seriesData) {
 	const data = [];
-	for (const serie of Object.keys(mapSeries)) {
-		const serieData = seriesData.filter(e => e.name === serie);
-		data.push(prepareSerieInsertData(serie, serieData[0]));
+	for (const serie of mapSeries) {
+		const serieData = seriesData.filter(e => e.name === serie[0]);
+		data.push(prepareSerieInsertData(serie[0], serieData[0]));
 	}
 	return data;
 }
@@ -191,10 +201,10 @@ function prepareAllSeriesInsertData(mapSeries, seriesData) {
  */
 function prepareAllKarasSeriesInsertData(mapSeries) {
 	const data = [];
-	for (const serie of Object.keys(mapSeries)) {
-		for (const kid of mapSeries[serie].kids) {
+	for (const serie of mapSeries) {
+		for (const kid of serie[1].kids) {
 			data.push([
-				mapSeries[serie].sid,
+				serie[1].sid,
 				kid
 			]);
 		}
@@ -204,26 +214,31 @@ function prepareAllKarasSeriesInsertData(mapSeries) {
 
 async function prepareAltSeriesInsertData(seriesData, mapSeries) {
 	const i18nData = [];
+	let index = 0;
 	for (const serie of seriesData) {
 		if (serie.i18n) {
 			for (const lang of Object.keys(serie.i18n)) {
+				index++;
 				i18nData.push([
+					index,
+					serie.sid,
 					lang,
-					serie.i18n[lang],
-					serie.name
+					serie.i18n[lang]
 				]);
 			}
 		}
 	}
 	// Checking if some series present in .kara files are not present in the series files
-	for (const serie of Object.keys(mapSeries)) {
-		if (!findSeries(serie, seriesData)) {
+	for (const serie of mapSeries) {
+		if (!findSeries(serie[0], seriesData)) {
+			index++;
 			// Print a warning and push some basic data so the series can be searchable at least
 			logger.warn(`[Gen] Series "${serie}" is not in any series file`);
 			i18nData.push([
+				index,
+				uuidV4(),
 				'jpn',
-				serie,
-				serie
+				serie[0],
 			]);
 		}
 	}
@@ -288,6 +303,7 @@ function getKaraTags(kara, allTags) {
 	return result;
 }
 
+
 function getTypes(kara, allTags) {
 	const result = new Set();
 
@@ -308,13 +324,10 @@ function getTypes(kara, allTags) {
 }
 
 function getTagId(tagName, tags) {
-
 	const index = tags.indexOf(tagName) + 1;
-
 	if (index > 0) {
 		return index;
 	}
-
 	tags.push(tagName);
 	return tags.length;
 }
@@ -322,15 +335,14 @@ function getTagId(tagName, tags) {
 function prepareAllTagsInsertData(allTags) {
 	const data = [];
 	const slugs = [];
+	const translations = require(join(__dirname,'../_locales/'));
+	let lastIndex;
 
 	allTags.forEach((tag, index) => {
 		const tagParts = tag.split(',');
 		const tagName = tagParts[0];
 		const tagType = tagParts[1];
-		slug.defaults.mode = 'rfc3986';
-		let tagSlug = slug(tagName, {
-			lower: true,
-		});
+		let tagSlug = slugify(tagName);
 		if (slugs.includes(`${tagType} ${tagSlug}`)) {
 			tagSlug = `${tagSlug}-${hash(tagName)}`;
 		}
@@ -339,14 +351,60 @@ function prepareAllTagsInsertData(allTags) {
 			error = true;
 		}
 		slugs.push(`${tagType} ${tagSlug}`);
+		const tagi18n = {};
+		if (+tagType === 7 || +tagType === 3) {
+			for (const language of Object.keys(translations)) {
+				// Key is the language, value is a i18n text
+				if (translations[language][tagName]) tagi18n[language] = translations[language][tagName];
+			}
+		}
 		data.push([
 			index + 1,
 			tagType,
 			tagName,
 			tagSlug,
+			JSON.stringify(tagi18n)
 		]);
+		lastIndex = index + 1;
 	});
-
+	// We browse through tag data to add the default tags if they don't exist.
+	for (const tag of karaTags) {
+		const tagi18n = {};
+		if (!data.find(t => t[2] === `TAG_${tag}`)) {
+			const tagDefaultName = `TAG_${tag}`;
+			for (const language of Object.keys(translations)) {
+				// Key is the language, value is a i18n text
+				if (translations[language][`TAG_${tag}`]) tagi18n[language] = translations[language][`TAG_${tag}`];
+			}
+			data.push([
+				lastIndex + 1,
+				7,
+				tagDefaultName,
+				slugify(tagDefaultName),
+				JSON.stringify(tagi18n)
+			]);
+			lastIndex++;
+		}
+	}
+	// We do it as well for types
+	for (const type of karaTypesMap) {
+		const tagi18n = {};
+		if (!data.find(t => t[2] === `TYPE_${type[0]}`)) {
+			const typeDefaultName = `TYPE_${type[0]}`;
+			for (const language of Object.keys(translations)) {
+				// Key is the language, value is a i18n text
+				if (translations[language][`TYPE_${type[0]}`]) tagi18n[language] = translations[language][`TAG_${type[0]}`];
+			}
+			data.push([
+				lastIndex + 1,
+				3,
+				typeDefaultName,
+				slugify(typeDefaultName),
+				JSON.stringify(tagi18n)
+			]);
+			lastIndex++;
+		}
+	}
 	return data;
 }
 
@@ -371,49 +429,50 @@ export async function run() {
 		generating = true;
 
 		logger.info('[Gen] Starting database generation');
+		// Series data
+		const seriesFiles = await extractAllSeriesFiles();
+		if (seriesFiles.length === 0) throw 'No series files found';
+		const series = await readAllSeries(seriesFiles);
+		checkDuplicateSeries(series.data);
+		checkDuplicateSIDs(series.data);
 		const karaFiles = await extractAllKaraFiles();
 		logger.debug(`[Gen] Number of .karas found : ${karaFiles.length}`);
 		if (karaFiles.length === 0) throw 'No kara files found';
-
-		const karas = await readAllKaras(karaFiles);
-		logger.debug(`[Gen] Number of karas read : ${karas.length}`);
+		const karas = await readAllKaras(karaFiles, series.map);
 		// Check if we don't have two identical KIDs
+		logger.debug(`[Gen] Number of karas read : ${karas.length}`);
 		checkDuplicateKIDs(karas);
-		// Series data
 
-		const seriesFiles = await extractAllSeriesFiles();
-		if (seriesFiles.length === 0) throw 'No series files found';
-		const seriesData = await readAllSeries(seriesFiles);
-		checkDuplicateSeries(seriesData);
-		checkDuplicateSIDs(seriesData);
 		// Preparing data to insert
 		logger.info('[Gen] Data files processed, creating database');
 		const sqlInsertKaras = prepareAllKarasInsertData(karas);
-		const seriesMap = getAllSeries(karas, seriesData);
-		const sqlInsertSeries = prepareAllSeriesInsertData(seriesMap, seriesData);
-		const sqlInsertKarasSeries = prepareAllKarasSeriesInsertData(seriesMap);
-		const sqlSeriesi18nData = await prepareAltSeriesInsertData(seriesData, seriesMap);
+		const sqlInsertSeries = prepareAllSeriesInsertData(series.map, series.data);
+		const sqlInsertKarasSeries = prepareAllKarasSeriesInsertData(series.map);
+		const sqlSeriesi18nData = await prepareAltSeriesInsertData(series.data, series.map);
 		const tags = getAllKaraTags(karas);
 		const sqlInsertTags = prepareAllTagsInsertData(tags.allTags);
 		const sqlInsertKarasTags = prepareTagsKaraInsertData(tags.tagsByKara);
 		await emptyDatabase();
 		// Inserting data in a transaction
-		await transaction([
-			{sql: insertKaras, params: sqlInsertKaras},
-			{sql: insertSeries, params: sqlInsertSeries},
-			{sql: insertTags, params: sqlInsertTags},
-			{sql: insertKaraTags, params: sqlInsertKarasTags},
-			{sql: insertKaraSeries, params: sqlInsertKarasSeries},
-			{sql: inserti18nSeries, params: sqlSeriesi18nData}
+		await Promise.all([
+			copyFromData('kara', sqlInsertKaras),
+			copyFromData('serie', sqlInsertSeries),
+			copyFromData('tag', sqlInsertTags)
 		]);
 		await Promise.all([
-			db().query('VACUUM ANALYZE;'),
-			refreshKaras(),
-			refreshSeries(),
-			refreshYears(),
-			refreshTags(),
+			copyFromData('serie_lang', sqlSeriesi18nData),
+			copyFromData('kara_tag', sqlInsertKarasTags),
+			copyFromData('kara_serie', sqlInsertKarasSeries)
+		]);
+		// Setting the pk_id_tag sequence to allow further edits during runtime
+		await db().query('SELECT SETVAL(\'tag_pk_id_tag_seq\',(SELECT MAX(pk_id_tag) FROM tag))');
+		await db().query('SELECT SETVAL(\'serie_lang_pk_id_serie_lang_seq\',(SELECT MAX(pk_id_serie_lang) FROM serie_lang))');
+		await db().query('VACUUM ANALYZE;');
+		await Promise.all([
+			refreshAll(),
 			updateSetting('lastGeneration', new Date())
 		]);
+
 		createVideoPreviews();
 		if (error) throw 'Error during generation. Find out why in the messages above.';
 	} catch (err) {

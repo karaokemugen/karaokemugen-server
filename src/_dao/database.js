@@ -4,6 +4,10 @@ import langs from 'langs';
 import logger from 'winston';
 import deburr from 'lodash.deburr';
 import { upsertInstance } from './stats';
+import {from as copyFrom} from 'pg-copy-streams';
+import {refreshYears, refreshKaras} from './kara';
+import {refreshTags, refreshKaraTags} from './tag';
+import {refreshKaraSeriesLang, refreshSeries, refreshKaraSeries} from './series';
 
 let database;
 
@@ -11,6 +15,19 @@ export function db() {
 	return database;
 }
 
+export async function refreshAll() {
+	await Promise.all([
+		refreshKaraSeries(),
+		refreshKaraTags()
+	]);
+	await Promise.all([
+		refreshKaraSeriesLang(),
+		refreshSeries(),
+		refreshKaras(),
+		refreshYears(),
+		refreshTags()
+	]);
+}
 
 export async function transaction(queries) {
 	const client = await database.connect();
@@ -79,4 +96,22 @@ export function paramWords(filter) {
 		params[`word${i}`] = `%${words[i]}%`;
 	}
 	return params;
+}
+
+export async function copyFromData(table, data) {
+	const client = await database.connect();
+	let stream = client.query(copyFrom(`COPY ${table} FROM STDIN DELIMITER '|' NULL ''`));
+	data = data.map(d => d.join('|')).join('\n');
+	stream.write(data);
+	stream.end();
+	return new Promise((resolve, reject) => {
+		stream.on('end', () => {
+			client.release();
+			resolve();
+		});
+		stream.on('error', err => {
+			client.release();
+			reject(err);
+		});
+	});
 }

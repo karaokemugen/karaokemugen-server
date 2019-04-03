@@ -3,11 +3,18 @@ import {pg as yesql} from 'yesql';
 const sql = require('./sqls/series');
 
 export async function refreshSeries() {
-	return Promise.all([
-		await db().query('REFRESH MATERIALIZED VIEW all_series'),
-		await db().query('REFRESH MATERIALIZED VIEW all_kara_serie_langs')
-	]);
+	await db().query('REFRESH MATERIALIZED VIEW all_series');
 }
+
+export async function refreshKaraSeries() {
+	await db().query('REFRESH MATERIALIZED VIEW series_i18n');
+	await db().query('REFRESH MATERIALIZED VIEW all_kara_series');
+}
+
+export async function refreshKaraSeriesLang() {
+	await db().query('REFRESH MATERIALIZED VIEW all_kara_serie_langs');
+}
+
 
 export async function countSeries(filter) {
 	const filterClauses = filter ? buildClausesSeries(filter) : {sql: [], params: {}};
