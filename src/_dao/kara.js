@@ -47,13 +47,12 @@ export function buildTypeClauses(mode, value) {
 			// Splitting only after the first ":"
 			const type = c.split(/:(.+)/)[0];
 
-			if (type === 's')
-			{
-				const values = c.split(/:(.+)/)[1].split(',').map((v) => { return `'${v}'::uuid` });
+			if (type === 's') {
+				const values = c.split(/:(.+)/)[1].split(',').map((v) => {
+					return `'${v}'::uuid`;
+				});
 				search = `${search} AND serie_id <@ ARRAY[${values}]`;
-			}
-			else
-			{
+			} else {
 				const values = c.split(/:(.+)/)[1];
 				if (type === 'y') search = `${search} AND year IN (${values})`;
 				if (type === 't') search = `${search} AND all_tags_id @> ARRAY[${values}]`;
