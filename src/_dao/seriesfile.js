@@ -1,6 +1,6 @@
 import {sanitizeFile, asyncWriteFile, asyncReadFile} from '../_utils/files';
 import testJSON from 'is-valid-json';
-import {resolve, basename} from 'path';
+import {resolve} from 'path';
 import {initValidators, check} from '../_utils/validators';
 import {uuidRegexp} from '../_services/constants';
 import {getConfig} from '../_utils/config';

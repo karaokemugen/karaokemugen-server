@@ -46,7 +46,7 @@ main().catch(err => {
 async function main() {
 	sudoBlock('You should not run Karaoke Mugen Server with root permissions, it\'s dangerous.');
 	const argv = parseArgs();
-	await initConfig(appPath, cli);
+	await initConfig(appPath, argv);
 	const conf = getConfig();
 	console.log('--------------------------------------------------------------------');
 	console.log(`Karaoke Mugen Server ${pjson.version}`);
@@ -63,6 +63,8 @@ async function main() {
 		asyncCheckOrMkdir(appPath, conf.Path.Previews),
 		asyncCheckOrMkdir(appPath, conf.Path.Avatars)
 	]);
+
+	if (argv.sql) setConfig({ optSql: true });
 
 	await initDB();
 	if (argv.generate) {
@@ -113,6 +115,8 @@ function parseArgs() {
 		.version(pjson.version)
 		.option('--port [port]', 'specify which port to listen to', 'port')
 		.option('--generate', 'generate karaoke database')
+		.option('--sql', 'display SQL queries (in debug)')
+		.option('--debug', 'display debug messages')
 		.option('--createAdmin [user],[password]', 'Create a new admin user', login)
 		.parse(argv);
 }

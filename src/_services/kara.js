@@ -1,10 +1,6 @@
 import {uuidRegexp, subFileRegexp, karaTypesArray, mediaFileRegexp, karaTypes} from './constants';
 import {check, initValidators} from '../_utils/validators';
 import {countKaras, selectAllKaras, selectAllYears, selectBaseStats} from '../_dao/kara';
-import {getConfig} from '../_utils/config';
-import langs from 'langs';
-import {getLanguage} from 'iso-countries-languages';
-import {resolve} from 'path';
 import timestamp from 'unix-timestamp';
 import uuidV4 from 'uuid/v4';
 
@@ -59,66 +55,12 @@ export async function getAllKaras(filter, lang, from = 0, size = 0, mode, modeVa
 	try {
 		const [length, pl] = await Promise.all([
 			countKaras(filter, mode, modeValue),
-			selectAllKaras(filter, lang, mode, modeValue, +from, +size)
+			selectAllKaras(filter, lang, +from, +size, mode, modeValue)
 		]);
 		return formatKaraList(pl, +from, length);
 	} catch(err) {
 		throw err;
 	}
-}
-
-export function translateKaraInfo(karas, lang) {
-	// If lang is not provided, assume we're using node's system locale
-	if (!lang) lang = getConfig().EngineDefaultLocale;
-	// Test if lang actually exists in ISO639-1 format
-	if (!langs.has('1',lang)) throw `Unknown language : ${lang}`;
-	// Instanciate a translation object for our needs with the correct language.
-	const i18n = require('i18n'); // Needed for its own translation instance
-	i18n.configure({
-		directory: resolve(__dirname,'../_locales'),
-	});
-	i18n.setLocale(lang);
-
-	// We need to read the detected locale in ISO639-1
-	const detectedLocale = langs.where('1',lang);
-	// If the kara list provided is not an array (only a single karaoke)
-	// Put it into an array first
-	if (!Array.isArray(karas)) karas = [karas];
-	karas.forEach((kara,index) => {
-		if (kara.languages.length > 0) {
-			let languages = [];
-			let langdata;
-			kara.languages.forEach(karalang => {
-				// Special case : und
-				// Undefined language
-				// In this case we return something different.
-				// Special case 2 : mul
-				// mul is for multilanguages, when a karaoke has too many languages to list.
-				switch (karalang.name) {
-				case 'und':
-					languages.push(i18n.__('UNDEFINED_LANGUAGE'));
-					break;
-				case 'mul':
-					languages.push(i18n.__('MULTI_LANGUAGE'));
-					break;
-				case 'zxx':
-					languages.push(i18n.__('NO_LANGUAGE'));
-					break;
-				default:
-					// We need to convert ISO639-2B to ISO639-1 to get its language
-					langdata = langs.where('2B',karalang.name);
-					if (langdata === undefined) {
-						languages.push(__('UNKNOWN_LANGUAGE'));
-					} else {
-						languages.push(getLanguage(detectedLocale[1],langdata[1]));
-					}
-					break;
-				}
-			});
-			karas[index].languages_i18n = languages;
-		}
-	});
-	return karas;
 }
 
 export function serieRequired(karaType) {
