@@ -1,6 +1,6 @@
 import {sanitizeFile, asyncWriteFile, asyncReadFile} from '../_utils/files';
 import testJSON from 'is-valid-json';
-import {resolve, basename} from 'path';
+import {resolve} from 'path';
 import {initValidators, check} from '../_utils/validators';
 import {uuidRegexp} from '../_services/constants';
 import {getConfig} from '../_utils/config';
@@ -18,12 +18,7 @@ const seriesConstraintsV2 = {
 };
 
 export async function getDataFromSeriesFile(file) {
-	let seriesFileData;
-	try {
-		seriesFileData = await asyncReadFile(file, 'utf-8');
-	} catch(err) {
-		throw `Unable to read series file : ${file}`;
-	}
+	const seriesFileData = await asyncReadFile(file, 'utf-8');
 	if (!testJSON(seriesFileData)) throw `Syntax error in file ${file}`;
 	const seriesData = JSON.parse(seriesFileData);
 	if (header > +seriesData.header) throw `Series file is too old (version found: ${seriesData.header.version}, expected version: ${header.version})`;
@@ -31,7 +26,6 @@ export async function getDataFromSeriesFile(file) {
 	if (validationErrors) {
 		throw `Series data is not valid: ${JSON.stringify(validationErrors)}`;
 	}
-	seriesData.series.seriefile = basename(file);
 	return seriesData.series;
 }
 
