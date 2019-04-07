@@ -76,6 +76,7 @@ export const tagsMap = Object.freeze({
 			TAG_VN         : i18next.t('tag:misc.TAG_VN'),
 			TAG_VOCALOID   : i18next.t('tag:misc.TAG_VOCALOID'),
 			TAG_WII        : i18next.t('tag:misc.TAG_WII'),
+			TAG_WIIU        : i18next.t('tag:misc.TAG_WIIU'),
 			TAG_XBOX360    : i18next.t('tag:misc.TAG_XBOX360'),
 			TAG_XBOXONE    : i18next.t('tag:misc.TAG_XBOXONE'),
 			TAG_YAOI       : i18next.t('tag:misc.TAG_YAOI'),

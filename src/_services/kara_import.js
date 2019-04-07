@@ -171,6 +171,7 @@ function defineFilename(data) {
 		if (data.tags.includes('TAG_SEGACD')) extraTags.push('SEGACD');
 		if (data.tags.includes('TAG_SATURN')) extraTags.push('SATURN');
 		if (data.tags.includes('TAG_WII')) extraTags.push('WII');
+		if (data.tags.includes('TAG_WIIU')) extraTags.push('WIIU');
 		if (data.tags.includes('TAG_SWITCH')) extraTags.push('SWITCH');
 		if (data.tags.includes('TAG_VIDEOGAME')) extraTags.push('GAME');
 		let extraType = '';
@@ -195,6 +196,7 @@ function containsVideoGameSupportTag(tags) {
 			|| tags.includes('TAG_SEGACD')
 			|| tags.includes('TAG_SATURN')
 			|| tags.includes('TAG_WII')
+			|| tags.includes('TAG_WIIU')
 			|| tags.includes('TAG_DREAMCAST')
 			|| tags.includes('TAG_SWITCH')
 			|| tags.includes('TAG_XBOXONE')
