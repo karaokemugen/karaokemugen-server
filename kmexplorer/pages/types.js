@@ -78,7 +78,7 @@ class Page extends React.Component {
 		return (
 			<div>
 				<Head>
-					<title key="title">{i18n.t('sitename')} - {i18n.t('category.types')}</title>
+					<title key="title">{i18n.t('sitename')} - {i18n.t('category.songtypes')}</title>
 				</Head>
 
 				<div className="kmx-filter-keyword">
