@@ -118,7 +118,7 @@ export default class EditableTagGroup extends React.Component {
 									if (tag.value !== 'NO_TAG')
 										return (
 											<Col key={tag.value} align='left' span={8}>
-												<Checkbox value={tag.value}>{t('TAGS.'+tag.text)}
+												<Checkbox value={tag.value}>{t('TAGS.'+tag.value)}
 												</Checkbox>
 											</Col>
 										);

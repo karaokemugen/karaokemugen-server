@@ -98,5 +98,6 @@ export const tags = [
 	'CREDITLESS',
 	'SWITCH',
 	'DRAMA',
+	'DUB',
 	'COVER'
 ];
