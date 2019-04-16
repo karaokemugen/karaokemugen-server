@@ -1,6 +1,6 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlay, faIgloo, faTags, faTag, faMicrophoneAlt, faTv, faSignature,faChalkboardTeacher, faUserSecret, faLanguage, faCalendarAlt, faGlobe, faFileImport } from '@fortawesome/free-solid-svg-icons'
+import { faTasks, faPlay, faIgloo, faTags, faTag, faMicrophoneAlt, faTv, faSignature,faChalkboardTeacher, faUserSecret, faLanguage, faCalendarAlt, faGlobe, faFileImport } from '@fortawesome/free-solid-svg-icons'
 import { faCreativeCommonsSampling } from '@fortawesome/free-brands-svg-icons'
 
 export default {
@@ -24,5 +24,6 @@ export default {
 	years: <FontAwesomeIcon icon={faCalendarAlt} />,
 	year: <FontAwesomeIcon icon={faCalendarAlt} />,
 	video_play: <FontAwesomeIcon icon={faPlay} />,
-	kara_import: <FontAwesomeIcon icon={faFileImport} />
+	kara_import: <FontAwesomeIcon icon={faFileImport} />,
+	songtypes: <FontAwesomeIcon icon={faTasks} />
 }
