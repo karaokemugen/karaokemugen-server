@@ -156,6 +156,7 @@ function defineFilename(data) {
 		if (data.tags.includes('TAG_PS2')) extraTags.push('PS2');
 		if (data.tags.includes('TAG_PSX')) extraTags.push('PSX');
 		if (data.tags.includes('TAG_COVER')) extraTags.push('COVER');
+		if (data.tags.includes('TAG_DUB')) extraTags.push('DUB');
 		if (data.tags.includes('TAG_SPECIAL')) extraTags.push('SPECIAL');
 		if (data.tags.includes('TAG_REMIX')) extraTags.push('REMIX');
 		if (data.tags.includes('TAG_OVA')) extraTags.push('OVA');
