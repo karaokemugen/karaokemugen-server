@@ -109,7 +109,7 @@ class Page extends React.Component {
 					total={total}
 					size={pageSize}
 					current={page}
-					renderUrl={(i) => { return "/singers?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
+					renderUrl={(i) => { return "/songwriters?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
 					/>
 			</div>
 			)
