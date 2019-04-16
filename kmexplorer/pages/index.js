@@ -70,7 +70,7 @@ class Page extends React.Component {
 				</Head>
 
 				<div className="km-home">
-					<img className="km-home--logo" src={require('../static/images/km-logo.png')} />
+					<a href="http://karaokes.moe/"><img className="km-home--logo" src={require('../static/images/km-logo.png')} /></a>
 
 					<ul className="km-home--stats">
 						<li key="karas"><strong>{count.karas>0 ? count.karas : '-'}</strong> <span>{i18n.t("category.karas")}</span></li>
