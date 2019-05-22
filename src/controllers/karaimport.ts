@@ -1,6 +1,6 @@
-import {createKara} from '../_services/kara_import';
+import {createKara} from '../services/kara_import';
 import multer from 'multer';
-import {getConfig} from '../_utils/config';
+import {getConfig} from '../utils/config';
 import {resolve} from 'path';
 
 export default function KIController(router) {

@@ -1,8 +1,8 @@
 import {createHash} from 'crypto';
-import {updateUser, updateUserPassword, insertUser, selectUser, selectAllUsers, deleteUser} from '../_dao/user';
+import {updateUser, updateUserPassword, insertUser, selectUser, selectAllUsers, deleteUser} from '../dao/user';
 import logger from 'winston';
-import {getConfig} from '../_utils/config';
-import {asyncReadDir, asyncExists, asyncUnlink, asyncMove, detectFileType} from '../_utils/files';
+import {getConfig} from '../utils/config';
+import {asyncReadDir, asyncExists, asyncUnlink, asyncMove, detectFileType} from '../utils/files';
 import uuidV4 from 'uuid/v4';
 import {resolve} from 'path';
 

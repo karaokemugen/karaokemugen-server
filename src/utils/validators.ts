@@ -1,7 +1,7 @@
 import validate from 'validate.js';
 import testJSON from 'is-valid-json';
 import {has as hasLang} from 'langs';
-import {uuidRegexp, karaTypes, tags} from '../_services/constants';
+import {uuidRegexp, karaTypes, tags} from '../services/constants';
 
 function typeValidator(value: string) {
 	if (!karaTypes[value]) return `${value} is an invalid song type`;

@@ -2,7 +2,7 @@ import { decode } from 'jwt-simple';
 import passport from 'passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import LocalStrategy from 'passport-local';
-import { findUserByName, hashPassword } from '../_services/user';
+import { findUserByName, hashPassword } from '../services/user';
 import { getConfig } from './config';
 
 export const requireAuth = passport.authenticate('jwt', { session: false });

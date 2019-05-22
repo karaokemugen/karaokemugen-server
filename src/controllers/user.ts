@@ -1,9 +1,9 @@
-import {removeUser, editUser, createUser, findUserByName, getAllUsers} from '../_services/user';
-import {check, unescape} from '../_utils/validators';
+import {removeUser, editUser, createUser, findUserByName, getAllUsers} from '../services/user';
+import {check, unescape} from '../utils/validators';
 import multer from 'multer';
-import {getConfig} from '../_utils/config';
+import {getConfig} from '../utils/config';
 import {resolve} from 'path';
-import { requireAuth, requireValidUser } from '../_utils/passport_manager';
+import { requireAuth, requireValidUser } from '../utils/passport_manager';
 
 export default function userController(router) {
 	const conf = getConfig();

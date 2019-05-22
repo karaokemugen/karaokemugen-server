@@ -4,21 +4,21 @@
 
 import logger from 'winston';
 import {extname, resolve, basename} from 'path';
-import {getConfig} from '../_utils/config';
-import {sanitizeFile, asyncUnlink, asyncExists, asyncMove, replaceExt} from '../_utils/files';
+import {getConfig} from '../utils/config';
+import {sanitizeFile, asyncUnlink, asyncExists, asyncMove, replaceExt} from '../utils/files';
 import {
 	extractAssInfos, extractVideoSubtitles, extractMediaTechInfos, writeKara
-} from '../_dao/karafile';
-import {webOptimize} from '../_utils/ffmpeg';
-import {getType} from '../_services/constants';
-import {formatKara} from '../_services/kara';
-import {check} from '../_utils/validators';
+} from '../dao/karafile';
+import {webOptimize} from '../utils/ffmpeg';
+import {getType} from '../services/constants';
+import {formatKara} from '../services/kara';
+import {check} from '../utils/validators';
 import timestamp from 'unix-timestamp';
-import {sendMail} from '../_utils/mailer';
-import { selectAllSeries } from '../_dao/series';
+import {sendMail} from '../utils/mailer';
+import { selectAllSeries } from '../dao/series';
 import uuidV4 from 'uuid/v4';
-import {writeSeriesFile} from '../_dao/seriesfile';
-import {duration} from '../_utils/date';
+import {writeSeriesFile} from '../dao/seriesfile';
+import {duration} from '../utils/date';
 import got from 'got';
 
 export async function createKara(kara) {

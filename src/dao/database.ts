@@ -1,4 +1,4 @@
-import {getConfig} from '../_utils/config';
+import {getConfig} from '../utils/config';
 import {Pool} from 'pg';
 import langs from 'langs';
 import logger from 'winston';

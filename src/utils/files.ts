@@ -2,7 +2,7 @@ import {createWriteStream, exists, readFile, readdir, rename, unlink, stat, writ
 import {remove, mkdirp, copy, move} from 'fs-extra';
 import {promisify} from 'util';
 import {resolve} from 'path';
-import {mediaFileRegexp} from '../_services/constants';
+import {mediaFileRegexp} from '../services/constants';
 import {createHash, HexBase64Latin1Encoding} from 'crypto';
 import sanitizeFilename from 'sanitize-filename';
 import deburr from 'lodash.deburr';

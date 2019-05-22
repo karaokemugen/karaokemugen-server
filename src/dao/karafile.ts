@@ -1,10 +1,10 @@
-import {getConfig} from '../_utils/config';
-import {asyncWriteFile, asyncStat, checksum, asyncExists, asyncReadFile} from '../_utils/files';
+import {getConfig} from '../utils/config';
+import {asyncWriteFile, asyncStat, checksum, asyncExists, asyncReadFile} from '../utils/files';
 import {parse as parseini} from 'ini';
 import logger from 'winston';
 import {resolve} from 'path';
-import {extractSubtitles, getMediaInfo} from '../_utils/ffmpeg';
-import {formatKara} from '../_services/kara';
+import {extractSubtitles, getMediaInfo} from '../utils/ffmpeg';
+import {formatKara} from '../services/kara';
 import {now} from 'unix-timestamp';
 import {stringify} from 'ini';
 

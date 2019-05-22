@@ -1,5 +1,5 @@
-import { requireAuth, requireValidUser } from '../_utils/passport_manager';
-import { getFavorites, addFavorite, removeFavorite } from '../_services/favorites';
+import { requireAuth, requireValidUser } from '../utils/passport_manager';
+import { getFavorites, addFavorite, removeFavorite } from '../services/favorites';
 
 export default function favoritesController(router) {
 	router.route('/favorites')

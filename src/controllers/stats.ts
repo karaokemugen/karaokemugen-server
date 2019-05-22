@@ -1,4 +1,4 @@
-import {getRequestedStats, getFavoritesStats, getPlayedStats, processStatsPayload} from '../_services/stats';
+import {getRequestedStats, getFavoritesStats, getPlayedStats, processStatsPayload} from '../services/stats';
 
 export default function statsController(router) {
 	router.post('/stats', async (req, res) => {

@@ -1,5 +1,5 @@
 import {getConfig} from './config';
-import {getAllKaras} from '../_services/kara';
+import {getAllKaras} from '../services/kara';
 import { asyncReadDir, asyncUnlink, asyncExists } from './files';
 import {resolve} from 'path';
 import { createThumbnail } from './ffmpeg';

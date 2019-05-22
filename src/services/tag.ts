@@ -1,8 +1,8 @@
 import langs from 'langs';
-import {getConfig} from '../_utils/config';
+import {getConfig} from '../utils/config';
 import {resolve} from 'path';
 import {getLanguage} from 'iso-countries-languages';
-import {selectTags} from '../_dao/tag';
+import {selectTags} from '../dao/tag';
 
 export async function getTags(lang, filter, type, from = 0, size = 999999999999999) {
 	let tags = await selectTags(filter, type, +from, +size);

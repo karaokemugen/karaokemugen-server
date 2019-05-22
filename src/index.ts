@@ -1,23 +1,22 @@
-import {getConfig, initConfig, setConfig} from './_utils/config';
+import {getConfig, initConfig, setConfig} from './utils/config';
 import logger from 'winston';
 import {resolve, join} from 'path';
 import {initFrontend} from './frontend';
 import cli from 'commander';
 import detect from 'detect-port';
-import {initDB} from './_dao/database';
-import {initMailer} from './_utils/mailer';
-import {initShortener} from './_services/shortener';
-import {initFavorites} from './_services/favorites';
-import {createUser} from './_services/user';
-import {run} from './_dao/generation';
+import {initDB} from './dao/database';
+import {initMailer} from './utils/mailer';
+import {initShortener} from './services/shortener';
+import {initFavorites} from './services/favorites';
+import {createUser} from './services/user';
+import {run} from './dao/generation';
 import sudoBlock from 'sudo-block';
-import {asyncCheckOrMkdir} from './_utils/files';
-import KMExplorer from './_services/kmExplorer';
+import {asyncCheckOrMkdir} from './utils/files';
+import {kmExplorerStart} from './services/kmExplorer';
 import findRemoveSync from 'find-remove';
 
 const pjson = require('../package.json');
 const appPath = join(__dirname,'../');
-let kmx;
 
 process.on('uncaughtException', (exception) => {
 	console.log(exception);
@@ -33,7 +32,6 @@ process.once('SIGINT', () => {
 });
 
 function exit(rc: number) {
-	if (kmx) kmx.stop();
 	process.exit(rc || 0);
 };
 
@@ -85,12 +83,11 @@ async function main() {
 	const inits = [];
 
 
-	kmx = new KMExplorer({
+	kmExplorerStart({
 		api: conf.KaraExplorer.Api,
 		port: conf.KaraExplorer.Port,
 		path: conf.KaraExplorer.Path,
 	});
-	kmx.start();
 
 	// Clean temp periodically of files older than two hours
 	setInterval(findRemoveSync.bind(this, resolve(conf.appPath, conf.Path.Temp), {age: {seconds: 7200}}), 2 * 60 * 60 * 1000);

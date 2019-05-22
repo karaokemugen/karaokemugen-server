@@ -1,4 +1,4 @@
-import {publishInstance, getInstance} from '../_services/shortener';
+import {publishInstance, getInstance} from '../services/shortener';
 
 export default function ShortenerController(router) {
 	router.route('/shortener')

@@ -1,6 +1,6 @@
 import {uuidRegexp, subFileRegexp, karaTypesArray, mediaFileRegexp, karaTypes} from './constants';
-import {check, initValidators} from '../_utils/validators';
-import {countKaras, selectAllKaras, selectAllYears, selectBaseStats} from '../_dao/kara';
+import {check, initValidators} from '../utils/validators';
+import {countKaras, selectAllKaras, selectAllYears, selectBaseStats} from '../dao/kara';
 import timestamp from 'unix-timestamp';
 import uuidV4 from 'uuid/v4';
 

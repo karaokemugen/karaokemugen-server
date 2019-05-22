@@ -1,8 +1,8 @@
 import {getLang} from './lang';
-import {getBaseStats, getAllKaras, getAllYears} from '../_services/kara';
-import {getTags} from '../_services/tag';
-import {getAllSeries} from '../_services/series';
-import {getSettings} from '../_utils/settings';
+import {getBaseStats, getAllKaras, getAllYears} from '../services/kara';
+import {getTags} from '../services/tag';
+import {getAllSeries} from '../services/series';
+import {getSettings} from '../utils/settings';
 
 export default function KSController(router) {
 	router.route('/karas/lastUpdate')

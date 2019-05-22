@@ -1,6 +1,6 @@
-import {cleanupInstances, insertInstance, updateInstance, selectInstance} from '../_dao/shortener';
+import {cleanupInstances, insertInstance, updateInstance, selectInstance} from '../dao/shortener';
 import logger from 'winston';
-import {getConfig} from '../_utils/config';
+import {getConfig} from '../utils/config';
 
 export async function publishInstance(ip, data) {
 	const currentDate = new Date();

@@ -1,6 +1,6 @@
 import { uuidRegexp } from './constants';
 import testJSON from 'is-valid-json';
-import { check } from '../_utils/validators';
+import { check } from '../utils/validators';
 import {
 	upsertInstance,
 	replaceFavorites,
@@ -8,7 +8,7 @@ import {
 	upsertRequests,
 	getFavoritesStats as dbGetFavoritesStats,
 	getRequestedStats as dbGetRequestedStats,
-	getPlayedStats as dbGetPlayedStats } from '../_dao/stats';
+	getPlayedStats as dbGetPlayedStats } from '../dao/stats';
 import logger from 'winston';
 
 const payloadConstraints = {

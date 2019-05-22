@@ -1,4 +1,4 @@
-import {getConfig} from '../_utils/config';
+import {getConfig} from '../utils/config';
 
 export const getLang = (req, _, next) => {
 	const langs = req.get('accept-language');

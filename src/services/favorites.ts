@@ -1,6 +1,6 @@
-import { selectAllFavorites, deleteFavorite, selectFavorites, insertFavorite } from '../_dao/favorites';
-import { getConfig } from '../_utils/config';
-import { replaceFavorites } from '../_dao/stats';
+import { selectAllFavorites, deleteFavorite, selectFavorites, insertFavorite } from '../dao/favorites';
+import { getConfig } from '../utils/config';
+import { replaceFavorites } from '../dao/stats';
 
 export async function getFavorites(token) {
 	return await selectFavorites(token.username);
