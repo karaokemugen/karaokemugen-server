@@ -5,6 +5,7 @@ import {getConfig} from '../utils/config';
 import {asyncReadDir, asyncExists, asyncUnlink, asyncMove, detectFileType} from '../utils/files';
 import uuidV4 from 'uuid/v4';
 import {resolve} from 'path';
+import {hasLang} from 'langs';
 
 export async function initUsers() {
 	cleanupAvatars();
@@ -119,6 +120,11 @@ export async function editUser(username,user,avatar,token) {
 		if (token.username !== currentUser.login && token.role !== 'admin') throw 'Only admins can edit another user';
 		if (user.type !== currentUser.type && token.role !== 'admin') throw 'Only admins can change a user\'s type';
 		// Check if login already exists.
+		if (!user.series_lang_mode) user.series_lang_mode = -1;
+		if (user.series_lang_mode < -1 || user.series_lang_mode > 4) throw 'Invalid series_lang_mode';
+		if (user.main_series_lang && !hasLang('2B', user.main_series_lang)) throw `main_series_lang is not a valid ISO639-2B code (received ${user.main_series_lang})`;
+		if (user.fallback_series_lang && !hasLang('2B', user.fallback_series_lang)) throw `fallback_series_lang is not a valid ISO639-2B code (received ${user.fallback_series_lang})`;
+
 		if (currentUser.nickname !== user.nickname && await await selectUser('nickname', user.nickname)) throw 'Nickname already exists';
 		if (user.password) {
 			user.password = hashPassword(user.password);

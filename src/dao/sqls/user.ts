@@ -22,7 +22,10 @@ SELECT
 	avatar_file,
 	bio,
 	url,
-	email
+	email,
+	series_lang_mode,
+	main_series_lang,
+	fallback_series_lang
 FROM users
 `;
 
@@ -42,6 +45,9 @@ UPDATE users SET
 	url = $3,
 	email = $4,
 	avatar_file = $5,
-	type = $6
-WhERE pk_login = $7
+	type = $6,
+	series_lang_mode = $7,
+	main_series_lang = $8,
+	fallback_series_lang = $9
+WhERE pk_login = $10
 `;
