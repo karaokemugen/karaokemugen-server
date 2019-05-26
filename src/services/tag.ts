@@ -27,7 +27,7 @@ export function translateTags(taglist,lang) {
 	// Instanciate a translation object for our needs with the correct language.
 	const i18n = require('i18n'); // Needed for its own translation instance
 	i18n.configure({
-		directory: resolve(__dirname,'../_locales'),
+		directory: resolve(__dirname,'../locales'),
 	});
 	i18n.setLocale(lang);
 	// We need to read the detected locale in ISO639-1

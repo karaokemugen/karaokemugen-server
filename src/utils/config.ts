@@ -59,7 +59,7 @@ export async function initConfig(appPath, argv) {
 
 function configureLocale() {
 	i18n.configure({
-		directory: resolve(__dirname, '../_locales'),
+		directory: resolve(__dirname, '../locales'),
 		defaultLocale: 'en',
 		cookie: 'locale',
 		register: global
