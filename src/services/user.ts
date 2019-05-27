@@ -5,7 +5,7 @@ import {getConfig} from '../utils/config';
 import {asyncReadDir, asyncExists, asyncUnlink, asyncMove, detectFileType} from '../utils/files';
 import uuidV4 from 'uuid/v4';
 import {resolve} from 'path';
-import {hasLang} from 'langs';
+import {has as hasLang} from 'langs';
 
 export async function initUsers() {
 	cleanupAvatars();
