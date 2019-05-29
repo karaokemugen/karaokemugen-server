@@ -33,7 +33,7 @@ export function hashPassword(password) {
 }
 
 export async function findUserByName(username, opts: any = {}) {
-	const user = await selectUser('login', username);
+	const user = await selectUser('pk_login', username);
 	if (!user) return false;
 	if (opts.public) {
 		delete user.password;
