@@ -192,6 +192,7 @@ function containsVideoGameSupportTag(tags) {
 			|| tags.includes('TAG_PSP')
 			|| tags.includes('TAG_XBOX360')
 			|| tags.includes('TAG_GAMECUBE')
+			|| tags.includes('TAG_N64')
 			|| tags.includes('TAG_DS')
 			|| tags.includes('TAG_3DS')
 			|| tags.includes('TAG_PC')

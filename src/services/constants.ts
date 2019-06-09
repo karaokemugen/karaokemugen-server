@@ -97,6 +97,7 @@ export const tags = [
 	'WII',
 	'CREDITLESS',
 	'SWITCH',
+	'N64',
 	'DRAMA',
 	'DUB',
 	'COVER'
