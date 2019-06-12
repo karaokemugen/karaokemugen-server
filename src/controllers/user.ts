@@ -1,14 +1,16 @@
 import {removeUser, editUser, createUser, findUserByName, getAllUsers} from '../services/user';
-import {check, unescape} from '../utils/validators';
+import {check, unescape} from '../lib/utils/validators';
 import multer from 'multer';
-import {getConfig} from '../utils/config';
+import {getConfig} from '../lib/utils/config';
 import {resolve} from 'path';
 import { requireAuth, requireValidUser } from '../utils/passport_manager';
+import { Router } from 'express';
+import { getState } from '../utils/state';
 
-export default function userController(router) {
+export default function userController(router: Router) {
 	const conf = getConfig();
 	// Middleware for playlist and files import
-	let upload = multer({ dest: resolve(conf.appPath,conf.Path.Temp)});
+	let upload = multer({ dest: resolve(getState().appPath,conf.System.Path.Temp)});
 
 	router.route('/users')
 		.get(async (_, res) => {
@@ -19,9 +21,8 @@ export default function userController(router) {
 				res.status(500).json(err);
 			}
 		})
-		.delete(requireAuth, requireValidUser, async (req, res) => {
+		.delete(requireAuth, requireValidUser, async (req: any, res) => {
 			try {
-				console.log(res.authToken);
 				await removeUser(req.authToken.username);
 				res.send('User deleted');
 			} catch(err) {
@@ -37,7 +38,6 @@ export default function userController(router) {
 				res.status(500).json(err.code);
 			}
 		});
-
 	router.route('/users/:user')
 		.get(async (req, res) => {
 			try {
@@ -47,7 +47,7 @@ export default function userController(router) {
 				res.status(500).json(err);
 			}
 		})
-		.put(upload.single('avatarfile'), requireAuth, requireValidUser,  async (req, res) => {
+		.put(upload.single('avatarfile'), requireAuth, requireValidUser,  async (req: any, res) => {
 			const validationErrors = check(req.body, {
 				nickname: {presence: true}
 			});
@@ -59,7 +59,7 @@ export default function userController(router) {
 				if (req.body.nickname) req.body.nickname = unescape(req.body.nickname.trim());
 				if (req.body.type) req.body.type = +req.body.type;
 				//Now we add user
-				let avatar;
+				let avatar: any;
 				if (req.file) avatar = req.file;
 				try {
 					await editUser(req.params.user,req.body,avatar,req.authToken);

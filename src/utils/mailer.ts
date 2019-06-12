@@ -1,9 +1,10 @@
-import nodemailer from 'nodemailer';
-import {getConfig} from './config';
-import logger from 'winston';
+import nodemailer, { Transporter } from 'nodemailer';
+import {getConfig} from '../lib/utils/config';
+import logger from '../lib/utils/logger';
+import { MailOptions } from 'nodemailer/lib/smtp-transport';
 
-let transporter;
-let mailOptions;
+let transporter: Transporter;
+let mailOptions: MailOptions;
 
 export function initMailer() {
 	const conf = getConfig().Mail;
@@ -18,8 +19,8 @@ export function initMailer() {
 	});
 
 	mailOptions = {
-		from: `"${conf.From}" <${conf.FromMail}>`,
-		to: `"${conf.To}" <${conf.ToMail}>`
+		from: conf.From,
+		to: conf.To
 	};
 
 }
@@ -28,7 +29,7 @@ export function sendMail(subject: string, message: string) {
 	transporter.sendMail({...mailOptions,
 		subject: subject,
 		text: message
-	}, (error: string, info: any) => {
+	}, (error: Error, info: any) => {
 		if (error) {
 			logger.debug(`[Mailer] Error sending mail : ${error}`);
 			throw error;

@@ -1,7 +1,7 @@
-import {getConfig} from '../utils/config';
+import { getState } from '../utils/state';
 
-export const getLang = (req, _, next) => {
+export const getLang = (req: any, _, next: any) => {
 	const langs = req.get('accept-language');
-	langs ?	req.lang = langs.split(',')[0].substring(0,2) : req.lang = getConfig().locale;
+	langs ?	req.lang = langs.split(',')[0].substring(0,2) : req.lang = getState().EngineDefaultLocale;
 	next();
 };

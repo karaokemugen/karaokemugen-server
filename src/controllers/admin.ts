@@ -1,9 +1,10 @@
 import {requireAuth, requireValidUser, requireAdmin} from '../utils/passport_manager';
-import { run as generate } from '../dao/generation';
+import { generateDatabase } from '../lib/services/generation';
+import { Router } from 'express';
 
-export default async function adminController(router) {
+export default async function adminController(router: Router) {
 	router.post('/generate', requireAuth, requireValidUser, requireAdmin, async (_, res) => {
-		generate();
+		generateDatabase();
 		res.status(200).send('Generation triggered');
 	});
 

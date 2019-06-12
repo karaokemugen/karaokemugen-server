@@ -1,10 +1,11 @@
-Path:
-  Karas: app/data/karas
-  Lyrics: app/data/lyrics
-  Medias: app/data/medias
-  Series: app/data/series
-  Bin:
-    ffmpeg: app/bin/ffmpeg
+System:
+  Path:
+    Karas: app/data/karas
+    Lyrics: app/data/lyrics
+    Medias: app/data/medias
+    Series: app/data/series
+    Bin:
+      ffmpeg: app/bin/ffmpeg
 Frontend:
   Host: kara.moe
   Port: 1350

@@ -1,28 +1,44 @@
+import { bools } from "../lib/utils/constants";
+
 // Karaoke Mugen default configuration file
 
 // this file is overwritten during updates, editing is ill-advised .
 // you can change the default settings by using config.ini to bypass the default value .
 export const defaults = {
-	JwtSecret: 'Change me',
-	ServerID: 'Change me',
-	Database: {
-		Host: 'localhost',
-		User: 'karaokemugen_server',
-		Pass: '',
-		Base: 'karaokemugen_server'
+	App: {
+		JwtSecret: 'Change me',
+		InstanceID: 'Change me',
 	},
-	Path: {
-		Karas: 'app/data/karas',
-		Lyrics: 'app/data/lyrics',
-		Medias: 'app/data/medias',
-		Series: 'app/data/series',
-		Temp: 'app/temp',
-		Inbox: 'app/inbox',
-		Avatars: 'app/avatars',
-		Previews: 'app/previews',
-		KaraokeMugenApp: 'karaokemugen-app/',
-		Bin: {
-			ffmpeg: '/usr/bin/ffmpeg'
+	Database: {
+		'sql-file': true,
+		defaultEnv: 'prod',
+		prod: {
+			driver: 'pg',
+			user: 'karaokemugen_server',
+			password: 'musubi',
+			host: 'localhost',
+			port: 5432,
+			database: 'karaokemugen_server',
+			schema: 'public'
+		}
+	},
+	System: {
+		Binaries: {
+			ffmpeg: {
+				Linux: '/usr/bin/ffmpeg',
+				Windows: 'ffmpeg.exe',
+				OSX: 'ffmpeg'
+			}
+		},
+		Path: {
+			Karas: ['app/data/karas'],
+			Lyrics: ['app/data/lyrics'],
+			Medias: ['app/data/medias'],
+			Series: ['app/data/series'],
+			Temp: 'app/temp',
+			Inbox: 'app/inbox',
+			Avatars: 'app/avatars',
+			Previews: 'app/previews',
 		}
 	},
 	Mail: {
@@ -59,15 +75,15 @@ export const defaults = {
 	},
 	Frontend: {
 		Port: 1350,
-		Host: 'localhost'
+		Host: 'localhost',
+		SeriesLanguageMode: 0
 	},
 	KaraExplorer: {
+		Api: 'http://localhost',
 		Port: 1351,
 		Path: '/base'
 	}
 };
-
-const bools = [true, false];
 
 export const configConstraints = {
 	JwtSecret: { presence: {allowEmpty: false}},
@@ -75,18 +91,17 @@ export const configConstraints = {
 	'Import.Mail.Enabled': { inclusion: bools },
 	'Import.Gitlab.Enabled': { inclusion: bools },
 	'Import.Gitlab.Labels': { arrayValidator: true },
-	'Database.User': { presence: {allowEmpty: false}},
-	'Database.Pass': { presence: true },
-	'Database.Host': { presence: {allowEmpty: false}},
-	'Database.Base': { presence: {allowEmpty: false}},
-	'Path.Karas': { presence: {allowEmpty: false}},
-	'Path.Lyrics': { presence: {allowEmpty: false}},
-	'Path.Medias': { presence: {allowEmpty: false}},
-	'Path.Series': { presence: {allowEmpty: false}},
-	'Path.Temp': { presence: {allowEmpty: false}},
-	'Path.Inbox': { presence: {allowEmpty: false}},
-	'Path.KaraokeMugenApp': { presence: {allowEmpty: false}},
-	'Path.Bin.ffmpeg': { presence: {allowEmpty: false}},
+	'Database.prod.user': { presence: {allowEmpty: false}},
+	'Database.prod.password': { presence: true },
+	'Database.prod.host': { presence: {allowEmpty: false}},
+	'Database.prod.database': { presence: {allowEmpty: false}},
+	'System.Path.Karas': { arrayValidator: true },
+	'System.Path.Lyrics': { arrayValidator: true },
+	'System.Path.Medias': { arrayValidator: true },
+	'System.Path.Series': { arrayValidator: true },
+	'System.Path.Temp': { presence: {allowEmpty: false}},
+	'System.Path.Inbox': { presence: {allowEmpty: false}},
+	'System.Binaries.ffmpeg': { presence: {allowEmpty: false}},
 	'Shortener.ExpireTimeDays': { numericality: { greaterThan: 0 }},
 	'Mail.Enabled': { inclusion: bools },
 	'Mail.Host': { presence: true },

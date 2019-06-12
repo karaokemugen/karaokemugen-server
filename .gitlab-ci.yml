@@ -3,6 +3,9 @@ image: takkatakka/lftp
 stages:
   - deploy
 
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
 before_script:
   - mkdir ~/.ssh
   - echo "$SSH_KEY" > ~/.ssh/id_rsa

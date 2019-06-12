@@ -1,4 +1,17 @@
-import {selectAllSeries, countSeries} from '../dao/series';
+import {selectAllSeries, countSeries, selectSerieByName} from '../dao/series';
+import { Series } from '../lib/types/series';
+import { writeSeriesFile } from '../lib/dao/seriesfile';
+import { resolve } from 'path';
+import { getState } from '../utils/state';
+import { getConfig } from '../lib/utils/config';
+
+export async function getOrAddSerieID(seriesObj: Series) {
+	const serie = await selectSerieByName(seriesObj.name);
+	if (serie) return serie.sid;
+	// If no serie found, create it and return the sid we generated
+	await writeSeriesFile(seriesObj, resolve(getState().appPath, getConfig().System.Path.Inbox, 'series/'));
+	return seriesObj.sid;
+}
 
 export async function getAllSeries(filter, lang, from = 0, size = 9999999999) {
 	const count = await countSeries(filter);

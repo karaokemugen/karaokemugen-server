@@ -1,4 +1,4 @@
-import logger from 'winston';
+import logger from './lib/utils/logger';
 import express, { Response } from 'express';
 import {resolve} from 'path';
 import bodyParser from 'body-parser';
@@ -12,19 +12,15 @@ import shortenerController from './controllers/shortener';
 import userController from './controllers/user';
 import favoritesController from './controllers/favorites';
 import {configurePassport} from './utils/passport_manager';
-import {getConfig} from './utils/config';
+import {getConfig} from './lib/utils/config';
 import range from 'express-range';
 import vhost from 'vhost';
-import {getInstanceRoom} from './dao/proxy';
+//import {getInstanceRoom} from './dao/proxy'; For KM instances hosting
 import proxy from 'express-http-proxy';
 import {createServer} from 'http';
 import helmet from 'helmet';
-
-let ws: any;
-
-export function getWS() {
-	return ws;
-}
+import { getState } from './utils/state';
+import { initWS } from './lib/utils/ws';
 
 /**
  * Starting express which will serve our app.
@@ -33,6 +29,7 @@ export function getWS() {
 export function initFrontend(listenPort: number) {
 
 	const conf = getConfig();
+	const state = getState();
 	const app = express();
 	const mainApp = express();
 
@@ -76,17 +73,17 @@ export function initFrontend(listenPort: number) {
 		res.redirect('/base'+req.url);
 		return;
 	});
-	mainApp.use('/import',  express.static(resolve(conf.appPath, 'kmimport/build')));
+	mainApp.use('/import',  express.static(resolve(state.appPath, 'kmimport/build')));
 	mainApp.get('/import/*', (_, res) => {
-		res.sendFile(resolve(conf.appPath, 'kmimport/build/index.html'));
+		res.sendFile(resolve(state.appPath, 'kmimport/build/index.html'));
 	});
 
-	mainApp.use('/downloads/karas', express.static(resolve(conf.appPath, conf.Path.Karas)));
-	mainApp.use('/downloads/lyrics', express.static(resolve(conf.appPath, conf.Path.Lyrics)));
-	mainApp.use('/downloads/medias', express.static(resolve(conf.appPath, conf.Path.Medias)));
-	mainApp.use('/downloads/series', express.static(resolve(conf.appPath, conf.Path.Series)));
-	mainApp.use('/previews', express.static(resolve(conf.appPath, conf.Path.Previews)));
-	mainApp.use('/avatars', express.static(resolve(conf.appPath, conf.Path.Avatars)));
+	mainApp.use('/downloads/karas', express.static(resolve(state.appPath, conf.System.Path.Karas[0])));
+	mainApp.use('/downloads/lyrics', express.static(resolve(state.appPath, conf.System.Path.Lyrics[0])));
+	mainApp.use('/downloads/medias', express.static(resolve(state.appPath, conf.System.Path.Medias[0])));
+	mainApp.use('/downloads/series', express.static(resolve(state.appPath, conf.System.Path.Series[0])));
+	mainApp.use('/previews', express.static(resolve(state.appPath, conf.System.Path.Previews)));
+	mainApp.use('/avatars', express.static(resolve(state.appPath, conf.System.Path.Avatars)));
 	// API router
 	mainApp.use('/api', api());
 	mainApp.get('/', (_, res) => {
@@ -101,7 +98,7 @@ export function initFrontend(listenPort: number) {
 
 	const port = listenPort || 5000;
 	const server = createServer(app);
-	ws = require('socket.io').listen(server);
+	initWS(server);
 	server.listen(port, () => {
 		logger.info(`[App] App listening on ${port}`);
 	});
@@ -127,14 +124,18 @@ function api() {
 	return apiRouter;
 }
 
-function getKMRoom(req: any, res: Response, next: any) {
-    const instance = getInstanceRoom(req.vhost[0]);
+function getKMRoom(_req: any, _res: Response, next: any) {
+	/* This code is disabled until we get to host our own KM Apps on this server code
+
+	const instance = getInstanceRoom(req.vhost[0]);
     if (!instance) {
         res.status(404).send('No room exists by this name');
     } else {
         req.KMAppPort = instance.port;
         next();
-    }
+	}
+	*/
+	next();
 }
 
 
