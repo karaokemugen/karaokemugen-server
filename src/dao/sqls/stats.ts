@@ -34,12 +34,12 @@ INSERT INTO instance(
 `;
 
 export const deleteFavorites = `
-DELETE FROM favorites
+DELETE FROM stats_favorites
 WHERE fk_iid = $1;
 `;
 
 export const insertFavorite = `
-INSERT INTO favorites(fk_iid, fk_kid)
+INSERT INTO stats_favorites(fk_iid, fk_kid)
 VALUES(
 	$1,
 	$2
@@ -47,7 +47,7 @@ VALUES(
 `;
 
 export const insertViewcount = `
-INSERT INTO played(fk_iid, fk_kid, session_started_at, played_at)
+INSERT INTO stats_played(fk_iid, fk_kid, session_started_at, played_at)
 VALUES(
 	$1,
 	$2,
@@ -58,7 +58,7 @@ ON CONFLICT (fk_iid, fk_kid, session_started_at, played_at) DO NOTHING;
 `;
 
 export const insertRequested = `
-INSERT INTO requested(fk_iid, fk_kid, session_started_at, requested_at)
+INSERT INTO stats_requested(fk_iid, fk_kid, session_started_at, requested_at)
 VALUES(
 	$1,
 	$2,
@@ -69,7 +69,7 @@ ON CONFLICT (fk_iid, fk_kid, session_started_at, requested_at) DO NOTHING;
 `;
 
 export const getPlayedStats = (filterClauses, lang, limitClause, offsetClause) => `
-WITH p AS (SELECT fk_kid, COUNT(*) AS nb FROM played GROUP BY fk_kid)
+WITH p AS (SELECT fk_kid, COUNT(*) AS nb FROM stats_played GROUP BY fk_kid)
 SELECT
   ak.kid AS kid,
   ak.title AS title,
@@ -109,7 +109,7 @@ ${offsetClause}
 `;
 
 export const getRequestedStats = (filterClauses, lang, limitClause, offsetClause) => `
-WITH rq AS (SELECT fk_kid, COUNT(*) AS nb FROM requested GROUP BY fk_kid)
+WITH rq AS (SELECT fk_kid, COUNT(*) AS nb FROM stats_requested GROUP BY fk_kid)
 SELECT
   ak.kid AS kid,
   ak.title AS title,
@@ -149,7 +149,7 @@ ${offsetClause}
 `;
 
 export const getFavoritesStats = (filterClauses, lang, limitClause, offsetClause) => `
-WITH fav AS (SELECT fk_kid, COUNT(*) AS nb FROM favorites GROUP BY fk_kid)
+WITH fav AS (SELECT fk_kid, COUNT(*) AS nb FROM stats_favorites GROUP BY fk_kid)
 SELECT
   ak.kid AS kid,
   ak.title AS title,
