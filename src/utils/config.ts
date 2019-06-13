@@ -2,7 +2,7 @@ import {resolve} from 'path';
 import {asyncRequired} from '../lib/utils/files';
 import {exit} from '../';
 import logger from 'winston';
-import { getState } from './state';
+import { getState, setState } from './state';
 import {Config} from '../types/config';
 import {BinariesConfig} from '../types/config';
 import { setConfigConstraints, configureLocale, loadConfigFiles, getConfig, configureIDs } from '../lib/utils/config';
@@ -10,7 +10,7 @@ import { configConstraints, defaults } from './default_settings';
 import { configureLogger } from '../lib/utils/logger';
 import uuidV4 from 'uuid/v4';
 
-export async function checkBinaries(config: Config): Promise<BinariesConfig> {
+async function checkBinaries(config: Config): Promise<BinariesConfig> {
 
 	const binariesPath = configuredBinariesForSystem(config);
 	let requiredBinariesChecks = [];
@@ -63,8 +63,10 @@ export async function initConfig(argv: any) {
 	await configureLocale();
 	await loadConfigFiles(appPath, argv.config, defaults);
 	const conf = getConfig();
+	logger.debug('[Launcher] Checking if binaries are available');
+	setState({binPath: await checkBinaries(conf)});
 	if (conf.App.JwtSecret === 'Change me' || conf.App.InstanceID === 'Change me') {
-		console.log('Your InstanceID and/or JwtSecret are not set.');
+		console.log('ERROR : Your InstanceID and/or JwtSecret are not set.');
 		console.log('You MUST set a JwtSecret other than "Change me"');
 		console.log('You MUST set an Instance ID as a UUID v4. Here is a generated one for you : ' + uuidV4());
 		console.log('Set them in your config.yml file, see the sample provided for help.');

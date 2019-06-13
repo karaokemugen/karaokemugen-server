@@ -1,11 +1,21 @@
+App:
+  InstanceID: Change me
+  JwtSecret: Change me
 System:
   Path:
-    Karas: app/data/karas
-    Lyrics: app/data/lyrics
-    Medias: app/data/medias
-    Series: app/data/series
-    Bin:
-      ffmpeg: app/bin/ffmpeg
+    Karas:
+      - app/data/karaokes
+    Lyrics:
+      - app/data/lyrics
+    Medias:
+      - app/data/medias
+    Series:
+      - app/data/series
+  Binaries:
+    ffmpeg:
+      Linux: /usr/bin/ffmpeg
+      Windows: ffmpeg.exe
+      OSX: ffmpeg
 Frontend:
   Host: kara.moe
   Port: 1350
