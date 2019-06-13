@@ -9,6 +9,10 @@ ALTER TABLE kara ALTER COLUMN fk_repo_name SET NOT NULL;
 ALTER TABLE favorites RENAME TO stats_favorites;
 ALTER TABLE played RENAME TO stats_played;
 ALTER TABLE requested RENAME TO stats_requested;
+CREATE TABLE repo (
+	pk_repo_name CHARACTER VARYING NOT NULL PRIMARY KEY,
+	last_downloaded_at TIMESTAMPTZ
+);
 CREATE VIEW stats AS
  SELECT ( SELECT count(tag.pk_id_tag) AS count
            FROM tag

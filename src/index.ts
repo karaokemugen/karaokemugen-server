@@ -15,6 +15,7 @@ import sudoBlock from 'sudo-block';
 import {asyncCheckOrMkdir} from './lib/utils/files';
 import {kmExplorerStart} from './services/kmExplorer';
 import findRemoveSync from 'find-remove';
+import { setState } from './utils/state';
 
 const pjson = require('../package.json');
 const appPath = join(__dirname,'../');
@@ -46,6 +47,7 @@ main().catch(err => {
 async function main() {
 	sudoBlock('You should not run Karaoke Mugen Server with root permissions, it\'s dangerous.');
 	const argv = parseArgs();
+	setState({appPath: appPath});
 	await initConfig(argv);
 	const conf = getConfig();
 	console.log('--------------------------------------------------------------------');

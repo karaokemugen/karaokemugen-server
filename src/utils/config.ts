@@ -5,9 +5,10 @@ import logger from 'winston';
 import { getState } from './state';
 import {Config} from '../types/config';
 import {BinariesConfig} from '../types/config';
-import { setConfigConstraints, configureLocale, loadConfigFiles, getConfig } from '../lib/utils/config';
+import { setConfigConstraints, configureLocale, loadConfigFiles, getConfig, configureIDs } from '../lib/utils/config';
 import { configConstraints, defaults } from './default_settings';
 import { configureLogger } from '../lib/utils/logger';
+import uuidV4 from 'uuid/v4';
 
 export async function checkBinaries(config: Config): Promise<BinariesConfig> {
 
@@ -61,5 +62,15 @@ export async function initConfig(argv: any) {
 	await configureLogger(appPath, !!argv.debug, true);
 	await configureLocale();
 	await loadConfigFiles(appPath, argv.config, defaults);
+	const conf = getConfig();
+	if (conf.App.JwtSecret === 'Change me' || conf.App.InstanceID === 'Change me') {
+		console.log('Your InstanceID and/or JwtSecret are not set.');
+		console.log('You MUST set a JwtSecret other than "Change me"');
+		console.log('You MUST set an Instance ID as a UUID v4. Here is a generated one for you : ' + uuidV4());
+		console.log('Set them in your config.yml file, see the sample provided for help.');
+		console.log('Aborting...');
+		exit(1);
+	}
+	await configureIDs();
 	return getConfig();
 }

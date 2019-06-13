@@ -31,7 +31,7 @@ export const defaults = {
 			}
 		},
 		Path: {
-			Karas: ['app/data/karas'],
+			Karas: ['app/data/karaokes'],
 			Lyrics: ['app/data/lyrics'],
 			Medias: ['app/data/medias'],
 			Series: ['app/data/series'],
@@ -86,8 +86,8 @@ export const defaults = {
 };
 
 export const configConstraints = {
-	JwtSecret: { presence: {allowEmpty: false}},
-	ServerID: { presence: {allowEmpty: false}},
+	'App.JwtSecret': { presence: {allowEmpty: false}},
+	'App.InstanceID': { presence: {allowEmpty: false}},
 	'Import.Mail.Enabled': { inclusion: bools },
 	'Import.Gitlab.Enabled': { inclusion: bools },
 	'Import.Gitlab.Labels': { arrayValidator: true },
