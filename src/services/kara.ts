@@ -20,7 +20,7 @@ export async function getAllYears() {
 	return await selectAllYears();
 }
 
-export async function getAllKaras(filter?: string, lang?: string, from = 0, size = 0, mode?: string, modeValue?: string) {
+export async function getAllKaras(filter?: string, lang?: string, from = 0, size = 0, mode?: string, modeValue?: string): Promise<KaraList> {
 	try {
 		const [length, pl] = await Promise.all([
 			countKaras(filter, mode, modeValue),
