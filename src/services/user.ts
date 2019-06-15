@@ -71,7 +71,7 @@ export async function createUser(user, opts: any = {}) {
 	if (!user.password) throw { code: 'USER_EMPTY_PASSWORD'};
 	if (!user.login) throw { code: 'USER_EMPTY_LOGIN'};
 	// Check if login or nickname already exists.
-	if (await selectUser('login',user.login) || await selectUser('nickname', user.login)) {
+	if (await selectUser('pk_login',user.login) || await selectUser('nickname', user.login)) {
 		logger.error(`[User] User/nickname ${user.login} already exists, cannot create it`);
 		throw { code: 'USER_ALREADY_EXISTS', data: {username: user.login}};
 	}
