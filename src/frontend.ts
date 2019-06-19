@@ -82,6 +82,7 @@ export function initFrontend(listenPort: number) {
 	});
 
 	mainApp.use('/downloads/karas', express.static(resolve(conf.appPath, conf.Path.Karas)));
+	mainApp.use('/downloads/karaokes', express.static(resolve(conf.appPath, conf.Path.Karas, '../karaokes/')));
 	mainApp.use('/downloads/lyrics', express.static(resolve(conf.appPath, conf.Path.Lyrics)));
 	mainApp.use('/downloads/medias', express.static(resolve(conf.appPath, conf.Path.Medias)));
 	mainApp.use('/downloads/series', express.static(resolve(conf.appPath, conf.Path.Series)));
