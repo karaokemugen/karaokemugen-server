@@ -23,48 +23,46 @@ KaraExplorer:
   Api: http://localhost:1350
   Port: 1351
   Path: /base
-Import:
-  Template:
-    Title: '[Inbox] $kara'
-    Description: >
-      Un nouveau karaoké a été envoyé dans l'inbox de l'équipe Karaoké Mugen. Merci de l'intégrer dès que possible s'il répond aux critères de qualité exigés.\n
-      \n
-      Les fichiers (.kara, vidéo, .ass et série si nécessaire) sont présents à l'emplacement suivant de votre compte FTP : kmpublic/inbox\n
-      \n
-      # Données du karaoké\n
-      \n
-      **Fichier** : $file\n
-      \n
-      **Auteur(s)** : $author\n
-      \n
-      **Titre** : $title\n
-      \n
-      **Série** : $series\n
-      \n
-      **Type** : $type$order\n
-      \n
-      **Langue** : $lang\n
-      \n
-      **Année** : $year\n
-      \n
-      **Chanteur(s)** : $singer\n
-      \n
-      **Tag(s)** : $tags\n
-      \n
-      **Compositeur(s)** : $songwriter\n
-      \n
-      **Créateur(s)** : $creator\n
-      \n
-      **Groupe(s)** : $groups\n
-      \n
-      **Durée** : $duration\n
-  Mail:
-    Enabled: false
-    To: axel@teri-chan.net
-  Gitlab:
-    Enabled: true
-    AccessToken: xxx
-    URL: http://lab.shelter.moe
-    ProjectID: 1
-    Labels:
-      - à intégrer
+Gitlab:
+  Enabled: true
+  Token: xxx
+  Host: http://lab.shelter.moe
+  ProjectID: 1
+  IssueTemplate:
+    Suggestion:
+      Labels:
+        - à intégrer
+    Import:
+      Title: '[Inbox] $kara'
+      Description: >
+        Un nouveau karaoké a été envoyé dans l'inbox de l'équipe Karaoké Mugen. Merci de l'intégrer dès que possible s'il répond aux critères de qualité exigés.\n
+        \n
+        Les fichiers (.kara, vidéo, .ass et série si nécessaire) sont présents à l'emplacement suivant de votre compte FTP : kmpublic/inbox\n
+        \n
+        # Données du karaoké\n
+        \n
+        **Fichier** : $file\n
+        \n
+        **Auteur(s)** : $author\n
+        \n
+        **Titre** : $title\n
+        \n
+        **Série** : $series\n
+        \n
+        **Type** : $type$order\n
+        \n
+        **Langue** : $lang\n
+        \n
+        **Année** : $year\n
+        \n
+        **Chanteur(s)** : $singer\n
+        \n
+        **Tag(s)** : $tags\n
+        \n
+        **Compositeur(s)** : $songwriter\n
+        \n
+        **Créateur(s)** : $creator\n
+        \n
+        **Groupe(s)** : $groups\n
+        \n
+        **Durée** : $duration\n
