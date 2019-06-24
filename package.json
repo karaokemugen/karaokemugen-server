@@ -74,7 +74,6 @@
     "express-http-proxy": "^1.5.1",
     "express-range": "^2.0.1",
     "find-remove": "^1.2.2",
-    "got": "^9.6.0",
     "helmet": "^3.18.0",
     "i18n": "^0.8.3",
     "is-valid-json": "^1.0.2",
