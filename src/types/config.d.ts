@@ -13,35 +13,16 @@ export interface Config {
 		Port: number,
 		Path: string
 	},
-	Mail: {
-		Enabled: boolean,
-		Host: string,
-		Port: number,
-		Secure: boolean,
-		Auth: {
-			User: string,
-			Password: string,
-		},
-		From: string,
-		To: string,
-	},
-	Import: {
-		Template: {
-			Title: string,
-			Description: string
-		},
-		Mail: {
-			Enabled: boolean,
-			To: string,
-		},
-		Gitlab: {
-			Enabled: boolean,
-			AccessToken: string,
-			URL: string,
-			ProjectID: number,
-			Labels: string[]
+	Gitlab?: {
+		Enabled?: boolean,
+		Host?: string,
+		Token?: string,
+		ProjectID?: number,
+		IssueTemplate?: {
+			Import?: GitlabTemplate
+			Suggestion?: GitlabTemplate
 		}
-	},
+	}
 	Shortener: {
 		ExpireTimeDays: number
 	},
@@ -87,4 +68,10 @@ export interface Config {
 
 export interface BinariesConfig {
 	ffmpeg: string
+}
+
+interface GitlabTemplate {
+	Description?: string,
+	Title?: string,
+	Labels?: string[]
 }

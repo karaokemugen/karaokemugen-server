@@ -1,5 +1,3 @@
-import { bools } from "../lib/utils/constants";
-
 // Karaoke Mugen default configuration file
 
 // this file is overwritten during updates, editing is ill-advised .
@@ -41,35 +39,6 @@ export const defaults = {
 			Previews: 'app/previews',
 		}
 	},
-	Mail: {
-		Enabled: false,
-		Host: '',
-		Port: 25,
-		Secure: false,
-		Auth: {
-			User: '',
-			Password: '',
-		},
-		From: 'KMServer <karaokemugen@localhost.localdomain>',
-		To: 'Karaoke Mugen <karaokemugen@localhost.localdomain>',
-	},
-	Import: {
-		Template: {
-			Title: undefined,
-			Description: undefined
-		},
-		Mail: {
-			Enabled: false,
-			To: undefined,
-		},
-		Gitlab: {
-			Enabled: false,
-			AccessToken: undefined,
-			URL: undefined,
-			ProjectID: undefined,
-			Labels: []
-		}
-	},
 	Shortener: {
 		ExpireTimeDays: 1
 	},
@@ -88,9 +57,6 @@ export const defaults = {
 export const configConstraints = {
 	'App.JwtSecret': { presence: {allowEmpty: false}},
 	'App.InstanceID': { presence: {allowEmpty: false}},
-	'Import.Mail.Enabled': { inclusion: bools },
-	'Import.Gitlab.Enabled': { inclusion: bools },
-	'Import.Gitlab.Labels': { arrayValidator: true },
 	'Database.prod.user': { presence: {allowEmpty: false}},
 	'Database.prod.password': { presence: true },
 	'Database.prod.host': { presence: {allowEmpty: false}},
@@ -103,14 +69,6 @@ export const configConstraints = {
 	'System.Path.Inbox': { presence: {allowEmpty: false}},
 	'System.Binaries.ffmpeg': { presence: {allowEmpty: false}},
 	'Shortener.ExpireTimeDays': { numericality: { greaterThan: 0 }},
-	'Mail.Enabled': { inclusion: bools },
-	'Mail.Host': { presence: true },
-	'Mail.Port': { numericality: { greaterThan: 0 }},
-	'Mail.Secure': { inclusion: bools },
-	'Mail.Auth.User': { presence: { allowEmpty: true } },
-	'Mail.Auth.Password': { presence: { allowEmpty: true } },
-	'Mail.From': { presence: true },
-	'Mail.To': { presence: true },
 	'Frontend.Host': { presence: { allowEmpty: false } },
 	'Frontend.Port': { numericality: true}
 };

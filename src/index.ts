@@ -6,7 +6,6 @@ import {initFrontend} from './frontend';
 import cli from 'commander';
 import detect from 'detect-port';
 import {initDB} from './dao/database';
-import {initMailer} from './utils/mailer';
 import {initShortener} from './services/shortener';
 import {initFavorites} from './services/favorites';
 import {createUser} from './services/user';
@@ -15,7 +14,7 @@ import sudoBlock from 'sudo-block';
 import {asyncCheckOrMkdir} from './lib/utils/files';
 import {kmExplorerStart} from './services/kmExplorer';
 import findRemoveSync from 'find-remove';
-import { setState } from './utils/state';
+import { setState, getState } from './utils/state';
 
 const pjson = require('../package.json');
 const appPath = join(__dirname,'../');
@@ -68,9 +67,9 @@ async function main() {
 
 	await Promise.all(checks);
 
-	if (argv.sql) setConfig({ opt: {sql: true }});
+	if (argv.sql) setState({ opt: {sql: true }});
 
-	await initDB();
+	await initDB(getState().opt.sql);
 
 	if (argv.generate) {
 		await generateDatabase();
@@ -105,7 +104,6 @@ async function main() {
 	// Clean temp periodically of files older than two hours
 	setInterval(findRemoveSync.bind(this, resolve(appPath, conf.System.Path.Temp), {age: {seconds: 7200}}), 2 * 60 * 60 * 1000);
 
-	if (getConfig().Mail.Enabled) inits.push(initMailer());
 	inits.push(initShortener());
 	inits.push(initFrontend(port));
 	inits.push(initFavorites());
