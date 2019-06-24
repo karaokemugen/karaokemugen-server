@@ -1,4 +1,4 @@
-image: takkatakka/lftp
+image: axelterizaki/karaokemugen-ci:node-10
 
 stages:
   - deploy
