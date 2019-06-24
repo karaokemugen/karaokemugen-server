@@ -34,7 +34,7 @@ export const defaults = {
 			Medias: ['app/data/medias'],
 			Series: ['app/data/series'],
 			Temp: 'app/temp',
-			Inbox: 'app/inbox',
+			Import: 'app/inbox',
 			Avatars: 'app/avatars',
 			Previews: 'app/previews',
 		}
@@ -66,7 +66,7 @@ export const configConstraints = {
 	'System.Path.Medias': { arrayValidator: true },
 	'System.Path.Series': { arrayValidator: true },
 	'System.Path.Temp': { presence: {allowEmpty: false}},
-	'System.Path.Inbox': { presence: {allowEmpty: false}},
+	'System.Path.Import': { presence: {allowEmpty: false}},
 	'System.Binaries.ffmpeg': { presence: {allowEmpty: false}},
 	'Shortener.ExpireTimeDays': { numericality: { greaterThan: 0 }},
 	'Frontend.Host': { presence: { allowEmpty: false } },

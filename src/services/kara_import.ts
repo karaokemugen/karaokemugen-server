@@ -17,9 +17,9 @@ export async function createKara(kara: Kara) {
 	let newKara: NewKara;
 	try {
 		newKara = await generateKara(kara, true,
-			resolve(state.appPath, conf.System.Path.Inbox, 'karaokes/'),
-			resolve(state.appPath, conf.System.Path.Inbox, 'medias/'),
-			resolve(state.appPath, conf.System.Path.Inbox, 'lyrics/')
+			resolve(state.appPath, conf.System.Path.Import, 'karaokes/'),
+			resolve(state.appPath, conf.System.Path.Import, 'medias/'),
+			resolve(state.appPath, conf.System.Path.Import, 'lyrics/')
 		);
 	} catch(err) {
 		logger.error(`[KaraImport] Error importing kara : ${err}. Kara Data ${JSON.stringify(kara)}`);

@@ -55,7 +55,7 @@ async function main() {
 	console.log('\n');
 	const paths = conf.System.Path;
 	const checks = [
-		asyncCheckOrMkdir(appPath, paths.Inbox),
+		asyncCheckOrMkdir(appPath, paths.Import),
 		asyncCheckOrMkdir(appPath, paths.Temp),
 		asyncCheckOrMkdir(appPath, paths.Previews),
 		asyncCheckOrMkdir(appPath, paths.Avatars)
