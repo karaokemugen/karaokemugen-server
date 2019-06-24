@@ -1,8 +1,9 @@
-import {langSelector, db, transaction, buildClauses} from './database';
+import {langSelector, db, transaction, buildClauses} from '../lib/dao/database';
 import {pg as yesql} from 'yesql';
+import { Favorite, Played, Requested, Instance } from '../types/stats';
 const sql = require('./sqls/stats');
 
-export async function upsertInstance(i) {
+export async function upsertInstance(i: Instance) {
 	return await db().query(sql.upsertInstance, [
 		new Date(),
 		i.instance_id,
@@ -22,13 +23,13 @@ export async function upsertInstance(i) {
 	]);
 }
 
-export async function replaceFavorites(instance_id, favorites) {
+export async function replaceFavorites(instance_id: string, favorites: Favorite[]) {
 	await db().query(sql.deleteFavorites, [instance_id]);
 	const params = favorites.map(f => [instance_id, f.kid]);
 	if (favorites.length > 0) await transaction([{sql: sql.insertFavorite, params: params}]);
 }
 
-export async function upsertPlayed(instance_id, viewcounts) {
+export async function upsertPlayed(instance_id: string, viewcounts: Played[]) {
 	const params = viewcounts.map(v => [
 		instance_id,
 		v.kid,
@@ -38,7 +39,7 @@ export async function upsertPlayed(instance_id, viewcounts) {
 	if (viewcounts.length > 0) await transaction([{sql: sql.insertViewcount, params: params}]);
 }
 
-export async function upsertRequests(instance_id, requests) {
+export async function upsertRequests(instance_id: string, requests: Requested[]) {
 	const params = requests.map(r => [
 		instance_id,
 		r.kid,
@@ -48,7 +49,7 @@ export async function upsertRequests(instance_id, requests) {
 	if (requests.length > 0) await transaction([{sql: sql.insertRequested, params: params}]);
 }
 
-export async function getPlayedStats(filter?, lang?, from = 0, size = 0) {
+export async function getPlayedStats(filter?: string, lang?: string, from = 0, size = 0) {
 	const filterClauses = filter ? buildClauses(filter) : {sql: [], params: {}};
 	let limitClause = '';
 	let offsetClause = '';
@@ -59,7 +60,7 @@ export async function getPlayedStats(filter?, lang?, from = 0, size = 0) {
 	return res.rows;
 }
 
-export async function getFavoritesStats(filter?, lang?, from = 0, size = 0) {
+export async function getFavoritesStats(filter?: string, lang?: string, from = 0, size = 0) {
 	const filterClauses = filter ? buildClauses(filter) : {sql: [], params: {}};
 	let limitClause = '';
 	let offsetClause = '';
@@ -70,7 +71,7 @@ export async function getFavoritesStats(filter?, lang?, from = 0, size = 0) {
 	return res.rows;
 }
 
-export async function getRequestedStats(filter?, lang?, from = 0, size = 0) {
+export async function getRequestedStats(filter?: string, lang?: string, from = 0, size = 0) {
 	const filterClauses = filter ? buildClauses(filter) : {sql: [], params: {}};
 	let limitClause = '';
 	let offsetClause = '';

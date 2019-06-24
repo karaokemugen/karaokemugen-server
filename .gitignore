@@ -27,4 +27,4 @@ logs/
 kmexplorer/\.next/
 kmimport/build
 
-/*.pid
+dist/

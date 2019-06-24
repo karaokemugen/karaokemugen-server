@@ -1,5 +1,13 @@
 // SQL for series
 
+export const getSeriesByName = `
+SELECT
+	name,
+	pk_sid AS sid
+FROM serie
+WHERE name = :name
+;`;
+
 export const countKaras = (filterClauses) => `
 SELECT COUNT(sid) AS count
 FROM all_series AS aseries

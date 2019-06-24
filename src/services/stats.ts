@@ -1,6 +1,6 @@
-import { uuidRegexp } from './constants';
+import { uuidRegexp } from '../lib/utils/constants';
 import testJSON from 'is-valid-json';
-import { check } from '../utils/validators';
+import { check } from '../lib/utils/validators';
 import {
 	upsertInstance,
 	replaceFavorites,
@@ -9,7 +9,7 @@ import {
 	getFavoritesStats as dbGetFavoritesStats,
 	getRequestedStats as dbGetRequestedStats,
 	getPlayedStats as dbGetPlayedStats } from '../dao/stats';
-import logger from 'winston';
+import logger from '../lib/utils/logger';
 
 const payloadConstraints = {
 	'instance.instance_id': {presence: true, format: uuidRegexp},
@@ -25,7 +25,7 @@ export async function processStatsPayload(payload) {
 		if (!testJSON(payload)) throw 'Syntax error in JSON data';
 		const validationErrors = check(payload, payloadConstraints);
 		if (validationErrors) throw `Payload is not valid: ${JSON.stringify(validationErrors)}`;
-		// If payload is version 1, it's going to be transformed a bit
+		// If payload is version 1, it's going to be transformed a bit (old KM versions prior to 2.5 which did have incorrect field names)
 		if (!payload.payloadVersion) {
 			payload.viewcounts = payload.viewcounts.map(v => {
 				return {

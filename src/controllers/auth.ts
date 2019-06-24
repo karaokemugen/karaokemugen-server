@@ -1,7 +1,9 @@
 import passport from 'passport';
 import {encode, decode} from 'jwt-simple';
-import {getConfig} from '../utils/config';
+import {getConfig} from '../lib/utils/config';
 import {findUserByName, checkPassword} from '../services/user';
+import { Token, Role, User } from '../lib/types/user';
+import { Router } from 'express';
 
 const loginErr = {
 	code: 'LOG_ERROR',
@@ -9,21 +11,20 @@ const loginErr = {
 	data: {}
 };
 
-async function checkLogin(username, password) {
-	const config = getConfig();
+async function checkLogin(username: string, password: string): Promise<Token> {
 	const user = await findUserByName(username);
 	if (!user) throw false;
 	if (!checkPassword(user, password)) throw false;
 	const role = getRole(user);
 	return {
-		token: createJwtToken(username, role, config),
+		token: createJwtToken(username, role),
 		username: username,
 		role: role
 	};
 }
 
 
-export default function authController(router) {
+export default function authController(router: Router) {
 
 	const requireAuth = passport.authenticate('jwt', { session: false });
 
@@ -41,21 +42,21 @@ export default function authController(router) {
 	});
 }
 
-function createJwtToken(username, role, config) {
-	const conf = config || getConfig();
+function createJwtToken(username: string, role: Role) {
+	const conf = getConfig();
 	const timestamp = new Date().getTime();
 	return encode(
 		{ username, iat: timestamp, role },
-		conf.JwtSecret
+		conf.App.JwtSecret
 	);
 }
 
-function decodeJwtToken(token, config?) {
-	const conf = config || getConfig();
-	return decode(token, conf.JwtSecret);
+function decodeJwtToken(token: string) {
+	const conf = getConfig();
+	return decode(token, conf.App.JwtSecret);
 }
 
-function getRole(user) {
+function getRole(user: User) {
 	if (user.type === 2) return 'admin';
 	return 'user';
 }

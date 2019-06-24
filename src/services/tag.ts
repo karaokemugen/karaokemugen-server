@@ -1,12 +1,12 @@
 import langs from 'langs';
-import {getConfig} from '../utils/config';
-import {resolve} from 'path';
-import {getLanguage} from 'iso-countries-languages';
+import {join} from 'path';
+import {getSupportedLangs, getLanguage} from 'iso-countries-languages';
 import {selectTags} from '../dao/tag';
+import { KaraList } from '../lib/types/kara';
 
-export async function getTags(lang, filter, type, from = 0, size = 999999999999999) {
+export async function getTags(filter: string, type: string, from = 0, size = 0): Promise<KaraList> {
 	let tags = await selectTags(filter, type, +from, +size);
-	tags = await translateTags(tags, lang);
+	tags = await translateTags(tags);
 	return {
 		content: tags,
 		infos: {
@@ -18,39 +18,23 @@ export async function getTags(lang, filter, type, from = 0, size = 9999999999999
 }
 
 
-export function translateTags(taglist,lang) {
-	const conf = getConfig();
-	// If lang is not provided, assume we're using node's system locale
-	if (!lang) lang = conf.EngineDefaultLocale;
-	// Test if lang actually exists in ISO639-1 format
-	if (!langs.has('1',lang)) throw `Unknown language : ${lang}`;
-	// Instanciate a translation object for our needs with the correct language.
-	const i18n = require('i18n'); // Needed for its own translation instance
-	i18n.configure({
-		directory: resolve(__dirname,'../locales'),
-	});
-	i18n.setLocale(lang);
+export function translateTags(taglist: any[]) {
+	const translations = require(join(__dirname,'../locales/'));
 	// We need to read the detected locale in ISO639-1
-	const detectedLocale = langs.where('1',lang);
 	taglist.forEach((tag, index) => {
-		if (tag.type >= 2 && tag.type <= 999 && tag.type !== 5) {
-			if (tag.name.startsWith('TAG_') || tag.name.startsWith('TYPE_')) {
-				taglist[index].name_i18n = i18n.__(tag.name);
-			} else {
-				taglist[index].name_i18n = tag.name;
-			}
-		}
-		// Special case for languages
+		let i18nString: string;
 		if (tag.type === 5) {
-			if (tag.name === 'und') {
-				taglist[index].name_i18n = i18n.__('UNDEFINED_LANGUAGE');
+			const langdata = langs.where('2B', tag.name);
+			if (!langdata) i18nString = 'UNKNOWN_LANGUAGE';
+			if (tag.name === 'und') i18nString = 'UNDEFINED_LANGUAGE';
+			if (tag.name === 'zxx') i18nString = 'NO_LANGUAGE';
+			if (i18nString) {
+				for (const language of Object.keys(translations)) {
+					taglist[index].i18n[language] = translations[language][i18nString];
+				}
 			} else {
-				// We need to convert ISO639-2B to ISO639-1 to get its language
-				const langdata = langs.where('2B', tag.name);
-				if (langdata === undefined) {
-					taglist[index].name_i18n = i18n.__('UNKNOWN_LANGUAGE');
-				} else {
-					taglist[index].name_i18n = (getLanguage(detectedLocale[1],langdata[1]));
+				for (const lang of getSupportedLangs()) {
+					taglist[index].i18n[lang] = getLanguage(lang, langdata[1]);
 				}
 			}
 		}

@@ -1,5 +1,6 @@
-import {buildTypeClauses, buildClauses, langSelector, db} from './database';
+import {buildTypeClauses, buildClauses, langSelector, db} from '../lib/dao/database';
 import {pg as yesql} from 'yesql';
+import { KaraParams } from '../lib/types/kara';
 const sql = require('./sqls/kara');
 
 export async function selectAllYears() {
@@ -7,15 +8,7 @@ export async function selectAllYears() {
 	return res.rows;
 }
 
-export async function refreshKaras() {
-	return await db().query('REFRESH MATERIALIZED VIEW all_karas');
-}
-
-export async function refreshYears() {
-	return await db().query('REFRESH MATERIALIZED VIEW all_years');
-}
-
-export async function countKaras(filter, mode, modeValue) {
+export async function countKaras(filter: string, mode: string, modeValue: string) {
 	const filterClauses = filter ? buildClauses(filter) : {sql: [], params: {}};
 	const typeClauses = mode ? buildTypeClauses(mode, modeValue) : '';
 	const query = sql.countKaras(filterClauses.sql, typeClauses);
@@ -23,16 +16,16 @@ export async function countKaras(filter, mode, modeValue) {
 	return res.rows[0].count;
 }
 
-export async function selectAllKaras(filter?, lang?, from = 0, size = 0, mode?, modeValue?) {
-	let filterClauses = filter ? buildClauses(filter) : {sql: [], params: {}};
-	let typeClauses = mode ? buildTypeClauses(mode, modeValue) : '';
+export async function selectAllKaras(params: KaraParams) {
+	let filterClauses = params.filter ? buildClauses(params.filter) : {sql: [], params: {}};
+	let typeClauses = params.mode ? buildTypeClauses(params.mode, params.modeValue) : '';
 	let orderClauses = '';
 	let limitClause = '';
 	let offsetClause = '';
-	if (mode === 'recent') orderClauses = 'created_at DESC, ';
-	if (from > 0) offsetClause = `OFFSET ${from} `;
-	if (size > 0) limitClause = `LIMIT ${size} `;
-	const query = sql.getAllKaras(filterClauses.sql, langSelector(lang), typeClauses, orderClauses, limitClause, offsetClause);
+	if (params.mode === 'recent') orderClauses = 'created_at DESC, ';
+	if (params.from > 0) offsetClause = `OFFSET ${params.from} `;
+	if (params.size > 0) limitClause = `LIMIT ${params.size} `;
+	const query = sql.getAllKaras(filterClauses.sql, langSelector(params.lang), typeClauses, orderClauses, limitClause, offsetClause);
 	const res = await db().query(yesql(query)(filterClauses.params));
 	return res.rows;
 }
