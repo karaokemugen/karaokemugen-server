@@ -25,7 +25,7 @@ export async function createKara(kara: Kara) {
 		logger.error(`[KaraImport] Error importing kara : ${err}. Kara Data ${JSON.stringify(kara)}`);
 		throw err;
 	}
-	const karaName = `${newKara.data.lang[0].toUpperCase()} - ${newKara.data.series[0]} - ${newKara.data.type}${newKara.data.order || ''} - ${newKara.data.title}`;
+	const karaName = `${newKara.data.lang[0].toUpperCase()} - ${newKara.data.series[0] || newKara.data.singer[0]} - ${newKara.data.type}${newKara.data.order || ''} - ${newKara.data.title}`;
 	let title = conf.Gitlab.IssueTemplate.Import.Title || 'New kara: $kara';
 	title = title.replace('$kara', karaName);
 	let desc = conf.Gitlab.IssueTemplate.Import.Description || '';
@@ -44,7 +44,7 @@ export async function createKara(kara: Kara) {
 		.replace('$groups', newKara.data.groups.join(', '))
 		.replace('$duration', duration(newKara.data.mediaduration));
 	try {
-		if (conf.Gitlab.Enabled) return gitlabPostNewIssue(title, desc);
+		if (conf.Gitlab.Enabled) return gitlabPostNewIssue(title, desc, conf.Gitlab.IssueTemplate.Import.Labels);
 	} catch(err) {
 		logger.error(`[KaraImport] Call to Gitlab API failed : ${err}`);
 	}
