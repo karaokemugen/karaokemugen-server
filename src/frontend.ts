@@ -78,13 +78,13 @@ export function initFrontend(listenPort: number) {
 		res.sendFile(resolve(state.appPath, 'kmimport/build/index.html'));
 	});
 
-	mainApp.use('/downloads/karas', express.static(resolve(conf.appPath, conf.Path.Karas)));
-	mainApp.use('/downloads/karaokes', express.static(resolve(conf.appPath, conf.Path.Karas, '../karaokes/')));
-	mainApp.use('/downloads/lyrics', express.static(resolve(conf.appPath, conf.Path.Lyrics)));
-	mainApp.use('/downloads/medias', express.static(resolve(conf.appPath, conf.Path.Medias)));
-	mainApp.use('/downloads/series', express.static(resolve(conf.appPath, conf.Path.Series)));
-	mainApp.use('/previews', express.static(resolve(conf.appPath, conf.Path.Previews)));
-	mainApp.use('/avatars', express.static(resolve(conf.appPath, conf.Path.Avatars)));
+	mainApp.use('/downloads/karas', express.static(resolve(state.appPath, conf.System.Path.Karas[0])));
+	mainApp.use('/downloads/karaokes', express.static(resolve(state.appPath, conf.System.Path.Karas[0], '../karaokes/')));
+	mainApp.use('/downloads/lyrics', express.static(resolve(state.appPath, conf.System.Path.Lyrics[0])));
+	mainApp.use('/downloads/medias', express.static(resolve(state.appPath, conf.System.Path.Medias[0])));
+	mainApp.use('/downloads/series', express.static(resolve(state.appPath, conf.System.Path.Series[0])));
+	mainApp.use('/previews', express.static(resolve(state.appPath, conf.System.Path.Previews)));
+	mainApp.use('/avatars', express.static(resolve(state.appPath, conf.System.Path.Avatars)));
 	// API router
 	mainApp.use('/api', api());
 	mainApp.get('/', (_, res) => {
