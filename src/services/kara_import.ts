@@ -5,12 +5,11 @@
 import logger from 'winston';
 import {resolve, basename} from 'path';
 import {getConfig} from '../lib/utils/config';
-import {sendMail} from '../utils/mailer';
 import {duration} from '../lib/utils/date';
-import got from 'got';
 import { generateKara } from '../lib/services/kara_creation';
 import { getState } from '../utils/state';
 import { NewKara, Kara } from '../lib/types/kara';
+import { gitlabPostNewIssue } from '../lib/services/gitlab';
 
 export async function createKara(kara: Kara) {
 	const conf = getConfig();
@@ -27,9 +26,9 @@ export async function createKara(kara: Kara) {
 		throw err;
 	}
 	const karaName = `${newKara.data.lang[0].toUpperCase()} - ${newKara.data.series[0]} - ${newKara.data.type}${newKara.data.order || ''} - ${newKara.data.title}`;
-	let title = conf.Import.Template.Title || 'New kara: $kara';
+	let title = conf.Gitlab.IssueTemplate.Import.Title || 'New kara: $kara';
 	title = title.replace('$kara', karaName);
-	let desc = conf.Import.Template.Description || '';
+	let desc = conf.Gitlab.IssueTemplate.Import.Description || '';
 	desc = desc.replace('$file', basename(newKara.file))
 		.replace('$author', newKara.data.author.join(', '))
 		.replace('$title', newKara.data.title)
@@ -45,26 +44,7 @@ export async function createKara(kara: Kara) {
 		.replace('$groups', newKara.data.groups.join(', '))
 		.replace('$duration', duration(newKara.data.mediaduration));
 	try {
-		if (conf.Mail.Enabled && conf.Import.Mail.Enabled) sendMail(title, desc);
-	} catch(err) {
-		logger.error(`[KaraImport] Could not send mail : ${err}`);
-	}
-	try {
-		if (conf.Import.Gitlab.Enabled) {
-			const gitlab = conf.Import.Gitlab;
-			const params = new URLSearchParams([
-				['id', `${gitlab.ProjectID}`],
-				['title', title],
-				['description', desc],
-				['labels', gitlab.Labels.join(',')]
-			]);
-			const res = await got.post(`https://${gitlab.URL}/api/v4/projects/${gitlab.ProjectID}/issues?${params.toString()}`, {
-				headers: {
-					'PRIVATE-TOKEN': gitlab.AccessToken
-				}
-			});
-			return JSON.parse(res.body).web_url;
-		}
+		if (conf.Gitlab.Enabled) return gitlabPostNewIssue(title, desc);
 	} catch(err) {
 		logger.error(`[KaraImport] Call to Gitlab API failed : ${err}`);
 	}
