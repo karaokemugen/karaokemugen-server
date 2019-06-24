@@ -29,7 +29,7 @@ deploy_prod:
 deploy_dev:
   stage: deploy
   script:
-    - yarn pull
+    - git pull && git submodule sync --recursive && git submodule update --init --recursive
     - cd src/lib
     - git status
     - ls services/*
