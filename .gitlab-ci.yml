@@ -1,4 +1,4 @@
-image: axelterizaki/karaokemugen-ci:node-10
+image: takkatakka/lftp
 
 stages:
   - deploy
@@ -16,9 +16,9 @@ before_script:
 deploy_prod:
   stage: deploy
   script:
-    - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd kmserver; mirror -Rnev --parallel=10 --exclude .git --exclude app/ --exclude config.yml --exclude database.json --exclude karaokemugen-app/ --exclude logs/ --exclude node_modules/ --exclude .next/ "
-    - ssh -l $USERNAME $HOST 'cd kmserver ; yarn install ; yarn installAll ; yarn build'
-    - ssh -l $USERNAME $HOST 'sudo systemctl restart karaokemugen-server'
+    - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd kmserver; mirror -Rnev --parallel=10 --exclude .git --exclude app/ --exclude config.yml --exclude .pid --exclude database.json --exclude karaokemugen-app/ --exclude logs/ --exclude node_modules/ --exclude .next/ "
+    - ssh -l $USERNAME $HOST 'cd kmserver ; yarn install ; yarn build'
+    - ssh -l $USERNAME $HOST 'sudo systemctl stop karaokemugen-server ; cd kmserver ; rm *.pid ; sudo systemctl start karaokemugen-server'
   environment:
     name: production
     url: https://kara.moe
@@ -29,14 +29,9 @@ deploy_prod:
 deploy_dev:
   stage: deploy
   script:
-    - git pull && git submodule sync --recursive && git submodule update --init --recursive
-    - cd src/lib
-    - git status
-    - ls services/*
-    - cd ../..
-    - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd kmserver-dev; mirror -Rnev --parallel=10 --exclude .git --exclude app/ --exclude config.yml --exclude database.json --exclude karaokemugen-app/ --exclude logs/ --exclude node_modules/ --exclude .next/ "
+    - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd kmserver-dev; mirror -Rnev --parallel=10 --exclude .git --exclude app/ --exclude config.yml --exclude .pid --exclude database.json --exclude karaokemugen-app/ --exclude logs/ --exclude node_modules/ --exclude .next/ "
     - ssh -l $USERNAME $HOST 'cd kmserver-dev ; yarn install ; yarn installAll ; yarn build'
-    - ssh -l $USERNAME $HOST 'sudo systemctl restart karaokemugen-server-dev'
+    - ssh -l $USERNAME $HOST 'sudo systemctl stop karaokemugen-server-dev ; cd kmserver-dev ;  rm *.pid ; sudo systemctl start karaokemugen-server-dev'
   environment:
     name: dev
     url: https://dev.kara.moe
