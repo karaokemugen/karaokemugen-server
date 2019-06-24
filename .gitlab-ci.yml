@@ -29,7 +29,7 @@ deploy_prod:
 deploy_dev:
   stage: deploy
   script:
-    - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd kmserver-dev; mirror -Rnev --parallel=10 --exclude .git --exclude app/ --exclude config.yml --exclude .pid --exclude database.json --exclude karaokemugen-app/ --exclude logs/ --exclude node_modules/ --exclude .next/ "
+    - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd kmserver-dev; mirror -Rnev --parallel=10 --exclude .git/ --exclude app/ --exclude config.yml --exclude .pid --exclude database.json --exclude karaokemugen-app/ --exclude logs/ --exclude node_modules/ --exclude .next/ "
     - ssh -l $USERNAME $HOST 'cd kmserver-dev ; yarn install ; yarn installAll ; yarn build'
     - ssh -l $USERNAME $HOST 'sudo systemctl stop karaokemugen-server-dev ; cd kmserver-dev ;  rm *.pid ; sudo systemctl start karaokemugen-server-dev'
   environment:
