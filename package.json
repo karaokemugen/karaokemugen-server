@@ -16,7 +16,7 @@
     "migrateDown": "node node_modules/db-migrate/bin/db-migrate down",
     "migrateUp": "node node_modules/db-migrate/bin/db-migrate up",
     "build": "rm -Rf dist && tsc --build",
-    "buildAll": "rm -Rf dist && yarn build && yarn buildKmimport && yarn buildKmexplorer",
+    "buildAll": "yarn build && yarn buildKmimport && yarn buildKmexplorer",
     "installAll": "cd kmimport && yarn install && cd ../kmexplorer && yarn install",
     "buildKmimport": "cd kmimport && yarn build",
     "buildKmexplorer": "cd kmexplorer && rm -Rf .next && npx next build",
