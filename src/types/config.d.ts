@@ -42,10 +42,9 @@ export interface Config {
 			Temp?: string,
 			Previews?: string,
 			Avatars?: string,
-			Inbox?: string,
+			Import?: string,
 			Jingles?: string[],
-			Backgrounds?: string[],
-			Import?: string
+			Backgrounds?: string[]
 		}
 	},
 	Database: {
