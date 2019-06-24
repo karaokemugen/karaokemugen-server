@@ -19,7 +19,8 @@
     "buildAll": "rm -Rf dist && yarn build && yarn buildKmimport && yarn buildKmexplorer",
     "installAll": "cd kmimport && yarn install && cd ../kmexplorer && yarn install",
     "buildKmimport": "cd kmimport && yarn build",
-    "buildKmexplorer": "cd kmexplorer && rm -Rf .next && npx next build"
+	"buildKmexplorer": "cd kmexplorer && rm -Rf .next && npx next build",
+	"pull": "git pull && git submodule sync --recursive && git submodule update --init --recursive"
   },
   "bugs": {
     "url": "https://lab.shelter.moe/karaokemugen/karaokemugen-server/issues",
