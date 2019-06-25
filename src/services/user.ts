@@ -1,7 +1,7 @@
 import {createHash} from 'crypto';
 import {updateUser, updateUserPassword, insertUser, selectUser, selectAllUsers, deleteUser} from '../dao/user';
-import logger from 'winston';
-import {getConfig} from '../lib/utils/config';
+import logger from '../lib/utils/logger';
+import {getConfig, resolvedPathAvatars} from '../lib/utils/config';
 import {asyncReadDir, asyncExists, asyncUnlink, asyncMove, detectFileType} from '../lib/utils/files';
 import uuidV4 from 'uuid/v4';
 import {resolve} from 'path';
@@ -64,7 +64,6 @@ export function checkPassword(user: User,password: string) {
 }
 
 export async function createUser(user: User, opts: any = {}) {
-
 	user.nickname = user.nickname || user.login;
 	user.avatar_file = user.avatar_file || 'blank.png';
 	user.bio = user.bio || null;
@@ -89,7 +88,6 @@ export async function createUser(user: User, opts: any = {}) {
 
 async function replaceAvatar(oldImageFile: string, avatar: Express.Multer.File) {
 	try {
-		const conf = getConfig();
 		const fileType = await detectFileType(avatar.path);
 		if (fileType !== 'jpg' &&
 				fileType !== 'gif' &&
@@ -98,7 +96,7 @@ async function replaceAvatar(oldImageFile: string, avatar: Express.Multer.File) 
 		}
 		// Construct the name of the new avatar file with its ID and filetype.
 		const newAvatarFile = `${uuidV4()}.${fileType}`;
-		const avatarPath = resolve(getState().appPath, conf.System.Path.Avatars);
+		const avatarPath = resolve(resolvedPathAvatars());
 		const newAvatarPath = resolve(avatarPath, newAvatarFile);
 		const oldAvatarPath = resolve(avatarPath, oldImageFile);
 		if (await asyncExists(oldAvatarPath) &&

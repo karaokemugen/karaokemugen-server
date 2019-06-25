@@ -1,7 +1,7 @@
 import {resolve} from 'path';
 import {asyncRequired} from '../lib/utils/files';
 import {exit} from '../';
-import logger from 'winston';
+import logger from '../lib/utils/logger';
 import { getState, setState } from './state';
 import {Config} from '../types/config';
 import {BinariesConfig} from '../types/config';

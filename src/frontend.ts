@@ -73,7 +73,7 @@ export function initFrontend(listenPort: number) {
 		res.redirect('/base'+req.url);
 		return;
 	});
-	mainApp.use('/import',  express.static(resolve(state.appPath, 'kmimport/build')));
+	mainApp.use('/import', express.static(resolve(state.appPath, 'kmimport/build')));
 	mainApp.get('/import/*', (_, res) => {
 		res.sendFile(resolve(state.appPath, 'kmimport/build/index.html'));
 	});
@@ -97,7 +97,7 @@ export function initFrontend(listenPort: number) {
 		res.status(404).send('Not found');
 	});
 
-	const port = listenPort || 5000;
+	const port = listenPort;
 	const server = createServer(app);
 	initWS(server);
 	server.listen(port, () => {
