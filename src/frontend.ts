@@ -12,7 +12,7 @@ import shortenerController from './controllers/shortener';
 import userController from './controllers/user';
 import favoritesController from './controllers/favorites';
 import {configurePassport} from './utils/passport_manager';
-import {getConfig} from './lib/utils/config';
+import {getConfig, resolvedPathKaras, resolvedPathSubs, resolvedPathMedias, resolvedPathSeries, resolvedPathPreviews, resolvedPathAvatars} from './lib/utils/config';
 import range from 'express-range';
 import vhost from 'vhost';
 //import {getInstanceRoom} from './dao/proxy'; For KM instances hosting
@@ -78,13 +78,13 @@ export function initFrontend(listenPort: number) {
 		res.sendFile(resolve(state.appPath, 'kmimport/build/index.html'));
 	});
 
-	mainApp.use('/downloads/karas', express.static(resolve(state.appPath, conf.System.Path.Karas[0])));
-	mainApp.use('/downloads/karaokes', express.static(resolve(state.appPath, conf.System.Path.Karas[0], '../karaokes/')));
-	mainApp.use('/downloads/lyrics', express.static(resolve(state.appPath, conf.System.Path.Lyrics[0])));
-	mainApp.use('/downloads/medias', express.static(resolve(state.appPath, conf.System.Path.Medias[0])));
-	mainApp.use('/downloads/series', express.static(resolve(state.appPath, conf.System.Path.Series[0])));
-	mainApp.use('/previews', express.static(resolve(state.appPath, conf.System.Path.Previews)));
-	mainApp.use('/avatars', express.static(resolve(state.appPath, conf.System.Path.Avatars)));
+	mainApp.use('/downloads/karas', express.static(resolvedPathKaras()[0]));
+	mainApp.use('/downloads/karaokes', express.static(resolve(resolvedPathKaras()[0], '../karaokes/')));
+	mainApp.use('/downloads/lyrics', express.static(resolvedPathSubs()[0]));
+	mainApp.use('/downloads/medias', express.static(resolvedPathMedias()[0]));
+	mainApp.use('/downloads/series', express.static(resolvedPathSeries()[0]));
+	mainApp.use('/previews', express.static(resolvedPathPreviews()));
+	mainApp.use('/avatars', express.static(resolvedPathAvatars()));
 	// API router
 	mainApp.use('/api', api());
 	mainApp.get('/', (_, res) => {
