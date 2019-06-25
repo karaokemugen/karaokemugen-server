@@ -70,6 +70,7 @@ export const tagsMap = Object.freeze({
 			TAG_SPECIAL    : i18next.t('tag:misc.TAG_SPECIAL'),
 			TAG_SPOIL      : i18next.t('tag:misc.TAG_SPOIL'),
 			TAG_SWITCH     : i18next.t('tag:misc.TAG_SWITCH'),
+			TAG_N64        : i18next.t('tag:misc.TAG_N64'),
 			TAG_TOKU       : i18next.t('tag:misc.TAG_TOKU'),
 			TAG_TVSHOW     : i18next.t('tag:misc.TAG_TVSHOW'),
 			TAG_VIDEOGAME  : i18next.t('tag:misc.TAG_VIDEOGAME'),

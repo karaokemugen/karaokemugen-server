@@ -1,19 +1,20 @@
-import {getConfig, initConfig, setConfig} from './utils/config';
+import {getConfig, setConfig} from './lib/utils/config';
+import {initConfig} from './utils/config';
 import logger from 'winston';
 import {resolve, join} from 'path';
 import {initFrontend} from './frontend';
 import cli from 'commander';
 import detect from 'detect-port';
 import {initDB} from './dao/database';
-import {initMailer} from './utils/mailer';
 import {initShortener} from './services/shortener';
 import {initFavorites} from './services/favorites';
 import {createUser} from './services/user';
-import {run} from './dao/generation';
+import {generateDatabase} from './lib/services/generation';
 import sudoBlock from 'sudo-block';
-import {asyncCheckOrMkdir} from './utils/files';
+import {asyncCheckOrMkdir} from './lib/utils/files';
 import {kmExplorerStart} from './services/kmExplorer';
 import findRemoveSync from 'find-remove';
+import { setState, getState } from './utils/state';
 
 const pjson = require('../package.json');
 const appPath = join(__dirname,'../');
@@ -21,6 +22,7 @@ const appPath = join(__dirname,'../');
 process.on('uncaughtException', (exception) => {
 	console.log(exception);
 });
+
 process.once('SIGTERM', () => {
 	logger.info('[Launcher] Received SIGTERM, terminating properly.');
 	exit(0);
@@ -31,7 +33,7 @@ process.once('SIGINT', () => {
 	exit(0);
 });
 
-function exit(rc: number) {
+export function exit(rc: number) {
 	process.exit(rc || 0);
 };
 
@@ -44,44 +46,54 @@ main().catch(err => {
 async function main() {
 	sudoBlock('You should not run Karaoke Mugen Server with root permissions, it\'s dangerous.');
 	const argv = parseArgs();
-	await initConfig(appPath, argv);
-	const conf: any = getConfig();
+	setState({appPath: appPath});
+	await initConfig(argv);
+	const conf = getConfig();
 	console.log('--------------------------------------------------------------------');
 	console.log(`Karaoke Mugen Server ${pjson.version}`);
 	console.log('--------------------------------------------------------------------');
 	console.log('\n');
+	const paths = conf.System.Path;
+	const checks = [
+		asyncCheckOrMkdir(appPath, paths.Import),
+		asyncCheckOrMkdir(appPath, paths.Temp),
+		asyncCheckOrMkdir(appPath, paths.Previews),
+		asyncCheckOrMkdir(appPath, paths.Avatars)
+	];
+	paths.Medias.forEach(e => checks.push(asyncCheckOrMkdir(appPath, e)));
+	paths.Karas.forEach(e => checks.push(asyncCheckOrMkdir(appPath, e)));
+	paths.Series.forEach(e => checks.push(asyncCheckOrMkdir(appPath, e)));
+	paths.Lyrics.forEach(e => checks.push(asyncCheckOrMkdir(appPath, e)));
 
-	await Promise.all([
-		asyncCheckOrMkdir(appPath, conf.Path.Medias),
-		asyncCheckOrMkdir(appPath, conf.Path.Series),
-		asyncCheckOrMkdir(appPath, conf.Path.Karas),
-		asyncCheckOrMkdir(appPath, conf.Path.Lyrics),
-		asyncCheckOrMkdir(appPath, conf.Path.Inbox),
-		asyncCheckOrMkdir(appPath, conf.Path.Temp),
-		asyncCheckOrMkdir(appPath, conf.Path.Previews),
-		asyncCheckOrMkdir(appPath, conf.Path.Avatars)
-	]);
+	await Promise.all(checks);
 
-	if (argv.sql) setConfig({ optSql: true });
+	if (argv.sql) setState({ opt: {sql: true }});
 
-	await initDB();
+	await initDB(getState().opt.sql);
+
 	if (argv.generate) {
-		await run();
+		await generateDatabase();
 		exit(0);
 	}
-	if (argv.createAdmin) await createUser({
-		login: argv.createAdmin[0],
-		password: argv.createAdmin[1]
-	}, {admin: true});
+
+	if (argv.createAdmin) {
+		await createUser({
+			login: argv.createAdmin[0],
+			password: argv.createAdmin[1]
+		}, {admin: true});
+		exit(0);
+	}
+
 	const port = await detect(+argv.port || conf.Frontend.Port);
+
 	if (port !== conf.Frontend.Port) setConfig({
 		Frontend: {
 			Port: port
 		}
 	});
+
 	logger.debug(`[Launcher] Port ${port} is available`);
 	const inits = [];
-
 
 	kmExplorerStart({
 		api: conf.KaraExplorer.Api,
@@ -90,9 +102,8 @@ async function main() {
 	});
 
 	// Clean temp periodically of files older than two hours
-	setInterval(findRemoveSync.bind(this, resolve(conf.appPath, conf.Path.Temp), {age: {seconds: 7200}}), 2 * 60 * 60 * 1000);
+	setInterval(findRemoveSync.bind(this, resolve(appPath, conf.System.Path.Temp), {age: {seconds: 7200}}), 2 * 60 * 60 * 1000);
 
-	if (getConfig().Mail.Enabled) inits.push(initMailer());
 	inits.push(initShortener());
 	inits.push(initFrontend(port));
 	inits.push(initFavorites());

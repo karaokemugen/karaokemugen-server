@@ -1,8 +1,8 @@
-import {paramWords, db} from './database';
+import {paramWords, db} from '../lib/dao/database';
 import {pg as yesql} from 'yesql';
 const sql = require('./sqls/tag');
 
-export async function selectTags(filter, type, from, size) {
+export async function selectTags(filter: string, type: string, from = 0, size = 0) {
 	let filterClauses = filter ? buildTagClauses(filter) : {sql: [], params: {}};
 	let typeClauses = type ? ` AND tagtype = ${type}` : '';
 	let limitClause = '';
@@ -14,7 +14,7 @@ export async function selectTags(filter, type, from, size) {
 	return res.rows;
 }
 
-function buildTagClauses(words) {
+function buildTagClauses(words: string) {
 	const params = paramWords(words);
 	let sql = [];
 	for (const i in words.split(' ').filter(s => !('' === s))) {
@@ -26,21 +26,4 @@ function buildTagClauses(words) {
 		sql: sql,
 		params: params
 	};
-}
-
-export async function refreshTags() {
-	return await db().query('REFRESH MATERIALIZED VIEW all_tags');
-}
-
-export async function refreshKaraTags() {
-	await Promise.all([
-		db().query('REFRESH MATERIALIZED VIEW author'),
-		db().query('REFRESH MATERIALIZED VIEW creator'),
-		db().query('REFRESH MATERIALIZED VIEW group_tags'),
-		db().query('REFRESH MATERIALIZED VIEW language'),
-		db().query('REFRESH MATERIALIZED VIEW singer'),
-		db().query('REFRESH MATERIALIZED VIEW misc'),
-		db().query('REFRESH MATERIALIZED VIEW songtype'),
-		db().query('REFRESH MATERIALIZED VIEW songwriter')
-	]);
 }

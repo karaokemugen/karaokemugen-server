@@ -1,6 +1,7 @@
 import {publishInstance, getInstance} from '../services/shortener';
+import { Router } from 'express';
 
-export default function ShortenerController(router) {
+export default function ShortenerController(router: Router) {
 	router.route('/shortener')
 		.get(async (req, res) => {
 			try {

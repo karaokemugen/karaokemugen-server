@@ -1,11 +1,13 @@
 import {createKara} from '../services/kara_import';
 import multer from 'multer';
-import {getConfig} from '../utils/config';
+import {getConfig} from '../lib/utils/config';
 import {resolve} from 'path';
+import { Router } from 'express';
+import { getState } from '../utils/state';
 
-export default function KIController(router) {
+export default function KIController(router: Router) {
 	const conf = getConfig();
-	let upload = multer({ dest: resolve(conf.appPath,conf.Path.Temp)});
+	let upload = multer({ dest: resolve(getState().appPath,conf.System.Path.Temp)});
 
 	router.post('/karas', async (req, res) => {
 		try {

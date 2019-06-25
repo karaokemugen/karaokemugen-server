@@ -1,109 +1,78 @@
-/** Centralized configuration management for Karaoke Mugen. */
-
 import {resolve} from 'path';
-import {safeLoad} from 'js-yaml';
-import osLocale from 'os-locale';
-import i18n from 'i18n';
+import {asyncRequired} from '../lib/utils/files';
+import {exit} from '../';
 import logger from 'winston';
+import { getState, setState } from './state';
+import {Config} from '../types/config';
+import {BinariesConfig} from '../types/config';
+import { setConfigConstraints, configureLocale, loadConfigFiles, getConfig, configureIDs } from '../lib/utils/config';
+import { configConstraints, defaults } from './default_settings';
+import { configureLogger } from '../lib/utils/logger';
 import uuidV4 from 'uuid/v4';
-import {check} from './validators';
-import {asyncExists, asyncReadFile, asyncRequired} from './files';
-import {configConstraints, defaults} from './default_settings';
-import {configureLogger} from './logger';
-import merge from 'lodash.merge';
-import testJSON from 'is-valid-json';
 
-/** Object containing all config */
-let config: any = {};
-let configFile = 'config.yml';
+async function checkBinaries(config: Config): Promise<BinariesConfig> {
 
-/**
- * We return a copy of the configuration data so the original one can't be modified
- * without passing by this module's functions.
- */
-export function getConfig() {
-	return {...config};
-}
+	const binariesPath = configuredBinariesForSystem(config);
+	let requiredBinariesChecks = [];
+	requiredBinariesChecks.push(asyncRequired(binariesPath.ffmpeg));
 
-export function sanitizeConfig(conf) {
-	for (const setting of Object.keys(conf)) {
-		if (/^\+?(0|[1-9]\d*)$/.test(conf[setting])) {
-			conf[setting] = parseInt(conf[setting], 10);
-		}
+	try {
+		await Promise.all(requiredBinariesChecks);
+	} catch (err) {
+		binMissing(binariesPath, err);
+		exit(1);
 	}
-	return conf;
+
+	return binariesPath;
 }
 
-export function profile(func) {
-	if (config.optProfiling) logger.profile(func);
+function configuredBinariesForSystem(config: Config): BinariesConfig {
+	switch (process.platform) {
+	case 'win32':
+		return {
+			ffmpeg: resolve(getState().appPath, config.System.Binaries.ffmpeg.Windows),
+		};
+	case 'darwin':
+		return {
+			ffmpeg: resolve(getState().appPath, config.System.Binaries.ffmpeg.OSX),
+		};
+	default:
+		return {
+			ffmpeg: resolve(getState().appPath, config.System.Binaries.ffmpeg.Linux)
+		};
+	}
 }
 
-export function verifyConfig(conf) {
-	const validationErrors = check(conf, configConstraints);
-	if (validationErrors) throw `Config is not valid: ${JSON.stringify(validationErrors)}`;
+function binMissing(binariesPath: any, err: string) {
+	logger.error('[BinCheck] One or more binaries could not be found! (' + err + ')');
+	logger.error('[BinCheck] Paths searched : ');
+	logger.error('[BinCheck] ffmpeg : ' + binariesPath.ffmpeg);
+	logger.error('[BinCheck] Exiting...');
+	console.log('\n');
+	console.log('One or more binaries needed by Karaoke Mugen could not be found.');
+	console.log('Check the paths above and make sure these are available.');
+	console.log('Edit your config.yml and set System.Binaries.ffmpeg correctly for your OS.');
+	console.log('You can download ffmpeg for your OS from http://ffmpeg.org');
 }
 
 /** Initializing configuration */
-export async function initConfig(appPath, argv) {
-	if (argv.config) configFile = argv.config;
-	await configureLogger(appPath, !!argv.debug);
-
-	config = {...config, appPath: appPath};
-	config = {...config, os: process.platform};
-	await loadConfigFiles(appPath);
-	if (config.JwtSecret === 'Change me') setConfig( {JwtSecret: uuidV4() });
-	if (config.ServerID === 'Change me') setConfig( {ServerID: uuidV4() });
-	configureLocale();
-	return getConfig();
-}
-
-function configureLocale() {
-	i18n.configure({
-		directory: resolve(__dirname, '../_locales'),
-		defaultLocale: 'en',
-		cookie: 'locale',
-		register: global
-	});
-	const detectedLocale = osLocale.sync().substring(0, 2);
-	i18n.setLocale(detectedLocale);
-	config = {...config, locale: detectedLocale};
-}
-
-async function loadConfigFiles(appPath) {
-	const overrideConfigFile = resolve(appPath, configFile);
-	const databaseConfigFile = resolve(appPath, 'database.json');
-	config = merge(config,defaults);
-	config.appPath = appPath;
-	if (await asyncExists(overrideConfigFile)) await loadConfig(overrideConfigFile);
-	const dbConfig = await loadDBConfig(databaseConfigFile);
-	config.Database = {...dbConfig.prod};
-}
-
-async function loadDBConfig(configFile) {
-	if (!await asyncExists(configFile)) throw 'Unable to find database.json!';
-	const configData: any = await asyncReadFile(configFile, 'utf-8');
-	if (!testJSON(configData)) {
-		logger.error('[Config] Database config file is not valid JSON');
-		throw 'Syntax error in database.json';
+export async function initConfig(argv: any) {
+	let appPath = getState().appPath;
+	setConfigConstraints(configConstraints);
+	await configureLogger(appPath, !!argv.debug, true);
+	await configureLocale();
+	await loadConfigFiles(appPath, argv.config, defaults);
+	const conf = getConfig();
+	logger.debug('[Launcher] Checking if binaries are available');
+	setState({binPath: await checkBinaries(conf)});
+	if (conf.App.JwtSecret === 'Change me' || conf.App.InstanceID === 'Change me') {
+		console.log('ERROR : Your InstanceID and/or JwtSecret are not set.');
+		console.log('You MUST set a JwtSecret other than "Change me"');
+		console.log('You MUST set an Instance ID as a UUID v4. Here is a generated one for you : ' + uuidV4());
+		console.log('Set them in your config.yml file, see the sample provided for help.');
+		console.log('Aborting...');
+		exit(1);
 	}
-	return JSON.parse(configData);
-}
-
-async function loadConfig(configFile) {
-	logger.debug(`[Config] Reading configuration file ${configFile}`);
-	await asyncRequired(configFile);
-	const content = await asyncReadFile(configFile, 'utf-8');
-	const parsedContent = safeLoad(content);
-	const newConfig = merge(config, parsedContent);
-	try {
-		verifyConfig(newConfig);
-		config = merge(config, newConfig);
-	} catch(err) {
-		throw err;
-	}
-}
-
-export async function setConfig(configPart) {
-	config = merge(config, configPart);
+	await configureIDs();
 	return getConfig();
 }

@@ -3,12 +3,12 @@ import passport from 'passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import LocalStrategy from 'passport-local';
 import { findUserByName, hashPassword } from '../services/user';
-import { getConfig } from './config';
+import { getConfig } from '../lib/utils/config';
 
 export const requireAuth = passport.authenticate('jwt', { session: false });
 
 export const requireValidUser = (req, res, next) => {
-	const token = decode(req.get('authorization'), getConfig().JwtSecret);
+	const token = decode(req.get('authorization'), getConfig().App.JwtSecret);
 	req.authToken = token;
 	findUserByName(token.username)
 		.then((user) => {
@@ -25,7 +25,7 @@ export const requireValidUser = (req, res, next) => {
 
 
 export const requireAdmin = (req, res, next) => {
-	const token = decode(req.get('authorization'), getConfig().JwtSecret);
+	const token = decode(req.get('authorization'), getConfig().App.JwtSecret);
 	if (token.role === 'admin') {
 		next();
 	} else {
@@ -34,12 +34,10 @@ export const requireAdmin = (req, res, next) => {
 
 };
 
-export function configurePassport(conf?: any) {
-
-	const resolvedConf = conf || getConfig();
+export function configurePassport() {
 
 	const localLogin = localPassportStrategy();
-	const jwtLogin = jwtPassportStrategy(resolvedConf);
+	const jwtLogin = jwtPassportStrategy();
 
 	passport.use(jwtLogin);
 	passport.use(localLogin);
@@ -66,11 +64,11 @@ function localPassportStrategy() {
 }
 
 
-function jwtPassportStrategy(config) {
+function jwtPassportStrategy() {
 
 	const jwtOptions = {
 		jwtFromRequest: ExtractJwt.fromHeader('authorization'),
-		secretOrKey: config.JwtSecret
+		secretOrKey: getConfig().App.JwtSecret
 	};
 
 	return new Strategy(jwtOptions, function (payload, done) {

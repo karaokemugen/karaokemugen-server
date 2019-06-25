@@ -1,6 +1,7 @@
 import {getRequestedStats, getFavoritesStats, getPlayedStats, processStatsPayload} from '../services/stats';
+import { Router } from 'express';
 
-export default function statsController(router) {
+export default function statsController(router: Router) {
 	router.post('/stats', async (req, res) => {
 		try {
 			await processStatsPayload(req.body);

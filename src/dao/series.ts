@@ -1,29 +1,22 @@
-import {paramWords, langSelector, db} from './database';
+import {paramWords, langSelector, db} from '../lib/dao/database';
 import {pg as yesql} from 'yesql';
 const sql = require('./sqls/series');
 
-export async function refreshSeries() {
-	await db().query('REFRESH MATERIALIZED VIEW all_series');
+export async function selectSerieByName(name: string) {
+	const res = await db().query(yesql(sql.getSeriesByName)({
+		name: name
+	}));
+	return res.rows[0];
 }
 
-export async function refreshKaraSeries() {
-	await db().query('REFRESH MATERIALIZED VIEW series_i18n');
-	await db().query('REFRESH MATERIALIZED VIEW all_kara_series');
-}
-
-export async function refreshKaraSeriesLang() {
-	await db().query('REFRESH MATERIALIZED VIEW all_kara_serie_langs');
-}
-
-
-export async function countSeries(filter) {
+export async function countSeries(filter: string): Promise<number> {
 	const filterClauses = filter ? buildClausesSeries(filter) : {sql: [], params: {}};
 	const query = sql.countKaras(filterClauses.sql);
 	const res = await db().query(yesql(query)(filterClauses.params));
 	return res.rows[0].count;
 }
 
-export async function selectAllSeries(filter?, lang?, from = 0, size = 99999999999999999) {
+export async function selectAllSeries(filter?: string, lang?: string, from = 0, size = 0) {
 
 	const filterClauses = filter ? buildClausesSeries(filter) : {sql: [], params: {}};
 	let offsetClause = '';
@@ -40,7 +33,7 @@ export async function selectAllSeries(filter?, lang?, from = 0, size = 999999999
 	return series.rows;
 }
 
-export function buildClausesSeries(words) {
+export function buildClausesSeries(words: string) {
 	const params = paramWords(words);
 	let sql = [];
 	for (const i in words.split(' ').filter(s => !('' === s))) {

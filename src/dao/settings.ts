@@ -1,4 +1,4 @@
-import {db} from './database';
+import {db} from '../lib/dao/database';
 const sql = require('./sqls/settings');
 
 export async function selectSettings() {
@@ -6,7 +6,7 @@ export async function selectSettings() {
 	return res.rows;
 }
 
-export async function upsertSetting(setting, value) {
+export async function upsertSetting(setting: string, value: any) {
 	return await db().query(sql.upsertSetting, [
 		setting,
 		value

@@ -1,16 +1,17 @@
 import { selectAllFavorites, deleteFavorite, selectFavorites, insertFavorite } from '../dao/favorites';
-import { getConfig } from '../utils/config';
+import { getConfig } from '../lib/utils/config';
 import { replaceFavorites } from '../dao/stats';
+import { Token } from '../lib/types/user';
 
-export async function getFavorites(token) {
+export async function getFavorites(token: Token) {
 	return await selectFavorites(token.username);
 }
 
-export async function addFavorite(token, kid) {
+export async function addFavorite(token: Token, kid: string) {
 	return await insertFavorite(token.username, kid);
 }
 
-export async function removeFavorite(token, kid) {
+export async function removeFavorite(token: Token, kid: string) {
 	return await deleteFavorite(token.username, kid);
 }
 
@@ -22,5 +23,5 @@ export async function initFavorites() {
 
 async function updateFavoritesStats() {
 	const favorites = await selectAllFavorites();
-	if (favorites.length > 0) await replaceFavorites(getConfig().ServerID, favorites);
+	if (favorites.length > 0) await replaceFavorites(getConfig().App.InstanceID, favorites);
 }
