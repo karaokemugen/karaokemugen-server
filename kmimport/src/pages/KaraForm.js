@@ -9,7 +9,6 @@ class KaraForm extends Component {
 		super(props);
 		this.state = {
 			seriesRequired: true,
-			overwrite: false,
 			subfileList: [],
 			mediafileList: [],
 			singers: [],

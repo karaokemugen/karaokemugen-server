@@ -16,10 +16,10 @@ export async function createKara(kara: Kara) {
 	const state = getState();
 	let newKara: NewKara;
 	try {
-		newKara = await generateKara(kara, true,
-			resolve(state.appPath, conf.System.Path.Import, 'karaokes/'),
-			resolve(state.appPath, conf.System.Path.Import, 'medias/'),
-			resolve(state.appPath, conf.System.Path.Import, 'lyrics/')
+		newKara = await generateKara(kara,
+			resolve(state.appPath, conf.System.Path.Import),
+			resolve(state.appPath, conf.System.Path.Import),
+			resolve(state.appPath, conf.System.Path.Import)
 		);
 	} catch(err) {
 		logger.error(`[KaraImport] Error importing kara : ${err}. Kara Data ${JSON.stringify(kara)}`);

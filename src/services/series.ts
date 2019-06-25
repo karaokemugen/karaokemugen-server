@@ -9,7 +9,7 @@ export async function getOrAddSerieID(seriesObj: Series) {
 	const serie = await selectSerieByName(seriesObj.name);
 	if (serie) return serie.sid;
 	// If no serie found, create it and return the sid we generated
-	await writeSeriesFile(seriesObj, resolve(getState().appPath, getConfig().System.Path.Import, 'series/'));
+	await writeSeriesFile(seriesObj, resolve(getState().appPath, getConfig().System.Path.Import));
 	return seriesObj.sid;
 }
 
