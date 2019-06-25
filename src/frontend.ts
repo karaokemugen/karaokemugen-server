@@ -78,8 +78,8 @@ export function initFrontend(listenPort: number) {
 		res.sendFile(resolve(state.appPath, 'kmimport/build/index.html'));
 	});
 
-	mainApp.use('/downloads/karas', express.static(resolvedPathKaras()[0]));
-	mainApp.use('/downloads/karaokes', express.static(resolve(resolvedPathKaras()[0], '../karaokes/')));
+	mainApp.use('/downloads/karaokes', express.static(resolvedPathKaras()[0]));
+	mainApp.use('/downloads/karas', express.static(resolve(resolvedPathKaras()[0], '../karas/')));
 	mainApp.use('/downloads/lyrics', express.static(resolvedPathSubs()[0]));
 	mainApp.use('/downloads/medias', express.static(resolvedPathMedias()[0]));
 	mainApp.use('/downloads/series', express.static(resolvedPathSeries()[0]));
