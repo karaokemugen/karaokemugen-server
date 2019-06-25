@@ -40,9 +40,9 @@ export function initFrontend(listenPort: number) {
 		return false;
 	});
 	app.use(helmet());
-	app.use(bodyParser.json({limit: '100mb'})); // support json encoded bodies
+	app.use(bodyParser.json({limit: '1000mb'})); // support json encoded bodies
 	app.use(bodyParser.urlencoded({
-		limit: '100mb',
+		limit: '1000mb',
 		extended: true
 	})); // support encoded bodies
 
