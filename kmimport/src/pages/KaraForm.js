@@ -23,14 +23,6 @@ class KaraForm extends Component {
 		};
 	}
 
-	emptyForm() {
-		this.setState({
-			subfileList: [],
-			mediafileList: []
-		});
-		this.props.form.resetFields();
-	}
-
 	componentDidMount() {
 		this.onChangeType(this.state.songtype);
 		this.props.form.validateFields();
@@ -45,7 +37,10 @@ class KaraForm extends Component {
 						title: global.t('ADD_SUCCESS'),
 						content: <div><label>{global.t('ADD_SUCCESS_DESCRIPTION')}</label><a href={response.data}>{response.data}</a></div>,
 					  });
-					  this.emptyForm();
+					  this.setState({
+						subfileList: [],
+						mediafileList: []
+					});
 				  })
 				  .catch((error) => {
 					Modal.error({
