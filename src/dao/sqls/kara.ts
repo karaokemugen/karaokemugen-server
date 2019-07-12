@@ -1,3 +1,5 @@
+import { LangClause } from "../../lib/types/database";
+
 // SQL for kara management
 
 export const countKaras = (filterClauses, typeClauses) => `
@@ -8,7 +10,7 @@ WHERE 1 = 1
   ${typeClauses}
 `;
 
-export const getAllKaras = (filterClauses, lang, typeClauses, orderClauses, limitClause, offsetClause) => `SELECT
+export const getAllKaras = (filterClauses: string[], lang: LangClause, typeClauses: string, orderClauses: string, limitClause: string, offsetClause: string) => `SELECT
   ak.kid AS kid,
   ak.title AS title,
   ak.songorder AS songorder,
@@ -18,6 +20,7 @@ export const getAllKaras = (filterClauses, lang, typeClauses, orderClauses, limi
 	  ak.serie) AS serie,
   ak.serie AS serie_orig,
   ak.serie_altname AS serie_altname,
+  ak.serie_i18n AS serie_i18n,
   ak.seriefiles AS seriefiles,
   ak.sid AS sid,
   ak.subfile AS subfile,
@@ -45,7 +48,7 @@ LEFT OUTER JOIN serie_lang AS sl_fall ON sl_fall.fk_sid = ks_fall.fk_sid AND sl_
 WHERE 1 = 1
   ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
   ${typeClauses}
-GROUP BY ak.kid, ak.title, ak.songorder, ak.serie, ak.sid, ak.serie_altname,  ak.seriefiles, ak.subfile, ak.singers, ak.songtypes, ak.creators, ak.songwriters, ak.year, ak.languages, ak.authors, ak.misc_tags, ak.mediafile, ak.karafile, ak.duration, ak.gain, ak.created_at, ak.modified_at, ak.mediasize, ak.groups, ak.languages_sortable, ak.songtypes_sortable, ak.singers_sortable
+GROUP BY ak.kid, ak.title, ak.songorder, ak.serie, ak.sid, ak.serie_altname, ak.serie_i18n, ak.seriefiles, ak.subfile, ak.singers, ak.songtypes, ak.creators, ak.songwriters, ak.year, ak.languages, ak.authors, ak.misc_tags, ak.mediafile, ak.karafile, ak.duration, ak.gain, ak.created_at, ak.modified_at, ak.mediasize, ak.groups, ak.languages_sortable, ak.songtypes_sortable, ak.singers_sortable
 ORDER BY ${orderClauses} ak.languages_sortable, ak.serie IS NULL, lower(unaccent(serie)), ak.songtypes_sortable DESC, ak.songorder, lower(unaccent(singers_sortable)), lower(unaccent(ak.title))
 ${limitClause}
 ${offsetClause}
