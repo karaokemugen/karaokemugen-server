@@ -20,6 +20,7 @@ export const getAllKaras = (filterClauses: string[], lang: LangClause, typeClaus
 	  ak.serie) AS serie,
   ak.serie AS serie_orig,
   ak.serie_altname AS serie_altname,
+  ak.serie_i18n AS serie_i18n,
   ak.seriefiles AS seriefiles,
   ak.sid AS sid,
   ak.subfile AS subfile,
