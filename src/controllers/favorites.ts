@@ -1,4 +1,4 @@
-import { requireAuth, requireValidUser } from '../utils/passport_manager';
+import {requireAuth, requireValidUser} from './middlewares/auth';
 import { getFavorites, addFavorite, removeFavorite } from '../services/favorites';
 import { Router } from 'express';
 

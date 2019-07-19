@@ -23,8 +23,6 @@
 		"pretty": true,
 		"removeComments": true,
 		"downlevelIteration": true,
-		"listFiles": true,
-		"listEmittedFiles": true,
 		"noUnusedParameters": true,
 		"noUnusedLocals": true
 	},

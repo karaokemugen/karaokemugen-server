@@ -1,43 +1,31 @@
-import langs from 'langs';
-import {join} from 'path';
-import {getSupportedLangs, getLanguage} from 'iso-countries-languages';
-import {selectTags} from '../dao/tag';
-import { KaraList } from '../lib/types/kara';
+import {selectTags, selectTagByNameAndType} from '../dao/tag';
+import { TagParams, TagList, Tag } from '../lib/types/tag';
+import { DBTag } from '../lib/types/database/tag';
+import { writeTagFile } from '../lib/dao/tagfile';
+import { resolvedPathImport } from '../lib/utils/config';
 
-export async function getTags(filter: string, type: string, from = 0, size = 0): Promise<KaraList> {
-	let tags = await selectTags(filter, type, +from, +size);
-	tags = await translateTags(tags);
+export function formatTagList(tagList: DBTag[], from: number, count: number): TagList {
 	return {
-		content: tags,
 		infos: {
-			count: tags.length,
-			from: +from,
-			to: +from + tags.length
-		}
+			count: count,
+			from: from,
+			to: from + tagList.length
+		},
+		content: tagList
 	};
 }
 
+export async function getTags(params: TagParams) {
+	const tags = await selectTags(params);
+	return formatTagList(tags.slice(params.from || 0,
+		(params.from || 0) + params.size || 999999999), params.from || 0, tags.length);
+}
 
-export function translateTags(taglist: any[]) {
-	const translations = require(join(__dirname,'../locales/'));
-	// We need to read the detected locale in ISO639-1
-	taglist.forEach((tag, index) => {
-		let i18nString: string;
-		if (tag.type === 5) {
-			const langdata = langs.where('2B', tag.name);
-			if (!langdata) i18nString = 'UNKNOWN_LANGUAGE';
-			if (tag.name === 'und') i18nString = 'UNDEFINED_LANGUAGE';
-			if (tag.name === 'zxx') i18nString = 'NO_LANGUAGE';
-			if (i18nString) {
-				for (const language of Object.keys(translations)) {
-					taglist[index].i18n[language] = translations[language][i18nString];
-				}
-			} else {
-				for (const lang of getSupportedLangs()) {
-					taglist[index].i18n[lang] = getLanguage(lang, langdata[1]);
-				}
-			}
-		}
-	});
-	return taglist;
+export async function getOrAddTagID(tagObj: Tag) {
+	const tag = await selectTagByNameAndType(tagObj.name, tagObj.types);
+	await writeTagFile(tagObj, resolvedPathImport());
+
+	return tag.tid;
+	// If no serie found, create it and return the sid we generated
+
 }

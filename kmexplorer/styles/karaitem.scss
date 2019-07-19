@@ -105,6 +105,36 @@
         background: $kara_item_tag_misc_bg;
         color: $kara_item_tag_misc_color;
       }
+
+      &[data-type="group"] {
+        order:4;
+        background: $kara_item_tag_group_bg;
+        color: $kara_item_tag_group_color;
+      }
+      &[data-type="family"] {
+        order:5;
+        background: $kara_item_tag_family_bg;
+        color: $kara_item_tag_family_color;
+      }
+      &[data-type="origin"] {
+        order:6;
+        background: $kara_item_tag_origin_bg;
+        color: $kara_item_tag_origin_color;
+      }
+      &[data-type="genre"] {
+        order:7;
+        background: $kara_item_tag_genre_bg;
+        color: $kara_item_tag_genre_color;
+      }
+      &[data-type="platform"] {
+        order:8;
+        background: $kara_item_tag_platform_bg;
+        color: $kara_item_tag_platform_color;
+      }
+      &[data-type="songtype"] {
+        order:2;
+      }
+
       &[data-type="author"] {
         background: $kara_item_tag_author_bg;
         color: $kara_item_tag_author_color;

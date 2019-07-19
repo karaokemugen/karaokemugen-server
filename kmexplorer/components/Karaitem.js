@@ -17,8 +17,8 @@ class Karaitem extends React.Component {
 
 		let filterTools = this.props.filterTools;
 
-		let kara = this.props.data
-		//console.log(kara);
+		const kara = this.props.data
+		const tags = this.props.tags
 
 		let renderMode = this.props.mode ? this.props.mode : 'compact';
 
@@ -27,59 +27,106 @@ class Karaitem extends React.Component {
 			return "/karas?"+querystring.stringify(filterTools.reset().addTag(type,value).getQuery());
 		}
 
+		let getI18nTagname = (v) => {
+			let final_name = null;
+			let fallback = null;
+			if(tags)
+			{
+				let tag =  this.props.tags[v.tid]
+				if(tag)
+					return tag.i18n[isoLanguages("iso3",i18n.language)] || (tag.i18n['eng'] || tag.name)
+			}
+			return v.name;
+		}
+
+		//console.log(kara);
+
+		let r18 = false;
+
 		//console.log(kara);
 
 		let singers = kara.singers.map((v,i) => {
 			if(v.name!=='NO_TAG')
 			{
-				let url = quickTagUrl('singer',v.pk_id_tag);
-				return <Link href={url} key={'singer_'+i}><a data-type="singer" data-id={v.pk_id_tag}>{icons.singer} {v.name}</a></Link>
+				let url = quickTagUrl('singer',v.tid);
+				return <Link href={url} key={'singer_'+i}><a data-type="singer" data-id={v.tid}>{icons.singer} {v.name}</a></Link>
 			}
 		});
 		let creators = kara.creators.map((v,i) => {
 			if(v.name!=='NO_TAG')
 			{
-				let url = quickTagUrl('creator',v.pk_id_tag);
-				return <Link href={url} key={'creator_'+i}><a data-type="creator" data-id={v.pk_id_tag}>{icons.creator} {v.name}</a></Link>
+				let url = quickTagUrl('creator',v.tid);
+				return <Link href={url} key={'creator_'+i}><a data-type="creator" data-id={v.tid}>{icons.creator} {v.name}</a></Link>
 			}
 		});
 		let authors = kara.authors.map((v,i) => {
 			if(v.name!=='NO_TAG')
 			{
-				let url = quickTagUrl('author',v.pk_id_tag);
-				return <Link href={url} key={'author_'+i}><a data-type="author" data-id={v.pk_id_tag}>{icons.author} {v.name}</a></Link>
+				let url = quickTagUrl('author',v.tid);
+				return <Link href={url} key={'author_'+i}><a data-type="author" data-id={v.tid}>{icons.author} {v.name}</a></Link>
 			}
 		});
 		let songwriters = kara.songwriters.map((v,i) => {
 			if(v.name!=='NO_TAG')
 			{
-				let url = quickTagUrl('songwriter',v.pk_id_tag);
-				return <Link href={url} key={'songwriters'+i}><a data-type="songwriter" data-id={v.pk_id_tag}>{icons.songwriter} {v.name}</a></Link>
+				let url = quickTagUrl('songwriter',v.tid);
+				return <Link href={url} key={'songwriters'+i}><a data-type="songwriter" data-id={v.tid}>{icons.songwriter} {v.name}</a></Link>
 			}
 		});
-		let languages = kara.languages.map((v,i) => {
+		let languages = kara.langs.map((v,i) => {
 			if(v.name!=='NO_TAG' && v.name!=='mul')
 			{
-				let url = quickTagUrl('language',v.pk_id_tag);
-				return <Link href={url} key={'language'+i}><a data-type="language" data-id={v.pk_id_tag}>{icons.language} {isoLanguages(v.name, i18n.language)}</a></Link>
+				let url = quickTagUrl('language',v.tid);
+				return <Link href={url} key={'language'+i}><a data-type="language" data-id={v.tid}>{icons.language} {isoLanguages(v.name, i18n.language)}</a></Link>
 			}
 		});
-		let r18 = false;
-		let tags = kara.misc_tags.map((v,i) => {
+		let songtypes = kara.songtypes.map((v,i) => {
 			if(v.name!=='NO_TAG')
 			{
-				if (v.name === 'TAG_R18')
-					r18 = true;
-				let url = quickTagUrl('tag',v.pk_id_tag);
-				return <Link href={url} key={'tags'+i}><a data-type="misc" data-id={v.pk_id_tag}>{icons.tag} {i18n.t("tag:misc."+v.name)}</a></Link>
+				let url = quickTagUrl('songtype',v.tid);
+				return <Link href={url} key={'songtype_'+i}><a data-type="songtype" data-id={v.tid}>{icons.songtype} {getI18nTagname(v)} {kara.songorder}</a></Link>
 			}
 		});
-
-		let songtypes = kara.songtype.map((v,i) => {
+		let miscs = kara.misc.map((v,i) => {
 			if(v.name!=='NO_TAG')
 			{
-				let url = quickTagUrl('tag',v.pk_id_tag);
-				return <span key={v.pk_id_tag}>{i18n.t("tag:songtype."+v.name)}</span>
+				let url = quickTagUrl('misc',v.tid);
+				return <Link href={url} key={'misc_'+i}><a data-type="misc" data-id={v.tid}>{icons.misc} {getI18nTagname(v)}</a></Link>
+			}
+		});
+		let groups = kara.groups.map((v,i) => {
+			if(v.name!=='NO_TAG')
+			{
+				let url = quickTagUrl('group',v.tid);
+				return <Link href={url} key={'group_'+i}><a data-type="group" data-id={v.tid}>{icons.group} {getI18nTagname(v)}</a></Link>
+			}
+		});
+		let families = kara.families.map((v,i) => {
+			if(v.name!=='NO_TAG')
+			{
+				let url = quickTagUrl('family',v.tid);
+				return <Link href={url} key={'family_'+i}><a data-type="family" data-id={v.tid}>{icons.family} {getI18nTagname(v)}</a></Link>
+			}
+		});
+		let origins = kara.origins.map((v,i) => {
+			if(v.name!=='NO_TAG')
+			{
+				let url = quickTagUrl('origin',v.tid);
+				return <Link href={url} key={'origin_'+i}><a data-type="origin" data-id={v.tid}>{icons.origin} {getI18nTagname(v)}</a></Link>
+			}
+		});
+		let genres = kara.genres.map((v,i) => {
+			if(v.name!=='NO_TAG')
+			{
+				let url = quickTagUrl('genre',v.tid);
+				return <Link href={url} key={'genre_'+i}><a data-type="genre" data-id={v.tid}>{icons.genre} {getI18nTagname(v)}</a></Link>
+			}
+		});
+		let platforms = kara.platforms.map((v,i) => {
+			if(v.name!=='NO_TAG')
+			{
+				let url = quickTagUrl('platform',v.tid);
+				return <Link href={url} key={'platform_'+i}><a data-type="platform" data-id={v.tid}>{icons.platform} {v.name}</a></Link>
 			}
 		});
 
@@ -110,16 +157,21 @@ class Karaitem extends React.Component {
 			<div className="kmx-kara-item" data-mode={renderMode}>
 				{caption}
 				<h2 className="title"><Link href={'/kara?kid='+kara.kid} key="detail"><a>{kara.title}</a></Link></h2>
-				<p className="songtypes">{songtypes} {kara.songorder}</p>
 				<div className="tags">
+					{songtypes}
 					{languages}
-					{tags}
 					{serie_name ? (<Link href={quickTagUrl('serie',serie_id)} key="serie"><a data-type="serie" data-id={serie_id}><i className="fa fa-tv"></i> {serie_name}</a></Link>) : null}
 					{kara.year ? (<Link href={quickTagUrl('year',kara.year)} key="year"><a data-type="year" ><i className="fa fa-calendar"></i> {kara.year}</a></Link>) : null }
 					{singers}
 					{songwriters}
 					{creators}
 					{authors}
+					{miscs}
+					{groups}
+					{families}
+					{origins}
+					{genres}
+					{platforms}
 				</div>
 			</div>
 		)

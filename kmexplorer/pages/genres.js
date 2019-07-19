@@ -8,6 +8,7 @@ import DedicatedTagtList from '../components/DedicatedTagList';
 import tagsMap from '../components/tagsMap.js';
 import querystring from 'querystring';
 import FilterTools from '../utils/filterTools';
+import isoLanguages from '../components/isoLanguages';
 const filterTools = new FilterTools();
 
 
@@ -55,11 +56,12 @@ class Page extends React.Component {
 		let tagList = [];
 		for (let id in this.props.tags) {
 			let tag = this.props.tags[id];
-			if(tag.code=="songtype")
+			if(tag.code=="genre")
 			{
+				if (tag.name === 'NO_TAG')
+					tag.name = i18n.t('tag:no_tag');
 				kmax = Math.max(kmax,tag.karacount);
-				tag.real_name = i18n.t('tag:songtype.'+tag.name);
-				if(keywords.length==0 || filterTools.keywordSearch(tag.real_name,keywords))
+				if(keywords.length==0 || filterTools.keywordSearch(tag.name,keywords))
 					tagList.push(tag);
 			}
 		}
@@ -67,10 +69,10 @@ class Page extends React.Component {
 
 		tagList = tagList.map(function(tag){
 			return {
-				key: tag.tag_id,
-				name : tag.real_name,
+				key: tag.tid,
+				name : tag.i18n[isoLanguages("iso3",i18n.language)] || (tag.i18n['eng'] || tag.name),
 				karacount : tag.karacount,
-				link : "/karas?"+querystring.stringify(filterTools.clear().addTag('songtype',tag.tag_id,tag.slug).getQuery()),
+				link : "/karas?"+querystring.stringify(filterTools.clear().addTag('genre',tag.tid,tag.slug).getQuery()),
 				height : 100 * tag.karacount / kmax
 			};
 		})
@@ -78,7 +80,7 @@ class Page extends React.Component {
 		return (
 			<div>
 				<Head>
-					<title key="title">{i18n.t('sitename')} - {i18n.t('category.songtypes')}</title>
+					<title key="title">{i18n.t('sitename')} - {i18n.t('category.genres')}</title>
 				</Head>
 
 				<div className="kmx-filter-keyword">
@@ -87,7 +89,29 @@ class Page extends React.Component {
 						<button type="submit"><i className="fa fa-search"></i></button>
 					</form>
 				</div>
-				<DedicatedTagtList type="songtypes" tags={tagList} />
+
+				<div className="kmx-filter-line">
+					<Pagination
+						total={total}
+						size={pageSize}
+						current={page}
+						renderUrl={(i) => { return "/genres?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
+						/>
+					<div className="kmx-filter-order">
+						<label>{i18n.t('form.order_by')} :</label>
+						<div key="alpha" onClick={(event) => this.updateOrder('alpha')} className={this.state.orderBy=="alpha" ? "active":""} >A-Z</div>
+						<div key="quantity" onClick={(event) => this.updateOrder('quantity')} className={this.state.orderBy=="quantity" ? "active":""} >{i18n.t('form.kara_count')}</div>
+					</div>
+				</div>
+
+				<DedicatedTagtList type="genres" tags={tagList} pageSize={pageSize} page={page} orderBy={this.state.orderBy}/>
+
+				<Pagination
+					total={total}
+					size={pageSize}
+					current={page}
+					renderUrl={(i) => { return "/genres?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
+					/>
 			</div>
 			)
 	}

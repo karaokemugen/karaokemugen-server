@@ -4,24 +4,28 @@
     "authors": "Authors",
     "creator": "Creator",
     "creators": "Creators",
-    "group": "Group",
+    "families": "Families",
+    "genres": "Genres",
+    "groups": "Groups",
     "home": "Home",
+    "kara_import": "Submit a kara",
     "karas": "Karas",
     "language": "Language",
     "languages": "Languages",
+    "miscs": "Miscs",
+    "origins": "Origins",
+    "platforms": "Platforms",
     "serie": "Serie",
     "series": "Series",
     "singer": "Singer",
     "singers": "Singers",
-    "songtype": "Type",
     "songtypes": "Types",
     "songwriter": "Songwriter",
     "songwriters": "Songwriters",
     "tag": "Tag",
     "tags": "Tags",
     "year": "Year",
-    "years": "Years",
-    "kara_import": "Submit a kara"
+    "years": "Years"
   },
   "duration": {
     "days": "days",
@@ -29,17 +33,13 @@
     "minutes": "minutes",
     "seconds": "seconds"
   },
-  "stats": {
-    "all_duration": "Duration of all karas",
-    "last_generation" : "Last update"
-  },
   "error-with-status": null,
   "error-without-status": null,
   "form": {
-    "karas_keywords_placeholder": "title, singer, serie, ...",
-    "tags_keywords_placeholder": "Filter by keywords",
-    "order_by": "Order by",
     "kara_count": "Kara count",
+    "karas_keywords_placeholder": "title, singer, serie, ...",
+    "order_by": "Order by",
+    "tags_keywords_placeholder": "Filter by keywords",
     "updated": "Updated"
   },
   "kara": {
@@ -69,5 +69,9 @@
     "no_data": "No result",
     "update_in_progress": "Update in progress"
   },
-  "sitename": "Karaoke Mugen"
+  "sitename": "Karaoke Mugen",
+  "stats": {
+    "all_duration": "Duration of all karas",
+    "last_generation": "Last update"
+  }
 }

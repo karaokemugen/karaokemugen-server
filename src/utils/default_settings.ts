@@ -33,6 +33,7 @@ export const defaults = {
 			Lyrics: ['app/data/lyrics'],
 			Medias: ['app/data/medias'],
 			Series: ['app/data/series'],
+			Tags: ['app/data/tags'],
 			Temp: 'app/temp',
 			Import: 'app/inbox',
 			Avatars: 'app/avatars',

@@ -22,10 +22,11 @@ export async function selectAllKaras(params: KaraParams) {
 	let orderClauses = '';
 	let limitClause = '';
 	let offsetClause = '';
+	let havingClause = '';
 	if (params.mode === 'recent') orderClauses = 'created_at DESC, ';
 	if (params.from > 0) offsetClause = `OFFSET ${params.from} `;
 	if (params.size > 0) limitClause = `LIMIT ${params.size} `;
-	const query = sql.getAllKaras(filterClauses.sql, langSelector(params.lang), typeClauses, orderClauses, limitClause, offsetClause);
+	const query = sql.getAllKaras(filterClauses.sql, langSelector(params.lang), typeClauses, orderClauses, havingClause, limitClause, offsetClause);
 	const res = await db().query(yesql(query)(filterClauses.params));
 	return res.rows;
 }

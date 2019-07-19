@@ -22,6 +22,8 @@ module.exports = {
         ns: [
             'common',
             'tag',
+            'footer',
+            'Namespace',
         ],
         defaultLng: 'en',
         defaultNs: 'common',

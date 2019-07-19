@@ -4,42 +4,42 @@
     "authors": "Auteurs",
     "creator": "Studio/Créateur",
     "creators": "Studios/Créateurs",
-    "group": "Groupe",
+    "families": "Familles",
+    "genres": "Genres",
+    "groups": "Groupes",
     "home": "Accueil",
+    "kara_import": "Envoyer un kara",
     "karas": "Karas",
     "language": "Langue",
     "languages": "Langues",
+    "miscs": "Divers",
+    "origins": "Origines",
+    "platforms": "Plateformes",
     "serie": "Série",
     "series": "Séries",
     "singer": "Interprête",
     "singers": "Interprêtes",
-    "songtype": "Type",
     "songtypes": "Types",
     "songwriter": "Compositeur",
     "songwriters": "Compositeurs",
-    "tag": "Tags",
+    "tag": "Tag",
     "tags": "Tags",
     "year": "Année",
-    "years": "Années",
-    "kara_import": "Envoyer un kara"
+    "years": "Années"
   },
   "duration": {
     "days": "jours",
     "hours": "heures",
     "minutes": "minutes",
-    "seconds": "secondes"
-  },
-  "stats": {
-    "all_duration" : "Durée de tous les karas",
-    "last_generation" : "Dernière mise à jour"
+    "seconds": "seconds"
   },
   "error-with-status": null,
   "error-without-status": null,
   "form": {
-    "karas_keywords_placeholder": "titre, interprête, série, ...",
-    "tags_keywords_placeholder": "Filtrer par mots clés",
-    "order_by": "Tri",
     "kara_count": "Nombre de karas",
+    "karas_keywords_placeholder": "titre, interprête, série, ...",
+    "order_by": "Tri",
+    "tags_keywords_placeholder": "Filtrer par mots clés",
     "updated": "Mise à jour récente"
   },
   "kara": {
@@ -69,5 +69,9 @@
     "no_data": "Aucun résultat",
     "update_in_progress": "Mise à jour en cours"
   },
-  "sitename": "Karaoke Mugen"
+  "sitename": "Karaoke Mugen",
+  "stats": {
+    "all_duration": "Durée de tous les karas",
+    "last_generation": "Dernière mise à jour"
+  }
 }

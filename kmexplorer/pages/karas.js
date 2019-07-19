@@ -123,10 +123,6 @@ class Homepage extends React.Component {
       let name = item.name;
       if(name === 'NO_TAG')
         name = i18n.t("tag:no_tag");
-      else if(item.code=='misc')
-        name = i18n.t("tag:misc."+name);
-      else if(item.code=='songtype')
-        name = i18n.t("tag:songtype."+name);
       else if(item.code=='language')
         name = isoLanguages(name, i18n.language)
 
@@ -204,7 +200,7 @@ class Homepage extends React.Component {
 					</div>
 				</div>
 
-        <Karalist updating={this.state.loading} data={this.props.karaList} filterTools={filterTools}/>
+        <Karalist updating={this.state.loading} data={this.props.karaList} tags={this.props.tags} filterTools={filterTools}/>
 
         <Pagination
           total={this.props.karaCount}
