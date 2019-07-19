@@ -30,13 +30,13 @@ SELECT
   misc.misc_tags AS misc_tags,
   songwriter.songwriters AS songwriters,
   group_tags.groups AS groups,
-  array_agg(DISTINCT(kt.fk_id_tag)) AS all_tags_id,
+  array_agg(DISTINCT(kt.fk_tid)) AS all_tags_id,
   string_agg(DISTINCT(t.name),' ') AS tags,
   k.fk_repo_name AS repo
 FROM kara k
 LEFT JOIN all_kara_series aks ON k.pk_kid = aks.kid
 LEFT JOIN kara_tag kt ON k.pk_kid = kt.fk_kid
-LEFT JOIN tag t ON kt.fk_id_tag = t.pk_id_tag
+LEFT JOIN tag t ON kt.fk_tid = t.pk_tid
 LEFT OUTER JOIN singer on k.pk_kid = singer.fk_kid
 LEFT OUTER JOIN songtype on k.pk_kid = songtype.fk_kid
 LEFT OUTER JOIN creator on k.pk_kid = creator.fk_kid
