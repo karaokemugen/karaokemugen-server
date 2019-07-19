@@ -1,6 +1,27 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTasks, faPlay, faIgloo, faTags, faTag, faMicrophoneAlt, faTv, faSignature,faChalkboardTeacher, faUserSecret, faLanguage, faCalendarAlt, faGlobe, faFileImport } from '@fortawesome/free-solid-svg-icons'
+import { 
+	faTasks,
+	faPlay,
+	faIgloo,
+	faTags,
+	faTag,
+	faMicrophoneAlt,
+	faTv,
+	faSignature,
+	faChalkboardTeacher,
+	faUserSecret,
+	faLanguage,
+	faCalendarAlt,
+	faGlobe,
+	faFileImport,
+	faBox,
+	faBoxes,
+	faPhotoVideo,
+	faProjectDiagram,
+	faChess,
+	faLaptop
+	} from '@fortawesome/free-solid-svg-icons'
 import { faCreativeCommonsSampling } from '@fortawesome/free-brands-svg-icons'
 
 export default {
@@ -9,6 +30,8 @@ export default {
 	kara: <FontAwesomeIcon icon={faCreativeCommonsSampling} />,
 	tags: <FontAwesomeIcon icon={faTags} />,
 	tag: <FontAwesomeIcon icon={faTag} />,
+	miscs: <FontAwesomeIcon icon={faTags} />,
+	misc: <FontAwesomeIcon icon={faTag} />,
 	singers: <FontAwesomeIcon icon={faMicrophoneAlt} />,
 	singer: <FontAwesomeIcon icon={faMicrophoneAlt} />,
 	series: <FontAwesomeIcon icon={faTv} />,
@@ -25,5 +48,16 @@ export default {
 	year: <FontAwesomeIcon icon={faCalendarAlt} />,
 	video_play: <FontAwesomeIcon icon={faPlay} />,
 	kara_import: <FontAwesomeIcon icon={faFileImport} />,
-	songtypes: <FontAwesomeIcon icon={faTasks} />
+	songtype: <FontAwesomeIcon icon={faTasks} />,
+	songtypes: <FontAwesomeIcon icon={faTasks} />,
+	group: <FontAwesomeIcon icon={faBox} />,
+	groups: <FontAwesomeIcon icon={faBoxes} />,
+	family: <FontAwesomeIcon icon={faPhotoVideo} />,
+	families: <FontAwesomeIcon icon={faPhotoVideo} />,
+	origin: <FontAwesomeIcon icon={faProjectDiagram} />,
+	origins: <FontAwesomeIcon icon={faProjectDiagram} />,
+	genre: <FontAwesomeIcon icon={faChess} />,
+	genres: <FontAwesomeIcon icon={faChess} />,
+	platform: <FontAwesomeIcon icon={faLaptop} />,
+	platforms: <FontAwesomeIcon icon={faLaptop} />
 }

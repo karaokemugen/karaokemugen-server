@@ -2,14 +2,16 @@ import React, { Suspense } from 'react';
 import KaraForm from './pages/KaraForm';
 import {Layout, Menu} from 'antd';
 import { useTranslation } from 'react-i18next';
-import Spinner from 'react-spinner';
 
 import './App.css';
 
+const Loader = () => (
+	<div>loading...</div>
+);
+
 function MyApp() {
 	const { t, i18n } = useTranslation();
-	global.t = t;
-
+	
 	return (
 		<div className="import-kara">
 			<Layout.Header style={{height: '48px'}}>
@@ -31,7 +33,7 @@ function MyApp() {
 
 export default function App() {
 	return (
-	  <Suspense fallback={<Spinner />}>
+	  <Suspense fallback={<Loader />}>
 		<MyApp />
 	  </Suspense>
 	);

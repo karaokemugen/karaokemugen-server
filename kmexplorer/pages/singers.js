@@ -8,6 +8,7 @@ import DedicatedTagtList from '../components/DedicatedTagList';
 import tagsMap from '../components/tagsMap.js';
 import querystring from 'querystring';
 import FilterTools from '../utils/filterTools';
+import isoLanguages from '../components/isoLanguages';
 const filterTools = new FilterTools();
 
 
@@ -68,10 +69,10 @@ class Page extends React.Component {
 
 		tagList = tagList.map(function(tag){
 			return {
-				key: tag.tag_id,
-				name : tag.name,
+				key: tag.tid,
+				name : tag.i18n[isoLanguages("iso3",i18n.language)] || (tag.i18n['eng'] || tag.name),
 				karacount : tag.karacount,
-				link : "/karas?"+querystring.stringify(filterTools.clear().addTag('singer',tag.tag_id,tag.slug).getQuery()),
+				link : "/karas?"+querystring.stringify(filterTools.clear().addTag('singer',tag.tid,tag.slug).getQuery()),
 				height : 100 * tag.karacount / kmax
 			};
 		})

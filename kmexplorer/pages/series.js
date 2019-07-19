@@ -8,6 +8,7 @@ import DedicatedTagtList from '../components/DedicatedTagList';
 import tagsMap from '../components/tagsMap.js';
 import querystring from 'querystring';
 import FilterTools from '../utils/filterTools';
+import isoLanguages from '../components/isoLanguages';
 const filterTools = new FilterTools();
 
 

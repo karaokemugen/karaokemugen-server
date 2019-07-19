@@ -11,7 +11,7 @@ import statsController from './controllers/stats';
 import shortenerController from './controllers/shortener';
 import userController from './controllers/user';
 import favoritesController from './controllers/favorites';
-import {configurePassport} from './utils/passport_manager';
+import {configurePassport} from './lib/utils/passport_manager';
 import {getConfig, resolvedPathKaras, resolvedPathSubs, resolvedPathMedias, resolvedPathSeries, resolvedPathPreviews, resolvedPathAvatars} from './lib/utils/config';
 import range from 'express-range';
 import vhost from 'vhost';

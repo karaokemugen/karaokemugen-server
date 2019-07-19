@@ -7,16 +7,10 @@
 		"node": true,
 		"mocha":true
     },
-    "extends": [
-		"react-app",
-		"plugin:security/recommended"
-	],
     "plugins": [
-		"react",
-		"security"
-	],
+        "@typescript-eslint"
+    ],
     "rules": {
-		"detect-object-injection": 0,
 		"jsx-a11y/href-no-hash": [0],
         "brace-style": [
             "error",
@@ -26,10 +20,6 @@
         "indent": [
             "error",
             "tab"
-        ],
-        "linebreak-style": [
-            "error",
-            "windows"
         ],
         "quotes": [
             "error",
@@ -41,12 +31,8 @@
         ],
         "no-throw-literal": "off"
     },
-    "parser": "babel-eslint",
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
-        "ecmaVersion": 2017,
-        "ecmaFeatures": {
-            "jsx": true
-        },
         "sourceType": "module"
     }
 }

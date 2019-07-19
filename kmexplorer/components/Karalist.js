@@ -18,7 +18,7 @@ class Karalist extends React.Component {
 			return (
 				<div className="kmx-karas-list">
 					{this.props.data.map((item,i) => {
-						return <Karaitem key={i} data={item} filterTools={this.props.filterTools}/>
+						return <Karaitem key={i} data={item} tags={this.props.tags} filterTools={this.props.filterTools}/>
 					})}
 				</div>
 			)

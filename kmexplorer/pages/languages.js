@@ -62,10 +62,10 @@ class Page extends React.Component {
 
 		tagList = tagList.map(function(tag){
 			return {
-				key: tag.tag_id,
+				key: tag.tid,
 				name : tag.real_name,
 				karacount : tag.karacount,
-				link : "/karas?"+querystring.stringify(filterTools.clear().addTag('language',tag.tag_id).getQuery()),
+				link : "/karas?"+querystring.stringify(filterTools.clear().addTag('language',tag.tid).getQuery()),
 				height : 100 * tag.karacount / kmax
 			};
 		})
