@@ -39,6 +39,7 @@ export interface Config {
 			Medias?: string[],
 			Lyrics?: string[],
 			Series?: string[],
+			Tags?: string[],
 			Temp?: string,
 			Previews?: string,
 			Avatars?: string,

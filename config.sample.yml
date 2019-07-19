@@ -11,6 +11,8 @@ System:
       - app/data/medias
     Series:
       - app/data/series
+    Tags:
+      - app/data/tags
   Binaries:
     ffmpeg:
       Linux: /usr/bin/ffmpeg

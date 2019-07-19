@@ -1,15 +1,7 @@
 import React from 'react'
 import { i18n, withNamespaces } from '../i18n'
-import i18nRouterPush from '../utils/i18nRouterPush'
 import Head from 'next/head'
-import axios from 'axios'
-import Pagination from '../components/Pagination';
-import DedicatedTagtList from '../components/DedicatedTagList';
-import tagsMap from '../components/tagsMap.js';
-import querystring from 'querystring';
-import FilterTools from '../utils/filterTools';
-import duration from '../utils/date';
-const filterTools = new FilterTools();
+import duration from '../components/date';
 
 class Page extends React.Component {
 	static async getInitialProps({ req, query, res }) {
@@ -29,12 +21,9 @@ class Page extends React.Component {
 
 		var count = {
 			singer:0,
-			songtype:0,
 			creator:0,
 			language:0,
 			author:0,
-			misc:0,
-			group:0,
 			songwriter:0,
 			serie:0,
 			karas:0,
@@ -51,16 +40,6 @@ class Page extends React.Component {
 			count.karas = this.props.stats.karas;
 			count.duration = this.props.stats.duration;
 			count.lastGeneration = this.props.stats.lastGeneration;
-		}
-		if(this.props.tags)
-		{
-			for (let i in this.props.tags)
-			{
-				let t = this.props.tags[i];
-				if(t.code==='misc') count.misc++;
-				if(t.code==='songtype') count.songtype++;
-				if(t.code==='group') count.group++;
-			}
 		}
 
 		return (
@@ -79,7 +58,6 @@ class Page extends React.Component {
 						<li key="creator"><strong>{count.creator>0 ? count.creator : '-'}</strong> <span>{i18n.t("category.creators")}</span></li>
 						<li key="language"><strong>{count.language>0 ? count.language : '-'}</strong> <span>{i18n.t("category.languages")}</span></li>
 						<li key="author"><strong>{count.author>0 ? count.author : '-'}</strong> <span>{i18n.t("category.authors")}</span></li>
-						<li key="misc"><strong>{count.misc>0 ? count.misc : '-'}</strong> <span>{i18n.t("category.tags")}</span></li>
 						<li key="songwriter"><strong>{count.songwriter>0 ? count.songwriter : '-'}</strong> <span>{i18n.t("category.songwriters")}</span></li>
 						<li className="km-home--stats--wide" key="lastGeneration"><span>{i18n.t("stats.last_generation")}</span> : <strong>{count.duration>0 ? new Date(count.lastGeneration).toLocaleString() : '-'}</strong></li>
 						<li className="km-home--stats--wide" key="duration"><span>{i18n.t("stats.all_duration")} :</span> <strong>{count.duration>0 ? duration(count.duration) : '-'}</strong></li>

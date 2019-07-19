@@ -25,23 +25,26 @@ export async function createKara(kara: Kara) {
 		logger.error(`[KaraImport] Error importing kara : ${err}. Kara Data ${JSON.stringify(kara)}`);
 		throw err;
 	}
-	const karaName = `${newKara.data.lang[0].toUpperCase()} - ${newKara.data.series[0] || newKara.data.singer[0]} - ${newKara.data.type}${newKara.data.order || ''} - ${newKara.data.title}`;
+	const karaName = `${newKara.data.langs[0].name.toUpperCase()} - ${newKara.data.series[0] || newKara.data.singers[0]} - ${newKara.data.songtypes[0]}${newKara.data.order || ''} - ${newKara.data.title}`;
 	let title = conf.Gitlab.IssueTemplate.Import.Title || 'New kara: $kara';
 	title = title.replace('$kara', karaName);
 	let desc = conf.Gitlab.IssueTemplate.Import.Description || '';
 	desc = desc.replace('$file', basename(newKara.file))
-		.replace('$author', newKara.data.author.join(', '))
+		.replace('$author', newKara.data.authors.join(', '))
 		.replace('$title', newKara.data.title)
 		.replace('$series', newKara.data.series.join(', '))
-		.replace('$type', newKara.data.type)
+		.replace('$type', newKara.data.songtypes.join(', '))
 		.replace('$order', newKara.data.order || '')
-		.replace('$lang', newKara.data.lang.join(', '))
+		.replace('$lang', newKara.data.langs.join(', '))
 		.replace('$year', `${newKara.data.year}`)
-		.replace('$singer', newKara.data.singer.join(', '))
-		.replace('$tags', newKara.data.tags.join(', '))
-		.replace('$songwriter', newKara.data.songwriter.join(', '))
-		.replace('$creator', newKara.data.creator.join(', '))
+		.replace('$singer', newKara.data.singers.join(', '))
+		.replace('$tags', newKara.data.misc.join(', '))
+		.replace('$songwriter', newKara.data.songwriters.join(', '))
+		.replace('$creator', newKara.data.creators.join(', '))
 		.replace('$groups', newKara.data.groups.join(', '))
+		.replace('$families', newKara.data.families.join(', '))
+		.replace('$genres', newKara.data.genres.join(', '))
+		.replace('$origins', newKara.data.origins.join(', '))
 		.replace('$duration', duration(newKara.data.mediaduration));
 	try {
 		if (conf.Gitlab.Enabled) return gitlabPostNewIssue(title, desc, conf.Gitlab.IssueTemplate.Import.Labels);

@@ -8,6 +8,7 @@ import DedicatedTagtList from '../components/DedicatedTagList';
 import tagsMap from '../components/tagsMap.js';
 import querystring from 'querystring';
 import FilterTools from '../utils/filterTools';
+import isoLanguages from '../components/isoLanguages';
 const filterTools = new FilterTools();
 
 
@@ -23,6 +24,7 @@ class Page extends React.Component {
 		super(props)
 		this.state = {
 			searchKeywords:"",
+			orderBy:"quantity",
 		}
 		filterTools.setParams(props.filterParams);
 	}
@@ -39,37 +41,38 @@ class Page extends React.Component {
 	    })
 	}
 
+	updateOrder(mode) {
+	    this.setState({
+	    	orderBy: mode,
+	    })
+	}
+
 	render() {
 		let kmax = 1;
+		let pageSize = 100;
+		let page = filterTools.getPage()
 		let keywords = this.state.searchKeywords;
 
 		let tagList = [];
 		for (let id in this.props.tags) {
 			let tag = this.props.tags[id];
-			if(tag.code=="misc")
+			if(tag.code=="origin")
 			{
-				kmax = Math.max(kmax,tag.karacount);
 				if (tag.name === 'NO_TAG')
-					tag.real_name = i18n.t('tag:no_tag');
-				else
-					tag.real_name = i18n.t('tag:misc.'+tag.name);
-
-				if(keywords.length==0 || filterTools.keywordSearch(tag.real_name,keywords))
+					tag.name = i18n.t('tag:no_tag');
+				kmax = Math.max(kmax,tag.karacount);
+				if(keywords.length==0 || filterTools.keywordSearch(tag.name,keywords))
 					tagList.push(tag);
 			}
 		}
 		let total = tagList.length
 
-		tagList.sort(function(a,b){
-			return a.real_name.toLowerCase().localeCompare(b.real_name.toLowerCase());
-		})
-
 		tagList = tagList.map(function(tag){
 			return {
-				key: tag.tag_id,
-				name : tag.real_name,
+				key: tag.tid,
+				name : tag.i18n[isoLanguages("iso3",i18n.language)] || (tag.i18n['eng'] || tag.name),
 				karacount : tag.karacount,
-				link : "/karas?"+querystring.stringify(filterTools.clear().addTag('misc',tag.tag_id,tag.slug).getQuery()),
+				link : "/karas?"+querystring.stringify(filterTools.clear().addTag('origin',tag.tid,tag.slug).getQuery()),
 				height : 100 * tag.karacount / kmax
 			};
 		})
@@ -77,15 +80,38 @@ class Page extends React.Component {
 		return (
 			<div>
 				<Head>
-				<title key="title">{i18n.t('sitename')} - {i18n.t('category.tags')}</title>
+					<title key="title">{i18n.t('sitename')} - {i18n.t('category.origins')}</title>
 				</Head>
+
 				<div className="kmx-filter-keyword">
 					<form onSubmit={(event) => event.preventDefault()}>
 						<input type="text" value={keywords} onChange={(event) => this.updateKeyword(event)} placeholder={i18n.t('form.tags_keywords_placeholder')} />
 						<button type="submit"><i className="fa fa-search"></i></button>
 					</form>
 				</div>
-				<DedicatedTagtList type="misc" tags={tagList} />
+
+				<div className="kmx-filter-line">
+					<Pagination
+						total={total}
+						size={pageSize}
+						current={page}
+						renderUrl={(i) => { return "/origins?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
+						/>
+					<div className="kmx-filter-order">
+						<label>{i18n.t('form.order_by')} :</label>
+						<div key="alpha" onClick={(event) => this.updateOrder('alpha')} className={this.state.orderBy=="alpha" ? "active":""} >A-Z</div>
+						<div key="quantity" onClick={(event) => this.updateOrder('quantity')} className={this.state.orderBy=="quantity" ? "active":""} >{i18n.t('form.kara_count')}</div>
+					</div>
+				</div>
+
+				<DedicatedTagtList type="origins" tags={tagList} pageSize={pageSize} page={page} orderBy={this.state.orderBy}/>
+
+				<Pagination
+					total={total}
+					size={pageSize}
+					current={page}
+					renderUrl={(i) => { return "/origins?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
+					/>
 			</div>
 			)
 	}

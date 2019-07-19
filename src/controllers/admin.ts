@@ -1,4 +1,4 @@
-import {requireAuth, requireValidUser, requireAdmin} from '../utils/passport_manager';
+import {requireAuth, requireValidUser, requireAdmin} from './middlewares/auth';
 import { generateDatabase } from '../lib/services/generation';
 import { Router } from 'express';
 import { createImagePreviews } from '../lib/utils/previews';

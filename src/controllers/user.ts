@@ -3,9 +3,9 @@ import {check, unescape} from '../lib/utils/validators';
 import multer from 'multer';
 import {getConfig} from '../lib/utils/config';
 import {resolve} from 'path';
-import { requireAuth, requireValidUser } from '../utils/passport_manager';
 import { Router } from 'express';
 import { getState } from '../utils/state';
+import {requireAuth, requireValidUser} from './middlewares/auth';
 
 export default function userController(router: Router) {
 	const conf = getConfig();

@@ -94,6 +94,11 @@ class MyApp extends App {
 				{code:'misc', id:tagsMap.misc.id},
 				{code:'group', id:tagsMap.group.id},
 				{code:'songwriter', id:tagsMap.songwriter.id},
+				{code:'group', id:tagsMap.group.id},
+				{code:'family', id:tagsMap.family.id},
+				{code:'origin', id:tagsMap.origin.id},
+				{code:'genre', id:tagsMap.genre.id},
+				{code:'platform', id:tagsMap.platform.id},
 			]
 			var tags = await localForage.getItem('tags');
 			if(tags===null || !tag_uptodate)
@@ -107,8 +112,10 @@ class MyApp extends App {
 					if(response.status===200 && response.data!==null && response.data.content)
 					{
 						response.data.content.map((v,i)=>{
+							//console.log(v)
 							v.code = el.code
-							tags[''+v.tag_id] = v;
+							v.slug = filterTools.normalizeString(v.name)
+							tags[''+v.tid] = v;
 						});
 					}
 				}

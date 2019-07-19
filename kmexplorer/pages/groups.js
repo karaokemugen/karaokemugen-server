@@ -56,7 +56,7 @@ class Page extends React.Component {
 		let tagList = [];
 		for (let id in this.props.tags) {
 			let tag = this.props.tags[id];
-			if(tag.code=="creator")
+			if(tag.code=="group")
 			{
 				if (tag.name === 'NO_TAG')
 					tag.name = i18n.t('tag:no_tag');
@@ -72,7 +72,7 @@ class Page extends React.Component {
 				key: tag.tid,
 				name : tag.i18n[isoLanguages("iso3",i18n.language)] || (tag.i18n['eng'] || tag.name),
 				karacount : tag.karacount,
-				link : "/karas?"+querystring.stringify(filterTools.clear().addTag('creator',tag.tid,tag.slug).getQuery()),
+				link : "/karas?"+querystring.stringify(filterTools.clear().addTag('group',tag.tid,tag.slug).getQuery()),
 				height : 100 * tag.karacount / kmax
 			};
 		})
@@ -80,7 +80,7 @@ class Page extends React.Component {
 		return (
 			<div>
 				<Head>
-					<title key="title">{i18n.t('sitename')} - {i18n.t('category.creators')}</title>
+					<title key="title">{i18n.t('sitename')} - {i18n.t('category.groups')}</title>
 				</Head>
 
 				<div className="kmx-filter-keyword">
@@ -95,22 +95,22 @@ class Page extends React.Component {
 						total={total}
 						size={pageSize}
 						current={page}
-						renderUrl={(i) => { return "/creators?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
+						renderUrl={(i) => { return "/groups?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
 						/>
-				<div className="kmx-filter-order">
+					<div className="kmx-filter-order">
 						<label>{i18n.t('form.order_by')} :</label>
 						<div key="alpha" onClick={(event) => this.updateOrder('alpha')} className={this.state.orderBy=="alpha" ? "active":""} >A-Z</div>
 						<div key="quantity" onClick={(event) => this.updateOrder('quantity')} className={this.state.orderBy=="quantity" ? "active":""} >{i18n.t('form.kara_count')}</div>
 					</div>
 				</div>
 
-				<DedicatedTagtList type="creators" tags={tagList} pageSize={pageSize} page={page} orderBy={this.state.orderBy}/>
+				<DedicatedTagtList type="groups" tags={tagList} pageSize={pageSize} page={page} orderBy={this.state.orderBy}/>
 
 				<Pagination
 					total={total}
 					size={pageSize}
 					current={page}
-					renderUrl={(i) => { return "/creators?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
+					renderUrl={(i) => { return "/groups?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
 					/>
 			</div>
 			)

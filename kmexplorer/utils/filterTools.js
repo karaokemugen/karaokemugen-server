@@ -59,9 +59,11 @@ export default class FilterTools {
 		var dedup_tags = tags.filter(function(elem, pos) {
 			return tags.indexOf(elem) == pos;
 		})
+		/*
 		dedup_tags = dedup_tags.map(function(v){
 			return parseInt(v);
 		})
+		*/
 		this.params = {
 			page : page,
 			keywords : keywords,
@@ -125,8 +127,6 @@ export default class FilterTools {
 		this.liveParams.slug=""+slug;
 		this.liveParams.orderBy='search';
 		//console.log(type,value,this.liveParams.tags)
-		if(type!='serie')
-			value = parseInt(value);
 
 		if(type=='year')
 			this.liveParams.year = value;

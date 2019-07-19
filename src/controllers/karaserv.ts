@@ -63,7 +63,7 @@ export default function KSController(router: Router) {
 	router.route('/karas/tags/:tagtype([0-9]+)')
 		.get(getLang, async (req: any, res) => {
 			try {
-				const tags = await getTags(req.query.filter, req.params.tagtype, req.query.from, req.query.size);
+				const tags = await getTags({filter: req.query.filter, type: req.params.tagtype, from: req.query.from, size: req.query.size});
 				res.json(tags);
 			} catch(err) {
 				res.status(500).json(err);
@@ -72,7 +72,7 @@ export default function KSController(router: Router) {
 	router.route('/karas/tags')
 		.get(getLang, async (req: any, res) => {
 			try {
-				const tags = await getTags(req.params.filter, null, req.query.from, req.query.size);
+				const tags = await getTags(({filter: req.query.filter, type: null, from: req.query.from, size: req.query.size}));
 				res.json(tags);
 			} catch(err) {
 				res.status(500).json(err);
