@@ -24,8 +24,5 @@ export async function getTags(params: TagParams) {
 export async function getOrAddTagID(tagObj: Tag) {
 	const tag = await selectTagByNameAndType(tagObj.name, tagObj.types);
 	await writeTagFile(tagObj, resolvedPathImport());
-
-	return tag.tid;
-	// If no serie found, create it and return the sid we generated
-
+	return tag;
 }
