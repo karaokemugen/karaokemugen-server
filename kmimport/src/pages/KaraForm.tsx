@@ -111,6 +111,8 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 
 	componentDidMount() {
 		this.props.form.validateFields();
+		this.props.form.validateFields(['series'], { force: true });
+		this.props.form.validateFields(['singers'], { force: true });
 	}
 
 	handleSubmit = e => {
