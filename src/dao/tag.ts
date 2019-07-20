@@ -35,7 +35,7 @@ function buildTagClauses(words: string): WhereClause {
 }
 
 export async function selectTagByNameAndType(name: string, types: number[]): Promise<DBTag> {
-	const res = await db().query(sql.getTagByName, [
+	const res = await db().query(sql.getTagByNameAndType, [
 		name,
 		types
 	]);
