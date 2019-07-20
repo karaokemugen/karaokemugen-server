@@ -30,21 +30,21 @@ export async function createKara(kara: Kara) {
 	title = title.replace('$kara', karaName);
 	let desc = conf.Gitlab.IssueTemplate.Import.Description || '';
 	desc = desc.replace('$file', basename(newKara.file))
-		.replace('$author', newKara.data.authors.join(', '))
+		.replace('$author', newKara.data.authors.map(t => t.name).join(', '))
 		.replace('$title', newKara.data.title)
 		.replace('$series', newKara.data.series.join(', '))
-		.replace('$type', newKara.data.songtypes.join(', '))
+		.replace('$type', newKara.data.songtypes.map(t => t.name).join(', '))
 		.replace('$order', newKara.data.order || '')
-		.replace('$lang', newKara.data.langs.join(', '))
+		.replace('$lang', newKara.data.langs.map(t => t.name).join(', '))
 		.replace('$year', `${newKara.data.year}`)
-		.replace('$singer', newKara.data.singers.join(', '))
-		.replace('$tags', newKara.data.misc.join(', '))
-		.replace('$songwriter', newKara.data.songwriters.join(', '))
-		.replace('$creator', newKara.data.creators.join(', '))
-		.replace('$groups', newKara.data.groups.join(', '))
-		.replace('$families', newKara.data.families.join(', '))
-		.replace('$genres', newKara.data.genres.join(', '))
-		.replace('$origins', newKara.data.origins.join(', '))
+		.replace('$singer', newKara.data.singers.map(t => t.name).join(', '))
+		.replace('$tags', newKara.data.misc.map(t => t.name).join(', '))
+		.replace('$songwriter', newKara.data.songwriters.map(t => t.name).join(', '))
+		.replace('$creator', newKara.data.creators.map(t => t.name).join(', '))
+		.replace('$groups', newKara.data.groups.map(t => t.name).join(', '))
+		.replace('$families', newKara.data.families.map(t => t.name).join(', '))
+		.replace('$genres', newKara.data.genres.map(t => t.name).join(', '))
+		.replace('$origins', newKara.data.origins.map(t => t.name).join(', '))
 		.replace('$duration', duration(newKara.data.mediaduration));
 	try {
 		if (conf.Gitlab.Enabled) return gitlabPostNewIssue(title, desc, conf.Gitlab.IssueTemplate.Import.Labels);
