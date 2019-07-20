@@ -24,6 +24,6 @@ SELECT
 	name,
 	pk_tid AS tid
 FROM tag
-WHERE name = :name
-  AND types && ARRAY[:types]
+WHERE name = $1
+  AND types @> $2
 ;`;
