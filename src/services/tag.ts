@@ -23,6 +23,10 @@ export async function getTags(params: TagParams) {
 
 export async function getOrAddTagID(tagObj: Tag) {
 	const tag = await selectTagByNameAndType(tagObj.name, tagObj.types);
-	if (!tag) await writeTagFile(tagObj, resolvedPathImport());
-	return tag;
+	if (!tag) {
+		await writeTagFile(tagObj, resolvedPathImport());
+		return tagObj;
+	} else {
+		return tag;
+	}
 }
