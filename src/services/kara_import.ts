@@ -25,7 +25,7 @@ export async function createKara(kara: Kara) {
 		logger.error(`[KaraImport] Error importing kara : ${err}. Kara Data ${JSON.stringify(kara)}`);
 		throw err;
 	}
-	const karaName = `${newKara.data.langs[0].name.toUpperCase()} - ${newKara.data.series[0] || newKara.data.singers[0]} - ${newKara.data.songtypes[0]}${newKara.data.order || ''} - ${newKara.data.title}`;
+	const karaName = `${newKara.data.langs[0].name.toUpperCase()} - ${newKara.data.series[0] || newKara.data.singers[0].name} - ${newKara.data.songtypes[0].name}${newKara.data.order || ''} - ${newKara.data.title}`;
 	let title = conf.Gitlab.IssueTemplate.Import.Title || 'New kara: $kara';
 	title = title.replace('$kara', karaName);
 	let desc = conf.Gitlab.IssueTemplate.Import.Description || '';
