@@ -1,6 +1,5 @@
 import { asyncReadDir, asyncReadFile } from "../lib/utils/files";
 import { resolvedPathImport } from "../lib/utils/config";
-import { tagTypes } from "../lib/utils/constants";
 import { resolve } from "path";
 import { Series } from "../lib/types/series";
 
