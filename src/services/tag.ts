@@ -3,6 +3,7 @@ import { TagParams, TagList, Tag } from '../lib/types/tag';
 import { DBTag } from '../lib/types/database/tag';
 import { writeTagFile } from '../lib/dao/tagfile';
 import { resolvedPathImport } from '../lib/utils/config';
+import { findTagInImportedFiles } from '../dao/tagfile';
 
 export function formatTagList(tagList: DBTag[], from: number, count: number): TagList {
 	return {
@@ -22,11 +23,11 @@ export async function getTags(params: TagParams) {
 }
 
 export async function getOrAddTagID(tagObj: Tag) {
-	const tag = await selectTagByNameAndType(tagObj.name, tagObj.types);
-	if (!tag) {
-		await writeTagFile(tagObj, resolvedPathImport());
-		return tagObj;
-	} else {
-		return tag;
-	}
+	let tag = await selectTagByNameAndType(tagObj.name, tagObj.types);
+	if (tag) return tag;
+	// If no tag is found, check in import folder if we have a tag by the same name and type
+	tag = await findTagInImportedFiles(tagObj.name, tagObj.types);
+	if (tag) return tag;
+	await writeTagFile(tagObj, resolvedPathImport());
+	return tagObj;
 }

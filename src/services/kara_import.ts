@@ -3,23 +3,21 @@
  */
 
 import logger from 'winston';
-import {resolve, basename} from 'path';
-import {getConfig} from '../lib/utils/config';
+import {basename} from 'path';
+import {getConfig, resolvedPathImport} from '../lib/utils/config';
 import {duration} from '../lib/utils/date';
 import { generateKara } from '../lib/services/kara_creation';
-import { getState } from '../utils/state';
 import { NewKara, Kara } from '../lib/types/kara';
 import { gitlabPostNewIssue } from '../lib/services/gitlab';
 
 export async function createKara(kara: Kara) {
 	const conf = getConfig();
-	const state = getState();
 	let newKara: NewKara;
 	try {
 		newKara = await generateKara(kara,
-			resolve(state.appPath, conf.System.Path.Import),
-			resolve(state.appPath, conf.System.Path.Import),
-			resolve(state.appPath, conf.System.Path.Import)
+			resolvedPathImport(),
+			resolvedPathImport(),
+			resolvedPathImport()
 		);
 	} catch(err) {
 		logger.error(`[KaraImport] Error importing kara : ${err}. Kara Data ${JSON.stringify(kara)}`);

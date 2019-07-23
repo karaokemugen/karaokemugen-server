@@ -1,15 +1,16 @@
 import {selectAllSeries, countSeries, selectSerieByName} from '../dao/series';
 import { Series } from '../lib/types/series';
 import { writeSeriesFile } from '../lib/dao/seriesfile';
-import { resolve } from 'path';
-import { getState } from '../utils/state';
-import { getConfig } from '../lib/utils/config';
+import { resolvedPathImport } from '../lib/utils/config';
+import { findSeriesInImportedFiles } from '../dao/seriesfile';
 
 export async function getOrAddSerieID(seriesObj: Series) {
-	const serie = await selectSerieByName(seriesObj.name);
+	let serie = await selectSerieByName(seriesObj.name);
 	if (serie) return serie.sid;
 	// If no serie found, create it and return the sid we generated
-	await writeSeriesFile(seriesObj, resolve(getState().appPath, getConfig().System.Path.Import));
+	serie = await findSeriesInImportedFiles(seriesObj.name);
+	if (serie) return serie.sid;
+	await writeSeriesFile(seriesObj, resolvedPathImport());
 	return seriesObj.sid;
 }
 
