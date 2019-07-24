@@ -162,11 +162,13 @@ export default class FilterTools {
 			let query = {
 				p:this.liveParams.page,
 			};
+
+			let _query = querystring.stringify(query);
 			return {
 				path:"/"+mode,
 				query:query,
-				query_string:querystring.stringify(query),
-				url:"/"+mode+"?"+querystring.stringify(query),
+				query_string:_query,
+				url:"/"+mode+"?"+_query,
 			};
 		}
 
@@ -178,11 +180,13 @@ export default class FilterTools {
 
 		if (this.liveParams.orderBy == 'recent') {
 			query = {p:this.liveParams.page};
+
+			let _query = querystring.stringify(query);
 			return {
 				path:"/karas",
 				query:query,
-				query_string:querystring.stringify(query),
-				url:"/karas?"+querystring.stringify(query),
+				query_string:_query,
+				url:"/karas?"+_query,
 			};
 		}
 
@@ -203,11 +207,13 @@ export default class FilterTools {
 				q.push('t:'+this.liveParams.tags.join(','));
 
 			query.q = q.join('!');
+
+			let _query = querystring.stringify(query);
 			return {
 				path:"/karas",
 				query:query,
-				query_string:querystring.stringify(query),
-				url:"/karas?"+querystring.stringify(query),
+				query_string:_query,
+				url:"/karas?"+_query,
 			};
 		}
 		else
@@ -240,19 +246,22 @@ export default class FilterTools {
 
 			if(code!==null)
 			{
+				let _path = "/karas"+(code ? "/"+code:"")+(slug ? "/"+slug:"")+(value ? "/"+value:"")
+				let _query = querystring.stringify(query);
 				return {
-					path:"/karas/"+code+"/"+(slug ? slug+"/":"")+value,
+					path:_path,
 					query:query,
-					query_string:querystring.stringify(query),
-					url:"/karas/"+code+"/"+(slug ? slug+"/":"")+value+"?"+querystring.stringify(query),
+					query_string:_query,
+					url:_path+"?"+_query,
 				};
 			}
 
+			let _query = querystring.stringify(query);
 			return {
 				path:"/karas/",
 				query:query,
-				query_string:querystring.stringify(query),
-				url:"/karas?"+querystring.stringify(query),
+				query_string:_query,
+				url:"/karas?"+_query,
 			};
 		}
 
