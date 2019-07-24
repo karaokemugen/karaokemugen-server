@@ -26,7 +26,7 @@ class Karaitem extends React.Component {
 
 		let quickTagUrl = function(type,value)
 		{
-			return "/karas?"+querystring.stringify(filterTools.reset().addTag(type,value).getQuery());
+			return filterTools.reset().addTag(type,value).getQuery().url;
 		}
 
 		let getI18nTagname = (v) => {

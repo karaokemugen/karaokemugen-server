@@ -45,38 +45,38 @@ class Header extends React.Component {
 		current_route = current_route ? current_route : '/';
 
 		filterTools.setParams(this.props.filterParams);
-		var query = querystring.stringify(filterTools.reset().setPage(0).getQuery());
+		var karasURL = filterTools.reset().setPage(0).getQuery().url;
 		return (
 			<div>
 				{this.state.help ? <Help onClose={() => this.hideHelp()} />:null}
 				<header className="kmx-header">
 					<div className="kmx-filters-menu">
 						<dl className="kmx-filters-menu--list">
-							<dd key="index"      ><Link href={ "/?"            + query }><a className={current_route=="/"            ? "active":"inactive"}>{icons.home} {i18n.t('category.home')}</a></Link></dd>
-							<dd key="karas"      ><Link href={ "/karas?"       + query }><a className={current_route=="/karas"       ? "active":"inactive"}>{icons.karas} {i18n.t('category.karas')}</a></Link></dd>
-							<dd key="songtypes"  ><Link href={ "/songtypes?"   + query }><a className={current_route=="/songtypes"   ? "active":"inactive"}>{icons.songtypes} {i18n.t('category.songtypes')}</a></Link></dd>
+							<dd key="index"      ><Link href={ "/?"         }><a className={current_route=="/"            ? "active":"inactive"}>{icons.home} {i18n.t('category.home')}</a></Link></dd>
+							<dd key="karas"      ><Link href={ karasURL     }><a className={current_route=="/karas"       ? "active":"inactive"}>{icons.karas} {i18n.t('category.karas')}</a></Link></dd>
+							<dd key="songtypes"  ><Link href={ "/songtypes" }><a className={current_route=="/songtypes"   ? "active":"inactive"}>{icons.songtypes} {i18n.t('category.songtypes')}</a></Link></dd>
 							<dd key="tags">
 								<button onClick={this.toggleDropdown.bind(this,'tags')}>{icons.tags} {i18n.t('category.tags')}</button>
 								{
 									this.state.dropdown.tags 
 									? <dl className="kmx-filters-menu--dropdown">
-										<dd onClick={this.closeDropdown.bind(this,'tags')} key="miscs"     ><Link href={ "/miscs?"     + query }><a className={current_route=="/miscs"       ? "active":"inactive"}>{icons.miscs} {i18n.t('category.miscs')}</a></Link></dd>
-										<dd onClick={this.closeDropdown.bind(this,'tags')} key="groups"    ><Link href={ "/groups?"    + query }><a className={current_route=="/groups"      ? "active":"inactive"}>{icons.groups} {i18n.t('category.groups')}</a></Link></dd>
-										<dd onClick={this.closeDropdown.bind(this,'tags')} key="families"  ><Link href={ "/families?"  + query }><a className={current_route=="/families"    ? "active":"inactive"}>{icons.families} {i18n.t('category.families')}</a></Link></dd>
-										<dd onClick={this.closeDropdown.bind(this,'tags')} key="origins"   ><Link href={ "/origins?"   + query }><a className={current_route=="/origins"     ? "active":"inactive"}>{icons.origins} {i18n.t('category.origins')}</a></Link></dd>
-										<dd onClick={this.closeDropdown.bind(this,'tags')} key="genres"    ><Link href={ "/genres?"    + query }><a className={current_route=="/genres"      ? "active":"inactive"}>{icons.genres} {i18n.t('category.genres')}</a></Link></dd>
-										<dd onClick={this.closeDropdown.bind(this,'tags')} key="platforms" ><Link href={ "/platforms?" + query }><a className={current_route=="/platforms"   ? "active":"inactive"}>{icons.platforms} {i18n.t('category.platforms')}</a></Link></dd>
+										<dd onClick={this.closeDropdown.bind(this,'tags')} key="miscs"     ><Link href={ "/miscs?"     }><a className={current_route=="/miscs"       ? "active":"inactive"}>{icons.miscs} {i18n.t('category.miscs')}</a></Link></dd>
+										<dd onClick={this.closeDropdown.bind(this,'tags')} key="groups"    ><Link href={ "/groups?"    }><a className={current_route=="/groups"      ? "active":"inactive"}>{icons.groups} {i18n.t('category.groups')}</a></Link></dd>
+										<dd onClick={this.closeDropdown.bind(this,'tags')} key="families"  ><Link href={ "/families?"  }><a className={current_route=="/families"    ? "active":"inactive"}>{icons.families} {i18n.t('category.families')}</a></Link></dd>
+										<dd onClick={this.closeDropdown.bind(this,'tags')} key="origins"   ><Link href={ "/origins?"   }><a className={current_route=="/origins"     ? "active":"inactive"}>{icons.origins} {i18n.t('category.origins')}</a></Link></dd>
+										<dd onClick={this.closeDropdown.bind(this,'tags')} key="genres"    ><Link href={ "/genres?"    }><a className={current_route=="/genres"      ? "active":"inactive"}>{icons.genres} {i18n.t('category.genres')}</a></Link></dd>
+										<dd onClick={this.closeDropdown.bind(this,'tags')} key="platforms" ><Link href={ "/platforms?" }><a className={current_route=="/platforms"   ? "active":"inactive"}>{icons.platforms} {i18n.t('category.platforms')}</a></Link></dd>
 									</dl>
 									: null
 								}
 							</dd>
-							<dd key="singers"    ><Link href={ "/singers?"     + query }><a className={current_route=="/singers"     ? "active":"inactive"}>{icons.singers} {i18n.t('category.singers')}</a></Link></dd>
-							<dd key="series"     ><Link href={ "/series?"      + query }><a className={current_route=="/series"      ? "active":"inactive"}>{icons.series} {i18n.t('category.series')}</a></Link></dd>
-							<dd key="songwriters"><Link href={ "/songwriters?" + query }><a className={current_route=="/songwriters" ? "active":"inactive"}>{icons.songwriters} {i18n.t('category.songwriters')}</a></Link></dd>
-							<dd key="creators"   ><Link href={ "/creators?"    + query }><a className={current_route=="/creators"    ? "active":"inactive"}>{icons.creators} {i18n.t('category.creators')}</a></Link></dd>
-							<dd key="authors"    ><Link href={ "/authors?"     + query }><a className={current_route=="/authors"     ? "active":"inactive"}>{icons.authors} {i18n.t('category.authors')}</a></Link></dd>
-							<dd key="languages"  ><Link href={ "/languages?"   + query }><a className={current_route=="/languages"   ? "active":"inactive"}>{icons.languages} {i18n.t('category.languages')}</a></Link></dd>
-							<dd key="years"      ><Link href={ "/years?"       + query }><a className={current_route=="/years"       ? "active":"inactive"}>{icons.years} {i18n.t('category.years')}</a></Link></dd>
+							<dd key="singers"    ><Link href={ "/singers?"     }><a className={current_route=="/singers"     ? "active":"inactive"}>{icons.singers} {i18n.t('category.singers')}</a></Link></dd>
+							<dd key="series"     ><Link href={ "/series?"      }><a className={current_route=="/series"      ? "active":"inactive"}>{icons.series} {i18n.t('category.series')}</a></Link></dd>
+							<dd key="songwriters"><Link href={ "/songwriters?" }><a className={current_route=="/songwriters" ? "active":"inactive"}>{icons.songwriters} {i18n.t('category.songwriters')}</a></Link></dd>
+							<dd key="creators"   ><Link href={ "/creators?"    }><a className={current_route=="/creators"    ? "active":"inactive"}>{icons.creators} {i18n.t('category.creators')}</a></Link></dd>
+							<dd key="authors"    ><Link href={ "/authors?"     }><a className={current_route=="/authors"     ? "active":"inactive"}>{icons.authors} {i18n.t('category.authors')}</a></Link></dd>
+							<dd key="languages"  ><Link href={ "/languages?"   }><a className={current_route=="/languages"   ? "active":"inactive"}>{icons.languages} {i18n.t('category.languages')}</a></Link></dd>
+							<dd key="years"      ><Link href={ "/years?"       }><a className={current_route=="/years"       ? "active":"inactive"}>{icons.years} {i18n.t('category.years')}</a></Link></dd>
 							<dd key="karaimport" ><a href={ "/import" }>{icons.kara_import} {i18n.t('category.kara_import')}</a></dd>
 						</dl>
 					</div>

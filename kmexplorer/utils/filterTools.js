@@ -1,5 +1,6 @@
 import {deburr} from "lodash"
-import tagsMap from "../components/tagsMap.js"
+import {tagsMap,tagTypeFromId} from "../components/tagsMap.js"
+import querystring from 'querystring';
 
 
 // ?p=0&filter=keywords&q=y:1982!s:501!t:10,4488
@@ -41,6 +42,9 @@ export default class FilterTools {
 		}
 	}
 	init(query){
+		//console.log(query)
+		query = query.path ? query.query : query;
+
 		var slug = query.slug ? query.slug : null;
 		var page = parseInt(query.p ? query.p : 0);
 		var keywords = query.filter ? ''+query.filter : '';
@@ -126,7 +130,7 @@ export default class FilterTools {
 			return this.liveParams.orderBy;
 	}
 	addTag(type,value,slug=null){
-		this.liveParams.slug=""+slug;
+		this.liveParams.slug = slug ? (""+slug) : null;
 		this.liveParams.orderBy='search';
 		//console.log(type,value,this.liveParams.tags)
 
@@ -150,24 +154,109 @@ export default class FilterTools {
 			this.liveParams.tags.splice(this.liveParams.tags.indexOf(value),1);
 		return this;
 	}
-	getQuery(){
-		let q = [];
-		if (this.liveParams.orderBy !== 'recent') {
+	getQuery(mode=null){
+		
+
+		if(mode!==null)
+		{
+			let query = {
+				p:this.liveParams.page,
+			};
+			return {
+				path:"/"+mode,
+				query:query,
+				query_string:querystring.stringify(query),
+				url:"/"+mode+"?"+querystring.stringify(query),
+			};
+		}
+
+		let query = {
+			p:this.liveParams.page,
+			filter:this.liveParams.keywords,
+			order: this.liveParams.orderBy,
+		};
+
+		if (this.liveParams.orderBy == 'recent') {
+			query = {p:this.liveParams.page};
+			return {
+				path:"/karas",
+				query:query,
+				query_string:querystring.stringify(query),
+				url:"/karas?"+querystring.stringify(query),
+			};
+		}
+
+		let q_count = 0;
+		if(this.liveParams.year) q_count++;
+		if(this.liveParams.serie) q_count++;
+		if(this.liveParams.tags && this.liveParams.tags.length>0)
+			q_count += this.liveParams.tags.length;
+
+		if(q_count>1)
+		{
+			let q = [];
 			if(this.liveParams.year)
 				q.push('y:'+this.liveParams.year);
 			if(this.liveParams.serie)
 				q.push('s:'+this.liveParams.serie);
 			if(this.liveParams.tags && this.liveParams.tags.length>0)
 				q.push('t:'+this.liveParams.tags.join(','));
+
+			query.q = q.join('!');
+			return {
+				path:"/karas",
+				query:query,
+				query_string:querystring.stringify(query),
+				url:"/karas?"+querystring.stringify(query),
+			};
+		}
+		else
+		{
+			let code = null;
+			let value = null;
+			let slug = this.liveParams.slug;
+
+			if(this.liveParams.year)
+			{
+				code = 'year';
+				value = this.liveParams.year;
+			}
+			else if(this.liveParams.serie)
+			{
+				code = 'serie';
+				value = this.liveParams.serie;
+			}
+			else if(this.liveParams.tags && this.liveParams.tags.length>0)
+			{
+				let tagFilter = this.liveParams.tags[0];
+				var typeId = parseInt(tagFilter.replace(/^.*~/,''));
+				let type = tagTypeFromId(typeId)
+				if(type)
+				{
+					code = type.code;
+					value = tagFilter;
+				}
+			}
+
+			if(code!==null)
+			{
+				return {
+					path:"/karas/"+code+"/"+(slug ? slug+"/":"")+value,
+					query:query,
+					query_string:querystring.stringify(query),
+					url:"/karas/"+code+"/"+(slug ? slug+"/":"")+value+"?"+querystring.stringify(query),
+				};
+			}
+
+			return {
+				path:"/karas/",
+				query:query,
+				query_string:querystring.stringify(query),
+				url:"/karas?"+querystring.stringify(query),
+			};
 		}
 
-		return {
-			p:this.liveParams.page,
-			filter:this.liveParams.keywords,
-			order: this.liveParams.orderBy,
-			q:q.join('!'),
-			slug:this.liveParams.slug,
-		}
+		
 	}
 	getApiQuery(pageSize){
 		let q = [];
