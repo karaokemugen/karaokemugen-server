@@ -1,4 +1,6 @@
 import {deburr} from "lodash"
+import tagsMap from "../components/tagsMap.js"
+
 
 // ?p=0&filter=keywords&q=y:1982!s:501!t:10,4488
 // p = current page index
@@ -133,7 +135,10 @@ export default class FilterTools {
 		else if(type=='serie')
 			this.liveParams.serie = value;
 		else if(this.liveParams.tags.indexOf(value)<0)
-			this.liveParams.tags.push(value);
+		{
+			let typeID = tagsMap[type].id || 0;
+			this.liveParams.tags.push(value+'~'+typeID);
+		}
 		return this;
 	}
 	removeTag(type,value=null){
