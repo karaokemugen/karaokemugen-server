@@ -12,7 +12,7 @@ import shortenerController from './controllers/shortener';
 import userController from './controllers/user';
 import favoritesController from './controllers/favorites';
 import {configurePassport} from './lib/utils/passport_manager';
-import {getConfig, resolvedPathKaras, resolvedPathSubs, resolvedPathMedias, resolvedPathSeries, resolvedPathPreviews, resolvedPathAvatars} from './lib/utils/config';
+import {getConfig, resolvedPathKaras, resolvedPathSubs, resolvedPathMedias, resolvedPathSeries, resolvedPathPreviews, resolvedPathAvatars, resolvedPathTags} from './lib/utils/config';
 import range from 'express-range';
 import vhost from 'vhost';
 //import {getInstanceRoom} from './dao/proxy'; For KM instances hosting
@@ -83,6 +83,7 @@ export function initFrontend(listenPort: number) {
 	mainApp.use('/downloads/lyrics', express.static(resolvedPathSubs()[0]));
 	mainApp.use('/downloads/medias', express.static(resolvedPathMedias()[0]));
 	mainApp.use('/downloads/series', express.static(resolvedPathSeries()[0]));
+	mainApp.use('/downloads/tags', express.static(resolvedPathTags()[0]));
 	mainApp.use('/previews', express.static(resolvedPathPreviews()));
 	mainApp.use('/avatars', express.static(resolvedPathAvatars()));
 	// API router
