@@ -30,6 +30,9 @@ console.log(`KaraExplorer PORT = ${PORT}`);
   })
   server.get('/karas/:tagType/:tagSlug/:tagID?', (req, res) => {
     const { query, params } = req
+
+    params.tagID = params.tagID || params.tagSlug
+    
     let q = 't:'+params.tagID 
     if(params.tagType=='year')
     {

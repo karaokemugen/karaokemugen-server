@@ -130,7 +130,8 @@ export default class FilterTools {
 			return this.liveParams.orderBy;
 	}
 	addTag(type,value,slug=null){
-		this.liveParams.slug = slug ? (""+slug) : null;
+
+		this.liveParams.slug = slug ? this.normalizeString(""+slug) : null;
 		this.liveParams.orderBy='search';
 		//console.log(type,value,this.liveParams.tags)
 
@@ -138,10 +139,14 @@ export default class FilterTools {
 			this.liveParams.year = value;
 		else if(type=='serie')
 			this.liveParams.serie = value;
-		else if(this.liveParams.tags.indexOf(value)<0)
+		else
 		{
 			let typeID = tagsMap[type].id || 0;
-			this.liveParams.tags.push(value+'~'+typeID);
+			if(this.liveParams.tags.indexOf(value+'~'+typeID)<0)
+			{
+				
+				this.liveParams.tags.push(value+'~'+typeID);
+			}
 		}
 		return this;
 	}
@@ -226,6 +231,7 @@ export default class FilterTools {
 			{
 				code = 'year';
 				value = this.liveParams.year;
+				slug = null
 			}
 			else if(this.liveParams.serie)
 			{
@@ -289,7 +295,7 @@ export default class FilterTools {
 	}
 
 	normalizeString(str) {
-		return deburr(str.toLowerCase()).replace(/[~'"«»]+/,'');
+		return typeof str === "string" ? deburr(str.toLowerCase()).replace(/[~'"«»]+/,'') : '';
 	}
 
 };
