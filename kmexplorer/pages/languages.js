@@ -51,7 +51,8 @@ class Page extends React.Component {
 			{
 				kmax = Math.max(kmax,tag.karacount);
 				tag.real_name = isoLanguages(tag.name, i18n.language)
-				if(keywords.length==0 || filterTools.keywordSearch(tag.real_name,keywords) || filterTools.keywordSearch(tag.name,keywords))
+				if(tag.karacount !== "0" 
+					&& (keywords.length==0 || filterTools.keywordSearch(tag.real_name,keywords) || filterTools.keywordSearch(tag.name,keywords)))
 					tagList.push(tag);
 			}
 		}
