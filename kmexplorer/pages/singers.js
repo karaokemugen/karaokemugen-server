@@ -72,7 +72,7 @@ class Page extends React.Component {
 				key: tag.tid,
 				name : tag.i18n[isoLanguages("iso3",i18n.language)] || (tag.i18n['eng'] || tag.name),
 				karacount : tag.karacount,
-				link : "/karas?"+querystring.stringify(filterTools.clear().addTag('singer',tag.tid,tag.slug).getQuery()),
+				link : filterTools.clear().addTag('singer',tag.tid,tag.slug).getQuery().url,
 				height : 100 * tag.karacount / kmax
 			};
 		})
@@ -95,7 +95,7 @@ class Page extends React.Component {
 						total={total}
 						size={pageSize}
 						current={page}
-						renderUrl={(i) => { return "/singers?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
+						renderUrl={(i) => { return filterTools.reset().setPage(i).getQuery('singers').url; }}
 						/>
 					<div className="kmx-filter-order">
 						<label>{i18n.t('form.order_by')} :</label>
@@ -110,7 +110,7 @@ class Page extends React.Component {
 					total={total}
 					size={pageSize}
 					current={page}
-					renderUrl={(i) => { return "/singers?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
+					renderUrl={(i) => { return filterTools.reset().setPage(i).getQuery('singers').url; }}
 					/>
 			</div>
 			)

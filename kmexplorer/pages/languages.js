@@ -51,7 +51,8 @@ class Page extends React.Component {
 			{
 				kmax = Math.max(kmax,tag.karacount);
 				tag.real_name = isoLanguages(tag.name, i18n.language)
-				if(keywords.length==0 || filterTools.keywordSearch(tag.real_name,keywords) || filterTools.keywordSearch(tag.name,keywords))
+				if(tag.karacount !== "0" 
+					&& (keywords.length==0 || filterTools.keywordSearch(tag.real_name,keywords) || filterTools.keywordSearch(tag.name,keywords)))
 					tagList.push(tag);
 			}
 		}
@@ -65,7 +66,7 @@ class Page extends React.Component {
 				key: tag.tid,
 				name : tag.real_name,
 				karacount : tag.karacount,
-				link : "/karas?"+querystring.stringify(filterTools.clear().addTag('language',tag.tid).getQuery()),
+				link : filterTools.clear().addTag('language',tag.tid).getQuery().url,
 				height : 100 * tag.karacount / kmax
 			};
 		})

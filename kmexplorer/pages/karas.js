@@ -7,7 +7,7 @@ import axios from 'axios'
 import Pagination from '../components/Pagination';
 import isoLanguages from '../components/isoLanguages';
 import Karalist from '../components/Karalist';
-import tagsMap from '../components/tagsMap.js';
+import {tagsMap, tagTypeFromId} from '../components/tagsMap.js';
 import querystring from 'querystring';
 import FilterTools from '../utils/filterTools';
 import RuntimeConfig from '../utils/RuntimeConfig';
@@ -43,8 +43,8 @@ class Homepage extends React.Component {
 
       if(karaPage > karaCount/pageSize)
       {
-        //console.log(filterTools.setPage(0).getQuery())
-        i18nRouterPush("/karas", filterTools.reset().setPage(0).getQuery(),res);
+        let q = filterTools.reset().setPage(0).getQuery();
+        i18nRouterPush(q.path, q.query, res);
       }
     }
     else
@@ -97,7 +97,8 @@ class Homepage extends React.Component {
     this.setState({
       loading:true,
     })
-    i18nRouterPush("/karas", filterTools.reset().getQuery())
+    let q = filterTools.reset().getQuery()
+    i18nRouterPush(q.path, q.query)
   }
 
   updateKeyword(event) {
@@ -116,17 +117,26 @@ class Homepage extends React.Component {
   }
 
   buildFilterTags(id){
-    var item = this.getTagDetail(id);
+    var item = this.getTagDetail(id.replace(/~[0-9]+$/,''));
+    var itemID = parseInt(id.replace(/^.*~/,''));
     if(item)
     {
-      var url = "/karas?"+querystring.stringify(filterTools.reset().removeTag('misc',id).getQuery())
-      let name = item.name;
+      let q = filterTools.reset().removeTag('misc',id).getQuery();
+      var url = q.url;
+      let name = item.i18n[isoLanguages("iso3",i18n.language)] || (item.i18n['eng'] || item.name);
       if(name === 'NO_TAG')
         name = i18n.t("tag:no_tag");
       else if(item.code=='language')
         name = isoLanguages(name, i18n.language)
 
-      return <Link href={url} key={'tag_'+id}><a data-type={item.code} className="tag">{name}</a></Link>
+      var icon = null;
+      if(itemID>0)
+      {
+        let t = tagTypeFromId(itemID)
+        icon = t.icon;
+      }
+
+      return <Link href={url} key={'tag_'+id}><a data-type={item.code} className="tag">{icon} {name}</a></Link>
     }
     return null;
   }
@@ -145,23 +155,24 @@ class Homepage extends React.Component {
           }
         });
       }
-      var url = "/karas?"+querystring.stringify(filterTools.reset().removeTag('serie',id).getQuery())
-      return <Link href={url} key={'serie_'+id}><a data-type="serie" className="tag">{real_name}</a></Link>
+
+      let q = filterTools.reset().removeTag('serie',id).getQuery();
+      return <Link href={q.url} key={'serie_'+id}><a data-type="serie" className="tag">{real_name}</a></Link>
     }
     return null;
   }
 
   buildFilterOrder(order, text){
-    let url = "/karas?"+querystring.stringify(filterTools.reset().setOrderBy(order).getQuery());
-    return <Link href={url}><a>{text}</a></Link>
+    let q = filterTools.clear().setOrderBy(order).getQuery();
+    return <Link href={q.url}><a>{text}</a></Link>
   }
 
   render() {
 
     let filterSerie = (() => {
-      let url = "/karas?"+querystring.stringify(filterTools.reset().removeTag('year',filterTools.params.year).getQuery());
+      let q = filterTools.reset().removeTag('year',filterTools.params.year).getQuery();
       return filterTools.params.year
-        ? <Link href={url} key="year"><a data-type="year" className="tag">{filterTools.params.year}</a></Link>
+        ? <Link href={q.url} key="year"><a data-type="year" className="tag">{filterTools.params.year}</a></Link>
         : null
     })();
 
@@ -191,7 +202,7 @@ class Homepage extends React.Component {
             total={this.props.karaCount}
             size={this.props.pageSize}
             current={this.props.karaPage}
-            renderUrl={(i) => { return "/karas?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
+            renderUrl={(i) => { return filterTools.reset().setPage(i).getQuery().url; }}
             />
          	<div className="kmx-filter-order">
 						<label>{i18n.t('form.order_by')} :</label>
@@ -206,7 +217,7 @@ class Homepage extends React.Component {
           total={this.props.karaCount}
           size={this.props.pageSize}
           current={this.props.karaPage}
-          renderUrl={(i) => { return "/karas?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
+          renderUrl={(i) => { return filterTools.reset().setPage(i).getQuery().url; }}
           />
       </div>
     )

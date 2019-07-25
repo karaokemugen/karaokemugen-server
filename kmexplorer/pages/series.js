@@ -70,7 +70,7 @@ class Page extends React.Component {
 				key: serie.sid,
 				name : serie.name,
 				karacount : serie.karacount,
-				link : "/karas?"+querystring.stringify(filterTools.clear().addTag('serie',serie.sid,serie.name).getQuery()),
+				link : filterTools.clear().addTag('serie',serie.sid,serie.name).getQuery().url,
 				height : 100 * serie.karacount / kmax
 			};
 		})
@@ -94,7 +94,7 @@ class Page extends React.Component {
 						total={total}
 						size={pageSize}
 						current={page}
-						renderUrl={(i) => { return "/series?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
+						renderUrl={(i) => { return filterTools.reset().setPage(i).getQuery('series').url; }}
 						/>
 					<div className="kmx-filter-order">
 						<label>{i18n.t('form.order_by')} :</label>
@@ -109,7 +109,7 @@ class Page extends React.Component {
 					total={total}
 					size={pageSize}
 					current={page}
-					renderUrl={(i) => { return "/series?"+querystring.stringify(filterTools.reset().setPage(i).getQuery()); }}
+					renderUrl={(i) => { return filterTools.reset().setPage(i).getQuery('series').url; }}
 					/>
 			</div>
 			)

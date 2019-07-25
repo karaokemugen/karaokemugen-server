@@ -24,7 +24,7 @@ class Karaitem extends React.Component {
 
 		let quickTagUrl = function(type,value)
 		{
-			return "/karas?"+querystring.stringify(filterTools.reset().addTag(type,value).getQuery());
+			return filterTools.reset().addTag(type,value).getQuery().url;
 		}
 
 		let getI18nTagname = (v) => {
@@ -156,7 +156,7 @@ class Karaitem extends React.Component {
 		return (
 			<div className="kmx-kara-item" data-mode={renderMode}>
 				{caption}
-				<h2 className="title"><Link href={'/kara?kid='+kara.kid} key="detail"><a>{kara.title}</a></Link></h2>
+				<h2 className="title"><Link href={'/kara/'+filterTools.normalizeString(kara.title)+'/'+kara.kid} key="detail"><a>{kara.title}</a></Link></h2>
 				<div className="tags">
 					{songtypes}
 					{languages}
