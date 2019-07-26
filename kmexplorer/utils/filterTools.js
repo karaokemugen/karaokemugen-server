@@ -160,8 +160,6 @@ export default class FilterTools {
 		return this;
 	}
 	getQuery(mode=null){
-		
-
 		if(mode!==null)
 		{
 			let query = {
@@ -182,18 +180,6 @@ export default class FilterTools {
 			filter:this.liveParams.keywords,
 			order: this.liveParams.orderBy,
 		};
-
-		if (this.liveParams.orderBy == 'recent') {
-			query = {p:this.liveParams.page};
-
-			let _query = querystring.stringify(query);
-			return {
-				path:"/karas",
-				query:query,
-				query_string:_query,
-				url:"/karas?"+_query,
-			};
-		}
 
 		let q_count = 0;
 		if(this.liveParams.year) q_count++;
@@ -264,7 +250,7 @@ export default class FilterTools {
 
 			let _query = querystring.stringify(query);
 			return {
-				path:"/karas/",
+				path:"/karas",
 				query:query,
 				query_string:_query,
 				url:"/karas?"+_query,
