@@ -52,9 +52,9 @@ class Header extends React.Component {
 				<header className="kmx-header">
 					<div className="kmx-filters-menu">
 						<dl className="kmx-filters-menu--list">
-							<dd key="index"      ><Link href={ "/?"         }><a className={current_route=="/"            ? "active":"inactive"}>{icons.home} {i18n.t('category.home')}</a></Link></dd>
-							<dd key="karas"      ><Link href={ karasURL     }><a className={current_route=="/karas"       ? "active":"inactive"}>{icons.karas} {i18n.t('category.karas')}</a></Link></dd>
-							<dd key="songtypes"  ><Link href={ "/songtypes" }><a className={current_route=="/songtypes"   ? "active":"inactive"}>{icons.songtypes} {i18n.t('category.songtypes')}</a></Link></dd>
+							<dd onClick={this.closeDropdown.bind(this,'tags')} key="index"      ><Link href={ "/?"         }><a className={current_route=="/"            ? "active":"inactive"}>{icons.home} {i18n.t('category.home')}</a></Link></dd>
+							<dd onClick={this.closeDropdown.bind(this,'tags')} key="karas"      ><Link href={ karasURL     }><a className={current_route=="/karas"       ? "active":"inactive"}>{icons.karas} {i18n.t('category.karas')}</a></Link></dd>
+							<dd onClick={this.closeDropdown.bind(this,'tags')} key="songtypes"  ><Link href={ "/songtypes" }><a className={current_route=="/songtypes"   ? "active":"inactive"}>{icons.songtypes} {i18n.t('category.songtypes')}</a></Link></dd>
 							<dd key="tags">
 								<button onClick={this.toggleDropdown.bind(this,'tags')}>{icons.tags} {i18n.t('category.tags')}</button>
 								{
@@ -70,14 +70,14 @@ class Header extends React.Component {
 									: null
 								}
 							</dd>
-							<dd key="singers"    ><Link href={ "/singers?"     }><a className={current_route=="/singers"     ? "active":"inactive"}>{icons.singers} {i18n.t('category.singers')}</a></Link></dd>
-							<dd key="series"     ><Link href={ "/series?"      }><a className={current_route=="/series"      ? "active":"inactive"}>{icons.series} {i18n.t('category.series')}</a></Link></dd>
-							<dd key="songwriters"><Link href={ "/songwriters?" }><a className={current_route=="/songwriters" ? "active":"inactive"}>{icons.songwriters} {i18n.t('category.songwriters')}</a></Link></dd>
-							<dd key="creators"   ><Link href={ "/creators?"    }><a className={current_route=="/creators"    ? "active":"inactive"}>{icons.creators} {i18n.t('category.creators')}</a></Link></dd>
-							<dd key="authors"    ><Link href={ "/authors?"     }><a className={current_route=="/authors"     ? "active":"inactive"}>{icons.authors} {i18n.t('category.authors')}</a></Link></dd>
-							<dd key="languages"  ><Link href={ "/languages?"   }><a className={current_route=="/languages"   ? "active":"inactive"}>{icons.languages} {i18n.t('category.languages')}</a></Link></dd>
-							<dd key="years"      ><Link href={ "/years?"       }><a className={current_route=="/years"       ? "active":"inactive"}>{icons.years} {i18n.t('category.years')}</a></Link></dd>
-							<dd key="karaimport" ><a href={ "/import" }>{icons.kara_import} {i18n.t('category.kara_import')}</a></dd>
+							<dd onClick={this.closeDropdown.bind(this,'tags')} key="singers"    ><Link href={ "/singers?"     }><a className={current_route=="/singers"     ? "active":"inactive"}>{icons.singers} {i18n.t('category.singers')}</a></Link></dd>
+							<dd onClick={this.closeDropdown.bind(this,'tags')} key="series"     ><Link href={ "/series?"      }><a className={current_route=="/series"      ? "active":"inactive"}>{icons.series} {i18n.t('category.series')}</a></Link></dd>
+							<dd onClick={this.closeDropdown.bind(this,'tags')} key="songwriters"><Link href={ "/songwriters?" }><a className={current_route=="/songwriters" ? "active":"inactive"}>{icons.songwriters} {i18n.t('category.songwriters')}</a></Link></dd>
+							<dd onClick={this.closeDropdown.bind(this,'tags')} key="creators"   ><Link href={ "/creators?"    }><a className={current_route=="/creators"    ? "active":"inactive"}>{icons.creators} {i18n.t('category.creators')}</a></Link></dd>
+							<dd onClick={this.closeDropdown.bind(this,'tags')} key="authors"    ><Link href={ "/authors?"     }><a className={current_route=="/authors"     ? "active":"inactive"}>{icons.authors} {i18n.t('category.authors')}</a></Link></dd>
+							<dd onClick={this.closeDropdown.bind(this,'tags')} key="languages"  ><Link href={ "/languages?"   }><a className={current_route=="/languages"   ? "active":"inactive"}>{icons.languages} {i18n.t('category.languages')}</a></Link></dd>
+							<dd onClick={this.closeDropdown.bind(this,'tags')} key="years"      ><Link href={ "/years?"       }><a className={current_route=="/years"       ? "active":"inactive"}>{icons.years} {i18n.t('category.years')}</a></Link></dd>
+							<dd onClick={this.closeDropdown.bind(this,'tags')} key="karaimport" ><a href={ "/import" }>{icons.kara_import} {i18n.t('category.kara_import')}</a></dd>
 						</dl>
 					</div>
 					<div className="kmx-help-menu">
