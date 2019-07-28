@@ -2,7 +2,7 @@ import React from 'react'
 import { i18n, withNamespaces } from '../i18n'
 import Head from 'next/head'
 import duration from '../components/date';
-
+import prettyBytes from 'pretty-bytes';
 class Page extends React.Component {
 	static async getInitialProps({ req, query, res }) {
 
@@ -27,7 +27,8 @@ class Page extends React.Component {
 			songwriter:0,
 			serie:0,
 			karas:0,
-			duration:0
+			duration:0,
+			mediasize:0
 		};
 		if(this.props.stats)
 		{
@@ -40,6 +41,7 @@ class Page extends React.Component {
 			count.karas = this.props.stats.karas;
 			count.duration = this.props.stats.duration;
 			count.lastGeneration = this.props.stats.lastGeneration;
+			count.mediasize = this.props.stats.mediasize;
 		}
 
 		return (
@@ -59,6 +61,7 @@ class Page extends React.Component {
 						<li key="language"><strong>{count.language>0 ? count.language : '-'}</strong> <span>{i18n.t("category.languages")}</span></li>
 						<li key="author"><strong>{count.author>0 ? count.author : '-'}</strong> <span>{i18n.t("category.authors")}</span></li>
 						<li key="songwriter"><strong>{count.songwriter>0 ? count.songwriter : '-'}</strong> <span>{i18n.t("category.songwriters")}</span></li>
+						<li key="mediasize"><span>{i18n.t("stats.media_size")}</span> : <strong>{count.mediasize>0 ? prettyBytes(Number(count.mediasize)) : '-'}</strong></li>
 						<li className="km-home--stats--wide" key="lastGeneration"><span>{i18n.t("stats.last_generation")}</span> : <strong>{count.duration>0 ? new Date(count.lastGeneration).toLocaleString() : '-'}</strong></li>
 						<li className="km-home--stats--wide" key="duration"><span>{i18n.t("stats.all_duration")} :</span> <strong>{count.duration>0 ? duration(count.duration) : '-'}</strong></li>
 					</ul>

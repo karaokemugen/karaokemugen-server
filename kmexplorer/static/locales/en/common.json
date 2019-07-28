@@ -72,6 +72,7 @@
   "sitename": "Karaoke Mugen",
   "stats": {
     "all_duration": "Duration of all karas",
-    "last_generation": "Last update"
+    "last_generation": "Last update",
+    "media_size": "Media Size"
   }
 }
