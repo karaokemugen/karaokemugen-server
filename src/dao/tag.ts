@@ -5,6 +5,11 @@ import { DBTag } from '../lib/types/database/tag';
 import { WhereClause } from '../lib/types/database';
 const sql = require('./sqls/tag');
 
+export async function selectTag(tid) {
+	const res = await db().query(sql.selectTag, [tid]);
+	return res.rows[0];
+}
+
 export async function selectTags(params: TagParams): Promise<DBTag[]> {
 	let filterClauses = params.filter
 		? buildTagClauses(params.filter)

@@ -27,3 +27,16 @@ FROM tag
 WHERE name = $1
   AND types @> $2
 ;`;
+
+export const selectTag = `
+SELECT tid,
+	types,
+	name,
+	short,
+	aliases,
+	i18n,
+	karacount,
+	tagfile
+FROM all_tags
+WHERE tid = $1
+`;
