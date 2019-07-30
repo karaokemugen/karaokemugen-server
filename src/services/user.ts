@@ -109,6 +109,10 @@ async function replaceAvatar(oldImageFile: string, avatar: Express.Multer.File) 
 	}
 }
 
+export async function changePassword(username: string, password: string) {
+	password = hashPassword(password);
+	return await updateUserPassword(username, password);
+}
 
 export async function editUser(username: string, user: User, avatar: Express.Multer.File, token: Token) {
 	try {

@@ -8,7 +8,7 @@ import detect from 'detect-port';
 import {initDB} from './dao/database';
 import {initShortener} from './services/shortener';
 import {initFavorites} from './services/favorites';
-import {createUser} from './services/user';
+import {createUser, changePassword} from './services/user';
 import {generateDatabase} from './lib/services/generation';
 import sudoBlock from 'sudo-block';
 import {asyncCheckOrMkdir} from './lib/utils/files';
@@ -84,6 +84,11 @@ async function main() {
 		exit(0);
 	}
 
+	if (argv.changePassword) {
+		await changePassword(argv.changePassword[0], argv.changePassword[1]);
+		exit(0);
+	}
+
 	const port = await detect(+argv.port || conf.Frontend.Port);
 
 	if (port !== conf.Frontend.Port) setConfig({
@@ -126,5 +131,6 @@ function parseArgs() {
 		.option('--sql', 'display SQL queries (in debug)')
 		.option('--debug', 'display debug messages')
 		.option('--createAdmin [user],[password]', 'Create a new admin user', login)
+		.option('--changePassword [user],[password]', 'Change a user password', login)
 		.parse(argv);
 }
