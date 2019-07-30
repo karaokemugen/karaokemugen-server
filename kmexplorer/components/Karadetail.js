@@ -81,6 +81,7 @@ class Karaitem extends React.Component {
 		let songtypes = kara.songtypes.map((v,i) => {
 			if(v.name!=='NO_TAG')
 			{
+								console.log(v)
 				let url = quickTagUrl('songtype',v.tid);
 				return <Link href={url} key={'songtype_'+i}><a data-type="songtype" data-id={v.tid}>{icons.songtype} {getI18nTagname(v)} {kara.songorder}</a></Link>
 			}

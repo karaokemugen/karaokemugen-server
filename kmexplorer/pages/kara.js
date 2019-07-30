@@ -41,7 +41,7 @@ class Karapage extends React.Component {
         <Head>
           <title key="title">{i18n.t('sitename')} - {this.props.kara ? this.props.kara.title : i18n.t('kara.unknown')}</title>
         </Head>
-        {this.props.kara ? <Karadetail key='kara' data={this.props.kara} filterTools={filterTools}/> : null }
+        {this.props.kara ? <Karadetail key='kara' data={this.props.kara} tags={this.props.tags} filterTools={filterTools}/> : null }
       </div>
     )
   }
