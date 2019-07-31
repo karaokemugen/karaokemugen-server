@@ -25,6 +25,7 @@ export async function createKara(kara: Kara) {
 	}
 	const karaName = `${newKara.data.langs[0].name.toUpperCase()} - ${newKara.data.series[0] || newKara.data.singers[0].name} - ${newKara.data.songtypes[0].name}${newKara.data.order || ''} - ${newKara.data.title}`;
 	let title = conf.Gitlab.IssueTemplate.Import.Title || 'New kara: $kara';
+	logger.debug('[GitLab] Kara: '+JSON.stringify(newKara.data, null, 2));
 	title = title.replace('$kara', karaName);
 	let desc = conf.Gitlab.IssueTemplate.Import.Description || '';
 	desc = desc.replace('$file', basename(newKara.file))
