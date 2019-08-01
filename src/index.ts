@@ -64,6 +64,7 @@ async function main() {
 	paths.Karas.forEach(e => checks.push(asyncCheckOrMkdir(appPath, e)));
 	paths.Series.forEach(e => checks.push(asyncCheckOrMkdir(appPath, e)));
 	paths.Lyrics.forEach(e => checks.push(asyncCheckOrMkdir(appPath, e)));
+	paths.Tags.forEach(e => checks.push(asyncCheckOrMkdir(appPath, e)));
 
 	await Promise.all(checks);
 
