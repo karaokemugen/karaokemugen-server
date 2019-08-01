@@ -19,6 +19,7 @@ import vhost from 'vhost';
 import proxy from 'express-http-proxy';
 import {createServer} from 'http';
 import helmet from 'helmet';
+import compression from 'compression';
 import { getState } from './utils/state';
 import { initWS } from './lib/utils/ws';
 
@@ -40,6 +41,7 @@ export function initFrontend(listenPort: number) {
 		return false;
 	});
 	app.use(helmet());
+	app.use(compression());
 	app.use(bodyParser.json({limit: '1000mb'})); // support json encoded bodies
 	app.use(bodyParser.urlencoded({
 		limit: '1000mb',
