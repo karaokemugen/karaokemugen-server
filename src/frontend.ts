@@ -56,13 +56,9 @@ export function initFrontend(listenPort: number) {
 		res.setHeader('Access-Control-Allow-Origin', '*');
 		res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 		res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Authorization, Accept, Key');
-		if (req.method === 'OPTIONS') {
-			res.statusCode = 200;
-			res.json();
-		} else {
-			// Pass to next layer of middleware
-			next();
-		}
+		req.method === 'OPTIONS'
+			? res.json()
+			: next();
 	});
 	app.use(vhost(`${conf.Frontend.Host}`, mainApp));
 	app.use(vhost(`*.${conf.Frontend.Host}`, getKMRoom), proxy(redirectKMRoom, {
@@ -81,6 +77,7 @@ export function initFrontend(listenPort: number) {
 	});
 
 	mainApp.use('/downloads/karaokes', express.static(resolvedPathKaras()[0]));
+	// Serve V3 Karas still for some time
 	mainApp.use('/downloads/karas', express.static(resolve(resolvedPathKaras()[0], '../karas/')));
 	mainApp.use('/downloads/lyrics', express.static(resolvedPathSubs()[0]));
 	mainApp.use('/downloads/medias', express.static(resolvedPathMedias()[0]));
@@ -96,16 +93,12 @@ export function initFrontend(listenPort: number) {
 	});
 	// The "catchall" handler: for any request that doesn't
 	// match one above, send back React's index.html file.
-	mainApp.get('*', (_, res) => {
-		res.status(404).send('Not found');
-	});
+	mainApp.get('*', (_, res) => res.status(404).send('Not found'));
 
 	const port = listenPort;
 	const server = createServer(app);
 	initWS(server);
-	server.listen(port, () => {
-		logger.info(`[App] App listening on ${port}`);
-	});
+	server.listen(port, () => logger.info(`[App] App listening on ${port}`));
 }
 
 function api() {
