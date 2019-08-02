@@ -15,6 +15,8 @@ import {asyncCheckOrMkdir} from './lib/utils/files';
 import {kmExplorerStart} from './services/kmExplorer';
 import findRemoveSync from 'find-remove';
 import { setState, getState } from './utils/state';
+import { createImagePreviews } from './lib/utils/previews';
+import { getAllKaras } from './services/kara';
 
 const pjson = require('../package.json');
 const appPath = join(__dirname,'../');
@@ -72,6 +74,11 @@ async function main() {
 
 	await initDB(getState().opt.sql);
 
+	if (argv.createPreviews) {
+		const karas = await getAllKaras();
+		await createImagePreviews(karas);
+		exit(0);
+	}
 	if (argv.generate) {
 		await generateDatabase();
 		exit(0);
