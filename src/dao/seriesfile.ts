@@ -8,7 +8,7 @@ export async function findSeriesInImportedFiles(name: string): Promise<Series> {
 	let files = await asyncReadDir(resolvedPathImport());
 	files = files.filter((f: string) => f.endsWith('.series.json'));
 	for (const file of files) {
-		const data = await asyncReadFile(resolve(resolvedPathImport(), file), 'utf-8');
+		const data = JSON.parse(await asyncReadFile(resolve(resolvedPathImport(), file), 'utf-8'));
 		if (data.series.name === name) return data.series;
 	}
 	return null;
