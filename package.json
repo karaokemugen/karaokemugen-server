@@ -17,7 +17,7 @@
       "migrateUp": "node node_modules/db-migrate/bin/db-migrate up",
       "build": "npx rimraf \"dist\" && tsc --build",
       "buildAll": "yarn build && yarn buildKmimport && yarn buildKmexplorer",
-      "installAll": "cd kmimport && yarn install && cd ../kmexplorer && yarn install",
+      "installAll": "yarn install && cd kmimport && yarn install && cd ../kmexplorer && yarn install",
       "buildKmimport": "cd kmimport && yarn build",
       "buildKmexplorer": "cd kmexplorer && npx rimraf \".next\" && npx next build",
       "pull": "git pull && git submodule sync --recursive && git submodule update --init --recursive"
