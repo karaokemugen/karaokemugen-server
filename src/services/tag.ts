@@ -5,6 +5,7 @@ import { writeTagFile } from '../lib/dao/tagfile';
 import { resolvedPathImport } from '../lib/utils/config';
 import { findTagInImportedFiles } from '../dao/tagfile';
 import { IDQueryResult } from '../lib/types/kara';
+import uuidV4 from 'uuid/v4';
 
 export function formatTagList(tagList: DBTag[], from: number, count: number): TagList {
 	return {
@@ -49,6 +50,7 @@ export async function getOrAddTagID(tagObj: Tag): Promise<IDQueryResult> {
 	// If no tag is found, check in import folder if we have a tag by the same name and type
 	tag = await findTagInImportedFiles(tagObj.name, tagObj.types);
 	if (tag) return {id: tag.tid, new: false};
+	tagObj.tid = uuidV4();
 	await writeTagFile(tagObj, resolvedPathImport());
 	return {id: tagObj.tid, new: true};
 }
