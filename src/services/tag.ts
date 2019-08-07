@@ -40,6 +40,7 @@ export async function editTag(_tid: string, tag: Tag, _opts: any) {
 }
 
 export async function addTag(tag: Tag, _opts: any) {
+	tag.tid = uuidV4();
 	await writeTagFile(tag, resolvedPathImport());
 	return tag;
 }
