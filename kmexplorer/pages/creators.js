@@ -58,8 +58,6 @@ class Page extends React.Component {
 			let tag = this.props.tags[id];
 			if(tag.code=="creator")
 			{
-				if (tag.name === 'NO_TAG')
-					tag.name = i18n.t('tag:no_tag');
 				kmax = Math.max(kmax,tag.karacount);
 				if(keywords.length==0 || filterTools.keywordSearch(tag.name,keywords))
 					tagList.push(tag);

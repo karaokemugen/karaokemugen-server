@@ -124,9 +124,7 @@ class Homepage extends React.Component {
       let q = filterTools.reset().removeTag('misc',id).getQuery();
       var url = q.url;
       let name = item.i18n[isoLanguages("iso3",i18n.language)] || (item.i18n['eng'] || item.name);
-      if(name === 'NO_TAG')
-        name = i18n.t("tag:no_tag");
-      else if(item.code=='language')
+      if(item.code=='language')
         name = isoLanguages(name, i18n.language)
 
       var icon = null;

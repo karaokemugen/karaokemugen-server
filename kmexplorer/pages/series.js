@@ -57,8 +57,6 @@ class Page extends React.Component {
 		let serieList = [];
 		for (let id in this.props.series) {
 			let serie = this.props.series[id];
-			if (serie.name === 'NO_TAG')
-				serie.name = i18n.t('tag:no_tag');
 			kmax = Math.max(kmax,serie.karacount);
 			if(keywords.length==0 || filterTools.keywordSearch(serie.name,keywords))
 				serieList.push(serie);
