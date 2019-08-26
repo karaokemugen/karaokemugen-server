@@ -6,8 +6,9 @@ export function getBaseStats() {
 	return selectBaseStats();
 }
 
-export function formatKaraList(karaList: any[], from: number, count: number): KaraList {
-	const {i18n, data} = consolidatei18n(karaList);
+export function formatKaraList(karaList: any[], from: number, count: number, lang: string): KaraList {
+	const langs = [lang, 'eng'];
+	const {i18n, data} = consolidatei18n(karaList, langs);
 	return {
 		infos: {
 			count: +count,
@@ -36,7 +37,7 @@ export async function getAllKaras(filter?: string, lang?: string, from = 0, size
 				modeValue: modeValue
 			})
 		]);
-		return formatKaraList(pl, +from, length);
+		return formatKaraList(pl, +from, length, lang);
 	} catch(err) {
 		throw err;
 	}

@@ -1,13 +1,12 @@
 import {selectTags, selectTagByNameAndType, selectTag} from '../dao/tag';
 import { TagParams, TagList, Tag } from '../lib/types/tag';
-import { DBTag } from '../lib/types/database/tag';
 import { writeTagFile } from '../lib/dao/tagfile';
 import { resolvedPathImport } from '../lib/utils/config';
 import { findTagInImportedFiles } from '../dao/tagfile';
 import { IDQueryResult } from '../lib/types/kara';
 import uuidV4 from 'uuid/v4';
 
-export function formatTagList(tagList: DBTag[], from: number, count: number): TagList {
+export function formatTagList(tagList: Tag[], from: number, count: number): TagList {
 	return {
 		infos: {
 			count: count,
