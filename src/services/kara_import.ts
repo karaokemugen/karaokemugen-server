@@ -43,6 +43,7 @@ export async function createKara(kara: Kara) {
 		.replace('$groups', newKara.data.groups.map(t => t.name).join(', '))
 		.replace('$families', newKara.data.families.map(t => t.name).join(', '))
 		.replace('$genres', newKara.data.genres.map(t => t.name).join(', '))
+		.replace('$platforms', newKara.data.platforms.map(t => t.name).join(', ))
 		.replace('$origins', newKara.data.origins.map(t => t.name).join(', '))
 		.replace('$duration', duration(newKara.data.mediaduration));
 	try {
