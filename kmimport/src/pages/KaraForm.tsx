@@ -218,6 +218,7 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 
 	render() {
 		const { getFieldDecorator } = this.props.form;
+		const { TextArea } = Input;
 		const t = this.props.translation;
 
 		return (
@@ -607,6 +608,25 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 						onChange={(tags) => this.props.form.setFieldsValue({ groups: tags })}
 						translation={t}
 					/>)}
+				</Form.Item>
+				<Form.Item
+					hasFeedback
+					label={
+						<span>{t('KARA.COMMENT')}&nbsp;
+							<Tooltip title={t('KARA.COMMENT_TOOLTIP')}>
+								<Icon type="question-circle-o" />
+							</Tooltip>
+						</span>
+					}
+					labelCol={{ span: 3 }}
+					wrapperCol={{ span: 8, offset: 0 }}
+				>
+					{getFieldDecorator("comment", {
+						initialValue: null,
+						rules: [{
+							required: false
+						}],
+					})(<TextArea/>)}
 				</Form.Item>
 				<Form.Item
 					wrapperCol={{ span: 8, offset: 1 }}

@@ -102,6 +102,7 @@ export async function createKara(kara: Kara) {
 	title = title.replace('$kara', karaName);
 	let desc = conf.Gitlab.IssueTemplate.Import.Description || '';
 	desc = desc.replace('$file', basename(newKara.file))
+		.replace('$comment', kara.comment || '')
 		.replace('$author', newKara.data.authors.map(t => t.name).join(', '))
 		.replace('$title', newKara.data.title)
 		.replace('$series', newKara.data.series.join(', '))

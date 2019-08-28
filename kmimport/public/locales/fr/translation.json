@@ -8,6 +8,8 @@
 	"ADD_SUCCESS_DESCRIPTION": "Un ticket a été crée sur notre outil de suivi. Vous pouvez consulter l'avancement de l'intégration de votre karaoké : ",
 	"ADD_ERROR": "Une erreur a eu lieu, le karaoké n'a pas pu être envoyé",
 	"KARA" : {
+		"COMMENT": "Un commentaire ?",
+		"COMMENT_TOOLTIP": "Si vous voulez donner des indications aux mainteneurs de la base de karaokés ou simplement dire merci, faites-le ici !",
 		"MEDIA_FILE": "Fichier vidéo",
 		"MEDIA_FILE_TOOLTIP": "Formats de fichier acceptés : .avi .mkv .mp4 .webm .mov .wmv .mpg .ogg .m4a .mp3",
 		"LYRICS_FILE": "Fichier de sous-titres",
