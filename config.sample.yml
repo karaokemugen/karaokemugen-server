@@ -68,3 +68,7 @@ Gitlab:
         **Groupe(s)** : $groups\n
         \n
         **Durée** : $duration\n
+        \n
+        # Commentaire
+        \n
+        $comment\n
