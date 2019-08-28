@@ -31,6 +31,15 @@ Gitlab:
   Host: http://lab.shelter.moe
   ProjectID: 1
   IssueTemplate:
+    Edit:
+      Labels:
+        - à intégrer
+      Description: >
+        ...\n
+        \n
+        Nouvelle vidéo ? : $newVideo\n
+        \n
+        Nouveau sub ? : $newSub\n
     Suggestion:
       Labels:
         - à intégrer
