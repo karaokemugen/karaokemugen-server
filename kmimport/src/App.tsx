@@ -11,7 +11,7 @@ const Loader = () => (
 
 function MyApp() {
 	const { t, i18n } = useTranslation();
-	
+
 	return (
 		<div className="import-kara">
 			<Layout.Header style={{height: '48px'}}>
@@ -26,6 +26,13 @@ function MyApp() {
 				</Menu>
 			</Layout.Header>
 			<div className="description"><label>{t('DESCRIPTION')}</label></div>
+			<div className="description"><label><b>{t('ATTENTION')}</b> {t('CHECK_IN_PROGRESS')}</label></div>
+			<div className="description">
+				<ul>
+					<li><a href="http://docs.karaokes.moe">{t('DOCUMENTATION_LINK')}</a></li>
+					<li><a href="https://lab.shelter.moe/karaokemugen/karaokebase/issues?label_name%5B%5D=en+cours">{t('IN_PROGRESS_LINK')}</a></li>
+				</ul>
+			</div>
 			<KaraForm translation={t}/>
 		</div>
 	);
