@@ -113,7 +113,6 @@ class MyApp extends App {
 					{
 						response.data.content.map((v,i)=>{
 							//console.log(v)
-							v.code = el.code
 							v.slug = filterTools.normalizeString(v.name)
 							tags[''+v.tid] = v;
 						});
