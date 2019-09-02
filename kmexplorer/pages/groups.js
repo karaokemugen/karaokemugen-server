@@ -56,7 +56,7 @@ class Page extends React.Component {
 		let tagList = [];
 		for (let id in this.props.tags) {
 			let tag = this.props.tags[id];
-			if(tag.code=="group")
+			if(tag.types.includes(tagsMap.group.id))
 			{
 				kmax = Math.max(kmax,tag.karacount);
 				if(keywords.length==0 || filterTools.keywordSearch(tag.name,keywords))

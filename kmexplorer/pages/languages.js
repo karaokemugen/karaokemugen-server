@@ -47,7 +47,7 @@ class Page extends React.Component {
 		let tagList = [];
 		for (let id in this.props.tags) {
 			let tag = this.props.tags[id];
-			if(tag.code=="language")
+			if(tag.types.includes(tagsMap.language.id))
 			{
 				kmax = Math.max(kmax,tag.karacount);
 				tag.real_name = isoLanguages(tag.name, i18n.language)
