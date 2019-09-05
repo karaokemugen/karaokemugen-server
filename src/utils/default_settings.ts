@@ -46,7 +46,7 @@ export const defaults = {
 	Frontend: {
 		Port: 1350,
 		Host: 'localhost',
-		SeriesLanguageMode: 0
+		SeriesLanguageMode: 3
 	},
 	KaraExplorer: {
 		Api: 'http://localhost',
