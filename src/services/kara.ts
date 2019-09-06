@@ -1,6 +1,7 @@
 import {countKaras, selectAllKaras, selectAllYears, selectBaseStats} from '../dao/kara';
 import { KaraList } from '../lib/types/kara';
 import { consolidatei18n } from '../lib/services/kara';
+import { DBKara } from '../lib/types/database/kara';
 
 export function getBaseStats() {
 	return selectBaseStats();
@@ -24,6 +25,21 @@ export async function getAllYears() {
 	return await selectAllYears();
 }
 
+export async function getKara(filter?: string, lang?: string, from = 0, size = 0, mode?: string, modeValue?: string): Promise<DBKara> {
+	try {
+		const karas = await selectAllKaras({
+			filter: filter,
+			lang: lang,
+			from: +from,
+			size: +size,
+			mode: mode,
+			modeValue: modeValue
+		});
+		return karas[0];
+	} catch(err) {
+		throw err;
+	}
+}
 export async function getAllKaras(filter?: string, lang?: string, from = 0, size = 0, mode?: string, modeValue?: string): Promise<KaraList> {
 	try {
 		const [length, pl] = await Promise.all([

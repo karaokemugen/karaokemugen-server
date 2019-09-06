@@ -46,12 +46,22 @@ export const defaults = {
 	Frontend: {
 		Port: 1350,
 		Host: 'localhost',
-		SeriesLanguageMode: 0
+		SeriesLanguageMode: 3
 	},
 	KaraExplorer: {
 		Api: 'http://localhost',
 		Port: 1351,
 		Path: '/base'
+	},
+	Gitlab: {
+		IssueTemplate: {
+			Import: {
+				Labels: []
+			},
+			Edit: {
+				Labels: []
+			}
+		}
 	}
 };
 

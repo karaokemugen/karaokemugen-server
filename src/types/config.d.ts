@@ -21,6 +21,7 @@ export interface Config {
 		IssueTemplate?: {
 			Import?: GitlabTemplate
 			Suggestion?: GitlabTemplate
+			Edit?: GitlabTemplate
 		}
 	}
 	Shortener: {

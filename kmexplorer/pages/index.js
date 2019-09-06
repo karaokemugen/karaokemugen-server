@@ -3,6 +3,9 @@ import { i18n, withNamespaces } from '../i18n'
 import Head from 'next/head'
 import duration from '../components/date';
 import prettyBytes from 'pretty-bytes';
+import i18nRouterPush from '../utils/i18nRouterPush'
+import FilterTools from '../utils/filterTools';
+const filterTools = new FilterTools();
 class Page extends React.Component {
 	static async getInitialProps({ req, query, res }) {
 
@@ -15,7 +18,18 @@ class Page extends React.Component {
 		super(props)
 		this.state = {}
 	}
-
+	
+	refreshList(event) {
+		event.preventDefault()
+		event.stopPropagation()
+		let q = filterTools.reset().getQuery()
+		i18nRouterPush(q.path, q.query)
+	  }
+	
+	  updateKeyword(event) {
+		// local state update of the search input field
+		filterTools.reset().setKeywords(event.target.value).save();
+	  }
 
 	render() {
 
@@ -49,6 +63,13 @@ class Page extends React.Component {
 				<Head>
 					<title key="title">{i18n.t('sitename')} - {i18n.t('category.home')}</title>
 				</Head>
+
+				<div className="kmx-filter-keyword">
+					<form onSubmit={(event) => this.refreshList(event)}>
+						<input type="text" onChange={(event) => this.updateKeyword(event)} placeholder={i18n.t('form.karas_keywords_placeholder')} />
+						<button type="submit"><i className="fa fa-search"></i></button>
+					</form>
+				</div>
 
 				<div className="km-home">
 					<a href="http://karaokes.moe/"><img className="km-home--logo" src={require('../static/images/km-logo.png')} /></a>

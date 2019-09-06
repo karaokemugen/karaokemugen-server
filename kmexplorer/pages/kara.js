@@ -19,8 +19,7 @@ class Karapage extends React.Component {
     if(kid)
     {
       var response = await axios.get(API_URL+'/api/karas/'+kid)
-      if(response.data && response.data.content && response.data.content.length > 0)
-        kara = response.data.content[0]
+      kara = response.data
     }
     let namespacesRequired = ['common', 'tag'];
     // on renvoi ici les props qui seront disponible dans le composant monté
