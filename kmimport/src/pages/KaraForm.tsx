@@ -630,8 +630,8 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 				<Form.Item
 					hasFeedback
 					label={
-						<span>{t('KARA.COMMENT')}&nbsp;
-							<Tooltip title={t('KARA.COMMENT_TOOLTIP')}>
+						<span>{i18next.t('KARA.COMMENT')}&nbsp;
+							<Tooltip title={i18next.t('KARA.COMMENT_TOOLTIP')}>
 								<Icon type="question-circle-o" />
 							</Tooltip>
 						</span>
