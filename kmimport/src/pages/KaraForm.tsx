@@ -628,25 +628,6 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 					})(<TextArea/>)}
 				</Form.Item>
 				<Form.Item
-					hasFeedback
-					label={
-						<span>{i18next.t('KARA.COMMENT')}&nbsp;
-							<Tooltip title={i18next.t('KARA.COMMENT_TOOLTIP')}>
-								<Icon type="question-circle-o" />
-							</Tooltip>
-						</span>
-					}
-					labelCol={{ span: 3 }}
-					wrapperCol={{ span: 8, offset: 0 }}
-				>
-					{getFieldDecorator("comment", {
-						initialValue: null,
-						rules: [{
-							required: false
-						}],
-					})(<TextArea/>)}
-				</Form.Item>
-				<Form.Item
 					wrapperCol={{ span: 8, offset: 1 }}
 				>
 					<Button type='primary' htmlType='submit' className='login-form-button'>{i18next.t('SUBMIT')}</Button>
