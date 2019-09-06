@@ -27,7 +27,7 @@ export async function getAllYears() {
 
 export async function getKara(filter?: string, lang?: string, from = 0, size = 0, mode?: string, modeValue?: string): Promise<DBKara> {
 	try {
-		return await selectAllKaras({
+		const karas = await selectAllKaras({
 			filter: filter,
 			lang: lang,
 			from: +from,
@@ -35,6 +35,7 @@ export async function getKara(filter?: string, lang?: string, from = 0, size = 0
 			mode: mode,
 			modeValue: modeValue
 		});
+		return karas[0];
 	} catch(err) {
 		throw err;
 	}
