@@ -3,13 +3,12 @@
  */
 
 import logger from 'winston';
-import {basename} from 'path';
+import {basename, resolve} from 'path';
 import {getConfig, resolvedPathImport, resolvedPathTemp, resolvedPathMedias, resolvedPathSubs} from '../lib/utils/config';
 import {duration} from '../lib/utils/date';
 import { generateKara } from '../lib/services/kara_creation';
 import { NewKara, Kara } from '../lib/types/kara';
 import { gitlabPostNewIssue } from '../lib/services/gitlab';
-import { resolve } from 'url';
 import { asyncExists, asyncCopy, asyncUnlink } from '../lib/utils/files';
 
 export async function editKara(kara: Kara): Promise<string> {

@@ -52,6 +52,16 @@ export const defaults = {
 		Api: 'http://localhost',
 		Port: 1351,
 		Path: '/base'
+	},
+	Gitlab: {
+		IssueTemplate: {
+			Import: {
+				Labels: []
+			},
+			Edit: {
+				Labels: []
+			}
+		}
 	}
 };
 
