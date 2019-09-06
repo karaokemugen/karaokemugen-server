@@ -58,12 +58,12 @@
     "unknown": "Unknown"
   },
   "karaissue": {
-    "badquality": "Bad media quality",
-    "badquality_explain": "Low resolution video, video artefact, bad sound, lousy metadata...",
-    "badtiming": "Bad timing",
-    "badtiming_explain": "Shifted or Wrong lyrics, font too small, ugly colors...",
     "baseline": "A problem with this karaoke? Tell us :",
-    "title": "A PROBLEM?"
+    "title": "A PROBLEM?",
+    "gitlab": "Report an issue",
+    "or": "OR",
+    "kara_edit": "Suggest an edit",
+    "kara_edit_types": "(lyrics, media and informations)"
   },
   "karalist": {
     "no_data": "No result",

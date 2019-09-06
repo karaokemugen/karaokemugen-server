@@ -110,6 +110,37 @@
     }
   }
 
+  .problems {
+    display: flex;
+    flex-direction: row;
+    margin: .5em 0 0 0;
+    padding: 0;
+    dd {
+      margin: 0;
+      padding: 0;
+      a {
+        font-size: 1.25em;
+        display: inline-block;
+        background: $kara_item_files_bg;
+        text-decoration: none;
+        padding: 0.25em .5em;
+        margin: 0 .25em .25em 0;
+        border-radius: .4em;
+        &:hover {
+          background: $kara_item_files_over_bg;
+          color: $kara_item_files_over_color;
+        }
+      }
+    }
+    label {
+      font-size: 1.25em;
+      padding: 0.25em .5em;
+      margin: 0 .25em .25em 0;
+      border-radius: .4em;
+    }
+  }
+
+
   blockquote {
     background: #36393F;
     padding: 1em;

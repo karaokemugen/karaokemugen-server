@@ -58,12 +58,12 @@
     "unknown": "Kara inconnu"
   },
   "karaissue": {
-    "badquality": "Média de mauvaise qualité",
-    "badquality_explain": "Vidéo en basse résolution, pixélisée, son ignoble, metadata foireuses...",
-    "badtiming": "Erreur de time",
-    "badtiming_explain": "Karaoké décalé, police trop petite ou illisible, erreur dans les paroles, choix des couleurs douteux...",
     "baseline": "Un souci avec ce karaoké ? Faites-le nous savoir :",
-    "title": "UN PROBLÈME ?"
+    "title": "UN PROBLÈME ?",
+    "gitlab": "Signaler le problème",
+    "or": "OU",
+    "kara_edit": "Proposer une modification",
+    "kara_edit_types": "(paroles, médias ou informations)"
   },
   "karalist": {
     "no_data": "Aucun résultat",
