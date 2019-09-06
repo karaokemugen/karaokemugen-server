@@ -5,6 +5,7 @@ import { i18n, appWithTranslation } from '../i18n'
 import axios from 'axios'
 import '../styles/index.scss';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 import tagsMap from '../components/tagsMap.js';
 import localForage from "localforage";
 import querystring from 'querystring';
@@ -171,6 +172,7 @@ class MyApp extends App {
 				</Head>
 				<Header {...pageProps} />
 				<Component {...pageProps} stats={this.state.stats} tags={this.state.tags} series={this.state.series} years={this.state.years}  />
+				<Footer {...pageProps} />
 			</Container>
 		)
 	}

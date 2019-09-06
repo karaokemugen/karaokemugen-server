@@ -30,6 +30,12 @@ body {
   flex-direction: row;
 }
 
+.kmx-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between
+}
+
 .kmx-help-menu,
 .kmx-language-menu,
 .kmx-filters-menu {
