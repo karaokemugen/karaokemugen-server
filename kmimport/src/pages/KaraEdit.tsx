@@ -90,7 +90,7 @@ class KaraEdit extends Component {
 
 	render() {
 		return (
-			<Layout.Content style={{padding: '25px 50px', textAlign: 'center'}}>
+			<Layout.Content style={{padding: '25px 50px'}}>
 				{this.state.kara && (<KaraForm kara={this.state.kara} save={this.state.save} />)}
 			</Layout.Content>
 		);
