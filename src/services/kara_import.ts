@@ -49,6 +49,7 @@ export async function editKara(kara: Kara): Promise<string> {
 		title = title.replace('$kara', karaName);
 		let desc = conf.Gitlab.IssueTemplate.Edit.Description || '';
 		desc = desc.replace('$file', basename(newKara.file))
+			.replace('$comment', kara.comment || '')
 			.replace('$newSub', `${!newKara.data.noNewSub}`)
 			.replace('$newVideo', `${!newKara.data.noNewVideo}`)
 			.replace('$author', newKara.data.authors.map(t => t.name).join(', '))
