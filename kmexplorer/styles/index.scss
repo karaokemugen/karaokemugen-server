@@ -1,5 +1,14 @@
 @import  "vars.scss";
 
+html, body, #__next {
+  height : 100%
+}
+
+#__next {
+  display: flex;
+  flex-direction: column;
+}
+
 body {
   margin: 0;
   background:$body_bg;
@@ -33,7 +42,8 @@ body {
 .kmx-footer {
   display: flex;
   flex-direction: row;
-  justify-content: space-between
+  justify-content: space-between;
+  margin-top: auto;
 }
 
 .kmx-help-menu,
