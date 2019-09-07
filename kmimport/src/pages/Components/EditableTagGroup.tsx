@@ -3,13 +3,13 @@ import deburr from 'lodash.deburr';
 import {AutoComplete, Button, Checkbox, Col, Form, Icon, Input, Row, Tag, Tooltip} from 'antd';
 import axios from 'axios/index';
 import { getTagInLocale } from "../../utils/kara";
+import i18next from 'i18next';
 interface EditableTagGroupProps {
 	search: 'tag' | 'serie' | 'aliases',
 	onChange: any,
 	checkboxes?: boolean,
 	tagType?: number,
-	value?: any[],
-	translation: any
+	value?: any[]
 }
 
 interface EditableTagGroupState {
@@ -144,7 +144,6 @@ export default class EditableTagGroup extends React.Component<EditableTagGroupPr
 
 	render() {
 		const { value, inputVisible } = this.state;
-		const t = this.props.translation;
 		if (this.props.checkboxes) {
 			return (
 				<div>
@@ -197,7 +196,7 @@ export default class EditableTagGroup extends React.Component<EditableTagGroupPr
 							</AutoComplete>
 							<Button type='primary' onClick={() => this.handleInputConfirmSerie(this.currentVal)}
 								className='login-form-button'>
-								{t('ADD')}
+								{i18next.t('ADD')}
 							</Button>
 						</Form.Item>
 					)}
@@ -206,7 +205,7 @@ export default class EditableTagGroup extends React.Component<EditableTagGroupPr
 							onClick={this.showInput}
 							style={{ background: '#fff', borderStyle: 'dashed' }}
 						>
-							<Icon type="plus" />{t('ADD')}
+							<Icon type="plus" />{i18next.t('ADD')}
 						</Tag>
 					)}
 				</div>
@@ -243,7 +242,7 @@ export default class EditableTagGroup extends React.Component<EditableTagGroupPr
 							</AutoComplete>
 							<Button type='primary' onClick={() => this.handleInputConfirm(this.currentVal)}
 								className='login-form-button'>
-						Add...
+						{i18next.t('ADD')}
 							</Button>
 						</Form.Item>
 					)}
@@ -252,7 +251,7 @@ export default class EditableTagGroup extends React.Component<EditableTagGroupPr
 							onClick={this.showInput}
 							style={{ background: '#fff', borderStyle: 'dashed' }}
 						>
-							<Icon type="plus" /> Add
+							<Icon type="plus" /> {i18next.t('ADD')}
 						</Tag>
 					)}
 				</div>
