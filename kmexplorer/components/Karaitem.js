@@ -28,8 +28,6 @@ class Karaitem extends React.Component {
 		}
 
 		let getI18nTagname = (v) => {
-			let final_name = null;
-			let fallback = null;
 			if(tags)
 			{
 				let tag =  this.props.tags[v.tid]
@@ -39,12 +37,7 @@ class Karaitem extends React.Component {
 			return v.name;
 		}
 
-		//console.log(kara);
-
 		let r18 = false;
-
-		//console.log(kara);
-
 		let singers = kara.singers.map((v,i) => {
 			let url = quickTagUrl('singer',v.tid, v.name);
 			return <Link href={url} key={'singer_'+i}><a data-type="singer" data-id={v.tid}>{icons.singer} {v.name}</a></Link>
@@ -72,6 +65,8 @@ class Karaitem extends React.Component {
 			return <Link href={url} key={'songtype_'+i}><a data-type="songtype" data-id={v.tid}>{icons.songtype} {name} {kara.songorder}</a></Link>
 		});
 		let miscs = kara.misc.map((v,i) => {
+			if (v.name === 'TAG_R18')
+				r18 = true;
 			let name = getI18nTagname(v);
 			let url = quickTagUrl('misc',v.tid, name);
 			return <Link href={url} key={'misc_'+i}><a data-type="misc" data-id={v.tid}>{icons.misc} {name}</a></Link>
