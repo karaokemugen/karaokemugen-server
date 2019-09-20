@@ -28,6 +28,10 @@ SELECT
     GROUP BY t.pk_tid, tag_aliases.list, count_per_type
     ORDER BY name;
 
+CREATE INDEX idx_at_name ON all_tags(name);
+CREATE INDEX idx_at_tid ON all_tags(tid);
+CREATE INDEX idx_at_search_aliases ON all_tags(search_aliases);
+
 CREATE VIEW stats AS
 SELECT
 (SELECT COUNT(pk_tid) FROM tag WHERE types @> ARRAY[2]) AS singers,
