@@ -2,7 +2,7 @@ DROP VIEW stats;
 DROP MATERIALIZED VIEW all_tags;
 CREATE MATERIALIZED VIEW all_tags AS
 WITH t_count as (
-    select a.fk_tid, json_agg(json_build_object('type', a.type, 'count', a.c)) AS count_per_type
+    select a.fk_tid, json_agg(json_build_object('type', a.type, 'count', a.c))::text AS count_per_type
     FROM (
         SELECT fk_tid, count(fk_kid) as c, type
         FROM kara_tag
@@ -18,13 +18,14 @@ SELECT
     tag_aliases.list AS search_aliases,
     t.tagfile AS tagfile,
     t.short as short,
-    (SELECT count_per_type FROM t_count where t_count.fk_tid = t.pk_tid) AS karacount
+    count_per_type AS karacount
     FROM tag t
     CROSS JOIN LATERAL (
         SELECT string_agg(tag_aliases.elem::text, ' ') AS list
         FROM jsonb_array_elements_text(t.aliases) AS tag_aliases(elem)
     ) tag_aliases
-    GROUP BY t.pk_tid, tag_aliases.list
+    LEFT JOIN t_count on t.pk_tid = t_count.fk_tid
+    GROUP BY t.pk_tid, tag_aliases.list, count_per_type
     ORDER BY name;
 
 CREATE VIEW stats AS

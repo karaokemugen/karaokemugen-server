@@ -6,6 +6,7 @@ const sql = require('./sqls/tag');
 
 export async function selectTag(tid) {
 	const res = await db().query(sql.selectTag, [tid]);
+	res.rows[0].karacount = JSON.parse(res.rows[0].karacount);
 	return res.rows[0];
 }
 
@@ -20,6 +21,7 @@ export async function selectTags(params: TagParams): Promise<Tag[]> {
 	if (params.size > 0) limitClause = `LIMIT ${params.size} `;
 	const query = sql.getAllTags(filterClauses.sql, typeClauses, limitClause, offsetClause);
 	const res = await db().query(yesql(query)(filterClauses.params));
+	res.rows.forEach((e: any, i: number) => res.rows[i].karacount = JSON.parse(e.karacount));
 	return res.rows;
 }
 

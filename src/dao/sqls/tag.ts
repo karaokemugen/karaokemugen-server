@@ -26,7 +26,8 @@ SELECT
 FROM tag
 WHERE name = $1
   AND types @> $2
-;`;
+;
+`;
 
 export const selectTag = `
 SELECT tid,
