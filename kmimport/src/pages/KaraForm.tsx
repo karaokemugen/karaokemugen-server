@@ -192,7 +192,7 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 		if (info.file.status === "uploading") {
 			this.props.form.setFieldsValue({ subfile: null, subfile_orig: null });
 		} else if (info.file.status === "done") {
-			if (info.file.name.endsWith(".ass") || info.file.name.endsWith(".txt")) {
+			if (info.file.name.endsWith(".ass") || info.file.name.endsWith(".txt") || || info.file.name.endsWith(".kfn")) {
 				this.props.form.setFieldsValue({
 					subfile: info.file.response.filename,
 					subfile_orig: info.file.response.originalname
@@ -642,7 +642,7 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 						initialValue: this.props.kara.karafile
 					})(<Input type="hidden" />)}
 				</Form.Item>
-				
+
 				<Form.Item>
 					{getFieldDecorator('mediafile', {
 						initialValue: this.props.kara.mediafile
