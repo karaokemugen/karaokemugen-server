@@ -22,9 +22,9 @@ export async function selectTags(params: TagParams): Promise<Tag[]> {
 	const query = sql.getAllTags(filterClauses.sql, typeClauses, limitClause, offsetClause);
 	const res = await db().query(yesql(query)(filterClauses.params));
 	res.rows.forEach((e: any, i: number) => {
+		const karacounts = JSON.parse(e.karacount);
 		res.rows[i].karacount = {};
-		const karacounts = JSON.parse(e.karacount)
-		karacounts.forEach((k: any) => res.rows[i].karacount[k.type] = k.count);
+		karacounts && karacounts.forEach((k: any) => res.rows[i].karacount[k.type] = k.count);
 	});
 	return res.rows;
 }

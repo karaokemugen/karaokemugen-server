@@ -58,20 +58,20 @@ class Page extends React.Component {
 			let tag = this.props.tags[id];
 			if(tag.types.includes(tagsMap.singer.id))
 			{
-				kmax = Math.max(kmax,tag.karacount);
+				kmax = Math.max(kmax,tag.karacount[tagsMap.singer.id]);
 				if(keywords.length==0 || filterTools.keywordSearch(tag.name,keywords))
 					tagList.push(tag);
 			}
 		}
 		let total = tagList.length
-
+		
 		tagList = tagList.map(function(tag){
 			return {
 				key: tag.tid,
 				name : tag.i18n[isoLanguages("iso3",i18n.language)] || (tag.i18n['eng'] || tag.name),
-				karacount : tag.karacount,
+				karacount : tag.karacount[tagsMap.singer.id],
 				link : filterTools.clear().addTag('singer',tag.tid,tag.slug).getQuery().url,
-				height : 100 * tag.karacount / kmax
+				height : 100 * tag.karacount[tagsMap.singer.id] / kmax
 			};
 		})
 
