@@ -163,7 +163,10 @@ class Karaitem extends React.Component {
 					<dd key="kara" data-type="kara"><a href={API_URL+"/downloads/karas/"+kara.karafile.replace('.json', '')}><i className="fa fa-file-code-o"></i> {i18n.t('kara.karafile')}</a></dd>
 					<dd key="media" data-type="media"><a href={API_URL+"/downloads/medias/"+kara.mediafile}><i className="fa fa-file-video-o"></i> {i18n.t('kara.mediafile')}</a></dd>
 					<dd key="lyrics" data-type="lyrics"><a href={API_URL+"/downloads/lyrics/"+kara.subfile}><i className="fa fa-file-text-o"></i> {i18n.t('kara.subfile')}</a></dd>
-					<dd key="series" data-type="series"><a href={API_URL+"/downloads/series/"+kara.seriefiles[0]}><i className="fa fa-file-code-o"></i> {i18n.t('kara.seriefile')}</a></dd>
+					{serie_name ? 
+						<dd key="series" data-type="series"><a href={API_URL+"/downloads/series/"+kara.seriefiles[0]}><i className="fa fa-file-code-o"></i> {i18n.t('kara.seriefile')}</a></dd>
+						: null
+					}
 				</dl>
 
 				<blockquote>

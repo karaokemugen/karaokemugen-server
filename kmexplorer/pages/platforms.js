@@ -58,7 +58,7 @@ class Page extends React.Component {
 			let tag = this.props.tags[id];
 			if(tag.types.includes(tagsMap.platform.id))
 			{
-				kmax = Math.max(kmax,tag.karacount);
+				kmax = Math.max(kmax,tag.karacount[tagsMap.platform.id]);
 				if(keywords.length==0 || filterTools.keywordSearch(tag.name,keywords))
 					tagList.push(tag);
 			}
@@ -69,9 +69,9 @@ class Page extends React.Component {
 			return {
 				key: tag.tid,
 				name : tag.i18n[isoLanguages("iso3",i18n.language)] || (tag.i18n['eng'] || tag.name),
-				karacount : tag.karacount,
+				karacount : tag.karacount[tagsMap.platform.id],
 				link : filterTools.clear().addTag('platform',tag.tid,tag.slug).getQuery().url,
-				height : 100 * tag.karacount / kmax
+				height : 100 * tag.karacount[tagsMap.platform.id] / kmax
 			};
 		})
 

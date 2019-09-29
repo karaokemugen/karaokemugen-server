@@ -1,0 +1,10 @@
+CREATE INDEX idx_ak_created ON all_karas(created_at DESC);
+CREATE INDEX idx_ak_serie ON all_karas(serie NULLS LAST);
+CREATE INDEX idx_ak_serie_singer ON all_karas(serie_singer_sortable NULLS LAST);
+CREATE INDEX idx_ak_songtypes ON all_karas(songtypes_sortable DESC);
+CREATE INDEX idx_ak_songorder ON all_karas(songorder);
+CREATE INDEX idx_ak_title ON all_karas(title);
+CREATE INDEX idx_ak_singer ON all_karas(singers_sortable);
+CREATE INDEX idx_ak_language ON all_karas(languages_sortable);
+CREATE INDEX idx_ak_year ON all_karas(year);
+CREATE INDEX idx_ak_kid ON all_karas(kid);
