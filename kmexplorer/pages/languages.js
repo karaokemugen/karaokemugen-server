@@ -43,7 +43,7 @@ class Page extends React.Component {
 	render() {
 		let kmax = 1;
 		let keywords = this.state.searchKeywords;
-
+		
 		let tagList = [];
 		for (let id in this.props.tags) {
 			let tag = this.props.tags[id];
@@ -51,7 +51,7 @@ class Page extends React.Component {
 			{
 				kmax = Math.max(kmax,tag.karacount[tagsMap.language.id]);
 				tag.real_name = isoLanguages(tag.name, i18n.language)
-				if(tag.karacount[tagsMap.language.id] !== 0 
+				if(tag.karacount[tagsMap.language.id] !== undefined 
 					&& (keywords.length==0 || filterTools.keywordSearch(tag.real_name,keywords) || filterTools.keywordSearch(tag.name,keywords)))
 					tagList.push(tag);
 			}
