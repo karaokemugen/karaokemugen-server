@@ -64,6 +64,16 @@ export interface Config {
 			database?: string,
 			bundledPostgresBinary?: boolean
 		}
+	},
+	Mail: {
+		Enabled: boolean,
+		Host?: string,
+		Port?: number,
+		Secure?: boolean,
+		User?: string,
+		Password?: string,
+		From?: string,
+		FromMail?: string
 	}
 }
 
