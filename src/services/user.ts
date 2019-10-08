@@ -45,6 +45,7 @@ export async function resetPassword(username: string, requestCode: string) {
 	if (!user) throw 'User unknown';
 	const newPassword = randomstring.generate(12);
 	await changePassword(username, newPassword);
+	passwordResetRequests.delete(username);
 	sendMail('Karaoke Mugen Password has been reset',`
 	Hello ${username},
 
