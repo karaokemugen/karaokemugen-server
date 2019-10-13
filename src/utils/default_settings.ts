@@ -38,7 +38,6 @@ export const defaults = {
 			Import: 'app/inbox',
 			Avatars: 'app/avatars',
 			Previews: 'app/previews',
-			Intros: 'app/intros'
 		}
 	},
 	Shortener: {

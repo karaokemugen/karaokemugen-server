@@ -46,7 +46,8 @@ export interface Config {
 			Avatars?: string,
 			Import?: string,
 			Jingles?: string[],
-			Backgrounds?: string[]
+			Backgrounds?: string[],
+			Intros?: string[]
 		}
 	},
 	Database: {
