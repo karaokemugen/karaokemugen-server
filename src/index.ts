@@ -17,6 +17,7 @@ import findRemoveSync from 'find-remove';
 import { setState, getState } from './utils/state';
 import { createImagePreviews } from './lib/utils/previews';
 import { getAllKaras } from './services/kara';
+import { initMailer } from './utils/mailer';
 
 const pjson = require('../package.json');
 const appPath = join(__dirname,'../');
@@ -120,6 +121,7 @@ async function main() {
 	inits.push(initShortener());
 	inits.push(initFrontend(port));
 	inits.push(initFavorites());
+	if (conf.Mail.Enabled) initMailer();
 	await Promise.all(inits);
 	logger.info('[Launcher] Karaoke Mugen Server is READY');
 }

@@ -2,6 +2,8 @@ import {countKaras, selectAllKaras, selectAllYears, selectBaseStats} from '../da
 import { KaraList } from '../lib/types/kara';
 import { consolidatei18n } from '../lib/services/kara';
 import { DBKara } from '../lib/types/database/kara';
+import { ASSToLyrics } from '../lib/utils/ass';
+import { getASS } from '../lib/dao/karafile';
 
 export function getBaseStats() {
 	return selectBaseStats();
@@ -35,6 +37,11 @@ export async function getKara(filter?: string, lang?: string, from = 0, size = 0
 			mode: mode,
 			modeValue: modeValue
 		});
+		karas[0].lyrics = null;
+		if (karas[0].subfile) {
+			const ASS = await getASS(karas[0].subfile);
+			if (ASS) karas[0].lyrics = ASSToLyrics(ASS);
+		}
 		return karas[0];
 	} catch(err) {
 		throw err;

@@ -8,10 +8,70 @@ import {resolve} from 'path';
 import {has as hasLang} from 'langs';
 import { getState } from '../utils/state';
 import { User, Token } from '../lib/types/user';
+import { sendMail } from '../utils/mailer';
+import randomstring from 'randomstring';
+
+const passwordResetRequests = new Map();
+
+export async function resetPasswordRequest(username: string) {
+	const user = await findUserByName(username);
+	if (!user) throw 'User unknown';
+	if (!user.email) throw 'User has no configured mail. Ask server admin for a password reset';
+	const requestCode = uuidV4();
+	passwordResetRequests.set(username, {
+		code: requestCode,
+		date: +(new Date().getTime() / 1000).toFixed(0)
+	});
+	sendMail('Karaoke Mugen Password Reset',`
+	Hello ${username},
+
+	You (or someone) requested a password reset for your account at ${getConfig().Frontend.Host}.
+
+	Please click the following link to get a new, randomized password sent to your mail account :
+
+	https://${getConfig().Frontend.Host}/api/users/${username}/resetpassword/${requestCode}
+
+	This link will expire in two hours.
+	`,
+	username,
+	user.email);
+};
+
+export async function resetPassword(username: string, requestCode: string) {
+	const request = passwordResetRequests.get(username);
+	if (!request) throw 'No request';
+	if (request.code !== requestCode) throw 'Wrong code';
+	const user = await findUserByName(username);
+	if (!user) throw 'User unknown';
+	const newPassword = randomstring.generate(12);
+	await changePassword(username, newPassword);
+	passwordResetRequests.delete(username);
+	sendMail('Karaoke Mugen Password has been reset',`
+	Hello ${username},
+
+	You (or someone) requested a password reset for your account at ${getConfig().Frontend.Host}.
+
+	Your password has been reset to the following :
+	${newPassword}
+
+	Please login using a Karaoke Mugen Application and change it to something else.
+
+	`,
+	username,
+	user.email);
+}
 
 export async function initUsers() {
 	cleanupAvatars();
 	setInterval(cleanupAvatars, 60 * 60 * 1000);
+	setInterval(cleanupPasswordResetRequests, 60 * 1000);
+}
+
+function cleanupPasswordResetRequests() {
+	const now = +(new Date().getTime() / 1000).toFixed(0);
+	passwordResetRequests.forEach((user: string, request: any) => {
+		if ((request.date + (60 * 60 * 2)) < now ) passwordResetRequests.delete(user);
+	});
 }
 
 async function cleanupAvatars() {

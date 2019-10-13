@@ -1,4 +1,4 @@
-import {removeUser, editUser, createUser, findUserByName, getAllUsers} from '../services/user';
+import {removeUser, editUser, createUser, findUserByName, getAllUsers, resetPasswordRequest, resetPassword} from '../services/user';
 import {check, unescape} from '../lib/utils/validators';
 import multer from 'multer';
 import {getConfig} from '../lib/utils/config';
@@ -73,4 +73,22 @@ export default function userController(router: Router) {
 				res.status(400).json(validationErrors);
 			}
 		});
+	router.route('/users/:user/resetpassword')
+		.post(async (req, res) => {
+			try {
+				const info = await resetPasswordRequest(req.params.user);
+				res.status(200).json(info);
+			} catch(err) {
+				res.status(500).json(err);
+			}
+		})
+	router.route('/users/:user/resetpassword/:requestCode')
+		.get(async (req, res) => {
+			try {
+				const info = await resetPassword(req.params.user, req.params.requestCode);
+				res.status(200).json(info);
+			} catch(err) {
+				res.status(500).json(err);
+			}
+		})
 }

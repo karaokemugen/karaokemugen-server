@@ -62,6 +62,9 @@ export const defaults = {
 				Labels: []
 			}
 		}
+	},
+	Mail: {
+		Enabled: false
 	}
 };
 
