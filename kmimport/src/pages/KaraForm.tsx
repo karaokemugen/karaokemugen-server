@@ -472,7 +472,11 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 					wrapperCol={{ span: 6, offset: 0 }}
 				>
 					{getFieldDecorator('authors', {
-						initialValue: this.state.authors
+						initialValue: this.state.authors,
+						rules: [{
+							required: true,
+							message: i18next.t('KARA.KARA_AUTHORS_REQUIRED')
+						}]
 					})(<EditableTagGroup
 						tagType={6}
 						search={'tag'}

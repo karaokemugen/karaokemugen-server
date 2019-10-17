@@ -41,6 +41,7 @@
 		"CREATORS": "Créateur(s)",
 		"CREATORS_TOOLTIP": "Entité qui a créé la série ou le clip. Peut être un studio d'animation, de cinéma, de jeu vidéo, etc.",
 		"KARA_AUTHORS": "Auteur(s) du karaoké",
+		"KARA_AUTHORS_REQUIRED": "L'auteur du karaoké est obligatoire",
 		"KARA_AUTHORS_TOOLTIP": "Vous devriez vous ajouter ici ;)",
 		"FAMILIES": "Famille(s)",
 		"PLATFORMS": "Platforme(s)",

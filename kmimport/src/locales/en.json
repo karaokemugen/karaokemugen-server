@@ -41,6 +41,7 @@
 		"CREATORS": "Creator(s)",
 		"CREATORS_TOOLTIP": "Entity that created the series. Can be animation studio, movie studio, or game studio",
 		"KARA_AUTHORS": "Kara author(s)",
+		"KARA_AUTHORS_REQUIRED": "Author of the kara is mandatory",
 		"KARA_AUTHORS_TOOLTIP": "You should add yourself here ;)",
 		"FAMILIES": "Familie(s)",
 		"PLATFORMS": "Platform(s)",
