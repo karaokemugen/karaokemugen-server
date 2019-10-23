@@ -4,6 +4,9 @@ import { consolidatei18n } from '../lib/services/kara';
 import { DBKara } from '../lib/types/database/kara';
 import { ASSToLyrics } from '../lib/utils/ass';
 import { getASS } from '../lib/dao/karafile';
+import { generateDatabase } from '../lib/services/generation';
+import { createImagePreviews } from '../lib/utils/previews';
+import logger from '../lib/utils/logger';
 
 export function getBaseStats() {
 	return selectBaseStats();
@@ -25,6 +28,16 @@ export function formatKaraList(karaList: any[], from: number, count: number, lan
 
 export async function getAllYears() {
 	return await selectAllYears();
+}
+
+export async function generate() {
+	try {
+		await generateDatabase(false, false);
+		const karas = await getAllKaras();
+		await createImagePreviews(karas);
+	} catch(err) {
+		logger.error(`[Gen] ${err}`);
+	}
 }
 
 export async function getKara(filter?: string, lang?: string, from = 0, size = 0, mode?: string, modeValue?: string): Promise<DBKara> {
