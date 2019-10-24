@@ -8,8 +8,8 @@ import { generateDatabase } from '../lib/services/generation';
 import { createImagePreviews } from '../lib/utils/previews';
 import logger from '../lib/utils/logger';
 
-export function getBaseStats() {
-	return selectBaseStats();
+export async function getBaseStats() {
+	return await selectBaseStats();
 }
 
 export function formatKaraList(karaList: any[], from: number, count: number, lang: string): KaraList {
