@@ -5,6 +5,7 @@ import duration from '../components/date';
 import prettyBytes from 'pretty-bytes';
 import i18nRouterPush from '../utils/i18nRouterPush'
 import FilterTools from '../utils/filterTools';
+import Link from '../utils/I18nLink';
 const filterTools = new FilterTools();
 class Page extends React.Component {
 	static async getInitialProps({ req, query, res }) {
@@ -75,13 +76,27 @@ class Page extends React.Component {
 					<a href="http://karaokes.moe/"><img className="km-home--logo" src={require('../static/images/km-logo.png')} /></a>
 
 					<ul className="km-home--stats">
-						<li key="karas"><strong>{count.karas>0 ? count.karas : '-'}</strong> <span>{i18n.t("category.karas")}</span></li>
-						<li key="serie"><strong>{count.serie>0 ? count.serie : '-'}</strong> <span>{i18n.t("category.series")}</span></li>
-						<li key="singer"><strong>{count.singer>0 ? count.singer : '-'}</strong> <span>{i18n.t("category.singers")}</span></li>
-						<li key="creator"><strong>{count.creator>0 ? count.creator : '-'}</strong> <span>{i18n.t("category.creators")}</span></li>
-						<li key="language"><strong>{count.language>0 ? count.language : '-'}</strong> <span>{i18n.t("category.languages")}</span></li>
-						<li key="author"><strong>{count.author>0 ? count.author : '-'}</strong> <span>{i18n.t("category.authors")}</span></li>
-						<li key="songwriter"><strong>{count.songwriter>0 ? count.songwriter : '-'}</strong> <span>{i18n.t("category.songwriters")}</span></li>
+						<li key="karas"><Link href={ "/karas?"}><div className="km-home--stats--link">
+							<strong>{count.karas>0 ? count.karas : '-'}</strong> <span>{i18n.t("category.karas")}</span>
+						</div></Link></li>
+						<li key="serie"><Link href={ "/series?"}><div className="km-home--stats--link">
+							<strong>{count.serie>0 ? count.serie : '-'}</strong> <span>{i18n.t("category.series")}</span>
+						</div></Link></li>
+						<li key="singer"><Link href={ "/singers?"}><div className="km-home--stats--link">
+							<strong>{count.singer>0 ? count.singer : '-'}</strong> <span>{i18n.t("category.singers")}</span>
+						</div></Link></li>
+						<li key="creator"><Link href={ "/creators?"}><div className="km-home--stats--link">
+							<strong>{count.creator>0 ? count.creator : '-'}</strong> <span>{i18n.t("category.creators")}</span>
+						</div></Link></li>
+						<li key="language"><Link href={ "/languages?"}><div className="km-home--stats--link">
+							<strong>{count.language>0 ? count.language : '-'}</strong> <span>{i18n.t("category.languages")}</span>
+						</div></Link></li>
+						<li key="author"><Link href={ "/authors?"}><div className="km-home--stats--link">
+							<strong>{count.author>0 ? count.author : '-'}</strong> <span>{i18n.t("category.authors")}</span>
+						</div></Link></li>
+						<li key="songwriter"><Link href={ "/songwriters?"}><div className="km-home--stats--link">
+							<strong>{count.songwriter>0 ? count.songwriter : '-'}</strong> <span>{i18n.t("category.songwriters")}</span>
+						</div></Link></li>
 						<li key="mediasize"><span>{i18n.t("stats.media_size")}</span> : <strong>{count.mediasize>0 ? prettyBytes(Number(count.mediasize)) : '-'}</strong></li>
 						<li className="km-home--stats--wide" key="lastGeneration"><span>{i18n.t("stats.last_generation")}</span> : <strong>{count.duration>0 ? new Date(count.lastGeneration).toLocaleString() : '-'}</strong></li>
 						<li className="km-home--stats--wide" key="duration"><span>{i18n.t("stats.all_duration")} :</span> <strong>{count.duration>0 ? duration(count.duration) : '-'}</strong></li>
