@@ -51,7 +51,7 @@ class Karaitem extends React.Component {
 			return <Link href={url} key={'author_'+i}><a data-type="author" data-id={v.tid}>{icons.author} {v.name}</a></Link>
 		});
 		let songwriters = kara.songwriters.map((v,i) => {
-			let url = quickTagUrl('songwriter',v.tid);
+			let url = quickTagUrl('songwriter',v.tid, v.name);
 			return <Link href={url} key={'songwriters'+i}><a data-type="songwriter" data-id={v.tid}>{icons.songwriter} {v.name}</a></Link>
 		});
 		let languages = kara.langs.map((v,i) => {

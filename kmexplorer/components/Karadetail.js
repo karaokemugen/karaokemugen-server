@@ -24,14 +24,12 @@ class Karaitem extends React.Component {
 
 		let renderMode = this.props.mode ? this.props.mode : 'compact';
 
-		let quickTagUrl = function(type,value)
+		let quickTagUrl = function(type,value,slug)
 		{
-			return filterTools.reset().addTag(type,value).getQuery().url;
+			return filterTools.reset().addTag(type,value,slug).getQuery().url;
 		}
 
 		let getI18nTagname = (v) => {
-			let final_name = null;
-			let fallback = null;
 			if(tags)
 			{
 				let tag =  this.props.tags[v.tid]
@@ -42,51 +40,59 @@ class Karaitem extends React.Component {
 		}
 
 		let singers = kara.singers.map((v,i) => {
-			let url = quickTagUrl('singer',v.tid);
+			let url = quickTagUrl('singer',v.tid, v.name);
+			console.log(url)
 			return <Link href={url} key={'singer_'+i}><a data-type="singer" data-id={v.tid}>{icons.singer} {v.name}</a></Link>
 		});
 		let creators = kara.creators.map((v,i) => {
-			let url = quickTagUrl('creator',v.tid);
+			let url = quickTagUrl('creator',v.tid, v.name);
 			return <Link href={url} key={'creator_'+i}><a data-type="creator" data-id={v.tid}>{icons.creator} {v.name}</a></Link>
 		});
 		let authors = kara.authors.map((v,i) => {
-			let url = quickTagUrl('author',v.tid);
+			let url = quickTagUrl('author',v.tid, v.name);
 			return <Link href={url} key={'author_'+i}><a data-type="author" data-id={v.tid}>{icons.author} {v.name}</a></Link>
 		});
 		let songwriters = kara.songwriters.map((v,i) => {
-			let url = quickTagUrl('songwriter',v.tid);
+			let url = quickTagUrl('songwriter',v.tid, v.name);
 			return <Link href={url} key={'songwriters'+i}><a data-type="songwriter" data-id={v.tid}>{icons.songwriter} {v.name}</a></Link>
 		});
 		let languages = kara.langs.map((v,i) => {
-			let url = quickTagUrl('language',v.tid);
+			let name = isoLanguages(v.name, i18n.language);
+			let url = quickTagUrl('language',v.tid, name);
 			return <Link href={url} key={'language'+i}><a data-type="language" data-id={v.tid}>{icons.language} {isoLanguages(v.name, i18n.language)}</a></Link>
 		});
 		let songtypes = kara.songtypes.map((v,i) => {
-			let url = quickTagUrl('songtype',v.tid);
+			let name = getI18nTagname(v);
+			let url = quickTagUrl('songtype',v.tid, name);
 			return <Link href={url} key={'songtype_'+i}><a data-type="songtype" data-id={v.tid}>{icons.songtype} {getI18nTagname(v)} {kara.songorder}</a></Link>
 		});
 		let miscs = kara.misc.map((v,i) => {
-			let url = quickTagUrl('misc',v.tid);
+			let name = getI18nTagname(v);
+			let url = quickTagUrl('misc',v.tid, name);
 			return <Link href={url} key={'misc_'+i}><a data-type="misc" data-id={v.tid}>{icons.misc} {getI18nTagname(v)}</a></Link>
 		});
 		let groups = kara.groups.map((v,i) => {
-			let url = quickTagUrl('group',v.tid);
+			let name = getI18nTagname(v);
+			let url = quickTagUrl('group',v.tid, name);
 			return <Link href={url} key={'group_'+i}><a data-type="group" data-id={v.tid}>{icons.group} {getI18nTagname(v)}</a></Link>
 		});
 		let families = kara.families.map((v,i) => {
-			let url = quickTagUrl('family',v.tid);
+			let name = getI18nTagname(v);
+			let url = quickTagUrl('family',v.tid, name);
 			return <Link href={url} key={'family_'+i}><a data-type="family" data-id={v.tid}>{icons.family} {getI18nTagname(v)}</a></Link>
 		});
 		let origins = kara.origins.map((v,i) => {
-			let url = quickTagUrl('origin',v.tid);
+			let name = getI18nTagname(v);
+			let url = quickTagUrl('origin',v.tid, name);
 			return <Link href={url} key={'origin_'+i}><a data-type="origin" data-id={v.tid}>{icons.origin} {getI18nTagname(v)}</a></Link>
 		});
 		let genres = kara.genres.map((v,i) => {
-			let url = quickTagUrl('genre',v.tid);
+			let name = getI18nTagname(v);
+			let url = quickTagUrl('genre',v.tid, name);
 			return <Link href={url} key={'genre_'+i}><a data-type="genre" data-id={v.tid}>{icons.genre} {getI18nTagname(v)}</a></Link>
 		});
 		let platforms = kara.platforms.map((v,i) => {
-			let url = quickTagUrl('platform',v.tid);
+			let url = quickTagUrl('platform',v.tid, v.name);
 			return <Link href={url} key={'platform_'+i}><a data-type="platform" data-id={v.tid}>{icons.platform} {v.name}</a></Link>
 		});
 
