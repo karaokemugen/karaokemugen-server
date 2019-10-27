@@ -10,6 +10,13 @@ const API_URL = RuntimeConfig.API_URL;
 
 class Karaitem extends React.Component {
 
+	constructor (props) {
+		super(props)
+		this.state = {
+			lyricsOpen:false,
+		}
+	}
+
 	render() {
 
 		// Todo variante resume/detail
@@ -165,6 +172,13 @@ class Karaitem extends React.Component {
 					<dd key="mtime" data-type="mtime">{i18n.t("kara.modification_date")} {new Date(kara.modified_at).toLocaleDateString()}</dd>
 					<dd key="kid" data-type="kid">{i18n.t('kara.karaoke_id')} : {kara.kid}</dd>
 				</dl>
+				{kara.lyrics ?
+				<dl className={`lyricsElement ${this.state.lyricsOpen ? "lyricsElementOpen" : ""}`}>
+					<dd className={`lyricsbutton ${this.state.lyricsOpen ? "lyricsOpen" : ""}`} onClick={() => this.setState({lyricsOpen: !this.state.lyricsOpen})}>{i18n.t("kara.lyrics_here")}</dd>
+					<dd className={this.state.lyricsOpen ? "" : "lyricsInvisible"}>{kara.lyrics.map((value, index) => 
+						<div key={index}>{value} <br/></div>)}
+					</dd>
+				</dl> : null}
 				<dl key="files" className="files">
 					<dd key="kara" data-type="kara"><a href={API_URL+"/downloads/karas/"+kara.karafile.replace('.json', '')}><i className="fa fa-file-code-o"></i> {i18n.t('kara.karafile')}</a></dd>
 					<dd key="media" data-type="media"><a href={API_URL+"/downloads/medias/"+kara.mediafile}><i className="fa fa-file-video-o"></i> {i18n.t('kara.mediafile')}</a></dd>

@@ -110,6 +110,44 @@
     }
   }
 
+  .lyricsElementOpen {
+    border: 1px solid #ffffff;
+    border-radius: .4em;
+  }
+
+  .lyricsElement {
+    width: 30%;
+    margin: .25em;
+    dd {
+      margin: 0;
+      div {
+        margin: 10px;
+      }
+    }
+    .lyricsInvisible {
+      display: none;
+    }
+
+    .lyricsbutton {
+      cursor: pointer;
+      font-size: 1.25em;
+      text-decoration: none;
+      padding: 0.25em .5em;
+      color: #26aacc;
+      border-radius: .4em;
+      background: $kara_item_files_bg;
+      &:hover {
+        background: $kara_item_files_over_bg;
+        color: $kara_item_files_over_color;
+      }
+    }
+  
+    .lyricsOpen {
+      background: $kara_item_files_over_bg;
+      color: $kara_item_files_over_color;
+    }
+  }
+
   .problems {
     display: flex;
     flex-direction: row;
