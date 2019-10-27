@@ -121,11 +121,13 @@ class Karaitem extends React.Component {
 
 		return (
 			<div className="kmx-kara-item" data-mode={renderMode}>
+				<div className="kmx-kara-item-first-line">
+					<h2 className="title"><Link href={'/kara/'+filterTools.normalizeString(kara.title)+'/'+kara.kid} key="detail"><a>{kara.title}</a></Link></h2>
+					<div className="tag-language">{languages}</div>
+				</div>
 				{caption}
-				<h2 className="title"><Link href={'/kara/'+filterTools.normalizeString(kara.title)+'/'+kara.kid} key="detail"><a>{kara.title}</a></Link></h2>
 				<div className="tags">
 					{songtypes}
-					{languages}
 					{serie_name ? (<Link href={quickTagUrl('serie',serie_id,serie_name)} key="serie"><a data-type="serie" data-id={serie_id}><i className="fa fa-tv"></i> {serie_name}</a></Link>) : null}
 					{kara.year ? (<Link href={quickTagUrl('year',kara.year, kara.year)} key="year"><a data-type="year" ><i className="fa fa-calendar"></i> {kara.year}</a></Link>) : null }
 					{singers}
