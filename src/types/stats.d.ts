@@ -21,13 +21,19 @@ export interface Favorite {
 
 export interface Played {
 	kid: string,
-	session_started_at: Date,
+	seid: string,
 	played_at: Date
+}
+
+export interface Session {
+	seid: string,
+	started_at: Date,
+	name: string
 }
 
 export interface Requested {
 	kid: string,
-	session_started_at: Date,
+	seid: string,
 	requested_at: Date
 }
 
