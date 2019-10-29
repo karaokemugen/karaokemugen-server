@@ -602,15 +602,25 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 						onChange={(tags) => this.props.form.setFieldsValue({ groups: tags })}
 					/>)}
 				</Form.Item>
-				<Form.Item>
+				<Form.Item
+					label={i18next.t('KARA.CREATED_AT')}
+					labelCol={{ span: 3 }}
+					wrapperCol={{ span: 8, offset: 0 }}
+				>
 					{getFieldDecorator('created_at', {
 						initialValue: this.props.kara.created_at
 					})(<Input type="hidden" />)}
+					<label className="description">{this.props.kara.created_at ? new Date(this.props.kara.created_at).toLocaleString() : null}</label>
 				</Form.Item>
-				<Form.Item>
+				<Form.Item
+					label={i18next.t('KARA.MODIFIED_AT')}
+					labelCol={{ span: 3 }}
+					wrapperCol={{ span: 8, offset: 0 }}
+				>
 					{getFieldDecorator('modified_at', {
 						initialValue: this.props.kara.modified_at
 					})(<Input type="hidden" />)}
+					<label className="description">{this.props.kara.modified_at ? new Date(this.props.kara.modified_at).toLocaleString() : null}</label>
 				</Form.Item>
 				<Form.Item
 					hasFeedback
@@ -629,7 +639,10 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 						rules: [{
 							required: false
 						}],
-					})(<TextArea/>)}
+					})(<>
+						{this.props.kara.kid ? <label className="description">{i18next.t('KARA.COMMENT_EDIT')}</label> : null}
+						<TextArea/>
+					</>)}
 				</Form.Item>
 				<Form.Item
 					wrapperCol={{ span: 8, offset: 1 }}
