@@ -14,7 +14,7 @@
 	"KARA" : {
 		"COMMENT": "Un commentaire ?",
 		"COMMENT_TOOLTIP": "Si vous voulez donner des indications aux mainteneurs de la base de karaokés ou simplement dire merci, faites-le ici !",
-		"COMMENT_EDIT": "N'hésitez pas à signer votre correction pour qu'on sache qui vous êtes",
+		"COMMENT_EDIT": "N'hésitez pas à signer votre correction pour qu'on sache qui vous êtes !",
 		"MEDIA_FILE": "Fichier vidéo",
 		"MEDIA_FILE_TOOLTIP": "Formats de fichier acceptés : .avi .mkv .mp4 .webm .mov .wmv .mpg .ogg .m4a .mp3",
 		"LYRICS_FILE": "Fichier de sous-titres",
