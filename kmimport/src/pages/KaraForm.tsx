@@ -641,7 +641,7 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 						}],
 					})(<>
 						{this.props.kara.kid ? <label className="description">{i18next.t('KARA.COMMENT_EDIT')}</label> : null}
-						<TextArea/>
+						<TextArea onChange={(e) => this.props.form.setFieldsValue({ comment: e.target.value })}/>
 					</>)}
 				</Form.Item>
 				<Form.Item
