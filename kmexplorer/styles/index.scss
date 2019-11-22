@@ -189,7 +189,8 @@ body {
     color:$filter_order_btn_color;
     text-decoration: none;
     border-radius:0.25em;
-    text-align:center;
+	text-align:center;
+	cursor: pointer;
     &.active,
     &:hover {
       background: $filter_order_btn_over_bg;

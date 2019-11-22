@@ -162,7 +162,7 @@ class Homepage extends React.Component {
 
   buildFilterOrder(order, text){
     let q = filterTools.reset().setOrderBy(order).getQuery();
-    return <Link href={q.url}><a>{text}</a></Link>
+    return <Link href={q.url}><div key={order} className={this.state.orderBy==order ? "active":""} >{text}</div></Link>
   }
 
   render() {
@@ -202,12 +202,12 @@ class Homepage extends React.Component {
             current={this.props.karaPage}
             renderUrl={(i) => { return filterTools.reset().setPage(i).getQuery().url; }}
             />
-         	<div className="kmx-filter-order">
-						<label>{i18n.t('form.order_by')} :</label>
-						<div key="search" className={this.state.orderBy=="search" ? "active":""} >{this.buildFilterOrder('search', "A-Z")}</div>
-						<div key="recent" className={this.state.orderBy=="recent" ? "active":""} >{this.buildFilterOrder('recent',i18n.t('form.updated'))}</div>
-					</div>
-				</div>
+			<div className="kmx-filter-order">
+				<label>{i18n.t('form.order_by')} :</label>
+				{this.buildFilterOrder('search', "A-Z")}
+				{this.buildFilterOrder('recent',i18n.t('form.updated'))}
+			</div>
+		</div>
 
         <Karalist updating={this.state.loading} data={this.props.karaList} tags={this.props.tags} filterTools={filterTools}/>
 
