@@ -1,6 +1,6 @@
 import {langSelector, db, transaction, buildClauses} from '../lib/dao/database';
 import {pg as yesql} from 'yesql';
-import { Favorite, Played, Requested, Instance } from '../types/stats';
+import { Session, Favorite, Played, Requested, Instance } from '../types/stats';
 const sql = require('./sqls/stats');
 
 export async function upsertInstance(i: Instance) {
@@ -29,21 +29,33 @@ export async function replaceFavorites(instance_id: string, favorites: Favorite[
 	if (favorites.length > 0) await transaction([{sql: sql.insertFavorite, params: params}]);
 }
 
-export async function upsertPlayed(instance_id: string, viewcounts: Played[]) {
+export async function upsertPlayed(viewcounts: Played[]) {
 	const params = viewcounts.map(v => [
-		instance_id,
 		v.kid,
-		v.session_started_at,
+		v.seid,
 		v.played_at
 	]);
 	if (viewcounts.length > 0) await transaction([{sql: sql.insertViewcount, params: params}]);
 }
 
-export async function upsertRequests(instance_id: string, requests: Requested[]) {
-	const params = requests.map(r => [
+export async function wipeInstance(instance_id: string) {
+	return await db().query(sql.wipeInstance, [instance_id]);
+}
+
+export async function upsertSessions(instance_id: string, sessions: Session[]) {
+	const params = sessions.map(s => [
 		instance_id,
+		s.seid,
+		s.started_at,
+		s.name
+	]);
+	if (sessions.length > 0) await transaction([{sql: sql.insertSession, params: params}]);
+}
+
+export async function upsertRequests(requests: Requested[]) {
+	const params = requests.map(r => [
 		r.kid,
-		r.session_started_at,
+		r.seid,
 		r.requested_at
 	]);
 	if (requests.length > 0) await transaction([{sql: sql.insertRequested, params: params}]);

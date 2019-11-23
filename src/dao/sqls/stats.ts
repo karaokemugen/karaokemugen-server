@@ -43,29 +43,39 @@ INSERT INTO stats_favorites(fk_iid, fk_kid)
 VALUES(
 	$1,
 	$2
-) ON CONFLICT DO NOTHING;
+)
 `;
 
 export const insertViewcount = `
-INSERT INTO stats_played(fk_iid, fk_kid, session_started_at, played_at)
+INSERT INTO stats_played(fk_kid, fk_seid, played_at)
 VALUES(
 	$1,
 	$2,
-	$3,
-	$4
+	$3
 )
-ON CONFLICT (fk_iid, fk_kid, session_started_at, played_at) DO NOTHING;
 `;
 
 export const insertRequested = `
-INSERT INTO stats_requested(fk_iid, fk_kid, session_started_at, requested_at)
+INSERT INTO stats_requested(fk_kid, fk_seid, requested_at)
+VALUES(
+	$1,
+	$2,
+	$3
+)
+`;
+
+export const wipeInstance = `
+DELETE FROM instance WHERE pk_iid = $1
+`;
+
+export const insertSession = `
+INSERT INTO stats_session(fk_iid, pk_seid, started_at, name)
 VALUES(
 	$1,
 	$2,
 	$3,
 	$4
 )
-ON CONFLICT (fk_iid, fk_kid, session_started_at, requested_at) DO NOTHING;
 `;
 
 export const getPlayedStats = (filterClauses, lang, limitClause, offsetClause) => `
