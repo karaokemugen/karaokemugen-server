@@ -8,7 +8,7 @@ const API_URL = RuntimeConfig.API_URL;
 class DedicatedTagList extends React.Component {
 	render() {
 
-		let tagList = this.props.tags;
+		let tagList = this.props.tags.filter((tag) => tag.karacount);
 		tagList.sort((a,b) =>{
 			if(this.props.orderBy === 'alpha')
 				return typeof a.name === 'string' ? a.name.toLowerCase().localeCompare(b.name.toLowerCase()) : a.name > b.name;
