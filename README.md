@@ -68,6 +68,28 @@ Use the supplied `config.sample.yml` file and copy it to `config.yml`. Edit it a
 yarn start --generate
 ```
 
+## Configure frontend
+
+For local use, please put this in your `config.yml` file :
+
+```yaml
+Frontend:
+  Host: localhost
+  Port: 1350
+KaraExplorer:
+  Api: http://localhost:1350
+  Port: 1351
+  Path: /base
+```
+
+Explanations :
+
+* Frontend.Host : Put your server's domain name. It's used by Express to know which domain to listen to and serve requests.
+* Frontend.Port : Port you should access your KM Server at. Usually on nginx or Apache you'll proxy/reverse proxy requests coming from port 80 to this port
+* KaraExplorer.Api : URL to the KM Server API. KM Explorer (the karaoke base browser) will use this URL to try to access the API to request data. Use https if necessary
+* KaraExplorer.Port : Port on which KaraExplorer listens on. This is a separate port than Frontend.Port and should not be proxified at directly. KM Server will take care of routing stuff to and from KM Explorer
+* KaraExplorer.Path : Path to the karaoke base. You cannot use / for this as it's used by the redirect service KM App uses.
+
 ## Launch
 
 Run
