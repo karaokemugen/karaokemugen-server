@@ -1,5 +1,5 @@
 import React from 'react'
-import { i18n, withNamespaces } from '../i18n'
+import { i18n, withTranslation } from '../i18n'
 import i18nRouterPush from '../utils/i18nRouterPush'
 import Head from 'next/head'
 import axios from 'axios'
@@ -67,4 +67,4 @@ class Page extends React.Component {
 	}
 }
 
-export default withNamespaces(['common','tag'])(Page)
+export default withTranslation(['common','tag'])(Page)

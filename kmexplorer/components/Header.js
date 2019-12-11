@@ -1,5 +1,5 @@
 import React from 'react'
-import { i18n, withNamespaces } from '../i18n'
+import { i18n, withTranslation } from '../i18n'
 import querystring from 'querystring';
 import FilterTools from '../utils/filterTools';
 import RuntimeConfig from '../utils/RuntimeConfig';
@@ -97,4 +97,4 @@ class Header extends React.Component {
 	}
 }
 
-export default withNamespaces('common')(Header)
+export default withTranslation('common')(Header)

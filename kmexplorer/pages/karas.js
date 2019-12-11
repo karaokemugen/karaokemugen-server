@@ -1,5 +1,5 @@
 import React from 'react'
-import { i18n, Router, withNamespaces } from '../i18n'
+import { i18n, Router, withTranslation } from '../i18n'
 import Link from '../utils/I18nLink';
 import i18nRouterPush from '../utils/i18nRouterPush'
 import Head from 'next/head'
@@ -222,4 +222,4 @@ class Homepage extends React.Component {
   }
 }
 
-export default withNamespaces(['common','tag'])(Homepage)
+export default withTranslation(['common','tag'])(Homepage)

@@ -1,5 +1,5 @@
 import React from 'react'
-import { i18n, withNamespaces } from '../i18n'
+import { i18n, withTranslation } from '../i18n'
 import Link from '../utils/I18nLink';
 import isoLanguages from '../components/isoLanguages';
 import querystring from 'querystring';
@@ -202,4 +202,4 @@ class Karaitem extends React.Component {
 		)
 	}
 }
-export default withNamespaces('common')(Karaitem)
+export default withTranslation('common')(Karaitem)

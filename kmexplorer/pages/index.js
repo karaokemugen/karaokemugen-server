@@ -1,5 +1,5 @@
 import React from 'react'
-import { i18n, withNamespaces } from '../i18n'
+import { i18n, withTranslation } from '../i18n'
 import Head from 'next/head'
 import duration from '../components/date';
 import prettyBytes from 'pretty-bytes';
@@ -107,4 +107,4 @@ class Page extends React.Component {
 	}
 }
 
-export default withNamespaces(['common','tag'])(Page)
+export default withTranslation(['common','tag'])(Page)

@@ -1,5 +1,5 @@
 import React from 'react'
-import { i18n, withNamespaces } from '../i18n'
+import { i18n, withTranslation } from '../i18n'
 import icons from '../components/Icons';
 
 
@@ -21,4 +21,4 @@ class Help extends React.Component {
 	}
 }
 
-export default withNamespaces('common')(Help)
+export default withTranslation('common')(Help)

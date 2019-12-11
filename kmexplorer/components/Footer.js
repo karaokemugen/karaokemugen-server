@@ -1,5 +1,5 @@
 import React from 'react'
-import { i18n, withNamespaces } from '../i18n'
+import { i18n, withTranslation } from '../i18n'
 
 class Footer extends React.Component {
 	render() {
@@ -12,4 +12,4 @@ class Footer extends React.Component {
 	}
 }
 
-export default withNamespaces('footer')(Footer)
+export default withTranslation('footer')(Footer)

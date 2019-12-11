@@ -1,5 +1,5 @@
 import React from 'react'
-import { i18n, withNamespaces } from '../i18n'
+import { i18n, withTranslation } from '../i18n'
 
 import Karaitem from './Karaitem';
 
@@ -34,4 +34,4 @@ class Karalist extends React.Component {
 	}
 }
 
-export default withNamespaces('common')(Karalist)
+export default withTranslation('common')(Karalist)

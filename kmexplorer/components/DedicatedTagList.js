@@ -1,5 +1,5 @@
 import React from 'react'
-import { i18n, withNamespaces } from '../i18n'
+import { i18n, withTranslation } from '../i18n'
 import Link from '../utils/I18nLink';
 import RuntimeConfig from '../utils/RuntimeConfig';
 const BASE_URL = RuntimeConfig.BASE_URL;
@@ -41,4 +41,4 @@ class DedicatedTagList extends React.Component {
 	}
 }
 
-export default withNamespaces('common')(DedicatedTagList)
+export default withTranslation('common')(DedicatedTagList)

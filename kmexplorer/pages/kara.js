@@ -1,5 +1,5 @@
 import React from 'react'
-import { i18n, withNamespaces } from '../i18n'
+import { i18n, withTranslation } from '../i18n'
 import Head from 'next/head'
 import axios from 'axios'
 import Karadetail from '../components/Karadetail';
@@ -46,4 +46,4 @@ class Karapage extends React.Component {
   }
 }
 
-export default withNamespaces(['common','tag'])(Karapage)
+export default withTranslation(['common','tag'])(Karapage)

@@ -1,5 +1,5 @@
 import React from 'react'
-import { i18n, Link, withNamespaces } from '../i18n'
+import { i18n, Link, withTranslation } from '../i18n'
 
 class Dummy extends React.Component {
 	render() {
@@ -12,4 +12,4 @@ class Dummy extends React.Component {
 	}
 }
 
-export default withNamespaces('common')(Dummy)
+export default withTranslation('common')(Dummy)
