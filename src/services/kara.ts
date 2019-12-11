@@ -60,18 +60,46 @@ export async function getKara(filter?: string, lang?: string, from = 0, size = 0
 		throw err;
 	}
 }
-export async function getAllKaras(filter?: string, lang?: string, from = 0, size = 0, mode?: string, modeValue?: string): Promise<KaraList> {
+export async function getAllKaras(filter?: string, lang?: string, from = 0, size = 0, mode?: string, modeValue?: string, compare?: 'updated' | 'missing', localKarasArr?: any): Promise<KaraList> {
 	try {
-		const pl = await selectAllKaras({
-				filter: filter,
-				lang: lang,
-				from: +from,
-				size: +size,
-				mode: mode,
-				modeValue: modeValue
-			});
-		return formatKaraList(pl, +from, pl[0].count, lang);
+		let trueFrom = from;
+		let trueSize = size;
+		if (compare) {
+			trueFrom = null;
+			trueSize = null;
+		}
+		let pl = await selectAllKaras({
+			filter: filter,
+			lang: lang,
+			from: +trueFrom,
+			size: +trueSize,
+			mode: mode,
+			modeValue: modeValue || ''
+		});
+		const localKaras = new Map();
+		if (Array.isArray(localKarasArr) && localKarasArr.length > 0) {
+			localKarasArr.forEach(k => localKaras.set(k.kid, k.modified_at));
+		}
+		if (compare === 'updated') {
+			pl = pl.filter((k: DBKara) => new Date(localKaras.get(k.kid)) < k.modified_at);
+		}
+		if (compare === 'missing') {
+			pl = pl.filter((k: DBKara) => !localKaras.has(k.kid));
+		}
+		let count = 0;
+		if (pl[0]) count = pl[0].count;
+		if (compare) {
+			count = pl.length;
+			if (from > 0) {
+				pl = pl.slice(+from, +from + +size || (pl.length - +from));
+			} else {
+				pl = pl.slice(0, +size || pl.length);
+			}
+		}
+		return formatKaraList(pl, +from, count, lang);
 	} catch(err) {
+		console.log(err);
+		logger.error(`[GetAllKaras] ${err}`);
 		throw err;
 	}
 }

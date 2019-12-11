@@ -34,9 +34,9 @@ export default function KSController(router: Router) {
 			}
 		});
 	router.route('/karas/search')
-		.get(getLang, async (req: any, res) => {
+		.post(getLang, async (req: any, res) => {
 			try {
-				const karas = await getAllKaras(req.query.filter,req.lang, req.query.from, req.query.size,'search',req.query.q);
+				const karas = await getAllKaras(req.body.filter, req.lang , req.body.from, req.body.size, 'search', req.body.q, req.body.compare, req.body.localKaras);
 				res.json(karas);
 			} catch(err) {
 				res.status(500).json(err);
