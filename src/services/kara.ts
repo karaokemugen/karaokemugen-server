@@ -1,6 +1,6 @@
 import {selectAllKaras, selectAllYears, selectBaseStats} from '../dao/kara';
 import { KaraList } from '../lib/types/kara';
-import { consolidatei18n } from '../lib/services/kara';
+import { consolidateData } from '../lib/services/kara';
 import { DBKara } from '../lib/types/database/kara';
 import { ASSToLyrics } from '../lib/utils/ass';
 import { getASS } from '../lib/dao/karafile';
@@ -14,7 +14,7 @@ export async function getBaseStats() {
 
 export function formatKaraList(karaList: any[], from: number, count: number, lang: string): KaraList {
 	const langs = [lang, 'eng'];
-	const {i18n, data} = consolidatei18n(karaList, langs);
+	const {i18n, data} = consolidateData(karaList, langs);
 	return {
 		infos: {
 			count: +count,

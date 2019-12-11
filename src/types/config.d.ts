@@ -47,7 +47,9 @@ export interface Config {
 			Import?: string,
 			Jingles?: string[],
 			Backgrounds?: string[],
-			Intros?: string[]
+			Intros?: string[],
+			Outros?: string[],
+			Encores?: string[]
 		}
 	},
 	Database: {

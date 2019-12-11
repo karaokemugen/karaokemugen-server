@@ -1,5 +1,6 @@
 export interface State {
 	appPath?: string,
+	dataPath?: string,
 	EngineDefaultLocale?: string,
 	version?: {
 		number?: string,

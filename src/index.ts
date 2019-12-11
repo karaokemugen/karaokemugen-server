@@ -21,6 +21,7 @@ import { initMailer } from './utils/mailer';
 
 const pjson = require('../package.json');
 const appPath = join(__dirname,'../');
+const dataPath = resolve(appPath, 'app/');
 
 process.on('uncaughtException', (exception) => {
 	console.log(exception);
@@ -49,7 +50,7 @@ main().catch(err => {
 async function main() {
 	sudoBlock('You should not run Karaoke Mugen Server with root permissions, it\'s dangerous.');
 	const argv = parseArgs();
-	setState({appPath: appPath});
+	setState({appPath: appPath, dataPath: dataPath});
 	await initConfig(argv);
 	const conf = getConfig();
 	console.log('--------------------------------------------------------------------');
@@ -58,16 +59,16 @@ async function main() {
 	console.log('\n');
 	const paths = conf.System.Path;
 	const checks = [
-		asyncCheckOrMkdir(appPath, paths.Import),
-		asyncCheckOrMkdir(appPath, paths.Temp),
-		asyncCheckOrMkdir(appPath, paths.Previews),
-		asyncCheckOrMkdir(appPath, paths.Avatars)
+		asyncCheckOrMkdir(resolve(appPath, paths.Import)),
+		asyncCheckOrMkdir(resolve(appPath, paths.Temp)),
+		asyncCheckOrMkdir(resolve(appPath, paths.Previews)),
+		asyncCheckOrMkdir(resolve(appPath, paths.Avatars))
 	];
-	paths.Medias.forEach(e => checks.push(asyncCheckOrMkdir(appPath, e)));
-	paths.Karas.forEach(e => checks.push(asyncCheckOrMkdir(appPath, e)));
-	paths.Series.forEach(e => checks.push(asyncCheckOrMkdir(appPath, e)));
-	paths.Lyrics.forEach(e => checks.push(asyncCheckOrMkdir(appPath, e)));
-	paths.Tags.forEach(e => checks.push(asyncCheckOrMkdir(appPath, e)));
+	paths.Medias.forEach(e => checks.push(asyncCheckOrMkdir(resolve(appPath, e))));
+	paths.Karas.forEach(e => checks.push(asyncCheckOrMkdir(resolve(appPath, e))));
+	paths.Series.forEach(e => checks.push(asyncCheckOrMkdir(resolve(appPath, e))));
+	paths.Lyrics.forEach(e => checks.push(asyncCheckOrMkdir(resolve(appPath, e))));
+	paths.Tags.forEach(e => checks.push(asyncCheckOrMkdir(resolve(appPath, e))));
 
 	await Promise.all(checks);
 
