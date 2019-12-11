@@ -1,4 +1,4 @@
-import {countKaras, selectAllKaras, selectAllYears, selectBaseStats} from '../dao/kara';
+import {selectAllKaras, selectAllYears, selectBaseStats} from '../dao/kara';
 import { KaraList } from '../lib/types/kara';
 import { consolidatei18n } from '../lib/services/kara';
 import { DBKara } from '../lib/types/database/kara';
@@ -62,18 +62,15 @@ export async function getKara(filter?: string, lang?: string, from = 0, size = 0
 }
 export async function getAllKaras(filter?: string, lang?: string, from = 0, size = 0, mode?: string, modeValue?: string): Promise<KaraList> {
 	try {
-		const [length, pl] = await Promise.all([
-			countKaras(filter, mode, modeValue),
-			selectAllKaras({
+		const pl = await selectAllKaras({
 				filter: filter,
 				lang: lang,
 				from: +from,
 				size: +size,
 				mode: mode,
 				modeValue: modeValue
-			})
-		]);
-		return formatKaraList(pl, +from, length, lang);
+			});
+		return formatKaraList(pl, +from, pl[0].count, lang);
 	} catch(err) {
 		throw err;
 	}

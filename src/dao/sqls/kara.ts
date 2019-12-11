@@ -2,14 +2,6 @@ import { LangClause } from "../../lib/types/database";
 
 // SQL for kara management
 
-export const countKaras = (filterClauses, typeClauses) => `
-SELECT COUNT(kid) AS count
-FROM all_karas AS ak
-WHERE 1 = 1
-  ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
-  ${typeClauses}
-`;
-
 export const getAllKaras = (filterClauses: string[], lang: LangClause, typeClauses: string, orderClauses: string, havingClause: string, limitClause: string, offsetClause: string) => `SELECT
   ak.kid AS kid,
   ak.title AS title,
@@ -46,7 +38,8 @@ export const getAllKaras = (filterClauses: string[], lang: LangClause, typeClaus
   ak.mediasize AS mediasize,
   ak.repo AS repo,
   ak.tag_names AS tag_names,
-  ak.tagfiles AS tagfiles
+  ak.tagfiles AS tagfiles,
+  count(ak.kid) OVER()::integer AS count
 FROM all_karas AS ak
 LEFT OUTER JOIN kara_serie AS ks_main ON ks_main.fk_kid = ak.kid
 LEFT OUTER JOIN serie_lang AS sl_main ON sl_main.fk_sid = ks_main.fk_sid AND sl_main.lang = ${lang.main}

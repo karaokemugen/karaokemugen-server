@@ -8,14 +8,6 @@ export async function selectAllYears() {
 	return res.rows;
 }
 
-export async function countKaras(filter: string, mode: string, modeValue: string) {
-	const filterClauses = filter ? buildClauses(filter) : {sql: [], params: {}};
-	const typeClauses = mode ? buildTypeClauses(mode, modeValue) : '';
-	const query = sql.countKaras(filterClauses.sql, typeClauses);
-	const res = await db().query(yesql(query)(filterClauses.params));
-	return res.rows[0].count;
-}
-
 export async function selectAllKaras(params: KaraParams) {
 	let filterClauses = params.filter ? buildClauses(params.filter) : {sql: [], params: {}};
 	let typeClauses = params.mode ? buildTypeClauses(params.mode, params.modeValue) : '';
