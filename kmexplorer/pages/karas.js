@@ -27,8 +27,13 @@ class Homepage extends React.Component {
     const searchTags = query.t ? query.t : '';
 
     const pageSize = 24;
-    const orderBy = filterTools.getOrderBy();
-    const karas = await axios.get(API_URL+'/api/karas/'+orderBy+'?'+querystring.stringify(filterTools.getApiQuery(pageSize)))
+	const orderBy = filterTools.getOrderBy();
+	let karas;
+	if (orderBy === 'recent') {
+		karas = await axios.get(API_URL+'/api/karas/'+orderBy+'?'+querystring.stringify(filterTools.getApiQuery(pageSize)));
+	} else {
+		karas = await axios.post(API_URL+'/api/karas/'+orderBy, filterTools.getApiQuery(pageSize));
+	}   
 
     let karaStatus = null;
     let karaPage = 0;
