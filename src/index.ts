@@ -59,16 +59,16 @@ async function main() {
 	console.log('\n');
 	const paths = conf.System.Path;
 	const checks = [
-		asyncCheckOrMkdir(resolve(appPath, paths.Import)),
-		asyncCheckOrMkdir(resolve(appPath, paths.Temp)),
-		asyncCheckOrMkdir(resolve(appPath, paths.Previews)),
-		asyncCheckOrMkdir(resolve(appPath, paths.Avatars))
+		asyncCheckOrMkdir(resolve(dataPath, paths.Import)),
+		asyncCheckOrMkdir(resolve(dataPath, paths.Temp)),
+		asyncCheckOrMkdir(resolve(dataPath, paths.Previews)),
+		asyncCheckOrMkdir(resolve(dataPath, paths.Avatars))
 	];
-	paths.Medias.forEach(e => checks.push(asyncCheckOrMkdir(resolve(appPath, e))));
-	paths.Karas.forEach(e => checks.push(asyncCheckOrMkdir(resolve(appPath, e))));
-	paths.Series.forEach(e => checks.push(asyncCheckOrMkdir(resolve(appPath, e))));
-	paths.Lyrics.forEach(e => checks.push(asyncCheckOrMkdir(resolve(appPath, e))));
-	paths.Tags.forEach(e => checks.push(asyncCheckOrMkdir(resolve(appPath, e))));
+	paths.Medias.forEach(e => checks.push(asyncCheckOrMkdir(resolve(dataPath, e))));
+	paths.Karas.forEach(e => checks.push(asyncCheckOrMkdir(resolve(dataPath, e))));
+	paths.Series.forEach(e => checks.push(asyncCheckOrMkdir(resolve(dataPath, e))));
+	paths.Lyrics.forEach(e => checks.push(asyncCheckOrMkdir(resolve(dataPath, e))));
+	paths.Tags.forEach(e => checks.push(asyncCheckOrMkdir(resolve(dataPath, e))));
 
 	await Promise.all(checks);
 
@@ -120,7 +120,7 @@ async function main() {
 	});
 
 	// Clean temp periodically of files older than two hours
-	setInterval(findRemoveSync.bind(this, resolve(appPath, conf.System.Path.Temp), {age: {seconds: 7200}}), 2 * 60 * 60 * 1000);
+	setInterval(findRemoveSync.bind(this, resolve(dataPath, conf.System.Path.Temp), {age: {seconds: 7200}}), 2 * 60 * 60 * 1000);
 
 	inits.push(initShortener());
 	inits.push(initFrontend(port));
