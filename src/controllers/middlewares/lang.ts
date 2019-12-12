@@ -1,4 +1,4 @@
-import { getState } from '../utils/state';
+import { getState } from '../../utils/state';
 
 export const getLang = (req: any, _, next: any) => {
 	const langs = req.get('accept-language');

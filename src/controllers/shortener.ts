@@ -5,7 +5,7 @@ export default function ShortenerController(router: Router) {
 	router.route('/shortener')
 		.get(async (req, res) => {
 			try {
-				const ret = await getInstance(req.headers['x-forwarded-for']);
+				const ret = await getInstance(req.headers['x-forwarded-for'][0]);
 				if (ret) {
 					res.redirect(`http://${ret.local_ip}:${ret.local_port}`);
 				} else {
@@ -17,7 +17,7 @@ export default function ShortenerController(router: Router) {
 		})
 		.post(async (req, res) => {
 			try {
-				await publishInstance(req.headers['x-forwarded-for'], req.body);
+				await publishInstance(req.headers['x-forwarded-for'][0], req.body);
 				res.status(200).send('Update OK');
 			} catch(err) {
 				res.status(500).send(err);
