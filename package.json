@@ -8,7 +8,7 @@
    "license": "MIT",
    "homepage": "https://mugen.karaokes.moe",
    "scripts": {
-      "prestart": "node node_modules/db-migrate/bin/db-migrate sync [all]",
+      "prestart": "node node_modules/db-migrate/bin/db-migrate sync [all] --config app/database.json",
       "start": "ts-node src/index.ts --",
       "qstart": "yarn prestart && node dist/index.js --",
       "generate": "ts-node src/index.ts -- --generate",
