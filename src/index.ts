@@ -76,11 +76,14 @@ async function main() {
 
 	await initDB(getState().opt.sql);
 
+	if (argv.static) setState({opt: {staticServe: true});
+
 	if (argv.createPreviews) {
 		const karas = await getAllKaras();
 		await createImagePreviews(karas);
 		exit(0);
 	}
+
 	if (argv.generate) {
 		await generateDatabase();
 		exit(0);
@@ -141,6 +144,7 @@ function parseArgs() {
 		.option('--generate', 'generate karaoke database')
 		.option('--sql', 'display SQL queries (in debug)')
 		.option('--debug', 'display debug messages')
+		.option('--static', 'serve static files via NodeJS')
 		.option('--createPreviews', 'generate image previews')
 		.option('--createAdmin [user],[password]', 'Create a new admin user', login)
 		.option('--changePassword [user],[password]', 'Change a user password', login)

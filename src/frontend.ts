@@ -76,13 +76,15 @@ export function initFrontend(listenPort: number) {
 		res.sendFile(resolve(state.appPath, 'kmimport/build/index.html'));
 	});
 
-	mainApp.use('/downloads/karaokes', express.static(resolvedPathKaras()[0]));
-	// Serve V3 Karas still for some time
-	mainApp.use('/downloads/karas', express.static(resolve(resolvedPathKaras()[0], '../karas/')));
-	mainApp.use('/downloads/lyrics', express.static(resolvedPathSubs()[0]));
-	mainApp.use('/downloads/medias', express.static(resolvedPathMedias()[0]));
-	mainApp.use('/downloads/series', express.static(resolvedPathSeries()[0]));
-	mainApp.use('/downloads/tags', express.static(resolvedPathTags()[0]));
+	if (state.opt.staticServe) {
+		mainApp.use('/downloads/karaokes', express.static(resolvedPathKaras()[0]));
+		// Serve V3 Karas still for some time
+		mainApp.use('/downloads/karas', express.static(resolve(resolvedPathKaras()[0], '../karas/')));
+		mainApp.use('/downloads/lyrics', express.static(resolvedPathSubs()[0]));
+		mainApp.use('/downloads/medias', express.static(resolvedPathMedias()[0]));
+		mainApp.use('/downloads/series', express.static(resolvedPathSeries()[0]));
+		mainApp.use('/downloads/tags', express.static(resolvedPathTags()[0]));
+	}
 	mainApp.use('/previews', express.static(resolvedPathPreviews()));
 	mainApp.use('/avatars', express.static(resolvedPathAvatars()));
 	// API router

@@ -12,6 +12,7 @@ let state: State = {
 		sql: false,
 		validate: false,
 		debug: false,
+		staticServe: false,
 	}
 };
 

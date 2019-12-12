@@ -17,6 +17,7 @@ export interface State {
 		profiling?: boolean,
 		sql?: boolean,
 		validate?: boolean,
-		debug?: boolean
+		debug?: boolean,
+		staticServe?: boolean
 	}
 }
