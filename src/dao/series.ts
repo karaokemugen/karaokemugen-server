@@ -1,8 +1,9 @@
 import {paramWords, langSelector, db} from '../lib/dao/database';
 import {pg as yesql} from 'yesql';
+import { DBSeriesBase, DBSeries } from '../lib/types/database/series';
 const sql = require('./sqls/series');
 
-export async function selectSerieByName(name: string) {
+export async function selectSerieByName(name: string): Promise<DBSeriesBase> {
 	const res = await db().query(yesql(sql.getSeriesByName)({
 		name: name
 	}));
@@ -16,7 +17,7 @@ export async function countSeries(filter: string): Promise<number> {
 	return res.rows[0].count;
 }
 
-export async function selectAllSeries(filter?: string, lang?: string, from = 0, size = 0) {
+export async function selectAllSeries(filter?: string, lang?: string, from = 0, size = 0): Promise<DBSeries[]> {
 
 	const filterClauses = filter ? buildClausesSeries(filter) : {sql: [], params: {}};
 	let offsetClause = '';

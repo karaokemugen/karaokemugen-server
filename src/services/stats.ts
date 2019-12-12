@@ -23,7 +23,7 @@ const payloadConstraints = {
 	sessions: {sessionValidator: true}
 };
 
-export async function processStatsPayload(payload) {
+export async function processStatsPayload(payload: any) {
 	try {
 		if (!testJSON(payload)) throw 'Syntax error in JSON data';
 

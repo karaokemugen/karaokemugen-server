@@ -42,7 +42,7 @@ export async function generate() {
 	}
 }
 
-export async function getKara(filter?: string, lang?: string, from = 0, size = 0, mode?: string, modeValue?: string): Promise<DBKara> {
+export async function getKara(filter?: string, lang?: string, from = 0, size = 0, mode?: string, modeValue?: string) {
 	try {
 		const karas = await selectAllKaras({
 			filter: filter,
@@ -113,7 +113,7 @@ export async function newKaraIssue(kid: string, type: 'quality' | 'time', messag
 		modeValue: kid
 	});
 	const kara = karas[0];
-	const karaName = `${kara.langs[0].name.toUpperCase()} - ${kara.series[0] || kara.singers[0].name} - ${kara.songtypes[0].name}${kara.order || ''} - ${kara.title}`;
+	const karaName = `${kara.langs[0].name.toUpperCase()} - ${kara.serie[0] || kara.singers[0].name} - ${kara.songtypes[0].name}${kara.songorder || ''} - ${kara.title}`;
 	const conf = getConfig();
 	let title = conf.Gitlab.IssueTemplate.KaraProblem.Title || '$kara';
 	logger.debug('[GitLab] Kara: '+JSON.stringify(kara, null, 2));

@@ -3,7 +3,7 @@ import logger from 'winston';
 import {getConfig} from '../lib/utils/config';
 import { InstanceData } from '../types/shortener';
 
-export async function publishInstance(ip: string | string[], data: InstanceData) {
+export async function publishInstance(ip: string, data: InstanceData) {
 	const currentDate = new Date();
 	logger.debug(`[Shortener] Received publish request from ${ip} with ${JSON.stringify(data)}`);
 	const instance = await selectInstance(ip);
@@ -29,7 +29,7 @@ export async function publishInstance(ip: string | string[], data: InstanceData)
 	}
 }
 
-export async function getInstance(ip: string | string[]) {
+export async function getInstance(ip: string) {
 	logger.debug(`[Shortener] Received get request from ${ip}`);
 	const instance = await selectInstance(ip);
 	logger.debug(`[Shortener] Found instance data ${JSON.stringify(instance)}`);
