@@ -57,11 +57,11 @@ function binMissing(binariesPath: any, err: string) {
 
 /** Initializing configuration */
 export async function initConfig(argv: any) {
-	let appPath = getState().appPath;
+	const dataPath = getState().dataPath;
 	setConfigConstraints(configConstraints);
-	await configureLogger(appPath, !!argv.debug, true);
+	await configureLogger(dataPath, !!argv.debug, true);
 	await configureLocale();
-	await loadConfigFiles(appPath, argv.config, defaults);
+	await loadConfigFiles(dataPath, argv.config, defaults);
 	const conf = getConfig();
 	logger.debug('[Launcher] Checking if binaries are available');
 	setState({binPath: await checkBinaries(conf)});
