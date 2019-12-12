@@ -9,8 +9,8 @@ export async function getOrAddSerieID(seriesObj: Series): Promise<IDQueryResult>
 	let serie = await selectSerieByName(seriesObj.name);
 	if (serie) return {id: serie.sid, new: false};
 	// If no serie found, create it and return the sid we generated
-	serie = await findSeriesInImportedFiles(seriesObj.name);
-	if (serie) return {id: serie.sid, new: false};
+	const importedSerie = await findSeriesInImportedFiles(seriesObj.name);
+	if (importedSerie) return {id: importedSerie.sid, new: false};
 	await writeSeriesFile(seriesObj, resolvedPathImport());
 	return {id: seriesObj.sid, new: true};
 }
