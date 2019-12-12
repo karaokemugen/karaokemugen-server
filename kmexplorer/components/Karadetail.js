@@ -5,6 +5,9 @@ import isoLanguages from '../components/isoLanguages';
 import querystring from 'querystring';
 import RuntimeConfig from '../utils/RuntimeConfig';
 import icons from '../components/Icons';
+import i18nRouterPush from '../utils/i18nRouterPush'
+import FilterTools from '../utils/filterTools';
+const filterTools = new FilterTools();
 const BASE_URL = RuntimeConfig.BASE_URL;
 const API_URL = RuntimeConfig.API_URL;
 
@@ -15,6 +18,18 @@ class Karaitem extends React.Component {
 		this.state = {
 			lyricsOpen:false,
 		}
+	}
+
+	refreshList(event) {
+		event.preventDefault()
+		event.stopPropagation()
+		let q = filterTools.reset().getQuery()
+		i18nRouterPush(q.path, q.query)
+	}
+	
+	updateKeyword(event) {
+		// local state update of the search input field
+		filterTools.reset().setKeywords(event.target.value).save();
 	}
 
 	render() {
@@ -123,6 +138,13 @@ class Karaitem extends React.Component {
 		//console.log(kara);
 
 		return (
+		<>
+			<div className="kmx-filter-keyword">
+				<form onSubmit={(event) => this.refreshList(event)}>
+					<input type="text" onChange={(event) => this.updateKeyword(event)} placeholder={i18n.t('form.karas_keywords_placeholder')} />
+					<button type="submit"><i className="fa fa-search"></i></button>
+				</form>
+			</div>
 			<div className="kmx-kara-detail">
 			 	{
 					kara.mediafile.match(/^((?!\.mp3).)*$/) && kara.mediafile.match(/^((?!\.m4a).)*$/)
@@ -199,6 +221,7 @@ class Karaitem extends React.Component {
 					</dl>
 				</blockquote>
 			</div>
+		</>
 		)
 	}
 }
