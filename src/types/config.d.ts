@@ -22,6 +22,7 @@ export interface Config {
 			Import?: GitlabTemplate
 			Suggestion?: GitlabTemplate
 			Edit?: GitlabTemplate
+			KaraProblem?: GitlabTemplate
 		}
 	}
 	Shortener: {

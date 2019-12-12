@@ -60,7 +60,10 @@ export const defaults = {
 			},
 			Edit: {
 				Labels: []
-			}
+			},
+			KaraProblem: {
+				Labels: []
+			},
 		}
 	},
 	Mail: {

@@ -1,5 +1,5 @@
 import {getLang} from './lang';
-import {getBaseStats, getKara, getAllKaras, getAllYears} from '../services/kara';
+import {getBaseStats, getKara, getAllKaras, getAllYears, newKaraIssue} from '../services/kara';
 import {getTags} from '../services/tag';
 import {getAllSeries} from '../services/series';
 import {getSettings} from '../lib/dao/database';
@@ -55,6 +55,23 @@ export default function KSController(router: Router) {
 			try {
 				const kara = await getKara(req.query.filter,req.lang, req.query.from, req.query.size, 'kid', req.params.kid);
 				res.json(kara);
+			} catch(err) {
+				res.status(500).json(err);
+			}
+		});
+	router.route('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})')
+		.get(getLang, async (req: any, res) => {
+			try {
+				const kara = await getKara(req.query.filter,req.lang, req.query.from, req.query.size, 'kid', req.params.kid);
+				res.json(kara);
+			} catch(err) {
+				res.status(500).json(err);
+			}
+		});
+	router.route('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/problem')
+		.post(getLang, async (req: any, res) => {
+			try {
+				await newKaraIssue(req.params.kid, req.body.type, req.body.message, req.body.author);
 			} catch(err) {
 				res.status(500).json(err);
 			}

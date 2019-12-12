@@ -7,6 +7,8 @@ import { getASS } from '../lib/dao/karafile';
 import { generateDatabase } from '../lib/services/generation';
 import { createImagePreviews } from '../lib/utils/previews';
 import logger from '../lib/utils/logger';
+import { getConfig } from '../lib/utils/config';
+import { gitlabPostNewIssue } from '../lib/services/gitlab';
 
 export async function getBaseStats() {
 	return await selectBaseStats();
@@ -60,6 +62,7 @@ export async function getKara(filter?: string, lang?: string, from = 0, size = 0
 		throw err;
 	}
 }
+
 export async function getAllKaras(filter?: string, lang?: string, from = 0, size = 0, mode?: string, modeValue?: string, compare?: 'updated' | 'missing', localKarasArr?: any): Promise<KaraList> {
 	try {
 		let trueFrom = from;
@@ -104,3 +107,24 @@ export async function getAllKaras(filter?: string, lang?: string, from = 0, size
 	}
 }
 
+export async function newKaraIssue(kid: string, type: 'quality' | 'time', message: string, author: string) {
+	const karas = await selectAllKaras({
+		mode: 'kid',
+		modeValue: kid
+	});
+	const kara = karas[0];
+	const karaName = `${kara.langs[0].name.toUpperCase()} - ${kara.series[0] || kara.singers[0].name} - ${kara.songtypes[0].name}${kara.order || ''} - ${kara.title}`;
+	const conf = getConfig();
+	let title = conf.Gitlab.IssueTemplate.KaraProblem.Title || '$kara';
+	logger.debug('[GitLab] Kara: '+JSON.stringify(kara, null, 2));
+	title = title.replace('$kara', karaName);
+	let desc = conf.Gitlab.IssueTemplate.KaraProblem.Description || '';
+	desc = desc.replace('$author', author)
+		.replace('$type', type)
+		.replace('$message', message);
+	try {
+		if (conf.Gitlab.Enabled) return gitlabPostNewIssue(title, desc, conf.Gitlab.IssueTemplate.KaraProblem.Labels);
+	} catch(err) {
+		logger.error(`[KaraProblem] Call to Gitlab API failed : ${err}`);
+	}
+}
