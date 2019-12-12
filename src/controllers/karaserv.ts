@@ -1,4 +1,4 @@
-import {getLang} from './lang';
+import {getLang} from './middlewares/lang';
 import {getBaseStats, getKara, getAllKaras, getAllYears, newKaraIssue} from '../services/kara';
 import {getTags} from '../services/tag';
 import {getAllSeries} from '../services/series';
