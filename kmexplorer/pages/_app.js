@@ -1,5 +1,5 @@
 import React from 'react'
-import App, { Container } from 'next/app'
+import App from 'next/app'
 import Head from 'next/head'
 import { i18n, appWithTranslation } from '../i18n'
 import axios from 'axios'
@@ -8,10 +8,8 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import tagsMap from '../components/tagsMap.js';
 import localForage from "localforage";
-import querystring from 'querystring';
 import FilterTools from '../utils/filterTools';
 import RuntimeConfig from '../utils/RuntimeConfig';
-const BASE_URL = RuntimeConfig.BASE_URL;
 const API_URL = RuntimeConfig.API_URL;
 const filterTools = new FilterTools();
 
@@ -164,7 +162,7 @@ class MyApp extends App {
 		const { Component, pageProps } = this.props
 
 		return (
-			<Container>
+			<>
 				<Head>
 					<title key="title">{i18n.t('sitename')}</title>
 					<meta name="viewport" content="width=device-width" />
@@ -172,7 +170,7 @@ class MyApp extends App {
 				<Header {...pageProps} />
 				<Component {...pageProps} stats={this.state.stats} tags={this.state.tags} series={this.state.series} years={this.state.years}  />
 				<Footer {...pageProps} />
-			</Container>
+			</>
 		)
 	}
 }
