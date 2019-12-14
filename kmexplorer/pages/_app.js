@@ -168,7 +168,6 @@ class MyApp extends App {
 				<Head>
 					<title key="title">{i18n.t('sitename')}</title>
 					<meta name="viewport" content="width=device-width" />
-					<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
 				</Head>
 				<Header {...pageProps} />
 				<Component {...pageProps} stats={this.state.stats} tags={this.state.tags} series={this.state.series} years={this.state.years}  />
