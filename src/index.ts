@@ -144,7 +144,7 @@ function parseArgs() {
 		.option('--generate', 'generate karaoke database')
 		.option('--sql', 'display SQL queries (in debug)')
 		.option('--debug', 'display debug messages')
-		.option('--static', 'serve static files via NodeJS')
+		.option('--staticServe', 'serve static files via NodeJS')
 		.option('--createPreviews', 'generate image previews')
 		.option('--createAdmin [user],[password]', 'Create a new admin user', login)
 		.option('--changePassword [user],[password]', 'Change a user password', login)
