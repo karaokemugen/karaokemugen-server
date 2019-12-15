@@ -76,7 +76,7 @@ async function main() {
 
 	await initDB(getState().opt.sql);
 
-	if (argv.static) setState({opt: {staticServe: true}});
+	if (argv.staticServe) setState({opt: {staticServe: true}});
 
 	if (argv.createPreviews) {
 		const karas = await getAllKaras();
