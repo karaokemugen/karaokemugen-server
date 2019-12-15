@@ -23,13 +23,13 @@ export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 	if (params.mode === 'played') {
 		statsSelectClause = 'COUNT(p.*)::integer AS played,';
 		statsJoinClause = 'LEFT OUTER JOIN stats_played AS p ON p.fk_kid = ak.kid ';
-		havingClause = 'HAVING COUNT(p.*) >= 10';
+		havingClause = 'HAVING COUNT(p.*) >= 5';
 		orderClauses = 'played DESC, ';
 	}
 	if (params.mode === 'favorited') {
 		statsSelectClause = 'COUNT(f.*)::integer AS favorited,';
 		statsJoinClause = 'LEFT OUTER JOIN stats_favorites AS f ON f.fk_kid = ak.kid ';
-		havingClause = 'HAVING COUNT(f.*) >= 5';
+		havingClause = 'HAVING COUNT(f.*) >= 1';
 		orderClauses = 'favorited DESC, ';
 	}
 	if (params.mode === 'requested') {
