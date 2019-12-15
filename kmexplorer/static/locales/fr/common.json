@@ -40,7 +40,14 @@
     "karas_keywords_placeholder": "titre, interprête, série, ...",
     "order_by": "Tri",
     "tags_keywords_placeholder": "Filtrer par mots clés",
-    "updated": "Mise à jour récente"
+    "updated": "Mise à jour récente",
+	"most_played": "Plus joués",
+	"most_favorites": "Plus favoris",
+	"most_requested": "Plus demandés",
+	"played": "Joué",
+	"favorites": "Favoris",
+	"requested": "Demandé",
+	"times": "fois"
   },
   "kara": {
     "creation_date": "Date de création",

@@ -26,9 +26,15 @@ class Homepage extends React.Component {
     const searchTags = query.t ? query.t : '';
 
     const pageSize = 24;
-    const orderBy = filterTools.getOrderBy();
-    const karas = await axios.get(API_URL+'/api/karas/'+orderBy+'?'+querystring.stringify(filterTools.getApiQuery(pageSize)))
-
+	const orderBy = filterTools.getOrderBy();
+	
+	const orderByArray = ['requested', 'favorites', 'played'];
+	let karas;
+	if (orderByArray.includes(orderBy)) {
+		karas = await axios.get(API_URL+'/api/stats/'+orderBy+'?'+querystring.stringify(filterTools.getApiQuery(pageSize)));
+	} else {
+		karas = await axios.get(API_URL+'/api/karas/'+orderBy+'?'+querystring.stringify(filterTools.getApiQuery(pageSize)))
+	}
     let karaStatus = null;
     let karaPage = 0;
     let karaCount = null;
@@ -205,6 +211,9 @@ class Homepage extends React.Component {
 				<label>{i18n.t('form.order_by')} :</label>
 				{this.buildFilterOrder('search', "A-Z")}
 				{this.buildFilterOrder('recent',i18n.t('form.updated'))}
+				{this.buildFilterOrder('requested',i18n.t('form.most_requested'))}
+				{this.buildFilterOrder('played',i18n.t('form.most_played'))}
+				{this.buildFilterOrder('favorites',i18n.t('form.most_favorites'))}
 			</div>
 		</div>
 
