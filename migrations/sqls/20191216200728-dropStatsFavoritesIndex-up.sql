@@ -1,0 +1,1 @@
+DROP INDEX idx_favorite_iid_kid;
