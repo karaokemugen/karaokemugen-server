@@ -63,7 +63,7 @@ export async function getKara(filter?: string, lang?: string, from = 0, size = 0
 	}
 }
 
-export async function getAllKaras(filter?: string, lang?: string, from = 0, size = 0, mode?: string, modeValue?: string, compare?: 'updated' | 'missing', localKarasArr?: any): Promise<KaraList> {
+export async function getAllKaras(filter?: string, lang?: string, from = 0, size = 0, mode?: string, modeValue?: string, compare?: 'updated' | 'missing', localKarasObj?: any): Promise<KaraList> {
 	try {
 		let trueFrom = from;
 		let trueSize = size;
@@ -80,8 +80,8 @@ export async function getAllKaras(filter?: string, lang?: string, from = 0, size
 			modeValue: modeValue || ''
 		});
 		const localKaras = new Map();
-		if (Array.isArray(localKarasArr) && localKarasArr.length > 0) {
-			localKarasArr.forEach(k => localKaras.set(k.kid, k.modified_at));
+		if (localKarasObj && Object.keys(localKarasObj).length > 0){
+			Object.keys(localKarasObj).forEach(kid => localKaras.set(kid, localKarasObj[kid]));
 		}
 		if (compare === 'updated') {
 			pl = pl.filter((k: DBKara) => new Date(localKaras.get(k.kid)) < k.modified_at);
