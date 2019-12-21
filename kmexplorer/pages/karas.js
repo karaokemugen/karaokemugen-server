@@ -166,7 +166,7 @@ class Homepage extends React.Component {
   }
 
   buildFilterOrder(order, text){
-    let q = filterTools.clear().setOrderBy(order).getQuery();
+    let q = filterTools.reset().setOrderBy(order).getQuery();
     return <Link href={q.url}><div key={order} className={this.state.orderBy==order ? "active":""} >{text}</div></Link>
   }
 
@@ -192,11 +192,13 @@ class Homepage extends React.Component {
           </form>
         </div>
 
-        <div className="kmx-filter-panel" data-type="tags">
-          {filterTools.params.tags.map((v) => { return this.buildFilterTags(v)})}
-          {filterTools.params.serie ? this.buildFilterSerie(filterTools.params.serie) : null}
-          {filterSerie}
-        </div>
+		{filterTools.params.orderBy === 'search' ?
+			<div className="kmx-filter-panel" data-type="tags">
+			{filterTools.params.tags.map((v) => { return this.buildFilterTags(v)})}
+			{filterTools.params.serie ? this.buildFilterSerie(filterTools.params.serie) : null}
+			{filterSerie}
+			</div> : null
+  		}
 
         <p>{this.props.karaCount} Karas</p>
 
