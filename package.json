@@ -100,7 +100,7 @@
       "slugify": "^1.3.6",
       "socket.io": "^2.3.0",
       "sudo-block": "^3.0.0",
-      "toyunda2ass": "^1.0.7",
+      "toyunda2ass": "^1.0.9",
       "ultrastar2ass": "^1.0.7",
       "uuid": "^3.3.3",
       "validate.js": "^0.13.1",
