@@ -166,7 +166,7 @@ class Homepage extends React.Component {
   }
 
   buildFilterOrder(order, text){
-    let q = filterTools.reset().setOrderBy(order).getQuery();
+    let q = filterTools.clear().setOrderBy(order).getQuery();
     return <Link href={q.url}><div key={order} className={this.state.orderBy==order ? "active":""} >{text}</div></Link>
   }
 

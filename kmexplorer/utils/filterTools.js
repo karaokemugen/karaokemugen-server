@@ -281,7 +281,7 @@ export default class FilterTools {
 	}
 
 	normalizeString(str) {
-		return typeof str === "string" ? deburr(str.toLowerCase()).replace(/[\/?%~'"«»]+/g,'') : '';
+		return typeof str === "string" ? deburr(str.toLowerCase()).replace(/#[\/?%~'"«»]+/g,'') : '';
 	}
 
 };
