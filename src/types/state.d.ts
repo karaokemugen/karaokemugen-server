@@ -2,6 +2,7 @@ export interface State {
 	appPath?: string,
 	dataPath?: string,
 	EngineDefaultLocale?: string,
+	os?: string,
 	version?: {
 		number?: string,
 		name?: string,

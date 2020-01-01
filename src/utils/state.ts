@@ -3,6 +3,7 @@ import {State} from '../types/state';
 
 // Internal settings
 let state: State = {
+	os: process.platform,
 	opt: {
 		generateDB: false,
 		reset: false,
@@ -12,7 +13,7 @@ let state: State = {
 		sql: false,
 		validate: false,
 		debug: false,
-		staticServe: false,
+		staticServe: false
 	}
 };
 
