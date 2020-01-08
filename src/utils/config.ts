@@ -73,6 +73,6 @@ export async function initConfig(argv: any) {
 		console.log('Aborting...');
 		exit(1);
 	}
-	await configureIDs();
+	configureIDs();
 	return getConfig();
 }
