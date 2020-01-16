@@ -28,6 +28,6 @@ export async function insertInstance(data: ShortURLData) {
 	]);
 }
 
-export async function cleanupInstances(days: number) {
-	return await db().query(sql.cleanupInstances,[days]);
+export async function cleanupInstances(date: Date) {
+	return await db().query(sql.cleanupInstances, [date]);
 }

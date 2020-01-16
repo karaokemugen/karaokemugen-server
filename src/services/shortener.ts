@@ -38,13 +38,17 @@ export async function getInstance(ip: string) {
 }
 
 export async function initShortener() {
-	setInterval(cleanInstances, 60 * 1000 * 1000 * 24 * getConfig().Shortener.ExpireTimeDays);
+	setInterval(cleanInstances, 60 * 60 * 1000 * 24 * getConfig().Shortener.ExpireTimeDays);
+	cleanInstances();
 }
 
 async function cleanInstances() {
 	// Unflag online accounts from database if they expired
 	try {
-		await cleanupInstances(getConfig().Shortener.ExpireTimeDays);
+		const date = new Date();
+		date.setDate(date.getDate() - getConfig().Shortener.ExpireTimeDays);
+		await cleanupInstances(date);
+		logger.info('[Shortener] Cleaned up expired instances')
 	} catch(err) {
 		logger.error(`[Shortener] Expiring instances failed (better luck next time) : ${err}`);
 	}
