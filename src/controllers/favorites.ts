@@ -1,6 +1,7 @@
 import {requireAuth, requireValidUser} from './middlewares/auth';
 import { getFavorites, addFavorite, removeFavorite } from '../services/favorites';
 import { Router } from 'express';
+import logger from '../lib/utils/logger';
 
 export default function favoritesController(router: Router) {
 	router.route('/favorites')
@@ -14,17 +15,23 @@ export default function favoritesController(router: Router) {
 		})
 		.post(requireAuth, requireValidUser, async (req: any, res) => {
 			try {
+				logger.debug(`[Favorites] Post favorites in progress ${req.body.kid}`);
 				await addFavorite(req.authToken, req.body.kid);
+				logger.debug(`[Favorites] Post favorites finish ${req.body.kid}`);
 				res.status(200).json();
 			} catch(err) {
+				logger.debug(`[Favorites] Post favorites error ${JSON.stringify(err)}`);
 				res.status(500).json(err);
 			}
 		})
 		.delete(requireAuth, requireValidUser, async (req: any, res) => {
 			try {
+				logger.debug(`[Favorites] Delete favorites in progress ${req.body.kid}`);
 				await removeFavorite(req.authToken, req.body.kid);
+				logger.debug(`[Favorites] Delete favorites finish ${req.body.kid}`);
 				res.status(200).json();
 			} catch(err) {
+				logger.debug(`[Favorites] Delete favorites error ${JSON.stringify(err)}`);
 				res.status(500).json(err);
 			}
 		});
