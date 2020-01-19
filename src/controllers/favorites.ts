@@ -15,9 +15,9 @@ export default function favoritesController(router: Router) {
 		})
 		.post(requireAuth, requireValidUser, async (req: any, res) => {
 			try {
-				logger.debug(`[Favorites] Post favorites in progress ${req.body.kid}`);
+				logger.debug(`[Favorites] Post favorites by ${req.authToken.username} in progress ${req.body.kid}`);
 				await addFavorite(req.authToken, req.body.kid);
-				logger.debug(`[Favorites] Post favorites finish ${req.body.kid}`);
+				logger.debug(`[Favorites] Post favorites by ${req.authToken.username} finish ${req.body.kid}`);
 				res.status(200).json();
 			} catch(err) {
 				logger.debug(`[Favorites] Post favorites error ${JSON.stringify(err)}`);
@@ -26,9 +26,9 @@ export default function favoritesController(router: Router) {
 		})
 		.delete(requireAuth, requireValidUser, async (req: any, res) => {
 			try {
-				logger.debug(`[Favorites] Delete favorites in progress ${req.body.kid}`);
+				logger.debug(`[Favorites] Delete favorites by ${req.authToken.username} in progress ${req.body.kid}`);
 				await removeFavorite(req.authToken, req.body.kid);
-				logger.debug(`[Favorites] Delete favorites finish ${req.body.kid}`);
+				logger.debug(`[Favorites] Delete favorites by ${req.authToken.username} finish ${req.body.kid}`);
 				res.status(200).json();
 			} catch(err) {
 				logger.debug(`[Favorites] Delete favorites error ${JSON.stringify(err)}`);
