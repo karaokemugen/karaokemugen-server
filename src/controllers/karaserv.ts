@@ -55,7 +55,7 @@ export default function KSController(router: Router) {
 	router.route('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})')
 		.get(getLang, async (req: any, res) => {
 			try {
-				const kara = await getKara(req.query.filter,req.lang, req.query.from, req.query.size, 'kid', req.params.kid);
+				const kara = await getKara(req.query.filter, req.lang, req.query.from, req.query.size, 'kid', req.params.kid);
 				res.json(kara);
 			} catch(err) {
 				res.status(500).json(err);
