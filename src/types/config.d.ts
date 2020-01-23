@@ -50,7 +50,8 @@ export interface Config {
 			Backgrounds?: string[],
 			Intros?: string[],
 			Outros?: string[],
-			Encores?: string[]
+			Encores?: string[],
+			Sponsors?: string[]
 		}
 	},
 	Database: {
