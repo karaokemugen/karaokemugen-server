@@ -1,7 +1,6 @@
 import {requireAuth, requireValidUser} from './middlewares/auth';
 import { getFavorites, addFavorite, removeFavorite } from '../services/favorites';
 import { Router } from 'express';
-import logger from '../lib/utils/logger';
 
 export default function favoritesController(router: Router) {
 	router.route('/favorites/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})')
