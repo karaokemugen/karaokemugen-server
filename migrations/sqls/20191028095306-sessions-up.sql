@@ -7,7 +7,15 @@ CREATE TABLE stats_session (
 	CONSTRAINT session_fk_iid_instance_fkey FOREIGN KEY (fk_iid) REFERENCES instance(pk_iid) ON DELETE CASCADE
 );
 
-INSERT INTO stats_session(pk_seid, fk_iid, name, started_at) VALUES('00000000-0000-0000-0000-000000000000', (SELECT pk_iid FROM instance WHERE version = 'Server'), 'Unknown session', '1970-01-01');
+INSERT INTO instance(config, modified_at, pk_iid, version) VALUES('{}'::jsonb,'1970-01-01', '00000000-0000-0000-0000-000000000000', 'Server') ON CONFLICT DO NOTHING;
+
+INSERT INTO stats_session(pk_seid,
+						  fk_iid,
+						  name,
+						  started_at)
+VALUES('00000000-0000-0000-0000-000000000000',
+	   (SELECT COALESCE ((SELECT pk_iid FROM instance WHERE version = 'Server'),
+						'00000000-0000-0000-0000-000000000000')), 'Unknown session', '1970-01-01');
 
 
 DROP INDEX idx_played_iid_startedat_kid_playedat;
