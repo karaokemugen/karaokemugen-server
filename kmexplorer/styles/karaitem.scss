@@ -77,7 +77,8 @@
     margin: 0 0 .50em;
     a {
       color: inherit;
-      text-decoration: none;
+	  text-decoration: none;
+	  overflow-wrap: anywhere;
       &:hover {
         text-decoration: underline;
       }
