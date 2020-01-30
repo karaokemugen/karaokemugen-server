@@ -1,4 +1,4 @@
-import { LangClause } from "../../lib/types/database";
+import { LangClause } from '../../lib/types/database';
 
 // SQL for kara management
 
@@ -36,7 +36,7 @@ export const getAllKaras = (filterClauses: string[], lang: LangClause, typeClaus
   ak.created_at AS created_at,
   ak.modified_at AS modified_at,
   ak.mediasize AS mediasize,
-  ak.repo AS repo,
+  ak.repo AS repository,
   ak.tag_names AS tag_names,
   ak.tagfiles AS tagfiles,
   ${statsSelectClause}

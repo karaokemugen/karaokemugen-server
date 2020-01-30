@@ -4,7 +4,7 @@
 
 import logger from 'winston';
 import {basename, resolve} from 'path';
-import {getConfig, resolvedPathImport, resolvedPathTemp, resolvedPathMedias, resolvedPathSubs} from '../lib/utils/config';
+import {getConfig, resolvedPathImport, resolvedPathTemp, resolvedPathRepos} from '../lib/utils/config';
 import {duration} from '../lib/utils/date';
 import { generateKara } from '../lib/services/kara_creation';
 import { NewKara, Kara } from '../lib/types/kara';
@@ -14,9 +14,9 @@ import { asyncExists, asyncCopy, asyncUnlink } from '../lib/utils/files';
 export async function editKara(kara: Kara): Promise<string> {
 	let newKara: NewKara;
 	try {
-		const mediaFile = resolve(resolvedPathMedias()[0], kara.mediafile);
+		const mediaFile = resolve(resolvedPathRepos('Medias')[0], kara.mediafile);
 		const subFile = kara.subfile
-			? resolve(resolvedPathSubs()[0], kara.subfile)
+			? resolve(resolvedPathRepos('Lyrics')[0], kara.subfile)
 			: kara.subfile;
 		// Removing useless data
 		delete kara.karafile;

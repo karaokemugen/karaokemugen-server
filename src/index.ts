@@ -64,11 +64,11 @@ async function main() {
 		asyncCheckOrMkdir(resolve(dataPath, paths.Previews)),
 		asyncCheckOrMkdir(resolve(dataPath, paths.Avatars))
 	];
-	paths.Medias.forEach(e => checks.push(asyncCheckOrMkdir(resolve(dataPath, e))));
-	paths.Karas.forEach(e => checks.push(asyncCheckOrMkdir(resolve(dataPath, e))));
-	paths.Series.forEach(e => checks.push(asyncCheckOrMkdir(resolve(dataPath, e))));
-	paths.Lyrics.forEach(e => checks.push(asyncCheckOrMkdir(resolve(dataPath, e))));
-	paths.Tags.forEach(e => checks.push(asyncCheckOrMkdir(resolve(dataPath, e))));
+	for (const repo of conf.System.Repositories) {
+		for (const paths of Object.keys(repo.Path)) {
+			repo.Path[paths].forEach((dir: string) => checks.push(asyncCheckOrMkdir(resolve(dataPath, dir))));
+		}
+	}
 
 	await Promise.all(checks);
 

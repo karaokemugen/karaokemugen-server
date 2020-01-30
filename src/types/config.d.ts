@@ -1,3 +1,5 @@
+import { Repository } from '../lib/types/repo';
+
 export interface Config {
 	App: {
 		JwtSecret?: string,
@@ -36,12 +38,13 @@ export interface Config {
 				Windows: string
 			}
 		},
+		Repositories: Repository[]
 		Path: {
-			Karas?: string[],
-			Medias?: string[],
-			Lyrics?: string[],
-			Series?: string[],
-			Tags?: string[],
+			Karas?: string,
+			Series?: string,
+			Tags?: string,
+			Medias?: string,
+			Lyrics?: string,
 			Temp?: string,
 			Previews?: string,
 			Avatars?: string,

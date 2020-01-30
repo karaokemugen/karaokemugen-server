@@ -1,5 +1,5 @@
 import {selectAllKaras, selectAllYears, selectBaseStats} from '../dao/kara';
-import { KaraList } from '../lib/types/kara';
+import { KaraList, ModeParam } from '../lib/types/kara';
 import { consolidateData } from '../lib/services/kara';
 import { DBKara } from '../lib/types/database/kara';
 import { ASSToLyrics } from '../lib/utils/ass';
@@ -42,7 +42,7 @@ export async function generate() {
 	}
 }
 
-export async function getKara(filter?: string, lang?: string, from = 0, size = 0, mode?: string, modeValue?: string) {
+export async function getKara(filter?: string, lang?: string, from = 0, size = 0, mode?: ModeParam, modeValue?: string) {
 	try {
 		const karas = await selectAllKaras({
 			filter: filter,
@@ -54,7 +54,7 @@ export async function getKara(filter?: string, lang?: string, from = 0, size = 0
 		});
 		karas[0].lyrics = null;
 		if (karas[0].subfile) {
-			const ASS = await getASS(karas[0].subfile);
+			const ASS = await getASS(karas[0].subfile, karas[0].repository);
 			if (ASS) karas[0].lyrics = ASSToLyrics(ASS);
 		}
 		return karas[0];
@@ -63,7 +63,7 @@ export async function getKara(filter?: string, lang?: string, from = 0, size = 0
 	}
 }
 
-export async function getAllKaras(filter?: string, lang?: string, from = 0, size = 0, mode?: string, modeValue?: string, compare?: 'updated' | 'missing', localKarasObj?: any): Promise<KaraList> {
+export async function getAllKaras(filter?: string, lang?: string, from = 0, size = 0, mode?: ModeParam, modeValue?: string, compare?: 'updated' | 'missing', localKarasObj?: any): Promise<KaraList> {
 	try {
 		let trueFrom = from;
 		let trueSize = size;

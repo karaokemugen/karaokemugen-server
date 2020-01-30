@@ -28,12 +28,20 @@ export const defaults = {
 				OSX: 'ffmpeg'
 			}
 		},
+		Repositories: [
+			{
+				Name: 'Local',
+				Online: false,
+				Path: {
+					Karas: ['data/karaokes'],
+					Lyrics: ['data/lyrics'],
+					Medias: ['data/medias'],
+					Series: ['data/series'],
+					Tags: ['data/tags']
+				}
+			}
+		],
 		Path: {
-			Karas: ['data/karaokes'],
-			Lyrics: ['data/lyrics'],
-			Medias: ['data/medias'],
-			Series: ['data/series'],
-			Tags: ['data/tags'],
 			Temp: 'temp',
 			Import: 'inbox',
 			Avatars: 'avatars',
