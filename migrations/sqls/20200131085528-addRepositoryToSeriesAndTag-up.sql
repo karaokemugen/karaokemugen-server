@@ -86,6 +86,7 @@ SELECT
   k.mediasize,
   aks.seriefiles AS seriefiles,
   aks.serie_altname AS serie_altname,
+  aks.serie_i18n AS serie_i18n,
   aks.serie AS serie,
   aks.sid AS sid,
   akt.tid AS tid,
