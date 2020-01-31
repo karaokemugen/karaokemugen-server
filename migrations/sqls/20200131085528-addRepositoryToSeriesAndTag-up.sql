@@ -129,5 +129,5 @@ LEFT OUTER JOIN families on k.pk_kid = families.fk_kid
 LEFT OUTER JOIN origins on k.pk_kid = origins.fk_kid
 LEFT OUTER JOIN genres on k.pk_kid = genres.fk_kid
 LEFT OUTER JOIN platforms on k.pk_kid = platforms.fk_kid
-GROUP BY k.pk_kid, languages_sortable, songtypes_sortable, singers_sortable, singers, songtypes, groups, songwriters, misc, authors, languages, creators, platforms, genres, origins, families, aks.seriefiles, aks.serie_orig, aks.serie_altname, aks.serie, aks.serie_names, aks.sid, akt.tid, akt.tags, akt.aliases, akt.tags_searchable, akt.tagfiles
+GROUP BY k.pk_kid, languages_sortable, songtypes_sortable, singers_sortable, singers, songtypes, groups, songwriters, misc, authors, languages, creators, platforms, genres, origins, families, aks.seriefiles, aks.serie_orig, aks.serie_i18n, aks.serie_altname, aks.serie, aks.serie_names, aks.sid, akt.tid, akt.tags, akt.aliases, akt.tags_searchable, akt.tagfiles
 ORDER BY languages_sortable, serie_singer_sortable, songtypes_sortable DESC, songorder;
