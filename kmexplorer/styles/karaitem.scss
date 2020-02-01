@@ -78,7 +78,7 @@
     a {
       color: inherit;
 	  text-decoration: none;
-	  overflow-wrap: anywhere;
+	  word-break: break-all;
       &:hover {
         text-decoration: underline;
       }
