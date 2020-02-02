@@ -86,6 +86,7 @@ export async function editKara(kara: Kara): Promise<string> {
 export async function createKara(kara: Kara) {
 	const conf = getConfig();
 	let newKara: NewKara;
+	kara.repository = conf.System.Repositories[0].Name;
 	try {
 		newKara = await generateKara(kara,
 			resolvedPathImport(),
