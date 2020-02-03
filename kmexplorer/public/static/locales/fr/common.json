@@ -79,12 +79,13 @@
     "update_in_progress": "Mise à jour en cours",
     "kara_suggestion": "Vous ne trouvez pas votre bonheur ? Cliquez ici"
   },
-  "modal": {
+  "kara_suggestion": {
 	"title": "Suggestion d'une chanson",
-	"name": "Titre de la chanson",
-	"series": "Série",
+	"name": "Titre",
+	"serie": "Série / Chanteurs",
+	"type": "Type",
 	"link": "Lien",
-    "username": "Votre pseudo"
+	"username": "Votre pseudo"
   },
   "sitename": "Karaoke Mugen",
   "stats": {

@@ -67,7 +67,22 @@ export const defaults = {
 				Labels: []
 			},
 			Suggestion: {
-				Labels: []
+				Description: `
+# Suggestion de karaoké
+
+
+**Titre** : $title
+
+
+**Série** : $serie
+
+
+**Type** : $type
+
+
+**Lien** : $link`,
+				Title: "[Suggestion] $serie - $title",
+				Labels: ['suggestion']
 			},
 			Edit: {
 				Labels: []

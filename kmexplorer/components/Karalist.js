@@ -1,7 +1,7 @@
 import React from 'react'
 import { i18n, withTranslation } from '../i18n'
 import Karaitem from './Karaitem';
-import Modal from '../components/Modal';
+import KaraSuggestion from '../components/KaraSuggestion';
 import axios from 'axios'
 import RuntimeConfig from '../utils/RuntimeConfig';
 const API_URL = RuntimeConfig.API_URL;
@@ -48,7 +48,7 @@ class Karalist extends React.Component {
 			)
 		} else {
 			return (<>
-				{this.state.modal ? <Modal onClose={() => this.hideModal()} />:null}
+				{this.state.modal ? <KaraSuggestion onClose={() => this.hideModal()} />:null}
 				<div className="kmx-karas-list">
 					<p className="error">{i18n.t('karalist.no_data')}</p>
 				</div>

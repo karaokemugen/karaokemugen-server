@@ -5,7 +5,7 @@ import {getAllSeries} from '../services/series';
 import {getSettings} from '../lib/dao/database';
 import { Router } from 'express';
 import {getConfig} from '../lib/utils/config';
-import { postSuggestionToKaraBase } from "../services/gitlab";
+import { postSuggestionToKaraBase } from "../lib/services/gitlab";
 
 export default function KSController(router: Router) {
 	router.route('/karas/lastUpdate')
@@ -127,8 +127,8 @@ export default function KSController(router: Router) {
 		.post(async (req, res) => {
 			try {
 				if (getConfig().Gitlab.Enabled) {
-					const url = await postSuggestionToKaraBase(req.body.karaName, req.body.username, req.body.series, req.body.link);
-					res.json({issueURL: url});
+					const url = await postSuggestionToKaraBase(req.body.title, req.body.serie, req.body.type, req.body.link, req.body.username, );
+					res.json(url);
 				} else {
 					res.status(403).json('Gitlab is not enabled');
 				}
