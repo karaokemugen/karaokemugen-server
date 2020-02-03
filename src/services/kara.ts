@@ -7,8 +7,10 @@ import { getASS } from '../lib/dao/karafile';
 import { generateDatabase } from '../lib/services/generation';
 import { createImagePreviews } from '../lib/utils/previews';
 import logger from '../lib/utils/logger';
-import { getConfig } from '../lib/utils/config';
+import { getConfig, resolvedPathRepos } from '../lib/utils/config';
 import { gitlabPostNewIssue } from '../lib/services/gitlab';
+import { asyncReadFile } from '../lib/utils/files';
+import { resolve, basename } from 'path';
 
 export async function getBaseStats() {
 	return await selectBaseStats();
@@ -105,6 +107,38 @@ export async function getAllKaras(filter?: string, lang?: string, from = 0, size
 		logger.error(`[GetAllKaras] ${err}`);
 		throw err;
 	}
+}
+
+export async function getRawKara(kid: string) {
+	const kara = (await selectAllKaras({
+		mode: 'kid',
+		modeValue: kid
+	}))[0];
+	const files = {
+		kara: resolve(resolvedPathRepos('Karas')[0], kara.karafile),
+		series: kara.seriefiles.map(f => resolve(resolvedPathRepos('Series')[0], f)),
+		tags: kara.tagfiles.map(f => resolve(resolvedPathRepos('Tags')[0], f)),
+		lyrics: resolve(resolvedPathRepos('Lyrics')[0], kara.subfile)
+	};
+	const data = {
+		kara: {file: kara.karafile, data: JSON.parse(await asyncReadFile(files.kara, 'utf-8'))},
+		lyrics: {file: kara.subfile, data: await asyncReadFile(files.lyrics, 'utf-8')},
+		series: [],
+		tags: [],
+	};
+	for (const seriesFile of files.series) {
+		data.series.push({
+			file: basename(seriesFile),
+			data: JSON.parse(await asyncReadFile(seriesFile, 'utf-8'))
+		});
+	}
+	for (const tagFile of files.tags) {
+		data.tags.push({
+			file: basename(tagFile),
+			data: JSON.parse(await asyncReadFile(tagFile, 'utf-8'))
+		});
+	}
+	return data;
 }
 
 export async function newKaraIssue(kid: string, type: 'quality' | 'time', message: string, author: string) {
