@@ -32,18 +32,10 @@ class Karaitem extends React.Component {
 	}
 
 	render() {
-
-		// Todo variante resume/detail
-		// - langue index = mul detail = liste complete
-		// - pas de lien vers les média en mode index
-
 		let filterTools = this.props.filterTools;
 
 		let kara = this.props.data
 		const tags = this.props.tags
-		//console.log(kara);
-
-		let renderMode = this.props.mode ? this.props.mode : 'compact';
 
 		let quickTagUrl = function(type,value,slug)
 		{
@@ -62,7 +54,6 @@ class Karaitem extends React.Component {
 
 		let singers = kara.singers.map((v,i) => {
 			let url = quickTagUrl('singer',v.tid, v.name);
-			console.log(url)
 			return <Link href={url} key={'singer_'+i}><a data-type="singer" data-id={v.tid}>{icons.singer} {v.name}</a></Link>
 		});
 		let creators = kara.creators.map((v,i) => {
@@ -119,7 +110,6 @@ class Karaitem extends React.Component {
 
 		// on n'exploite que la série principale
 		let serie_name = kara.serie;
-		//console.log(kara);
 		let serie_id = kara.sid;
 		if(typeof kara.serie_i18n == "object" && kara.serie_i18n[0] && kara.serie_i18n[0].length)
 		{
@@ -133,8 +123,6 @@ class Karaitem extends React.Component {
 		let serie = serie_name ? <Link href={quickTagUrl('serie',serie_id)} key="serie"><a data-type="serie" data-id={serie_id}><i className="fa fa-tv"></i> {serie_name}</a></Link> : null;
 
 		let year =kara.year ? <Link href={quickTagUrl('year',kara.year)} key="year"><a data-type="year" ><i className="fa fa-calendar"></i> {kara.year}</a></Link> : null;
-
-		//console.log(kara);
 
 		return (
 		<>

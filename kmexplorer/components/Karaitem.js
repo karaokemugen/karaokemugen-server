@@ -7,10 +7,6 @@ import icons from '../components/Icons';
 class Karaitem extends React.Component {
 
 	render() {
-		// Todo variante resume/detail
-		// - langue index = mul detail = liste complete
-		// - pas de lien vers les média en mode index
-
 		let filterTools = this.props.filterTools;
 
 		const kara = this.props.data
@@ -94,7 +90,6 @@ class Karaitem extends React.Component {
 
 		// on n'exploite que la série principale
 		let serie_name = kara.serie;
-		//console.log(kara);
 		let serie_id = kara.sid;
 		if(typeof kara.serie_i18n == "object" && kara.serie_i18n[0] && kara.serie_i18n[0].length)
 		{
