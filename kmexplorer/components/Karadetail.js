@@ -189,9 +189,9 @@ class Karaitem extends React.Component {
 					</dd>
 				</dl> : null}
 				<dl key="files" className="files">
-					<dd key="kara" data-type="kara"><a href={API_URL+"/downloads/karaokes/"+kara.karafile}><i className="fa fa-file-code-o"></i> {i18n.t('kara.karafile')}</a></dd>
-					<dd key="media" data-type="media"><a href={API_URL+"/downloads/medias/"+kara.mediafile}><i className="fa fa-file-video-o"></i> {i18n.t('kara.mediafile')}</a></dd>
-					<dd key="lyrics" data-type="lyrics"><a href={API_URL+"/downloads/lyrics/"+kara.subfile}><i className="fa fa-file-text-o"></i> {i18n.t('kara.subfile')}</a></dd>
+					<dd key="kara" data-type="kara"><a href={API_URL+"/downloads/karaokes/"+kara.karafile}>{icons.karaFile} {i18n.t('kara.karafile')}</a></dd>
+					<dd key="media" data-type="media"><a href={API_URL+"/downloads/medias/"+kara.mediafile}>{icons.mediaFile} {i18n.t('kara.mediafile')}</a></dd>
+					<dd key="lyrics" data-type="lyrics"><a href={API_URL+"/downloads/lyrics/"+kara.subfile}>{icons.lyricsFile} {i18n.t('kara.subfile')}</a></dd>
 					{kara.seriefiles && kara.seriefiles.length > 0 ? 
 						<dd key="series" data-type="series">
 							<select onChange={event => window.location.href=`${API_URL}/downloads/series/${event.target.value}`}>

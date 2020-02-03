@@ -21,7 +21,10 @@ import {
 	faChess,
 	faLaptop,
 	faTimes,
-	faCheck
+	faCheck,
+	faFileCode,
+	faFileVideo,
+	faFileAlt
 	} from '@fortawesome/free-solid-svg-icons'
 import { faCreativeCommonsSampling } from '@fortawesome/free-brands-svg-icons'
 
@@ -62,5 +65,8 @@ export default {
 	platform: <FontAwesomeIcon icon={faLaptop} />,
 	platforms: <FontAwesomeIcon icon={faLaptop} />,
 	abort: <FontAwesomeIcon icon={faTimes} />,
-	confirm: <FontAwesomeIcon icon={faCheck} />
+	confirm: <FontAwesomeIcon icon={faCheck} />,
+	karaFile: <FontAwesomeIcon icon={faFileCode} />,
+	mediaFile: <FontAwesomeIcon icon={faFileVideo} />,
+	lyricsFile: <FontAwesomeIcon icon={faFileAlt} />
 }
