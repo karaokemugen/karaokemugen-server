@@ -192,9 +192,25 @@ class Karaitem extends React.Component {
 					<dd key="kara" data-type="kara"><a href={API_URL+"/downloads/karaokes/"+kara.karafile}><i className="fa fa-file-code-o"></i> {i18n.t('kara.karafile')}</a></dd>
 					<dd key="media" data-type="media"><a href={API_URL+"/downloads/medias/"+kara.mediafile}><i className="fa fa-file-video-o"></i> {i18n.t('kara.mediafile')}</a></dd>
 					<dd key="lyrics" data-type="lyrics"><a href={API_URL+"/downloads/lyrics/"+kara.subfile}><i className="fa fa-file-text-o"></i> {i18n.t('kara.subfile')}</a></dd>
-					{serie_name ? 
-						<dd key="series" data-type="series"><a href={API_URL+"/downloads/series/"+kara.seriefiles[0]}><i className="fa fa-file-code-o"></i> {i18n.t('kara.seriefile')}</a></dd>
-						: null
+					{kara.seriefiles && kara.seriefiles.length > 0 ? 
+						<dd key="series" data-type="series">
+							<select onChange={event => window.location.href=`${API_URL}/downloads/series/${event.target.value}`}>
+								<option value="">{i18n.t('kara.seriefile')}</option>
+								{kara.seriefiles.map(file => {
+									return <option key={file} value={file}>{file}</option>
+								})}
+							</select>
+						</dd> : null
+					}
+					{kara.tagfiles && kara.tagfiles.length > 0 ? 
+						<dd key="tags" data-type="tags">
+							<select onChange={event => window.location.href=`${API_URL}/downloads/tags/${event.target.value}`}>
+								<option value="">{i18n.t('kara.tagfile')}</option>
+								{kara.tagfiles.map(file => {
+									return <option key={file} value={file}>{file}</option>
+								})}
+							</select>
+						</dd> : null
 					}
 				</dl>
 

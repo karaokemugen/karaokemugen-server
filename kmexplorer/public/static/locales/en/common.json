@@ -59,11 +59,12 @@
     "mediafile": "Media File",
     "modification_date": "Modication date",
     "play_in_your_browser": "Test this karaoké from your browser!",
-    "seriefile": "Serie File",
+    "seriefile": "Serie Files",
     "sing_now": "SING ON THIS KARAOKE NOW !",
     "subfile": "Lyrics File",
     "unknown": "Unknown",
-    "lyrics_here": "Display the lyrics"
+	"lyrics_here": "Display the lyrics",
+	"tagfile": "Tag Files"
   },
   "karaissue": {
     "baseline": "A problem with this karaoke? Tell us :",

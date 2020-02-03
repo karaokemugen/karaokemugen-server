@@ -59,11 +59,12 @@
     "mediafile": "Fichier de média",
     "modification_date": "Date de modification",
     "play_in_your_browser": "Testez ce karaoké depuis votre navigateur !",
-    "seriefile": "Fichier de série",
+    "seriefile": "Fichiers de série",
     "sing_now": "CHANTEZ SUR CE KARAOKÉ MAINTENANT !",
     "subfile": "Fichier de paroles",
     "unknown": "Kara inconnu",
-    "lyrics_here": "Afficher les paroles"
+	"lyrics_here": "Afficher les paroles",
+	"tagfile": "Fichiers de tag"
   },
   "karaissue": {
     "baseline": "Un souci avec ce karaoké ? Faites-le nous savoir :",

@@ -93,7 +93,7 @@
     dd {
       margin: 0;
       padding: 0;
-      a {
+      a,select {
         font-size: 0.9em;
         display: inline-block;
         background: $kara_item_files_bg;
@@ -101,12 +101,13 @@
         text-decoration: none;
         padding: 0.25em .5em;
         margin: 0 .25em .25em 0;
-        border-radius: .4em;
-        &:hover {
-          background: $kara_item_files_over_bg;
-          color: $kara_item_files_over_color;
-        }
-      }
+		border-radius: .4em;
+		border: 0px;
+	  }
+	  a:hover,option:checked {
+		background: $kara_item_files_over_bg;
+		color: $kara_item_files_over_color;
+	  }
     }
   }
 
