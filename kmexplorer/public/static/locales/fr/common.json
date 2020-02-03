@@ -33,8 +33,8 @@
     "minutes": "minutes",
     "seconds": "seconds"
   },
-  "error-with-status": null,
-  "error-without-status": null,
+  "error-with-status": "Erreur au chargement de la page : {{statusCode}}",
+  "error-without-status": "Erreur au chargement de la page",
   "form": {
     "kara_count": "Nombre de karas",
     "karas_keywords_placeholder": "titre, interprête, série, ...",

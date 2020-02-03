@@ -33,8 +33,8 @@
     "minutes": "minutes",
     "seconds": "seconds"
   },
-  "error-with-status": null,
-  "error-without-status": null,
+  "error-with-status": "Error loading page : {{statusCode}}",
+  "error-without-status": "Error loading page",
   "form": {
     "kara_count": "Kara count",
     "karas_keywords_placeholder": "title, singer, serie, ...",

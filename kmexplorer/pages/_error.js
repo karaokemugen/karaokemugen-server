@@ -22,7 +22,7 @@ class Error extends React.Component {
     return (
       <p>
         {statusCode
-          ? t('error-with-status', { statusCode })
+          ? t('error-with-status', { statusCode: statusCode })
           : t('error-without-status')}
       </p>
     )
