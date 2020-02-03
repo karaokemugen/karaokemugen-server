@@ -116,7 +116,7 @@
   }
 
   .lyricsElement {
-    width: 30%;
+	max-width: 500px;
     margin: .25em;
     dd {
       margin: 0;
