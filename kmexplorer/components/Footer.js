@@ -2,6 +2,13 @@ import React from 'react'
 import { i18n, withTranslation } from '../i18n'
 
 class Footer extends React.Component {
+	static async getInitialProps({ req, query, res }) {
+
+		let namespacesRequired = ['footer'];
+
+		return { namespacesRequired };
+	}
+
 	render() {
 		return (
 			<footer className="kmx-footer">

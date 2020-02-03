@@ -67,7 +67,7 @@ export function initFrontend(listenPort: number) {
 	// Serve static files from the React app
 	mainApp.use('/base', proxy(`http://127.0.0.1:${conf.KaraExplorer.Port}`));
 	// fix bad behavior of next-i18next - language file are not prefixed correctly
-	mainApp.get('/public/static/locales/*', (req, res) => {
+	mainApp.get('/static/locales/*', (req, res) => {
 		res.redirect('/base'+req.url);
 		return;
 	});
