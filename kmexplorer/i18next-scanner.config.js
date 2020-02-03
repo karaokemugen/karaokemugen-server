@@ -29,8 +29,8 @@ module.exports = {
         defaultNs: 'common',
         defaultValue: null,
         resource: {
-            loadPath: 'static/locales/{{lng}}/{{ns}}.json',
-            savePath: 'static/locales/{{lng}}/{{ns}}.json',
+            loadPath: 'public/static/locales/{{lng}}/{{ns}}.json',
+            savePath: 'public/static/locales/{{lng}}/{{ns}}.json',
             jsonIndent: 2,
             lineEnding: '\n'
         },

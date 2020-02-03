@@ -73,7 +73,7 @@ class Page extends React.Component {
 				</div>
 
 				<div className="km-home">
-					<a href="http://karaokes.moe/"><img className="km-home--logo" src={require('../static/images/km-logo.png')} /></a>
+					<a href="http://karaokes.moe/"><img className="km-home--logo" src={require('../public/static/images/km-logo.png')} /></a>
 
 					<ul className="km-home--stats">
 						<li key="karas"><Link href={ "/karas?"}><div className="km-home--stats--link">
