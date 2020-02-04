@@ -17,17 +17,13 @@ DELETE FROM short_url
 WHERE modified_at <= $1
 `;
 
-export const updateInstance = `
-UPDATE short_url
-SET modified_at = $1,
-	remote_ip = $2,
-	local_ip = $3,
-	local_port = $4
-WHERE instance_id = $5
-`;
-
-export const insertInstance = `
+export const upsertInstance = `
 INSERT INTO short_url
 (modified_at, remote_ip, local_ip, local_port, instance_id)
-VALUES($1, $2, $3, $4, $5);
-`;
+VALUES($1, $2, $3, $4, $5)
+ON CONFLICT (remote_ip) DO UPDATE SET
+   modified_at = $1,
+   local_ip = $3,
+   local_port = $4,
+   instance_id = $5
+;`;

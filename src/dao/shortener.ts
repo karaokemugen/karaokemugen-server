@@ -8,18 +8,8 @@ export async function selectInstance(ip: string): Promise<DBInstance[]> {
 	return res.rows;
 }
 
-export async function updateInstance(data: ShortURLData) {
-	return await db().query(sql.updateInstance, [
-		data.date,
-		data.remote_ip,
-		data.local_ip,
-		data.local_port,
-		data.instance_id
-	]);
-}
-
-export async function insertInstance(data: ShortURLData) {
-	return await db().query(sql.insertInstance,[
+export async function upsertInstance(data: ShortURLData) {
+	return await db().query(sql.upsertInstance, [
 		data.date,
 		data.remote_ip,
 		data.local_ip,
