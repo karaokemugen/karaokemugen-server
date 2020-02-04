@@ -15,7 +15,7 @@ export async function getOrAddSerieID(seriesObj: Series): Promise<IDQueryResult>
 	return {id: seriesObj.sid, new: true};
 }
 
-export async function getAllSeries(filter, lang, from = 0, size = 9999999999) {
+export async function getAllSeries(filter: string, lang: string, from = 0, size = 9999999999) {
 	const count = await countSeries(filter);
 	const series = await selectAllSeries(filter, lang, +from, +size);
 	return {
