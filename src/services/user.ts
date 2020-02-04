@@ -25,7 +25,7 @@ export async function resetPasswordRequest(username: string) {
 	sendMail('Karaoke Mugen Password Reset',`
 	Hello ${username},
 
-	You (or someone) requested a password reset for your account at ${getConfig().Frontend.Host}.
+	You (or someone) requested a password reset for your account at ${getConfig().Frontend.Host}. If you didn't request this, please ignore this email.
 
 	Please click the following link to get a new, randomized password sent to your mail account :
 
