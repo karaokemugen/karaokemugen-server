@@ -15,7 +15,7 @@
     "miscs": "Miscs",
     "origins": "Origins",
     "platforms": "Platforms",
-    "serie": "Serie",
+    "serie": "Series",
     "series": "Series",
     "singer": "Singer",
     "singers": "Singers",
@@ -33,11 +33,11 @@
     "minutes": "minutes",
     "seconds": "seconds"
   },
-  "error-with-status": "Error loading page : {{statusCode}}",
+  "error-with-status": "Error loading page: {{statusCode}}",
   "error-without-status": "Error loading page",
   "form": {
     "kara_count": "Kara count",
-    "karas_keywords_placeholder": "title, singer, serie, ...",
+    "karas_keywords_placeholder": "title, singer, series, ...",
     "order_by": "Order by",
     "tags_keywords_placeholder": "Filter by keywords",
 	"updated": "Recent",
@@ -59,7 +59,7 @@
     "mediafile": "Media File",
     "modification_date": "Modication date",
     "play_in_your_browser": "Test this karaoké from your browser!",
-    "seriefile": "Serie Files",
+    "seriefile": "Series Files",
     "sing_now": "SING ON THIS KARAOKE NOW !",
     "subfile": "Lyrics File",
     "unknown": "Unknown",
@@ -67,7 +67,7 @@
 	"tagfile": "Tag Files"
   },
   "karaissue": {
-    "baseline": "A problem with this karaoke? Tell us :",
+    "baseline": "A problem with this karaoke? Tell us:",
     "title": "A PROBLEM?",
     "gitlab": "Report an issue",
     "or": "OR",
@@ -82,7 +82,7 @@
   "kara_suggestion": {
 	"title": "Suggestion of a song",
 	"name": "Name",
-	"serie": "Serie / Singers",
+	"serie": "Series / Singers",
 	"type": "Songtype",
 	"link": "Link",
 	"username": "Your username"
