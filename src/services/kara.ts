@@ -1,5 +1,5 @@
 import {selectAllKaras, selectAllYears, selectBaseStats} from '../dao/kara';
-import { KaraList, ModeParam } from '../lib/types/kara';
+import { KaraList, ModeParam, CompareParam } from '../lib/types/kara';
 import { consolidateData } from '../lib/services/kara';
 import { DBKara } from '../lib/types/database/kara';
 import { ASSToLyrics } from '../lib/utils/ass';
@@ -7,8 +7,10 @@ import { getASS } from '../lib/dao/karafile';
 import { generateDatabase } from '../lib/services/generation';
 import { createImagePreviews } from '../lib/utils/previews';
 import logger from '../lib/utils/logger';
-import { getConfig } from '../lib/utils/config';
+import { getConfig, resolvedPathRepos } from '../lib/utils/config';
 import { gitlabPostNewIssue } from '../lib/services/gitlab';
+import { asyncReadFile } from '../lib/utils/files';
+import { resolve, basename } from 'path';
 
 export async function getBaseStats() {
 	return await selectBaseStats();
@@ -63,8 +65,9 @@ export async function getKara(filter?: string, lang?: string, from = 0, size = 0
 	}
 }
 
-export async function getAllKaras(filter?: string, lang?: string, from = 0, size = 0, mode?: ModeParam, modeValue?: string, compare?: 'updated' | 'missing', localKarasObj?: any): Promise<KaraList> {
+export async function getAllKaras(filter?: string, lang?: string, from = 0, size = 0, mode?: ModeParam, modeValue?: string, compare?: CompareParam, localKarasObj?: any): Promise<KaraList> {
 	try {
+		// When compare is used because we're queried from KM App in order to tell which karaoke is missing or updated, we redefine from/size so we get absolutely all songs from database.
 		let trueFrom = from;
 		let trueSize = size;
 		if (compare) {
@@ -79,6 +82,8 @@ export async function getAllKaras(filter?: string, lang?: string, from = 0, size
 			mode: mode,
 			modeValue: modeValue || ''
 		});
+		// Let's build a map of KM App's KIDs if it's provided, and then filter the results depending on if we want updated songs or missing songs.
+		// Missing songs are those not present in localKaras, updated songs are present but have a lower modification date
 		const localKaras = new Map();
 		if (localKarasObj && Object.keys(localKarasObj).length > 0){
 			Object.keys(localKarasObj).forEach(kid => localKaras.set(kid, localKarasObj[kid]));
@@ -89,8 +94,10 @@ export async function getAllKaras(filter?: string, lang?: string, from = 0, size
 		if (compare === 'missing') {
 			pl = pl.filter((k: DBKara) => !localKaras.has(k.kid));
 		}
+		// We're getting song count from the first element in our results. Each element returns the count field from database.
 		let count = 0;
 		if (pl[0]) count = pl[0].count;
+		// If compare is provided, we slice our list according to the real from/size asked by KM App's so we return the correct set of results.
 		if (compare) {
 			count = pl.length;
 			if (from > 0) {
@@ -105,6 +112,38 @@ export async function getAllKaras(filter?: string, lang?: string, from = 0, size
 		logger.error(`[GetAllKaras] ${err}`);
 		throw err;
 	}
+}
+
+export async function getRawKara(kid: string) {
+	const kara = (await selectAllKaras({
+		mode: 'kid',
+		modeValue: kid
+	}))[0];
+	const files = {
+		kara: resolve(resolvedPathRepos('Karas')[0], kara.karafile),
+		series: kara.seriefiles.map(f => resolve(resolvedPathRepos('Series')[0], f)),
+		tags: kara.tagfiles.map(f => resolve(resolvedPathRepos('Tags')[0], f)),
+		lyrics: resolve(resolvedPathRepos('Lyrics')[0], kara.subfile)
+	};
+	const data = {
+		kara: {file: kara.karafile, data: JSON.parse(await asyncReadFile(files.kara, 'utf-8'))},
+		lyrics: {file: kara.subfile || null, data: await asyncReadFile(files.lyrics, 'utf-8') || null},
+		series: [],
+		tags: [],
+	};
+	for (const seriesFile of files.series) {
+		data.series.push({
+			file: basename(seriesFile),
+			data: JSON.parse(await asyncReadFile(seriesFile, 'utf-8'))
+		});
+	}
+	for (const tagFile of files.tags) {
+		data.tags.push({
+			file: basename(tagFile),
+			data: JSON.parse(await asyncReadFile(tagFile, 'utf-8'))
+		});
+	}
+	return data;
 }
 
 export async function newKaraIssue(kid: string, type: 'quality' | 'time', message: string, author: string) {
