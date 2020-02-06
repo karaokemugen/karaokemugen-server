@@ -1,5 +1,5 @@
 import logger from './lib/utils/logger';
-import express, { Response } from 'express';
+import express from 'express';
 import {resolve} from 'path';
 import bodyParser from 'body-parser';
 import passport from 'passport';
@@ -32,7 +32,11 @@ export function initFrontend(listenPort: number) {
 	const conf = getConfig();
 	const state = getState();
 	const app = express();
-	const mainApp = express();
+	const API = express();
+	const KMExplorer = express();
+	const KMImport = express();
+	const Shortener = express();
+	const KMServer = express();
 
 	app.set('trust proxy', (ip: string) => {
 		if (ip === '127.0.0.1' ||
@@ -60,40 +64,58 @@ export function initFrontend(listenPort: number) {
 			? res.json()
 			: next();
 	});
-	app.use(vhost(`${conf.Frontend.Host}`, mainApp));
+	// KMExplorer
+	if (conf.KaraExplorer.Enabled) {
+		app.use(vhost(`${conf.KaraExplorer.Host}`, KMExplorer));
+		KMExplorer.use('/previews', express.static(resolvedPathPreviews()));
+		KMExplorer.use(conf.KaraExplorer.Path, proxy(`http://127.0.0.1:${conf.KaraExplorer.Port}`));
+		// fix bad behavior of next-i18next - language file are not prefixed correctly
+		KMExplorer.get('/static/locales/*', (req, res) => {
+			res.redirect(conf.KaraExplorer.Path + req.url);
+			return;
+		});
+	}
+	/** Disabled code for KM Rooms
 	app.use(vhost(`*.${conf.Frontend.Host}`, getKMRoom), proxy(redirectKMRoom, {
 		memoizeHost: false
 	}));
-	// Serve static files from the React app
-	mainApp.use('/base', proxy(`http://127.0.0.1:${conf.KaraExplorer.Port}`));
-	// fix bad behavior of next-i18next - language file are not prefixed correctly
-	mainApp.get('/static/locales/*', (req, res) => {
-		res.redirect('/base'+req.url);
-		return;
-	});
-	mainApp.use('/import', express.static(resolve(state.appPath, 'kmimport/build')));
-	mainApp.get('/import/*', (_, res) => {
+	*/
+	// KMImport
+	if (conf.Import.Enabled) {
+		app.use(vhost(`${conf.Import.Host}`, KMImport));
+		KMImport.use(conf.Import.Path, express.static(resolve(state.appPath, 'kmimport/build')));
+		KMImport.get(`${conf.Import.Path}/*`, (_, res) => {
 		res.sendFile(resolve(state.appPath, 'kmimport/build/index.html'));
-	});
-
-	if (state.opt.staticServe) {
-		mainApp.use('/downloads/karaokes', express.static(resolvedPathRepos('Karas')[0]));
-		mainApp.use('/downloads/lyrics', express.static(resolvedPathRepos('Lyrics')[0]));
-		mainApp.use('/downloads/medias', express.static(resolvedPathRepos('Medias')[0]));
-		mainApp.use('/downloads/series', express.static(resolvedPathRepos('Series')[0]));
-		mainApp.use('/downloads/tags', express.static(resolvedPathRepos('Tags')[0]));
+		});
 	}
-	mainApp.use('/previews', express.static(resolvedPathPreviews()));
-	mainApp.use('/avatars', express.static(resolvedPathAvatars()));
+
+	//KMServer
+	// If static serve is enabled, we're serving all files from KMServer instead of Apache/nginx
+	if (state.opt.staticServe) {
+		KMServer.use('/downloads/karaokes', express.static(resolvedPathRepos('Karas')[0]));
+		KMServer.use('/downloads/lyrics', express.static(resolvedPathRepos('Lyrics')[0]));
+		KMServer.use('/downloads/medias', express.static(resolvedPathRepos('Medias')[0]));
+		KMServer.use('/downloads/series', express.static(resolvedPathRepos('Series')[0]));
+		KMServer.use('/downloads/tags', express.static(resolvedPathRepos('Tags')[0]));
+	}
+
+
+
 	// API router
-	mainApp.use('/api', api());
-	mainApp.get('/', (_, res) => {
-		res.redirect('/api/shortener');
-		return;
-	});
+	app.use(vhost(`${conf.API.Host}`, API));
+	API.use('/api', api());
+	if (conf.Users.Enabled) API.use('/avatars', express.static(resolvedPathAvatars()));
+	if (conf.Shortener.Enabled) {
+		app.use(vhost(`${conf.API.Host}`, Shortener));
+		Shortener.get('/', (_, res) => {
+			res.redirect('/api/shortener');
+			return;
+		});
+	}
+
 	// The "catchall" handler: for any request that doesn't
 	// match one above, send back React's index.html file.
-	mainApp.get('*', (_, res) => res.status(404).send('Not found'));
+	app.get('*', (_, res) => res.status(404).send('Not found'));
 
 	const port = listenPort;
 	const server = createServer(app);
@@ -103,26 +125,27 @@ export function initFrontend(listenPort: number) {
 
 function api() {
 	const apiRouter = express.Router();
-
-	// Adding identification routes
-	authController(apiRouter);
+	const conf = getConfig();
 	// Adding admin routes
 	adminController(apiRouter);
 	// Adding KaraServ routes
 	KServerController(apiRouter);
-	KImportController(apiRouter);
+	if (conf.Import.Enabled) KImportController(apiRouter);
 	// Shortener/kara.moe route
-	shortenerController(apiRouter);
+	if (conf.Shortener.Enabled) shortenerController(apiRouter);
 	// Stats
-	statsController(apiRouter);
+	if (conf.Stats.Enabled) statsController(apiRouter);
 	// Online Mode for KM App
-	userController(apiRouter);
-	favoritesController(apiRouter);
+	if (conf.Users.Enabled) {
+		userController(apiRouter);
+		favoritesController(apiRouter);
+		authController(apiRouter);
+	}
 	return apiRouter;
 }
 
+/* This code is disabled until we get to host our own KM Apps on this server code
 function getKMRoom(_req: any, _res: Response, next: any) {
-	/* This code is disabled until we get to host our own KM Apps on this server code
 
 	const instance = getInstanceRoom(req.vhost[0]);
     if (!instance) {
@@ -131,11 +154,10 @@ function getKMRoom(_req: any, _res: Response, next: any) {
         req.KMAppPort = instance.port;
         next();
 	}
-	*/
 	next();
 }
-
 
 function redirectKMRoom(req: any) {
 	return `http://localhost:${req.KMAppPort}`;
 }
+*/

@@ -8,13 +8,13 @@ System:
       Windows: ffmpeg.exe
       OSX: ffmpeg
   Repositories:
-    - Name: Change me
+    - Name: kara.moe
       Online: false
       Path:
         Karas:
           - app/data/karaokes
         Lyrics:
-          -  app/data/lyrics
+          - app/data/lyrics
         Medias:
           - app/data/medias
         Series:
@@ -22,12 +22,23 @@ System:
         Tags:
           - app/data/tags
 Frontend:
-  Host: kara.moe
   Port: 1350
+API:
+  Secure: false
+  Host: localhost
+Users:
+  Enabled: true
+Shortener:
+  Enabled: true
+Stats:
+  Enabled: true
 KaraExplorer:
-  Api: http://localhost:1350
   Port: 1351
+  Host: localhost
   Path: /base
+Import:
+  Host: localhost
+  Path: /import
 Gitlab:
   Enabled: true
   Token: xxx

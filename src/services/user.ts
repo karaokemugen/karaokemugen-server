@@ -22,14 +22,15 @@ export async function resetPasswordRequest(username: string) {
 		code: requestCode,
 		date: +(new Date().getTime() / 1000).toFixed(0)
 	});
+	const conf = getConfig();
 	sendMail('Karaoke Mugen Password Reset',`
 	Hello ${username},
 
-	You (or someone) requested a password reset for your account at ${getConfig().Frontend.Host}. If you didn't request this, please ignore this email.
+	You (or someone) requested a password reset for your account at ${getConfig().API.Host}. If you didn't request this, please ignore this email.
 
 	Please click the following link to get a new, randomized password sent to your mail account :
 
-	https://${getConfig().Frontend.Host}/api/users/${username}/resetpassword/${requestCode}
+	${conf.API.Secure ? 'https://' : 'http://'}${conf.API.Host}${conf.Frontend.Port ? ':'+conf.Frontend.Port : ''}/api/users/${username}/resetpassword/${requestCode}
 
 	This link will expire in two hours.
 	`,
@@ -49,7 +50,7 @@ export async function resetPassword(username: string, requestCode: string) {
 	sendMail('Karaoke Mugen Password has been reset',`
 	Hello ${username},
 
-	You (or someone) requested a password reset for your account at ${getConfig().Frontend.Host}.
+	You (or someone) requested a password reset for your account at ${getConfig().API.Host}.
 
 	Your password has been reset to the following :
 	${newPassword}

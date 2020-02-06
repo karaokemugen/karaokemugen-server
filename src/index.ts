@@ -114,7 +114,7 @@ async function main() {
 	const inits = [];
 
 	kmExplorerStart({
-		api: conf.KaraExplorer.Api,
+		api: `${conf.API.Secure ? 'https://' : 'http://'}${conf.API.Host}${conf.Frontend.Port ? ':' + conf.Frontend.Port : ''}`,
 		port: conf.KaraExplorer.Port,
 		path: conf.KaraExplorer.Path,
 	});

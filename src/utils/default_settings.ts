@@ -1,8 +1,10 @@
+import { Config } from "../types/config";
+
 // Karaoke Mugen default configuration file
 
 // this file is overwritten during updates, editing is ill-advised .
 // you can change the default settings by using config.ini to bypass the default value .
-export const defaults = {
+export const defaults: Config = {
 	App: {
 		JwtSecret: 'Change me',
 		InstanceID: 'Change me',
@@ -49,15 +51,31 @@ export const defaults = {
 		}
 	},
 	Shortener: {
+		Enabled: true,
 		ExpireTimeDays: 1
 	},
 	Frontend: {
 		Port: 1350,
-		Host: 'localhost',
 		SeriesLanguageMode: 3
 	},
+	Users: {
+		Enabled: true
+	},
+	Stats: {
+		Enabled: true
+	},
+	Import: {
+		Enabled: true,
+		Host: 'localhost',
+		Path: '/import'
+	},
+	API: {
+		Secure: true,
+		Host: 'localhost'
+	},
 	KaraExplorer: {
-		Api: 'http://localhost',
+		Enabled: true,
+		Host: 'localhost',
 		Port: 1351,
 		Path: '/base'
 	},
