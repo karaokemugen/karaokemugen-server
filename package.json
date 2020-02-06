@@ -34,6 +34,7 @@
       "@types/compression": "^1.0.1",
       "@types/detect-port": "^1.1.0",
       "@types/fs-extra": "^8.0.1",
+      "@types/helmet": "^0.0.45",
       "@types/js-yaml": "^3.12.2",
       "@types/lodash.clonedeep": "^4.5.6",
       "@types/lodash.deburr": "^4.1.6",
