@@ -2,8 +2,7 @@
 
 
 export const getInstance = `
-SELECT pk_id_shorturl AS shorturl_id,
-	modified_at,
+SELECT modified_at,
 	remote_ip,
 	local_ip,
 	local_port,
