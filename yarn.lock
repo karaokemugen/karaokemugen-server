@@ -3647,10 +3647,10 @@ typescript@^3.7.4:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.7.4.tgz#1743a5ec5fef6a1fa9f3e4708e33c81c73876c19"
   integrity sha512-A25xv5XCtarLwXpcDNZzCGvW2D1S3/bACratYBx2sax8PefsFhlYmkQicKHvpYflFS8if4zne5zT5kpJ7pzuvw==
 
-ultrastar2ass@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/ultrastar2ass/-/ultrastar2ass-1.0.7.tgz#801e573c927c88ff9cbc59f3a71a3ef6d597f437"
-  integrity sha512-a1utIMaOcJkGECc6gb9SMWYDiXmL3BNMQ4AqkrstTPEQYGgWdC2J5A0JkNHqBoUKbMQcxD0RUGD2d3DbSTMDEA==
+ultrastar2ass@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/ultrastar2ass/-/ultrastar2ass-1.0.8.tgz#999c68e4b47007ef02c825111af5e9b09c954a2c"
+  integrity sha512-tovc1morOHJooX9lMMxm8zh1c8Mup6rwbNhCzG3SNFuFpD/Oc1ZpW7tNo2p7ZvPrV5YVlRQPFfKonqiwzMo7vg==
   dependencies:
     ass-stringify "^0.1.3"
 
