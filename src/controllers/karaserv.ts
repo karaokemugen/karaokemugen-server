@@ -99,7 +99,7 @@ export default function KSController(router: Router) {
 	router.route('/karas/tags')
 		.get(getLang, async (req: any, res) => {
 			try {
-				const tags = await getTags(({filter: req.query.filter, type: null, from: req.query.from, size: req.query.size}));
+				const tags = await getTags(({filter: req.query.filter, type: req.query.type, from: req.query.from, size: req.query.size}));
 				res.json(tags);
 			} catch(err) {
 				res.status(500).json(err);
