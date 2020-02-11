@@ -46,10 +46,11 @@ interface KaraFormState {
 	families?: Tag[];
 	genres?: Tag[];
 	platforms?: Tag[];
-	origins?: Tag[],
-	created_at?: Date,
-	modified_at?: Date,
-	songtypesValue: Tag[]
+	origins?: Tag[];
+	seasons?: Tag[];
+	created_at?: Date;
+	modified_at?: Date;
+	songtypesValue: Tag[];
 }
 
 class KaraForm extends Component<KaraFormProps, KaraFormState> {
@@ -90,6 +91,7 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 			platforms: this.getTagArray(kara.platforms),
 			genres: this.getTagArray(kara.genres),
 			origins: this.getTagArray(kara.origins),
+			seasons: this.getTagArray(kara.seasons),
 			created_at: kara.created_at ? kara.created_at : new Date(),
 			modified_at: kara.modified_at ? kara.modified_at : new Date(),
 			songtypesValue: null
@@ -149,6 +151,7 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 			kara.platforms = this.getTagObject(kara.platforms);
 			kara.genres = this.getTagObject(kara.genres);
 			kara.origins = this.getTagObject(kara.origins);
+			kara.seasons = this.getTagObject(kara.seasons);
 			kara.songtypes = this.getTagObject(this.state.songtypesValue).filter(value => values.songtypes === value.tid);
 			if (!err) this.props.save(kara);
 		});
@@ -236,8 +239,8 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 					wrapperCol={{ span: 6, offset: 0 }}
 				>
 					<Upload
-						action='/api/karas/importfile'
-						accept='video/*,audio/*'
+						action="/api/karas/importfile"
+						accept="video/*,audio/*"
 						multiple={false}
 						onChange={this.onMediaUploadChange}
 						fileList={this.state.mediafile}
@@ -259,7 +262,7 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 					wrapperCol={{ span: 6, offset: 0 }}
 				>
 					<Upload
-						action='/api/karas/importfile'
+						action="/api/karas/importfile"
 						multiple={false}
 						onChange={this.onSubUploadChange}
 						fileList={this.state.subfile}
@@ -336,7 +339,7 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 							initialValue: this.state.songtypes.tid
 						})(
 
-							<Select placeholder={"Song type"}>
+							<Select placeholder={i18next.t('KARA.TYPE')}>
 								{this.state.songtypesValue.map(type => {
 									return <Select.Option key={type[0]} value={type[0]}>{type[1]}</Select.Option>
 								})
@@ -399,6 +402,20 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 						min={0}
 						placeholder='Year'
 						style={{ width: '100%' }}
+					/>)}
+				</Form.Item>
+				<Form.Item
+					label={i18next.t('KARA.SEASONS')}
+					labelCol={{ span: 3 }}
+					wrapperCol={{ span: 10, offset: 0 }}
+				>
+					{getFieldDecorator('seasons', {
+						initialValue: this.state.seasons
+					})(<EditableTagGroup
+						tagType={14}
+						checkboxes={true}
+						search={'tag'}
+						onChange={(tags) => this.props.form.setFieldsValue({ seasons: tags })}
 					/>)}
 				</Form.Item>
 				<Form.Item hasFeedback
@@ -484,13 +501,7 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 					/>)}
 				</Form.Item>
 				<Form.Item
-					label={(
-						<span>{i18next.t('KARA.FAMILIES')}&nbsp;
-							<Tooltip title={(<a href="http://docs.karaokes.moe/fr/contrib-guide/references/#tags">See tag list</a>)}>
-								<Icon type="question-circle-o" />
-							</Tooltip>
-						</span>
-					)}
+					label={i18next.t('KARA.FAMILIES')}
 					labelCol={{ span: 3 }}
 					wrapperCol={{ span: 10, offset: 0 }}
 				>
@@ -504,13 +515,7 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 					/>)}
 				</Form.Item>
 				<Form.Item
-					label={(
-						<span>{i18next.t('KARA.PLATFORMS')}&nbsp;
-							<Tooltip title={(<a href="http://docs.karaokes.moe/fr/contrib-guide/references/#tags">See tag list</a>)}>
-								<Icon type="question-circle-o" />
-							</Tooltip>
-						</span>
-					)}
+					label={i18next.t('KARA.PLATFORMS')}
 					labelCol={{ span: 3 }}
 					wrapperCol={{ span: 10, offset: 0 }}
 				>
@@ -524,13 +529,7 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 					/>)}
 				</Form.Item>
 				<Form.Item
-					label={(
-						<span>{i18next.t('KARA.GENRES')}&nbsp;
-							<Tooltip title={(<a href="http://docs.karaokes.moe/fr/contrib-guide/references/#tags">See tag list</a>)}>
-								<Icon type="question-circle-o" />
-							</Tooltip>
-						</span>
-					)}
+					label={i18next.t('KARA.GENRES')}
 					labelCol={{ span: 3 }}
 					wrapperCol={{ span: 10, offset: 0 }}
 				>
@@ -544,13 +543,7 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 					/>)}
 				</Form.Item>
 				<Form.Item
-					label={(
-						<span>{i18next.t('KARA.ORIGINS')}&nbsp;
-							<Tooltip title={(<a href="http://docs.karaokes.moe/fr/contrib-guide/references/#tags">See tag list</a>)}>
-								<Icon type="question-circle-o" />
-							</Tooltip>
-						</span>
-					)}
+					label={i18next.t('KARA.ORIGINS')}
 					labelCol={{ span: 3 }}
 					wrapperCol={{ span: 10, offset: 0 }}
 				>
@@ -564,13 +557,7 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 					/>)}
 				</Form.Item>
 				<Form.Item
-					label={(
-						<span>{i18next.t('KARA.MISC')}&nbsp;
-							<Tooltip title={(<a href="http://docs.karaokes.moe/fr/contrib-guide/references/#tags">See tag list</a>)}>
-								<Icon type="question-circle-o" />
-							</Tooltip>
-						</span>
-					)}
+					label={i18next.t('KARA.MISC')}
 					labelCol={{ span: 3 }}
 					wrapperCol={{ span: 10, offset: 0 }}
 				>
