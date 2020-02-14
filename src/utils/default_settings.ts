@@ -122,14 +122,7 @@ export const configConstraints = {
 	'Database.prod.password': { presence: true },
 	'Database.prod.host': { presence: {allowEmpty: false}},
 	'Database.prod.database': { presence: {allowEmpty: false}},
-	'System.Path.Karas': { arrayValidator: true },
-	'System.Path.Lyrics': { arrayValidator: true },
-	'System.Path.Medias': { arrayValidator: true },
-	'System.Path.Series': { arrayValidator: true },
-	'System.Path.Temp': { presence: {allowEmpty: false}},
-	'System.Path.Import': { presence: {allowEmpty: false}},
 	'System.Binaries.ffmpeg': { presence: {allowEmpty: false}},
 	'Shortener.ExpireTimeDays': { numericality: { greaterThan: 0 }},
-	'Frontend.Host': { presence: { allowEmpty: false } },
 	'Frontend.Port': { numericality: true}
 };
