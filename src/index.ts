@@ -22,6 +22,7 @@ import { initMailer } from './utils/mailer';
 const pjson = require('../package.json');
 const appPath = join(__dirname,'../');
 const dataPath = resolve(appPath, 'app/');
+const resourcePath = appPath;
 
 process.on('uncaughtException', (exception) => {
 	console.log(exception);
@@ -50,7 +51,7 @@ main().catch(err => {
 async function main() {
 	sudoBlock('You should not run Karaoke Mugen Server with root permissions, it\'s dangerous.');
 	const argv = parseArgs();
-	setState({appPath: appPath, dataPath: dataPath});
+	setState({appPath: appPath, dataPath: dataPath, resourcePath: resourcePath});
 	await initConfig(argv);
 	const conf = getConfig();
 	console.log('--------------------------------------------------------------------');

@@ -13,18 +13,29 @@ before_script:
   - chmod -R 700 ~/.ssh
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
-deploy_prod:
+deploy_moe:
   stage: deploy
   script:
     - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd kmserver; mirror -Rnev --parallel=10 --exclude .git/ --exclude app/ --exclude config.yml --exclude database.json --exclude karaokemugen-app/ --exclude logs/ --exclude node_modules/ --exclude .next/ "
     - ssh -l $USERNAME $HOST 'cd kmserver ; yarn install ; yarn installAll ; yarn buildAll'
     - ssh -l $USERNAME $HOST 'sudo systemctl restart karaokemugen-server'
   environment:
-    name: production
+    name: production-moe
     url: https://kara.moe
   only:
   - master
 
+deploy_world:
+  stage: deploy
+  script:
+    - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd kmserver-world; mirror -Rnev --parallel=10 --exclude .git/ --exclude app/ --exclude config.yml --exclude database.json --exclude logs/ --exclude node_modules/ --exclude .next/ "
+    - ssh -l $USERNAME $HOST 'cd kmserver-world ; yarn install ; yarn installAll ; yarn buildAll'
+    - ssh -l $USERNAME $HOST 'sudo systemctl restart karaokemugen-server-world'
+  environment:
+    name: production-world
+    url: https://world.karaokes.moe
+  only:
+  - master
 
 deploy_dev:
   stage: deploy

@@ -11,7 +11,7 @@
 	"ADD_SUCCESS": "Karaoké envoyé avec succès.",
 	"ADD_SUCCESS_DESCRIPTION": "Un ticket a été crée sur notre outil de suivi. Vous pouvez consulter l'avancement de l'intégration de votre karaoké : ",
 	"ADD_ERROR": "Une erreur a eu lieu, le karaoké n'a pas pu être envoyé",
-	"KARA" : {
+	"KARA": {
 		"COMMENT": "Un commentaire ?",
 		"COMMENT_TOOLTIP": "Si vous voulez donner des indications aux mainteneurs de la base de karaokés ou simplement dire merci, faites-le ici !",
 		"COMMENT_EDIT": "N'hésitez pas à signer votre correction pour qu'on sache qui vous êtes !",
@@ -48,6 +48,7 @@
 		"PLATFORMS": "Platforme(s)",
 		"GENRES": "Genre(s)",
 		"ORIGINS": "Origine(s)",
+		"SEASONS": "Saison(s)",
 		"MISC": "Divers",
 		"TAGS_TOOLTIP": "Tags à lier à ce karaoké",
 		"GROUPS": "Groupe(s)",

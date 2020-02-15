@@ -4,27 +4,6 @@ import KaraForm from './KaraForm';
 import axios from 'axios/index';
 import i18next from 'i18next';
 
-const newKara = {
-	kid: null,
-	songorder: null,
-	songtypes: null,
-	serie: null,
-	title: null,
-	langs: null,
-	singers: null,
-	songwriters: null,
-	year: null,
-	creators: null,
-	authors: null,
-	misc: null,
-	groups: null,
-	created_at: null,
-	families: null,
-	platforms: null,
-	genres: null,
-	origins: null
-};
-
 class KaraEdit extends Component {
 
 	state = {
@@ -83,7 +62,7 @@ class KaraEdit extends Component {
 					});
 				});
 		} else {
-			this.setState({kara: {...newKara}, save: this.saveNew});
+			this.setState({kara: {}, save: this.saveNew});
 		}
 	};
 	

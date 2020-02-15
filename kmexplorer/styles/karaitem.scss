@@ -94,8 +94,10 @@
 
   .tag-language {
     font-size: 1em;
-    margin-top: 4px;
-    white-space: nowrap;
+	margin: 2px;
+	display: flex;
+	flex-wrap: wrap;
+	align-content: flex-start;
     a {
       background: $kara_item_tag_default_bg;
       color: $kara_item_tag_default_color;
@@ -103,7 +105,8 @@
       padding: .5em;
       border-radius: .4em;
 	  order:99;
-	  margin-left: 5px;
+	  margin: 2px;
+	  white-space: nowrap;
 
       &[data-type="language"] {
         background: $kara_item_tag_language_bg;
