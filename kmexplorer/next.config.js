@@ -3,7 +3,7 @@ const withImages = require('next-images')
 module.exports = withImages()
 
 // default DEV settings
-var BASE_URL = '/';
+var BASE_URL = '/base';
 var API_URL = 'https://localhost:1350';
 
 process.argv.forEach( function(element, index) {
