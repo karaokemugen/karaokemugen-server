@@ -64,28 +64,12 @@ export function initFrontend(listenPort: number) {
 			? res.json()
 			: next();
 	});
-	// KMExplorer
-	if (conf.KaraExplorer.Enabled) {
-		app.use(vhost(`${conf.KaraExplorer.Host}`, KMExplorer));
-		KMExplorer.use('/previews', express.static(resolvedPathPreviews()));
-		KMExplorer.use(conf.KaraExplorer.Path, proxy(`http://127.0.0.1:${conf.KaraExplorer.Port}`));
-		// fix bad behavior of next-i18next - language file are not prefixed correctly
-		KMExplorer.get('/static/locales/*', (req, res) => {
-			res.redirect(conf.KaraExplorer.Path + req.url);
-			return;
-		});
-	}
-	/** Disabled code for KM Rooms
-	app.use(vhost(`*.${conf.Frontend.Host}`, getKMRoom), proxy(redirectKMRoom, {
-		memoizeHost: false
-	}));
-	*/
 	// KMImport
 	if (conf.Import.Enabled) {
 		app.use(vhost(`${conf.Import.Host}`, KMImport));
 		KMImport.use(conf.Import.Path, express.static(resolve(state.appPath, 'kmimport/build')));
 		KMImport.get(`${conf.Import.Path}/*`, (_, res) => {
-		res.sendFile(resolve(state.appPath, 'kmimport/build/index.html'));
+			res.sendFile(resolve(state.appPath, 'kmimport/build/index.html'));
 		});
 	}
 
@@ -112,6 +96,23 @@ export function initFrontend(listenPort: number) {
 			return;
 		});
 	}
+	// KMExplorer
+	if (conf.KaraExplorer.Enabled) {
+		app.use(vhost(`${conf.KaraExplorer.Host}`, KMExplorer));
+		KMExplorer.use('/previews', express.static(resolvedPathPreviews()));
+		KMExplorer.use(conf.KaraExplorer.Path, proxy(`http://127.0.0.1:${conf.KaraExplorer.Port}`));
+		// fix bad behavior of next-i18next - language file are not prefixed correctly
+		KMExplorer.get('/static/locales/*', (req, res) => {
+			res.redirect(conf.KaraExplorer.Path + req.url);
+			return;
+		});
+	}
+	/** Disabled code for KM Rooms
+	app.use(vhost(`*.${conf.Frontend.Host}`, getKMRoom), proxy(redirectKMRoom, {
+		memoizeHost: false
+	}));
+	*/
+
 
 	// The "catchall" handler: for any request that doesn't
 	// match one above, send back React's index.html file.
