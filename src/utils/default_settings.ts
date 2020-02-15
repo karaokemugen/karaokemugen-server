@@ -71,7 +71,8 @@ export const defaults: Config = {
 	},
 	API: {
 		Secure: true,
-		Host: 'localhost'
+		Host: 'localhost',
+		Port: 1350
 	},
 	KaraExplorer: {
 		Enabled: true,

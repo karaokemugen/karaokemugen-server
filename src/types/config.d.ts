@@ -12,6 +12,7 @@ export interface Config {
 	API: {
 		Secure: boolean
 		Host: string
+		Port: number
 	}
   	Users: {
 		Enabled: boolean
