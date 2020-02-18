@@ -36,6 +36,7 @@ KaraExplorer:
   Port: 1351
   Host: localhost
   Path: /base
+  LiveURL: https://live.karaokes.moe
 Import:
   Host: localhost
   Path: /import

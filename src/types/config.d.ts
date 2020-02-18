@@ -34,6 +34,7 @@ export interface Config {
 		Port: number
 		Host: string
 		Path: string
+		LiveURL: string
 	}
 	Gitlab?: {
 		Enabled?: boolean,
