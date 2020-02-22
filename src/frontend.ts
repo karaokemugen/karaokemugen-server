@@ -22,7 +22,6 @@ import helmet from 'helmet';
 import compression from 'compression';
 import { getState } from './utils/state';
 import { initWS } from './lib/utils/ws';
-import { resolveFileInDirs } from './lib/utils/files';
 
 /**
  * Starting express which will serve our app.
