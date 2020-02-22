@@ -12,7 +12,7 @@ import {
 } from "antd";
 import EditableTagGroup from "./Components/EditableTagGroup";
 import axios from "axios/index";
-import { getTagInLocale } from "../utils/kara";
+import { getTagInLocale, getApiUrl } from "../utils/kara";
 import i18next from 'i18next';
 
 interface KaraFormProps {
@@ -126,7 +126,7 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 	}
 
 	getSongtypes = async () => {
-		const res = await axios.get("/api/karas/tags/3");
+		const res = await axios.get(`${getApiUrl()}/api/karas/tags/3`);
 		this.setState({ songtypesValue: this.getTagArray(res.data.content) });
 	};
 
@@ -239,7 +239,7 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 					wrapperCol={{ span: 6, offset: 0 }}
 				>
 					<Upload
-						action="/api/karas/importfile"
+						action={`${getApiUrl()}/api/karas/importfile`}
 						accept="video/*,audio/*"
 						multiple={false}
 						onChange={this.onMediaUploadChange}
@@ -262,7 +262,7 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 					wrapperCol={{ span: 6, offset: 0 }}
 				>
 					<Upload
-						action="/api/karas/importfile"
+						action={`${getApiUrl()}/api/karas/importfile`}
 						multiple={false}
 						onChange={this.onSubUploadChange}
 						fileList={this.state.subfile}

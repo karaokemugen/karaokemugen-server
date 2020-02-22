@@ -2,7 +2,7 @@ import React from 'react';
 import deburr from 'lodash.deburr';
 import {AutoComplete, Button, Checkbox, Col, Form, Icon, Input, Row, Tag, Tooltip} from 'antd';
 import axios from 'axios/index';
-import { getTagInLocale } from "../../utils/kara";
+import { getTagInLocale, getApiUrl } from "../../utils/kara";
 import i18next from 'i18next';
 interface EditableTagGroupProps {
 	search: 'tag' | 'serie' | 'aliases',
@@ -83,14 +83,14 @@ export default class EditableTagGroup extends React.Component<EditableTagGroupPr
 	};
 
 	getTags = async (type) => {
-		return axios.get('/api/karas/tags/'+type);
+		return axios.get(`${getApiUrl()}/api/karas/tags/${type}`);
 	};
 
 	getSeries = async (filter) => {
 		if (filter === '') {
 			return ({data: []});
 		}
-		return axios.get('/api/karas/series', {
+		return axios.get(`${getApiUrl()}/api/karas/series`, {
 			params: {
 				filter: filter
 			}

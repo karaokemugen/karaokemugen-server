@@ -1,6 +1,8 @@
 import langs from 'langs';
+import Axios from 'axios';
 
 var navigatorLanguage;
+let apiUrl;
 
 function getNavigatorLanguage() {
 	var languages = langs.all();
@@ -37,4 +39,17 @@ export function getNameTagInLocaleList(list) {
 	} else {
 		return [];
 	} 
+}
+
+export async function setApiUrl () {
+	if (!apiUrl) {
+		const response = await Axios.get('whereIsMyAPI');
+		apiUrl = `${response.data.Secure ? 'https://' : 'http://'}${response.data.Host}:${response.data.Port}`
+		console.log(apiUrl)
+	}
+	return apiUrl;
+}
+
+export function getApiUrl () {
+	return apiUrl;
 }
