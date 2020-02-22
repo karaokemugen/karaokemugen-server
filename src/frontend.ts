@@ -22,6 +22,7 @@ import helmet from 'helmet';
 import compression from 'compression';
 import { getState } from './utils/state';
 import { initWS } from './lib/utils/ws';
+import { resolveFileInDirs } from './lib/utils/files';
 
 /**
  * Starting express which will serve our app.
@@ -37,6 +38,7 @@ export function initFrontend(listenPort: number) {
 	const KMImport = express();
 	const Shortener = express();
 	const KMServer = express();
+	const APILocater = express();
 
 	app.set('trust proxy', (ip: string) => {
 		if (ip === '127.0.0.1' ||
@@ -64,8 +66,13 @@ export function initFrontend(listenPort: number) {
 			? res.json()
 			: next();
 	});
+	// API Locater
+	APILocater.get('/whereIsMyAPI', (_, res) => {
+		res.status(200).json(conf.API);
+	});
 	// KMImport
 	if (conf.Import.Enabled) {
+		app.use(vhost(`${conf.Import.Host}`, APILocater));
 		app.use(vhost(`${conf.Import.Host}`, KMImport));
 		KMImport.use(conf.Import.Path, express.static(resolve(state.appPath, 'kmimport/build')));
 		KMImport.get(`${conf.Import.Path}/*`, (_, res) => {
@@ -99,6 +106,7 @@ export function initFrontend(listenPort: number) {
 	}
 	// KMExplorer
 	if (conf.KaraExplorer.Enabled) {
+		app.use(vhost(`${conf.KaraExplorer.Host}`, APILocater));
 		app.use(vhost(`${conf.KaraExplorer.Host}`, KMExplorer));
 		KMExplorer.use('/previews', express.static(resolvedPathPreviews()));
 		KMExplorer.use(conf.KaraExplorer.Path, proxy(`http://127.0.0.1:${conf.KaraExplorer.Port}`));
