@@ -115,6 +115,11 @@ export function initFrontend(listenPort: number) {
 			return;
 		});
 	}
+	if (conf.API.Host !== conf.KaraExplorer.Host && conf.KaraExplorer.Path && conf.KaraExplorer.Path !== '/') {
+		KMExplorer.get('/', (_, res) => {
+			res.redirect(conf.KaraExplorer.Path);
+		});
+	}
 	/** Disabled code for KM Rooms
 	app.use(vhost(`*.${conf.Frontend.Host}`, getKMRoom), proxy(redirectKMRoom, {
 		memoizeHost: false
