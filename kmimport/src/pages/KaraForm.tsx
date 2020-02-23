@@ -667,6 +667,11 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 						initialValue: this.props.kara.subfile
 					})(<Input type="hidden" />)}
 				</Form.Item>
+				<Form.Item>
+					{getFieldDecorator('repository', {
+						initialValue: this.props.kara.repository
+					})(<Input type="hidden" />)}
+				</Form.Item>
 			</Form>
 		);
 	}
