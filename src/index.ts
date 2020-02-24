@@ -51,7 +51,13 @@ main().catch(err => {
 async function main() {
 	sudoBlock('You should not run Karaoke Mugen Server with root permissions, it\'s dangerous.');
 	const argv = parseArgs();
-	setState({appPath: appPath, dataPath: dataPath, resourcePath: resourcePath});
+	setState({
+		appPath: appPath,
+		dataPath: dataPath,
+		resourcePath: resourcePath,
+		originalAppPath: appPath,
+		electron: false
+	});
 	await initConfig(argv);
 	const conf = getConfig();
 	console.log('--------------------------------------------------------------------');
