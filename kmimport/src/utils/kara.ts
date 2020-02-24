@@ -43,9 +43,8 @@ export function getNameTagInLocaleList(list) {
 
 export async function setApiUrl () {
 	if (!apiUrl) {
-		const response = await Axios.get('whereIsMyAPI');
+		const response = await Axios.get('/whereIsMyAPI');
 		apiUrl = `${response.data.Secure ? 'https://' : 'http://'}${response.data.Host}:${response.data.Port}`
-		console.log(apiUrl)
 	}
 	return apiUrl;
 }
