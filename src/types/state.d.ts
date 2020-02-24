@@ -1,8 +1,10 @@
 export interface State {
 	appPath?: string,
 	dataPath?: string,
-	resourcePath?: string
+	resourcePath?: string,
+	originalAppPath?: string,
 	EngineDefaultLocale?: string,
+	electron?: any,
 	os?: string,
 	version?: {
 		number?: string,

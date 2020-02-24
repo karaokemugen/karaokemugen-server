@@ -3,6 +3,7 @@ import {Layout, Menu} from 'antd';
 import i18next from 'i18next';
 import './App.css';
 import KaraEdit from './pages/KaraEdit';
+import { setApiUrl } from './utils/kara';
 
 const Loader = () => (
 	<div>loading...</div>
@@ -10,7 +11,15 @@ const Loader = () => (
 
 class MyApp extends Component {
 
-	render() {    
+	state = {
+		apiUrl: undefined
+	}
+
+	async componentDidMount() {
+		this.setState({apiUrl: await setApiUrl()});
+	}
+
+	render() {
 		return (
 			<div className="import-kara">
 				<Layout.Header style={{height: '48px'}}>
@@ -32,7 +41,7 @@ class MyApp extends Component {
 						<li><a href="https://lab.shelter.moe/karaokemugen/karaokebase/issues?label_name%5B%5D=en+cours">{i18next.t('IN_PROGRESS_LINK')}</a></li>
 					</ul>
 				</div>
-				<KaraEdit />
+				{this.state.apiUrl ? <KaraEdit /> : null}
 			</div>
 		);
 	}

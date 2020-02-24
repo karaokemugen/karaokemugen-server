@@ -3,6 +3,7 @@ import {Layout, Modal} from 'antd';
 import KaraForm from './KaraForm';
 import axios from 'axios/index';
 import i18next from 'i18next';
+import { getApiUrl } from '../utils/kara';
 
 class KaraEdit extends Component {
 
@@ -16,7 +17,7 @@ class KaraEdit extends Component {
 	}
 
 	saveNew = (kara) => {
-		axios.post('/api/karas/', kara)
+		axios.post(`${getApiUrl()}/api/karas/`, kara)
 			.then(response => {
 				Modal.success({
 					title: i18next.t('ADD_SUCCESS'),
@@ -31,7 +32,7 @@ class KaraEdit extends Component {
 	};
 
 	saveUpdate = (kara) => {
-		axios.put(`/api/karas/${kara.kid}`, kara)
+		axios.put(`${getApiUrl()}/api/karas/${kara.kid}`, kara)
 		.then(response => {
 			Modal.success({
 				title: i18next.t('ADD_SUCCESS'),
@@ -50,7 +51,7 @@ class KaraEdit extends Component {
 		let url = window.location.pathname.split("/");
 		let kid = url[url.length-1];
 		if (kid !== '') {
-			axios.get(`/api/karas/${kid}`)
+			axios.get(`${getApiUrl()}/api/karas/${kid}`)
 				.then(res => {
 					var kara = res.data;
 					this.setState({kara: kara, save: this.saveUpdate});

@@ -6,15 +6,36 @@ export interface Config {
 		InstanceID?: string,
 	},
 	Frontend: {
-	  	Host: string,
-		Port: number,
+		Port: number
 		SeriesLanguageMode: number
 	}
-	KaraExplorer: {
-		Api: string,
-		Port: number,
+	API: {
+		Secure: boolean
+		Host: string
+		Port: number
+	}
+  	Users: {
+		Enabled: boolean
+	}
+	Stats: {
+		Enabled: boolean
+	}
+	Shortener: {
+		Enabled: boolean
+		ExpireTimeDays: number
+	}
+	Import: {
+		Enabled: true
+		Host: string
 		Path: string
-	},
+	}
+  	KaraExplorer: {
+		Enabled: boolean
+		Port: number
+		Host: string
+		Path: string
+		LiveURL: string
+	}
 	Gitlab?: {
 		Enabled?: boolean,
 		Host?: string,
@@ -27,9 +48,6 @@ export interface Config {
 			KaraProblem?: GitlabTemplate
 		}
 	}
-	Shortener: {
-		ExpireTimeDays: number
-	},
 	System: {
 		Binaries: {
 			ffmpeg: {

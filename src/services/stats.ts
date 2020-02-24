@@ -41,7 +41,7 @@ export async function processStatsPayload(payload: any) {
 		logger.info(`[Stats] Received payload from instance ${payload.instance.instance_id}`);
 	} catch(err) {
 		logger.error(`[Stats] Error with payload from ${payload.instance.instance_id} : ${err}`);
-		logger.debug(`[Stats] Payload in error : ${JSON.stringify(payload,null,2)}`);
+		logger.debug(`[Stats] Payload in error : ${JSON.stringify(payload, null, 2)}`);
 		throw err;
 	}
 }

@@ -15,7 +15,7 @@ Make sure node and yarn are up to date
 
 - node 10.13.0 or later
 - yarn 1 or later
-- PostgreSQL 10.6
+- PostgreSQL 10.6 or later
 
 Clone this repository and install dependencies
 
@@ -74,21 +74,28 @@ For local use, please put this in your `config.yml` file :
 
 ```yaml
 Frontend:
-  Host: localhost
   Port: 1350
+API:
+  Secure: false
+  Host: localhost
 KaraExplorer:
-  Api: http://localhost:1350
   Port: 1351
+  Host: localhost
   Path: /base
+Import:
+  Host: localhost
+  Path: /import
 ```
 
 Explanations :
 
-* Frontend.Host : Put your server's domain name. It's used by Express to know which domain to listen to and serve requests.
-* Frontend.Port : Port you should access your KM Server at. Usually on nginx or Apache you'll proxy/reverse proxy requests coming from port 80 to this port
-* KaraExplorer.Api : URL to the KM Server API. KM Explorer (the karaoke base browser) will use this URL to try to access the API to request data. Use https if necessary
-* KaraExplorer.Port : Port on which KaraExplorer listens on. This is a separate port than Frontend.Port and should not be proxified at directly. KM Server will take care of routing stuff to and from KM Explorer
-* KaraExplorer.Path : Path to the karaoke base. You cannot use / for this as it's used by the redirect service KM App uses.
+- API.Host : Put your server's domain name. It's used by the API to know which domain to listen to and serve requests.
+- API.Secure : Wether you're API is going to be on HTTPS or HTTP front server. Enabled by default, disable it for local tests without being behind a webserver
+- Frontend.Port : Port you should access your KM Server at. Usually on nginx or Apache you'll proxy/reverse proxy requests coming from port 80 to this port
+- KaraExplorer.Host : Host KMExplorer should be listening to
+- KaraExplorer.Port : Port on which KMExplorer listens on. This is a separate port than Frontend.Port and should not be proxified at directly. KM Server will take care of routing stuff to and from KM Explorer
+- KaraExplorer.Path : Path to the karaoke base. Use `/base` if it's the same host as your API.Host value so the shortener and your KMExplorer won't overlap.
+- Import.Host and .Path : same as above, this is for the Karaoke Import submission form.
 
 ## Launch
 

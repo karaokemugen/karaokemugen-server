@@ -9,6 +9,7 @@ import { setConfigConstraints, configureLocale, loadConfigFiles, getConfig, conf
 import { configConstraints, defaults } from './default_settings';
 import { configureLogger } from '../lib/utils/logger';
 import uuidV4 from 'uuid/v4';
+import cloneDeep from 'lodash.clonedeep';
 
 async function checkBinaries(config: Config): Promise<BinariesConfig> {
 
@@ -61,7 +62,7 @@ export async function initConfig(argv: any) {
 	setConfigConstraints(configConstraints);
 	await configureLogger(dataPath, !!argv.debug, true);
 	await configureLocale();
-	await loadConfigFiles(dataPath, argv.config, defaults);
+	await loadConfigFiles(dataPath, argv.config, defaults, getState().appPath);
 	const conf = getConfig();
 	logger.debug('[Launcher] Checking if binaries are available');
 	setState({binPath: await checkBinaries(conf)});
@@ -75,4 +76,14 @@ export async function initConfig(argv: any) {
 	}
 	configureIDs();
 	return getConfig();
+}
+
+export function getPublicConfig() {
+	const conf = cloneDeep(getConfig());
+	delete conf.App;
+	delete conf.Database;
+	delete conf.System;
+	delete conf.Gitlab;
+	delete conf.Mail;
+	return conf;
 }

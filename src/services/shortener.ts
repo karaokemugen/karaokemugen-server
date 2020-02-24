@@ -1,4 +1,4 @@
-import {cleanupInstances, insertInstance, updateInstance, selectInstance} from '../dao/shortener';
+import {cleanupInstances, upsertInstance, selectInstance} from '../dao/shortener';
 import logger from 'winston';
 import {getConfig} from '../lib/utils/config';
 import { InstanceData } from '../types/shortener';
@@ -8,25 +8,13 @@ export async function publishInstance(ip: string, data: InstanceData) {
 	logger.debug(`[Shortener] Received publish request from ${ip} with ${JSON.stringify(data)}`);
 	const instance = await selectInstance(ip);
 	logger.debug(`[Shortener] Instance found : ${JSON.stringify(instance)}`);
-	if (instance.length > 0) {
-		await updateInstance({
-			instance_id: data.IID,
-			remote_ip: ip,
-			date: currentDate,
-			local_ip: data.localIP,
-			local_port: data.localPort
-		});
-		return true;
-	} else {
-		await insertInstance({
-			instance_id: data.IID,
-			remote_ip: ip,
-			date: currentDate,
-			local_ip: data.localIP,
-			local_port: data.localPort
-		});
-		return true;
-	}
+	await upsertInstance({
+		instance_id: data.IID,
+		remote_ip: ip,
+		date: currentDate,
+		local_ip: data.localIP,
+		local_port: data.localPort
+	});
 }
 
 export async function getInstance(ip: string) {
