@@ -121,24 +121,34 @@ export async function getRawKara(kid: string) {
 	}))[0];
 	const files = {
 		kara: resolve(resolvedPathRepos('Karas')[0], kara.karafile),
-		series: kara.seriefiles.map(f => resolve(resolvedPathRepos('Series')[0], f)),
-		tags: kara.tagfiles.map(f => resolve(resolvedPathRepos('Tags')[0], f)),
-		lyrics: resolve(resolvedPathRepos('Lyrics')[0], kara.subfile)
+		series: kara.seriefiles.map(f => {
+			return f
+				? resolve(resolvedPathRepos('Series')[0], f)
+				: null;
+		}),
+		tags: kara.tagfiles.map(f => {
+			return f
+				? resolve(resolvedPathRepos('Tags')[0], f)
+				: null;
+		}),
+		lyrics: kara.subfile ? resolve(resolvedPathRepos('Lyrics')[0], kara.subfile) : null
 	};
+	let lyricsData = null;
+	if (kara.subfile) lyricsData = await asyncReadFile(files.lyrics, 'utf-8');
 	const data = {
 		kara: {file: kara.karafile, data: JSON.parse(await asyncReadFile(files.kara, 'utf-8'))},
-		lyrics: {file: kara.subfile || null, data: await asyncReadFile(files.lyrics, 'utf-8') || null},
+		lyrics: {file: kara.subfile || null, data: lyricsData},
 		series: [],
 		tags: [],
 	};
 	for (const seriesFile of files.series) {
-		data.series.push({
+		if (seriesFile) data.series.push({
 			file: basename(seriesFile),
 			data: JSON.parse(await asyncReadFile(seriesFile, 'utf-8'))
 		});
 	}
 	for (const tagFile of files.tags) {
-		data.tags.push({
+		if (tagFile) data.tags.push({
 			file: basename(tagFile),
 			data: JSON.parse(await asyncReadFile(tagFile, 'utf-8'))
 		});
