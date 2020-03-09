@@ -4,7 +4,7 @@ import { writeTagFile } from '../lib/dao/tagfile';
 import { resolvedPathImport } from '../lib/utils/config';
 import { findTagInImportedFiles } from '../dao/tagfile';
 import { IDQueryResult } from '../lib/types/kara';
-import uuidV4 from 'uuid/v4';
+import { v4 as uuidV4 } from 'uuid';
 
 export function formatTagList(tagList: Tag[], from: number, count: number): TagList {
 	return {

@@ -3,7 +3,7 @@ import {updateUser, updateUserPassword, insertUser, selectUser, selectAllUsers, 
 import logger from '../lib/utils/logger';
 import {getConfig, resolvedPathAvatars} from '../lib/utils/config';
 import {asyncReadDir, asyncExists, asyncUnlink, asyncMove, detectFileType} from '../lib/utils/files';
-import uuidV4 from 'uuid/v4';
+import { v4 as uuidV4 } from 'uuid';
 import {resolve} from 'path';
 import {has as hasLang} from 'langs';
 import { getState } from '../utils/state';

@@ -8,7 +8,7 @@ import {BinariesConfig} from '../types/config';
 import { setConfigConstraints, configureLocale, loadConfigFiles, getConfig, configureIDs } from '../lib/utils/config';
 import { configConstraints, defaults } from './default_settings';
 import { configureLogger } from '../lib/utils/logger';
-import uuidV4 from 'uuid/v4';
+import { v4 as uuidV4 } from 'uuid';
 import cloneDeep from 'lodash.clonedeep';
 
 async function checkBinaries(config: Config): Promise<BinariesConfig> {
