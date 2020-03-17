@@ -90,9 +90,15 @@ export async function getAllKaras(filter?: string, lang?: string, from = 0, size
 		}
 		if (compare === 'updated') {
 			pl = pl.filter((k: DBKara) => new Date(localKaras.get(k.kid)) < k.modified_at);
+			for (const i in pl) {
+				pl[i].count = pl.length;
+			}
 		}
 		if (compare === 'missing') {
 			pl = pl.filter((k: DBKara) => !localKaras.has(k.kid));
+			for (const i in pl) {
+				pl[i].count = pl.length;
+			}
 		}
 		// We're getting song count from the first element in our results. Each element returns the count field from database.
 		let count = 0;
