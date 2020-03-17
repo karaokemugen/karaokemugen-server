@@ -97,7 +97,7 @@
 	margin: 2px;
 	display: flex;
 	flex-wrap: wrap;
-	align-content: flex-start;
+	justify-content: flex-end;
     a {
       background: $kara_item_tag_default_bg;
       color: $kara_item_tag_default_color;
