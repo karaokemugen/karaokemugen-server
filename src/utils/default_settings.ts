@@ -1,4 +1,4 @@
-import { Config } from "../types/config";
+import { Config } from '../types/config';
 
 // Karaoke Mugen default configuration file
 
@@ -33,6 +33,7 @@ export const defaults: Config = {
 		Repositories: [
 			{
 				Name: 'Local',
+				Enabled: true,
 				Online: false,
 				Path: {
 					Karas: ['data/karaokes'],
@@ -101,7 +102,7 @@ export const defaults: Config = {
 
 
 **Lien** : $link`,
-				Title: "[Suggestion] $serie - $title",
+				Title: '[Suggestion] $serie - $title',
 				Labels: ['suggestion']
 			},
 			Edit: {
