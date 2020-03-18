@@ -39,7 +39,10 @@ export async function editKara(kara: Kara): Promise<string> {
 		newKara = await generateKara(kara, resolvedPathImport(), resolvedPathImport(), resolvedPathImport());
 		// Remove files if they're not new
 		if (kara.noNewSub && newKara.data.subfile) asyncUnlink(resolve(resolvedPathImport(), newKara.data.subfile));
-		if (kara.noNewVideo) asyncUnlink(resolve(resolvedPathImport(), newKara.data.mediafile));
+		if (kara.noNewVideo) {
+			asyncUnlink(resolve(resolvedPathImport(), newKara.data.mediafile));
+			newKara.data.mediaduration = 0;
+		}
 
 		// Post issue to gitlab
 		const karaName = `${newKara.data.langs[0].name.toUpperCase()} - ${newKara.data.series[0] || newKara.data.singers[0].name} - ${newKara.data.songtypes[0].name}${newKara.data.order || ''} - ${newKara.data.title}`;
