@@ -189,12 +189,12 @@ class Karaitem extends React.Component {
 					</dd>
 				</dl> : null}
 				<dl key="files" className="files">
-					<dd key="kara" data-type="kara"><a href={API_URL+"/downloads/karaokes/"+kara.karafile}>{icons.karaFile} {i18n.t('kara.karafile')}</a></dd>
-					<dd key="media" data-type="media"><a href={API_URL+"/downloads/medias/"+kara.mediafile}>{icons.mediaFile} {i18n.t('kara.mediafile')}</a></dd>
-					<dd key="lyrics" data-type="lyrics"><a href={API_URL+"/downloads/lyrics/"+kara.subfile} download>{icons.lyricsFile} {i18n.t('kara.subfile')}</a></dd>
+					<dd key="kara" data-type="kara"><a href={`${API_URL}/downloads/karaokes/${encodeURIComponent(kara.karafile)}`}>{icons.karaFile} {i18n.t('kara.karafile')}</a></dd>
+					<dd key="media" data-type="media"><a href={`${API_URL}/downloads/medias/${encodeURIComponent(kara.mediafile)}`}>{icons.mediaFile} {i18n.t('kara.mediafile')}</a></dd>
+					<dd key="lyrics" data-type="lyrics"><a href={`${API_URL}/downloads/lyrics/${encodeURIComponent(kara.subfile)}`} download>{icons.lyricsFile} {i18n.t('kara.subfile')}</a></dd>
 					{kara.seriefiles && kara.seriefiles.length > 0 ? 
 						<dd key="series" data-type="series">
-							<select onChange={event => window.location.href=`${API_URL}/downloads/series/${event.target.value}`}>
+							<select onChange={event => window.location.href=`${API_URL}/downloads/series/${encodeURIComponent(event.target.value)}`}>
 								<option value="">{i18n.t('kara.seriefile')}</option>
 								{kara.seriefiles.map(file => {
 									return <option key={file} value={file}>{file}</option>
@@ -204,7 +204,7 @@ class Karaitem extends React.Component {
 					}
 					{kara.tagfiles && kara.tagfiles.length > 0 ? 
 						<dd key="tags" data-type="tags">
-							<select onChange={event => window.location.href=`${API_URL}/downloads/tags/${event.target.value}`}>
+							<select onChange={event => window.location.href=`${API_URL}/downloads/tags/${encodeURIComponent(event.target.value)}`}>
 								<option value="">{i18n.t('kara.tagfile')}</option>
 								{kara.tagfiles.map(file => {
 									return <option key={file} value={file}>{file}</option>
