@@ -5,8 +5,9 @@ import { resolvedPathImport } from '../lib/utils/config';
 import { findTagInImportedFiles } from '../dao/tagfile';
 import { IDQueryResult } from '../lib/types/kara';
 import { v4 as uuidV4 } from 'uuid';
+import { DBTag } from '../lib/types/database/tag';
 
-export function formatTagList(tagList: Tag[], from: number, count: number): TagList {
+export function formatTagList(tagList: DBTag[], from: number, count: number): TagList {
 	return {
 		infos: {
 			count: count,

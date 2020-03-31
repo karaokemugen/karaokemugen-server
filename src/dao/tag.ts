@@ -2,6 +2,7 @@ import {paramWords, db} from '../lib/dao/database';
 import {pg as yesql} from 'yesql';
 import { Tag, TagParams } from '../lib/types/tag';
 import { WhereClause } from '../lib/types/database';
+import { DBTag } from '../lib/types/database/tag';
 const sql = require('./sqls/tag');
 
 export async function selectTag(tid: string): Promise<Tag> {
@@ -10,7 +11,7 @@ export async function selectTag(tid: string): Promise<Tag> {
 	return res.rows[0];
 }
 
-export async function selectTags(params: TagParams): Promise<Tag[]> {
+export async function selectTags(params: TagParams): Promise<DBTag[]> {
 	let filterClauses = params.filter
 		? buildTagClauses(params.filter)
 		: {sql: [], params: {}};
