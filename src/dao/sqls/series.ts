@@ -28,7 +28,9 @@ SELECT
 	aseries.i18n AS i18n,
 	aseries.search AS search,
 	aseries.seriefile AS seriefile,
-	aseries.karacount::integer AS karacount
+	aseries.karacount::integer AS karacount,
+	aseries.repository AS repository,
+	aseries.modified_at AS modified_at
 FROM all_series aseries
 WHERE 1 = 1
 	${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}

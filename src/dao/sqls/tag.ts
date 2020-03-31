@@ -10,7 +10,9 @@ SELECT tid,
 	i18n,
 	karacount,
 	tagfile,
-	count(tid) OVER()::integer AS count
+	count(tid) OVER()::integer AS count,
+	repository,
+	modified_at
 FROM all_tags
 WHERE 1 = 1
   ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
@@ -38,7 +40,9 @@ SELECT tid,
 	aliases,
 	i18n,
 	karacount,
-	tagfile
+	tagfile,
+	repository,
+	modified_at
 FROM all_tags
 WHERE tid = $1
 `;
