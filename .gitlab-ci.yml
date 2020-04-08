@@ -17,7 +17,7 @@ deploy_moe:
   stage: deploy
   script:
     - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd kmserver; mirror -Rnev --parallel=10 --exclude .git/ --exclude app/ --exclude config.yml --exclude database.json --exclude karaokemugen-app/ --exclude logs/ --exclude node_modules/ --exclude .next/ "
-    - ssh -l $USERNAME $HOST 'cd kmserver ; yarn install ; yarn installAll ; yarn buildAll'
+    - ssh -l $USERNAME $HOST 'cd kmserver ; yarn migrateUp ; yarn install ; yarn installAll ; yarn buildAll'
     - ssh -l $USERNAME $HOST 'sudo systemctl restart karaokemugen-server'
   environment:
     name: production-moe
@@ -29,7 +29,7 @@ deploy_world:
   stage: deploy
   script:
     - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd kmserver-world; mirror -Rnev --parallel=10 --exclude .git/ --exclude app/ --exclude config.yml --exclude database.json --exclude logs/ --exclude node_modules/ --exclude .next/ "
-    - ssh -l $USERNAME $HOST 'cd kmserver-world ; yarn install ; yarn installAll ; yarn buildAll'
+    - ssh -l $USERNAME $HOST 'cd kmserver-world ; yarn migrateUp ; yarn install ; yarn installAll ; yarn buildAll'
     - ssh -l $USERNAME $HOST 'sudo systemctl restart karaokemugen-server-world'
   environment:
     name: production-world
@@ -41,7 +41,7 @@ deploy_dev:
   stage: deploy
   script:
     - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd kmserver-dev; mirror -Rnev --parallel=10 --exclude .git/ --exclude app/ --exclude config.yml --exclude database.json --exclude karaokemugen-app/ --exclude logs/ --exclude node_modules/ --exclude .next/ "
-    - ssh -l $USERNAME $HOST 'cd kmserver-dev ; yarn start --generate; yarn install ; yarn installAll ; yarn buildAll'
+    - ssh -l $USERNAME $HOST 'cd kmserver-dev ; yarn migrateUp ; yarn install ; yarn installAll ; yarn buildAll'
     - ssh -l $USERNAME $HOST 'sudo systemctl restart karaokemugen-server-dev'
   environment:
     name: dev
