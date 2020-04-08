@@ -24,7 +24,7 @@ class Karaitem extends React.Component {
 			{
 				let tag =  this.props.tags[v.tid]
 				if(tag)
-					return tag.i18n[isoLanguages("iso3",i18n.language)] || (tag.i18n['eng'] || tag.name)
+					return tag.i18n[isoLanguages(i18n.language)] || (tag.i18n['eng'] || tag.name)
 			}
 			return v.name;
 		}
@@ -47,7 +47,7 @@ class Karaitem extends React.Component {
 			return <Link href={url} key={'songwriters'+i}><a data-type="songwriter" data-id={v.tid}>{icons.songwriter} {v.name}</a></Link>
 		});
 		let languages = kara.langs.map((v,i) => {
-			let name = isoLanguages(v.name, i18n.language);
+			let name = getI18nTagname(v);
 			let url = quickTagUrl('language',v.tid, name);
 			return <Link href={url} key={'language'+i}><a data-type="language" data-id={v.tid}>{icons.language} {name}</a></Link>
 		});
@@ -94,7 +94,7 @@ class Karaitem extends React.Component {
 		if(typeof kara.serie_i18n == "object" && kara.serie_i18n[0] && kara.serie_i18n[0].length)
 		{
 			kara.serie_i18n[0].forEach( function(v, i) {
-				if(v.lang==isoLanguages("iso3",i18n.language))
+				if(v.lang==isoLanguages(i18n.language))
 				{
 					serie_name = v.name;
 				}

@@ -128,9 +128,7 @@ class Homepage extends React.Component {
     {
       let q = filterTools.reset().removeTag('misc',id).getQuery();
       var url = q.url;
-      let name = item.i18n[isoLanguages("iso3",i18n.language)] || (item.i18n['eng'] || item.name);
-      if(item.code=='language')
-        name = isoLanguages(name, i18n.language)
+      let name = item.i18n[isoLanguages(i18n.language)] || (item.i18n['eng'] || item.name);
 
       var icon = null;
       if(itemID>0)
@@ -148,19 +146,8 @@ class Homepage extends React.Component {
     let item = this.getSerieDetail(id);
     if(item)
     {
-      let real_name = item.name
-      if(typeof item.i18n == "object" && item.i18n.length)
-      {
-        item.i18n.forEach( function(v, i) {
-          if(v.lang==isoLanguages("iso3",i18n.language))
-          {
-            real_name = v.name;
-          }
-        });
-      }
-
       let q = filterTools.reset().removeTag('serie',id).getQuery();
-      return <Link href={q.url} key={'serie_'+id}><a data-type="serie" className="tag">{real_name}</a></Link>
+      return <Link href={q.url} key={'serie_'+id}><a data-type="serie" className="tag">{ item.name}</a></Link>
     }
     return null;
   }

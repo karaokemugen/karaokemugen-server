@@ -65,7 +65,7 @@ class Page extends React.Component {
 		tagList = tagList.map(function(tag){
 			return {
 				key: tag.tid,
-				name : tag.i18n[isoLanguages("iso3",i18n.language)] || (tag.i18n['eng'] || tag.name),
+				name : tag.i18n[isoLanguages(i18n.language)] || (tag.i18n['eng'] || tag.name),
 				karacount : tag.karacount[tagsMap.songwriter.id],
 				link : filterTools.clear().addTag('songwriter',tag.tid,tag.slug).getQuery().url,
 				height : 100 * tag.karacount[tagsMap.songwriter.id] / kmax
