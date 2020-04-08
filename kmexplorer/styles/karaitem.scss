@@ -98,6 +98,7 @@
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: flex-end;
+	align-items: baseline;
     a {
       background: $kara_item_tag_default_bg;
       color: $kara_item_tag_default_color;
