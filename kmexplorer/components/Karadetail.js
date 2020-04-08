@@ -146,16 +146,10 @@ class Karaitem extends React.Component {
 			 	}
 				<h1 className="title">{kara.title}</h1>
 				<p className="songtypes">{songtypes}</p>
-				{
-					kara.mediafile.match(/\.mp4$/)
-					? (
-						<div>
-							<h2>{i18n.t('kara.sing_now')}</h2>
-							<p>{i18n.t('kara.live_version_available')} <a target="_blank" href={"http://live.karaokes.moe/?video="+kara.kid}>{i18n.t('kara.play_in_your_browser')}</a></p>
-						</div>
-					)
-					: null
-				}
+				<div>
+					<h2>{i18n.t('kara.sing_now')}</h2>
+					<p>{i18n.t('kara.live_version_available')} <a target="_blank" href={"http://live.karaokes.moe/?video="+kara.kid}>{i18n.t('kara.play_in_your_browser')}</a></p>
+				</div>
 				<h2>{i18n.t('kara.informations')}</h2>
 				<ul className="tags">
 					<li><strong>{i18n.t('category.serie')} :</strong> {serie}</li>
