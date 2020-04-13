@@ -2,9 +2,8 @@ import React from 'react'
 import { i18n, withTranslation } from '../i18n'
 import Karaitem from './Karaitem';
 import KaraSuggestion from '../components/KaraSuggestion';
-import axios from 'axios'
 import RuntimeConfig from '../utils/RuntimeConfig';
-const API_URL = RuntimeConfig.API_URL;
+import localForage from "localforage";
 
 class Karalist extends React.Component {
 	constructor (props) {
@@ -13,7 +12,11 @@ class Karalist extends React.Component {
 			modal:false,
 			gitlabEnabled: false
 		}
-		this.isGitlabEnabled();
+	}
+
+	async componentDidMount() {
+		this.setState({gitlabEnabled: (await localForage.getItem('config')).Gitlab.Enabled, 
+			liveURL: (await localForage.getItem('config')).KaraExplorer.LiveURL});
 	}
 	
 	displayModal = () => {
@@ -21,13 +24,6 @@ class Karalist extends React.Component {
 	}
 	hideModal = () => {
 		this.setState({modal:false})
-	}
-
-	isGitlabEnabled = async () => {
-		var response = await axios.get(API_URL+'/api/settings');
-		if(response.status===200) {
-			this.setState({gitlabEnabled: response.data.config.Gitlab.Enabled});
-		}
 	}
 
 	render() {
@@ -42,7 +38,8 @@ class Karalist extends React.Component {
 			return (
 				<div className="kmx-karas-list">
 					{this.props.data.map((item,i) => {
-						return <Karaitem key={i} data={item} tags={this.props.tags} filterTools={this.props.filterTools}/>
+						return <Karaitem key={i} data={item} tags={this.props.tags} 
+							liveURL={this.state.liveURL} filterTools={this.props.filterTools}/>
 					})}
 				</div>
 			)

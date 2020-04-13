@@ -53,6 +53,10 @@ class MyApp extends App {
 	}
 
 	async componentDidMount() {
+		var response = await axios.get(API_URL+'/api/settings');
+		if(response.status===200) {
+			await localForage.setItem('config',response.data.config)
+		}
 		if(this.state.tags===null)
 		{
 			localForage.config({

@@ -139,9 +139,13 @@ export default function KSController(router: Router) {
 
 	router.route('/settings')
 		.get(async (_, res) => {
+			const config = getConfig();
 			return res.json({config: {
 				Gitlab: {
-						Enabled: getConfig().Gitlab.Enabled
+						Enabled: config.Gitlab.Enabled
+					},
+				KaraExplorer: {
+						LiveURL: config.KaraExplorer.LiveURL
 					}
 				}
 			});

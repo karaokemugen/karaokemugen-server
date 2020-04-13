@@ -7,16 +7,21 @@ import RuntimeConfig from '../utils/RuntimeConfig';
 import icons from '../components/Icons';
 import i18nRouterPush from '../utils/i18nRouterPush'
 import FilterTools from '../utils/filterTools';
+import localForage from "localforage";
 const filterTools = new FilterTools();
 const API_URL = RuntimeConfig.API_URL;
 
-class Karaitem extends React.Component {
+class Karadetail extends React.Component {
 
 	constructor (props) {
 		super(props)
 		this.state = {
 			lyricsOpen:false,
 		}
+	}
+
+	async componentDidMount(){
+		this.setState({liveURL: (await localForage.getItem('config')).KaraExplorer.LiveURL});
 	}
 
 	refreshList(event) {
@@ -147,7 +152,7 @@ class Karaitem extends React.Component {
 				<h1 className="title">{kara.title}</h1>
 				<p className="songtypes">{songtypes}</p>
 				{
-					!kara.mediafile.match(/\.avi$/)
+					!kara.mediafile.match(/\.avi$/) && this.state.liveURL
 					? (
 						<div>
 							<h2>{i18n.t('kara.sing_now')}</h2>
@@ -228,4 +233,4 @@ class Karaitem extends React.Component {
 		)
 	}
 }
-export default withTranslation('common')(Karaitem)
+export default withTranslation('common')(Karadetail)
