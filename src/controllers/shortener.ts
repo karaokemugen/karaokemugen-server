@@ -1,5 +1,6 @@
 import {publishInstance, getInstance} from '../services/shortener';
 import { Router } from 'express';
+import { Locales } from 'locale';
 
 export default function ShortenerController(router: Router) {
 	router.route('/shortener')
@@ -9,7 +10,9 @@ export default function ShortenerController(router: Router) {
 				if (ret) {
 					res.redirect(`http://${ret.local_ip}:${ret.local_port}`);
 				} else {
-					res.status(404).send('No Karaoke Mugen instance runs on your local network.');
+					const locale = new Locales(req.headers['accept-language'], 'en');
+					const supported_languages = new Locales(['fr', 'en']);
+					res.redirect(`/static/shortener/notfound.${locale.best(supported_languages)}.html`);
 				}
 			} catch(err) {
 				res.status(500).json(err);

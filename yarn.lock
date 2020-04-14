@@ -168,6 +168,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/locale@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@types/locale/-/locale-0.1.0.tgz#1186dd9edcfe81717255e6b3349912d67a0132ba"
+  integrity sha512-mI2512gUWp0POxtdvPUZ5UEuqQayBxKJL/dLM1lQY+htB06lwgxQTHtTD293KZcp09l0/vgtUoqkY81pzkGdOg==
+
 "@types/lodash.clonedeep@^4.5.6":
   version "4.5.6"
   resolved "https://registry.yarnpkg.com/@types/lodash.clonedeep/-/lodash.clonedeep-4.5.6.tgz#3b6c40a0affe0799a2ce823b440a6cf33571d32b"
@@ -2258,6 +2263,11 @@ levn@^0.3.0, levn@~0.3.0:
   dependencies:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
+
+locale@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/locale/-/locale-0.1.0.tgz#3b5bf70614fdab48ac3e3fbc648147cb65443bde"
+  integrity sha1-O1v3BhT9q0isPj+8ZIFHy2VEO94=
 
 lodash.clonedeep@^4.5.0:
   version "4.5.0"
