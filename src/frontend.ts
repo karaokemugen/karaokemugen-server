@@ -120,6 +120,10 @@ export function initFrontend(listenPort: number) {
 			res.redirect(conf.KaraExplorer.Path);
 		});
 	}
+
+	// Load static assets from static folder (mostly error pages)
+	app.use('/static', express.static(resolve(state.appPath, 'static')));
+
 	/** Disabled code for KM Rooms
 	app.use(vhost(`*.${conf.Frontend.Host}`, getKMRoom), proxy(redirectKMRoom, {
 		memoizeHost: false
@@ -128,8 +132,8 @@ export function initFrontend(listenPort: number) {
 
 
 	// The "catchall" handler: for any request that doesn't
-	// match one above, send back React's index.html file.
-	app.get('*', (_, res) => res.status(404).send('Not found'));
+	// match one above, send a 404 page.
+	app.get('*', (_, res) => res.status(404).sendFile(resolve(state.appPath, 'static/404.html')));
 
 	const port = listenPort;
 	const server = createServer(app);
