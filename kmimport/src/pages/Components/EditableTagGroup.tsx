@@ -82,8 +82,16 @@ export default class EditableTagGroup extends React.Component<EditableTagGroupPr
 		this.props.onChange && this.props.onChange(tags);
 	};
 
-	getTags = async (type) => {
-		return axios.get(`${getApiUrl()}/api/karas/tags/${type}`);
+	getTags = async (filter, type) => {
+		if (filter === '') {
+			return ({data: []});
+		}
+		return axios.get(`${getApiUrl()}/api/karas/tags/${type}`, {
+			params: {
+				type: type,
+				filter: filter
+			}
+		});
 	};
 
 	getSeries = async (filter) => {
@@ -113,7 +121,7 @@ export default class EditableTagGroup extends React.Component<EditableTagGroupPr
 	searchTags = (val?: any) => {
 		if (timerTag[this.props.tagType]) clearTimeout(timerTag[this.props.tagType]);
 		timerTag[this.props.tagType] = setTimeout(() => {
-		this.getTags(this.props.tagType).then(tags => {
+		this.getTags(val, this.props.tagType).then(tags => {
 			let result = (tags.data.content && tags.data.content.map(tag => {
 				return { value: tag.tid, text: getTagInLocale(tag), name:tag.name };
 			})) || [];
@@ -151,10 +159,11 @@ export default class EditableTagGroup extends React.Component<EditableTagGroupPr
 	render() {
 		const { value, inputVisible } = this.state;
 		if (this.props.checkboxes) {
+			var tids = this.state.value.map(objectTag => {return objectTag[0]});
 			return (
 				<div>
 
-					<Checkbox.Group defaultValue={this.state.value[0]} style={{ width: '100%' }} onChange={this.onCheck}>
+					<Checkbox.Group value={tids} style={{ width: '100%' }} onChange={this.onCheck}>
 						<Row>
 							{
 								this.state.DS.map((tag) => {
@@ -170,7 +179,7 @@ export default class EditableTagGroup extends React.Component<EditableTagGroupPr
 					</Checkbox.Group>
 				</div>
 			);
-		} else if (this.props.search === 'serie') {
+		} else if (this.props.search === 'serie' || this.props.search === 'aliases') {
 			return (
 				<div>
 					{
