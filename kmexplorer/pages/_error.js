@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { i18n } from '../i18n'
+import { withTranslation } from '../i18n'
 
 class Error extends React.Component {
   static getInitialProps({ res, err }) {
@@ -22,8 +22,8 @@ class Error extends React.Component {
     return (
       <p>
         {statusCode
-          ? i18n.t('error-with-status', { statusCode: statusCode })
-          : i18n.t('error-without-status')}
+          ? t('error-with-status', { statusCode: statusCode })
+          : t('error-without-status')}
       </p>
     )
   }
@@ -38,4 +38,4 @@ Error.propTypes = {
   t: PropTypes.func.isRequired,
 }
 
-export default Error
+export default withTranslation(['common','tag'])(Error)

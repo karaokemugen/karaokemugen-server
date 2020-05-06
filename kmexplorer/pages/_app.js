@@ -1,7 +1,7 @@
 import React from 'react'
 import App from 'next/app'
 import Head from 'next/head'
-import { i18n } from '../i18n'
+import { i18n, appWithTranslation } from '../i18n'
 import axios from 'axios'
 import '../styles/index.scss';
 import Header from '../components/Header';
@@ -18,6 +18,16 @@ class MyApp extends App {
 		let pageProps = {}
 
 		const filterParams = filterTools.init(ctx.query);
+
+		if(ctx.req)
+		{
+			//console.log('server side');
+			// Server-side only (req not define client side)
+		}
+		else
+		{
+			//console.log('client side');
+		}
 
 		if (Component.getInitialProps) {
 			pageProps = await Component.getInitialProps(ctx)
@@ -169,4 +179,4 @@ class MyApp extends App {
 	}
 }
 
-export default MyApp
+export default appWithTranslation(MyApp)

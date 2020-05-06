@@ -1,5 +1,5 @@
 import React from 'react'
-import { i18n } from '../i18n'
+import { i18n, withTranslation } from '../i18n'
 import Head from 'next/head'
 import axios from 'axios'
 import Karadetail from '../components/Karadetail';
@@ -20,7 +20,7 @@ class Karapage extends React.Component {
       var response = await axios.get(API_URL+'/api/karas/'+kid)
       kara = response.data
     }
-    let namespacesRequired = ['common'];
+    let namespacesRequired = ['common', 'tag'];
     // on renvoi ici les props qui seront disponible dans le composant monté
     return { namespacesRequired, kid, kara, filterParams}
   }
@@ -45,4 +45,4 @@ class Karapage extends React.Component {
   }
 }
 
-export default Karapage
+export default withTranslation(['common','tag'])(Karapage)

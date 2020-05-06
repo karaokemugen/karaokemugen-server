@@ -1,5 +1,5 @@
 import React from 'react'
-import { i18n } from '../i18n'
+import { i18n, withTranslation } from '../i18n'
 import Head from 'next/head'
 import duration from '../components/date';
 import prettyBytes from 'pretty-bytes';
@@ -8,6 +8,12 @@ import FilterTools from '../utils/filterTools';
 import Link from '../utils/I18nLink';
 const filterTools = new FilterTools();
 class Page extends React.Component {
+	static async getInitialProps({ req, query, res }) {
+
+		let namespacesRequired = ['common', 'tag'];
+
+		return { namespacesRequired };
+	}
 
 	constructor (props) {
 		super(props)
@@ -101,4 +107,4 @@ class Page extends React.Component {
 	}
 }
 
-export default Page
+export default withTranslation(['common','tag'])(Page)

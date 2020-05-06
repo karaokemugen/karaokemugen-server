@@ -1,4 +1,5 @@
 import React from 'react'
+import { i18n, withTranslation } from '../i18n'
 import Link from '../utils/I18nLink';
 
 class Pagination extends React.Component {
@@ -68,4 +69,4 @@ class Pagination extends React.Component {
 	}
 }
 
-export default Pagination
+export default withTranslation('common')(Pagination)

@@ -1,4 +1,4 @@
-import {i18n} from '../i18n';
+import {i18n,withTranslation} from '../i18n';
 import Icons from './Icons.js';
 
 export const tagsMap = Object.freeze({
@@ -76,4 +76,4 @@ export function tagTypeFromId(id) {
 	}
 }
 
-export default tagsMap
+export default withTranslation(['common','tag'])(tagsMap)
