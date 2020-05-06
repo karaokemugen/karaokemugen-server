@@ -1,5 +1,5 @@
 import React from 'react'
-import { i18n, withTranslation } from '../i18n'
+import { i18n } from '../i18n'
 import Link from '../utils/I18nLink';
 import isoLanguages from '../components/isoLanguages';
 import icons from '../components/Icons';
@@ -158,4 +158,4 @@ class Karaitem extends React.Component {
 	}
 }
 
-export default withTranslation('common')(Karaitem)
+export default Karaitem

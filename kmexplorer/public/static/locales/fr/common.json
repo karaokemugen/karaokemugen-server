@@ -92,5 +92,10 @@
     "all_duration": "Durée de tous les karas",
     "last_generation": "Dernière mise à jour",
     "media_size": "Taille des médias"
-  }
+  },
+  "footer": {
+	"home": "Accueil du projet",
+	"software_under_license": "Logiciel sous license ",
+	"base_under_licence": "Base de karaokés sous license"
+  }  
 }

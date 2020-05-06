@@ -1,8 +1,7 @@
 import React from 'react'
-import { i18n, withTranslation } from '../i18n'
+import { i18n } from '../i18n'
 import Karaitem from './Karaitem';
 import KaraSuggestion from '../components/KaraSuggestion';
-import RuntimeConfig from '../utils/RuntimeConfig';
 import localForage from "localforage";
 
 class Karalist extends React.Component {
@@ -60,4 +59,4 @@ class Karalist extends React.Component {
 	}
 }
 
-export default withTranslation('common')(Karalist)
+export default Karalist

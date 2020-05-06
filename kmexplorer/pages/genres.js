@@ -1,5 +1,5 @@
 import React from 'react'
-import { i18n, withTranslation } from '../i18n'
+import { i18n } from '../i18n'
 import Head from 'next/head'
 import Pagination from '../components/Pagination';
 import DedicatedTagtList from '../components/DedicatedTagList';
@@ -10,12 +10,6 @@ const filterTools = new FilterTools();
 
 
 class Page extends React.Component {
-	static async getInitialProps({ req, query, res }) {
-
-		let namespacesRequired = ['common', 'tag'];
-
-		return { namespacesRequired };
-	}
 
 	constructor (props) {
 		super(props)
@@ -112,4 +106,4 @@ class Page extends React.Component {
 	}
 }
 
-export default withTranslation(['common','tag'])(Page)
+export default Page

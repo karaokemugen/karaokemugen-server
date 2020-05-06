@@ -1,5 +1,5 @@
 import React from 'react'
-import { i18n, withTranslation } from '../i18n'
+import { i18n } from '../i18n'
 import icons from './Icons';
 import axios from 'axios'
 import RuntimeConfig from '../utils/RuntimeConfig';
@@ -76,4 +76,4 @@ class KaraSuggestion extends React.Component {
 	}
 }
 
-export default withTranslation('common')(KaraSuggestion)
+export default KaraSuggestion

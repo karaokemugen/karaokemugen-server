@@ -1,5 +1,5 @@
 import React from 'react'
-import { i18n, withTranslation } from '../i18n'
+import { i18n } from '../i18n'
 import Link from '../utils/I18nLink';
 import i18nRouterPush from '../utils/i18nRouterPush'
 import Head from 'next/head'
@@ -59,7 +59,7 @@ class Homepage extends React.Component {
 
     let updateTime = (new Date).getTime();
 
-    let namespacesRequired = ['common', 'tag'];
+    let namespacesRequired = ['common'];
 
     // on renvoi ici les props qui seront disponible dans le composant monté
     return { updateTime, namespacesRequired, searchKeywords, searchTags, karaStatus, karaPage, karaCount, karaList, pageSize, filterParams, orderBy}
@@ -219,4 +219,4 @@ class Homepage extends React.Component {
   }
 }
 
-export default withTranslation(['common','tag'])(Homepage)
+export default Homepage

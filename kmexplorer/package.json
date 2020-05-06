@@ -8,8 +8,7 @@
   },
   "scripts": {
     "dev": "node server.js --api=http://localhost:1350 --port=3000 --path=http://localhost:3000",
-    "kms": "node server.js --api=http://localhost:1350 --port=1351 --path=/base",
-    "i18n": "i18next-scanner --config i18next-scanner.config.js \"{components,pages}/**.js\""
+    "kms": "node server.js --api=http://localhost:1350 --port=1351 --path=/base"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -17,8 +16,7 @@
     "babel-preset-env": "^1.6.1",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-plugin-import": "^2.20.2",
-    "i18next-scanner": "^2.11.0"
+    "eslint-plugin-import": "^2.20.2"
   },
   "dependencies": {
     "@cospired/i18n-iso-languages": "^2.1.1",

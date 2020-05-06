@@ -1,5 +1,5 @@
 import React from 'react'
-import { i18n, withTranslation } from '../i18n'
+import { i18n } from '../i18n'
 import FilterTools from '../utils/filterTools';
 import icons from '../components/Icons';
 import Link from '../utils/I18nLink';
@@ -79,4 +79,4 @@ class Header extends React.Component {
 	}
 }
 
-export default withTranslation('common')(Header)
+export default Header
