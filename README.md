@@ -17,7 +17,7 @@ Make sure node and yarn are up to date
 - yarn 1 or later
 - PostgreSQL 10.6 or later
 
-Clone this repository and install dependencies
+Clone this repository, install dependencies and build react pages
 
 ```sh
 yarn installAll
