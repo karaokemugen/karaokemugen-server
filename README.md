@@ -20,10 +20,8 @@ Make sure node and yarn are up to date
 Clone this repository and install dependencies
 
 ```sh
-yarn install
-cd kmexplorer
-yarn install
-cd ..
+yarn installAll
+yarn buildAll
 ```
 
 ## Setup database
