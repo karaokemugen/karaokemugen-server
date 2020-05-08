@@ -223,7 +223,7 @@ class Karadetail extends React.Component {
 					<h2>{i18n.t('karaissue.title')}</h2>
 					<p>{i18n.t('karaissue.baseline')}</p>
 					<dl className="problems">
-						<dd><a href={"https://lab.shelter.moe/karaokemugen/karaokebase/issues/new?issuable_template=bad_time&issue[title]="+kara.title}>{i18n.t('karaissue.gitlab')}</a></dd>
+						<dd><a href={"https://lab.shelter.moe/karaokemugen/bases/karaokebase/issues/new?issuable_template=bad_time&issue[title]="+kara.title}>{i18n.t('karaissue.gitlab')}</a></dd>
 						<label>{i18n.t('karaissue.or')}</label>
 						<dd><a href={"/import/"+kara.kid}>{i18n.t('karaissue.kara_edit')}</a>{i18n.t('karaissue.kara_edit_types')}</dd>
 					</dl>

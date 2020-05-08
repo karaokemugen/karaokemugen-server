@@ -38,7 +38,7 @@ class MyApp extends Component {
 				<div className="description">
 					<ul>
 						<li><a href="http://docs.karaokes.moe">{i18next.t('DOCUMENTATION_LINK')}</a></li>
-						<li><a href="https://lab.shelter.moe/karaokemugen/karaokebase/issues?label_name%5B%5D=en+cours">{i18next.t('IN_PROGRESS_LINK')}</a></li>
+						<li><a href="https://lab.shelter.moe/karaokemugen/bases/karaokebase/issues?label_name%5B%5D=en+cours">{i18next.t('IN_PROGRESS_LINK')}</a></li>
 					</ul>
 				</div>
 				<Alert message={i18next.t('LICENSE_REMINDER')} type="info" showIcon className='license-alert'
