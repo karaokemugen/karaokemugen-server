@@ -141,7 +141,7 @@ class Karadetail extends React.Component {
 
 		return (
 		<>
-			{this.state.modal ? <KaraProblem onClose={() => this.hideModal()} />:null}
+			{this.state.modal ? <KaraProblem onClose={() => this.hideModal()} kid={kara.kid} /> : null}
 			<div className="kmx-filter-keyword">
 				<form onSubmit={(event) => this.refreshList(event)}>
 					<input type="text" onChange={(event) => this.updateKeyword(event)} placeholder={i18n.t('form.karas_keywords_placeholder')} />
