@@ -8,11 +8,13 @@ const API_URL = RuntimeConfig.API_URL;
 class KaraProblem extends React.Component {
 	constructor (props) {
 		super(props)
-		this.state = {};
+		this.state = {
+			type: "quality"
+		};
 	}
 
 	confirm = async () => {
-		if (this.state.title && this.state.songtype && this.state.serie && this.state.username) {
+		if (this.state.comment && this.state.username) {
 			var response = await axios.post(`${API_URL}/api/${this.props.kid}karas/problem`,
 				{type: this.state.type, message : this.state.comment, author: this.state.username})
 			if(response.status===200 && response.data !==null) {
