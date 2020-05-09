@@ -46,53 +46,151 @@ Gitlab:
   Host: https://lab.shelter.moe
   ProjectID: 1
   IssueTemplate:
-    Edit:
-      Labels:
-        - à intégrer
-      Description: >
-        ...\n
-        \n
-        Nouvelle vidéo ? : $newVideo\n
-        \n
-        Nouveau sub ? : $newSub\n
-    Suggestion:
-      Labels:
-        - suggestion
     Import:
       Title: '[Inbox] $kara'
+      Labels:
+        - to integrate
       Description: >
-        Un nouveau karaoké a été envoyé dans l'inbox de l'équipe Karaoké Mugen. Merci de l'intégrer dès que possible s'il répond aux critères de qualité exigés.\n
-        \n
-        Les fichiers (.kara, vidéo, .ass et série si nécessaire) sont présents à l'emplacement suivant de votre compte FTP : kmpublic/inbox\n
-        \n
-        # Données du karaoké\n
-        \n
-        **Fichier** : $file\n
-        \n
-        **Auteur(s)** : $author\n
-        \n
-        **Titre** : $title\n
-        \n
-        **Série** : $series\n
-        \n
-        **Type** : $type$order\n
-        \n
-        **Langue** : $lang\n
-        \n
-        **Année** : $year\n
-        \n
-        **Chanteur(s)** : $singer\n
-        \n
-        **Tag(s)** : $tags\n
-        \n
-        **Compositeur(s)** : $songwriter\n
-        \n
-        **Créateur(s)** : $creator\n
-        \n
-        **Groupe(s)** : $groups\n
-        \n
-        **Durée** : $duration\n
-        \n
-        # Commentaire
-        \n
-        $comment\n
+        A new karaoke has been sent to the Karaoke Mugen team inbox. Please integrate it as soon as possible if it meets the required quality criteria.
+
+
+        The files (.kara, video, .ass and serial if necessary) are present in the following location of your FTP account: kmpublic / inbox
+
+
+        # Karaoke data
+
+
+        **File** : $file
+
+
+        **Author(s)** : $author
+
+
+        **Title** : $title
+
+
+        **Series** : $series
+
+
+        **Type** : $type$order
+
+
+        **Language** : $lang
+
+
+        **Year** : $year
+
+
+        **Singer(s)** : $singer
+
+
+        **Tag(s)** : Misc: $tags - Famillies: $families - Genres: $genres - Platforms: $platforms - Origins: $origins
+
+
+        **Songwriter(s)** : $songwriter
+
+
+        **Creator(s)** : $creator
+
+
+        **Group(s)** : $groups
+
+
+        **Duration** : $duration
+
+
+        **Comment** : $comment
+    Edit:
+      Title: '[Correction] $kara'
+      Labels:
+        - to integrate
+      Description: >
+        A proposal to modify a karaoke has been sent. You will find all the new files in the inbox.
+
+
+        # Karaoke data
+
+
+        **File** : $file
+
+
+        **New subtitle?**: $newSub
+
+
+        **New media?**: $newVideo
+
+
+        **Author(s)** : $author
+
+
+        **Title** : $title
+
+
+        **Series** : $series
+
+
+        **Type** : $type$order
+
+
+        **Language** : $lang
+
+
+        **Year** : $year
+
+
+        **Singer(s)** : $singer
+
+
+        **Tag(s)** : Misc: $tags - Famillies: $families - Genres: $genres - Platforms: $platforms - Origins: $origins
+
+
+        **Songwriter(s)** : $songwriter
+
+
+        **Creator(s)** : $creator
+
+
+        **Group(s)** : $groups
+
+
+        **Duration** : $duration
+
+
+        **Comment** : $comment
+    Suggestion:
+      Title : '[Suggestion] $serie - $title'
+      Labels:
+        - suggestion
+      Description: >
+        # Karaoke suggestion
+
+
+        **Title** : $title
+
+
+        **Series** : $serie
+
+
+        **Type** : $type
+
+
+        **Link** : $link
+    KaraProblem: 
+      Quality:
+        Title: '[Media issue] $kara'
+        Labels:
+          - video quality
+        Description: >
+          # Media issue
+
+
+          **Comment** : $comment
+      Time:
+        Title: '[Time] $kara'
+        Labels:
+          - time
+        Description: >
+          # Poorly timed / defective karaoke
+
+
+          **Comment** : $comment

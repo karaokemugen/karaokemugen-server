@@ -87,6 +87,13 @@
 	"link": "Lien",
 	"username": "Votre pseudo"
   },
+  "kara_problem": {
+	"type": "Type de problème",
+	"media_issue": "Problème lié au media",
+	"time_issue": "Karaoké mal timé / décalé",
+	"comment": "Commentaire",
+	"username": "Votre pseudo"
+  },
   "sitename": "Karaoke Mugen",
   "stats": {
     "all_duration": "Durée de tous les karas",

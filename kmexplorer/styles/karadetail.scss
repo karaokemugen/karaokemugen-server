@@ -158,7 +158,8 @@
     dd {
       margin: 0;
       padding: 0;
-      a {
+      a, div {
+		color: $link_color;
         font-size: 1.25em;
         display: inline-block;
         background: $kara_item_files_bg;

@@ -85,31 +85,153 @@ export const defaults: Config = {
 	Gitlab: {
 		IssueTemplate: {
 			Import: {
-				Labels: []
+				Title: '[Inbox] $kara',
+				Labels: ['to integrate'],
+				Description: `
+A new karaoke has been sent to the Karaoke Mugen team inbox. Please integrate it as soon as possible if it meets the required quality criteria.
+
+
+The files (.kara, video, .ass and serial if necessary) are present in the following location of your FTP account: kmpublic / inbox
+
+
+# Karaoke data
+
+
+**File** : $file
+
+
+**Author(s)** : $author
+
+
+**Title** : $title
+
+
+**Series** : $series
+
+
+**Type** : $type$order
+
+
+**Language** : $lang
+
+
+**Year** : $year
+
+
+**Singer(s)** : $singer
+
+
+**Tag(s)** : Misc: $tags - Famillies: $families - Genres: $genres - Platforms: $platforms - Origins: $origins
+
+
+**Songwriter(s)** : $songwriter
+
+
+**Creator(s)** : $creator
+
+
+**Group(s)** : $groups
+
+
+**Duration** : $duration
+
+
+**Comment** : $comment`
 			},
 			Suggestion: {
+				Title: '[Suggestion] $serie - $title',
+				Labels: ['suggestion'],
 				Description: `
-# Suggestion de karaoké
+# Karaoke suggestion
 
 
-**Titre** : $title
+**Title** : $title
 
 
-**Série** : $serie
+**Series** : $serie
 
 
 **Type** : $type
 
 
-**Lien** : $link`,
-				Title: '[Suggestion] $serie - $title',
-				Labels: ['suggestion']
+**Link** : $link`
 			},
 			Edit: {
-				Labels: []
+				Title: '[Correction] $kara',
+				Labels: ['to integrate'],
+				Description: `
+A proposal to modify a karaoke has been sent. You will find all the new files in the inbox.
+
+
+# Karaoke data
+
+
+**File** : $file
+
+
+**New subtitle?**: $newSub
+
+
+**New media?**: $newVideo
+
+
+**Author(s)** : $author
+
+
+**Title** : $title
+
+
+**Series** : $series
+
+
+**Type** : $type$order
+
+
+**Language** : $lang
+
+
+**Year** : $year
+
+
+**Singer(s)** : $singer
+
+
+**Tag(s)** : Misc: $tags - Famillies: $families - Genres: $genres - Platforms: $platforms - Origins: $origins
+
+
+**Songwriter(s)** : $songwriter
+
+
+**Creator(s)** : $creator
+
+
+**Group(s)** : $groups
+
+
+**Duration** : $duration
+
+
+**Comment** : $comment`
 			},
 			KaraProblem: {
-				Labels: []
+				Quality: {
+					Title: '[Media issue] $kara',
+					Labels: ['video quality'],
+					Description: `
+# Media issue
+
+
+**Comment** : $comment`
+				},
+				Time: {
+					Title: '[Time] $kara',
+					Labels: ['time'],
+					Description: `
+# Poorly timed / defective karaoke
+
+
+**Comment** : $comment`
+				}
 			},
 		}
 	},

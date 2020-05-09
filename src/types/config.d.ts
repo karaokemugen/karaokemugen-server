@@ -45,7 +45,10 @@ export interface Config {
 			Import?: GitlabTemplate
 			Suggestion?: GitlabTemplate
 			Edit?: GitlabTemplate
-			KaraProblem?: GitlabTemplate
+			KaraProblem?: {
+				Quality?: GitlabTemplate,
+				Time?: GitlabTemplate
+			}
 		}
 	}
 	System: {

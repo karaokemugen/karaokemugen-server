@@ -87,6 +87,13 @@
 	"link": "Link",
 	"username": "Your username"
   },
+  "kara_problem": {
+	"type": "Type of issue",
+	"media_issue": "Media issue",
+	"time_issue": "Poorly timed / out of sync karaoke",
+	"comment": "Comment",
+	"username": "Your username"
+  },
   "sitename": "Karaoke Mugen",
   "stats": {
     "all_duration": "Duration of all karas",

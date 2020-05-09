@@ -170,15 +170,16 @@ export async function newKaraIssue(kid: string, type: 'quality' | 'time', messag
 	const kara = karas[0];
 	const karaName = `${kara.langs[0].name.toUpperCase()} - ${kara.serie[0] || kara.singers[0].name} - ${kara.songtypes[0].name}${kara.songorder || ''} - ${kara.title}`;
 	const conf = getConfig();
-	let title = conf.Gitlab.IssueTemplate.KaraProblem.Title || '$kara';
+	const issueTemplate = type === 'quality' ? conf.Gitlab.IssueTemplate.KaraProblem.Quality : conf.Gitlab.IssueTemplate.KaraProblem.Time;
+	let title = issueTemplate.Title || '$kara';
 	logger.debug('[GitLab] Kara: '+JSON.stringify(kara, null, 2));
 	title = title.replace('$kara', karaName);
-	let desc = conf.Gitlab.IssueTemplate.KaraProblem.Description || '';
+	let desc = issueTemplate.Description || '';
 	desc = desc.replace('$author', author)
 		.replace('$type', type)
 		.replace('$message', message);
 	try {
-		if (conf.Gitlab.Enabled) return gitlabPostNewIssue(title, desc, conf.Gitlab.IssueTemplate.KaraProblem.Labels);
+		if (conf.Gitlab.Enabled) return gitlabPostNewIssue(title, desc, issueTemplate.Labels);
 	} catch(err) {
 		logger.error(`[KaraProblem] Call to Gitlab API failed : ${err}`);
 	}

@@ -2,12 +2,12 @@ import React from 'react'
 import { i18n, withTranslation } from '../i18n'
 import Link from '../utils/I18nLink';
 import isoLanguages from '../components/isoLanguages';
-import querystring from 'querystring';
 import RuntimeConfig from '../utils/RuntimeConfig';
 import icons from '../components/Icons';
 import i18nRouterPush from '../utils/i18nRouterPush'
 import FilterTools from '../utils/filterTools';
 import localForage from "localforage";
+import KaraProblem from './KaraProblem';
 const filterTools = new FilterTools();
 const API_URL = RuntimeConfig.API_URL;
 
@@ -17,11 +17,14 @@ class Karadetail extends React.Component {
 		super(props)
 		this.state = {
 			lyricsOpen:false,
+			modal:false,
+			gitlabEnabled: false
 		}
 	}
 
 	async componentDidMount(){
-		this.setState({liveURL: (await localForage.getItem('config')).KaraExplorer.LiveURL});
+		this.setState({gitlabEnabled: (await localForage.getItem('config')).Gitlab.Enabled, 
+			liveURL: (await localForage.getItem('config')).KaraExplorer.LiveURL});
 	}
 
 	refreshList(event) {
@@ -34,6 +37,13 @@ class Karadetail extends React.Component {
 	updateKeyword(event) {
 		// local state update of the search input field
 		filterTools.reset().setKeywords(event.target.value).save();
+	}
+
+	displayModal = () => {
+		this.setState({modal:true})
+	}
+	hideModal = () => {
+		this.setState({modal:false})
 	}
 
 	render() {
@@ -131,6 +141,7 @@ class Karadetail extends React.Component {
 
 		return (
 		<>
+			{this.state.modal ? <KaraProblem onClose={() => this.hideModal()} />:null}
 			<div className="kmx-filter-keyword">
 				<form onSubmit={(event) => this.refreshList(event)}>
 					<input type="text" onChange={(event) => this.updateKeyword(event)} placeholder={i18n.t('form.karas_keywords_placeholder')} />
@@ -223,8 +234,12 @@ class Karadetail extends React.Component {
 					<h2>{i18n.t('karaissue.title')}</h2>
 					<p>{i18n.t('karaissue.baseline')}</p>
 					<dl className="problems">
-						<dd><a href={"https://lab.shelter.moe/karaokemugen/bases/karaokebase/issues/new?issuable_template=bad_time&issue[title]="+kara.title}>{i18n.t('karaissue.gitlab')}</a></dd>
-						<label>{i18n.t('karaissue.or')}</label>
+						{this.state.gitlabEnabled ?
+							<>
+								<dd><div onClick={this.displayModal}>{i18n.t('karaissue.gitlab')}</div></dd>
+								<label>{i18n.t('karaissue.or')}</label>
+							</> : null
+						}
 						<dd><a href={"/import/"+kara.kid}>{i18n.t('karaissue.kara_edit')}</a>{i18n.t('karaissue.kara_edit_types')}</dd>
 					</dl>
 				</blockquote>
