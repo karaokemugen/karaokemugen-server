@@ -2,7 +2,6 @@ import React from 'react'
 import { i18n, withTranslation } from '../i18n'
 import Karaitem from './Karaitem';
 import KaraSuggestion from '../components/KaraSuggestion';
-import RuntimeConfig from '../utils/RuntimeConfig';
 import localForage from "localforage";
 
 class Karalist extends React.Component {
@@ -35,14 +34,20 @@ class Karalist extends React.Component {
 			)
 		}
 		else if(this.props.data && this.props.data.length>0) {
-			return (
+			return (<>
+				{this.state.modal ? <KaraSuggestion onClose={() => this.hideModal()} />:null}
 				<div className="kmx-karas-list">
 					{this.props.data.map((item,i) => {
 						return <Karaitem key={i} data={item} tags={this.props.tags} 
 							liveURL={this.state.liveURL} filterTools={this.props.filterTools}/>
 					})}
 				</div>
-			)
+				{this.state.gitlabEnabled ?
+					<div className="kara-suggestion" onClick={this.displayModal}>
+						{i18n.t("karalist.kara_suggestion")}
+					</div> : null
+				}
+			</>)
 		} else {
 			return (<>
 				{this.state.modal ? <KaraSuggestion onClose={() => this.hideModal()} />:null}
@@ -54,8 +59,7 @@ class Karalist extends React.Component {
 						{i18n.t("karalist.kara_suggestion")}
 					</div> : null
 				}
-				</>
-			)
+			</>)
 		}
 	}
 }
