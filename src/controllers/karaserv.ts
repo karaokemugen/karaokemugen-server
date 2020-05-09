@@ -74,6 +74,7 @@ export default function KSController(router: Router) {
 		.post(getLang, async (req: any, res) => {
 			try {
 				await newKaraIssue(req.params.kid, req.body.type, req.body.comment, req.body.username);
+				res.status(200).json();
 			} catch(err) {
 				res.status(500).json(err);
 			}
