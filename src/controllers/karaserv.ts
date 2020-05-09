@@ -73,7 +73,7 @@ export default function KSController(router: Router) {
 	router.route('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/problem')
 		.post(getLang, async (req: any, res) => {
 			try {
-				await newKaraIssue(req.params.kid, req.body.type, req.body.message, req.body.author);
+				await newKaraIssue(req.params.kid, req.body.type, req.body.comment, req.body.username);
 			} catch(err) {
 				res.status(500).json(err);
 			}

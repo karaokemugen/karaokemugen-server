@@ -145,6 +145,9 @@ The files (.kara, video, .ass and serial if necessary) are present in the follow
 # Karaoke suggestion
 
 
+**Issue author** : $username
+
+
 **Title** : $title
 
 
@@ -221,6 +224,9 @@ A proposal to modify a karaoke has been sent. You will find all the new files in
 # Media issue
 
 
+**Issue author** : $username
+
+
 **Comment** : $comment`
 				},
 				Time: {
@@ -228,6 +234,9 @@ A proposal to modify a karaoke has been sent. You will find all the new files in
 					Labels: ['time'],
 					Description: `
 # Poorly timed / defective karaoke
+
+
+**Issue author** : $username
 
 
 **Comment** : $comment`

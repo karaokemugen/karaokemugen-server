@@ -165,6 +165,9 @@ Gitlab:
         # Karaoke suggestion
 
 
+        **Issue author** : $username
+
+
         **Title** : $title
 
 
@@ -184,6 +187,9 @@ Gitlab:
           # Media issue
 
 
+          **Issue author** : $username
+
+
           **Comment** : $comment
       Time:
         Title: '[Time] $kara'
@@ -191,6 +197,9 @@ Gitlab:
           - time
         Description: >
           # Poorly timed / defective karaoke
+
+
+          **Issue author** : $username
 
 
           **Comment** : $comment

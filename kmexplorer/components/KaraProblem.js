@@ -16,7 +16,7 @@ class KaraProblem extends React.Component {
 	confirm = async () => {
 		if (this.state.comment && this.state.username) {
 			var response = await axios.post(`${API_URL}/api/karas/${this.props.kid}/problem`,
-				{type: this.state.type, message : this.state.comment, author: this.state.username})
+				{type: this.state.type, comment : this.state.comment, username: this.state.username})
 			if(response.status===200 && response.data !==null) {
 				this.props.onClose();
 			}

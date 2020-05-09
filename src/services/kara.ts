@@ -162,7 +162,7 @@ export async function getRawKara(kid: string) {
 	return data;
 }
 
-export async function newKaraIssue(kid: string, type: 'quality' | 'time', message: string, author: string) {
+export async function newKaraIssue(kid: string, type: 'quality' | 'time', comment: string, username: string) {
 	const karas = await selectAllKaras({
 		mode: 'kid',
 		modeValue: kid
@@ -175,9 +175,9 @@ export async function newKaraIssue(kid: string, type: 'quality' | 'time', messag
 	logger.debug('[GitLab] Kara: '+JSON.stringify(kara, null, 2));
 	title = title.replace('$kara', karaName);
 	let desc = issueTemplate.Description || '';
-	desc = desc.replace('$author', author)
+	desc = desc.replace('$username', username)
 		.replace('$type', type)
-		.replace('$message', message);
+		.replace('$comment', comment);
 	try {
 		if (conf.Gitlab.Enabled) return gitlabPostNewIssue(title, desc, issueTemplate.Labels);
 	} catch(err) {
