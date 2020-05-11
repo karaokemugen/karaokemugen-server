@@ -237,7 +237,7 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 				>
 					<Upload
 						action={`${getApiUrl()}/api/karas/importfile`}
-						accept="video/*,audio/*"
+						accept="video/*,audio/*,.mkv"
 						multiple={false}
 						onChange={this.onMediaUploadChange}
 						fileList={this.state.mediafile}
