@@ -9,14 +9,13 @@ import {initDB} from './dao/database';
 import {initShortener} from './services/shortener';
 import {initFavorites} from './services/favorites';
 import {createUser, changePassword} from './services/user';
-import {generateDatabase} from './lib/services/generation';
 import sudoBlock from 'sudo-block';
 import {asyncCheckOrMkdir} from './lib/utils/files';
 import {kmExplorerStart} from './services/kmExplorer';
 import findRemoveSync from 'find-remove';
 import { setState, getState } from './utils/state';
 import { createImagePreviews } from './lib/utils/previews';
-import { getAllKaras } from './services/kara';
+import { getAllKaras, generate } from './services/kara';
 import { initMailer } from './utils/mailer';
 
 const pjson = require('../package.json');
@@ -92,7 +91,7 @@ async function main() {
 	}
 
 	if (argv.generate) {
-		await generateDatabase();
+		await generate();
 		exit(0);
 	}
 
