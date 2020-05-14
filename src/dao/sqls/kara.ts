@@ -54,7 +54,7 @@ export const selectBaseStats = `SELECT
 (SELECT COUNT(tid) FROM all_tags WHERE types @> ARRAY[6])::integer AS authors,
 (SELECT COUNT(pk_kid) FROM kara)::integer AS karas,
 (SELECT COUNT(tid)::integer FROM all_tags WHERE types @> ARRAY[5] AND karacount::text NOT LIKE '{"count": 0}' ) AS languages,
-(SELECT COUNT(tid)::integer FROM all_tags WHERE types @> ARRAY[1] AND karacount::text NOT LIKE '{"count": 0}' ) AS languages,
+(SELECT COUNT(tid)::integer FROM all_tags WHERE types @> ARRAY[1] AND karacount::text NOT LIKE '{"count": 0}' ) AS series,
 (SELECT SUM(mediasize) FROM kara)::bigint AS mediasize,
 (SELECT SUM(duration) FROM kara)::integer AS duration;
 `;
