@@ -1,29 +1,13 @@
-import {selectAllSeries, countSeries, selectSerieByName} from '../dao/series';
-import { Series } from '../lib/types/series';
-import { writeSeriesFile } from '../lib/dao/seriesfile';
-import { resolvedPathImport } from '../lib/utils/config';
-import { findSeriesInImportedFiles } from '../dao/seriesfile';
-import { IDQueryResult } from '../lib/types/kara';
+import { getTags } from './tag';
 
-export async function getOrAddSerieID(seriesObj: Series): Promise<IDQueryResult> {
-	let serie = await selectSerieByName(seriesObj.name);
-	if (serie) return {id: serie.sid, new: false};
-	// If no serie found, create it and return the sid we generated
-	const importedSerie = await findSeriesInImportedFiles(seriesObj.name);
-	if (importedSerie) return {id: importedSerie.sid, new: false};
-	await writeSeriesFile(seriesObj, resolvedPathImport());
-	return {id: seriesObj.sid, new: true};
-}
+// This is a masquerade until KM <3.2 is deprecated
 
-export async function getAllSeries(filter: string, lang: string, from = 0, size = 9999999999) {
-	const count = await countSeries(filter);
-	const series = await selectAllSeries(filter, lang, +from, +size);
-	return {
-		content: series,
-		infos: {
-			count: +count,
-			from: +from,
-			to: +from + series.length
-		}
-	};
+export async function getAllSeries(filter: string, from = 0, size = 9999999999) {
+	const tags: any = await getTags({filter: filter, type: 1, from: from, size: size});
+	for (const i in tags.content) {
+		tags.content[i].sid = tags.content[i].tid;
+		delete tags.content[i].tid;
+		tags.content[i].seriefile = tags.content[i].tagfile;
+		delete tags.content[i].tagfile;
+	}
 }

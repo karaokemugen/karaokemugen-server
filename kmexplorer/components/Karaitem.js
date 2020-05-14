@@ -87,19 +87,10 @@ class Karaitem extends React.Component {
 			let url = quickTagUrl('platform',v.tid, v.name);
 			return <Link href={url} key={'platform_'+i}><a data-type="platform" data-id={v.tid}>{icons.platform} {v.name}</a></Link>
 		});
-
-		// on n'exploite que la série principale
-		let serie_name = kara.serie;
-		let serie_id = kara.sid;
-		if(typeof kara.serie_i18n == "object" && kara.serie_i18n[0] && kara.serie_i18n[0].length)
-		{
-			kara.serie_i18n[0].forEach( function(v, i) {
-				if(v.lang==isoLanguages(i18n.language))
-				{
-					serie_name = v.name;
-				}
-			});
-		}
+		let series = kara.series.map((v,i) => {
+			let url = quickTagUrl('serie',v.tid, v.name);
+			return <Link href={url} key={'serie_'+i}><a data-type="serie" data-id={v.tid}>{v.name}</a></Link>
+		});
 
 		var captionStyle = null;
 		if (kara.mediafile.match(/^((?!\.mp3).)*$/) && kara.mediafile.match(/^((?!\.m4a).)*$/))
@@ -140,7 +131,7 @@ class Karaitem extends React.Component {
 				</div>
 				<div className="tags">
 					{songtypes}
-					{serie_name ? (<Link href={quickTagUrl('serie',serie_id,serie_name)} key="serie"><a data-type="serie" data-id={serie_id}><i className="fa fa-tv"></i> {serie_name}</a></Link>) : null}
+					{series}
 					{kara.year ? (<Link href={quickTagUrl('year',kara.year, kara.year)} key="year"><a data-type="year" ><i className="fa fa-calendar"></i> {kara.year}</a></Link>) : null }
 					{singers}
 					{songwriters}

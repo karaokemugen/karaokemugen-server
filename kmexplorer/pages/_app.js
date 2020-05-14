@@ -19,16 +19,6 @@ class MyApp extends App {
 
 		const filterParams = filterTools.init(ctx.query);
 
-		if(ctx.req)
-		{
-			//console.log('server side');
-			// Server-side only (req not define client side)
-		}
-		else
-		{
-			//console.log('client side');
-		}
-
 		if (Component.getInitialProps) {
 			pageProps = await Component.getInitialProps(ctx)
 		}
@@ -47,7 +37,6 @@ class MyApp extends App {
 		super(props)
 		this.state = {
 			tags:null,
-			series:null,
 			years:null,
 		}
 	}
@@ -89,6 +78,7 @@ class MyApp extends App {
 
 			// Recupération des Tags si nécéssaire
 			var lsTagsToRetrieve = [
+				{code:'serie', id:tagsMap.serie.id},
 				{code:'singer', id:tagsMap.singer.id},
 				{code:'songtype', id:tagsMap.songtype.id},
 				{code:'creator', id:tagsMap.creator.id},
@@ -110,12 +100,10 @@ class MyApp extends App {
 				for(let i in lsTagsToRetrieve)
 				{
 					let el = lsTagsToRetrieve[i];
-					//console.log(el.code,API_URL+'/api/karas/tags/'+el.id)
 					var response = await axios.get(API_URL+'/api/karas/tags/'+el.id)
 					if(response.status===200 && response.data!==null && response.data.content)
 					{
 						response.data.content.map((v,i)=>{
-							//console.log(v)
 							v.slug = filterTools.normalizeString(v.name)
 							tags[''+v.tid] = v;
 						});
@@ -125,23 +113,6 @@ class MyApp extends App {
 			}
 			if(tags!=null)
 				this.setState({tags:tags});
-
-			// Récupération des séries si nécéssaire
-			var series = await localForage.getItem('series');
-			if(series===null || !tag_uptodate)
-			{
-				series = {};
-				var response = await axios.get(API_URL+'/api/karas/series')
-				if(response.status===200 && response.data!==null && response.data.content)
-				{
-					response.data.content.map((v,i)=>{
-						series[v.sid] = v;
-					});
-				}
-				localForage.setItem('series',series)
-			}
-			if(series!=null)
-				this.setState({series:series});
 
 			// Récupération des années si nécéssaire
 			var years = await localForage.getItem('years');
@@ -172,7 +143,7 @@ class MyApp extends App {
 					<meta name="viewport" content="width=device-width" />
 				</Head>
 				<Header {...pageProps} />
-				<Component {...pageProps} stats={this.state.stats} tags={this.state.tags} series={this.state.series} years={this.state.years}  />
+				<Component {...pageProps} stats={this.state.stats} tags={this.state.tags} years={this.state.years}  />
 				<Footer {...pageProps} />
 			</>
 		)
