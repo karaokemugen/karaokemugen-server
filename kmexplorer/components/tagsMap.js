@@ -2,6 +2,11 @@ import {i18n,withTranslation} from '../i18n';
 import Icons from './Icons.js';
 
 export const tagsMap = Object.freeze({
+	serie: {
+		id: 1,
+		label: i18n.t('common:category.serie'),
+		icon: Icons.serie,
+	},
 	singer: {
 		id: 2,
 		label: i18n.t('common:category.singer'),

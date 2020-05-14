@@ -3,12 +3,11 @@ import {tagsMap,tagTypeFromId} from "../components/tagsMap.js"
 import querystring from 'querystring';
 
 
-// ?p=0&filter=keywords&q=y:1982!s:501!t:10,4488
+// ?p=0&filter=keywords&q=y:1982!t:10,4488
 // p = current page index
 // filter = keywords filter
 // q = extra search filter separated by "!"
 // - y = year
-// - s = serie
 // - t = tags comma separated
 
 export default class FilterTools {
@@ -17,7 +16,6 @@ export default class FilterTools {
 			page : 0,
 			keywords : '',
 			year : null,
-			serie : null,
 			tags : [],
 			slug : null,
 			orderBy : 'recent'
@@ -26,7 +24,6 @@ export default class FilterTools {
 			page : 0,
 			keywords : '',
 			year : null,
-			serie : null,
 			tags : [],
 			slug : null,
 			orderBy : 'recent'
@@ -35,14 +32,12 @@ export default class FilterTools {
 			page : 0,
 			keywords : '',
 			year : null,
-			serie : null,
 			tags : [],
 			slug : null,
 			orderBy : 'recent'
 		}
 	}
 	init(query){
-		//console.log(query)
 		query = query.path ? query.query : query;
 
 		var slug = query.slug ? query.slug : null;
@@ -50,31 +45,21 @@ export default class FilterTools {
 		var keywords = query.filter ? ''+query.filter : '';
 		var extra = query.q ? '!'+query.q : '!';
 		var orderBy = query.order ? ''+query.order : 'recent'
-		//console.log(extra);
 		var year = null;
-		var serie = null;
 		var tags = [];
 		extra.split('!').forEach( function(v, i) {
 			if(v.match(/^y:/))
 				year = parseInt(v.replace(/^y:/,''));
-			else if(v.match(/^s:/))
-				serie = v.replace(/^s:/,'');
 			else if(v.match(/^t:/))
 				tags = v.replace(/^t:/,'').split(',');
 		});
 		var dedup_tags = tags.filter(function(elem, pos) {
 			return tags.indexOf(elem) == pos;
 		})
-		/*
-		dedup_tags = dedup_tags.map(function(v){
-			return parseInt(v);
-		})
-		*/
 		this.params = {
 			page : page,
 			keywords : keywords,
 			year : year,
-			serie : serie,
 			tags : dedup_tags,
 			slug : slug,
 			orderBy : orderBy
@@ -137,13 +122,9 @@ export default class FilterTools {
 
 		if(type=='year')
 			this.liveParams.year = value;
-		else if(type=='serie')
-			this.liveParams.serie = value;
-		else
-		{
+		else {
 			let typeID = tagsMap[type].id || 0;
-			if(this.liveParams.tags.indexOf(value+'~'+typeID)<0)
-			{
+			if(this.liveParams.tags.indexOf(value+'~'+typeID) < 0) {
 				
 				this.liveParams.tags.push(value+'~'+typeID);
 			}
@@ -153,8 +134,6 @@ export default class FilterTools {
 	removeTag(type,value=null){
 		if(type=='year')
 			this.liveParams.year = null;
-		else if(type=='serie')
-			this.liveParams.serie = null;
 		else if(this.liveParams.tags.indexOf(value)>=0)
 			this.liveParams.tags.splice(this.liveParams.tags.indexOf(value),1);
 		return this;
@@ -183,17 +162,13 @@ export default class FilterTools {
 
 		let q_count = 0;
 		if(this.liveParams.year) q_count++;
-		if(this.liveParams.serie) q_count++;
 		if(this.liveParams.tags && this.liveParams.tags.length>0)
 			q_count += this.liveParams.tags.length;
 
-		if(q_count>1)
-		{
+		if(q_count>1) {
 			let q = [];
 			if(this.liveParams.year)
 				q.push('y:'+this.liveParams.year);
-			if(this.liveParams.serie)
-				q.push('s:'+this.liveParams.serie);
 			if(this.liveParams.tags && this.liveParams.tags.length>0)
 				q.push('t:'+this.liveParams.tags.join(','));
 
@@ -206,38 +181,26 @@ export default class FilterTools {
 				query_string:_query,
 				url:"/karas?"+_query,
 			};
-		}
-		else
-		{
+		} else {
 			let code = null;
 			let value = null;
 			let slug = this.liveParams.slug;
 
-			if(this.liveParams.year)
-			{
+			if(this.liveParams.year) {
 				code = 'year';
 				value = this.liveParams.year;
 				slug = null
-			}
-			else if(this.liveParams.serie)
-			{
-				code = 'serie';
-				value = this.liveParams.serie;
-			}
-			else if(this.liveParams.tags && this.liveParams.tags.length>0)
-			{
+			} else if(this.liveParams.tags && this.liveParams.tags.length > 0) {
 				let tagFilter = this.liveParams.tags[0];
 				var typeId = parseInt(tagFilter.replace(/^.*~/,''));
 				let type = tagTypeFromId(typeId)
-				if(type)
-				{
+				if(type) {
 					code = type.code;
 					value = tagFilter;
 				}
 			}
 
-			if(code!==null)
-			{
+			if(code!==null)	{
 				let _path = "/karas"+(code ? "/"+code:"")+(slug ? "/"+slug:"")+(value ? "/"+value:"")
 				let _query = querystring.stringify(query);
 				return {
@@ -263,8 +226,6 @@ export default class FilterTools {
 		let q = [];
 		if(this.liveParams.year)
 			q.push('y:'+this.liveParams.year);
-		if(this.liveParams.serie)
-			q.push('s:'+this.liveParams.serie);
 		if(this.liveParams.tags && this.liveParams.tags.length>0)
 			q.push('t:'+this.liveParams.tags.join(','));
 		return {

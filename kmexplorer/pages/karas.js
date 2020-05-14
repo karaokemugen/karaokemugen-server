@@ -117,10 +117,7 @@ class Homepage extends React.Component {
   getTagDetail(id){
     return this.props.tags && this.props.tags[id] ? this.props.tags[id] : null;
   }
-  getSerieDetail(id){
-    return this.props.series && this.props.series[id] ? this.props.series[id] : null;
-  }
-
+  
   buildFilterTags(id){
     var item = this.getTagDetail(id.replace(/~[0-9]+$/,''));
     var itemID = parseInt(id.replace(/^.*~/,''));
@@ -142,16 +139,6 @@ class Homepage extends React.Component {
     return null;
   }
 
-  buildFilterSerie(id){
-    let item = this.getSerieDetail(id);
-    if(item)
-    {
-      let q = filterTools.reset().removeTag('serie',id).getQuery();
-      return <Link href={q.url} key={'serie_'+id}><a data-type="serie" className="tag">{ item.name}</a></Link>
-    }
-    return null;
-  }
-
   buildFilterOrder(order, text){
     let q = filterTools.reset().setOrderBy(order).getQuery();
     return <Link href={q.url}><div key={order} className={this.state.orderBy==order ? "active":""} >{text}</div></Link>
@@ -159,7 +146,7 @@ class Homepage extends React.Component {
 
   render() {
 
-    let filterSerie = (() => {
+    let filterYear = (() => {
       let q = filterTools.reset().removeTag('year',filterTools.params.year).getQuery();
       return filterTools.params.year
         ? <Link href={q.url} key="year"><a data-type="year" className="tag">{filterTools.params.year}</a></Link>
@@ -182,8 +169,7 @@ class Homepage extends React.Component {
 		{filterTools.params.orderBy === 'search' ?
 			<div className="kmx-filter-panel" data-type="tags">
 			{filterTools.params.tags.map((v) => { return this.buildFilterTags(v)})}
-			{filterTools.params.serie ? this.buildFilterSerie(filterTools.params.serie) : null}
-			{filterSerie}
+			{filterYear}
 			</div> : null
   		}
 

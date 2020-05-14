@@ -122,20 +122,10 @@ class Karadetail extends React.Component {
 			let url = quickTagUrl('platform',v.tid, v.name);
 			return <Link href={url} key={'platform_'+i}><a data-type="platform" data-id={v.tid}>{icons.platform} {v.name}</a></Link>
 		});
-
-		// on n'exploite que la série principale
-		let serie_name = kara.serie;
-		let serie_id = kara.sid;
-		if(typeof kara.serie_i18n == "object" && kara.serie_i18n[0] && kara.serie_i18n[0].length)
-		{
-			kara.serie_i18n[0].forEach( function(v, i) {
-				if(v.lang==isoLanguages(i18n.language))
-				{
-					serie_name = v.name;
-				}
-			});
-		}
-		let serie = serie_name ? <Link href={quickTagUrl('serie',serie_id)} key="serie"><a data-type="serie" data-id={serie_id}><i className="fa fa-tv"></i> {serie_name}</a></Link> : null;
+		let series = kara.series.map((v,i) => {
+			let url = quickTagUrl('serie',v.tid, v.name);
+			return <Link href={url} key={'serie_'+i}><a data-type="serie" data-id={v.tid}>{icons.serie} {v.name}</a></Link>
+		});
 
 		let year =kara.year ? <Link href={quickTagUrl('year',kara.year)} key="year"><a data-type="year" ><i className="fa fa-calendar"></i> {kara.year}</a></Link> : null;
 
@@ -174,7 +164,7 @@ class Karadetail extends React.Component {
 				}
 				<h2>{i18n.t('kara.informations')}</h2>
 				<ul className="tags">
-					<li><strong>{i18n.t('category.serie')} :</strong> {serie}</li>
+					<li><strong>{i18n.t('category.serie')} :</strong> {series}</li>
 					<li><strong>{i18n.t('category.language')} :</strong> {languages}</li>
 					<li>
 						<strong>{i18n.t('category.tag')} :</strong>
@@ -208,16 +198,6 @@ class Karadetail extends React.Component {
 					<dd key="kara" data-type="kara"><a href={`${API_URL}/downloads/karaokes/${encodeURIComponent(kara.karafile)}`}>{icons.karaFile} {i18n.t('kara.karafile')}</a></dd>
 					<dd key="media" data-type="media"><a href={`${API_URL}/downloads/medias/${encodeURIComponent(kara.mediafile)}`}>{icons.mediaFile} {i18n.t('kara.mediafile')}</a></dd>
 					<dd key="lyrics" data-type="lyrics"><a href={`${API_URL}/downloads/lyrics/${encodeURIComponent(kara.subfile)}`} download>{icons.lyricsFile} {i18n.t('kara.subfile')}</a></dd>
-					{kara.seriefiles && kara.seriefiles.length > 0 ? 
-						<dd key="series" data-type="series">
-							<select onChange={event => window.location.href=`${API_URL}/downloads/series/${encodeURIComponent(event.target.value)}`}>
-								<option value="">{i18n.t('kara.seriefile')}</option>
-								{kara.seriefiles.map(file => {
-									return <option key={file} value={file}>{file}</option>
-								})}
-							</select>
-						</dd> : null
-					}
 					{kara.tagfiles && kara.tagfiles.length > 0 ? 
 						<dd key="tags" data-type="tags">
 							<select onChange={event => window.location.href=`${API_URL}/downloads/tags/${encodeURIComponent(event.target.value)}`}>

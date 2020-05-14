@@ -38,10 +38,6 @@ console.log(`KaraExplorer PORT = ${PORT}`);
     {
       q = 'y:'+params.tagSlug 
     }
-    else if(params.tagType=='serie')
-    {
-      q = 's:'+params.tagID 
-    }
     return app.render(req, res, '/karas', { ...query, q: q })
   })
   server.get('*', (req, res) => {

@@ -3,7 +3,9 @@ import { i18n, withTranslation } from '../i18n'
 import Head from 'next/head'
 import Pagination from '../components/Pagination';
 import DedicatedTagtList from '../components/DedicatedTagList';
+import tagsMap from '../components/tagsMap.js';
 import FilterTools from '../utils/filterTools';
+import isoLanguages from '../components/isoLanguages';
 const filterTools = new FilterTools();
 
 
@@ -43,28 +45,30 @@ class Page extends React.Component {
 	}
 
 	render() {
-
 		let kmax = 1;
 		let pageSize = 100;
 		let page = filterTools.getPage()
 		let keywords = this.state.searchKeywords;
 
-		let serieList = [];
-		for (let id in this.props.series) {
-			let serie = this.props.series[id];
-			kmax = Math.max(kmax,serie.karacount);
-			if(keywords.length==0 || filterTools.keywordSearch(serie.name,keywords))
-				serieList.push(serie);
+		let tagList = [];
+		for (let id in this.props.tags) {
+			let tag = this.props.tags[id];
+			if(tag.types.includes(tagsMap.serie.id))
+			{
+				kmax = Math.max(kmax,tag.karacount[tagsMap.serie.id]);
+				if(keywords.length==0 || filterTools.keywordSearch(tag.name,keywords))
+					tagList.push(tag);
+			}
 		}
-		let total = serieList.length
-
-		serieList = serieList.map(function(serie){
+		let total = tagList.length
+		
+		tagList = tagList.map(function(tag){
 			return {
-				key: serie.sid,
-				name : serie.name,
-				karacount : serie.karacount,
-				link : filterTools.clear().addTag('serie',serie.sid,serie.name).getQuery().url,
-				height : 100 * serie.karacount / kmax
+				key: tag.tid,
+				name : tag.i18n[isoLanguages(i18n.language)] || (tag.i18n['eng'] || tag.name),
+				karacount : tag.karacount[tagsMap.serie.id],
+				link : filterTools.clear().addTag('serie',tag.tid,tag.slug).getQuery().url,
+				height : 100 * tag.karacount[tagsMap.serie.id] / kmax
 			};
 		})
 
@@ -96,7 +100,7 @@ class Page extends React.Component {
 					</div>
 				</div>
 
-				<DedicatedTagtList type="series" tags={serieList} pageSize={pageSize} page={page} orderBy={this.state.orderBy}/>
+				<DedicatedTagtList type="series" tags={tagList} pageSize={pageSize} page={page} orderBy={this.state.orderBy}/>
 
 				<Pagination
 					total={total}
