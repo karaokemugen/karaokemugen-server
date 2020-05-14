@@ -1,4 +1,4 @@
-import {buildTypeClauses, buildClauses, langSelector, db} from '../lib/dao/database';
+import {buildTypeClauses, buildClauses, db} from '../lib/dao/database';
 import {pg as yesql} from 'yesql';
 import { KaraParams } from '../lib/types/kara';
 import { DBKara, DBYear } from '../lib/types/database/kara';
@@ -40,7 +40,7 @@ export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 	}
 	if (params.from > 0) offsetClause = `OFFSET ${params.from} `;
 	if (params.size > 0) limitClause = `LIMIT ${params.size} `;
-	const query = sql.getAllKaras(filterClauses.sql, langSelector(params.lang), typeClauses, orderClauses, havingClause, limitClause, offsetClause, statsSelectClause, statsJoinClause);
+	const query = sql.getAllKaras(filterClauses.sql, typeClauses, orderClauses, havingClause, limitClause, offsetClause, statsSelectClause, statsJoinClause);
 	const res = await db().query(yesql(query)(filterClauses.params));
 	return res.rows;
 }

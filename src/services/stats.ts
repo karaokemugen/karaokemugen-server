@@ -46,14 +46,14 @@ export async function processStatsPayload(payload: any) {
 	}
 }
 
-export async function getFavoritesStats(filter: string, lang: string, from = 0, size = 0) {
-	return await getAllKaras(filter, lang, from, size, 'favorited');
+export async function getFavoritesStats(filter: string, from = 0, size = 0) {
+	return await getAllKaras(filter, from, size, 'favorited');
 }
 
-export async function getRequestedStats(filter: string, lang: string, from = 0, size = 0) {
-	return await getAllKaras(filter, lang, from, size, 'requested');
+export async function getRequestedStats(filter: string, from = 0, size = 0) {
+	return await getAllKaras(filter, from, size, 'requested');
 }
 
-export async function getPlayedStats(filter: string, lang: string, from = 0, size = 0) {
-	return await getAllKaras(filter, lang, from, size, 'played');
+export async function getPlayedStats(filter: string, from = 0, size = 0) {
+	return await getAllKaras(filter, from, size, 'played');
 }

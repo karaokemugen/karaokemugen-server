@@ -1,11 +1,10 @@
-import {getLang} from './middlewares/lang';
 import {getRawKara, getBaseStats, getKara, getAllKaras, getAllYears, newKaraIssue} from '../services/kara';
 import {getTags} from '../services/tag';
 import {getAllSeries} from '../services/series';
 import {getSettings} from '../lib/dao/database';
 import { Router } from 'express';
 import {getConfig} from '../lib/utils/config';
-import { postSuggestionToKaraBase } from "../lib/services/gitlab";
+import { postSuggestionToKaraBase } from '../lib/services/gitlab';
 
 export default function KSController(router: Router) {
 	router.route('/karas/lastUpdate')
@@ -19,9 +18,9 @@ export default function KSController(router: Router) {
 		});
 
 	router.route('/karas')
-		.get(getLang, async (req: any, res) => {
+		.get(async (req: any, res) => {
 			try {
-				const karas = await getAllKaras(req.query.filter,req.lang, req.query.from, req.query.size);
+				const karas = await getAllKaras(req.query.filter, req.query.from, req.query.size);
 				res.json(karas);
 			} catch(err) {
 				res.status(500).json(err);
@@ -36,33 +35,33 @@ export default function KSController(router: Router) {
 			}
 		});
 	router.route('/karas/search')
-		.post(getLang, async (req: any, res) => {
+		.post(async (req: any, res) => {
 			try {
-				const karas = await getAllKaras(req.body.filter, req.lang , req.body.from, req.body.size, 'search', req.body.q, req.body.compare, req.body.localKaras);
+				const karas = await getAllKaras(req.body.filter, req.body.from, req.body.size, 'search', req.body.q, req.body.compare, req.body.localKaras);
 				res.json(karas);
 			} catch(err) {
 				res.status(500).json(err);
 			}
 		})
-		.get(getLang, async (req: any, res) => {
+		.get(async (req: any, res) => {
 			try {
-				const karas = await getAllKaras(req.query.filter, req.lang, req.query.from, req.query.size, 'search', req.query.q);
+				const karas = await getAllKaras(req.query.filter, req.query.from, req.query.size, 'search', req.query.q);
 				res.json(karas);
 			} catch(err) {
 				res.status(500).json(err);
 			}
 		});
 	router.route('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})')
-		.get(getLang, async (req: any, res) => {
+		.get(async (req: any, res) => {
 			try {
-				const kara = await getKara(null, req.lang, null, null, 'kid', req.params.kid);
+				const kara = await getKara(null, null, null, 'kid', req.params.kid);
 				res.json(kara);
 			} catch(err) {
 				res.status(500).json(err);
 			}
 		});
 	router.route('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/raw')
-		.get(getLang, async (req: any, res) => {
+		.get(async (req: any, res) => {
 			try {
 				const kara = await getRawKara(req.params.kid);
 				res.json(kara);
@@ -71,7 +70,7 @@ export default function KSController(router: Router) {
 			}
 		});
 	router.route('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/problem')
-		.post(getLang, async (req: any, res) => {
+		.post(async (req: any, res) => {
 			try {
 				await newKaraIssue(req.params.kid, req.body.type, req.body.comment, req.body.username);
 				res.status(200).json();
@@ -80,16 +79,16 @@ export default function KSController(router: Router) {
 			}
 		});
 	router.route('/karas/recent')
-		.get(getLang, async (req: any, res) => {
+		.get(async (req: any, res) => {
 			try {
-				const karas = await getAllKaras(req.query.filter,req.lang, req.query.from, req.query.size,'recent');
+				const karas = await getAllKaras(req.query.filter, req.query.from, req.query.size,'recent');
 				res.json(karas);
 			} catch(err) {
 				res.status(500).json(err);
 			}
 		});
 	router.route('/karas/tags/:tagtype([0-9]+)')
-		.get(getLang, async (req: any, res) => {
+		.get(async (req: any, res) => {
 			try {
 				const tags = await getTags({filter: req.query.filter, type: req.params.tagtype, from: req.query.from, size: req.query.size});
 				res.json(tags);
@@ -98,7 +97,7 @@ export default function KSController(router: Router) {
 			}
 		});
 	router.route('/karas/tags')
-		.get(getLang, async (req: any, res) => {
+		.get(async (req: any, res) => {
 			try {
 				const tags = await getTags(({filter: req.query.filter, type: null, from: req.query.from, size: req.query.size}));
 				res.json(tags);
@@ -107,9 +106,9 @@ export default function KSController(router: Router) {
 			}
 		});
 	router.route('/karas/series')
-		.get(getLang, async (req: any, res) => {
+		.get(async (req: any, res) => {
 			try {
-				const series = await getAllSeries(req.query.filter, req.lang, req.query.from, req.query.size);
+				const series = await getAllSeries(req.query.filter, req.query.from, req.query.size);
 				res.json(series);
 			} catch(err) {
 				res.status(500).json(err);
@@ -143,12 +142,12 @@ export default function KSController(router: Router) {
 			const config = getConfig();
 			return res.json({config: {
 				Gitlab: {
-						Enabled: config.Gitlab.Enabled
-					},
+					Enabled: config.Gitlab.Enabled
+				},
 				KaraExplorer: {
-						LiveURL: config.KaraExplorer.LiveURL
-					}
+					LiveURL: config.KaraExplorer.LiveURL
 				}
+			}
 			});
 		});
 }

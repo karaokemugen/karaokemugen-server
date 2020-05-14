@@ -16,9 +16,8 @@ export async function getBaseStats() {
 	return await selectBaseStats();
 }
 
-export function formatKaraList(karaList: any[], from: number, count: number, lang: string): KaraList {
-	const langs = [lang, 'eng'];
-	const {i18n, data} = consolidateData(karaList, langs);
+export function formatKaraList(karaList: any[], from: number, count: number): KaraList {
+	const {i18n, data} = consolidateData(karaList);
 	return {
 		infos: {
 			count: +count,
@@ -44,11 +43,10 @@ export async function generate() {
 	}
 }
 
-export async function getKara(filter?: string, lang?: string, from = 0, size = 0, mode?: ModeParam, modeValue?: string) {
+export async function getKara(filter?: string, from = 0, size = 0, mode?: ModeParam, modeValue?: string) {
 	try {
 		const karas = await selectAllKaras({
 			filter: filter,
-			lang: lang,
 			from: +from,
 			size: +size,
 			mode: mode,
@@ -65,7 +63,7 @@ export async function getKara(filter?: string, lang?: string, from = 0, size = 0
 	}
 }
 
-export async function getAllKaras(filter?: string, lang?: string, from = 0, size = 0, mode?: ModeParam, modeValue?: string, compare?: CompareParam, localKarasObj?: any): Promise<KaraList> {
+export async function getAllKaras(filter?: string, from = 0, size = 0, mode?: ModeParam, modeValue?: string, compare?: CompareParam, localKarasObj?: any): Promise<KaraList> {
 	try {
 		// When compare is used because we're queried from KM App in order to tell which karaoke is missing or updated, we redefine from/size so we get absolutely all songs from database.
 		let trueFrom = from;
@@ -76,7 +74,6 @@ export async function getAllKaras(filter?: string, lang?: string, from = 0, size
 		}
 		let pl = await selectAllKaras({
 			filter: filter,
-			lang: lang,
 			from: +trueFrom,
 			size: +trueSize,
 			mode: mode,
@@ -112,7 +109,7 @@ export async function getAllKaras(filter?: string, lang?: string, from = 0, size
 				pl = pl.slice(0, +size || pl.length);
 			}
 		}
-		return formatKaraList(pl, +from, count, lang);
+		return formatKaraList(pl, +from, count);
 	} catch(err) {
 		console.log(err);
 		logger.error(`[GetAllKaras] ${err}`);
@@ -168,7 +165,7 @@ export async function newKaraIssue(kid: string, type: 'quality' | 'time', commen
 		modeValue: kid
 	});
 	const kara = karas[0];
-	const karaName = `${kara.langs[0].name.toUpperCase()} - ${kara.serie[0] || kara.singers[0].name} - ${kara.songtypes[0].name}${kara.songorder || ''} - ${kara.title}`;
+	const karaName = `${kara.langs[0].name.toUpperCase()} - ${kara.series[0].name || kara.singers[0].name} - ${kara.songtypes[0].name}${kara.songorder || ''} - ${kara.title}`;
 	const conf = getConfig();
 	const issueTemplate = type === 'quality' ? conf.Gitlab.IssueTemplate.KaraProblem.Quality : conf.Gitlab.IssueTemplate.KaraProblem.Time;
 	let title = issueTemplate.Title || '$kara';
