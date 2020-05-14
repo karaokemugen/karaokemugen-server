@@ -9,7 +9,7 @@ import { createImagePreviews } from '../lib/utils/previews';
 import logger from '../lib/utils/logger';
 import { getConfig, resolvedPathRepos } from '../lib/utils/config';
 import { gitlabPostNewIssue } from '../lib/services/gitlab';
-import { asyncReadFile } from '../lib/utils/files';
+import { asyncReadFile, sanitizeFile } from '../lib/utils/files';
 import { resolve, basename } from 'path';
 
 export async function getBaseStats() {
@@ -126,7 +126,7 @@ export async function getRawKara(kid: string) {
 		kara: resolve(resolvedPathRepos('Karas')[0], kara.karafile),
 		series: kara.series.map(s => {
 			return s
-				? resolve(resolvedPathRepos('Series')[0], `${s.name}.series.json`)
+				? resolve(resolvedPathRepos('Series')[0], `${sanitizeFile(s.name)}.series.json`)
 				: null;
 		}),
 		tags: kara.tagfiles.map(f => {
