@@ -124,9 +124,9 @@ export async function getRawKara(kid: string) {
 	}))[0];
 	const files = {
 		kara: resolve(resolvedPathRepos('Karas')[0], kara.karafile),
-		series: kara.seriefiles.map(f => {
-			return f
-				? resolve(resolvedPathRepos('Series')[0], f)
+		series: kara.series.map(s => {
+			return s
+				? resolve(resolvedPathRepos('Series')[0], `${s.name}.series.json`)
 				: null;
 		}),
 		tags: kara.tagfiles.map(f => {
