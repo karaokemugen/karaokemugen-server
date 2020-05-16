@@ -45,7 +45,7 @@ export async function editKara(kara: Kara): Promise<string> {
 		}
 
 		// Post issue to gitlab
-		const karaName = `${newKara.data.langs[0].name.toUpperCase()} - ${newKara.data.series[0] || newKara.data.singers[0].name} - ${newKara.data.songtypes[0].name}${newKara.data.order || ''} - ${newKara.data.title}`;
+		const karaName = `${newKara.data.langs[0].name.toUpperCase()} - ${newKara.data.series[0]?.name || newKara.data.singers[0].name} - ${newKara.data.songtypes[0].name}${newKara.data.order || ''} - ${newKara.data.title}`;
 		const conf = getConfig();
 		let title = conf.Gitlab.IssueTemplate.Edit.Title || 'Edited kara: $kara';
 		logger.debug('[GitLab] Kara: '+JSON.stringify(newKara.data, null, 2));
