@@ -86,45 +86,47 @@ class Karadetail extends React.Component {
 		let languages = kara.langs.map((v,i) => {
 			let name = getI18nTagname(v);
 			let url = quickTagUrl('language',v.tid, name);
-			return <Link href={url} key={'language'+i}><a data-type="language" data-id={v.tid}>{icons.language} {getI18nTagname(v)}</a></Link>
+			return <Link href={url} key={'language'+i}><a data-type="language" data-id={v.tid}>{icons.language} {name}</a></Link>
 		});
 		let songtypes = kara.songtypes.map((v,i) => {
 			let name = getI18nTagname(v);
 			let url = quickTagUrl('songtype',v.tid, name);
-			return <Link href={url} key={'songtype_'+i}><a data-type="songtype" data-id={v.tid}>{icons.songtype} {getI18nTagname(v)} {kara.songorder}</a></Link>
+			return <Link href={url} key={'songtype_'+i}><a data-type="songtype" data-id={v.tid}>{icons.songtype} {name} {kara.songorder}</a></Link>
 		});
 		let miscs = kara.misc.map((v,i) => {
 			let name = getI18nTagname(v);
 			let url = quickTagUrl('misc',v.tid, name);
-			return <Link href={url} key={'misc_'+i}><a data-type="misc" data-id={v.tid}>{icons.misc} {getI18nTagname(v)}</a></Link>
+			return <Link href={url} key={'misc_'+i}><a data-type="misc" data-id={v.tid}>{icons.misc} {name}</a></Link>
 		});
 		let groups = kara.groups.map((v,i) => {
 			let name = getI18nTagname(v);
 			let url = quickTagUrl('group',v.tid, name);
-			return <Link href={url} key={'group_'+i}><a data-type="group" data-id={v.tid}>{icons.group} {getI18nTagname(v)}</a></Link>
+			return <Link href={url} key={'group_'+i}><a data-type="group" data-id={v.tid}>{icons.group} {name}</a></Link>
 		});
 		let families = kara.families.map((v,i) => {
 			let name = getI18nTagname(v);
 			let url = quickTagUrl('family',v.tid, name);
-			return <Link href={url} key={'family_'+i}><a data-type="family" data-id={v.tid}>{icons.family} {getI18nTagname(v)}</a></Link>
+			return <Link href={url} key={'family_'+i}><a data-type="family" data-id={v.tid}>{icons.family} {name}</a></Link>
 		});
 		let origins = kara.origins.map((v,i) => {
 			let name = getI18nTagname(v);
 			let url = quickTagUrl('origin',v.tid, name);
-			return <Link href={url} key={'origin_'+i}><a data-type="origin" data-id={v.tid}>{icons.origin} {getI18nTagname(v)}</a></Link>
+			return <Link href={url} key={'origin_'+i}><a data-type="origin" data-id={v.tid}>{icons.origin} {name}</a></Link>
 		});
 		let genres = kara.genres.map((v,i) => {
 			let name = getI18nTagname(v);
 			let url = quickTagUrl('genre',v.tid, name);
-			return <Link href={url} key={'genre_'+i}><a data-type="genre" data-id={v.tid}>{icons.genre} {getI18nTagname(v)}</a></Link>
+			return <Link href={url} key={'genre_'+i}><a data-type="genre" data-id={v.tid}>{icons.genre} {name}</a></Link>
 		});
 		let platforms = kara.platforms.map((v,i) => {
-			let url = quickTagUrl('platform',v.tid, v.name);
-			return <Link href={url} key={'platform_'+i}><a data-type="platform" data-id={v.tid}>{icons.platform} {v.name}</a></Link>
+			let name = getI18nTagname(v);
+			let url = quickTagUrl('platform',v.tid, name);
+			return <Link href={url} key={'platform_'+i}><a data-type="platform" data-id={v.tid}>{icons.platform} {name}</a></Link>
 		});
 		let series = kara.series.map((v,i) => {
-			let url = quickTagUrl('serie',v.tid, v.name);
-			return <Link href={url} key={'serie_'+i}><a data-type="serie" data-id={v.tid}>{icons.serie} {v.name}</a></Link>
+			let name = getI18nTagname(v);
+			let url = quickTagUrl('serie',v.tid, name);
+			return <Link href={url} key={'serie_'+i}><a data-type="serie" data-id={v.tid}>{icons.serie} {name}</a></Link>
 		});
 
 		let year =kara.year ? <Link href={quickTagUrl('year',kara.year)} key="year"><a data-type="year" ><i className="fa fa-calendar"></i> {kara.year}</a></Link> : null;

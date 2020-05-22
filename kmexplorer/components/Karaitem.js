@@ -84,12 +84,14 @@ class Karaitem extends React.Component {
 			return <Link href={url} key={'genre_'+i}><a data-type="genre" data-id={v.tid}>{icons.genre} {name}</a></Link>
 		});
 		let platforms = kara.platforms.map((v,i) => {
-			let url = quickTagUrl('platform',v.tid, v.name);
-			return <Link href={url} key={'platform_'+i}><a data-type="platform" data-id={v.tid}>{icons.platform} {v.name}</a></Link>
+			let name = getI18nTagname(v);
+			let url = quickTagUrl('platform',v.tid, name);
+			return <Link href={url} key={'platform_'+i}><a data-type="platform" data-id={v.tid}>{icons.platform} {name}</a></Link>
 		});
 		let series = kara.series.map((v,i) => {
-			let url = quickTagUrl('serie',v.tid, v.name);
-			return <Link href={url} key={'serie_'+i}><a data-type="serie" data-id={v.tid}>{v.name}</a></Link>
+			let name = getI18nTagname(v);
+			let url = quickTagUrl('serie',v.tid, name);
+			return <Link href={url} key={'serie_'+i}><a data-type="serie" data-id={v.tid}>{name}</a></Link>
 		});
 
 		var captionStyle = null;
