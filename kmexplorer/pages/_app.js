@@ -46,28 +46,24 @@ class MyApp extends App {
 		if(response.status===200) {
 			await localForage.setItem('config',response.data.config)
 		}
-		if(this.state.tags===null)
-		{
+		if(this.state.tags === null) {
 			localForage.config({
 				name        : 'KaraokeXplorer',
 				description : 'KaraokeXplorer tags cache'
 			});
 			var tag_uptodate = false;
 			var response = await axios.get(API_URL+'/api/karas/lastUpdate')
-			if(response.status===200 && response.data!==null)
-			{
+			if(response.status===200 && response.data !== null) {
 				var tag_lastupdate = await localForage.getItem('tag_lastupdate');
-				tag_uptodate = typeof(tag_lastupdate) === 'object' && tag_lastupdate === new Date(response.data).getTime();
+				tag_uptodate = tag_lastupdate === new Date(response.data).getTime();
 				if (!tag_uptodate)
 					await localForage.setItem('tag_lastupdate', new Date(response.data).getTime());
 			}
 
 			var stats = await localForage.getItem('stats');
-			if(stats===null || stats===undefined || !tag_uptodate)
-			{
+			if(stats===null || stats===undefined || !tag_uptodate) {
 				var response = await axios.get(API_URL+'/api/karas/stats')
-				if(response.status===200 && response.data!==null)
-				{
+				if(response.status===200 && response.data!==null) {
 					stats = response.data;
 					stats.lastGeneration = await localForage.getItem('tag_lastupdate');
 				}
@@ -93,13 +89,11 @@ class MyApp extends App {
 
 			// Récupération des années si nécéssaire
 			var years = await localForage.getItem('years');
-			if(years===null || !tag_uptodate)
-			{
+			if(years===null || !tag_uptodate) {
 				years = {};
 				var response = await axios.get(API_URL+'/api/karas/years')
-				if(response.status===200 && response.data!==null && response.data)
-				{
-					response.data.map((v,i)=>{
+				if(response.status===200 && response.data!==null && response.data) {
+					response.data.map(v => {
 						years[v.year] = v;
 					});
 				}
