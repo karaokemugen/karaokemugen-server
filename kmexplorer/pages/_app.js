@@ -76,38 +76,15 @@ class MyApp extends App {
 			if(stats!=null)
 				this.setState({stats:stats});
 
-			// Recupération des Tags si nécéssaire
-			var lsTagsToRetrieve = [
-				{code:'serie', id:tagsMap.serie.id},
-				{code:'singer', id:tagsMap.singer.id},
-				{code:'songtype', id:tagsMap.songtype.id},
-				{code:'creator', id:tagsMap.creator.id},
-				{code:'language', id:tagsMap.language.id},
-				{code:'author', id:tagsMap.author.id},
-				{code:'misc', id:tagsMap.misc.id},
-				{code:'group', id:tagsMap.group.id},
-				{code:'songwriter', id:tagsMap.songwriter.id},
-				{code:'group', id:tagsMap.group.id},
-				{code:'family', id:tagsMap.family.id},
-				{code:'origin', id:tagsMap.origin.id},
-				{code:'genre', id:tagsMap.genre.id},
-				{code:'platform', id:tagsMap.platform.id},
-			]
 			var tags = await localForage.getItem('tags');
-			if(tags===null || !tag_uptodate)
-			{
+			if(tags===null || !tag_uptodate) {
 				tags = {};
-				for(let i in lsTagsToRetrieve)
-				{
-					let el = lsTagsToRetrieve[i];
-					var response = await axios.get(API_URL+'/api/karas/tags/'+el.id)
-					if(response.status===200 && response.data!==null && response.data.content)
-					{
-						response.data.content.map((v,i)=>{
-							v.slug = filterTools.normalizeString(v.name)
-							tags[''+v.tid] = v;
-						});
-					}
+				var response = await axios.get(API_URL+'/api/karas/tags')
+				if(response.status===200 && response.data!==null && response.data.content) {
+					response.data.content.map(v => {
+						v.slug = filterTools.normalizeString(v.name)
+						tags[''+v.tid] = v;
+					});
 				}
 				localForage.setItem('tags',tags)
 			}
