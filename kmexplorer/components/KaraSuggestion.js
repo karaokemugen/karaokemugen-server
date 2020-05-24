@@ -3,6 +3,8 @@ import { i18n, withTranslation } from '../i18n'
 import icons from './Icons';
 import axios from 'axios'
 import RuntimeConfig from '../utils/RuntimeConfig';
+import isoLanguages from '../components/isoLanguages';
+
 const API_URL = RuntimeConfig.API_URL;
 
 class KaraSuggestion extends React.Component {
@@ -13,7 +15,7 @@ class KaraSuggestion extends React.Component {
 
 	async componentDidMount() {
 		var response = await axios.get(API_URL+'/api/karas/tags/3');
-		var songtypes = response.data.content.filter(tag => tag.types.includes(3)).map(tag => tag.name)
+		var songtypes = response.data.content.map(tag => tag.i18n[isoLanguages(i18n.language)] || (tag.i18n['eng'] || tag.name))
 		this.setState({songtypes: songtypes, songtype: songtypes[0]});
 	}
 
