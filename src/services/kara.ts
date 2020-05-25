@@ -165,7 +165,10 @@ export async function newKaraIssue(kid: string, type: 'quality' | 'time', commen
 		modeValue: kid
 	});
 	const kara = karas[0];
-	const karaName = `${kara.langs[0].name.toUpperCase()} - ${kara.series[0].name || kara.singers[0].name} - ${kara.songtypes[0].name}${kara.songorder || ''} - ${kara.title}`;
+	let singerOrSerie = kara.series.length > 0 && kara.series[0].name || (kara.singers.length > 0 && kara.singers[0].name) || '';
+	let langs = (kara.langs.length > 0 && kara.langs[0].name.toUpperCase()) || '';
+	let songtype = (kara.songtypes.length > 0 && kara.songtypes[0].name) || '';
+	const karaName = `${langs} - ${singerOrSerie} - ${songtype}${kara.songorder || ''} - ${kara.title}`;
 	const conf = getConfig();
 	const issueTemplate = type === 'quality' ? conf.Gitlab.IssueTemplate.KaraProblem.Quality : conf.Gitlab.IssueTemplate.KaraProblem.Time;
 	let title = issueTemplate.Title || '$kara';
