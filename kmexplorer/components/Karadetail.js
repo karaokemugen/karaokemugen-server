@@ -198,7 +198,10 @@ class Karadetail extends React.Component {
 				</dl> : null}
 				<dl key="files" className="files">
 					<dd key="kara" data-type="kara"><a href={`${API_URL}/downloads/karaokes/${encodeURIComponent(kara.karafile)}`}>{icons.karaFile} {i18n.t('kara.karafile')}</a></dd>
-					<dd key="media" data-type="media"><a href={`${API_URL}/downloads/medias/${encodeURIComponent(kara.mediafile)}`}>{icons.mediaFile} {i18n.t('kara.mediafile')}</a></dd>
+					{this.state.liveURL ?
+						<dd key="media" data-type="media"><a href={`${API_URL}/downloads/medias/${encodeURIComponent(kara.mediafile)}`}>{icons.mediaFile} {i18n.t('kara.mediafile')}</a></dd> :
+						null
+					}
 					<dd key="lyrics" data-type="lyrics"><a href={`${API_URL}/downloads/lyrics/${encodeURIComponent(kara.subfile)}`} download>{icons.lyricsFile} {i18n.t('kara.subfile')}</a></dd>
 					{kara.tagfiles && kara.tagfiles.length > 0 ? 
 						<dd key="tags" data-type="tags">
