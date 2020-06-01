@@ -23,8 +23,10 @@ class Karadetail extends React.Component {
 	}
 
 	async componentDidMount(){
-		this.setState({gitlabEnabled: (await localForage.getItem('config')).Gitlab.Enabled, 
-			liveURL: (await localForage.getItem('config')).KaraExplorer.LiveURL});
+		const config = await localForage.getItem('config');
+		this.setState({gitlabEnabled: config.Gitlab.Enabled, 
+			liveURL: config.KaraExplorer.LiveURL,
+			mediaLinks: config.KaraExplorer.MediaLinks});
 	}
 
 	refreshList(event) {
@@ -198,7 +200,7 @@ class Karadetail extends React.Component {
 				</dl> : null}
 				<dl key="files" className="files">
 					<dd key="kara" data-type="kara"><a href={`${API_URL}/downloads/karaokes/${encodeURIComponent(kara.karafile)}`}>{icons.karaFile} {i18n.t('kara.karafile')}</a></dd>
-					{this.state.liveURL ?
+					{this.state.mediaLinks ?
 						<dd key="media" data-type="media"><a href={`${API_URL}/downloads/medias/${encodeURIComponent(kara.mediafile)}`}>{icons.mediaFile} {i18n.t('kara.mediafile')}</a></dd> :
 						null
 					}

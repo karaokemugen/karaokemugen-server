@@ -35,6 +35,7 @@ export interface Config {
 		Host: string
 		Path: string
 		LiveURL: string
+		MediaLinks: boolean
 	}
 	Gitlab?: {
 		Enabled?: boolean,

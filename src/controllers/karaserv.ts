@@ -145,7 +145,8 @@ export default function KSController(router: Router) {
 					Enabled: config.Gitlab.Enabled
 				},
 				KaraExplorer: {
-					LiveURL: config.KaraExplorer.LiveURL
+					LiveURL: config.KaraExplorer.LiveURL,
+					MediaLinks: config.KaraExplorer.MediaLinks
 				}
 			}
 			});

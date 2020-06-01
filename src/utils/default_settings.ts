@@ -80,7 +80,8 @@ export const defaults: Config = {
 		Host: 'localhost',
 		Port: 1351,
 		Path: '/base',
-		LiveURL: 'https://live.karaokes.moe'
+		LiveURL: 'https://live.karaokes.moe',
+		MediaLinks: true
 	},
 	Gitlab: {
 		IssueTemplate: {

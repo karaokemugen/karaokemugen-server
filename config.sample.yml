@@ -37,6 +37,7 @@ KaraExplorer:
   Host: localhost
   Path: /base
   LiveURL: https://live.karaokes.moe
+  MediaLinks: true
 Import:
   Host: localhost
   Path: /import
