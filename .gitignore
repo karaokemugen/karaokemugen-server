@@ -17,14 +17,14 @@ database.json
 sftp-config.json
 bin/
 localtunnel-server/
-kmexplorer/node_modules
-kmexplorer/build
+kmexplorer.old/node_modules
+kmexplorer.old/build
 app/
 logs/
 !app/avatars/blank.png
-!kmexplorer/src/app
+!kmexplorer.old/src/app
 
-kmexplorer/\.next/
+kmexplorer.old/\.next/
 kmimport/build
 
 dist/
