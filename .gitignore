@@ -27,4 +27,6 @@ logs/
 kmexplorer.old/\.next/
 kmimport/build
 
+kmexplorer/.nuxt
+
 dist/

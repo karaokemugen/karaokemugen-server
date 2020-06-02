@@ -21,7 +21,7 @@ import helmet from 'helmet';
 import compression from 'compression';
 import { getState } from './utils/state';
 import { initWS } from './lib/utils/ws';
-import NuxtConfig from '../nuxt.config';
+import { NuxtConfig } from '../kmexplorer/nuxt.config';
 import { Nuxt, Builder } from 'nuxt';
 
 /**

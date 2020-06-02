@@ -1,0 +1,13 @@
+{
+  "name": "km-explorer",
+  "private": true,
+  "version": "1.0.0",
+  "dependencies": {
+    "@nuxtjs/axios": "^5.10.3",
+    "nuxt": "^2.12.2"
+  },
+  "devDependencies": {
+    "@nuxt/typescript-build": "^1.0.1",
+    "ts-loader": "^7.0.5"
+  }
+}
