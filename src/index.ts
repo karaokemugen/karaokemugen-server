@@ -11,7 +11,6 @@ import {initFavorites} from './services/favorites';
 import {createUser, changePassword} from './services/user';
 import sudoBlock from 'sudo-block';
 import {asyncCheckOrMkdir} from './lib/utils/files';
-import {kmExplorerStart} from './services/kmExplorer';
 import findRemoveSync from 'find-remove';
 import { setState, getState } from './utils/state';
 import { createImagePreviews } from './lib/utils/previews';
@@ -118,12 +117,6 @@ async function main() {
 
 	logger.debug(`[Launcher] Port ${port} is available`);
 	const inits = [];
-
-	kmExplorerStart({
-		api: `${conf.API.Secure ? 'https://' : 'http://'}${conf.API.Host}${conf.API.Port ? ':' + conf.API.Port : ''}`,
-		port: conf.KaraExplorer.Port,
-		path: conf.KaraExplorer.Path,
-	});
 
 	// Clean temp periodically of files older than two hours
 	setInterval(findRemoveSync.bind(this, resolve(dataPath, conf.System.Path.Temp), {age: {seconds: 7200}}), 2 * 60 * 60 * 1000);

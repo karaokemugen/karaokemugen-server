@@ -12,22 +12,23 @@ import shortenerController from './controllers/shortener';
 import userController from './controllers/user';
 import favoritesController from './controllers/favorites';
 import {configurePassport} from './lib/utils/passport_manager';
-import {getConfig, resolvedPathPreviews, resolvedPathAvatars, resolvedPathRepos} from './lib/utils/config';
+import {getConfig, resolvedPathAvatars, resolvedPathRepos} from './lib/utils/config';
 import range from 'express-range';
 import vhost from 'vhost';
 //import {getInstanceRoom} from './dao/proxy'; For KM instances hosting
-import proxy from 'express-http-proxy';
 import {createServer} from 'http';
 import helmet from 'helmet';
 import compression from 'compression';
 import { getState } from './utils/state';
 import { initWS } from './lib/utils/ws';
+import NuxtConfig from '../nuxt.config';
+import { Nuxt, Builder } from 'nuxt';
 
 /**
  * Starting express which will serve our app.
  * Serving this app means it has to be built beforehand.
  */
-export function initFrontend(listenPort: number) {
+export async function initFrontend(listenPort: number) {
 
 	const conf = getConfig();
 	const state = getState();
@@ -107,13 +108,26 @@ export function initFrontend(listenPort: number) {
 	if (conf.KaraExplorer.Enabled) {
 		app.use(vhost(`${conf.KaraExplorer.Host}`, APILocater));
 		app.use(vhost(`${conf.KaraExplorer.Host}`, KMExplorer));
-		KMExplorer.use('/previews', express.static(resolvedPathPreviews()));
+		/*KMExplorer.use('/previews', express.static(resolvedPathPreviews()));
 		KMExplorer.use(conf.KaraExplorer.Path, proxy(`http://127.0.0.1:${conf.KaraExplorer.Port}`));
 		// fix bad behavior of next-i18next - language file are not prefixed correctly
-		KMExplorer.get('/static/locales/*', (req, res) => {
+		KMExplorer.get('/static/locales/!*', (req, res) => {
 			res.redirect(conf.KaraExplorer.Path + req.url);
 			return;
-		});
+		});*/
+
+		process.env.DEBUG = 'nuxt:*'
+
+		NuxtConfig.dev = process.env.NODE_ENV !== 'production';
+		console.log(JSON.stringify(NuxtConfig));
+		const nuxt = new Nuxt(NuxtConfig);
+		await nuxt.ready();
+		if (NuxtConfig.dev) {
+			const builder = new Builder(nuxt)
+			await builder.build()
+		}
+
+		KMExplorer.use(nuxt.render);
 	}
 	if (conf.API.Host !== conf.KaraExplorer.Host && conf.KaraExplorer.Path && conf.KaraExplorer.Path !== '/') {
 		KMExplorer.get('/', (_, res) => {
