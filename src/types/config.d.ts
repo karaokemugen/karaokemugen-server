@@ -31,7 +31,6 @@ export interface Config {
 	}
   	KaraExplorer: {
 		Enabled: boolean
-		Port: number
 		Host: string
 		Path: string
 		LiveURL: string

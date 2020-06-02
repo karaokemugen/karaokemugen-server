@@ -2,6 +2,9 @@
   "name": "km-explorer",
   "private": true,
   "version": "1.0.0",
+  "scripts": {
+    "build": "nuxt build"
+  },
   "dependencies": {
     "@nuxtjs/axios": "^5.10.3",
     "nuxt": "^2.12.2"

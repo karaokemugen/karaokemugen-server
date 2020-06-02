@@ -3,7 +3,7 @@ import { Config } from '../types/config';
 // Karaoke Mugen default configuration file
 
 // this file is overwritten during updates, editing is ill-advised .
-// you can change the default settings by using config.ini to bypass the default value .
+// you can change the default settings by using config.yml to bypass the default value .
 export const defaults: Config = {
 	App: {
 		JwtSecret: 'Change me',
@@ -78,8 +78,7 @@ export const defaults: Config = {
 	KaraExplorer: {
 		Enabled: true,
 		Host: 'localhost',
-		Port: 1351,
-		Path: '/base',
+		Path: '/base/',
 		LiveURL: 'https://live.karaokes.moe',
 		MediaLinks: true
 	},
@@ -260,4 +259,24 @@ export const configConstraints = {
 	'System.Binaries.ffmpeg': { presence: {allowEmpty: false}},
 	'Shortener.ExpireTimeDays': { numericality: { greaterThan: 0 }},
 	'Frontend.Port': { numericality: true}
+};
+
+export let NuxtConfig = {
+	mode: 'universal',
+	dev: false,
+	/*
+    ** Nuxt.js dev-modules
+    */
+	buildModules: [
+		'@nuxt/typescript-build'
+	],
+	modules: [
+		// Doc: https://axios.nuxtjs.org/usage
+		'@nuxtjs/axios',
+	],
+	router: {
+		base: '/base/'
+	},
+	modulesDir: ['../node_modules/'],
+	rootDir: 'kmexplorer/'
 };

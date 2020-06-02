@@ -21,7 +21,7 @@ import helmet from 'helmet';
 import compression from 'compression';
 import { getState } from './utils/state';
 import { initWS } from './lib/utils/ws';
-import { NuxtConfig } from '../kmexplorer/nuxt.config';
+import { NuxtConfig } from './utils/default_settings';
 import { Nuxt, Builder } from 'nuxt';
 
 /**
@@ -41,10 +41,9 @@ export async function initFrontend(listenPort: number) {
 	const APILocater = express();
 
 	app.set('trust proxy', (ip: string) => {
-		if (ip === '127.0.0.1' ||
-			ip === '::ffff:127.0.0.1'
-	 	) return true;
-		return false;
+		return ip === '127.0.0.1' ||
+			ip === '::ffff:127.0.0.1';
+
 	});
 	app.use(helmet());
 	app.use(compression());
@@ -108,18 +107,10 @@ export async function initFrontend(listenPort: number) {
 	if (conf.KaraExplorer.Enabled) {
 		app.use(vhost(`${conf.KaraExplorer.Host}`, APILocater));
 		app.use(vhost(`${conf.KaraExplorer.Host}`, KMExplorer));
-		/*KMExplorer.use('/previews', express.static(resolvedPathPreviews()));
-		KMExplorer.use(conf.KaraExplorer.Path, proxy(`http://127.0.0.1:${conf.KaraExplorer.Port}`));
-		// fix bad behavior of next-i18next - language file are not prefixed correctly
-		KMExplorer.get('/static/locales/!*', (req, res) => {
-			res.redirect(conf.KaraExplorer.Path + req.url);
-			return;
-		});*/
-
-		process.env.DEBUG = 'nuxt:*'
 
 		NuxtConfig.dev = process.env.NODE_ENV !== 'production';
-		console.log(JSON.stringify(NuxtConfig));
+		NuxtConfig.router.base = conf.KaraExplorer.Path;
+		logger.debug(`Starting Nuxt with config ${JSON.stringify(NuxtConfig)}`);
 		const nuxt = new Nuxt(NuxtConfig);
 		await nuxt.ready();
 		if (NuxtConfig.dev) {

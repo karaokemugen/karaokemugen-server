@@ -33,8 +33,6 @@ Shortener:
 Stats:
   Enabled: true
 KaraExplorer:
-  Port: 1351
-  Host: localhost
   Path: /base
   LiveURL: https://live.karaokes.moe
   MediaLinks: true
