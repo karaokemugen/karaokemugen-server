@@ -1,16 +1,22 @@
 {
   "name": "km-explorer",
+  "//": "The nuxt.config.js is at /src/utils/default_settings.ts",
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "build": "nuxt build"
+    "build": "echo \"Go back, you are not in the right folder (and do yarn buildKmexplorer) :)\"",
+    "start": "echo \"Go back, you are not in the right folder :)\""
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.10.3",
-    "nuxt": "^2.12.2"
+    "bulma": "^0.8.2",
+    "nuxt": "^2.12.2",
+    "nuxt-i18n": "^6.12.2"
   },
   "devDependencies": {
     "@nuxt/typescript-build": "^1.0.1",
+    "node-sass": "^4.14.1",
+    "sass-loader": "^8.0.2",
     "ts-loader": "^7.0.5"
   }
 }

@@ -21,14 +21,13 @@ import helmet from 'helmet';
 import compression from 'compression';
 import { getState } from './utils/state';
 import { initWS } from './lib/utils/ws';
-import { NuxtConfig } from './utils/default_settings';
-import { Nuxt, Builder } from 'nuxt';
+import {startKMExplorer} from "./services/kmexplorer";
 
 /**
  * Starting express which will serve our app.
  * Serving this app means it has to be built beforehand.
  */
-export async function initFrontend(listenPort: number) {
+export function initFrontend(listenPort: number) {
 
 	const conf = getConfig();
 	const state = getState();
@@ -43,7 +42,6 @@ export async function initFrontend(listenPort: number) {
 	app.set('trust proxy', (ip: string) => {
 		return ip === '127.0.0.1' ||
 			ip === '::ffff:127.0.0.1';
-
 	});
 	app.use(helmet());
 	app.use(compression());
@@ -108,17 +106,9 @@ export async function initFrontend(listenPort: number) {
 		app.use(vhost(`${conf.KaraExplorer.Host}`, APILocater));
 		app.use(vhost(`${conf.KaraExplorer.Host}`, KMExplorer));
 
-		NuxtConfig.dev = process.env.NODE_ENV !== 'production';
-		NuxtConfig.router.base = conf.KaraExplorer.Path;
-		logger.debug(`Starting Nuxt with config ${JSON.stringify(NuxtConfig)}`);
-		const nuxt = new Nuxt(NuxtConfig);
-		await nuxt.ready();
-		if (NuxtConfig.dev) {
-			const builder = new Builder(nuxt)
-			await builder.build()
-		}
-
-		KMExplorer.use(nuxt.render);
+		startKMExplorer().then(nuxt => {
+			KMExplorer.use(nuxt.render);
+		});
 	}
 	if (conf.API.Host !== conf.KaraExplorer.Host && conf.KaraExplorer.Path && conf.KaraExplorer.Path !== '/') {
 		KMExplorer.get('/', (_, res) => {

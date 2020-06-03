@@ -8,7 +8,9 @@
    "license": "MIT",
    "homepage": "https://mugen.karaokes.moe",
    "private": true,
-   "workspaces": ["kmimport", "kmexplorer"],
+   "workspaces": {
+      "packages": ["kmexplorer", "kmimport"]
+   },
    "scripts": {
       "prestart": "node node_modules/db-migrate/bin/db-migrate sync [all] --config app/database.json",
       "start": "ts-node src/index.ts --",
@@ -20,7 +22,7 @@
       "build": "npx rimraf \"dist\" && tsc --build",
       "buildAll": "yarn build && yarn buildKmimport && yarn buildKmexplorer",
       "buildKmimport": "cd kmimport && yarn build",
-      "buildKmexplorer": "cd kmexplorer && npx rimraf \".nuxt\" && yarn build",
+      "buildKmexplorer": "npx rimraf \"kmexplorer/.nuxt\" && ts-node src/index.ts --build",
       "pull": "git pull && git submodule sync --recursive && git submodule update --init --recursive"
    },
    "bugs": {

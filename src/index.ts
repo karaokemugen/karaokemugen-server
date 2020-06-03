@@ -16,6 +16,7 @@ import { setState, getState } from './utils/state';
 import { createImagePreviews } from './lib/utils/previews';
 import { getAllKaras, generate } from './services/kara';
 import { initMailer } from './utils/mailer';
+import {buildKMExplorer} from "./services/kmexplorer";
 
 const pjson = require('../package.json');
 const appPath = join(__dirname,'../');
@@ -107,6 +108,11 @@ async function main() {
 		exit(0);
 	}
 
+	if (argv.build) {
+		await buildKMExplorer();
+		exit(0);
+	}
+
 	const port = await detect(+argv.port || conf.Frontend.Port);
 
 	if (port !== conf.Frontend.Port) setConfig({
@@ -147,5 +153,6 @@ function parseArgs() {
 		.option('--createPreviews', 'generate image previews')
 		.option('--createAdmin [user],[password]', 'Create a new admin user', login)
 		.option('--changePassword [user],[password]', 'Change a user password', login)
+		.option('--build', 'Build KMExplorer (required in production environments)')
 		.parse(argv);
 }

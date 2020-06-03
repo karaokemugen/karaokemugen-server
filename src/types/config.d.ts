@@ -35,6 +35,8 @@ export interface Config {
 		Path: string
 		LiveURL: string
 		MediaLinks: boolean
+		Secure: boolean
+		NuxtOverrides?: any
 	}
 	Gitlab?: {
 		Enabled?: boolean,

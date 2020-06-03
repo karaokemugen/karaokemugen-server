@@ -80,7 +80,8 @@ export const defaults: Config = {
 		Host: 'localhost',
 		Path: '/base/',
 		LiveURL: 'https://live.karaokes.moe',
-		MediaLinks: true
+		MediaLinks: true,
+		Secure: true
 	},
 	Gitlab: {
 		IssueTemplate: {
@@ -270,13 +271,51 @@ export let NuxtConfig = {
 	buildModules: [
 		'@nuxt/typescript-build'
 	],
+
 	modules: [
 		// Doc: https://axios.nuxtjs.org/usage
 		'@nuxtjs/axios',
+		// Doc: https://nuxt-community.github.io/nuxt-i18n
+		'nuxt-i18n'
 	],
+
+	axios: {
+		baseURL: 'http://localhost:1350',
+		https: false
+	},
+
 	router: {
 		base: '/base/'
 	},
+
+	css: [
+		{src: '~/assets/main.scss', lang: 'scss'}
+	],
+
+	i18n: {
+		locales: [
+			{
+				code: 'eng',
+				name: 'English',
+				iso: 'en',
+				file: 'eng.ts'
+			},
+			{
+				code: 'fre',
+				name: 'Français',
+				iso: 'fr',
+				file: 'fre.ts'
+			}
+		],
+		baseUrl: 'http://localhost:1350/base',
+		seo: true,
+		lazy: true,
+		defaultLocale: 'fre',
+		strategy: 'no_prefix',
+		langDir: 'lang/',
+		vuex: false
+	},
+
 	modulesDir: ['../node_modules/'],
 	rootDir: 'kmexplorer/'
 };
