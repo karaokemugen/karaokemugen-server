@@ -104,6 +104,9 @@ export interface Config {
 		Password?: string,
 		From?: string,
 		FromMail?: string
+	},
+	Online: {
+		Stats?: boolean
 	}
 }
 
