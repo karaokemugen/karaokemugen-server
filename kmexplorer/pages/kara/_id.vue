@@ -1,37 +1,78 @@
 <template>
-    <i18n path="kara.phrase" tag="h1">
-        <template v-slot:karaoke>
-            {{ karaoke.title }}
-        </template>
-        <template v-slot:series>
-            <em v-for="series in karaoke.series" :key="series.tid">{{ series.name }}</em>
-        </template>
-    </i18n>
+    <div class="tile is-ancestor">
+        <div class="tile is-parent">
+            <div class="tile is-child" :class="{'is-8': !liveOpened, 'is-4': liveOpened}">
+                <kara-full-info :karaoke="karaoke"></kara-full-info>
+            </div>
+            <div class="tile is-4-desktop-only is-parent is-vertical">
+                <div class="tile is-child" v-if="liveURL">
+                    <live-player :karaoke="karaoke" v-on:open="placeForLive"></live-player>
+                </div>
+                <div class="tile is-child" v-else>
+                    <div class="box">
+                        <img :src="`/previews/${karaoke.kid}.${karaoke.mediasize}.25.jpg`" alt="">
+                    </div>
+                </div>
+                <div class="tile is-child" v-show="!liveOpened">
+                    <div class="box">
+                        <div class="imgGroup">
+                            <img :src="`/previews/${karaoke.kid}.${karaoke.mediasize}.33.jpg`" alt="">
+                            <img :src="`/previews/${karaoke.kid}.${karaoke.mediasize}.50.jpg`" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script lang="ts">
     import Vue from 'vue';
+    import LivePlayer from "~/components/LivePlayer.vue";
+    import KaraFullInfo from "~/components/KaraFullInfo.vue";
 
     export default Vue.extend({
         name: "ShowKara",
 
+        components: {
+            LivePlayer,
+            KaraFullInfo
+        },
+
         data() {
             return {
-                karaoke: {}
+                karaoke: {},
+                liveURL: process.env.LIVE_URL,
+                liveOpened: false
+            }
+        },
+
+        methods: {
+            placeForLive() {
+                this.liveOpened = true;
             }
         },
 
         async asyncData({ params, $axios, error, app }) {
-            try {
-                const {data} = await $axios.get(`/api/karas/${params.id}`);
-                return { karaoke: data };
-            } catch (e) {
-                error({ statusCode: 404, message: app.i18n.t('kara.notfound') });
-            }
+            const {data} = await $axios.get(`/api/karas/${params.id}`).catch(
+                _err => error({ statusCode: 404, message: app.i18n.t('kara.notfound') }));
+            return { karaoke: data };
         }
     });
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+    .tile .is-child {
+        transition: width 0.8s ;
+    }
+    .imgGroup {
+        display: flex;
+        flex-wrap: nowrap;
+        img:last-child {
+            margin-left: 0.25em;
+        }
+    }
+    .tile.is-vertical {
+        padding: 0 1em;
+    }
 </style>

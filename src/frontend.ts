@@ -12,7 +12,7 @@ import shortenerController from './controllers/shortener';
 import userController from './controllers/user';
 import favoritesController from './controllers/favorites';
 import {configurePassport} from './lib/utils/passport_manager';
-import {getConfig, resolvedPathAvatars, resolvedPathRepos} from './lib/utils/config';
+import {getConfig, resolvedPathAvatars, resolvedPathPreviews, resolvedPathRepos} from './lib/utils/config';
 import range from 'express-range';
 import vhost from 'vhost';
 //import {getInstanceRoom} from './dao/proxy'; For KM instances hosting
@@ -105,6 +105,8 @@ export function initFrontend(listenPort: number) {
 	if (conf.KaraExplorer.Enabled) {
 		app.use(vhost(`${conf.KaraExplorer.Host}`, APILocater));
 		app.use(vhost(`${conf.KaraExplorer.Host}`, KMExplorer));
+
+		KMExplorer.use('/previews', express.static(resolvedPathPreviews()));
 
 		startKMExplorer().then(nuxt => {
 			KMExplorer.use(nuxt.render);

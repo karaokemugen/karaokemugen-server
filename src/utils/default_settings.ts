@@ -265,6 +265,10 @@ export const configConstraints = {
 export let NuxtConfig = {
 	mode: 'universal',
 	dev: false,
+
+	env: {
+		LIVE_URL: false
+	},
 	/*
     ** Nuxt.js dev-modules
     */
@@ -279,6 +283,10 @@ export let NuxtConfig = {
 		'nuxt-i18n'
 	],
 
+	plugins: [
+		'~/plugins/icons.js'
+	],
+
 	axios: {
 		baseURL: 'http://localhost:1350',
 		https: false
@@ -289,7 +297,8 @@ export let NuxtConfig = {
 	},
 
 	css: [
-		{src: '~/assets/main.scss', lang: 'scss'}
+		{src: '~/assets/main.scss', lang: 'scss'},
+		'@fortawesome/fontawesome-svg-core/styles.css'
 	],
 
 	i18n: {
