@@ -5,9 +5,9 @@
         </nuxt-link>
         <div class="tags are-medium">
             <template v-for="type in Object.keys(tagTypes)" v-if="karaoke[type].length > 0">
-                    <nuxt-link :to="`/tags/${tag.tid}~${tagTypes[type].type}`" class="tag is-rounded is-medium" :class="tagTypes[type].class" v-for="tag in karaoke[type]" :key="tag.tid">
-                        <font-awesome-icon :icon="['fas', tagTypes[type].icon]" :fixed-width="true" /> {{ tag.name }} <!-- TODO: Populate with i18n data -->
-                    </nuxt-link>
+                <nuxt-link :to="`/tags/${tag.tid}~${tagTypes[type].type}`" class="tag is-rounded is-medium" :class="tagTypes[type].class" v-for="tag in karaoke[type]" :key="`${tag.tid}~${tagTypes[type].type}`">
+                    <font-awesome-icon :icon="['fas', tagTypes[type].icon]" :fixed-width="true" /> {{ i18n[tag.tid]? i18n[tag.tid][$i18n.locale] || i18n[tag.tid].eng:tag.name }}
+                </nuxt-link>
             </template>
         </div>
     </div>
@@ -18,7 +18,7 @@
     import { tagTypes } from "~/assets/constants";
 
     export default Vue.extend({
-        props: ['karaoke'],
+        props: ['karaoke', 'i18n'],
 
         name: "KaraCard",
 
@@ -30,8 +30,14 @@
     });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+    .box {
+        height: 100%;
+    }
     .tags {
         margin-top: 1.5rem;
+        .tag *:first-child {
+            margin-right: 0.25rem;
+        }
     }
 </style>

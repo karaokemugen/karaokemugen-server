@@ -68,6 +68,12 @@
     .imgGroup {
         display: flex;
         flex-wrap: nowrap;
+        img {
+            // Stupid workaround for Chrom*-based browsers
+            width: 100%;
+            height: 100%;
+            min-width: 0;
+        }
         img:last-child {
             margin-left: 0.25em;
         }
