@@ -27,9 +27,7 @@
                 </td>
                 <td>
                     <div class="tags are-medium">
-                        <nuxt-link :to="`/tags/${tag.tid}~${tagTypes[type].type}`" class="tag is-rounded is-medium" :class="tagTypes[type].class" v-for="tag in karaoke[type]" :key="tag.tid">
-                            {{ tag.i18n[$i18n.locale] || tag.i18n.eng || tag.name }}
-                        </nuxt-link>
+                        <tag :type="type" :tag="tag" v-for="tag in karaoke[type]" :key="tag.tid" :icon="false"></tag>
                     </div>
                 </td>
             </tr>
@@ -38,13 +36,19 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+    import Vue from 'vue';
     import { tagTypes } from "~/assets/constants";
+    import Tag from '~/components/Tag.vue';
 
-    export default {
+    export default Vue.extend({
         name: "KaraFullInfo",
 
         props: ['karaoke'],
+
+        components: {
+            Tag
+        },
 
         data() {
             return {
@@ -72,8 +76,7 @@
                 }
             }
         }
-
-    }
+    });
 </script>
 
 <style scoped lang="scss">

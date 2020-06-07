@@ -9,7 +9,10 @@ export default {
             singers: "Singer | Singers",
             songwriters: "Songwriter | Songwriters",
             families: "Family | Families",
-            creators: "Crator | Creators",
+            origins: "Origin | Origins",
+            genres: "Kind | Kinds",
+            platforms: "Platform | Platforms",
+            creators: "Creator | Creators",
             authors: "Time author | Time authors",
             groups: "Group | Groups",
             misc: "Miscellaneous"

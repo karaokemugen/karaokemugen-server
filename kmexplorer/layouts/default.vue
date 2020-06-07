@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="navbar is-transparent is-fixed-top">
+    <nav class="navbar is-primary is-fixed-top">
       <div class="navbar-brand">
         <nuxt-link class="navbar-item" to="/">KMExplorer</nuxt-link>
       </div>

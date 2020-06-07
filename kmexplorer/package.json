@@ -13,6 +13,7 @@
     "@fortawesome/vue-fontawesome": "^0.1.9",
     "@nuxtjs/axios": "^5.10.3",
     "bulma": "^0.8.2",
+    "bulmaswatch": "^0.8.1",
     "lodash.debounce": "^4.0.8",
     "lodash.merge": "^4.6.2",
     "nuxt": "^2.12.2",

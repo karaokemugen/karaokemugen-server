@@ -1,4 +1,4 @@
-interface tagType {
+export interface tagType {
     icon: string,
     class: string,
     type: number
@@ -29,6 +29,21 @@ export const tagTypes: {[key: string]: tagType} = {
         icon: 'photo-video',
         class: 'is-info',
         type: 10
+    },
+    'origins': {
+        icon: 'project-diagram',
+        class: 'is-info',
+        type: 11
+    },
+    'genres': {
+        icon: 'chess',
+        class: 'is-info',
+        type: 12
+    },
+    'platforms': {
+        icon: 'laptop',
+        class: 'is-info',
+        type: 13
     },
     'creators': {
         icon: 'chalkboard-teacher',

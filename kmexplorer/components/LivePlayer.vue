@@ -1,7 +1,13 @@
 <template>
     <div class="box">
         <iframe :src="`${liveURL}?video=${karaoke.kid}&autoplay=1`" :class="{live: transition}" allowfullscreen v-if="show"></iframe>
-        <img :src="`/previews/${karaoke.kid}.${karaoke.mediasize}.25.jpg`" v-else @click="showPlayer">
+        <div class="image-container" v-else @click="showPlayer" tabindex="0" @keydown="showPlayer" aria-keyshortcuts="L">
+            <img :src="`/previews/${karaoke.kid}.${karaoke.mediasize}.25.jpg`">
+            <font-awesome-layers>
+                <font-awesome-icon :icon="['fas', 'circle']" size="4x"></font-awesome-icon>
+                <font-awesome-icon :icon="['fas', 'play']" color="black" size="2x"></font-awesome-icon>
+            </font-awesome-layers>
+        </div>
     </div>
 </template>
 
@@ -28,6 +34,14 @@
             showPlayer() {
                 this.show = true;
                 this.$emit('open');
+            },
+            keyEvent(e) { // Fancy shortcut, don't tell anyone! :p
+                console.log('Over there!', e.code, this);
+                if (e.code === 'KeyL') {
+                    e.preventDefault();
+                    this.showPlayer();
+                    window.removeEventListener('keydown', this.keyEvent);
+                }
             }
         },
 
@@ -37,12 +51,20 @@
                     setTimeout(this.createTransition, 25);
                 });
             }
+        },
+
+        mounted() {
+            window.addEventListener('keydown', this.keyEvent);
+        },
+
+        destroyed() {
+            window.removeEventListener('keydown', this.keyEvent);
         }
     });
 </script>
 
-<style scoped>
-    .box *:first-child {
+<style scoped lang="scss">
+    .box > *:first-child, .box img {
         width: 100%;
         height: 18vw;
         transition: height 0.8s;
@@ -54,6 +76,20 @@
     }
     .box img {
         object-fit: cover;
+    }
+    .fa-layers {
+        position: relative;
+        bottom: calc(50% + 2em);
+        left: calc(50% - 2.5em);
+        svg:first-child > path {
+            stroke: black;
+            stroke-width: 0.5em;
+        }
+        .fa-play {
+            left: 125%;
+        }
+    }
+    .image-container {
         cursor: pointer;
     }
 </style>
