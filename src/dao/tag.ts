@@ -7,7 +7,6 @@ const sql = require('./sqls/tag');
 
 export async function selectTag(tid: string): Promise<Tag> {
 	const res = await db().query(sql.selectTag, [tid]);
-	res.rows[0].karacount = JSON.parse(res.rows[0].karacount);
 	return res.rows[0];
 }
 

@@ -85,7 +85,7 @@
         border-spacing: 0 1em;
     }
     .tagList span.name {
-        margin-right: 1em;
+        margin-right: 3em;
     }
     .subtitle.no-top-margin {
         margin-top: -1.25rem;

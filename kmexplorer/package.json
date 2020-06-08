@@ -18,13 +18,15 @@
     "lodash.merge": "^4.6.2",
     "nuxt": "^2.12.2",
     "nuxt-fontawesome": "^0.4.0",
-    "nuxt-i18n": "^6.12.2"
+    "nuxt-i18n": "^6.12.2",
+    "vuex-persist": "^2.2.0"
   },
   "devDependencies": {
     "@nuxt/typescript-build": "^1.0.1",
     "@types/lodash.debounce": "^4.0.6",
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
-    "ts-loader": "^7.0.5"
+    "ts-loader": "^7.0.5",
+    "vuex-module-decorators": "^0.17.0"
   }
 }

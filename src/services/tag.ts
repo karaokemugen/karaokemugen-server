@@ -25,12 +25,14 @@ export async function getTags(params: TagParams) {
 		(params.from || 0) + params.size || 999999999), params.from || 0, tags.length);
 }
 
-export async function getTag(tid: string) {
+export async function getTag(tid: string, findInImportedFiles: boolean = true) {
 	let tag = await selectTag(tid);
 	if (tag) return tag;
 	// If no tag is found, check in import folder if we have a tag by the same name and type
-	tag = await findTagInImportedFiles(tag.name, tag.types);
-	if (tag) return tag;
+	if (findInImportedFiles) {
+		tag = await findTagInImportedFiles(tag.name, tag.types);
+		if (tag) return tag;
+	}
 	return null;
 }
 

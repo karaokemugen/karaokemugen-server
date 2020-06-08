@@ -1,7 +1,73 @@
 export interface tagType {
     icon: string,
     class: string,
-    type: number
+    type?: number,
+    name?: string
+}
+
+export const tagRegex = /([a-z0-9]{8}(?:-[a-z0-9]{4}){3}-[a-z0-9]{12})~([0-9]{1,2})/;
+
+export const tagTypesMap: {[key: number]: tagType} = {
+    1: {
+        icon: 'tv',
+        class: 'is-success',
+        name: 'series'
+    },
+    5: {
+        icon: 'globe',
+        class: 'is-success',
+        name: 'langs'
+    },
+    2: {
+        icon: 'microphone-alt',
+        class: 'is-warning',
+        name: 'singers'
+    },
+    8: {
+        icon: 'signature',
+        class: 'is-warning',
+        name: 'singers'
+    },
+    10: {
+        icon: 'photo-video',
+        class: 'is-info',
+        name: 'families'
+    },
+    11: {
+        icon: 'project-diagram',
+        class: 'is-info',
+        name: 'origins'
+    },
+    12: {
+        icon: 'chess',
+        class: 'is-info',
+        name: 'genres'
+    },
+    13: {
+        icon: 'laptop',
+        class: 'is-info',
+        name: 'platforms'
+    },
+    4: {
+        icon: 'chalkboard-teacher',
+        class: 'is-white',
+        name: 'creators'
+    },
+    6: {
+        icon: 'user-secret',
+        class: 'is-white',
+        name: 'authors'
+    },
+    9: {
+        icon: 'box',
+        class: 'is-black',
+        name: 'groups'
+    },
+    7: {
+        icon: 'tag',
+        class: 'is-black',
+        name: 'misc'
+    }
 }
 
 export const tagTypes: {[key: string]: tagType} = {

@@ -1,5 +1,5 @@
 import {getRawKara, getBaseStats, getKara, getAllKaras, getAllYears, newKaraIssue} from '../services/kara';
-import {getTags} from '../services/tag';
+import {getTag, getTags} from '../services/tag';
 import {getAllSeries} from '../services/series';
 import {getSettings} from '../lib/dao/database';
 import { Router } from 'express';
@@ -133,6 +133,16 @@ export default function KSController(router: Router) {
 					res.status(403).json('Gitlab is not enabled');
 				}
 			} catch(err) {
+				res.status(500).json(err);
+			}
+		});
+
+	router.route('/tags/:tid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})')
+		.get(async (req, res) => {
+			try {
+				const tag = await getTag(req.params.tid, false);
+				res.json(tag);
+			} catch (err) {
 				res.status(500).json(err);
 			}
 		});

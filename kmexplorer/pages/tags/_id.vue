@@ -13,9 +13,12 @@
 
 <script lang="ts">
     import Vue from 'vue';
+    import merge from 'lodash.merge';
+
     import KaraCard from '~/components/KaraCard.vue';
     import LoadingNanami from '~/components/LoadingNanami.vue';
-    import merge from 'lodash.merge';
+    import { menuBarStore } from "~/store";
+    import { tagRegex, tagTypesMap } from "../../assets/constants";
 
     export default Vue.extend({
         name: "KaraListTag",
@@ -29,7 +32,10 @@
             return {
                 karaokes: {infos: {count:0, from: 0, to: 0}, i18n: {}, content: []},
                 from: 0,
-                loading: false
+                loading: false,
+                tag: {
+                    name: ''
+                }
             }
         },
 
@@ -64,18 +70,32 @@
         },
 
         async asyncData({ params, $axios, error, app }) {
-            const {data} = await $axios.get(`/api/karas/search`, {
+            const { data } = await $axios.get(`/api/tags/${tagRegex.exec(params.id)[1]}`).catch(
+                _err => error({ statusCode: 404, message: app.i18n.t('tag.notfound') }));
+
+            const { data: data2 } = await $axios.get(`/api/karas/search`, {
                 params: {
                     q: `t:${params.id}`,
                     from: 0,
                     size: 20
                 }
             }).catch(
-                _err => error({ statusCode: 404, message: app.i18n.t('kara.notfound') }));
-            return { karaokes: data };
+                _err => error({ statusCode: 404, message: app.i18n.t('error.generic') }));
+            return { karaokes: data2, tag: data };
         },
 
         transition: 'fade',
+
+        created() {
+            menuBarStore.setTag({
+                type: tagTypesMap[tagRegex.exec(this.$route.params.id)[2]].name,
+                tag: this.tag
+            });
+        },
+
+        destroyed() {
+            menuBarStore.setTag(undefined);
+        },
 
         mounted() {
             this.scrollEvent();

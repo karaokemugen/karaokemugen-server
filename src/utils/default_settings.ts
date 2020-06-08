@@ -284,7 +284,8 @@ export let NuxtConfig = {
 	],
 
 	plugins: [
-		'~/plugins/icons.js'
+		'~/plugins/icons.js',
+		{src: '~/plugins/vuex-persist.js', ssr: false}
 	],
 
 	axios: {
