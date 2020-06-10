@@ -18,6 +18,7 @@ import { createImagePreviews } from './lib/utils/previews';
 import { getAllKaras, generate } from './services/kara';
 import { initMailer } from './utils/mailer';
 import dotenv from 'dotenv';
+import sentry from './utils/sentry';
 
 const pjson = require('../package.json');
 const appPath = join(__dirname,'../');
@@ -28,6 +29,12 @@ dotenv.config();
 
 process.on('uncaughtException', (exception) => {
 	console.log(exception);
+	sentry.error(exception);
+});
+
+process.on('unhandledRejection', (error) => {
+	console.log(error);
+	sentry.error(new Error(JSON.stringify(error, null, 2)));
 });
 
 process.once('SIGTERM', () => {
