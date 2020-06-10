@@ -6,3 +6,7 @@ export class IPCTransport extends Transport{
 		super(opts);
 	}
 }
+
+export function emitIPC(type: string, data: any) {
+	return { type, data };
+}

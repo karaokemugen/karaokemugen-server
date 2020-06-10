@@ -30,3 +30,5 @@ kmimport/build
 kmexplorer/.nuxt
 
 dist/
+
+.env

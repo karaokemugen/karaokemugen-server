@@ -21,6 +21,15 @@ const payloadConstraints = {
 	sessions: {sessionValidator: true}
 };
 
+export async function addPlayed(seid: string, kid: string, played_at: string) {
+	const date = new Date(played_at);
+	await upsertPlayed([{
+		kid: kid,
+		seid: seid,
+		played_at: date
+	}]);
+}
+
 export async function processStatsPayload(payload: any) {
 	try {
 		if (!testJSON(payload)) throw 'Syntax error in JSON data';

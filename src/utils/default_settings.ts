@@ -55,6 +55,10 @@ export const defaults: Config = {
 		Enabled: true,
 		ExpireTimeDays: 1
 	},
+	BaseLicense: {
+		Name: null,
+		Link: null
+	},
 	Frontend: {
 		Port: 1350,
 		SeriesLanguageMode: 3
@@ -247,6 +251,10 @@ A proposal to modify a karaoke has been sent. You will find all the new files in
 	},
 	Mail: {
 		Enabled: false
+	},
+	Online: {
+		Stats: false,
+		ErrorTracking: true,
 	}
 };
 

@@ -5,6 +5,10 @@ export interface Config {
 		JwtSecret?: string,
 		InstanceID?: string,
 	},
+	BaseLicense: {
+		Name: string
+		Link: string
+	}
 	Frontend: {
 		Port: number
 		SeriesLanguageMode: number
@@ -18,7 +22,7 @@ export interface Config {
 		Enabled: boolean
 	}
 	Stats: {
-		Enabled: boolean
+		Enabled: boolean,
 	}
 	Shortener: {
 		Enabled: boolean
@@ -105,6 +109,10 @@ export interface Config {
 		Password?: string,
 		From?: string,
 		FromMail?: string
+	},
+	Online: {
+		Stats?: boolean,
+		ErrorTracking?: boolean,
 	}
 }
 
