@@ -11,6 +11,7 @@ import { getConfig, resolvedPathRepos } from '../lib/utils/config';
 import { gitlabPostNewIssue } from '../lib/services/gitlab';
 import { asyncReadFile, sanitizeFile } from '../lib/utils/files';
 import { resolve, basename } from 'path';
+import { DownloadBundle } from '../lib/types/downloads';
 
 export async function getBaseStats() {
 	return await selectBaseStats();
@@ -117,7 +118,7 @@ export async function getAllKaras(filter?: string, from = 0, size = 0, mode?: Mo
 	}
 }
 
-export async function getRawKara(kid: string) {
+export async function getRawKara(kid: string): Promise<DownloadBundle> {
 	const kara = (await selectAllKaras({
 		mode: 'kid',
 		modeValue: kid
@@ -156,7 +157,12 @@ export async function getRawKara(kid: string) {
 			data: JSON.parse(await asyncReadFile(tagFile, 'utf-8'))
 		});
 	}
-	return data;
+	return {
+		header: {
+			description: 'Karaoke Mugen Karaoke Bundle File'
+		},
+		...data
+	};
 }
 
 export async function newKaraIssue(kid: string, type: 'quality' | 'time', comment: string, username: string) {
