@@ -6,9 +6,11 @@ export interface State {
 	EngineDefaultLocale?: string,
 	electron?: any,
 	os?: string,
+	isTest?: boolean,
 	version?: {
 		number?: string,
 		name?: string,
+		sha?: string,
 	},
 	binPath?: {
 		ffmpeg?: string,

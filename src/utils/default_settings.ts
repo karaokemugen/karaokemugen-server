@@ -249,7 +249,8 @@ A proposal to modify a karaoke has been sent. You will find all the new files in
 		Enabled: false
 	},
 	Online: {
-		Stats: false
+		Stats: false,
+		ErrorTracking: true,
 	}
 };
 

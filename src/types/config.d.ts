@@ -18,7 +18,7 @@ export interface Config {
 		Enabled: boolean
 	}
 	Stats: {
-		Enabled: boolean
+		Enabled: boolean,
 	}
 	Shortener: {
 		Enabled: boolean
@@ -106,7 +106,8 @@ export interface Config {
 		FromMail?: string
 	},
 	Online: {
-		Stats?: boolean
+		Stats?: boolean,
+		ErrorTracking?: boolean,
 	}
 }
 

@@ -17,11 +17,14 @@ import { setState, getState } from './utils/state';
 import { createImagePreviews } from './lib/utils/previews';
 import { getAllKaras, generate } from './services/kara';
 import { initMailer } from './utils/mailer';
+import dotenv from 'dotenv';
 
 const pjson = require('../package.json');
 const appPath = join(__dirname,'../');
 const dataPath = resolve(appPath, 'app/');
 const resourcePath = appPath;
+
+dotenv.config();
 
 process.on('uncaughtException', (exception) => {
 	console.log(exception);
