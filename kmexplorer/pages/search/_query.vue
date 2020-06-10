@@ -8,10 +8,9 @@
 
     import KaraList from '~/components/KaraList.vue';
     import { menuBarStore } from "~/store";
-    import { tagRegex, tagTypesMap } from "../../assets/constants";
 
     export default Vue.extend({
-        name: "KaraListTag",
+        name: "KaraSearch",
 
         components: {
             KaraList
@@ -21,10 +20,7 @@
             return {
                 karaokes: {infos: {count:0, from: 0, to: 0}, i18n: {}, content: []},
                 from: 0,
-                loading: false,
-                tag: {
-                    name: ''
-                }
+                loading: false
             }
         },
 
@@ -35,7 +31,7 @@
                 this.loading = true;
                 const {data} = await this.$axios.get(`/api/karas/search`, {
                     params: {
-                        q: `t:${this.$route.params.id}`,
+                        filter: `${this.$route.params.query}`,
                         from: (this.from * 20),
                         size: ((this.from+1) * 20)
                     }
@@ -59,32 +55,26 @@
         },
 
         async asyncData({ params, $axios, error, app }) {
-            const { data } = await $axios.get(`/api/tags/${tagRegex.exec(params.id)[1]}`).catch(
-                _err => error({ statusCode: 404, message: app.i18n.t('tag.notfound') }));
-
-            const { data: data2 } = await $axios.get(`/api/karas/search`, {
+            const { data } = await $axios.get(`/api/karas/search`, {
                 params: {
-                    q: `t:${params.id}`,
+                    filter: `${params.query}`,
                     from: 0,
                     size: 20
                 }
             }).catch(
                 _err => error({ statusCode: 404, message: app.i18n.t('error.generic') }));
-            return { karaokes: data2, tag: data };
+            return { karaokes: data };
         },
 
         transition: 'fade',
 
-        mounted() {
-            menuBarStore.setTag({
-                type: tagTypesMap[tagRegex.exec(this.$route.params.id)[2]].name,
-                tag: this.tag
-            });
-            this.scrollEvent();
+        destroyed() {
+            // menuBarStore.setSearch(undefined);
         },
 
-        destroyed() {
-            menuBarStore.setTag(undefined);
+        mounted() {
+            this.scrollEvent();
+            menuBarStore.setSearch(this.$route.params.query);
         },
 
         watch: {

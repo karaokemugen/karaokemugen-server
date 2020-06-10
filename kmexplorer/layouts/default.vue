@@ -10,7 +10,7 @@
             <tag :type="tag.type" :tag="tag.tag" :icon="true" :nolink="true" />
           </div>
           <div class="navbar-item is-expanded">
-
+            <search-bar />
           </div>
         </div>
         <div class="navbar-end">
@@ -29,6 +29,7 @@
 <script lang="ts">
   import Vue from 'vue';
   import Tag from '~/components/Tag';
+  import SearchBar from '~/components/SearchBar';
 
   export default Vue.extend({
     head: {
@@ -38,7 +39,8 @@
     },
 
     components: {
-      Tag
+      Tag,
+      SearchBar
     },
 
     data() {

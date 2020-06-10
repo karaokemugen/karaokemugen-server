@@ -5,9 +5,14 @@ export interface tagType {
     name?: string
 }
 
-export const tagRegex = /([a-z0-9]{8}(?:-[a-z0-9]{4}){3}-[a-z0-9]{12})~([0-9]{1,2})/;
+export const tagRegex = /([a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12})~([0-9]{1,2})/;
 
 export const tagTypesMap: {[key: number]: tagType} = {
+    3: {
+        icon: 'tasks',
+        class: 'is-success',
+        name: 'songtypes'
+    },
     1: {
         icon: 'tv',
         class: 'is-success',
@@ -71,6 +76,11 @@ export const tagTypesMap: {[key: number]: tagType} = {
 }
 
 export const tagTypes: {[key: string]: tagType} = {
+    'songtypes': {
+        icon: 'tasks',
+        class: 'is-success',
+        type: 3
+    },
     'series': {
         icon: 'tv',
         class: 'is-success',

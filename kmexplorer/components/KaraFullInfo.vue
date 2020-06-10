@@ -21,7 +21,7 @@
         </h6>
         <table class="tagList">
             <tbody>
-            <tr v-for="type in Object.keys(tagTypes)" v-if="karaoke[type].length > 0">
+            <tr v-for="type in Object.keys(tagTypesSorted)" v-if="karaoke[type].length > 0">
                 <td>
                     <span class="name"><font-awesome-icon :icon="['fas', tagTypes[type].icon]" :fixed-width="true" /> {{ $tc(`kara.tagtypes.${type}`, karaoke[type].length) }}</span>
                 </td>
@@ -74,6 +74,11 @@
                         tid: '6339add6-b9a3-46c4-9488-2660caa30487~1'
                     };
                 }
+            },
+            tagTypesSorted() {
+                let tagTypes = this.tagTypes;
+                delete tagTypes.songtypes; // Don't show songtypes on full view, as it's already shown in the title
+                return tagTypes;
             }
         }
     });

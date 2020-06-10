@@ -1,4 +1,7 @@
 export default {
+    error: {
+        generic: "Erreur"
+    },
     kara: {
         phrase: "{songtype} de {series}",
         notfound: "Karaoké non trouvé",
@@ -17,5 +20,8 @@ export default {
             groups: "Groupe | Groupes",
             misc: "Divers"
         }
+    },
+    layout: {
+        loading: "Chargement..."
     }
 }

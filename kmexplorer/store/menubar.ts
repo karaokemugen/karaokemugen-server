@@ -12,8 +12,15 @@ export default class MenuBar extends VuexModule {
         tag: Tag
     }
 
+    search: string
+
     @Mutation
     setTag(tag) {
         this.tag = tag;
+    }
+
+    @Mutation
+    setSearch(search) {
+        this.search = search;
     }
 }

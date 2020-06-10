@@ -1,4 +1,7 @@
 export default {
+    error: {
+        generic: "Error"
+    },
     kara: {
         phrase: "{songtype} from {series}",
         notfound: "Karaoke not found",
@@ -17,5 +20,8 @@ export default {
             groups: "Group | Groups",
             misc: "Miscellaneous"
         }
+    },
+    layout: {
+        loading: "Loading..."
     }
 }

@@ -15,7 +15,7 @@ $input-background-color: $background;
 $input-color: $grey-lighter;
 $input-icon-active-color: white;
 
-$box-background-color: darken($grey, 14);
+$box-background-color: darken($grey, 17);
 $subtitle-color: $grey-lighter;
 $subtitle-strong-color: $grey-lighter;
 $subtitle-strong-color: $grey-lighter;
@@ -23,6 +23,8 @@ $subtitle-strong-color: $grey-lighter;
 $success: darken($green, 20);
 
 $link: lighten($turquoise, 15);
+
+$warning: darken($orange, 10);
 
 @import "~bulma";
 

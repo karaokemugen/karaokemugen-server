@@ -8,6 +8,7 @@
 
 <script lang="ts">
     import Vue from 'vue';
+    import { menuBarStore } from "~/store";
 
     export default Vue.extend({
         name: "SearchBar",
@@ -20,8 +21,22 @@
 
         methods: {
             triggerSearch() {
-                this.$router.push();
+                this.$router.push(`/search/${this.search}`);
             }
+        },
+
+        watch: {
+            search(now, _old) {
+                menuBarStore.setSearch(now);
+            }
+        },
+
+        mounted() {
+            this.$store.subscribe((mutation, _state) => {
+                if (mutation.type === 'menubar/setSearch') {
+                    this.search = mutation.payload;
+                }
+            });
         }
     });
 </script>
