@@ -58,7 +58,7 @@ export const defaults: Config = {
 	BaseLicense: {
 		Name: null,
 		Link: null
-	}
+	},
 	Frontend: {
 		Port: 1350,
 		SeriesLanguageMode: 3
