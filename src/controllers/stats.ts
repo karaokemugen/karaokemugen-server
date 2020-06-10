@@ -1,4 +1,4 @@
-import {getRequestedStats, getFavoritesStats, getPlayedStats, processStatsPayload} from '../services/stats';
+import {getRequestedStats, getFavoritesStats, getPlayedStats, processStatsPayload, addPlayed} from '../services/stats';
 import { Router } from 'express';
 
 export default function statsController(router: Router) {
@@ -22,6 +22,14 @@ export default function statsController(router: Router) {
 	router.get('/stats/played', async (req: any, res) => {
 		try {
 			res.status(200).json(await getPlayedStats(req.query.filter, req.query.from, req.query.size));
+		} catch(err) {
+			res.status(500).json(`Error while retrieving played stats : ${err}`);
+		}
+	});
+	router.post('/stats/played', async (req: any, res) => {
+		try {
+			await addPlayed(req.body.seid, req.body.kid, req.body.played_at);
+			res.status(200).json();
 		} catch(err) {
 			res.status(500).json(`Error while retrieving played stats : ${err}`);
 		}
