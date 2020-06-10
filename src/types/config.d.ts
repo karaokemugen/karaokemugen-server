@@ -5,6 +5,10 @@ export interface Config {
 		JwtSecret?: string,
 		InstanceID?: string,
 	},
+	BaseLicense: {
+		Name: string
+		Link: string
+	}
 	Frontend: {
 		Port: number
 		SeriesLanguageMode: number
