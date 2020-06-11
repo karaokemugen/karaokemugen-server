@@ -13,6 +13,19 @@ before_script:
   - chmod -R 700 ~/.ssh
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
+update_sentry:
+  stage: deploy
+  image: axelterizaki/karaokemugen-ci:node-12
+  cache:
+    key: km-server-${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
+  script:
+    - yarn install
+    - yarn ts-node util/sentryUpdateReleases.ts
+  only:
+    - master
+
 deploy_moe:
   stage: deploy
   script:
