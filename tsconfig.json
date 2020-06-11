@@ -19,6 +19,8 @@
 		// Import constants from JSON (locales).
 		"resolveJsonModule": true,
 		"sourceMap": true,
+		"inlineSources": true,
+		"sourceRoot": "/",
 		"outDir": "dist/",
 		"pretty": true,
 		"removeComments": true,

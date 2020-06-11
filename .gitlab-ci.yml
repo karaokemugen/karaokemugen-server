@@ -22,6 +22,7 @@ update_sentry:
       - node_modules/
   script:
     - yarn install
+    - yarn build
     - yarn ts-node util/sentryUpdateReleases.ts
   only:
     - master
