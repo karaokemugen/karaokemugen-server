@@ -10,6 +10,7 @@ import {
 	wipeInstance} from '../dao/stats';
 import logger from '../lib/utils/logger';
 import { getAllKaras } from './kara';
+import sentry from '../utils/sentry';
 
 const payloadConstraints = {
 	'instance.instance_id': {presence: true, format: uuidRegexp},
@@ -22,12 +23,18 @@ const payloadConstraints = {
 };
 
 export async function addPlayed(seid: string, kid: string, played_at: string) {
-	const date = new Date(played_at);
-	await upsertPlayed([{
-		kid: kid,
-		seid: seid,
-		played_at: date
-	}]);
+	try {
+		const date = new Date(played_at);
+		await upsertPlayed([{
+			kid: kid,
+			seid: seid,
+			played_at: date
+		}]);
+	} catch(err) {
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
+		throw err;
+	}
 }
 
 export async function processStatsPayload(payload: any) {
@@ -51,18 +58,38 @@ export async function processStatsPayload(payload: any) {
 	} catch(err) {
 		logger.error(`[Stats] Error with payload from ${payload.instance.instance_id} : ${err}`);
 		logger.debug(`[Stats] Payload in error : ${JSON.stringify(payload, null, 2)}`);
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
 		throw err;
 	}
 }
 
 export async function getFavoritesStats(filter: string, from = 0, size = 0) {
-	return await getAllKaras(filter, from, size, 'favorited');
+	try {
+		return await getAllKaras(filter, from, size, 'favorited');
+	} catch(err) {
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
+		throw err;
+	}
 }
 
 export async function getRequestedStats(filter: string, from = 0, size = 0) {
-	return await getAllKaras(filter, from, size, 'requested');
+	try {
+		return await getAllKaras(filter, from, size, 'requested');
+	} catch(err) {
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
+		throw err;
+	}
 }
 
 export async function getPlayedStats(filter: string, from = 0, size = 0) {
-	return await getAllKaras(filter, from, size, 'played');
+	try {
+		return await getAllKaras(filter, from, size, 'played');
+	} catch(err) {
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
+		throw err;
+	}
 }
