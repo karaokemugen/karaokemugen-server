@@ -11,9 +11,16 @@ import { getConfig, resolvedPathRepos } from '../lib/utils/config';
 import { gitlabPostNewIssue } from '../lib/services/gitlab';
 import { asyncReadFile, sanitizeFile } from '../lib/utils/files';
 import { resolve, basename } from 'path';
+import { DownloadBundle } from '../lib/types/downloads';
+import sentry from '../utils/sentry';
 
 export async function getBaseStats() {
-	return await selectBaseStats();
+	try {
+		return await selectBaseStats();
+	} catch(err) {
+		sentry.error(err);
+		throw err;
+	}
 }
 
 export function formatKaraList(karaList: any[], from: number, count: number): KaraList {
@@ -30,7 +37,12 @@ export function formatKaraList(karaList: any[], from: number, count: number): Ka
 }
 
 export async function getAllYears() {
-	return await selectAllYears();
+	try {
+		return await selectAllYears();
+	} catch(err) {
+		sentry.error(err);
+		throw err;
+	}
 }
 
 export async function generate() {
@@ -40,6 +52,7 @@ export async function generate() {
 		await createImagePreviews(karas);
 	} catch(err) {
 		logger.error(`[Gen] ${err}`);
+		sentry.error(err, 'Fatal');
 	}
 }
 
@@ -59,6 +72,8 @@ export async function getKara(filter?: string, from = 0, size = 0, mode?: ModePa
 		}
 		return karas[0];
 	} catch(err) {
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
 		throw err;
 	}
 }
@@ -111,52 +126,63 @@ export async function getAllKaras(filter?: string, from = 0, size = 0, mode?: Mo
 		}
 		return formatKaraList(pl, +from, count);
 	} catch(err) {
-		console.log(err);
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
 		logger.error(`[GetAllKaras] ${err}`);
 		throw err;
 	}
 }
 
-export async function getRawKara(kid: string) {
-	const kara = (await selectAllKaras({
-		mode: 'kid',
-		modeValue: kid
-	}))[0];
-	const files = {
-		kara: resolve(resolvedPathRepos('Karas')[0], kara.karafile),
-		series: kara.series.map(s => {
-			return s
-				? resolve(resolvedPathRepos('Series')[0], `${sanitizeFile(s.name)}.series.json`)
-				: null;
-		}),
-		tags: kara.tagfiles.map(f => {
-			return f
-				? resolve(resolvedPathRepos('Tags')[0], f)
-				: null;
-		}),
-		lyrics: kara.subfile ? resolve(resolvedPathRepos('Lyrics')[0], kara.subfile) : null
-	};
-	let lyricsData = null;
-	if (kara.subfile) lyricsData = await asyncReadFile(files.lyrics, 'utf-8');
-	const data = {
-		kara: {file: kara.karafile, data: JSON.parse(await asyncReadFile(files.kara, 'utf-8'))},
-		lyrics: {file: kara.subfile || null, data: lyricsData},
-		series: [],
-		tags: [],
-	};
-	for (const seriesFile of files.series) {
-		if (seriesFile) data.series.push({
-			file: basename(seriesFile),
-			data: JSON.parse(await asyncReadFile(seriesFile, 'utf-8'))
-		});
+export async function getRawKara(kid: string): Promise<DownloadBundle> {
+	try {
+		const kara = (await selectAllKaras({
+			mode: 'kid',
+			modeValue: kid
+		}))[0];
+		const files = {
+			kara: resolve(resolvedPathRepos('Karas')[0], kara.karafile),
+			series: kara.series.map(s => {
+				return s
+					? resolve(resolvedPathRepos('Series')[0], `${sanitizeFile(s.name)}.series.json`)
+					: null;
+			}),
+			tags: kara.tagfiles.map(f => {
+				return f
+					? resolve(resolvedPathRepos('Tags')[0], f)
+					: null;
+			}),
+			lyrics: kara.subfile ? resolve(resolvedPathRepos('Lyrics')[0], kara.subfile) : null
+		};
+		let lyricsData = null;
+		if (kara.subfile) lyricsData = await asyncReadFile(files.lyrics, 'utf-8');
+		const data = {
+			kara: {file: kara.karafile, data: JSON.parse(await asyncReadFile(files.kara, 'utf-8'))},
+			lyrics: {file: kara.subfile || null, data: lyricsData},
+			series: [],
+			tags: [],
+		};
+		for (const seriesFile of files.series) {
+			if (seriesFile) data.series.push({
+				file: basename(seriesFile),
+				data: JSON.parse(await asyncReadFile(seriesFile, 'utf-8'))
+			});
+		}
+		for (const tagFile of files.tags) {
+			if (tagFile) data.tags.push({
+				file: basename(tagFile),
+				data: JSON.parse(await asyncReadFile(tagFile, 'utf-8'))
+			});
+		}
+		return {
+			header: {
+				description: 'Karaoke Mugen Karaoke Bundle File'
+			},
+			...data
+		};
+	} catch(err) {
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
 	}
-	for (const tagFile of files.tags) {
-		if (tagFile) data.tags.push({
-			file: basename(tagFile),
-			data: JSON.parse(await asyncReadFile(tagFile, 'utf-8'))
-		});
-	}
-	return data;
 }
 
 export async function newKaraIssue(kid: string, type: 'quality' | 'time', comment: string, username: string) {
@@ -182,5 +208,7 @@ export async function newKaraIssue(kid: string, type: 'quality' | 'time', commen
 		if (conf.Gitlab.Enabled) return gitlabPostNewIssue(title, desc, issueTemplate.Labels);
 	} catch(err) {
 		logger.error(`[KaraProblem] Call to Gitlab API failed : ${err}`);
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err, 'Warning');
 	}
 }

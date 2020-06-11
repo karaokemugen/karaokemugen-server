@@ -1,6 +1,9 @@
 App:
   InstanceID: Change me
   JwtSecret: Change me
+BaseLicense:
+  Name: ODbL/CC BY-NC-SA 4.0
+  Link: https://lab.shelter.moe/karaokemugen/bases/karaokebase/-/blob/master/LICENSE.md
 System:
   Binaries:
     ffmpeg:
@@ -179,7 +182,7 @@ Gitlab:
 
 
         **Link** : $link
-    KaraProblem: 
+    KaraProblem:
       Quality:
         Title: '[Media issue] $kara'
         Labels:

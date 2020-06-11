@@ -10,56 +10,69 @@ import { getState } from '../utils/state';
 import { User, Token } from '../lib/types/user';
 import { sendMail } from '../utils/mailer';
 import randomstring from 'randomstring';
+import sentry from '../utils/sentry';
 
 const passwordResetRequests = new Map();
 
 export async function resetPasswordRequest(username: string) {
-	const user = await findUserByName(username);
-	if (!user) throw 'User unknown';
-	if (!user.email) throw 'User has no configured mail. Ask server admin for a password reset';
-	const requestCode = uuidV4();
-	passwordResetRequests.set(username, {
-		code: requestCode,
-		date: +(new Date().getTime() / 1000).toFixed(0)
-	});
-	const conf = getConfig();
-	sendMail('Karaoke Mugen Password Reset',`
-	Hello ${username},
+	try {
+		const user = await findUserByName(username);
+		if (!user) throw new Error('User unknown');
+		if (!user.email) throw new Error('User has no configured mail. Ask server admin for a password reset');
+		const requestCode = uuidV4();
+		passwordResetRequests.set(username, {
+			code: requestCode,
+			date: +(new Date().getTime() / 1000).toFixed(0)
+		});
+		const conf = getConfig();
+		sendMail('Karaoke Mugen Password Reset',`
+		Hello ${username},
 
-	You (or someone) requested a password reset for your account at ${getConfig().API.Host}. If you didn't request this, please ignore this email.
+		You (or someone) requested a password reset for your account at ${getConfig().API.Host}. If you didn't request this, please ignore this email.
 
-	Please click the following link to get a new, randomized password sent to your mail account :
+		Please click the following link to get a new, randomized password sent to your mail account :
 
-	${conf.API.Secure ? 'https://' : 'http://'}${conf.API.Host}${conf.Frontend.Port ? ':'+conf.Frontend.Port : ''}/api/users/${username}/resetpassword/${requestCode}
+		${conf.API.Secure ? 'https://' : 'http://'}${conf.API.Host}${conf.Frontend.Port ? ':'+conf.Frontend.Port : ''}/api/users/${username}/resetpassword/${requestCode}
 
-	This link will expire in two hours.
-	`,
-	username,
-	user.email);
+		This link will expire in two hours.
+		`,
+		username,
+		user.email);
+	} catch(err) {
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
+		throw err;
+	}
 };
 
 export async function resetPassword(username: string, requestCode: string) {
-	const request = passwordResetRequests.get(username);
-	if (!request) throw 'No request';
-	if (request.code !== requestCode) throw 'Wrong code';
-	const user = await findUserByName(username);
-	if (!user) throw 'User unknown';
-	const newPassword = randomstring.generate(12);
-	await changePassword(username, newPassword);
-	passwordResetRequests.delete(username);
-	sendMail('Karaoke Mugen Password has been reset',`
-	Hello ${username},
+	try {
+		const request = passwordResetRequests.get(username);
+		if (!request) throw new Error('No request');
+		if (request.code !== requestCode) throw new Error('Wrong code');
+		const user = await findUserByName(username);
+		if (!user) throw new Error('User unknown');
+		const newPassword = randomstring.generate(12);
+		await changePassword(username, newPassword);
+		passwordResetRequests.delete(username);
+		sendMail('Karaoke Mugen Password has been reset',`
+		Hello ${username},
 
-	You (or someone) requested a password reset for your account at ${getConfig().API.Host}.
+		You (or someone) requested a password reset for your account at ${getConfig().API.Host}.
 
-	Your password has been reset to the following :
-	${newPassword}
+		Your password has been reset to the following :
+		${newPassword}
 
-	Please login using a Karaoke Mugen Application and change it to something else.
+		Please login using a Karaoke Mugen Application and change it to something else.
 
-	`,
-	username,
-	user.email);
+		`,
+		username,
+		user.email);
+	} catch(err) {
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
+		throw err;
+	}
 }
 
 export async function initUsers() {
@@ -77,16 +90,22 @@ function cleanupPasswordResetRequests() {
 
 async function cleanupAvatars() {
 	// This is done because updating avatars generate a new name for the file. So unused avatar files are now cleaned up.
-	const users = await getAllUsers();
-	const avatars = [];
-	for (const user of users) {
-		if (!avatars.includes(user.avatar_file)) avatars.push(user.avatar_file);
-	}
-	const conf = getConfig();
-	const avatarPath = resolve(getState().dataPath, conf.System.Path.Avatars);
-	const avatarFiles = await asyncReadDir(avatarPath);
-	for (const file of avatarFiles) {
-		if (!avatars.includes(file) && file !== 'blank.png') asyncUnlink(resolve(avatarPath, file));
+	try {
+		const users = await getAllUsers();
+		const avatars = [];
+		for (const user of users) {
+			if (!avatars.includes(user.avatar_file)) avatars.push(user.avatar_file);
+		}
+		const conf = getConfig();
+		const avatarPath = resolve(getState().dataPath, conf.System.Path.Avatars);
+		const avatarFiles = await asyncReadDir(avatarPath);
+		for (const file of avatarFiles) {
+			if (!avatars.includes(file) && file !== 'blank.png') asyncUnlink(resolve(avatarPath, file));
+		}
+	} catch(err) {
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
+		throw err;
 	}
 }
 
@@ -97,27 +116,45 @@ export function hashPassword(password: string) {
 }
 
 export async function findUserByName(username: string, opts: any = {}) {
-	const user = await selectUser('pk_login', username);
-	if (!user) return false;
-	if (opts.public) {
-		delete user.password;
-		delete user.email;
+	try {
+		const user = await selectUser('pk_login', username);
+		if (!user) return false;
+		if (opts.public) {
+			delete user.password;
+			delete user.email;
+		}
+		return user;
+	} catch(err) {
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
+		throw err;
 	}
-	return user;
 }
 
 export async function removeUser(username: string) {
-	return await deleteUser(username);
+	try {
+		return await deleteUser(username);
+	} catch(err) {
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
+		throw err;
+	}
 }
 
 export async function getAllUsers(opts: any = {}) {
-	const users = await selectAllUsers();
-	if (!opts.public) return users;
-	for (const index in users) {
-		delete users[index].password;
-		delete users[index].email;
+	try {
+		const users = await selectAllUsers();
+		if (!opts.public) return users;
+		for (const index in users) {
+			delete users[index].password;
+			delete users[index].email;
+		}
+		return users;
+	} catch(err) {
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
+		throw err;
 	}
-	return users;
 }
 
 export function checkPassword(user: User,password: string) {
@@ -125,25 +162,31 @@ export function checkPassword(user: User,password: string) {
 }
 
 export async function createUser(user: User, opts: any = {}) {
-	user.nickname = user.nickname || user.login;
-	user.avatar_file = user.avatar_file || 'blank.png';
-	user.bio = user.bio || null;
-	user.url = user.url || null;
-	user.email = user.email || null;
-	opts.admin ? user.type = 2 : user.type = 1;
-	if (!user.password) throw { code: 'USER_EMPTY_PASSWORD'};
-	if (!user.login) throw { code: 'USER_EMPTY_LOGIN'};
-	// Check if login or nickname already exists.
-	if (await selectUser('pk_login', user.login) || await selectUser('nickname', user.login)) {
-		logger.error(`[User] User/nickname ${user.login} already exists, cannot create it`);
-		throw { code: 'USER_ALREADY_EXISTS', data: {username: user.login}};
-	}
-	user.password = hashPassword(user.password);
 	try {
-		await insertUser(user);
-	} catch (err) {
-		logger.error(`[User] Unable to create user ${user.login} : ${err}`);
-		throw ({ code: 'USER_CREATION_ERROR', data: err});
+		user.nickname = user.nickname || user.login;
+		user.avatar_file = user.avatar_file || 'blank.png';
+		user.bio = user.bio || null;
+		user.url = user.url || null;
+		user.email = user.email || null;
+		opts.admin ? user.type = 2 : user.type = 1;
+		if (!user.password) throw { code: 'USER_EMPTY_PASSWORD'};
+		if (!user.login) throw { code: 'USER_EMPTY_LOGIN'};
+		// Check if login or nickname already exists.
+		if (await selectUser('pk_login', user.login) || await selectUser('nickname', user.login)) {
+			logger.error(`[User] User/nickname ${user.login} already exists, cannot create it`);
+			throw { code: 'USER_ALREADY_EXISTS', data: {username: user.login}};
+		}
+		user.password = hashPassword(user.password);
+		try {
+			await insertUser(user);
+		} catch (err) {
+			logger.error(`[User] Unable to create user ${user.login} : ${err}`);
+			throw ({ code: 'USER_CREATION_ERROR', data: err});
+		}
+	} catch(err) {
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(new Error(err));
+		throw err;
 	}
 }
 
@@ -166,13 +209,20 @@ async function replaceAvatar(oldImageFile: string, avatar: Express.Multer.File) 
 		return newAvatarFile;
 	} catch (err) {
 		logger.error(`[User] Unable to replace avatar ${oldImageFile} with ${avatar.path} : ${err}`);
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
 		throw err;
 	}
 }
 
 export async function changePassword(username: string, password: string) {
-	password = hashPassword(password);
-	return await updateUserPassword(username, password);
+	try {
+		password = hashPassword(password);
+		return await updateUserPassword(username, password);
+	} catch(err) {
+		sentry.error(err);
+		throw err;
+	}
 }
 
 export async function editUser(username: string, user: User, avatar: Express.Multer.File, token: Token) {
@@ -210,6 +260,8 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		return user;
 	} catch (err) {
 		logger.error(`[User] Failed to update ${username}'s profile : ${err}`);
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(new Error(err));
 		throw {
 			message: err,
 			data: user.nickname

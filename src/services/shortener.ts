@@ -3,6 +3,7 @@ import logger from 'winston';
 import {getConfig} from '../lib/utils/config';
 import { InstanceData } from '../types/shortener';
 import {isIPv6} from 'net';
+import sentry from '../utils/sentry';
 
 export async function publishInstance(ip: string, data: InstanceData) {
 	try {
@@ -39,16 +40,24 @@ export async function publishInstance(ip: string, data: InstanceData) {
 		}
 	} catch(err) {
 		logger.error(`[Shortener] Failed to publish instance : ${err}`);
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
 		throw err;
 	}
 }
 
 export async function getInstance(ip: string) {
-	logger.debug(`[Shortener] Received get request from ${ip}`);
-	const instance = await selectInstance(ip);
-	logger.debug(`[Shortener] Found instance data ${JSON.stringify(instance)}`);
-	if (instance.length > 0) return instance[0];
-	return false;
+	try {
+		logger.debug(`[Shortener] Received get request from ${ip}`);
+		const instance = await selectInstance(ip);
+		logger.debug(`[Shortener] Found instance data ${JSON.stringify(instance)}`);
+		if (instance.length > 0) return instance[0];
+		return false;
+	} catch(err) {
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
+		throw err;
+	}
 }
 
 export async function initShortener() {
@@ -65,5 +74,6 @@ async function cleanInstances() {
 		logger.info('[Shortener] Cleaned up expired instances');
 	} catch(err) {
 		logger.error(`[Shortener] Expiring instances failed (better luck next time) : ${err}`);
+		sentry.error(err, 'Warning');
 	}
 }

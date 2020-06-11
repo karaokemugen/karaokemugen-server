@@ -10,6 +10,7 @@ import { generateKara } from '../lib/services/kara_creation';
 import { NewKara, Kara } from '../lib/types/kara';
 import { gitlabPostNewIssue } from '../lib/services/gitlab';
 import { asyncExists, asyncCopy, asyncUnlink } from '../lib/utils/files';
+import sentry from '../utils/sentry';
 
 export async function editKara(kara: Kara): Promise<string> {
 	let newKara: NewKara;
@@ -76,11 +77,14 @@ export async function editKara(kara: Kara): Promise<string> {
 			if (conf.Gitlab.Enabled) return gitlabPostNewIssue(title, desc, conf.Gitlab.IssueTemplate.Edit.Labels);
 		} catch(err) {
 			logger.error(`[KaraImport] Call to Gitlab API failed : ${err}`);
+			sentry.error(err, 'Warning');
 		}
 
 
 	} catch(err) {
 		logger.error(`[KaraGen] Error while editing kara : ${err}`);
+		sentry.addErrorInfo('Kara', JSON.stringify(kara, null, 2));
+		sentry.error(err);
 		throw err;
 	}
 }
@@ -98,6 +102,8 @@ export async function createKara(kara: Kara) {
 		);
 	} catch(err) {
 		logger.error(`[KaraImport] Error importing kara : ${err}. Kara Data ${JSON.stringify(kara)}`);
+		sentry.addErrorInfo('Kara', JSON.stringify(kara, null, 2));
+		sentry.error(err);
 		throw err;
 	}
 	const karaName = `${newKara.data.langs[0].name.toUpperCase()} - ${newKara.data.series[0]?.name || newKara.data.singers[0]?.name} - ${newKara.data.songtypes[0].name}${newKara.data.songorder || ''} - ${newKara.data.title}`;
@@ -128,5 +134,7 @@ export async function createKara(kara: Kara) {
 		if (conf.Gitlab.Enabled) return gitlabPostNewIssue(title, desc, conf.Gitlab.IssueTemplate.Import.Labels);
 	} catch(err) {
 		logger.error(`[KaraImport] Call to Gitlab API failed : ${err}`);
+		sentry.error(err, 'Warning');
+		throw err;
 	}
 }
