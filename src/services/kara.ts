@@ -65,6 +65,7 @@ export async function getKara(filter?: string, from = 0, size = 0, mode?: ModePa
 			mode: mode,
 			modeValue: modeValue
 		});
+		if (!karas[0]) return;
 		karas[0].lyrics = null;
 		if (karas[0].subfile) {
 			const ASS = await getASS(karas[0].subfile, karas[0].repository);
