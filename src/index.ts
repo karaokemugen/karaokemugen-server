@@ -26,6 +26,7 @@ const dataPath = resolve(appPath, 'app/');
 const resourcePath = appPath;
 
 dotenv.config();
+sentry.init();
 
 process.on('uncaughtException', (exception) => {
 	console.log(exception);
