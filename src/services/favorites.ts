@@ -2,17 +2,33 @@ import { selectAllFavorites, deleteFavorite, selectFavorites, insertFavorite } f
 import { getConfig } from '../lib/utils/config';
 import { replaceFavorites } from '../dao/stats';
 import { Token } from '../lib/types/user';
+import sentry from '../utils/sentry';
 
 export async function getFavorites(token: Token) {
-	return await selectFavorites(token.username);
+	try {
+		return await selectFavorites(token.username);
+	} catch(err) {
+		sentry.error(err);
+		throw err;
+	}
 }
 
 export async function addFavorite(token: Token, kid: string) {
-	return await insertFavorite(token.username, kid);
+	try {
+		return await insertFavorite(token.username, kid);
+	} catch(err) {
+		sentry.error(err);
+		throw err;
+	}
 }
 
 export async function removeFavorite(token: Token, kid: string) {
-	return await deleteFavorite(token.username, kid);
+	try {
+		return await deleteFavorite(token.username, kid);
+	} catch(err) {
+		sentry.error(err);
+		throw err;
+	}
 }
 
 export async function initFavorites() {
@@ -22,6 +38,11 @@ export async function initFavorites() {
 }
 
 async function updateFavoritesStats() {
-	const favorites = await selectAllFavorites();
-	if (favorites.length > 0) await replaceFavorites(getConfig().App.InstanceID, favorites);
+	try {
+		const favorites = await selectAllFavorites();
+		if (favorites.length > 0) await replaceFavorites(getConfig().App.InstanceID, favorites);
+	} catch(err) {
+		sentry.error(err);
+		throw err;
+	}
 }

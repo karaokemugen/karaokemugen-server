@@ -1,4 +1,4 @@
 export const version = {
-	number: '0.9.0',
+	number: '0.9.1',
 	sha: null
 };

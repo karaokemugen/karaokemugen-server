@@ -2,6 +2,7 @@ import nodemailer, { Transporter } from 'nodemailer';
 import { getConfig } from '../lib/utils/config';
 import logger from '../lib/utils/logger';
 import { MailOptions } from 'nodemailer/lib/smtp-transport';
+import sentry from './sentry';
 
 let transporter: Transporter;
 let mailOptions: MailOptions;
@@ -32,6 +33,7 @@ export function sendMail(subject: string, message: string, to: string, toMail: s
 	}, (error, info) => {
 		if (error) {
 			logger.debug(`[Mailer] Error sending mail : ${error}`);
+			sentry.error(error);
 			throw error;
 		} else {
 			logger.debug(`[Mailer] Sent mail : ${JSON.stringify(info, null, 2)}`);

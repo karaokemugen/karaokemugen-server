@@ -7,6 +7,7 @@ import { IDQueryResult } from '../lib/types/kara';
 import { v4 as uuidV4 } from 'uuid';
 import { DBTag } from '../lib/types/database/tag';
 import { writeSeriesFile } from '../lib/dao/seriesfile';
+import sentry from '../utils/sentry';
 
 export function formatTagList(tagList: DBTag[], from: number, count: number): TagList {
 	return {
@@ -20,47 +21,77 @@ export function formatTagList(tagList: DBTag[], from: number, count: number): Ta
 }
 
 export async function getTags(params: TagParams) {
-	const tags = await selectTags(params);
-	return formatTagList(tags.slice(params.from || 0,
-		(params.from || 0) + params.size || 999999999), params.from || 0, tags.length);
+	try {
+		const tags = await selectTags(params);
+		return formatTagList(tags.slice(params.from || 0,
+			(params.from || 0) + params.size || 999999999), params.from || 0, tags.length);
+	} catch(err) {
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
+		throw err;
+	}
 }
 
 export async function getTag(tid: string, findInImportedFiles: boolean = true) {
-	let tag = await selectTag(tid);
-	if (tag) return tag;
-	// If no tag is found, check in import folder if we have a tag by the same name and type
-	if (findInImportedFiles) {
-		tag = await findTagInImportedFiles(tag.name, tag.types);
+	try {
+		let tag = await selectTag(tid);
 		if (tag) return tag;
+		// If no tag is found, check in import folder if we have a tag by the same name and type
+		if (findInImportedFiles) {
+			tag = await findTagInImportedFiles(tag.name, tag.types);
+			if (tag) return tag;
+		}
+		return null;
+	} catch(err) {
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
+		throw err;
 	}
-	return null;
 }
 
 /* "Edit" a tag. Save its new version */
 export async function editTag(_tid: string, tag: Tag, _opts: any) {
-	await addTag(tag, null);
-	return tag;
+	try {
+		await addTag(tag, null);
+		return tag;
+	} catch(err) {
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
+		throw err;
+	}
 }
 
 export async function addTag(tag: Tag, _opts: any) {
-	tag.tid = uuidV4();
-	await writeTagFile(tag, resolvedPathImport());
-	if (tag.types.includes(1)) {
-		await writeSeriesFile(tag, resolvedPathImport());
+	try {
+		tag.tid = uuidV4();
+		await writeTagFile(tag, resolvedPathImport());
+		if (tag.types.includes(1)) {
+			await writeSeriesFile(tag, resolvedPathImport());
+		}
+		return tag;
+	} catch(err) {
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
+		throw err;
 	}
-	return tag;
 }
 
 export async function getOrAddTagID(tagObj: Tag): Promise<IDQueryResult> {
-	let tag = await selectTagByNameAndType(tagObj.name, tagObj.types);
-	if (tag) return {id: tag.tid, new: false};
-	// If no tag is found, check in import folder if we have a tag by the same name and type
-	tag = await findTagInImportedFiles(tagObj.name, tagObj.types);
-	if (tag) return {id: tag.tid, new: false};
-	tagObj.tid = uuidV4();
-	await writeTagFile(tagObj, resolvedPathImport());
-	if (tagObj.types.includes(1)) {
-		await writeSeriesFile(tagObj, resolvedPathImport());
+	try {
+		let tag = await selectTagByNameAndType(tagObj.name, tagObj.types);
+		if (tag) return {id: tag.tid, new: false};
+		// If no tag is found, check in import folder if we have a tag by the same name and type
+		tag = await findTagInImportedFiles(tagObj.name, tagObj.types);
+		if (tag) return {id: tag.tid, new: false};
+		tagObj.tid = uuidV4();
+		await writeTagFile(tagObj, resolvedPathImport());
+		if (tagObj.types.includes(1)) {
+			await writeSeriesFile(tagObj, resolvedPathImport());
+		}
+		return {id: tagObj.tid, new: true};
+	} catch(err) {
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
+		throw err;
 	}
-	return {id: tagObj.tid, new: true};
 }
