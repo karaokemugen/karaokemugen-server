@@ -140,6 +140,7 @@ export async function getRawKara(kid: string): Promise<DownloadBundle> {
 			mode: 'kid',
 			modeValue: kid
 		}))[0];
+		if (!kara) throw 'Unknown song';
 		const files = {
 			kara: resolve(resolvedPathRepos('Karas')[0], kara.karafile),
 			series: kara.series.map(s => {
@@ -181,8 +182,11 @@ export async function getRawKara(kid: string): Promise<DownloadBundle> {
 			...data
 		};
 	} catch(err) {
-		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
-		sentry.error(err);
+		if (typeof err === 'object') {
+			sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+			sentry.error(err);
+		}
+		throw err;
 	}
 }
 
@@ -211,5 +215,6 @@ export async function newKaraIssue(kid: string, type: 'quality' | 'time', commen
 		logger.error(`[KaraProblem] Call to Gitlab API failed : ${err}`);
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err, 'Warning');
+		throw err;
 	}
 }
