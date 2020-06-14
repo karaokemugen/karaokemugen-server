@@ -67,6 +67,11 @@ export function initFrontend(listenPort: number) {
 		res.status(200).json(conf.API);
 	});
 
+	KMExplorer.get('/favicon.ico', (_, res) => {
+		res.redirect('/static/favicon.ico');
+		return;
+	});
+
 	//KMServer
 	// If static serve is enabled, we're serving all files from KMServer instead of Apache/nginx
 	if (state.opt.staticServe) {
