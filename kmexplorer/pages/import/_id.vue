@@ -45,10 +45,8 @@ export default Vue.extend({
     KaraEdit
   },
 
-  methods: {
-    placeForLive() {
-      this.liveOpened = true;
-    }
+  validate() {
+	  return process.env.KM_IMPORT
   },
 
   async asyncData({ params, $axios, error, app }) {

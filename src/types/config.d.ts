@@ -34,7 +34,7 @@ export interface Config {
 		Path: string
 		LiveURL: string
 		MediaLinks: boolean
-		Import: true
+		Import: boolean
 		Secure: boolean
 		NuxtOverrides?: any
 	}

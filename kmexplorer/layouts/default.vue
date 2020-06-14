@@ -16,6 +16,9 @@
         <div class="navbar-end">
           <div class="navbar-item">
             Coucou
+		  </div>
+          <div v-if="import_enabled" class="navbar-item">
+			<nuxt-link class="navbar-item" to="/import">Import</nuxt-link>
           </div>
         </div>
       </div>
@@ -46,7 +49,8 @@
     data() {
       return {
         hello: 'KMExplorer',
-        tag: null
+        tag: null,
+		import_enabled: process.env.KM_IMPORT
       }
     },
 
