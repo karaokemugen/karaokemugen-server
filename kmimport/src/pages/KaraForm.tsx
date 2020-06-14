@@ -461,7 +461,7 @@ class KaraForm extends Component<KaraFormProps, KaraFormState> {
 					<EditableTagGroup
 						tagType={6}
 						search={'tag'}
-						onChange={(tags) => this.formRef.current.setFieldsValue({ author: tags })}
+						onChange={(tags) => this.formRef.current.setFieldsValue({ authors: tags })}
 					/>
 				</Form.Item>
 				<Form.Item
