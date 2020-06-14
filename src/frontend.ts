@@ -36,7 +36,6 @@ export function initFrontend(listenPort: number) {
 	const KMExplorer = express();
 	const Shortener = express();
 	const KMServer = express();
-	const APILocater = express();
 
 	app.set('trust proxy', (ip: string) => {
 		return ip === '127.0.0.1' ||
@@ -61,10 +60,6 @@ export function initFrontend(listenPort: number) {
 		req.method === 'OPTIONS'
 			? res.json()
 			: next();
-	});
-	// API Locater
-	APILocater.get('/whereIsMyAPI', (_, res) => {
-		res.status(200).json(conf.API);
 	});
 
 	KMExplorer.get('/favicon.ico', (_, res) => {
@@ -96,7 +91,6 @@ export function initFrontend(listenPort: number) {
 	}
 	// KMExplorer
 	if (conf.KaraExplorer.Enabled) {
-		app.use(vhost(`${conf.KaraExplorer.Host}`, APILocater));
 		app.use(vhost(`${conf.KaraExplorer.Host}`, KMExplorer));
 
 		KMExplorer.use('/previews', express.static(resolvedPathPreviews()));
