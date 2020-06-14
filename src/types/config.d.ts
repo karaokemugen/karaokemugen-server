@@ -35,6 +35,7 @@ export interface Config {
 		LiveURL: string
 		MediaLinks: boolean
 		Import: boolean
+		InProgressSongsList: string
 		Secure: boolean
 		NuxtOverrides?: any
 	}

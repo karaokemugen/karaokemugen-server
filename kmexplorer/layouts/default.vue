@@ -26,6 +26,23 @@
     <div class="container is-fluid">
       <nuxt />
     </div>
+	<footer class="columns has-text-centered">
+		<p class="column">
+			Karaoke Mugen Server -
+			<a href="https://lab.shelter.moe/karaokemugen/karaokemugen-server">GIT</a> -
+			<a href="http://karaokes.moe">{{$t('footer.home')}}</a>
+		</p>
+		<p class="column">
+			{{$t('footer.software_under_license')}}
+			<a
+				href="https://lab.shelter.moe/karaokemugen/karaokemugen-server/blob/master/LICENSE.md"
+			>MIT</a>
+			<span>
+				/ {{$t('footer.base_under_licence')}}
+				<a :href="base_license_link">{{base_license_name}}</a>
+			</span>
+		</p>
+	</footer>
   </div>
 </template>
 
@@ -50,7 +67,9 @@
       return {
         hello: 'KMExplorer',
         tag: null,
-		import_enabled: process.env.KM_IMPORT
+		import_enabled: process.env.KM_IMPORT,
+		base_license_name: process.env.BASE_LICENSE_NAME,
+		base_license_link: process.env.BASE_LICENSE_LINK,
       }
     },
 

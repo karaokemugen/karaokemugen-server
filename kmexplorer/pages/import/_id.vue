@@ -10,22 +10,21 @@
         <li>
           <a href="http://docs.karaokes.moe">{{$t('kara.import.documentation_link')}}</a>
         </li>
-        <li>
+        <li v-if="in_progress_songs_list">
           <a
-            href="https://lab.shelter.moe/karaokemugen/bases/karaokebase/issues?label_name%5B%5D=en+cours"
+            :href="in_progress_songs_list"
           >{{$t('kara.import.in_progress_link')}}</a>
         </li>
       </ul>
     </div>
-    <article class="message is-info">
+    <article class="message is-info" v-if="base_license_name">
       <div class="message-header">
-        <p>{{$t('kara.import.license_reminder')}}</p>
+        <p>{{$t('kara.import.license_reminder', {name: base_license_name})}}</p>
       </div>
       <div class="message-body">
-        <a
-          href="https://lab.shelter.moe/karaokemugen/bases/karaokebase/-/blob/master/LICENSE.md"
+        <a v-if="base_license_link"
+          :href="base_license_link"
         >{{$t('kara.import.license_link')}}</a>
-        <p>{{$t('kara.import.license_info')}}</p>
       </div>
     </article>
     <div class="tile is-child is-5">
@@ -43,6 +42,14 @@ export default Vue.extend({
 
   components: {
     KaraEdit
+  },
+
+  data() {
+	  return {
+		  base_license_name: process.env.BASE_LICENSE_NAME,
+		  base_license_link: process.env.BASE_LICENSE_LINK,
+		  in_progress_songs_list: process.env.IN_PROGRESS_SONGS_LIST
+	  }
   },
 
   validate() {

@@ -81,7 +81,8 @@ export const defaults: Config = {
 		LiveURL: 'https://live.karaokes.moe',
 		MediaLinks: true,
 		Import: true,
-		Secure: true
+		Secure: true,
+		InProgressSongsList: null
 	},
 	Gitlab: {
 		IssueTemplate: {

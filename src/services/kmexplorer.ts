@@ -10,7 +10,10 @@ function generateConfig(production: boolean = false) {
         dev: production ? false:process.env.NODE_ENV !== 'production',
         env: {
 			LIVE_URL: conf.KaraExplorer.LiveURL,
-			KM_IMPORT: conf.KaraExplorer.Import
+			KM_IMPORT: conf.KaraExplorer.Import,
+			IN_PROGRESS_SONGS_LIST: conf.KaraExplorer.InProgressSongsList,
+			BASE_LICENSE_NAME: conf.BaseLicense.Name,
+			BASE_LICENSE_LINK: conf.BaseLicense.Link
         },
         router: {
             base: conf.KaraExplorer.Path

@@ -26,9 +26,8 @@ export default {
 			check_in_progress: "Merci de vérifier la liste des karaokés en cours de réalisation avant de proposer un karaoké. Cela évitera à tout le monde de faire deux fois le travail, et le monde sera meilleur.",
 			documentation_link: "Documentation",
 			in_progress_link: "Liste des karaokés en cours",
-			license_reminder: "Votre karaoké sera publié avec la licence CC-NC-BY-SA 4.0.",
+			license_reminder: "Votre karaoké sera publié avec la licence {name}",
 			license_link: "Renseignez-vous sur cette licence en cliquant ici.",
-			license_info: "Ce karaoké pourra donc être distribué à des fins non commerciales par n'importe qui tant qu'il respecte les conditions de cette licence.",
 			add: "Ajout",
 			choose_file: "Choisissez un fichier",
 			add_file_media_error: "{name} n'est pas un fichier vidéo",
@@ -68,5 +67,10 @@ export default {
     },
     layout: {
         loading: "Chargement..."
-    }
+	},
+	footer: {
+		home: "Accueil du projet",
+		software_under_license: "Logiciel sous licence ",
+		base_under_licence: "Base de karaokés sous licence"
+	}
 }

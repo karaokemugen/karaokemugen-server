@@ -40,6 +40,7 @@ KaraExplorer:
   LiveURL: https://live.karaokes.moe
   MediaLinks: true
   Import: true
+  InProgressSongsList: https://lab.shelter.moe/karaokemugen/bases/karaokebase/issues?label_name%5B%5D=en+cours
 Gitlab:
   Enabled: true
   Token: xxx

@@ -26,9 +26,8 @@ export default {
 			check_in_progress: "Please check the list of karaokes currently being made before sending us a song. This'll avoid duplicate work, and the world will thus be a better place.",
 			documentation_link: "Documentation",
 			in_progress_link: "Karaokes In Progress List",
-			license_reminder: "Your karaoke will be published with the CC-NC-BY-SA 4.0.",
+			license_reminder: "Your karaoke will be published with the {name} license",
 			license_link: "Learn more about this license by clicking here.",
-			license_info: "This karaoke may be distributed for non-commercial purposes, as soon as it complies with the license terms.",
 			add: "Add",
 			choose_file: "Choose a file",
 			add_file_media_error: "{name} is not a media file",
@@ -67,5 +66,10 @@ export default {
     },
     layout: {
         loading: "Loading..."
-    }
+	},
+	footer: {
+		home: "Project home",
+		software_under_license: "Software under license",
+		base_under_licence: "Karaoke base under license"
+	}
 }
