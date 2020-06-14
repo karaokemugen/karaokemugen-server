@@ -69,11 +69,6 @@ export const defaults: Config = {
 	Stats: {
 		Enabled: true
 	},
-	Import: {
-		Enabled: true,
-		Host: 'localhost',
-		Path: '/import'
-	},
 	API: {
 		Secure: true,
 		Host: 'localhost',
@@ -85,6 +80,7 @@ export const defaults: Config = {
 		Path: '/base/',
 		LiveURL: 'https://live.karaokes.moe',
 		MediaLinks: true,
+		Import: true,
 		Secure: true
 	},
 	Gitlab: {
@@ -288,7 +284,8 @@ export let NuxtConfig = {
 		// Doc: https://axios.nuxtjs.org/usage
 		'@nuxtjs/axios',
 		// Doc: https://nuxt-community.github.io/nuxt-i18n
-		'nuxt-i18n'
+		'nuxt-i18n',
+		['nuxt-buefy', { materialDesignIcons: false }]
 	],
 
 	plugins: [
