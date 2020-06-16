@@ -273,7 +273,7 @@
 				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
 			</label>
 			<div class="control">
-				<label class="label">{{$t('kara.import.comment_edit')}}</label>
+				<label class="label" v-if="karaoke.kid">{{$t('kara.import.comment_edit')}}</label>
 				<textarea class="textarea" v-model="karaoke.comment" />
 			</div>
 		</div>

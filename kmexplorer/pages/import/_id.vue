@@ -71,7 +71,9 @@ export default Vue.extend({
       families: [],
       genres: [],
       platforms: [],
-      origins: []
+	  origins: [],
+	  modified_at: new Date(),
+	  created_at: new Date()
     };
     if (params.id) {
       result = await $axios
