@@ -25,7 +25,7 @@ export async function upsertInstance(i: Instance) {
 export async function replaceFavorites(instance_id: string, favorites: Favorite[]) {
 	await db().query(sql.deleteFavorites, [instance_id]);
 	const params = favorites.map(f => [instance_id, f.kid]);
-	if (favorites.length > 0) await transaction([{sql: sql.insertFavorite, params: params}]);
+	if (favorites.length > 0) await transaction({sql: sql.insertFavorite, params: params});
 }
 
 export async function upsertPlayed(viewcounts: Played[]) {
@@ -34,7 +34,7 @@ export async function upsertPlayed(viewcounts: Played[]) {
 		v.seid,
 		v.played_at
 	]);
-	if (viewcounts.length > 0) await transaction([{sql: sql.insertViewcount, params: params}]);
+	if (viewcounts.length > 0) await transaction({sql: sql.insertViewcount, params: params});
 }
 
 export async function wipeInstance(instance_id: string) {
@@ -48,7 +48,7 @@ export async function upsertSessions(instance_id: string, sessions: Session[]) {
 		s.started_at,
 		s.name
 	]);
-	if (sessions.length > 0) await transaction([{sql: sql.insertSession, params: params}]);
+	if (sessions.length > 0) await transaction({sql: sql.insertSession, params: params});
 }
 
 export async function upsertRequests(requests: Requested[]) {
@@ -57,6 +57,6 @@ export async function upsertRequests(requests: Requested[]) {
 		r.seid,
 		r.requested_at
 	]);
-	if (requests.length > 0) await transaction([{sql: sql.insertRequested, params: params}]);
+	if (requests.length > 0) await transaction({sql: sql.insertRequested, params: params});
 }
 
