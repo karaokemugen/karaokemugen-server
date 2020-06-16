@@ -1,6 +1,6 @@
 <template>
-    <div class="field">
-        <div class="control is-expanded">
+    <div class="field is-expanded">
+        <div class="control">
             <input class="input is-fullwidth" type="text" placeholder="" v-model="search" @keydown.enter="triggerSearch">
         </div>
     </div>
@@ -41,6 +41,10 @@
     });
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+    .field.is-expanded {
+        flex-grow: 1;
+        flex-shrink: 0;
+        width: 80vw;
+    }
 </style>

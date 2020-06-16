@@ -128,6 +128,9 @@
         width: 30%;
         float: right;
         flex-shrink: 0;
+        img {
+            border-radius: 4px;
+        }
         img:last-child {
             position: absolute;
             left: 0;
