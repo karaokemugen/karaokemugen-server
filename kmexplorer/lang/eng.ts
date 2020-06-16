@@ -1,24 +1,24 @@
 export default {
-    error: {
-        generic: "Error"
-    },
-    kara: {
-        phrase: "{songtype} from {series}",
-        notfound: "Karaoke not found",
-        tagtypes: {
-            series: "Series",
-            langs: "Language | Languages",
-            songtypes: "Song type | Song types",
-            singers: "Singer | Singers",
-            songwriters: "Songwriter | Songwriters",
-            families: "Family | Families",
-            origins: "Origin | Origins",
-            genres: "Kind | Kinds",
-            platforms: "Platform | Platforms",
-            creators: "Creator | Creators",
-            authors: "Kara author | Kara authors",
-            groups: "Group | Groups",
-            misc: "Miscellaneous"
+	error: {
+		generic: "Error"
+	},
+	kara: {
+		phrase: "{songtype} from {series}",
+		notfound: "Karaoke not found",
+		tagtypes: {
+			series: "Series",
+			langs: "Language | Languages",
+			songtypes: "Song type | Song types",
+			singers: "Singer | Singers",
+			songwriters: "Songwriter | Songwriters",
+			families: "Family | Families",
+			origins: "Origin | Origins",
+			genres: "Kind | Kinds",
+			platforms: "Platform | Platforms",
+			creators: "Creator | Creators",
+			authors: "Kara author | Kara authors",
+			groups: "Group | Groups",
+			misc: "Miscellaneous"
 		},
 		import: {
 			description: "This form allows you to submit a karaoke to the Karaoke Mugen team. It will not be immediately integrated in the karaoke database because it requires a validation. Please be patient. Your karaoke may be modified if it doesn't comply to KM's rules.",
@@ -62,14 +62,26 @@ export default {
 			add_success: "Karaoke sent successfully.",
 			add_success_description: "An issue has been created on our tracker. You can check its progression at: ",
 			add_error: "An error has occurred, karaoke has not been sent properly",
-		},
-    },
-    layout: {
-        loading: "Loading..."
+		}
+	},
+	layout: {
+		loading: "Loading..."
 	},
 	footer: {
 		home: "Project home",
 		software_under_license: "Software under license",
 		base_under_licence: "Karaoke base under license"
-	}
+	},
+	stats: {
+		karaokes: "Karaoké | Karaokés",
+		all_duration: "Duration of all karas",
+		last_generation: "Last update",
+		media_size: "Media Size"
+	},
+	duration: {
+		days: "days",
+		hours: "hours",
+		minutes: "minutes",
+		seconds: "seconds"
+	},
 }

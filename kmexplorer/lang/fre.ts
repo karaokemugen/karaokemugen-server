@@ -1,24 +1,24 @@
 export default {
-    error: {
-        generic: "Erreur"
-    },
-    kara: {
-        phrase: "{songtype} de {series}",
-        notfound: "Karaoké non trouvé",
-        tagtypes: {
-            series: "Série | Séries",
-            langs: "Langue | Langues",
-            songtypes: "Type de chanson | Types de chanson",
-            singers: "Chanteur | Chanteurs",
-            songwriters: "Compositeur | Compositeurs",
-            families: "Famille | Familles",
-            origins: "Origine | Origines",
-            genres: "Genre | Genres",
-            platforms: "Plateforme | Plateformes",
-            creators: "Créateur | Créateurs",
-            authors: "Auteur du karaoké | Auteurs du karaoké",
-            groups: "Groupe | Groupes",
-            misc: "Divers"
+	error: {
+		generic: "Erreur"
+	},
+	kara: {
+		phrase: "{songtype} de {series}",
+		notfound: "Karaoké non trouvé",
+		tagtypes: {
+			series: "Série | Séries",
+			langs: "Langue | Langues",
+			songtypes: "Type de chanson | Types de chanson",
+			singers: "Chanteur | Chanteurs",
+			songwriters: "Compositeur | Compositeurs",
+			families: "Famille | Familles",
+			origins: "Origine | Origines",
+			genres: "Genre | Genres",
+			platforms: "Plateforme | Plateformes",
+			creators: "Créateur | Créateurs",
+			authors: "Auteur du karaoké | Auteurs du karaoké",
+			groups: "Groupe | Groupes",
+			misc: "Divers"
 		},
 		import: {
 			description: "Ce formulaire permet d'envoyer un karaoké à l'équipe de Karaoke Mugen. Il ne sera pas intégré immédiatement dans la base de karaokés car il nécessite une validation préalable. Aussi, votre karaoké peut être modifié par l'équipe de Karaoke Mugen s'il ne convient pas aux normes. Reportez-vous à la documentation pour plus d'information, section \"Guide du contributeur\" puis \"Documents de référence\".",
@@ -63,14 +63,26 @@ export default {
 			add_success: "Karaoké envoyé avec succès.",
 			add_succes_description: "Un ticket a été crée sur notre outil de suivi. Vous pouvez consulter l'avancement de l'intégration de votre karaoké : ",
 			add_error: "Une erreur a eu lieu, le karaoké n'a pas pu être envoyé",
-		},
-    },
-    layout: {
-        loading: "Chargement..."
+		}
+	},
+	layout: {
+		loading: "Chargement..."
 	},
 	footer: {
 		home: "Accueil du projet",
 		software_under_license: "Logiciel sous licence ",
 		base_under_licence: "Base de karaokés sous licence"
-	}
+	},
+	stats: {
+		karaokes: "Karaoké | Karaokés",
+		all_duration: "Durée de tous les karas",
+		last_generation: "Dernière mise à jour",
+		media_size: "Taille des médias"
+	},
+	duration: {
+		days: "jours",
+		hours: "heures",
+		minutes: "minutes",
+		seconds: "secondes"
+	},
 }
