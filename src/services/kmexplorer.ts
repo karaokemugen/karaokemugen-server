@@ -3,6 +3,7 @@ import { NuxtConfig } from "../utils/default_settings";
 import logger from "../lib/utils/logger";
 import {getConfig} from "../lib/utils/config";
 import merge from 'lodash.merge';
+import { supportedFiles } from '../lib/utils/constants';
 
 function generateConfig(production: boolean = false) {
     const conf = getConfig();
@@ -13,7 +14,9 @@ function generateConfig(production: boolean = false) {
 			KM_IMPORT: conf.KaraExplorer.Import,
 			IN_PROGRESS_SONGS_LIST: conf.KaraExplorer.InProgressSongsList,
 			BASE_LICENSE_NAME: conf.BaseLicense.Name,
-			BASE_LICENSE_LINK: conf.BaseLicense.Link
+			BASE_LICENSE_LINK: conf.BaseLicense.Link,
+			SUPPORTED_LYRICS: supportedFiles.lyrics,
+			SUPPORTED_MEDIAS: [].concat(supportedFiles.video, supportedFiles.audio)
         },
         router: {
             base: conf.KaraExplorer.Path
