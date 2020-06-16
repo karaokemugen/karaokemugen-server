@@ -26,6 +26,8 @@ $link: lighten($turquoise, 15);
 
 $warning: darken($orange, 10);
 
+$footer-padding: 3rem 1.5rem 3rem;
+
 @import "~bulma";
 
 @import '~bulmaswatch/darkly/_overrides';
@@ -49,3 +51,9 @@ body.has-navbar-fixed-top, html.has-navbar-fixed-top {
   border: none;
   border-radius: 0;
 }
+
+.footer {
+  background-color: unset;
+}
+
+@import '~buefy/src/scss/buefy';

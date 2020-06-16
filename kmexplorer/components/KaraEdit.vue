@@ -281,7 +281,7 @@
 			<div class="control submit">
 				<button
 					class="button is-link"
-					:disabled="submitDisabled()"
+					:disabled="submitDisabled"
 					@click="submit"
 				>{{$t('kara.import.submit')}}</button>
 			</div>
@@ -389,23 +389,24 @@ export default Vue.extend({
 			} else {
 				this.$axios.$post("/api/karas/", this.karaoke);
 			}
-		},
-		submitDisabled() {
-			return (
-				this.mediafile_error ||
-				this.subfile_error ||
-				!this.karaoke.title ||
-				(this.karaoke.series.length === 0 &&
-					this.karaoke.singers.length === 0) ||
-				this.karaoke.songtypes.length === 0 ||
-				this.karaoke.langs.length === 0 ||
-				!this.karaoke.year ||
-				this.karaoke.authors.length === 0
-			);
 		}
 	},
 
-	computed: {}
+	computed: {
+		submitDisabled() {
+		  return (
+			this.mediafile_error ||
+			this.subfile_error ||
+			!this.karaoke.title ||
+			(this.karaoke.series.length === 0 &&
+					this.karaoke.singers.length === 0) ||
+			this.karaoke.songtypes.length === 0 ||
+			this.karaoke.langs.length === 0 ||
+			!this.karaoke.year ||
+			this.karaoke.authors.length === 0
+		  );
+    }
+  }
 });
 </script>
 

@@ -272,7 +272,13 @@ export let NuxtConfig = {
 	dev: false,
 
 	env: {
-		LIVE_URL: false
+		LIVE_URL: false,
+		KM_IMPORT: false,
+		IN_PROGRESS_SONGS_LIST: '',
+		BASE_LICENSE_NAME: '',
+		BASE_LICENSE_LINK: '',
+		SUPPORTED_LYRICS: ['ass'],
+		SUPPORTED_MEDIAS: ['mp4']
 	},
 	/*
     ** Nuxt.js dev-modules
@@ -286,7 +292,8 @@ export let NuxtConfig = {
 		'@nuxtjs/axios',
 		// Doc: https://nuxt-community.github.io/nuxt-i18n
 		'nuxt-i18n',
-		['nuxt-buefy', { materialDesignIcons: false }]
+		// Doc: https://buefy.org/documentation/start
+		['nuxt-buefy', { css: false, materialDesignIcons: false }]
 	],
 
 	plugins: [
@@ -324,7 +331,7 @@ export let NuxtConfig = {
 			}
 		],
 		baseUrl: 'http://localhost:1350/base',
-		seo: true,
+		seo: false,
 		lazy: true,
 		defaultLocale: 'fre',
 		strategy: 'no_prefix',

@@ -26,22 +26,24 @@
     <div class="container is-fluid">
       <nuxt />
     </div>
-	<footer class="columns has-text-centered">
-		<p class="column">
-			Karaoke Mugen Server -
-			<a href="https://lab.shelter.moe/karaokemugen/karaokemugen-server">GIT</a> -
-			<a href="http://karaokes.moe">{{$t('footer.home')}}</a>
-		</p>
-		<p class="column">
-			{{$t('footer.software_under_license')}}
-			<a
-				href="https://lab.shelter.moe/karaokemugen/karaokemugen-server/blob/master/LICENSE.md"
-			>MIT</a>
-			<span>
-				/ {{$t('footer.base_under_licence')}}
-				<a :href="base_license_link">{{base_license_name}}</a>
-			</span>
-		</p>
+	<footer class="footer">
+		<div class="columns has-text-centered">
+            <p class="column">
+                Karaoke Mugen Server -
+                <a href="https://lab.shelter.moe/karaokemugen/karaokemugen-server">GIT</a> -
+                <a href="http://karaokes.moe">{{$t('footer.home')}}</a>
+            </p>
+            <p class="column">
+                {{$t('footer.software_under_license')}}
+                <a
+                        href="https://lab.shelter.moe/karaokemugen/karaokemugen-server/blob/master/LICENSE.md"
+                >MIT</a>
+                <template v-if="base_license_name">
+                    / {{$t('footer.base_under_licence')}}
+                    <a :href="base_license_link">{{base_license_name}}</a>
+                </template>
+            </p>
+        </div>
 	</footer>
   </div>
 </template>

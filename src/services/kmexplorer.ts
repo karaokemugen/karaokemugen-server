@@ -38,7 +38,7 @@ function generateConfig(production: boolean = false) {
 
 export async function buildKMExplorer() {
     const NuxtConfig = generateConfig(true);
-    logger.debug(`Starting Nuxt with config ${JSON.stringify(NuxtConfig)}`);
+    logger.debug(`Building Nuxt with config ${JSON.stringify(NuxtConfig)}`);
     const nuxt = new Nuxt(NuxtConfig);
     await nuxt.ready();
     const builder = new Builder(nuxt);
