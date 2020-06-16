@@ -185,7 +185,7 @@ export async function createUser(user: User, opts: any = {}) {
 		}
 	} catch(err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
-		sentry.error(new Error(err));
+		sentry.error(new Error(err.err));
 		throw err;
 	}
 }

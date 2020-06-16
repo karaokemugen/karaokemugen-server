@@ -7,9 +7,10 @@ export default function ShortenerController(router: Router) {
 	router.route('/shortener')
 		.get(async (req, res) => {
 			try {
-				const ret = await getInstance(req.headers['x-forwarded-for'] as string);
+				const ip = (req.headers['x-forwarded-for'] as string).split(', ')[0];
+				const ret = await getInstance(ip);
 				if (ret) {
-					if (isIPv6(req.headers['x-forwarded-for'] as string) && ret.ip6) {
+					if (isIPv6(ip) && ret.ip6) {
 						res.redirect(`http://[${ret.ip6}]:${ret.local_port}`);
 					} else {
 						res.redirect(`http://${ret.local_ip4}:${ret.local_port}`);
