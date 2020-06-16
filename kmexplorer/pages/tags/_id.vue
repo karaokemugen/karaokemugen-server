@@ -26,7 +26,11 @@
                     name: ''
                 }
             }
-        },
+		},
+		
+		validate({ params }) {
+			return params.id && tagRegex.exec(params.id);
+		},
 
         methods: {
             async loadNextPage() {
