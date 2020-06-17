@@ -23,7 +23,8 @@ import {
     faPhotoVideo,
     faProjectDiagram,
     faChess,
-    faUser
+    faUser,
+    faCloudDownloadAlt
 } from '@fortawesome/free-solid-svg-icons';
 
 // This is important, we are going to let Nuxt.js worry about the CSS
@@ -51,6 +52,7 @@ library.add(faIgloo);
 library.add(faTags);
 library.add(faList);
 library.add(faUser);
+library.add(faCloudDownloadAlt);
 
 // Register the component globally
 Vue.component('font-awesome-icon', FontAwesomeIcon);

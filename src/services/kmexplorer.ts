@@ -16,7 +16,9 @@ function generateConfig(production: boolean = false) {
 			BASE_LICENSE_NAME: conf.BaseLicense.Name,
 			BASE_LICENSE_LINK: conf.BaseLicense.Link,
 			SUPPORTED_LYRICS: supportedFiles.lyrics,
-			SUPPORTED_MEDIAS: [].concat(supportedFiles.video, supportedFiles.audio)
+			SUPPORTED_MEDIAS: [].concat(supportedFiles.video, supportedFiles.audio),
+            API_HOST: conf.API.Host,
+            EXPLORER_HOST: conf.KaraExplorer.Host
         },
         router: {
             base: conf.KaraExplorer.Path

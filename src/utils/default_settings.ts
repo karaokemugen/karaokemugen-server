@@ -278,7 +278,9 @@ export let NuxtConfig = {
 		BASE_LICENSE_NAME: '',
 		BASE_LICENSE_LINK: '',
 		SUPPORTED_LYRICS: ['ass'],
-		SUPPORTED_MEDIAS: ['mp4']
+		SUPPORTED_MEDIAS: ['mp4'],
+		API_HOST: '',
+		EXPLORER_HOST: ''
 	},
 	/*
     ** Nuxt.js dev-modules

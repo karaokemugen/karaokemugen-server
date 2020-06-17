@@ -21,18 +21,22 @@
         </h6>
         <table class="tagList">
             <tbody>
-            <tr v-for="type in Object.keys(tagTypesSorted)" v-if="karaoke[type].length > 0">
-                <td>
-                    <span class="name"><font-awesome-icon :icon="['fas', tagTypes[type].icon]" :fixed-width="true" /> {{ $tc(`kara.tagtypes.${type}`, karaoke[type].length) }}</span>
-                </td>
-                <td>
-                    <div class="tags are-medium">
-                        <tag :type="type" :tag="tag" v-for="tag in karaoke[type]" :key="tag.tid" :icon="false"></tag>
-                    </div>
-                </td>
-            </tr>
+                <tr v-for="type in Object.keys(tagTypesSorted)" v-if="karaoke[type].length > 0">
+                    <td>
+                        <span class="name"><font-awesome-icon :icon="['fas', tagTypes[type].icon]" :fixed-width="true" /> {{ $tc(`kara.tagtypes.${type}`, karaoke[type].length) }}</span>
+                    </td>
+                    <td>
+                        <div class="tags are-medium">
+                            <tag :type="type" :tag="tag" v-for="tag in karaoke[type]" :key="tag.tid" :icon="false"></tag>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
+        <a :href="kmAppUrl" class="button is-success">
+            <font-awesome-icon :icon="['fas', 'cloud-download-alt']" :fixed-width="true"></font-awesome-icon>
+            {{$t('kara.download')}}
+        </a>
     </div>
 </template>
 
@@ -79,6 +83,9 @@
                 let tagTypes = this.tagTypes;
                 delete tagTypes.songtypes; // Don't show songtypes on full view, as it's already shown in the title
                 return tagTypes;
+            },
+            kmAppUrl() {
+                return `km://download/${process.env.API_HOST}/${this.karaoke.kid}`;
             }
         }
     });
