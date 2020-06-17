@@ -33,32 +33,38 @@ $footer-padding: 3rem 1.5rem 3rem;
 @import '~bulmaswatch/darkly/_overrides';
 
 body.has-navbar-fixed-top, html.has-navbar-fixed-top {
-  padding-top: 5rem;
+	padding-top: 5rem;
 }
 
 .fade-enter-active, .fade-leave-active {
-  transition: opacity 100ms;
+	transition: opacity 100ms;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
+	opacity: 0;
 }
 
 .button.is-static {
-  background-color: $grey-darker;
+	background-color: $grey-darker;
 }
 
 .navbar.is-fixed-top {
-  border: none;
-  border-radius: 0;
+	border: none;
+	border-radius: 0;
 }
 
 .tag:not(body).is-purple {
-  background-color: #8702a3;
-  color: white;
+	background-color: #8702a3;
+	color: white;
 }
 
 .footer {
-  background-color: unset;
+	background-color: unset;
+}
+
+@media (min-width: $desktop) {
+	.container.is-fluid {
+		margin-left: 200px;
+	}
 }
 
 @import '~buefy/src/scss/buefy';

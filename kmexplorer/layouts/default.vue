@@ -20,7 +20,7 @@
 		</nav>
 
 		<div class="columns">
-			<aside class="menu">
+			<aside class="menu is-hidden-touch">
 				<p class="menu-label">General</p>
 				<ul class="menu-list">
 					<li>
@@ -54,7 +54,7 @@
 					{{$t('menu.login')}}
 				</nuxt-link>
 			</aside>
-			<section class="container column">
+			<section class="container column is-fluid">
 				<nuxt />
 			</section>
 		</div>
