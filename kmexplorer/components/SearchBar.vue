@@ -45,6 +45,6 @@
     .field.is-expanded {
         flex-grow: 1;
         flex-shrink: 0;
-        width: 80vw;
+        width: 75vw;
     }
 </style>

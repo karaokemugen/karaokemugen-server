@@ -1,7 +1,8 @@
 <template>
 	<div class="is-ancestor">
-		<div class="tags" v-if="type">
-			<tag v-for="tag in tags.content" :key="tag.tid" :type="type" :tag="tag" :i18n="tag.i18n" />
+		<div class="tags" v-if="tags.content.length > 0">
+			<tag v-for="tag in tags.content" :key="tag.tid" :icon="true"
+				:type="type ? type : tagTypesMap[tag.types[0]].name" :tag="tag" :i18n="tag.i18n" />
 		</div>
 		<loading-nanami class="tile is-parent is-12" v-if="loading"></loading-nanami>
 	</div>
@@ -10,7 +11,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Tag from "~/components/Tag.vue";
-import { tagTypes } from "../../assets/constants";
+import { tagTypesMap, tagTypes } from "../../assets/constants";
 import LoadingNanami from "../../components/LoadingNanami";
 
 export default Vue.extend({
@@ -22,6 +23,7 @@ export default Vue.extend({
 
 	data() {
 		return {
+			tagTypesMap,
 			tags: {
 				infos: { count: 0, from: 0, to: 0 },
 				content: []
@@ -61,13 +63,9 @@ export default Vue.extend({
 		}
 	},
 
-	validate({ params }) {
-		return params.id && tagTypes[params.id];
-	},
-
 	async asyncData({ params, $axios, error, app }) {
 		const { data } = await $axios
-			.get(`/api/karas/tags/${tagTypes[params.id].type}`, {
+			.get(`/api/karas/tags/${params.id && tagTypes[params.id] ? tagTypes[params.id].type : ''}`, {
                 params: {
                     from: 0,
                     size: 400

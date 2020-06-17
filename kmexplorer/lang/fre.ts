@@ -85,4 +85,10 @@ export default {
 		minutes: "minutes",
 		seconds: "secondes"
 	},
+	menu: {
+		home: "Accueil",
+		kara_import: "Envoyer un kara",
+		karas: "Karas",
+		tags: "Tags"
+	}
 }
