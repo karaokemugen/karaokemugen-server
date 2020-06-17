@@ -6,14 +6,56 @@
 					<font-awesome-icon :icon="['fas', 'igloo']" :fixed-width="true" />
 					{{$t('menu.home')}}
 				</nuxt-link>
+				<a
+					role="button"
+					class="navbar-burger burger"
+					aria-label="menu"
+					aria-expanded="false"
+					data-target="navbarBasicExample"
+					@click="mobileMenu = !mobileMenu"
+				>
+					<span aria-hidden="true"></span>
+					<span aria-hidden="true"></span>
+					<span aria-hidden="true"></span>
+				</a>
 			</div>
-			<div class="navbar-menu">
+			<div :class="`navbar-menu ${mobileMenu && 'is-active'}`">
 				<div class="navbar-start">
 					<div class="navbar-item" v-if="tag">
 						<tag :type="tag.type" :tag="tag.tag" :icon="true" :nolink="true" />
 					</div>
 					<div class="navbar-item is-expanded">
 						<search-bar />
+					</div>
+				</div>
+				<div class="navbar-end is-hidden-desktop">
+					<div class="navbar-item">
+						<nuxt-link class="navbar-item" to="/search">
+							<font-awesome-icon :icon="['fas', 'list']" :fixed-width="true" />
+							{{$t('menu.karas')}}
+						</nuxt-link>
+					</div>
+					<div class="navbar-item">
+						<nuxt-link class="navbar-item" to="/types">
+							<font-awesome-icon :icon="['fas', 'tags']" :fixed-width="true" />
+							{{$t('menu.tags')}}
+						</nuxt-link>
+					</div>
+					<div v-if="import_enabled" class="navbar-item">
+						<nuxt-link class="navbar-item" to="/import">
+							<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true" />
+							{{$t('menu.kara_import')}}
+						</nuxt-link>
+					</div>
+					<div class="navbar-item">
+						<a class="navbar-item" @click.prevent="logout" aria-label="Logout" v-if="loggedIn">
+							<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
+							{{$t('menu.logout')}}
+						</a>
+						<nuxt-link class="navbar-item" to="/login" v-else>
+							<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
+							{{$t('menu.login')}}
+						</nuxt-link>
 					</div>
 				</div>
 			</div>
@@ -103,7 +145,8 @@ export default Vue.extend({
 			import_enabled: process.env.KM_IMPORT,
 			base_license_name: process.env.BASE_LICENSE_NAME,
 			base_license_link: process.env.BASE_LICENSE_LINK,
-			loggedIn: this.$auth.loggedIn
+			loggedIn: this.$auth.loggedIn,
+			mobileMenu: false
 		};
 	},
 
@@ -116,9 +159,9 @@ export default Vue.extend({
 	},
 
 	methods: {
-	    logout() {
-	        this.$auth.logout();
-	        this.loggedIn = false;
+		logout() {
+			this.$auth.logout();
+			this.loggedIn = false;
 		}
 	}
 });
