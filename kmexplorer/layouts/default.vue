@@ -9,37 +9,43 @@
 			</div>
 			<div class="navbar-menu">
 				<div class="navbar-start">
-					<div class="navbar-item" v-if="tag">
-						<tag :type="tag.type" :tag="tag.tag" :icon="true" :nolink="true" />
-					</div>
 					<div class="navbar-item is-expanded">
 						<search-bar />
 					</div>
 				</div>
-				<div class="navbar-end">
-					<div class="navbar-item">
+			</div>
+		</nav>
+
+		<div class="columns">
+			<aside class="menu">
+				<p class="menu-label">General</p>
+				<ul class="menu-list">
+					<li>
 						<nuxt-link class="navbar-item" to="/search">
 							<font-awesome-icon :icon="['fas', 'list']" :fixed-width="true" />
 							{{$t('menu.karas')}}
 						</nuxt-link>
-					</div>
-					<div class="navbar-item">
+					</li>
+					<li>
 						<nuxt-link class="navbar-item" to="/types">
 							<font-awesome-icon :icon="['fas', 'tags']" :fixed-width="true" />
 							{{$t('menu.tags')}}
 						</nuxt-link>
-					</div>
-					<div v-if="import_enabled" class="navbar-item">
+					</li>
+				</ul>
+				<p class="menu-label">Administration</p>
+				<ul class="menu-list">
+					<li>
 						<nuxt-link class="navbar-item" to="/import">
 							<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true" />
 							{{$t('menu.kara_import')}}
 						</nuxt-link>
-					</div>
-				</div>
-			</div>
-		</nav>
-		<div class="container is-fluid">
-			<nuxt />
+					</li>
+				</ul>
+			</aside>
+			<section class="container column">
+				<nuxt />
+			</section>
 		</div>
 		<footer class="footer">
 			<div class="columns has-text-centered">
@@ -98,3 +104,9 @@ export default Vue.extend({
 	}
 });
 </script>
+<style scoped lang="scss">
+.menu {
+	margin-left: 15px;
+	position: fixed;
+}
+</style>
