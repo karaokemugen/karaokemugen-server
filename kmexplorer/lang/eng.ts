@@ -88,6 +88,25 @@ export default {
 		home: "Home",
 		kara_import: "Submit a kara",
 		karas: "Karas",
-		tags: "Tags"
+		tags: "Tags",
+		login: "Se connecter",
+		logout: "Se déconnecter"
+	},
+	modal: {
+		login: {
+			title: 'Login',
+			subtitle: 'Login to view your favorites and edit your profile!',
+			fields: {
+				username: {
+					label: 'Username',
+					placeholder: 'LoveLiveFan93'
+				},
+				password: {
+					label: 'Password',
+					placeholder: 'ActuallyIdolM@sterIsBetter'
+				}
+			},
+			submit: 'Login'
+		}
 	}
 }

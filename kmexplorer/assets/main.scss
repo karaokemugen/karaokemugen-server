@@ -24,7 +24,7 @@ $success: darken($green, 20);
 
 $link: lighten($turquoise, 15);
 
-$warning: darken($orange, 10);
+$warning: darken($orange, 15);
 
 $footer-padding: 3rem 1.5rem 3rem;
 
@@ -50,6 +50,11 @@ body.has-navbar-fixed-top, html.has-navbar-fixed-top {
 .navbar.is-fixed-top {
   border: none;
   border-radius: 0;
+}
+
+.tag:not(body).is-purple {
+  background-color: #8702a3;
+  color: white;
 }
 
 .footer {

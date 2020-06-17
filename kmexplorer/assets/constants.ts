@@ -123,12 +123,12 @@ export const tagTypes: {[key: string]: tagType} = {
     },
     'creators': {
         icon: 'chalkboard-teacher',
-        class: 'is-white',
+        class: 'is-purple',
         type: 4
     },
     'authors': {
         icon: 'user-secret',
-        class: 'is-white',
+        class: 'is-purple',
         type: 6
     },
     'groups': {

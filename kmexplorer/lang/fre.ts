@@ -89,6 +89,25 @@ export default {
 		home: "Accueil",
 		kara_import: "Envoyer un kara",
 		karas: "Karas",
-		tags: "Tags"
+		tags: "Tags",
+		login: "Se connecter",
+		logout: "Se déconnecter"
+	},
+	modal: {
+		login: {
+			title: 'Se connecter',
+			subtitle: 'Connectez-vous à votre compte en ligne pour voir vos favoris et éditer votre profil !',
+			fields: {
+				username: {
+					label: 'Nom d\'utilisateur',
+					placeholder: 'LoveLiveFan93'
+				},
+				password: {
+					label: 'Mot de passe',
+					placeholder: 'EnVraiJePréfèreIdolM@ster'
+				}
+			},
+			submit: 'Se connecter'
+		}
 	}
 }

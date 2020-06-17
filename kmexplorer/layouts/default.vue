@@ -9,6 +9,9 @@
 			</div>
 			<div class="navbar-menu">
 				<div class="navbar-start">
+					<div class="navbar-item" v-if="tag">
+						<tag :type="tag.type" :tag="tag.tag" :icon="true" :nolink="true" />
+					</div>
 					<div class="navbar-item is-expanded">
 						<search-bar />
 					</div>
@@ -42,6 +45,14 @@
 						</nuxt-link>
 					</li>
 				</ul>
+				<a class="navbar-item" @click.prevent="logout" aria-label="Logout" v-if="loggedIn">
+					<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
+					{{$t('menu.logout')}}
+				</a>
+				<nuxt-link class="navbar-item" to="/login" v-else>
+					<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
+					{{$t('menu.login')}}
+				</nuxt-link>
 			</aside>
 			<section class="container column">
 				<nuxt />
@@ -91,7 +102,8 @@ export default Vue.extend({
 			tag: null,
 			import_enabled: process.env.KM_IMPORT,
 			base_license_name: process.env.BASE_LICENSE_NAME,
-			base_license_link: process.env.BASE_LICENSE_LINK
+			base_license_link: process.env.BASE_LICENSE_LINK,
+			loggedIn: this.$auth.loggedIn
 		};
 	},
 
@@ -101,6 +113,13 @@ export default Vue.extend({
 				this.tag = mutation.payload;
 			}
 		});
+	},
+
+	methods: {
+	    logout() {
+	        this.$auth.logout();
+	        this.loggedIn = false;
+		}
 	}
 });
 </script>

@@ -293,7 +293,9 @@ export let NuxtConfig = {
 		// Doc: https://nuxt-community.github.io/nuxt-i18n
 		'nuxt-i18n',
 		// Doc: https://buefy.org/documentation/start
-		['nuxt-buefy', { css: false, materialDesignIcons: false }]
+		['nuxt-buefy', { css: false, materialDesignIcons: false }],
+		// Doc: https://auth.nuxtjs.org/
+		'@nuxtjs/auth'
 	],
 
 	plugins: [
@@ -304,6 +306,18 @@ export let NuxtConfig = {
 	axios: {
 		baseURL: 'http://localhost:1350',
 		https: false
+	},
+
+	auth: {
+		strategies: {
+			local: {
+				endpoints: {
+					login: { url: '/api/auth/login', method: 'post', propertyName: 'token' },
+					user: { url: '/api/auth/check', method: 'get', propertyName: 'username' }
+				},
+				tokenType: false
+			}
+		}
 	},
 
 	router: {
