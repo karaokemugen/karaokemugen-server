@@ -114,7 +114,24 @@ export default {
 		login: "Login",
 		logout: "Logout",
 		register: "Register",
-		search_placeholder: "Series, singers, names..."
+	},
+	search: {
+		placeholder: "Series, singers, names...",
+		sort: {
+			a_z: "De A à Z",
+			kara_count: "Kara count",
+			recent: "Recent",
+			most_played: "Most played",
+			most_favorites: "Plus favoris",
+			most_requested: "Plus demandés",
+		},
+		next: "Next page",
+        previous: "Previous page",
+		aria: {
+			goto: "Go to page {0}",
+			page: "Page {0}",
+			sort: "Sort by"
+		},
 	},
 	modal: {
 		login: {

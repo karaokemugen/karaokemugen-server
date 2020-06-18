@@ -115,7 +115,24 @@ export default {
 		login: "Se connecter",
 		logout: "Se déconnecter",
 		register: "S'inscrire",
-		search_placeholder: "Séries, chanteurs, noms..."
+	},
+	search: {
+		placeholder: "Séries, chanteurs, noms...",
+		sort: {
+			a_z: "De A à Z",
+			kara_count: "Nombre de chansons",
+			recent: "Mise à jour récente",
+			most_played: "Plus joués",
+			most_favorites: "Plus favoris",
+			most_requested: "Plus demandés",
+		},
+		next: "Page suivante",
+        previous: "Page précédente",
+        aria: {
+            goto: "Aller à la page {0}",
+            page: "Page {0}",
+            sort: "Trier par"
+        }
 	},
 	modal: {
 		login: {
