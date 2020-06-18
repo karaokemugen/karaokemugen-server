@@ -6,26 +6,29 @@
 					<img :src="require('../assets/nanami.png')" alt="Logo" />
 					{{ explorerHost }}
 				</nuxt-link>
-				<div class="navbar-item" v-if="tag">
-					<tag :type="tag.type" :tag="tag.tag" :icon="true" :nolink="true" />
-				</div>
-				<div class="navbar-item is-expanded is-hidden-touch ">
-					<search-bar />
-				</div>
-				<div class="navbar-item has-dropdown is-hidden-desktop ">
+				<div class="navbar-item has-dropdown is-hidden-desktop">
 					<a class="navbar-link" @click="openMenu('database')">
 						<font-awesome-icon :icon="['fas', 'database']" :fixed-width="true" />
 					</a>
 				</div>
-				<div class="navbar-item has-dropdown is-hidden-desktop ">
+				<div class="navbar-item has-dropdown is-hidden-desktop">
 					<a class="navbar-link" @click="openMenu('community')">
 						<font-awesome-icon :icon="['fas', 'cloud-upload-alt']" :fixed-width="true" />
 					</a>
 				</div>
-				<div class="navbar-item has-dropdown is-hidden-desktop ">
+				<div class="navbar-item has-dropdown is-hidden-desktop">
 					<a class="navbar-link" @click="openMenu('account')">
 						<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
 					</a>
+				</div>
+			</div>
+
+			<div class="navbar-menu">
+				<div class="navbar-item" v-if="tag">
+					<tag :type="tag.type" :tag="tag.tag" :icon="true" :nolink="true" />
+				</div>
+				<div class="navbar-item is-expanded">
+					<search-bar />
 				</div>
 			</div>
 
