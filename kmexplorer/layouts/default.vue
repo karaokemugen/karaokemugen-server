@@ -3,8 +3,8 @@
 		<nav class="navbar is-primary is-fixed-top">
 			<div class="navbar-brand">
 				<nuxt-link class="navbar-item" to="/">
-					<font-awesome-icon :icon="['fas', 'igloo']" :fixed-width="true" />
-					{{$t('menu.home')}}
+					<img :src="require('../assets/nanami.png')" alt="Logo">
+					{{ explorerHost }}
 				</nuxt-link>
 				<a
 					role="button"
@@ -145,6 +145,7 @@ export default Vue.extend({
 			import_enabled: process.env.KM_IMPORT,
 			base_license_name: process.env.BASE_LICENSE_NAME,
 			base_license_link: process.env.BASE_LICENSE_LINK,
+			explorerHost: process.env.EXPLORER_HOST,
 			loggedIn: this.$auth.loggedIn,
 			mobileMenu: false
 		};

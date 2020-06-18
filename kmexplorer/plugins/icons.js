@@ -4,7 +4,6 @@ import { FontAwesomeIcon, FontAwesomeLayers } from '@fortawesome/vue-fontawesome
 import {
     faList,
     faTags,
-    faIgloo,
     faFileImport,
     faLaptop,
     faChalkboardTeacher,
@@ -48,7 +47,6 @@ library.add(faUserSecret);
 library.add(faBox);
 library.add(faTag);
 library.add(faFileImport);
-library.add(faIgloo);
 library.add(faTags);
 library.add(faList);
 library.add(faUser);

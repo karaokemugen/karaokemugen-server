@@ -86,7 +86,6 @@ export default {
 		seconds: "seconds"
 	},
 	menu: {
-		home: "Home",
 		kara_import: "Submit a kara",
 		karas: "Karas",
 		tags: "Tags",

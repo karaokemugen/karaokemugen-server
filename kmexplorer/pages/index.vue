@@ -3,7 +3,7 @@
 		<a href="http://karaokes.moe/">
 			<img class="km-home--logo" :src="require('../assets/km-logo.png')" />
 		</a>
-		<h1 class="title">KM Explorer</h1>
+		<h1 class="title">{{ explorerHost }}</h1>
 		<h2 class="subtitle">Explore! Find! Sing!</h2>
 		<ul class="km-home--stats">
 			<li key="karas">
@@ -74,6 +74,7 @@ export default Vue.extend({
 
 	data() {
 		return {
+			explorerHost: process.env.EXPLORER_HOST,
 			count: {
 				singers: 0,
 				creators: 0,
