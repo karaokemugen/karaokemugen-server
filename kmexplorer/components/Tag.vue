@@ -1,6 +1,6 @@
 <template>
     <nuxt-link :to="nolink ? ``:`/tags/${tag.tid}~${tagTypes[type].type}`" class="tag is-medium"
-               :class="tagTypes[type].class">
+               :class="tagTypes[type].class" v-if="!tag.karacount || tag.karacount[tagTypes[this.type].type] > 0 ">
         <font-awesome-icon :icon="['fas', tagTypes[type].icon]" :fixed-width="true" v-if="icon" />
         {{ localizedName }}
     </nuxt-link>

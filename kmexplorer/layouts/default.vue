@@ -6,20 +6,54 @@
 					<img :src="require('../assets/nanami.png')" alt="Logo" />
 					{{ explorerHost }}
 				</nuxt-link>
-				<a
-					role="button"
-					class="navbar-burger burger"
-					aria-label="menu"
-					aria-expanded="false"
-					data-target="navbarBasicExample"
-					@click="mobileMenu = !mobileMenu"
-				>
-					<span aria-hidden="true"></span>
-					<span aria-hidden="true"></span>
-					<span aria-hidden="true"></span>
-				</a>
+				<div class="navbar-item" v-if="tag">
+					<tag :type="tag.type" :tag="tag.tag" :icon="true" :nolink="true" />
+				</div>
+				<div class="navbar-item is-expanded is-hidden-touch ">
+					<search-bar />
+				</div>
+				<div class="navbar-item has-dropdown is-hidden-desktop ">
+					<a class="navbar-link" @click="openMenu('database')">
+						<font-awesome-icon :icon="['fas', 'database']" :fixed-width="true" />
+					</a>
+				</div>
+				<div class="navbar-item has-dropdown is-hidden-desktop ">
+					<a class="navbar-link" @click="openMenu('community')">
+						<font-awesome-icon :icon="['fas', 'cloud-upload-alt']" :fixed-width="true" />
+					</a>
+				</div>
+				<div class="navbar-item has-dropdown is-hidden-desktop ">
+					<a class="navbar-link" @click="openMenu('account')">
+						<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
+					</a>
+				</div>
 			</div>
-			<div :class="`navbar-menu ${mobileMenu && 'is-active'}`">
+
+			<div class="navbar-dropdown" v-if="communityMenu">
+				<nuxt-link class="navbar-item" to="/import" v-if="import_enabled">
+					<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true" />
+					{{$t('menu.kara_import')}}
+				</nuxt-link>
+			</div>
+
+			<div class="navbar-dropdown" v-if="accountMenu">
+				<a class="navbar-item" @click.prevent="logout" aria-label="Logout" v-if="loggedIn">
+					<font-awesome-icon :icon="['fas', 'sign-out-alt']" :fixed-width="true" />
+					{{$t('menu.logout')}}
+				</a>
+				<div v-else>
+					<nuxt-link class="navbar-item" to="/login">
+						<font-awesome-icon :icon="['fas', 'sign-in-alt']" :fixed-width="true" />
+						{{$t('menu.login')}}
+					</nuxt-link>
+					<nuxt-link class="navbar-item" to="/register">
+						<font-awesome-icon :icon="['fas', 'edit']" :fixed-width="true" />
+						{{$t('menu.register')}}
+					</nuxt-link>
+				</div>
+			</div>
+
+			<div class="navbar-dropdown" v-if="databaseMenu">
 				<div class="navbar-item" v-if="tag">
 					<tag :type="tag.type" :tag="tag.tag" :icon="true" :nolink="true" />
 				</div>
@@ -28,53 +62,187 @@
 				</div>
 				<div class="is-hidden-desktop">
 					<nuxt-link class="navbar-item" to="/search">
-						<font-awesome-icon :icon="['fas', 'list']" :fixed-width="true" />
+						<font-awesome-icon :icon="['fas', 'music']" :fixed-width="true" />
 						{{$t('menu.karas')}}
 					</nuxt-link>
-					<nuxt-link class="navbar-item" to="/types">
-						<font-awesome-icon :icon="['fas', 'tags']" :fixed-width="true" />
-						{{$t('menu.tags')}}
+					<nuxt-link class="navbar-item" to="/types/songtypes">
+						<font-awesome-icon :icon="['fas', 'list']" :fixed-width="true" />
+						{{$t('menu.songtypes')}}
 					</nuxt-link>
-					<nuxt-link class="navbar-item" to="/import" v-if="import_enabled">
-						<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true" />
-						{{$t('menu.kara_import')}}
-					</nuxt-link>
-					<a class="navbar-item" @click.prevent="logout" aria-label="Logout" v-if="loggedIn">
-						<font-awesome-icon :icon="['fas', 'sign-out-alt']" :fixed-width="true" />
-						{{$t('menu.logout')}}
-					</a>
-					<div v-else>
-						<nuxt-link class="navbar-item" to="/login">
-							<font-awesome-icon :icon="['fas', 'sign-in-alt']" :fixed-width="true" />
-							{{$t('menu.login')}}
-						</nuxt-link>
-						<nuxt-link class="navbar-item" to="/register">
-							<font-awesome-icon :icon="['fas', 'edit']" :fixed-width="true" />
-							{{$t('menu.register')}}
-						</nuxt-link>
+					<div class="navbar-item">
+						<a :class="tagsMenu && 'is-active'" @click="tagsMenu = !tagsMenu">
+							<font-awesome-icon :icon="['fas', 'tags']" :fixed-width="true" />
+							{{$t('menu.tags')}}
+						</a>
+
+						<div class="navbar-dropdown" v-if="tagsMenu">
+							<nuxt-link class="navbar-item" to="/types/misc">
+								<font-awesome-icon :icon="['fas', 'tags']" :fixed-width="true" />
+								{{$t('menu.miscs')}}
+							</nuxt-link>
+
+							<nuxt-link class="navbar-item" to="/types/groups">
+								<font-awesome-icon :icon="['fas', 'boxes']" :fixed-width="true" />
+								{{$t('menu.groups')}}
+							</nuxt-link>
+
+							<nuxt-link class="navbar-item" to="/types/families">
+								<font-awesome-icon :icon="['fas', 'photo-video']" :fixed-width="true" />
+								{{$t('menu.families')}}
+							</nuxt-link>
+
+							<nuxt-link class="navbar-item" to="/types/origins">
+								<font-awesome-icon :icon="['fas', 'project-diagram']" :fixed-width="true" />
+								{{$t('menu.origins')}}
+							</nuxt-link>
+
+							<nuxt-link class="navbar-item" to="/types/genres">
+								<font-awesome-icon :icon="['fas', 'chess']" :fixed-width="true" />
+								{{$t('menu.genres')}}
+							</nuxt-link>
+
+							<nuxt-link class="navbar-item" to="/types/platforms">
+								<font-awesome-icon :icon="['fas', 'laptop']" :fixed-width="true" />
+								{{$t('menu.platforms')}}
+							</nuxt-link>
+						</div>
 					</div>
+					<nuxt-link class="navbar-item" to="/types/singers">
+						<font-awesome-icon :icon="['fas', 'microphone-alt']" :fixed-width="true" />
+						{{$t('menu.singers')}}
+					</nuxt-link>
+					<nuxt-link class="navbar-item" to="/types/series">
+						<font-awesome-icon :icon="['fas', 'tv']" :fixed-width="true" />
+						{{$t('menu.series')}}
+					</nuxt-link>
+					<nuxt-link class="navbar-item" to="/types/songwriters">
+						<font-awesome-icon :icon="['fas', 'signature']" :fixed-width="true" />
+						{{$t('menu.songwriters')}}
+					</nuxt-link>
+					<nuxt-link class="navbar-item" to="/types/creators">
+						<font-awesome-icon :icon="['fas', 'chalkboard-teacher']" :fixed-width="true" />
+						{{$t('menu.creators')}}
+					</nuxt-link>
+					<nuxt-link class="navbar-item" to="/types/authors">
+						<font-awesome-icon :icon="['fas', 'user-secret']" :fixed-width="true" />
+						{{$t('menu.authors')}}
+					</nuxt-link>
+					<nuxt-link class="navbar-item" to="/types/langs">
+						<font-awesome-icon :icon="['fas', 'language']" :fixed-width="true" />
+						{{$t('menu.languages')}}
+					</nuxt-link>
+					<nuxt-link class="navbar-item" to="/types/years">
+						<font-awesome-icon :icon="['fas', 'calendar-alt']" :fixed-width="true" />
+						{{$t('menu.years')}}
+					</nuxt-link>
 				</div>
 			</div>
 		</nav>
 
 		<div class="columns">
 			<aside class="menu is-hidden-touch">
-				<p class="menu-label">General</p>
+				<p class="menu-label">{{$t('menu.database')}}</p>
 				<ul class="menu-list">
 					<li>
 						<nuxt-link class="navbar-item" to="/search">
-							<font-awesome-icon :icon="['fas', 'list']" :fixed-width="true" />
+							<font-awesome-icon :icon="['fas', 'music']" :fixed-width="true" />
 							{{$t('menu.karas')}}
 						</nuxt-link>
 					</li>
 					<li>
-						<nuxt-link class="navbar-item" to="/types">
+						<nuxt-link class="navbar-item" to="/types/songtypes">
+							<font-awesome-icon :icon="['fas', 'list']" :fixed-width="true" />
+							{{$t('menu.songtypes')}}
+						</nuxt-link>
+					</li>
+					<li>
+						<a :class="tagsMenu && 'is-active'" @click="tagsMenu = !tagsMenu">
 							<font-awesome-icon :icon="['fas', 'tags']" :fixed-width="true" />
 							{{$t('menu.tags')}}
+						</a>
+						<ul class="menu-list" v-if="tagsMenu">
+							<li>
+								<nuxt-link class="navbar-item" to="/types/misc">
+									<font-awesome-icon :icon="['fas', 'tags']" :fixed-width="true" />
+									{{$t('menu.miscs')}}
+								</nuxt-link>
+							</li>
+							<li>
+								<nuxt-link class="navbar-item" to="/types/groups">
+									<font-awesome-icon :icon="['fas', 'boxes']" :fixed-width="true" />
+									{{$t('menu.groups')}}
+								</nuxt-link>
+							</li>
+							<li>
+								<nuxt-link class="navbar-item" to="/types/families">
+									<font-awesome-icon :icon="['fas', 'photo-video']" :fixed-width="true" />
+									{{$t('menu.families')}}
+								</nuxt-link>
+							</li>
+							<li>
+								<nuxt-link class="navbar-item" to="/types/origins">
+									<font-awesome-icon :icon="['fas', 'project-diagram']" :fixed-width="true" />
+									{{$t('menu.origins')}}
+								</nuxt-link>
+							</li>
+							<li>
+								<nuxt-link class="navbar-item" to="/types/genres">
+									<font-awesome-icon :icon="['fas', 'chess']" :fixed-width="true" />
+									{{$t('menu.genres')}}
+								</nuxt-link>
+							</li>
+							<li>
+								<nuxt-link class="navbar-item" to="/types/platforms">
+									<font-awesome-icon :icon="['fas', 'laptop']" :fixed-width="true" />
+									{{$t('menu.platforms')}}
+								</nuxt-link>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<nuxt-link class="navbar-item" to="/types/singers">
+							<font-awesome-icon :icon="['fas', 'microphone-alt']" :fixed-width="true" />
+							{{$t('menu.singers')}}
+						</nuxt-link>
+					</li>
+					<li>
+						<nuxt-link class="navbar-item" to="/types/series">
+							<font-awesome-icon :icon="['fas', 'tv']" :fixed-width="true" />
+							{{$t('menu.series')}}
+						</nuxt-link>
+					</li>
+					<li>
+						<nuxt-link class="navbar-item" to="/types/songwriters">
+							<font-awesome-icon :icon="['fas', 'signature']" :fixed-width="true" />
+							{{$t('menu.songwriters')}}
+						</nuxt-link>
+					</li>
+					<li>
+						<nuxt-link class="navbar-item" to="/types/creators">
+							<font-awesome-icon :icon="['fas', 'chalkboard-teacher']" :fixed-width="true" />
+							{{$t('menu.creators')}}
+						</nuxt-link>
+					</li>
+					<li>
+						<nuxt-link class="navbar-item" to="/types/authors">
+							<font-awesome-icon :icon="['fas', 'user-secret']" :fixed-width="true" />
+							{{$t('menu.authors')}}
+						</nuxt-link>
+					</li>
+					<li>
+						<nuxt-link class="navbar-item" to="/types/langs">
+							<font-awesome-icon :icon="['fas', 'language']" :fixed-width="true" />
+							{{$t('menu.languages')}}
+						</nuxt-link>
+					</li>
+					<li>
+						<nuxt-link class="navbar-item" to="/types/years">
+							<font-awesome-icon :icon="['fas', 'calendar-alt']" :fixed-width="true" />
+							{{$t('menu.years')}}
 						</nuxt-link>
 					</li>
 				</ul>
-				<p class="menu-label">Administration</p>
+				<p class="menu-label">{{$t('menu.community')}}</p>
 				<ul class="menu-list">
 					<li>
 						<nuxt-link class="navbar-item" to="/import">
@@ -82,21 +250,25 @@
 							{{$t('menu.kara_import')}}
 						</nuxt-link>
 					</li>
-
-					<a class="navbar-item" @click.prevent="logout" aria-label="Logout" v-if="loggedIn">
-						<font-awesome-icon :icon="['fas', 'sign-out-alt']" :fixed-width="true" />
-						{{$t('menu.logout')}}
-					</a>
-					<div v-else>
-						<nuxt-link class="navbar-item" to="/login">
-							<font-awesome-icon :icon="['fas', 'sign-in-alt']" :fixed-width="true" />
-							{{$t('menu.login')}}
-						</nuxt-link>
-						<nuxt-link class="navbar-item" to="/register">
-							<font-awesome-icon :icon="['fas', 'edit']" :fixed-width="true" />
-							{{$t('menu.register')}}
-						</nuxt-link>
-					</div>
+				</ul>
+				<p class="menu-label">{{$t('menu.account')}}</p>
+				<ul class="menu-list">
+					<li>
+						<a class="navbar-item" @click.prevent="logout" aria-label="Logout" v-if="loggedIn">
+							<font-awesome-icon :icon="['fas', 'sign-out-alt']" :fixed-width="true" />
+							{{$t('menu.logout')}}
+						</a>
+						<div v-else>
+							<nuxt-link class="navbar-item" to="/login">
+								<font-awesome-icon :icon="['fas', 'sign-in-alt']" :fixed-width="true" />
+								{{$t('menu.login')}}
+							</nuxt-link>
+							<nuxt-link class="navbar-item" to="/register">
+								<font-awesome-icon :icon="['fas', 'edit']" :fixed-width="true" />
+								{{$t('menu.register')}}
+							</nuxt-link>
+						</div>
+					</li>
 				</ul>
 			</aside>
 			<section class="container column is-fluid">
@@ -150,7 +322,10 @@ export default Vue.extend({
 			base_license_link: process.env.BASE_LICENSE_LINK,
 			explorerHost: process.env.EXPLORER_HOST,
 			loggedIn: this.$auth.loggedIn,
-			mobileMenu: false
+			tagsMenu: false,
+			databaseMenu: false,
+			communityMenu: false,
+			accountMenu: false
 		};
 	},
 
@@ -166,6 +341,21 @@ export default Vue.extend({
 		logout() {
 			this.$auth.logout();
 			this.loggedIn = false;
+		},
+		openMenu(menu: string) {
+			if (menu === "database") {
+				this.databaseMenu = !this.databaseMenu;
+				this.communityMenu = false;
+				this.accountMenu = false;
+			} else if (menu === "community") {
+				this.databaseMenu = false;
+				this.communityMenu = !this.communityMenu;
+				this.accountMenu = false;
+			} else if (menu === "account") {
+				this.databaseMenu = false;
+				this.communityMenu = false;
+				this.accountMenu = !this.accountMenu;
+			}
 		}
 	}
 });

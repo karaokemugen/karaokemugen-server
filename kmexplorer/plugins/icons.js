@@ -2,30 +2,40 @@ import Vue from 'vue';
 import { config, library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon, FontAwesomeLayers } from '@fortawesome/vue-fontawesome';
 import {
-    faList,
-    faTags,
-    faFileImport,
-    faLaptop,
-    faChalkboardTeacher,
-    faUserSecret,
-    faQuestionCircle,
-    faTag,
-    faBox,
-    faUpload,
-    faCircle,
-    faPlay,
-    faTasks,
-    faTv,
-    faGlobe,
-    faMicrophoneAlt,
-    faSignature,
-    faPhotoVideo,
-    faProjectDiagram,
-    faChess,
-    faSignInAlt,
-    faSignOutAlt,
-    faEdit,
-    faCloudDownloadAlt, faStar, faFileExport, faMeh
+	faList,
+	faTags,
+	faFileImport,
+	faLaptop,
+	faChalkboardTeacher,
+	faUserSecret,
+	faQuestionCircle,
+	faTag,
+	faBox,
+	faUpload,
+	faCircle,
+	faPlay,
+	faTasks,
+	faTv,
+	faGlobe,
+	faMicrophoneAlt,
+	faSignature,
+	faPhotoVideo,
+	faProjectDiagram,
+	faChess,
+	faSignInAlt,
+	faSignOutAlt,
+	faEdit,
+	faCloudDownloadAlt,
+	faStar,
+	faFileExport,
+	faMeh,
+	faMusic,
+	faDatabase,
+	faCloudUploadAlt,
+	faUser,
+	faBoxes,
+	faLanguage,
+	faCalendarAlt
 } from '@fortawesome/free-solid-svg-icons';
 
 // This is important, we are going to let Nuxt.js worry about the CSS
@@ -58,6 +68,13 @@ library.add(faCloudDownloadAlt);
 library.add(faStar);
 library.add(faFileExport);
 library.add(faMeh);
+library.add(faMusic);
+library.add(faDatabase);
+library.add(faCloudUploadAlt);
+library.add(faUser);
+library.add(faBoxes);
+library.add(faLanguage);
+library.add(faCalendarAlt);
 
 // Register the component globally
 Vue.component('font-awesome-icon', FontAwesomeIcon);
