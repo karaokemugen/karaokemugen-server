@@ -96,7 +96,8 @@ export default {
 		tags: "Tags",
 		login: "Login",
 		logout: "Logout",
-		register: "Register"
+		register: "Register",
+		search_placeholder: "Series, singers, names..."
 	},
 	modal: {
 		login: {

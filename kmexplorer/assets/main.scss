@@ -36,6 +36,10 @@ body.has-navbar-fixed-top, html.has-navbar-fixed-top {
 	padding-top: 5rem;
 }
 
+.input::placeholder, .taginput .taginput-container.is-focusable::placeholder, .textarea::placeholder, .select select::placeholder {
+	color: lighten($grey, 15);
+}
+
 .fade-enter-active, .fade-leave-active {
 	transition: opacity 100ms;
 }

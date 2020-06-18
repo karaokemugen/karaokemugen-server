@@ -1,7 +1,7 @@
 <template>
     <div class="field is-expanded">
         <div class="control">
-            <input class="input is-fullwidth" type="text" placeholder="" v-model="search" @keydown.enter="triggerSearch">
+            <input class="input is-fullwidth" type="text" :placeholder="$t('menu.search_placeholder')" v-model="search" @keydown.enter="triggerSearch">
         </div>
     </div>
 </template>
