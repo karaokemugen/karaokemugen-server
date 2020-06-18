@@ -17,9 +17,20 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 	let typeClauses = params.type ? ` AND types @> ARRAY[${params.type}]` : '';
 	let limitClause = '';
 	let offsetClause = '';
+	let joinClauses = '';
+	let orderClause = 'name';
+	if (params.order === 'karacount' && params.type) {
+		joinClauses = `LEFT   JOIN LATERAL (
+	   	SELECT elem->>'count' AS karacounttype
+	   	FROM   jsonb_array_elements(all_tags.karacount::jsonb) a(elem)
+	   	WHERE  elem->>'type' = '${params.type}'
+	   	) a ON true
+		`;
+		orderClause = 'karacounttype DESC NULLS LAST, name';
+	}
 	if (params.from > 0) offsetClause = `OFFSET ${params.from} `;
 	if (params.size > 0) limitClause = `LIMIT ${params.size} `;
-	const query = sql.getAllTags(filterClauses.sql, typeClauses, limitClause, offsetClause);
+	const query = sql.getAllTags(filterClauses.sql, typeClauses, limitClause, offsetClause, joinClauses, orderClause);
 	const res = await db().query(yesql(query)(filterClauses.params));
 	res.rows.forEach((e: any, i: number) => {
 		const karacounts = e.karacount;

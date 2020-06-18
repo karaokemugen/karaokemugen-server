@@ -1,7 +1,7 @@
 // Tags SQL
 
 
-export const getAllTags = (filterClauses: string[], typeClauses: string, limitClause: string, offsetClause: string) => `
+export const getAllTags = (filterClauses: string[], typeClauses: string, limitClause: string, offsetClause: string, joinClauses: string, orderClauses: string) => `
 SELECT tid,
 	types,
 	name,
@@ -14,10 +14,11 @@ SELECT tid,
 	repository,
 	modified_at
 FROM all_tags
+${joinClauses}
 WHERE 1 = 1
   ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
   ${typeClauses}
-ORDER BY name
+ORDER BY ${orderClauses}
 ${limitClause}
 ${offsetClause}
 `;
