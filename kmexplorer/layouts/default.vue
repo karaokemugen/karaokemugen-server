@@ -147,13 +147,13 @@
 				<p class="menu-label">{{$t('menu.database')}}</p>
 				<ul class="menu-list">
 					<li>
-						<nuxt-link class="navbar-item" to="/search">
+						<nuxt-link to="/search">
 							<font-awesome-icon :icon="['fas', 'music']" :fixed-width="true" />
 							{{$t('menu.karas')}}
 						</nuxt-link>
 					</li>
 					<li>
-						<nuxt-link class="navbar-item" to="/types/songtypes">
+						<nuxt-link to="/types/songtypes">
 							<font-awesome-icon :icon="['fas', 'list']" :fixed-width="true" />
 							{{$t('menu.songtypes')}}
 						</nuxt-link>
@@ -165,37 +165,37 @@
 						</a>
 						<ul class="menu-list" v-if="tagsMenu">
 							<li>
-								<nuxt-link class="navbar-item" to="/types/misc">
+								<nuxt-link to="/types/misc">
 									<font-awesome-icon :icon="['fas', 'tags']" :fixed-width="true" />
 									{{$t('menu.miscs')}}
 								</nuxt-link>
 							</li>
 							<li>
-								<nuxt-link class="navbar-item" to="/types/groups">
+								<nuxt-link to="/types/groups">
 									<font-awesome-icon :icon="['fas', 'boxes']" :fixed-width="true" />
 									{{$t('menu.groups')}}
 								</nuxt-link>
 							</li>
 							<li>
-								<nuxt-link class="navbar-item" to="/types/families">
+								<nuxt-link to="/types/families">
 									<font-awesome-icon :icon="['fas', 'photo-video']" :fixed-width="true" />
 									{{$t('menu.families')}}
 								</nuxt-link>
 							</li>
 							<li>
-								<nuxt-link class="navbar-item" to="/types/origins">
+								<nuxt-link to="/types/origins">
 									<font-awesome-icon :icon="['fas', 'project-diagram']" :fixed-width="true" />
 									{{$t('menu.origins')}}
 								</nuxt-link>
 							</li>
 							<li>
-								<nuxt-link class="navbar-item" to="/types/genres">
+								<nuxt-link to="/types/genres">
 									<font-awesome-icon :icon="['fas', 'chess']" :fixed-width="true" />
 									{{$t('menu.genres')}}
 								</nuxt-link>
 							</li>
 							<li>
-								<nuxt-link class="navbar-item" to="/types/platforms">
+								<nuxt-link to="/types/platforms">
 									<font-awesome-icon :icon="['fas', 'laptop']" :fixed-width="true" />
 									{{$t('menu.platforms')}}
 								</nuxt-link>
@@ -203,43 +203,43 @@
 						</ul>
 					</li>
 					<li>
-						<nuxt-link class="navbar-item" to="/types/singers">
+						<nuxt-link to="/types/singers">
 							<font-awesome-icon :icon="['fas', 'microphone-alt']" :fixed-width="true" />
 							{{$t('menu.singers')}}
 						</nuxt-link>
 					</li>
 					<li>
-						<nuxt-link class="navbar-item" to="/types/series">
+						<nuxt-link to="/types/series">
 							<font-awesome-icon :icon="['fas', 'tv']" :fixed-width="true" />
 							{{$t('menu.series')}}
 						</nuxt-link>
 					</li>
 					<li>
-						<nuxt-link class="navbar-item" to="/types/songwriters">
+						<nuxt-link to="/types/songwriters">
 							<font-awesome-icon :icon="['fas', 'signature']" :fixed-width="true" />
 							{{$t('menu.songwriters')}}
 						</nuxt-link>
 					</li>
 					<li>
-						<nuxt-link class="navbar-item" to="/types/creators">
+						<nuxt-link to="/types/creators">
 							<font-awesome-icon :icon="['fas', 'chalkboard-teacher']" :fixed-width="true" />
 							{{$t('menu.creators')}}
 						</nuxt-link>
 					</li>
 					<li>
-						<nuxt-link class="navbar-item" to="/types/authors">
+						<nuxt-link to="/types/authors">
 							<font-awesome-icon :icon="['fas', 'user-secret']" :fixed-width="true" />
 							{{$t('menu.authors')}}
 						</nuxt-link>
 					</li>
 					<li>
-						<nuxt-link class="navbar-item" to="/types/langs">
+						<nuxt-link to="/types/langs">
 							<font-awesome-icon :icon="['fas', 'language']" :fixed-width="true" />
 							{{$t('menu.languages')}}
 						</nuxt-link>
 					</li>
 					<li>
-						<nuxt-link class="navbar-item" to="/types/years">
+						<nuxt-link to="/types/years">
 							<font-awesome-icon :icon="['fas', 'calendar-alt']" :fixed-width="true" />
 							{{$t('menu.years')}}
 						</nuxt-link>
@@ -248,7 +248,7 @@
 				<p class="menu-label">{{$t('menu.community')}}</p>
 				<ul class="menu-list">
 					<li>
-						<nuxt-link class="navbar-item" to="/import">
+						<nuxt-link to="/import">
 							<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true" />
 							{{$t('menu.kara_import')}}
 						</nuxt-link>
@@ -257,16 +257,16 @@
 				<p class="menu-label">{{$t('menu.account')}}</p>
 				<ul class="menu-list">
 					<li>
-						<a class="navbar-item" @click.prevent="logout" aria-label="Logout" v-if="loggedIn">
+						<a @click.prevent="logout" aria-label="Logout" v-if="loggedIn">
 							<font-awesome-icon :icon="['fas', 'sign-out-alt']" :fixed-width="true" />
 							{{$t('menu.logout')}}
 						</a>
 						<div v-else>
-							<nuxt-link class="navbar-item" to="/login">
+							<nuxt-link to="/login">
 								<font-awesome-icon :icon="['fas', 'sign-in-alt']" :fixed-width="true" />
 								{{$t('menu.login')}}
 							</nuxt-link>
-							<nuxt-link class="navbar-item" to="/register">
+							<nuxt-link to="/register">
 								<font-awesome-icon :icon="['fas', 'edit']" :fixed-width="true" />
 								{{$t('menu.register')}}
 							</nuxt-link>
