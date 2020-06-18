@@ -17,7 +17,7 @@
             </template>
         </i18n>
         <h6 class="subtitle is-6 no-top-margin">
-            {{ karaoke.year }}
+            <nuxt-link :to="`/years/${karaoke.year}`">{{ karaoke.year }}</nuxt-link>
         </h6>
         <table class="tagList">
             <tbody>

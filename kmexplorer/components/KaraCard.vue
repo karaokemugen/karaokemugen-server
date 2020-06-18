@@ -18,6 +18,9 @@
                         </nuxt-link>
                     </template>
                 </i18n>
+				<h6 class="subtitle is-6 no-top-margin">
+					<nuxt-link :to="`/years/${karaoke.year}`">{{ karaoke.year }}</nuxt-link>
+				</h6>
             </div>
             <div class="images">
                 <img :src="images[0]" alt="">
