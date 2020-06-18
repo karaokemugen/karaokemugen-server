@@ -1,8 +1,10 @@
 <template>
-    <div class="field is-expanded">
-        <div class="control">
+    <div class="field is-expanded has-addons">
+        <div class="control is-expanded">
             <input class="input is-fullwidth" type="text" :placeholder="$t('search.placeholder')" v-model="search" @keydown.enter="triggerSearch">
-			<span class="select is-primary">
+        </div>
+		<div class="control">
+			<span class="select">
 				<select :aria-label="$t('search.aria.sort')" v-model="sort">
 					<option value="az" selected>{{ $t('search.sort.a_z') }}</option>
 					<option value="karacount">{{ $t('search.sort.kara_count') }}</option>
@@ -12,7 +14,7 @@
 					<option value="most_requested">{{ $t('search.sort.most_requested') }}</option>
 				</select>
 			</span>
-        </div>
+		</div>
     </div>
 </template>
 
@@ -55,11 +57,5 @@
     .field.is-expanded {
         flex-grow: 1;
         flex-shrink: 0;
-		.control {
-			display: flex;
-		}
-		.select select option {
-			color: white;
-		}
     }
 </style>
