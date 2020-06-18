@@ -45,6 +45,7 @@ export default Vue.extend({
 					size: (this.from + 1) * 400
 				}
 			});
+			data.content = data.content.filter(tag => tag.karacount && Object.keys(tag.karacount).length > 0);
 			this.tags.content.push(...data.content);
 			this.tags.infos.to = data.infos.to;
 			this.loading = false;
@@ -75,6 +76,7 @@ export default Vue.extend({
 			.catch(_err =>
 				error({ statusCode: 404, message: app.i18n.t("tag.notfound") })
 			);
+			data.content = data.content.filter(tag => tag.karacount && Object.keys(tag.karacount).length > 0);
 		return { tags: data, type: params.id };
 	},
 
