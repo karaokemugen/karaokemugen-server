@@ -2,7 +2,7 @@
 	<div class="is-ancestor">
 		<div class="tags" v-if="tags.content.length > 0">
 			<tag v-for="tag in tags.content" :key="tag.tid" :icon="true"
-				:type="type ? type : tagTypesMap[tag.types[0]].name" :tag="tag" :i18n="tag.i18n" />
+				:type="type" :tag="tag" :i18n="tag.i18n" />
 		</div>
 		<loading-nanami class="tile is-parent is-12" v-if="loading"></loading-nanami>
 	</div>
@@ -35,7 +35,6 @@ export default Vue.extend({
 
 	methods: {
 		async loadNextPage() {
-			console.log("load")
 			if (this.tags.infos.to === this.tags.infos.count || this.loading)
 				return ;
 			this.from++;
@@ -61,14 +60,18 @@ export default Vue.extend({
 		}
 	},
 
+	validate({ params }) {
+		return params.id && tagTypes[params.id];
+	},
+
 	async asyncData({ params, $axios, error, app }) {
 		const { data } = await $axios
-			.get(`/api/karas/tags/${params.id && tagTypes[params.id] ? tagTypes[params.id].type : ''}`, {
-                params: {
-                    from: 0,
-                    size: 400
-                }
-            })
+			.get(`/api/karas/tags/${tagTypes[params.id].type}`, {
+				params: {
+					from: 0,
+					size: 400
+				}
+			})
 			.catch(_err =>
 				error({ statusCode: 404, message: app.i18n.t("tag.notfound") })
 			);

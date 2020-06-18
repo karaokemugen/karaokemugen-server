@@ -52,8 +52,6 @@
             scrollEvent() {
                 let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight > document.documentElement.offsetHeight - 400;
 
-                console.log(bottomOfWindow);
-
                 if (bottomOfWindow) {
                     this.loadNextPage();
                 }
