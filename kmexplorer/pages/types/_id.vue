@@ -2,7 +2,7 @@
 	<div class="is-ancestor">
 		<div class="tags" v-if="tags.content.length > 0">
 			<tag v-for="tag in tags.content" :key="tag.tid" :icon="true"
-				:type="type" :tag="tag" :i18n="tag.i18n" />
+				:type="type" :tag="tag" :i18n="tag.i18n" :showkaracount="true" />
 		</div>
 		<loading-nanami class="tile is-parent is-12" v-if="loading"></loading-nanami>
 	</div>

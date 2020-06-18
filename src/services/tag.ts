@@ -36,8 +36,8 @@ export async function getTag(tid: string, findInImportedFiles: boolean = true) {
 	try {
 		let tag = await selectTag(tid);
 		if (tag) return tag;
-		// If no tag is found, check in import folder if we have a tag by the same name and type
 		if (findInImportedFiles) {
+			// If no tag is found, check in import folder if we have a tag by the same name and type
 			tag = await findTagInImportedFiles(tag.name, tag.types);
 			if (tag) return tag;
 		}

@@ -2,7 +2,8 @@
     <nuxt-link :to="nolink ? ``:`/tags/${tag.tid}~${tagTypes[type].type}`" class="tag is-medium"
                :class="tagTypes[type].class">
         <font-awesome-icon :icon="['fas', tagTypes[type].icon]" :fixed-width="true" v-if="icon" />
-        {{ localizedName }} <label v-if="tag.karacount">&nbsp;({{ tag.karacount[tagTypes[this.type].type] }})</label>
+        {{ localizedName }}
+		<template v-if="showkaracount">&nbsp;({{ tag.karacount[tagTypes[type].type] }})</template>
     </nuxt-link>
 </template>
 
@@ -13,7 +14,7 @@
     export default Vue.extend({
         name: "Tag",
 
-        props: ['tag', 'icon', 'type', 'i18n', 'nolink'],
+        props: ['tag', 'icon', 'type', 'i18n', 'nolink', 'showkaracount'],
 
         data() {
             return {
