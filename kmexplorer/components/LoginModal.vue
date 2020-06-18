@@ -56,6 +56,11 @@
             submitForm() {
                 this.loading = true;
                 this.$auth.loginWith('local', { data: this.login }).then(res => {
+                    console.log(res);
+                    // Fetch user, its favorites
+                    /*const { data } = await this.$axios.get('/api/favorites');
+                    let user = {name: res.username, favorites: data, role: res.role}
+                    this.$auth.setUser(user);*/
                     this.loading = false;
                     this.closeModal();
                 });

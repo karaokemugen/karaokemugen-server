@@ -61,6 +61,10 @@ body.has-navbar-fixed-top, html.has-navbar-fixed-top {
 	background-color: unset;
 }
 
+.button .svg-inline--fa {
+	margin-right: 0.25em ;
+}
+
 @media (min-width: $desktop) {
 	.container.is-fluid {
 		margin-left: 160px;

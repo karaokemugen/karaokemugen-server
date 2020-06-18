@@ -71,7 +71,7 @@
     }
     @media (min-width: 700px) {
         .box *:first-child.live {
-            height: 34vw;
+            height: 31vw;
         }
     }
     .box img {

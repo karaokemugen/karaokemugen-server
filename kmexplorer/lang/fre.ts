@@ -20,7 +20,12 @@ export default {
 			groups: "Groupe | Groupes",
 			misc: "Divers"
 		},
-		download: 'Ajouter à l\'application',
+		add: 'Télécharger dans l\'application',
+		download: 'Télécharger le karaoké au format karabundle',
+		favorites: {
+			add: 'Ajouter aux favoris',
+			remove: 'Retirer des favoris'
+		},
 		import: {
 			description: "Ce formulaire permet d'envoyer un karaoké à l'équipe de Karaoke Mugen. Il ne sera pas intégré immédiatement dans la base de karaokés car il nécessite une validation préalable. Aussi, votre karaoké peut être modifié par l'équipe de Karaoke Mugen s'il ne convient pas aux normes. Reportez-vous à la documentation pour plus d'information, section \"Guide du contributeur\" puis \"Documents de référence\".",
 			attention: "ATTENTION :",

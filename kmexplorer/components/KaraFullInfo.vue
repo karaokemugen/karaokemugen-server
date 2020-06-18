@@ -33,10 +33,24 @@
                 </tr>
             </tbody>
         </table>
-        <a :href="kmAppUrl" class="button is-success">
-            <font-awesome-icon :icon="['fas', 'cloud-download-alt']" :fixed-width="true"></font-awesome-icon>
-            {{$t('kara.download')}}
-        </a>
+        <div class="buttons">
+            <a :href="kmAppUrl" class="button is-success">
+                <font-awesome-icon :icon="['fas', 'cloud-download-alt']" :fixed-width="true"></font-awesome-icon>
+                {{$t('kara.add')}}
+            </a>
+            <button class="button is-warning" @click="toggleFavorite" v-if="favorite" :class="{'is-loading': loading}">
+                <font-awesome-icon :icon="['fas', 'star']" :fixed-width="true"></font-awesome-icon>
+                {{$t('kara.favorites.remove')}}
+            </button>
+            <button class="button is-warning" @click="toggleFavorite" v-else :class="{'is-loading': loading}">
+                <font-awesome-icon :icon="['fas', 'star']" :fixed-width="true"></font-awesome-icon>
+                {{$t('kara.favorites.add')}}
+            </button>
+            <a :href="bundleUrl" class="button" :download="`${serieSinger.name} - ${karaoke.title}.karabundle.json`">
+                <font-awesome-icon :icon="['fas', 'file-export']" :fixed-width="true"></font-awesome-icon>
+                {{$t('kara.download')}}
+            </a>
+        </div>
     </div>
 </template>
 
@@ -56,7 +70,9 @@
 
         data() {
             return {
-                tagTypes
+                tagTypes,
+                favorite: false,
+                loading: false
             }
         },
 
@@ -86,6 +102,26 @@
             },
             kmAppUrl() {
                 return `km://download/${process.env.API_HOST}/${this.karaoke.kid}`;
+            },
+            bundleUrl() {
+                return `${this.$axios.defaults.baseURL}api/karas/${this.karaoke.kid}/raw`;
+            }
+        },
+
+        methods: {
+            async toggleFavorite() {
+                if (this.$auth.loggedIn) {
+                    this.loading = true;
+                    if (this.favorite) {
+                        await this.$axios.delete(`/api/favorites/${this.karaoke.kid}`)
+                    } else {
+                        await this.$axios.post(`/api/favorites/${this.karaoke.kid}`)
+                    }
+                    this.favorite = !this.favorite;
+                    this.loading = false;
+                } else {
+                    this.$router.push('/login');
+                }
             }
         }
     });

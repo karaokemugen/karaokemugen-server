@@ -51,15 +51,13 @@ export default Vue.extend({
 			this.loading = false;
 		},
 		scrollEvent() {
-			window.addEventListener("scroll", () => {
-				let bottomOfWindow =
-					document.documentElement.scrollTop + window.innerHeight >
-					document.documentElement.offsetHeight - 400;
+			let bottomOfWindow =
+				document.documentElement.scrollTop + window.innerHeight >
+				document.documentElement.offsetHeight - 400;
 
-				if (bottomOfWindow) {
-					this.loadNextPage();
-				}
-			});
+			if (bottomOfWindow) {
+				this.loadNextPage();
+			}
 		}
 	},
 
@@ -78,10 +76,14 @@ export default Vue.extend({
 	},
 
 	mounted() {
-		this.scrollEvent();
+		window.addEventListener('scroll', this.scrollEvent);
 	},
 
-	watch: {
+	destroyed() {
+	    window.removeEventListener('scroll', this.scrollEvent);
+    },
+
+    watch: {
 		loading(now, _old) {
 			if (now) this.$nuxt.$loading.start();
 			else this.$nuxt.$loading.finish();

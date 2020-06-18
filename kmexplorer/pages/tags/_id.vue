@@ -50,15 +50,13 @@
                 this.loading = false;
             },
             scrollEvent() {
-                window.addEventListener('scroll', () => {
-                    let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight > document.documentElement.offsetHeight - 400;
+                let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight > document.documentElement.offsetHeight - 400;
 
-                    console.log(bottomOfWindow);
+                console.log(bottomOfWindow);
 
-                    if (bottomOfWindow) {
-                        this.loadNextPage();
-                    }
-                });
+                if (bottomOfWindow) {
+                    this.loadNextPage();
+                }
             }
         },
 
@@ -84,11 +82,12 @@
                 type: tagTypesMap[tagRegex.exec(this.$route.params.id)[2]].name,
                 tag: this.tag
             });
-            this.scrollEvent();
+            window.addEventListener('scroll', this.scrollEvent);
         },
 
         destroyed() {
             menuBarStore.setTag(undefined);
+            window.removeEventListener('scroll', this.scrollEvent);
         },
 
         watch: {

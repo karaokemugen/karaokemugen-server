@@ -42,15 +42,13 @@
                 this.loading = false;
             },
             scrollEvent() {
-                window.addEventListener('scroll', () => {
-                    let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight > document.documentElement.offsetHeight - 400;
+                let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight > document.documentElement.offsetHeight - 400;
 
-                    console.log(bottomOfWindow);
+                console.log(bottomOfWindow);
 
-                    if (bottomOfWindow) {
-                        this.loadNextPage();
-                    }
-                });
+                if (bottomOfWindow) {
+                    this.loadNextPage();
+                }
             }
         },
 
@@ -70,10 +68,11 @@
 
         destroyed() {
             // menuBarStore.setSearch(undefined);
+            window.removeEventListener('scroll', this.scrollEvent);
         },
 
         mounted() {
-            this.scrollEvent();
+            window.addEventListener('scroll', this.scrollEvent);
             menuBarStore.setSearch(this.$route.params.query);
         },
 
