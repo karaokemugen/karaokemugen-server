@@ -3,7 +3,7 @@
 		<nav class="navbar is-primary is-fixed-top">
 			<div class="navbar-brand">
 				<nuxt-link class="navbar-item" to="/">
-					<img :src="require('../assets/nanami.png')" alt="Logo">
+					<img :src="require('../assets/nanami.png')" alt="Logo" />
 					{{ explorerHost }}
 				</nuxt-link>
 				<a
@@ -20,41 +20,37 @@
 				</a>
 			</div>
 			<div :class="`navbar-menu ${mobileMenu && 'is-active'}`">
-				<div class="navbar-start">
-					<div class="navbar-item" v-if="tag">
-						<tag :type="tag.type" :tag="tag.tag" :icon="true" :nolink="true" />
-					</div>
-					<div class="navbar-item is-expanded">
-						<search-bar />
-					</div>
+				<div class="navbar-item" v-if="tag">
+					<tag :type="tag.type" :tag="tag.tag" :icon="true" :nolink="true" />
 				</div>
-				<div class="navbar-end is-hidden-desktop">
-					<div class="navbar-item">
-						<nuxt-link class="navbar-item" to="/search">
-							<font-awesome-icon :icon="['fas', 'list']" :fixed-width="true" />
-							{{$t('menu.karas')}}
-						</nuxt-link>
-					</div>
-					<div class="navbar-item">
-						<nuxt-link class="navbar-item" to="/types">
-							<font-awesome-icon :icon="['fas', 'tags']" :fixed-width="true" />
-							{{$t('menu.tags')}}
-						</nuxt-link>
-					</div>
-					<div v-if="import_enabled" class="navbar-item">
-						<nuxt-link class="navbar-item" to="/import">
-							<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true" />
-							{{$t('menu.kara_import')}}
-						</nuxt-link>
-					</div>
-					<div class="navbar-item">
-						<a class="navbar-item" @click.prevent="logout" aria-label="Logout" v-if="loggedIn">
-							<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
-							{{$t('menu.logout')}}
-						</a>
-						<nuxt-link class="navbar-item" to="/login" v-else>
-							<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
+				<div class="navbar-item is-expanded">
+					<search-bar />
+				</div>
+				<div class="is-hidden-desktop">
+					<nuxt-link class="navbar-item" to="/search">
+						<font-awesome-icon :icon="['fas', 'list']" :fixed-width="true" />
+						{{$t('menu.karas')}}
+					</nuxt-link>
+					<nuxt-link class="navbar-item" to="/types">
+						<font-awesome-icon :icon="['fas', 'tags']" :fixed-width="true" />
+						{{$t('menu.tags')}}
+					</nuxt-link>
+					<nuxt-link class="navbar-item" to="/import" v-if="import_enabled">
+						<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true" />
+						{{$t('menu.kara_import')}}
+					</nuxt-link>
+					<a class="navbar-item" @click.prevent="logout" aria-label="Logout" v-if="loggedIn">
+						<font-awesome-icon :icon="['fas', 'sign-out-alt']" :fixed-width="true" />
+						{{$t('menu.logout')}}
+					</a>
+					<div v-else>
+						<nuxt-link class="navbar-item" to="/login">
+							<font-awesome-icon :icon="['fas', 'sign-in-alt']" :fixed-width="true" />
 							{{$t('menu.login')}}
+						</nuxt-link>
+						<nuxt-link class="navbar-item" to="/register">
+							<font-awesome-icon :icon="['fas', 'edit']" :fixed-width="true" />
+							{{$t('menu.register')}}
 						</nuxt-link>
 					</div>
 				</div>
@@ -86,15 +82,22 @@
 							{{$t('menu.kara_import')}}
 						</nuxt-link>
 					</li>
+
+					<a class="navbar-item" @click.prevent="logout" aria-label="Logout" v-if="loggedIn">
+						<font-awesome-icon :icon="['fas', 'sign-out-alt']" :fixed-width="true" />
+						{{$t('menu.logout')}}
+					</a>
+					<div v-else>
+						<nuxt-link class="navbar-item" to="/login">
+							<font-awesome-icon :icon="['fas', 'sign-in-alt']" :fixed-width="true" />
+							{{$t('menu.login')}}
+						</nuxt-link>
+						<nuxt-link class="navbar-item" to="/register">
+							<font-awesome-icon :icon="['fas', 'edit']" :fixed-width="true" />
+							{{$t('menu.register')}}
+						</nuxt-link>
+					</div>
 				</ul>
-				<a class="navbar-item" @click.prevent="logout" aria-label="Logout" v-if="loggedIn">
-					<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
-					{{$t('menu.logout')}}
-				</a>
-				<nuxt-link class="navbar-item" to="/login" v-else>
-					<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
-					{{$t('menu.login')}}
-				</nuxt-link>
 			</aside>
 			<section class="container column is-fluid">
 				<nuxt />

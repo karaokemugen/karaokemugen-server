@@ -22,7 +22,9 @@ import {
     faPhotoVideo,
     faProjectDiagram,
     faChess,
-    faUser,
+	faSignInAlt,
+	faSignOutAlt,
+	faEdit,
     faCloudDownloadAlt
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -49,7 +51,9 @@ library.add(faTag);
 library.add(faFileImport);
 library.add(faTags);
 library.add(faList);
-library.add(faUser);
+library.add(faSignInAlt);
+library.add(faSignOutAlt);
+library.add(faEdit);
 library.add(faCloudDownloadAlt);
 
 // Register the component globally

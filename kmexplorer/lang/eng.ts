@@ -89,8 +89,9 @@ export default {
 		kara_import: "Submit a kara",
 		karas: "Karas",
 		tags: "Tags",
-		login: "Se connecter",
-		logout: "Se déconnecter"
+		login: "Login",
+		logout: "Logout",
+		register: "Register"
 	},
 	modal: {
 		login: {

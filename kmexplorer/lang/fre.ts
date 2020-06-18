@@ -91,7 +91,8 @@ export default {
 		karas: "Karas",
 		tags: "Tags",
 		login: "Se connecter",
-		logout: "Se déconnecter"
+		logout: "Se déconnecter",
+		register: "S'inscrire"
 	},
 	modal: {
 		login: {
