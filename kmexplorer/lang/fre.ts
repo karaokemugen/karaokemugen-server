@@ -101,7 +101,7 @@ export default {
 		families: "Familles",
 		origins: "Origines",
 		genres: "Genres",
-		platforms: "Platformes",
+		platforms: "Plateformes",
 		singers: "Chanteurs",
 		series: "Séries",
 		songwriters: "Compositeurs",

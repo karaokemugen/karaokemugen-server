@@ -147,15 +147,23 @@
 				<p class="menu-label">{{$t('menu.database')}}</p>
 				<ul class="menu-list">
 					<li>
-						<nuxt-link to="/search">
+						<nuxt-link to="/search" active-class="is-active">
 							<font-awesome-icon :icon="['fas', 'music']" :fixed-width="true" />
 							{{$t('menu.karas')}}
 						</nuxt-link>
 					</li>
 					<li>
-						<nuxt-link to="/types/songtypes">
+						<nuxt-link to="/types/songtypes" active-class="is-active"
+								   :class="{'is-active': tagType === '~3'}">
 							<font-awesome-icon :icon="['fas', 'list']" :fixed-width="true" />
 							{{$t('menu.songtypes')}}
+						</nuxt-link>
+					</li>
+					<li>
+						<nuxt-link to="/types/series" active-class="is-active"
+								   :class="{'is-active': tagType === '~1'}">
+							<font-awesome-icon :icon="['fas', 'tv']" :fixed-width="true" />
+							{{$t('menu.series')}}
 						</nuxt-link>
 					</li>
 					<li>
@@ -165,37 +173,43 @@
 						</a>
 						<ul class="menu-list" v-if="tagsMenu">
 							<li>
-								<nuxt-link to="/types/misc">
+								<nuxt-link to="/types/misc" active-class="is-active"
+										   :class="{'is-active': tagType === '~7'}">
 									<font-awesome-icon :icon="['fas', 'tags']" :fixed-width="true" />
 									{{$t('menu.miscs')}}
 								</nuxt-link>
 							</li>
 							<li>
-								<nuxt-link to="/types/groups">
+								<nuxt-link to="/types/groups" active-class="is-active"
+										   :class="{'is-active': tagType === '~9'}">
 									<font-awesome-icon :icon="['fas', 'boxes']" :fixed-width="true" />
 									{{$t('menu.groups')}}
 								</nuxt-link>
 							</li>
 							<li>
-								<nuxt-link to="/types/families">
+								<nuxt-link to="/types/families" active-class="is-active"
+										   :class="{'is-active': tagType === '~10'}">
 									<font-awesome-icon :icon="['fas', 'photo-video']" :fixed-width="true" />
 									{{$t('menu.families')}}
 								</nuxt-link>
 							</li>
 							<li>
-								<nuxt-link to="/types/origins">
+								<nuxt-link to="/types/origins" active-class="is-active"
+										   :class="{'is-active': tagType === '~11'}">
 									<font-awesome-icon :icon="['fas', 'project-diagram']" :fixed-width="true" />
 									{{$t('menu.origins')}}
 								</nuxt-link>
 							</li>
 							<li>
-								<nuxt-link to="/types/genres">
+								<nuxt-link to="/types/genres" active-class="is-active"
+										   :class="{'is-active': tagType === '~12'}">
 									<font-awesome-icon :icon="['fas', 'chess']" :fixed-width="true" />
 									{{$t('menu.genres')}}
 								</nuxt-link>
 							</li>
 							<li>
-								<nuxt-link to="/types/platforms">
+								<nuxt-link to="/types/platforms" active-class="is-active"
+										   :class="{'is-active': tagType === '~13'}">
 									<font-awesome-icon :icon="['fas', 'laptop']" :fixed-width="true" />
 									{{$t('menu.platforms')}}
 								</nuxt-link>
@@ -203,43 +217,43 @@
 						</ul>
 					</li>
 					<li>
-						<nuxt-link to="/types/singers">
+						<nuxt-link to="/types/singers" active-class="is-active"
+								   :class="{'is-active': tagType === '~2'}">
 							<font-awesome-icon :icon="['fas', 'microphone-alt']" :fixed-width="true" />
 							{{$t('menu.singers')}}
 						</nuxt-link>
 					</li>
 					<li>
-						<nuxt-link to="/types/series">
-							<font-awesome-icon :icon="['fas', 'tv']" :fixed-width="true" />
-							{{$t('menu.series')}}
-						</nuxt-link>
-					</li>
-					<li>
-						<nuxt-link to="/types/songwriters">
+						<nuxt-link to="/types/songwriters" active-class="is-active"
+								   :class="{'is-active': tagType === '~8'}">
 							<font-awesome-icon :icon="['fas', 'signature']" :fixed-width="true" />
 							{{$t('menu.songwriters')}}
 						</nuxt-link>
 					</li>
 					<li>
-						<nuxt-link to="/types/creators">
+						<nuxt-link to="/types/creators" active-class="is-active"
+								   :class="{'is-active': tagType === '~4'}">
 							<font-awesome-icon :icon="['fas', 'chalkboard-teacher']" :fixed-width="true" />
 							{{$t('menu.creators')}}
 						</nuxt-link>
 					</li>
 					<li>
-						<nuxt-link to="/types/authors">
+						<nuxt-link to="/types/authors" active-class="is-active"
+								   :class="{'is-active': tagType === '~6'}">
 							<font-awesome-icon :icon="['fas', 'user-secret']" :fixed-width="true" />
 							{{$t('menu.authors')}}
 						</nuxt-link>
 					</li>
 					<li>
-						<nuxt-link to="/types/langs">
+						<nuxt-link to="/types/langs" active-class="is-active"
+								   :class="{'is-active': tagType === '~5'}">
 							<font-awesome-icon :icon="['fas', 'language']" :fixed-width="true" />
 							{{$t('menu.languages')}}
 						</nuxt-link>
 					</li>
 					<li>
-						<nuxt-link to="/types/years">
+						<nuxt-link to="/types/years" active-class="is-active"
+								   :class="{'is-active': $route.params.year}">
 							<font-awesome-icon :icon="['fas', 'calendar-alt']" :fixed-width="true" />
 							{{$t('menu.years')}}
 						</nuxt-link>
@@ -248,7 +262,7 @@
 				<p class="menu-label">{{$t('menu.community')}}</p>
 				<ul class="menu-list">
 					<li>
-						<nuxt-link to="/import">
+						<nuxt-link to="/import" active-class="is-active">
 							<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true" />
 							{{$t('menu.kara_import')}}
 						</nuxt-link>
@@ -262,11 +276,11 @@
 							{{$t('menu.logout')}}
 						</a>
 						<div v-else>
-							<nuxt-link to="/login">
+							<nuxt-link to="/login" active-class="is-active">
 								<font-awesome-icon :icon="['fas', 'sign-in-alt']" :fixed-width="true" />
 								{{$t('menu.login')}}
 							</nuxt-link>
-							<nuxt-link to="/register">
+							<nuxt-link to="/register" active-class="is-active">
 								<font-awesome-icon :icon="['fas', 'edit']" :fixed-width="true" />
 								{{$t('menu.register')}}
 							</nuxt-link>
@@ -359,6 +373,12 @@ export default Vue.extend({
 				this.communityMenu = false;
 				this.accountMenu = !this.accountMenu;
 			}
+		}
+	},
+
+	computed: {
+		tagType() {
+			return this.$route.params?.id?.substring(36);
 		}
 	}
 });
