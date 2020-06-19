@@ -57,7 +57,7 @@
 				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
 			</label>
 			<div class="control">
-				<input :class="`input ${!karaoke.title && 'is-danger'}`" type="text" v-model="karaoke.title" />
+				<input class="input" :class="{ 'is-danger': !karaoke.title }" type="text" v-model="karaoke.title" />
 			</div>
 			<p class="help is-danger" v-if="!karaoke.title">{{$t('kara.import.title_required')}}</p>
 		</div>

@@ -114,6 +114,7 @@ export default {
 		login: "Login",
 		logout: "Logout",
 		register: "Register",
+		connection: "Connection"
 	},
 	search: {
 		placeholder: "Series, singers, names...",
@@ -148,6 +149,21 @@ export default {
 				}
 			},
 			submit: 'Login'
+		},
+		signin: {
+			title: 'Signin',
+			subtitle: 'Signin to view your favorites and edit your profile!',
+			fields: {
+				username: {
+					label: 'Username',
+					placeholder: 'LoveLiveFan93'
+				},
+				password: {
+					label: 'Password',
+					placeholder: 'ActuallyIdolM@sterIsBetter'
+				}
+			},
+			submit: 'Signin'
 		}
 	}
 }

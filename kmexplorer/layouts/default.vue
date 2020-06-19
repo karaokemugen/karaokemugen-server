@@ -47,11 +47,7 @@
 				<div v-else>
 					<nuxt-link class="navbar-item" to="/login">
 						<font-awesome-icon :icon="['fas', 'sign-in-alt']" :fixed-width="true" />
-						{{$t('menu.login')}}
-					</nuxt-link>
-					<nuxt-link class="navbar-item" to="/register">
-						<font-awesome-icon :icon="['fas', 'edit']" :fixed-width="true" />
-						{{$t('menu.register')}}
+						{{$t('menu.connection')}}
 					</nuxt-link>
 				</div>
 			</div>
@@ -278,11 +274,7 @@
 						<div v-else>
 							<nuxt-link to="/login" active-class="is-active">
 								<font-awesome-icon :icon="['fas', 'sign-in-alt']" :fixed-width="true" />
-								{{$t('menu.login')}}
-							</nuxt-link>
-							<nuxt-link to="/register" active-class="is-active">
-								<font-awesome-icon :icon="['fas', 'edit']" :fixed-width="true" />
-								{{$t('menu.register')}}
+								{{$t('menu.connection')}}
 							</nuxt-link>
 						</div>
 					</li>

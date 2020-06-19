@@ -115,6 +115,7 @@ export default {
 		login: "Se connecter",
 		logout: "Se déconnecter",
 		register: "S'inscrire",
+		connection: "Connexion"
 	},
 	search: {
 		placeholder: "Séries, chanteurs, noms...",
@@ -149,6 +150,21 @@ export default {
 				}
 			},
 			submit: 'Se connecter'
+		},
+		signin: {
+			title: 'S\'inscrire',
+			subtitle: 'Inscrivez-vous pour voir vos favoris et éditer votre profil !',
+			fields: {
+				username: {
+					label: 'Nom d\'utilisateur',
+					placeholder: 'LoveLiveFan93'
+				},
+				password: {
+					label: 'Mot de passe',
+					placeholder: 'EnVraiJePréfèreIdolM@ster'
+				}
+			},
+			submit: 'S\'inscrire'
 		}
 	}
 }
