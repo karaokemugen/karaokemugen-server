@@ -151,7 +151,7 @@ export default {
 			},
 			submit: 'Se connecter'
 		},
-		signin: {
+		signup: {
 			title: 'S\'inscrire',
 			subtitle: 'Inscrivez-vous pour voir vos favoris et éditer votre profil !',
 			fields: {

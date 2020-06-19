@@ -12,9 +12,9 @@
 						>{{ $t('modal.login.title') }}</a>
 						<a
 							class="modal-card-title"
-							:class="{'is-active' : mode === 'signin' }"
-							@click="mode='signin'"
-						>{{ $t('modal.signin.title') }}</a>
+							:class="{'is-active' : mode === 'signup' }"
+							@click="mode='signup'"
+						>{{ $t('modal.signup.title') }}</a>
 						<a class="delete" aria-label="close" @click="closeModal"></a>
 					</div>
 				</header>
@@ -63,11 +63,11 @@
 						</div>
 					</div>
 				</section>
-				<section class="modal-card-body" v-if="mode === 'signin'">
-					<h5 class="title is-5">{{ $t('modal.signin.subtitle') }}</h5>
+				<section class="modal-card-body" v-if="mode === 'signup'">
+					<h5 class="title is-5">{{ $t('modal.signup.subtitle') }}</h5>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
-							<label for="title" class="label">{{ $t('modal.signin.fields.username.label') }}</label>
+							<label for="title" class="label">{{ $t('modal.signup.fields.username.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
@@ -78,7 +78,7 @@
 										id="title"
 										class="input"
 										required
-										:placeholder="$t('modal.signin.fields.username.placeholder')"
+										:placeholder="$t('modal.signup.fields.username.placeholder')"
 										autocomplete="username"
 										v-model="login.username"
 									/>
@@ -88,7 +88,7 @@
 					</div>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
-							<label for="password" class="label">{{ $t('modal.signin.fields.password.label') }}</label>
+							<label for="password" class="label">{{ $t('modal.signup.fields.password.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
@@ -99,7 +99,7 @@
 										id="password"
 										class="input"
 										required
-										:placeholder="$t('modal.signin.fields.password.placeholder')"
+										:placeholder="$t('modal.signup.fields.password.placeholder')"
 										autocomplete="current-password"
 										v-model="login.password"
 									/>
@@ -119,8 +119,8 @@
 						class="button is-success"
 						:class="{'is-loading': loading}"
 						type="submit"
-						v-if="mode === 'signin'"
-					>{{ $t('modal.signin.submit') }}</button>
+						v-if="mode === 'signup'"
+					>{{ $t('modal.signup.submit') }}</button>
 				</footer>
 			</div>
 		</form>

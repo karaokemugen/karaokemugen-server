@@ -150,9 +150,9 @@ export default {
 			},
 			submit: 'Login'
 		},
-		signin: {
-			title: 'Signin',
-			subtitle: 'Signin to view your favorites and edit your profile!',
+		signup: {
+			title: 'Signup',
+			subtitle: 'Signup to view your favorites and edit your profile!',
 			fields: {
 				username: {
 					label: 'Username',
@@ -163,7 +163,7 @@ export default {
 					placeholder: 'ActuallyIdolM@sterIsBetter'
 				}
 			},
-			submit: 'Signin'
+			submit: 'Signup'
 		}
 	}
 }
