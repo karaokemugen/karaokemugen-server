@@ -1,7 +1,8 @@
 import {createHash} from 'crypto';
+import {hash, compare, genSalt} from 'bcryptjs';
 import {updateUser, updateUserPassword, insertUser, selectUser, selectAllUsers, deleteUser} from '../dao/user';
 import logger from '../lib/utils/logger';
-import {getConfig, resolvedPathAvatars} from '../lib/utils/config';
+import {getConfig, resolvedPathAvatars, setConfig} from '../lib/utils/config';
 import {asyncReadDir, asyncExists, asyncUnlink, asyncMove, detectFileType} from '../lib/utils/files';
 import { v4 as uuidV4 } from 'uuid';
 import {resolve} from 'path';
@@ -79,6 +80,8 @@ export async function initUsers() {
 	cleanupAvatars();
 	setInterval(cleanupAvatars, 60 * 60 * 1000);
 	setInterval(cleanupPasswordResetRequests, 60 * 1000);
+	// Generate password salt if it doesn't exist in config
+	if (!getConfig().App.PasswordSalt) setConfig({ App: {PasswordSalt: await genSalt(10)}});
 }
 
 function cleanupPasswordResetRequests() {
@@ -157,8 +160,24 @@ export async function getAllUsers(opts: any = {}) {
 	}
 }
 
-export function checkPassword(user: User,password: string) {
-	return user.password === hashPassword(password);
+/** Hash passwords with bcrypt */
+export function hashPasswordbcrypt(password: string): Promise<string> {
+	return hash(password, getConfig().App.PasswordSalt);
+}
+
+
+export async function checkPassword(user: User,password: string) {
+	// First we test if password needs to be updated to new hash
+	const hashedPasswordSHA = hashPassword(password);
+	const hashedPasswordbcrypt = await hashPasswordbcrypt(password);
+
+	if (user.password === hashedPasswordSHA) {
+		// Needs update to bcrypt hashed password
+		await updateUserPassword(user.login, hashedPasswordbcrypt);
+		user.password = hashedPasswordbcrypt;
+	}
+
+	return await compare(password, user.password);
 }
 
 export async function createUser(user: User, opts: any = {}) {
@@ -176,7 +195,8 @@ export async function createUser(user: User, opts: any = {}) {
 			logger.error(`[User] User/nickname ${user.login} already exists, cannot create it`);
 			throw { code: 'USER_ALREADY_EXISTS', data: {username: user.login}};
 		}
-		user.password = hashPassword(user.password);
+		if (user.password.length < 8) throw {code: 'PASSWORD_TOO_SHORT', data: user.password.length};
+		user.password = await hashPasswordbcrypt(user.password);
 		try {
 			await insertUser(user);
 		} catch (err) {
@@ -244,7 +264,8 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 
 		if (currentUser.nickname !== user.nickname && await await selectUser('nickname', user.nickname)) throw 'Nickname already exists';
 		if (user.password) {
-			user.password = hashPassword(user.password);
+			if (user.password.length < 8) throw {code: 'PASSWORD_TOO_SHORT', data: user.password.length};
+			user.password = await hashPasswordbcrypt(user.password);
 			await updateUserPassword(user.login, user.password);
 		}
 		if (avatar) {
