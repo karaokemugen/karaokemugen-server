@@ -68,7 +68,7 @@
 		transition: 'fade',
 
 		mounted() {
-			window.addEventListener('scroll', this.scrollEvent);
+			window.addEventListener('scroll', this.scrollEvent, {passive: true});
 		},
 
 		destroyed() {

@@ -26,6 +26,13 @@ export default {
 			add: 'Add to favorites',
 			remove: 'Remove from favorites'
 		},
+		problem: {
+			title: 'An issue with {title}?',
+			btn: {
+				report: 'Report an issue',
+				edit: 'Purpose an edit'
+			}
+		},
 		import: {
 			description: "This form allows you to submit a karaoke to the Karaoke Mugen team. It will not be immediately integrated in the karaoke database because it requires a validation. Please be patient. Your karaoke may be modified if it doesn't comply to KM's rules.",
 			attention: "ATTENTION:",

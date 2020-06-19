@@ -1,5 +1,5 @@
 <template>
-	<div class="modal is-active">
+	<div class="modal" :class="{'is-active': active}">
 		<form action="#" @submit.prevent="submitForm">
 			<div class="modal-background"></div>
 			<div class="modal-card">
@@ -132,6 +132,8 @@ import Vue from "vue";
 
 export default Vue.extend({
 	name: "LoginModal",
+
+	props: ['active'],
 
 	data() {
 		return {

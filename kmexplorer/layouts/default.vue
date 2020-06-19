@@ -271,12 +271,10 @@
 							<font-awesome-icon :icon="['fas', 'sign-out-alt']" :fixed-width="true" />
 							{{$t('menu.logout')}}
 						</a>
-						<div v-else>
-							<nuxt-link to="/login" active-class="is-active">
-								<font-awesome-icon :icon="['fas', 'sign-in-alt']" :fixed-width="true" />
-								{{$t('menu.connection')}}
-							</nuxt-link>
-						</div>
+						<a @click.prevent="modal.auth = true" aria-label="Login" v-else>
+							<font-awesome-icon :icon="['fas', 'sign-in-alt']" :fixed-width="true" />
+							{{$t('menu.connection')}}
+						</a>
 					</li>
 				</ul>
 			</aside>
@@ -303,6 +301,7 @@
 				</p>
 			</div>
 		</footer>
+		<LoginModal :active="modal.auth" @close="modal.auth = false" />
 	</div>
 </template>
 
@@ -310,6 +309,7 @@
 import Vue from "vue";
 import Tag from "~/components/Tag";
 import SearchBar from "~/components/SearchBar";
+import LoginModal from "~/components/LoginModal";
 
 export default Vue.extend({
 	head: {
@@ -320,7 +320,8 @@ export default Vue.extend({
 
 	components: {
 		Tag,
-		SearchBar
+		SearchBar,
+		LoginModal
 	},
 
 	data() {
@@ -334,7 +335,10 @@ export default Vue.extend({
 			tagsMenu: false,
 			databaseMenu: false,
 			communityMenu: false,
-			accountMenu: false
+			accountMenu: false,
+			modal: {
+				auth: false
+			}
 		};
 	},
 
@@ -342,6 +346,10 @@ export default Vue.extend({
 		this.$store.subscribe((mutation, _state) => {
 			if (mutation.type === "menubar/setTag") {
 				this.tag = mutation.payload;
+			} else if (mutation.type === "modal/openModal") {
+				this.modal[mutation.payload] = true;
+			} else if (mutation.type === "modal/closeModal") {
+				this.modal[mutation.payload] = false;
 			}
 		});
 	},

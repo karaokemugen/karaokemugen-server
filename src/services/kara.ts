@@ -210,7 +210,7 @@ export async function newKaraIssue(kid: string, type: 'quality' | 'time', commen
 		.replace('$type', type)
 		.replace('$comment', comment);
 	try {
-		if (conf.Gitlab.Enabled) return gitlabPostNewIssue(title, desc, issueTemplate.Labels);
+		if (conf.Gitlab.Enabled) return await gitlabPostNewIssue(title, desc, issueTemplate.Labels);
 	} catch(err) {
 		logger.error(`[KaraProblem] Call to Gitlab API failed : ${err}`);
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));

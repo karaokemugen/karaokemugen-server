@@ -315,7 +315,8 @@ export let NuxtConfig = {
 			local: {
 				endpoints: {
 					login: { url: '/api/auth/login', method: 'post', propertyName: 'token' },
-					user: { url: '/api/auth/check', method: 'get', propertyName: 'username' }
+					user: { url: '/api/auth/check', method: 'get', propertyName: 'username' },
+					logout: false
 				},
 				tokenType: false
 			}

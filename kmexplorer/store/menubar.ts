@@ -1,4 +1,4 @@
-import { Module, VuexModule, Mutation,  } from 'vuex-module-decorators'
+import { Module, VuexModule, Mutation } from 'vuex-module-decorators'
 import {Tag} from "../../src/lib/types/tag";
 
 @Module({
@@ -14,6 +14,8 @@ export default class MenuBar extends VuexModule {
 
     search: string
 
+	sort: string
+
     @Mutation
     setTag(tag) {
         this.tag = tag;
@@ -23,4 +25,9 @@ export default class MenuBar extends VuexModule {
     setSearch(search) {
         this.search = search;
     }
+
+    @Mutation
+	setSort(sort) {
+    	this.sort = sort;
+	}
 }

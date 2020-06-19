@@ -27,7 +27,8 @@
 
         data() {
             return {
-                search: ''
+                search: '',
+				sort: 'az'
             }
         },
 
@@ -40,7 +41,10 @@
         watch: {
             search(now, _old) {
                 menuBarStore.setSearch(now);
-            }
+            },
+			sort(now, _old) {
+            	menuBarStore.setSort(now);
+			}
         },
 
         mounted() {

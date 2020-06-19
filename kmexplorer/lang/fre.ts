@@ -26,6 +26,35 @@ export default {
 			add: 'Ajouter aux favoris',
 			remove: 'Retirer des favoris'
 		},
+		problem: {
+			title: 'Un problème avec {title} ?',
+			btn: {
+				report: 'Signaler un problème',
+				edit: 'Proposer une modification'
+			},
+			form: {
+				title: 'Signaler un problème',
+				subtitle: 'Nous faisons de notre mieux pour avoir une base de karaokés sans lacunes, cependant il en reste sûrement encore à certains endroits. Merci de votre aide !',
+				type: {
+					label: 'Type du problème',
+					time: 'Paroles mal synchronisées',
+					quality: 'Vidéo de mauvaise qualité'
+				},
+				comment: {
+					label: 'Commentaire',
+					placeholder: 'Les paroles se désynchronisent au bout de 2 minutes.'
+				},
+				username: {
+					label: 'Votre nom',
+					placeholder: 'MéticuleuxMoiÊtre'
+				},
+				submit: 'Envoyer',
+				thanks: {
+					text: 'Merci ! Nous allons résoudre le problème dès que possible, le problème est suivi à cette adresse : {url}',
+					btn: 'Fermer'
+				}
+			}
+		},
 		import: {
 			description: "Ce formulaire permet d'envoyer un karaoké à l'équipe de Karaoke Mugen. Il ne sera pas intégré immédiatement dans la base de karaokés car il nécessite une validation préalable. Aussi, votre karaoké peut être modifié par l'équipe de Karaoke Mugen s'il ne convient pas aux normes. Reportez-vous à la documentation pour plus d'information, section \"Guide du contributeur\" puis \"Documents de référence\".",
 			attention: "ATTENTION :",

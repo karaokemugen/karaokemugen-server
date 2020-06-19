@@ -80,7 +80,7 @@
                 type: tagTypesMap[tagRegex.exec(this.$route.params.id)[2]].name,
                 tag: this.tag
             });
-            window.addEventListener('scroll', this.scrollEvent);
+            window.addEventListener('scroll', this.scrollEvent, {passive: true});
         },
 
         destroyed() {

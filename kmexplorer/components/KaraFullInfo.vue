@@ -58,8 +58,9 @@
     import Vue from 'vue';
     import { tagTypes } from "~/assets/constants";
     import Tag from '~/components/Tag.vue';
+    import { modalStore } from "~/store";
 
-    export default Vue.extend({
+	export default Vue.extend({
         name: "KaraFullInfo",
 
         props: ['karaoke'],
@@ -120,7 +121,7 @@
                     this.favorite = !this.favorite;
                     this.loading = false;
                 } else {
-                    this.$router.push('/login');
+                    modalStore.openModal('auth');
                 }
             }
         }
