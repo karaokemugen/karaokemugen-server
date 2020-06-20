@@ -12,6 +12,7 @@ import { User, Token } from '../lib/types/user';
 import { sendMail } from '../utils/mailer';
 import randomstring from 'randomstring';
 import sentry from '../utils/sentry';
+import {getRole, createJwtToken } from '../controllers/auth';
 
 const passwordResetRequests = new Map();
 
@@ -280,7 +281,10 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		}
 		await updateUser(user);
 		logger.debug(`[User] ${username} (${user.nickname}) profile updated`);
-		return user;
+		return {
+			user,
+			token: createJwtToken(user.login, getRole(user), user.password_last_modified_at)
+		};
 	} catch (err) {
 		logger.error(`[User] Failed to update ${username}'s profile : ${err}`);
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));

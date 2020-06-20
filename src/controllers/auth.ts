@@ -42,7 +42,7 @@ export default function authController(router: Router) {
 	});
 }
 
-function createJwtToken(username: string, role: Role, passwordLastModifiedAt: Date) {
+export function createJwtToken(username: string, role: Role, passwordLastModifiedAt: Date) {
 	const conf = getConfig();
 	const timestamp = new Date().getTime();
 	return encode(
@@ -56,7 +56,7 @@ function decodeJwtToken(token: string) {
 	return decode(token, conf.App.JwtSecret);
 }
 
-function getRole(user: User) {
+export function getRole(user: User) {
 	if (user.type === 2) return 'admin';
 	return 'user';
 }
