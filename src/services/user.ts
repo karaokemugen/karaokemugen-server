@@ -125,6 +125,7 @@ export async function findUserByName(username: string, opts: any = {}) {
 		if (opts.public) {
 			delete user.password;
 			delete user.email;
+			delete user.password_last_modified_at;
 		}
 		return user;
 	} catch(err) {
@@ -151,6 +152,7 @@ export async function getAllUsers(opts: any = {}) {
 		for (const index in users) {
 			delete users[index].password;
 			delete users[index].email;
+			delete users[index].password_last_modified_at;
 		}
 		return users;
 	} catch(err) {
@@ -262,7 +264,7 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		if (user.main_series_lang && !hasLang('2B', user.main_series_lang)) throw `main_series_lang is not a valid ISO639-2B code (received ${user.main_series_lang})`;
 		if (user.fallback_series_lang && !hasLang('2B', user.fallback_series_lang)) throw `fallback_series_lang is not a valid ISO639-2B code (received ${user.fallback_series_lang})`;
 
-		if (currentUser.nickname !== user.nickname && await await selectUser('nickname', user.nickname)) throw 'Nickname already exists';
+		if (currentUser.nickname !== user.nickname && await selectUser('nickname', user.nickname)) throw 'Nickname already exists';
 		if (user.password) {
 			if (user.password.length < 8) throw {code: 'PASSWORD_TOO_SHORT', data: user.password.length};
 			user.password = await hashPasswordbcrypt(user.password);
