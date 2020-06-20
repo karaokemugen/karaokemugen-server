@@ -8,7 +8,7 @@ import detect from 'detect-port';
 import {initDB} from './dao/database';
 import {initShortener} from './services/shortener';
 import {initFavorites} from './services/favorites';
-import {createUser, changePassword} from './services/user';
+import {createUser, changePassword, initUsers} from './services/user';
 import sudoBlock from 'sudo-block';
 import {asyncCheckOrMkdir} from './lib/utils/files';
 import findRemoveSync from 'find-remove';
@@ -94,6 +94,8 @@ async function main() {
 	await initDB(getState().opt.sql);
 
 	if (argv.staticServe) setState({opt: {staticServe: true}});
+
+	await initUsers();
 
 	if (argv.createPreviews) {
 		const karas = await getAllKaras();

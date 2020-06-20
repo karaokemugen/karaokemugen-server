@@ -62,8 +62,8 @@ export default function userController(router: Router) {
 				let avatar: any;
 				if (req.file) avatar = req.file;
 				try {
-					await editUser(req.params.user,req.body,avatar,req.authToken);
-					res.json('USER_UPDATED');
+					const response = await editUser(req.params.user,req.body,avatar,req.authToken);
+					res.json(response);
 				} catch(err) {
 					res.status(500).json(err);
 				}
@@ -81,7 +81,7 @@ export default function userController(router: Router) {
 			} catch(err) {
 				res.status(500).json(err);
 			}
-		})
+		});
 	router.route('/users/:user/resetpassword/:requestCode')
 		.get(async (req, res) => {
 			try {
@@ -90,5 +90,5 @@ export default function userController(router: Router) {
 			} catch(err) {
 				res.status(500).json(err);
 			}
-		})
+		});
 }

@@ -1,7 +1,8 @@
 import {createHash} from 'crypto';
+import {hash, compare, genSalt} from 'bcryptjs';
 import {updateUser, updateUserPassword, insertUser, selectUser, selectAllUsers, deleteUser} from '../dao/user';
 import logger from '../lib/utils/logger';
-import {getConfig, resolvedPathAvatars} from '../lib/utils/config';
+import {getConfig, resolvedPathAvatars, setConfig} from '../lib/utils/config';
 import {asyncReadDir, asyncExists, asyncUnlink, asyncMove, detectFileType} from '../lib/utils/files';
 import { v4 as uuidV4 } from 'uuid';
 import {resolve} from 'path';
@@ -11,6 +12,7 @@ import { User, Token } from '../lib/types/user';
 import { sendMail } from '../utils/mailer';
 import randomstring from 'randomstring';
 import sentry from '../utils/sentry';
+import {getRole, createJwtToken } from '../controllers/auth';
 
 const passwordResetRequests = new Map();
 
@@ -79,6 +81,8 @@ export async function initUsers() {
 	cleanupAvatars();
 	setInterval(cleanupAvatars, 60 * 60 * 1000);
 	setInterval(cleanupPasswordResetRequests, 60 * 1000);
+	// Generate password salt if it doesn't exist in config
+	if (!getConfig().App.PasswordSalt) setConfig({ App: {PasswordSalt: await genSalt(10)}});
 }
 
 function cleanupPasswordResetRequests() {
@@ -122,6 +126,7 @@ export async function findUserByName(username: string, opts: any = {}) {
 		if (opts.public) {
 			delete user.password;
 			delete user.email;
+			delete user.password_last_modified_at;
 		}
 		return user;
 	} catch(err) {
@@ -148,6 +153,7 @@ export async function getAllUsers(opts: any = {}) {
 		for (const index in users) {
 			delete users[index].password;
 			delete users[index].email;
+			delete users[index].password_last_modified_at;
 		}
 		return users;
 	} catch(err) {
@@ -157,8 +163,24 @@ export async function getAllUsers(opts: any = {}) {
 	}
 }
 
-export function checkPassword(user: User,password: string) {
-	return user.password === hashPassword(password);
+/** Hash passwords with bcrypt */
+export function hashPasswordbcrypt(password: string): Promise<string> {
+	return hash(password, getConfig().App.PasswordSalt);
+}
+
+
+export async function checkPassword(user: User,password: string) {
+	// First we test if password needs to be updated to new hash
+	const hashedPasswordSHA = hashPassword(password);
+	const hashedPasswordbcrypt = await hashPasswordbcrypt(password);
+
+	if (user.password === hashedPasswordSHA) {
+		// Needs update to bcrypt hashed password
+		await updateUserPassword(user.login, hashedPasswordbcrypt);
+		user.password = hashedPasswordbcrypt;
+	}
+
+	return await compare(password, user.password);
 }
 
 export async function createUser(user: User, opts: any = {}) {
@@ -176,7 +198,8 @@ export async function createUser(user: User, opts: any = {}) {
 			logger.error(`[User] User/nickname ${user.login} already exists, cannot create it`);
 			throw { code: 'USER_ALREADY_EXISTS', data: {username: user.login}};
 		}
-		user.password = hashPassword(user.password);
+		if (user.password.length < 8) throw {code: 'PASSWORD_TOO_SHORT', data: user.password.length};
+		user.password = await hashPasswordbcrypt(user.password);
 		try {
 			await insertUser(user);
 		} catch (err) {
@@ -242,10 +265,11 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		if (user.main_series_lang && !hasLang('2B', user.main_series_lang)) throw `main_series_lang is not a valid ISO639-2B code (received ${user.main_series_lang})`;
 		if (user.fallback_series_lang && !hasLang('2B', user.fallback_series_lang)) throw `fallback_series_lang is not a valid ISO639-2B code (received ${user.fallback_series_lang})`;
 
-		if (currentUser.nickname !== user.nickname && await await selectUser('nickname', user.nickname)) throw 'Nickname already exists';
+		if (currentUser.nickname !== user.nickname && await selectUser('nickname', user.nickname)) throw 'Nickname already exists';
 		if (user.password) {
-			user.password = hashPassword(user.password);
-			await updateUserPassword(user.login, user.password);
+			if (user.password.length < 8) throw {code: 'PASSWORD_TOO_SHORT', data: user.password.length};
+			user.password = await hashPasswordbcrypt(user.password);
+			user.password_last_modified_at = await updateUserPassword(user.login, user.password);
 		}
 		if (avatar) {
 			// If a new avatar was sent, it is contained in the avatar object
@@ -257,7 +281,10 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		}
 		await updateUser(user);
 		logger.debug(`[User] ${username} (${user.nickname}) profile updated`);
-		return user;
+		return {
+			user,
+			token: createJwtToken(user.login, getRole(user), user.password_last_modified_at)
+		};
 	} catch (err) {
 		logger.error(`[User] Failed to update ${username}'s profile : ${err}`);
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));

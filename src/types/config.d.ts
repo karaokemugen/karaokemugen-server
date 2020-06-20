@@ -4,6 +4,7 @@ export interface Config {
 	App: {
 		JwtSecret?: string,
 		InstanceID?: string,
+		PasswordSalt?: string,
 	},
 	BaseLicense: {
 		Name: string

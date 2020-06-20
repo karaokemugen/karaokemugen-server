@@ -1,7 +1,7 @@
-import { getConfig } from "../../lib/utils/config";
+import { getConfig } from '../../lib/utils/config';
 import { decode } from 'jwt-simple';
 import passport from 'passport';
-import { findUserByName } from "../../services/user";
+import { findUserByName } from '../../services/user';
 
 
 export const requireAuth = passport.authenticate('jwt', { session: false });
@@ -14,7 +14,11 @@ export const requireValidUser = (req, res, next) => {
 			if (!user) {
 				res.status(403).send('User logged in unknown');
 			} else {
-				next();
+				if (token.passwordLastModifiedAt !== user.password_last_modified_at.toISOString()) {
+					res.status(403).send('Token has expired');
+				} else {
+					next();
+				}
 			}
 		})
 		.catch(() => {

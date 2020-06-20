@@ -41,7 +41,9 @@ export function initFrontend(listenPort: number) {
 		return ip === '127.0.0.1' ||
 			ip === '::ffff:127.0.0.1';
 	});
-	app.use(helmet());
+	app.use(helmet({
+		hsts: false
+	}));
 	app.use(compression());
 	app.use(bodyParser.json({limit: '1000mb'})); // support json encoded bodies
 	app.use(bodyParser.urlencoded({

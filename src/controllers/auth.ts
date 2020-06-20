@@ -14,10 +14,10 @@ const loginErr = {
 async function checkLogin(username: string, password: string): Promise<Token> {
 	const user = await findUserByName(username);
 	if (!user) throw false;
-	if (!checkPassword(user, password)) throw false;
+	if (!await checkPassword(user, password)) throw false;
 	const role = getRole(user);
 	return {
-		token: createJwtToken(username, role),
+		token: createJwtToken(username, role, user.password_last_modified_at),
 		username: username,
 		role: role
 	};
@@ -42,11 +42,11 @@ export default function authController(router: Router) {
 	});
 }
 
-function createJwtToken(username: string, role: Role) {
+export function createJwtToken(username: string, role: Role, passwordLastModifiedAt: Date) {
 	const conf = getConfig();
 	const timestamp = new Date().getTime();
 	return encode(
-		{ username, iat: timestamp, role },
+		{ username, iat: timestamp, role, passwordLastModifiedAt },
 		conf.App.JwtSecret
 	);
 }
@@ -56,7 +56,7 @@ function decodeJwtToken(token: string) {
 	return decode(token, conf.App.JwtSecret);
 }
 
-function getRole(user: User) {
+export function getRole(user: User) {
 	if (user.type === 2) return 'admin';
 	return 'user';
 }
