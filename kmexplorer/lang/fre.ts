@@ -191,6 +191,14 @@ export default {
 				password: {
 					label: 'Mot de passe',
 					placeholder: 'EnVraiJePréfèreIdolM@ster'
+				},
+				password_confirmation: {
+					label: 'Confirmation du mot de passe',
+					placeholder: 'EnVraiJePréfèreIdolM@ster'
+				},
+				email: {
+					label: 'Email',
+					placeholder: 'test@shelter.moe'
 				}
 			},
 			submit: 'S\'inscrire'

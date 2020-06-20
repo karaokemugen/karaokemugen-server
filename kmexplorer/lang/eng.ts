@@ -168,6 +168,14 @@ export default {
 				password: {
 					label: 'Password',
 					placeholder: 'ActuallyIdolM@sterIsBetter'
+				},
+				password_confirmation: {
+					label: 'Password Confirmation',
+					placeholder: 'ActuallyIdolM@sterIsBetter'
+				},
+				email: {
+					label: 'Email',
+					placeholder: 'test@shelter.moe'
 				}
 			},
 			submit: 'Signup'
