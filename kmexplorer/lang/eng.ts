@@ -180,5 +180,8 @@ export default {
 			},
 			submit: 'Signup'
 		}
+	},
+	titles: {
+		home: 'Home'
 	}
 }

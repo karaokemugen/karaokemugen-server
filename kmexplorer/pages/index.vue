@@ -103,6 +103,11 @@ export default Vue.extend({
 		}
 		count.lastGeneration = (await $axios.get("/api/karas/lastUpdate")).data;
 		return { count: count };
+	},
+	head() {
+		return {
+			title: this.$t('titles.home')
+		}
 	}
 });
 </script>

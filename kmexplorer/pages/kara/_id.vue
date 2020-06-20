@@ -62,6 +62,12 @@
             const {data} = await $axios.get(`/api/karas/${params.id}`).catch(
                 _err => error({ statusCode: 404, message: app.i18n.t('kara.notfound') }));
             return { karaoke: data };
+        },
+
+        head() {
+            return {
+                title: this.karaoke.title
+            }
         }
     });
 </script>

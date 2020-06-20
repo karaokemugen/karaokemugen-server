@@ -305,6 +305,13 @@ export let NuxtConfig = {
 		{src: '~/plugins/vuex-persist.js', ssr: false}
 	],
 
+	head: {
+		titleTemplate: (titleChunk) => {
+			// If undefined or blank then we don't need the hyphen
+			return titleChunk ? `${titleChunk} - Karaoke Mugen` : 'Karaoke Mugen';
+		}  
+	},
+
 	axios: {
 		baseURL: 'http://localhost:1350',
 		https: false

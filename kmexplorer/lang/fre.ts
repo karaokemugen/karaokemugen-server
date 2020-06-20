@@ -203,5 +203,8 @@ export default {
 			},
 			submit: 'S\'inscrire'
 		}
+	},
+	titles: {
+		home: 'Accueil'
 	}
 }
