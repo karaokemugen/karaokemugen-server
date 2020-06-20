@@ -81,7 +81,7 @@ export default function userController(router: Router) {
 			} catch(err) {
 				res.status(500).json(err);
 			}
-		})
+		});
 	router.route('/users/:user/resetpassword/:requestCode')
 		.get(async (req, res) => {
 			try {
@@ -90,5 +90,5 @@ export default function userController(router: Router) {
 			} catch(err) {
 				res.status(500).json(err);
 			}
-		})
+		});
 }
