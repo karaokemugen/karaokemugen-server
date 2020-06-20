@@ -91,14 +91,16 @@ export default Vue.extend({
 	async asyncData({ params, $axios, error, app }) {
 		let result = await $axios.get("/api/karas/stats");
 		let count = result.data;
-		count.mediasize = prettyBytes(Number(count.mediasize));
-		const durationArray = duration(count.duration);
-		let returnString = '';
-		if (durationArray[0] !== 0) returnString += `${durationArray[0]} ${app.i18n.t("duration.days")} `;
-		if (durationArray[1] !== 0) returnString += `${durationArray[1]} ${app.i18n.t("duration.hours")} `;
-		if (durationArray[2] !== 0) returnString += `${durationArray[2]} ${app.i18n.t("duration.minutes")} `;
-		if (durationArray[3] !== 0) returnString += `${durationArray[3]} ${app.i18n.t("duration.seconds")} `;
-		count.duration = returnString;
+		if (count.mediasize) count.mediasize = prettyBytes(Number(count.mediasize));
+		if (count.mediasize) {
+			const durationArray = duration(count.duration);
+			let returnString = '';
+			if (durationArray[0] !== 0) returnString += `${durationArray[0]} ${app.i18n.t("duration.days")} `;
+			if (durationArray[1] !== 0) returnString += `${durationArray[1]} ${app.i18n.t("duration.hours")} `;
+			if (durationArray[2] !== 0) returnString += `${durationArray[2]} ${app.i18n.t("duration.minutes")} `;
+			if (durationArray[3] !== 0) returnString += `${durationArray[3]} ${app.i18n.t("duration.seconds")} `;
+			count.duration = returnString;
+		}
 		count.lastGeneration = (await $axios.get("/api/karas/lastUpdate")).data;
 		return { count: count };
 	}
