@@ -61,5 +61,8 @@
     .field.is-expanded {
         flex-grow: 1;
         flex-shrink: 0;
+        .select select option {
+            color: white;
+        }
     }
 </style>
