@@ -37,7 +37,7 @@ WHERE pk_login = $1
 `;
 
 export const updateUserPassword = `
-UPDATE users SET password = $2, password_last_modified_at = NOW() WHERE pk_login = $1
+UPDATE users SET password = $2, password_last_modified_at = NOW() WHERE pk_login = $1 RETURNING password_last_modified_at;
 `;
 
 export const updateUser = `
@@ -51,5 +51,5 @@ UPDATE users SET
 	series_lang_mode = $7,
 	main_series_lang = $8,
 	fallback_series_lang = $9
-WhERE pk_login = $10
+WHERE pk_login = $10
 `;

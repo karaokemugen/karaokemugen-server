@@ -269,7 +269,7 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		if (user.password) {
 			if (user.password.length < 8) throw {code: 'PASSWORD_TOO_SHORT', data: user.password.length};
 			user.password = await hashPasswordbcrypt(user.password);
-			await updateUserPassword(user.login, user.password);
+			user.password_last_modified_at = await updateUserPassword(user.login, user.password);
 		}
 		if (avatar) {
 			// If a new avatar was sent, it is contained in the avatar object
