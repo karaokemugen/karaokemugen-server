@@ -49,8 +49,6 @@ export default Vue.extend({
 
   methods: {
     async setPage(e: number) {
-	  if (this.tags.infos.to === this.tags.infos.count || this.loading) return;
-	  console.log(e)
       this.page = e;
       this.loading = true;
       const { data } = await this.$axios.get(
@@ -61,8 +59,7 @@ export default Vue.extend({
             size: 100
           }
         }
-	  );
-	  console.log(data)
+      );
       data.content = data.content.filter(
         tag => tag.karacount && Object.keys(tag.karacount).length > 0
       );
@@ -80,7 +77,7 @@ export default Vue.extend({
       .get(`/api/karas/tags/${tagTypes[params.id].type}`, {
         params: {
           from: 0,
-          size: 200
+          size: 100
         }
       })
       .catch(_err =>
