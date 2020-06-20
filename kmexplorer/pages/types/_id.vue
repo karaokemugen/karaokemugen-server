@@ -57,8 +57,8 @@ export default Vue.extend({
         `/api/karas/tags/${tagTypes[this.type].type}`,
         {
           params: {
-            from: (this.page - 1) * 200,
-            size: 200
+            from: (this.page - 1) * 100,
+            size: 100
           }
         }
 	  );
@@ -93,7 +93,7 @@ export default Vue.extend({
     return {
       tags: data,
       type: params.id,
-      total: data.content.length > 0 && data.content[0].count / 200
+      total: data.content.length > 0 && Math.ceil(data.content[0].count / 100)
     };
   },
 
