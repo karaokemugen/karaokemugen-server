@@ -9,8 +9,9 @@ INSERT INTO users(
 	avatar_file,
 	bio,
 	url,
-	email
-) VALUES($1, $2, $3, $4, $5, $6, $7, $8)
+	email,
+	password_last_modified_at
+) VALUES($1, $2, $3, $4, $5, $6, $7, $8, NOW())
 `;
 
 export const selectUser = `
@@ -25,7 +26,8 @@ SELECT
 	email,
 	series_lang_mode,
 	main_series_lang,
-	fallback_series_lang
+	fallback_series_lang,
+	password_last_modified_at
 FROM users
 `;
 
@@ -35,7 +37,7 @@ WHERE pk_login = $1
 `;
 
 export const updateUserPassword = `
-UPDATE users SET password = $2 WHERE pk_login = $1
+UPDATE users SET password = $2, password_last_modified_at = NOW() WHERE pk_login = $1
 `;
 
 export const updateUser = `

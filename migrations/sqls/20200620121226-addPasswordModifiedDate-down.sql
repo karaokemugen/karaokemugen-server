@@ -1,0 +1,1 @@
+ALTER TABLE users DROP COLUMN password_last_modified_at;

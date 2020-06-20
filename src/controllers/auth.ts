@@ -17,7 +17,7 @@ async function checkLogin(username: string, password: string): Promise<Token> {
 	if (!checkPassword(user, password)) throw false;
 	const role = getRole(user);
 	return {
-		token: createJwtToken(username, role),
+		token: createJwtToken(username, role, user.password_last_modified_at),
 		username: username,
 		role: role
 	};
@@ -42,11 +42,11 @@ export default function authController(router: Router) {
 	});
 }
 
-function createJwtToken(username: string, role: Role) {
+function createJwtToken(username: string, role: Role, passwordLastModifiedAt: Date) {
 	const conf = getConfig();
 	const timestamp = new Date().getTime();
 	return encode(
-		{ username, iat: timestamp, role },
+		{ username, iat: timestamp, role, passwordLastModifiedAt },
 		conf.App.JwtSecret
 	);
 }
