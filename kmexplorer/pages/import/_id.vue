@@ -27,7 +27,7 @@
         >{{$t('kara.import.license_link')}}</a>
       </div>
     </article>
-    <div class="tile is-child is-5">
+    <div class="tile is-child is-8">
       <kara-edit :karaparam="karaparam"></kara-edit>
     </div>
   </div>
@@ -99,6 +99,7 @@ export default Vue.extend({
 }
 .tile .is-child {
   transition: width 0.8s;
+  max-width: 1000px;
 }
 
 .is-info {
