@@ -1,0 +1,43 @@
+<template>
+    <nav class="pagination" role="navigation" aria-label="pagination">
+        <a class="pagination-previous" v-if="page > 1" @click="changePage(page - 1)">{{ $t('search.previous') }}</a>
+        <a class="pagination-next" v-if="page !== lastPage" @click="changePage(page + 1)">{{ $t('search.next') }}</a>
+        <ul class="pagination-list">
+            <li v-if="page > 2">
+                <a class="pagination-link" :aria-label="$t('search.aria.goto', [1])" @click="changePage(1)">1</a>
+            </li>
+            <li v-if="page > 2">
+                <span class="pagination-ellipsis">&hellip;</span>
+            </li>
+            <li v-if="page > 1">
+                <a class="pagination-link" :aria-label="$t('search.aria.goto', [page - 1])" @click="changePage(page - 1)">{{ page-1 }}</a>
+            </li>
+            <li>
+                <a class="pagination-link is-current" :aria-label="$t('search.aria.page', [page])" aria-current="page">{{ page }}</a>
+            </li>
+            <li v-if="page < (lastPage - 1)">
+                <a class="pagination-link" :aria-label="$t('search.aria.goto', [page + 1])" @click="changePage(page + 1)">{{ page+1 }}</a>
+            </li>
+            <li v-if="page < (lastPage - 2)">
+                <span class="pagination-ellipsis">&hellip;</span>
+            </li>
+            <li v-if="page <= (lastPage - 1)">
+                <a class="pagination-link" :aria-label="$t('search.aria.goto', [lastPage])" @click="changePage(lastPage)">{{ lastPage }}</a>
+            </li>
+        </ul>
+    </nav>
+</template>
+
+<script lang="ts">
+    import Vue from "vue";
+
+    export default Vue.extend({
+        props: ['page', 'lastPage'],
+
+        methods: {
+            changePage(page: number) {
+                this.$emit('page', page);
+            }
+        }
+    });
+</script>
