@@ -45,7 +45,9 @@ export function initFrontend(listenPort: number) {
 	 	) return true;
 		return false;
 	});
-	app.use(helmet());
+	app.use(helmet({
+		hsts: false
+	}));
 	app.use(compression());
 	app.use(bodyParser.json({limit: '1000mb'})); // support json encoded bodies
 	app.use(bodyParser.urlencoded({
