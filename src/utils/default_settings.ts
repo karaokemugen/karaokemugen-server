@@ -364,5 +364,7 @@ export let NuxtConfig = {
 	},
 
 	modulesDir: ['../node_modules/'],
-	rootDir: 'kmexplorer/'
+	rootDir: 'kmexplorer/',
+	// No.
+	telemetry: false
 };
