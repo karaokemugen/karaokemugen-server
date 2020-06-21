@@ -13,8 +13,8 @@ export function formatTagList(tagList: DBTag[], from: number, count: number): Ta
 	return {
 		infos: {
 			count: count,
-			from: +from,
-			to: +from + +tagList.length
+			from: from,
+			to: from + tagList.length
 		},
 		content: tagList
 	};
