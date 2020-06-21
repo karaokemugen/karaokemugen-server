@@ -190,6 +190,7 @@ export default Vue.extend({
 		  await this.$axios.post('/api/users', signup);
 	  }
       this.$auth.loginWith("local", { data: this.login }).then(res => {
+        this.$emit("login");
         console.log(res);
         // Fetch user, its favorites
         /*const { data } = await this.$axios.get('/api/favorites');

@@ -351,7 +351,7 @@
         </p>
       </div>
     </footer>
-    <LoginModal :active="modal.auth" @close="modal.auth = false" />
+    <LoginModal :active="modal.auth" @close="modal.auth = false" @login="loggedIn=$auth.loggedIn" />
 	<ProfileModal :active="modal.profile" @close="modal.profile = false" />
   </div>
 </template>
