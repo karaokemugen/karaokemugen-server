@@ -39,7 +39,7 @@
                   />
                 </div>
                 <div class="control">
-                  <div class="input is-static">{{`@${explorerHost}`}}</div>
+                  <div class="input is-static">{{`@${apiHost}`}}</div>
                 </div>
               </div>
             </div>
@@ -87,7 +87,7 @@
                   />
                 </div>
                 <div class="control">
-                  <div class="input is-static">{{`@${explorerHost}`}}</div>
+                  <div class="input is-static">{{`@${apiHost}`}}</div>
                 </div>
               </div>
             </div>
@@ -186,7 +186,7 @@ export default Vue.extend({
 
   data() {
     return {
-      explorerHost: process.env.EXPLORER_HOST,
+      apiHost: process.env.API_HOST,
       login: {
         username: "",
         password: ""
