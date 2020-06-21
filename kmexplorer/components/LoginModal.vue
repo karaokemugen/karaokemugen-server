@@ -155,14 +155,7 @@
             class="button is-success"
             :class="{'is-loading': loading}"
             type="submit"
-            v-if="mode === 'login'"
-          >{{ $t('modal.login.submit') }}</button>
-          <button
-            class="button is-success"
-            :class="{'is-loading': loading}"
-            type="submit"
-            v-if="mode === 'signup'"
-          >{{ $t('modal.signup.submit') }}</button>
+          >{{ $t(mode === 'login' ? 'modal.login.submit' : 'modal.signup.submit') }}</button>
         </footer>
       </div>
     </form>

@@ -121,7 +121,8 @@ export default {
 		login: "Login",
 		logout: "Logout",
 		register: "Register",
-		connection: "Connection"
+		connection: "Connection",
+		profile: "Profile"
 	},
 	search: {
 		placeholder: "Series, singers, names...",
@@ -179,6 +180,50 @@ export default {
 				}
 			},
 			submit: 'Signup'
+		},
+		profile: {
+			title: 'Edit profile',
+			fields: {
+				username: {
+					label: 'Username'
+				},
+				nickname: {
+					label: 'Nickname',
+					placeholder: 'LoveLiveFan93'
+				},
+				password: {
+					label: 'Mot de passe',
+					placeholder: 'EnVraiJePréfèreIdolM@ster'
+				},
+				password_confirmation: {
+					label: 'Confirmation du mot de passe',
+					placeholder: 'EnVraiJePréfèreIdolM@ster'
+				},
+				email: {
+					label: 'Email',
+					placeholder: 'test@shelter.moe'
+				},
+				
+				url: {
+					label: 'Url',
+					placeholder: 'test@shelter.moe'
+				},
+				bio: {
+					label: 'Biographie',
+					placeholder: 'test@shelter.moe'
+				},
+			},
+			submit: 'Sauvegarder',
+			delete: 'Suppression du compte',
+			series_name: {
+				label: "Affichage des noms de série",
+				original_name: "Nom original",
+				song_lang: "Selon la langue de la chanson",
+				user_lang: "Selon la langue de l'utilisateur",
+				force_lang_series: "Forcer la langue des noms de séries",
+				force_lang_series_main: "Langue des noms de séries",
+				force_lang_series_fallback: "Langue de secours des noms de séries",
+			}
 		}
 	},
 	titles: {
