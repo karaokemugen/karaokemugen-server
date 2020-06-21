@@ -134,6 +134,10 @@
                     v-model="login.password_confirmation"
                   />
                 </div>
+                <p
+                  class="help is-danger"
+                  v-if="passwordNotEquals()"
+                >{{ $t('modal.signup.passwords_mismatch') }}</p>
               </div>
             </div>
           </div>
@@ -163,6 +167,7 @@
           <button
             class="button is-success"
             :class="{'is-loading': loading}"
+            :disabled="passwordNotEquals()"
             type="submit"
           >{{ $t(mode === 'login' ? 'modal.login.submit' : 'modal.signup.submit') }}</button>
         </footer>
@@ -192,6 +197,13 @@ export default Vue.extend({
   },
 
   methods: {
+    passwordNotEquals() {
+      return (
+        this.mode === "signup" &&
+        this.login.password_confirmation &&
+        this.login.password !== this.login.password_confirmation
+      );
+    },
     async submitForm() {
       this.loading = true;
       if (this.mode === "signup") {

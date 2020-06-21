@@ -54,6 +54,7 @@
                     name="nickname"
                     id="nickname"
                     class="input"
+                    required
                     autocomplete="nickname"
                     v-model="user.nickname"
                   />
@@ -100,6 +101,10 @@
                     autocomplete="password-confirmation"
                     v-model="user.password_confirmation"
                   />
+                  <p
+                    class="help is-danger"
+                    v-if="passwordNotEquals()"
+                  >{{ $t('modal.profile.passwords_mismatch') }}</p>
                 </div>
               </div>
             </div>
@@ -116,6 +121,7 @@
                     name="email"
                     id="email"
                     class="input"
+                    required
                     :placeholder="$t('modal.profile.fields.email.placeholder')"
                     autocomplete="email"
                     v-model="user.email"
@@ -252,6 +258,7 @@
           <button
             class="button is-success"
             :class="{'is-loading': loading}"
+            :disabled="passwordNotEquals()"
             type="submit"
           >{{ $t('modal.profile.submit') }}</button>
         </footer>
@@ -291,7 +298,7 @@ export default Vue.extend({
     };
   },
 
-  created() {
+  mounted() {
     this.getUser();
   },
 
@@ -306,6 +313,12 @@ export default Vue.extend({
   },
 
   methods: {
+    passwordNotEquals() {
+      return (
+        this.user.password_confirmation &&
+        this.user.password !== this.user.password_confirmation
+      );
+    },
     listLangs(name) {
       let listLangs = [];
       for (let [key, value] of Object.entries(

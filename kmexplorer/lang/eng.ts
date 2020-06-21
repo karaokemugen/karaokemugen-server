@@ -179,6 +179,7 @@ export default {
 					placeholder: 'test@shelter.moe'
 				}
 			},
+			passwords_mismatch: "Passwords do not match",
 			submit: 'Signup'
 		},
 		profile: {
@@ -213,6 +214,7 @@ export default {
 					placeholder: 'It\' s my life'
 				},
 			},
+			passwords_mismatch: "Passwords do not match",
 			submit: 'Save',
 			delete: 'Delete account',
 			series_name: {

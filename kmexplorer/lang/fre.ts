@@ -202,6 +202,7 @@ export default {
 					placeholder: 'test@shelter.moe'
 				}
 			},
+			passwords_mismatch: 'Les mots de passe ne correspondent pas',
 			submit: 'S\'inscrire'
 		},
 		profile: {
@@ -236,6 +237,7 @@ export default {
 					placeholder: 'C\'est la vie'
 				},
 			},
+			passwords_mismatch: 'Les mots de passe ne correspondent pas',
 			submit: 'Sauvegarder',
 			delete: 'Suppression du compte',
 			series_name: {
