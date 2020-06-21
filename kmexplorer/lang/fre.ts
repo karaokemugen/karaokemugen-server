@@ -229,11 +229,11 @@ export default {
 				
 				url: {
 					label: 'Url',
-					placeholder: 'test@shelter.moe'
+					placeholder: 'https://karaokes.moe'
 				},
 				bio: {
 					label: 'Biographie',
-					placeholder: 'test@shelter.moe'
+					placeholder: 'C\'est la vie'
 				},
 			},
 			submit: 'Sauvegarder',

@@ -25,7 +25,7 @@
               <label for="title" class="label">{{ $t('modal.login.fields.username.label') }}</label>
             </div>
             <div class="field-body">
-              <div class="field">
+              <div class="field has-addons">
                 <div class="control">
                   <input
                     type="text"
@@ -37,6 +37,9 @@
                     autocomplete="username"
                     v-model="login.username"
                   />
+                </div>
+                <div class="control">
+                  <div class="input is-static">{{`@${explorerHost}`}}</div>
                 </div>
               </div>
             </div>
@@ -70,7 +73,7 @@
               <label for="title" class="label">{{ $t('modal.signup.fields.username.label') }}</label>
             </div>
             <div class="field-body">
-              <div class="field">
+              <div class="field has-addons">
                 <div class="control">
                   <input
                     type="text"
@@ -82,6 +85,9 @@
                     autocomplete="username"
                     v-model="login.username"
                   />
+                </div>
+                <div class="control">
+                  <div class="input is-static">{{`@${explorerHost}`}}</div>
                 </div>
               </div>
             </div>
@@ -107,9 +113,12 @@
               </div>
             </div>
           </div>
-		   <div class="field is-horizontal">
+          <div class="field is-horizontal">
             <div class="field-label is-normal">
-              <label for="password_confirmation" class="label">{{ $t('modal.signup.fields.password_confirmation.label') }}</label>
+              <label
+                for="password_confirmation"
+                class="label"
+              >{{ $t('modal.signup.fields.password_confirmation.label') }}</label>
             </div>
             <div class="field-body">
               <div class="field">
@@ -172,6 +181,7 @@ export default Vue.extend({
 
   data() {
     return {
+      explorerHost: process.env.EXPLORER_HOST,
       login: {
         username: "",
         password: ""
@@ -184,11 +194,11 @@ export default Vue.extend({
   methods: {
     async submitForm() {
       this.loading = true;
-	  if (this.mode === 'signup') {
-      let signup = this.login;
-      signup.login = this.login.username;
-		  await this.$axios.post('/api/users', signup);
-	  }
+      if (this.mode === "signup") {
+        let signup = this.login;
+        signup.login = this.login.username;
+        await this.$axios.post("/api/users", signup);
+      }
       this.$auth.loginWith("local", { data: this.login }).then(res => {
         this.$emit("login");
         console.log(res);

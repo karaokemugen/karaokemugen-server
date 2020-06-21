@@ -24,7 +24,7 @@
               <label for="title" class="label">{{ $t('modal.profile.fields.username.label') }}</label>
             </div>
             <div class="field-body">
-              <div class="field">
+              <div class="field has-addons">
                 <div class="control">
                   <input
                     type="text"
@@ -34,6 +34,28 @@
                     readonly
                     autocomplete="login"
                     v-model="user.login"
+                  />
+                </div>
+                <div class="control">
+                  <div class="input is-static">{{`@${explorerHost}`}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label for="nickname" class="label">{{ $t('modal.profile.fields.nickname.label') }}</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input
+                    type="text"
+                    name="nickname"
+                    id="nickname"
+                    class="input"
+                    autocomplete="nickname"
+                    v-model="user.nickname"
                   />
                 </div>
               </div>
@@ -143,12 +165,15 @@
             </div>
           </div>
           <div class="field is-horizontal">
-            <div class="field-label is-normal">
-            </div>
+            <div class="field-label is-normal"></div>
             <div class="field-body">
               <div class="field">
                 <div class="control">
-                  <button type="button" class="button is-danger" @click="deleteUser">{{$t('modal.profile.delete')}}</button>
+                  <button
+                    type="button"
+                    class="button is-danger"
+                    @click="deleteUser"
+                  >{{$t('modal.profile.delete')}}</button>
                 </div>
               </div>
             </div>
@@ -248,6 +273,7 @@ export default Vue.extend({
 
   data() {
     return {
+      explorerHost: process.env.EXPLORER_HOST,
       user: {
         login: "",
         nickname: "",

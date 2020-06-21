@@ -206,11 +206,11 @@ export default {
 				
 				url: {
 					label: 'Url',
-					placeholder: 'test@shelter.moe'
+					placeholder: 'https://karaokes.moe'
 				},
 				bio: {
 					label: 'Biography',
-					placeholder: 'test@shelter.moe'
+					placeholder: 'It\' s my life'
 				},
 			},
 			submit: 'Save',
