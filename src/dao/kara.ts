@@ -3,6 +3,7 @@ import {pg as yesql} from 'yesql';
 import { KaraParams } from '../lib/types/kara';
 import { DBKara, DBYear } from '../lib/types/database/kara';
 import { DBStats } from '../types/database/kara';
+import { Filter } from '../lib/types/database/database';
 const sql = require('./sqls/kara');
 
 export async function selectAllYears(): Promise<DBYear[]> {
@@ -11,7 +12,7 @@ export async function selectAllYears(): Promise<DBYear[]> {
 }
 
 export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
-	let filterClauses = params.filter ? buildClauses(params.filter) : {sql: [], params: {}};
+	const filterClauses: Filter = params.filter ? buildClauses(params.filter) : {sql: [], params: {}};
 	let typeClauses = params.mode ? buildTypeClauses(params.mode, params.modeValue) : '';
 	let orderClauses = '';
 	let limitClause = '';
@@ -19,6 +20,20 @@ export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 	let havingClause = '';
 	let statsSelectClause = '';
 	let statsJoinClause = '';
+	let favoritedSelectClause = '';
+	let favoritedJoinClause = '';
+	let favoritedGroupClause = '';
+	if (params.username) {
+		favoritedSelectClause = `
+		(CASE WHEN f.fk_kid IS NULL
+			THEN FALSE
+			ELSE TRUE
+	  	END) as flag_favorites,
+		`;
+		favoritedJoinClause = 'LEFT OUTER JOIN users_favorites AS f ON f.fk_login = :username AND f.fk_kid = ak.kid';
+		favoritedGroupClause = 'f.fk_kid, ';
+		filterClauses.params.username = params.username;
+	}
 	if (params.mode === 'recent') orderClauses = 'created_at DESC, ';
 	if (params.mode === 'played') {
 		statsSelectClause = 'COUNT(p.*)::integer AS played,';
@@ -40,7 +55,7 @@ export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 	}
 	if (params.from > 0) offsetClause = `OFFSET ${params.from} `;
 	if (params.size > 0) limitClause = `LIMIT ${params.size} `;
-	const query = sql.getAllKaras(filterClauses.sql, typeClauses, orderClauses, havingClause, limitClause, offsetClause, statsSelectClause, statsJoinClause);
+	const query = sql.getAllKaras(filterClauses.sql, typeClauses, orderClauses, havingClause, limitClause, offsetClause, statsSelectClause, statsJoinClause, favoritedSelectClause, favoritedJoinClause, favoritedGroupClause,);
 	const res = await db().query(yesql(query)(filterClauses.params));
 	return res.rows;
 }

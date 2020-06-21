@@ -3,6 +3,7 @@ import { Favorite } from '../types/stats';
 import { DBKara } from '../lib/types/database/kara';
 import {pg as yesql} from 'yesql';
 import { FavParams } from '../lib/types/favorites';
+import { Filter } from '../lib/types/database/database';
 const sql = require('./sqls/favorites');
 
 export async function selectFavorites(username: string): Promise<Favorite[]> {
@@ -21,13 +22,6 @@ export async function deleteFavorite(username: string, kid: string) {
 export async function selectAllFavorites(): Promise<Favorite[]> {
 	const res = await db().query(sql.selectAllFavorites);
 	return res.rows;
-}
-
-interface Filter {
-	sql: any[],
-	params: {
-		username?: string
-	}
 }
 
 export async function selectFavoritesFull(params: FavParams): Promise<DBKara[]> {

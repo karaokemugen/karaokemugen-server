@@ -56,14 +56,15 @@ export async function generate() {
 	}
 }
 
-export async function getKara(filter?: string, from = 0, size = 0, mode?: ModeParam, modeValue?: string) {
+export async function getKara(filter?: string, from = 0, size = 0, mode?: ModeParam, modeValue?: string, username?: string) {
 	try {
 		const karas = await selectAllKaras({
 			filter: filter,
 			from: +from,
 			size: +size,
 			mode: mode,
-			modeValue: modeValue
+			modeValue: modeValue,
+			username: username
 		});
 		if (!karas[0]) return;
 		karas[0].lyrics = null;
@@ -79,7 +80,7 @@ export async function getKara(filter?: string, from = 0, size = 0, mode?: ModePa
 	}
 }
 
-export async function getAllKaras(filter?: string, from = 0, size = 0, mode?: ModeParam, modeValue?: string, compare?: CompareParam, localKarasObj?: any): Promise<KaraList> {
+export async function getAllKaras(filter?: string, from = 0, size = 0, mode?: ModeParam, modeValue?: string, compare?: CompareParam, localKarasObj?: any, username?: string): Promise<KaraList> {
 	try {
 		// When compare is used because we're queried from KM App in order to tell which karaoke is missing or updated, we redefine from/size so we get absolutely all songs from database.
 		let trueFrom = from;
@@ -93,7 +94,8 @@ export async function getAllKaras(filter?: string, from = 0, size = 0, mode?: Mo
 			from: +trueFrom,
 			size: +trueSize,
 			mode: mode,
-			modeValue: modeValue || ''
+			modeValue: modeValue || '',
+			username: username
 		});
 		// Let's build a map of KM App's KIDs if it's provided, and then filter the results depending on if we want updated songs or missing songs.
 		// Missing songs are those not present in localKaras, updated songs are present but have a lower modification date
