@@ -297,12 +297,15 @@ export let NuxtConfig = {
 		// Doc: https://buefy.org/documentation/start
 		['nuxt-buefy', { css: false, materialDesignIcons: false }],
 		// Doc: https://auth.nuxtjs.org/
-		'@nuxtjs/auth'
+		'@nuxtjs/auth',
+		// Doc: https://github.com/nuxt-community/modules/tree/master/packages/toast
+		'@nuxtjs/toast'
 	],
 
 	plugins: [
 		'~/plugins/icons.js',
-		{src: '~/plugins/vuex-persist.js', ssr: false}
+		{src: '~/plugins/vuex-persist.js', ssr: false},
+		{src: '~/plugins/axios.js', ssr: false}
 	],
 
 	head: {
