@@ -40,7 +40,12 @@
       </div>
 
       <div class="navbar-dropdown" v-if="accountMenu">
-        <a class="navbar-item" @click.prevent="modal.profile = true" aria-label="Profile" v-if="loggedIn">
+        <a
+          class="navbar-item"
+          @click.prevent="modal.profile = true"
+          aria-label="Profile"
+          v-if="loggedIn"
+        >
           <font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
           {{$t('menu.profile')}}
         </a>
@@ -351,8 +356,8 @@
         </p>
       </div>
     </footer>
-    <LoginModal :active="modal.auth" @close="modal.auth = false" @login="loggedIn=$auth.loggedIn" />
-	<ProfileModal :active="modal.profile" @close="modal.profile = false" />
+    <LoginModal :active="modal.auth" @close="modal.auth=false" @login="loggedIn=$auth.loggedIn" />
+    <ProfileModal :active="modal.profile" @close="modal.profile=false" @logout="logout" />
   </div>
 </template>
 
@@ -373,8 +378,8 @@ export default Vue.extend({
   components: {
     Tag,
     SearchBar,
-	LoginModal,
-	ProfileModal
+    LoginModal,
+    ProfileModal
   },
 
   data() {
@@ -390,8 +395,8 @@ export default Vue.extend({
       communityMenu: false,
       accountMenu: false,
       modal: {
-		auth: false,
-		profile: false
+        auth: false,
+        profile: false
       }
     };
   },

@@ -59,6 +59,100 @@
               </div>
             </div>
           </div>
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label
+                for="password_confirmation"
+                class="label"
+              >{{ $t('modal.profile.fields.password_confirmation.label') }}</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input
+                    type="password"
+                    name="password_confirmation"
+                    id="password_confirmation"
+                    class="input"
+                    :placeholder="$t('modal.profile.fields.password_confirmation.placeholder')"
+                    autocomplete="password-confirmation"
+                    v-model="user.password_confirmation"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label for="email" class="label">{{ $t('modal.profile.fields.email.label') }}</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input
+                    type="text"
+                    name="email"
+                    id="email"
+                    class="input"
+                    :placeholder="$t('modal.profile.fields.email.placeholder')"
+                    autocomplete="email"
+                    v-model="user.email"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label for="url" class="label">{{ $t('modal.profile.fields.url.label') }}</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input
+                    type="text"
+                    name="url"
+                    id="url"
+                    class="input"
+                    :placeholder="$t('modal.profile.fields.url.placeholder')"
+                    autocomplete="url"
+                    v-model="user.url"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label for="bio" class="label">{{ $t('modal.profile.fields.bio.label') }}</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input
+                    type="text"
+                    name="bio"
+                    id="bio"
+                    class="input"
+                    :placeholder="$t('modal.profile.fields.bio.placeholder')"
+                    autocomplete="bio"
+                    v-model="user.bio"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <button type="button" class="button is-danger" @click="deleteUser">{{$t('modal.profile.delete')}}</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
         <section class="modal-card-body" v-if="mode === 'series'">
           <div class="field is-horizontal">
@@ -215,6 +309,11 @@ export default Vue.extend({
         this.user.fallback_series_lang,
         languages.alpha3BToAlpha2(this.$i18n.locale)
       );
+    },
+    deleteUser() {
+      this.$axios.delete("/api/myaccount");
+      this.$emit("logout");
+      this.closeModal();
     },
     async submitForm() {
       this.loading = true;
