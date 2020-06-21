@@ -1,7 +1,7 @@
 <template>
     <div class="box">
         <iframe :src="`${liveURL}?video=${karaoke.kid}&autoplay=1`" :class="{live: transition}" allowfullscreen v-if="show"></iframe>
-        <div class="image-container" v-else @click="showPlayer" tabindex="0" @keydown="showPlayer" aria-keyshortcuts="L">
+        <div class="image-container" v-else @click="showPlayer" tabindex="0" @keydown="showPlayer" aria-keyshortcuts="Ctrl+L">
             <img :src="`/previews/${karaoke.kid}.${karaoke.mediasize}.25.jpg`">
             <font-awesome-layers>
                 <font-awesome-icon :icon="['fas', 'circle']" size="4x"></font-awesome-icon>
@@ -36,8 +36,7 @@
                 this.$emit('open');
             },
             keyEvent(e) { // Fancy shortcut, don't tell anyone! :p
-                console.log('Over there!', e.code, this);
-                if (e.code === 'KeyL') {
+                if (e.code === 'KeyL' && e.ctrlKey) {
                     e.preventDefault();
                     this.showPlayer();
                     window.removeEventListener('keydown', this.keyEvent);

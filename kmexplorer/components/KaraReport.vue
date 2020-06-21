@@ -1,7 +1,7 @@
 <template>
 	<div class="box">
 		<h4 class="title is-4">{{ $t('kara.problem.title', {title: karaoke.title}) }}</h4>
-		<button class="button is-warning" @click="toggleModal">
+		<button class="button is-warning" @click="toggleModal" :disabled="submitted">
 			<font-awesome-icon :icon="['fas', 'meh']" />
 			{{ $t('kara.problem.btn.report') }}
 		</button>
@@ -135,7 +135,6 @@
         		this.modal = !this.modal;
 			},
 			submitProblem() {
-				console.log(this.formData);
 				this.loading = true;
 				this.$axios.post(`/api/karas/${this.karaoke.kid}/problem`, this.formData).then(res => {
 					this.gitlabUrl = res.data;
