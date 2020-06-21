@@ -67,7 +67,64 @@
             </div>
             <div class="field-body">
               <div class="field">
-                <div class="control"></div>
+                <div class="control">
+                  <div class="select">
+                    <select v-model="user.series_lang_mode">
+                      <option :value="-1">{{ $t('modal.profile.series_name.mode_no_pref') }}</option>
+                      <option :value="0">{{ $t('modal.profile.series_name.original_name') }}</option>
+                      <option :value="1">{{ $t('modal.profile.series_name.song_lang') }}</option>
+                      <option :value="2">{{ $t('modal.profile.series_name.mode_admin') }}</option>
+                      <option :value="3">{{ $t('modal.profile.series_name.user_lang') }}</option>
+                      <option :value="4">{{ $t('modal.profile.series_name.force_lang_series') }}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field is-horizontal" v-if="user.series_lang_mode === 4">
+            <div class="field-label is-normal">
+              <label
+                for="title"
+                class="label"
+              >{{ $t('modal.profile.series_name.force_lang_series_main') }}</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <div class="select">
+                    <b-autocomplete
+                      keep-first
+                      open-on-focus
+                      v-model="main_series_lang_name"
+                      :data="getListLangsMain"
+                      @select="option => user.main_series_lang = get3BCode(option)"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field is-horizontal" v-if="user.series_lang_mode === 4">
+            <div class="field-label is-normal">
+              <label
+                for="title"
+                class="label"
+              >{{ $t('modal.profile.series_name.force_lang_series_fallback') }}</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <div class="select">
+                    <b-autocomplete
+                      keep-first
+                      open-on-focus
+                      v-model="fallback_series_lang_name"
+                      :data="getListLangsFallback"
+                      @select="option => user.fallback_series_lang = get3BCode(option)"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -86,6 +143,9 @@
 
 <script lang="ts">
 import Vue from "vue";
+import languages from "@cospired/i18n-iso-languages";
+languages.registerLocale(require("@cospired/i18n-iso-languages/langs/en.json"));
+languages.registerLocale(require("@cospired/i18n-iso-languages/langs/fr.json"));
 
 export default Vue.extend({
   name: "ProfileModale",
@@ -104,6 +164,8 @@ export default Vue.extend({
         main_series_lang: null,
         fallback_series_lang: null
       },
+      main_series_lang_name: "",
+      fallback_series_lang_name: "",
       mode: "general",
       loading: false
     };
@@ -113,11 +175,46 @@ export default Vue.extend({
     this.getUser();
   },
 
+  computed: {
+    getListLangsMain() {
+      return this.listLangs(this.main_series_lang_name || "");
+    },
+
+    getListLangsFallback() {
+      return this.listLangs(this.fallback_series_lang_name || "");
+    }
+  },
+
   methods: {
+    listLangs(name) {
+      let listLangs = [];
+      for (let [key, value] of Object.entries(
+        languages.getNames(languages.alpha3BToAlpha2(this.$i18n.locale))
+      )) {
+        listLangs.push(value);
+      }
+      return listLangs.filter(value =>
+        value.toLowerCase().includes(name.toLowerCase())
+      );
+    },
+    get3BCode(language: string) {
+      return languages.getAlpha3BCode(
+        language,
+        languages.alpha3BToAlpha2(this.$i18n.locale)
+      );
+    },
     async getUser() {
       let response = await this.$axios.get("/api/myaccount");
       response.data.password = "";
       this.user = response.data;
+      this.main_series_lang_name = languages.getName(
+        this.user.main_series_lang,
+        languages.alpha3BToAlpha2(this.$i18n.locale)
+      );
+      this.fallback_series_lang_name = languages.getName(
+        this.user.fallback_series_lang,
+        languages.alpha3BToAlpha2(this.$i18n.locale)
+      );
     },
     async submitForm() {
       this.loading = true;
@@ -139,5 +236,8 @@ export default Vue.extend({
 }
 .is-active {
   color: #1dd2af;
+}
+.select select option {
+  color: white;
 }
 </style>

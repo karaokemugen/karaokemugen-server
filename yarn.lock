@@ -822,6 +822,11 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@cospired/i18n-iso-languages@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@cospired/i18n-iso-languages/-/i18n-iso-languages-2.1.2.tgz#2dd4005ac975f369df522055f35ecbc404770bca"
+  integrity sha512-XylKOsWRyQm9sNanZnppRORXTLaL34uThyBQpTFwOGAYvNg9PeYsyTTfLA1FTCh02RV+kiwt/O/y14DR/OqpWg==
+
 "@csstools/convert-colors@^1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"

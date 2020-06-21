@@ -70,7 +70,6 @@ import prettyBytes from 'pretty-bytes';
 import duration from '../assets/date';
 
 export default Vue.extend({
-	components: {},
 
 	data() {
 		return {

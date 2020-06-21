@@ -192,11 +192,11 @@ export default {
 					placeholder: 'LoveLiveFan93'
 				},
 				password: {
-					label: 'Mot de passe',
+					label: 'Password',
 					placeholder: 'EnVraiJePréfèreIdolM@ster'
 				},
 				password_confirmation: {
-					label: 'Confirmation du mot de passe',
+					label: 'Password confirmation',
 					placeholder: 'EnVraiJePréfèreIdolM@ster'
 				},
 				email: {
@@ -209,20 +209,22 @@ export default {
 					placeholder: 'test@shelter.moe'
 				},
 				bio: {
-					label: 'Biographie',
+					label: 'Biography',
 					placeholder: 'test@shelter.moe'
 				},
 			},
-			submit: 'Sauvegarder',
-			delete: 'Suppression du compte',
+			submit: 'Save',
+			delete: 'Delete account',
 			series_name: {
-				label: "Affichage des noms de série",
-				original_name: "Nom original",
-				song_lang: "Selon la langue de la chanson",
-				user_lang: "Selon la langue de l'utilisateur",
-				force_lang_series: "Forcer la langue des noms de séries",
-				force_lang_series_main: "Langue des noms de séries",
-				force_lang_series_fallback: "Langue de secours des noms de séries",
+				label: "Series language display",
+				original_name: "Original name",
+				song_lang: "Song language",
+				mode_admin: "Karaoke Mugen language",
+				user_lang: "User language",
+				mode_no_pref: "No preference",
+				force_lang_series: "Force your own language",
+				force_lang_series_main: "Series name language",
+				force_lang_series_fallback: "Fallback series name language",
 			}
 		}
 	},

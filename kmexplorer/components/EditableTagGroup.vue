@@ -17,6 +17,7 @@
       <div v-if="inputVisible">
         <b-autocomplete
           keep-first
+          open-on-focus
           v-model="currentVal"
           :data="data"
           :loading="isFetching"
@@ -76,8 +77,6 @@ export default Vue.extend({
     }
   },
 
-  components: {},
-
   methods: {
     async getTags(type, filter) {
       if (filter === "") {
@@ -133,9 +132,7 @@ export default Vue.extend({
         this.data.filter(tag => this.values.includes(tag.tid))
       );
     }
-  },
-
-  computed: {}
+  }
 });
 </script>
 
