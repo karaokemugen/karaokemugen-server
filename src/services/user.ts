@@ -240,7 +240,7 @@ async function replaceAvatar(oldImageFile: string, avatar: Express.Multer.File) 
 
 export async function changePassword(username: string, password: string) {
 	try {
-		password = hashPassword(password);
+		password = await hashPasswordbcrypt(password);
 		return await updateUserPassword(username, password);
 	} catch(err) {
 		sentry.error(err);

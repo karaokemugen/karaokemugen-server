@@ -28,8 +28,8 @@ export function formatKaraList(karaList: any[], from: number, count: number): Ka
 	return {
 		infos: {
 			count: +count,
-			from: from,
-			to: from + data.length
+			from: +from,
+			to: +from + data.length
 		},
 		i18n: i18n,
 		content: data

@@ -18,7 +18,7 @@ import { getAllKaras, generate } from './services/kara';
 import { initMailer } from './utils/mailer';
 import dotenv from 'dotenv';
 import sentry from './utils/sentry';
-import {buildKMExplorer} from "./services/kmexplorer";
+import {buildKMExplorer} from './services/kmexplorer';
 
 const pjson = require('../package.json');
 const appPath = join(__dirname,'../');
