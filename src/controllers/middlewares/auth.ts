@@ -14,7 +14,8 @@ export const requireValidUser = (req, res, next) => {
 			if (!user) {
 				res.status(403).send('User logged in unknown');
 			} else {
-				if (token.passwordLastModifiedAt !== user.password_last_modified_at.toISOString()) {
+				const tokenDate = new Date(token.passwordLastModifiedAt);
+				if (tokenDate.toJSON() !== user.password_last_modified_at.toJSON()) {
 					res.status(403).send('Token has expired');
 				} else {
 					next();
@@ -32,7 +33,7 @@ export const requireAdmin = (req, res, next) => {
 	if (token.role === 'admin') {
 		next();
 	} else {
-		res.status(403).send('Only admin can use this function');
+		res.status(403).send('Only admins can use this function');
 	}
 
 };
