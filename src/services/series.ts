@@ -12,6 +12,7 @@ export async function getAllSeries(filter: string, from = 0, size = 9999999999) 
 			tags.content[i].seriefile = tags.content[i].tagfile;
 			delete tags.content[i].tagfile;
 		}
+		return tags;
 	} catch(err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
