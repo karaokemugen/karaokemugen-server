@@ -1,6 +1,6 @@
 // SQL for kara management
 
-export const getAllMedias = `
+export const selectAllMedias = `
 	SELECT mediafile,
 	mediasize
 	FROM kara
