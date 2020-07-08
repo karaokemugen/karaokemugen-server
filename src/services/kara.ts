@@ -1,4 +1,4 @@
-import {selectAllKaras, selectAllYears, selectBaseStats} from '../dao/kara';
+import {selectAllKaras, selectAllYears, selectBaseStats, selectAllMedias} from '../dao/kara';
 import { KaraList, ModeParam, CompareParam } from '../lib/types/kara';
 import { consolidateData } from '../lib/services/kara';
 import { DBKara } from '../lib/types/database/kara';
@@ -54,6 +54,10 @@ export async function generate() {
 		logger.error(`[Gen] ${err}`);
 		sentry.error(err, 'Fatal');
 	}
+}
+
+export function getAllmedias() {
+	return selectAllMedias();
 }
 
 export async function getKara(filter?: string, from = 0, size = 0, mode?: ModeParam, modeValue?: string) {

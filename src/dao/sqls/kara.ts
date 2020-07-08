@@ -1,5 +1,11 @@
 // SQL for kara management
 
+export const selectAllMedias = `
+	SELECT mediafile,
+	mediasize
+	FROM kara
+`;
+
 export const getAllKaras = (filterClauses: string[], typeClauses: string, orderClauses: string, havingClause: string, limitClause: string, offsetClause: string, statsSelectClause: string, statsJoinClause: string) => `SELECT
   ak.kid AS kid,
   ak.title AS title,

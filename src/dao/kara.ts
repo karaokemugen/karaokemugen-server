@@ -1,9 +1,14 @@
 import {buildTypeClauses, buildClauses, db} from '../lib/dao/database';
 import {pg as yesql} from 'yesql';
 import { KaraParams } from '../lib/types/kara';
-import { DBKara, DBYear } from '../lib/types/database/kara';
+import { DBKara, DBYear, DBMedia } from '../lib/types/database/kara';
 import { DBStats } from '../types/database/kara';
 const sql = require('./sqls/kara');
+
+export async function selectAllMedias(): Promise<DBMedia[]> {
+	const res = await db().query(sql.selectAllMedias);
+	return res.rows;
+}
 
 export async function selectAllYears(): Promise<DBYear[]> {
 	const res = await db().query(sql.getYears);
