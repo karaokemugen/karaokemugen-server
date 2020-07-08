@@ -1,5 +1,5 @@
-import {getRawKara, getBaseStats, getKara, getAllKaras, getAllYears, newKaraIssue} from '../services/kara';
-import {getTag, getTags} from '../services/tag';
+import {getRawKara, getBaseStats, getKara, getAllKaras, getAllYears, newKaraIssue, getAllmedias} from '../services/kara';
+import {getTags, getTag} from '../services/tag';
 import {getAllSeries} from '../services/series';
 import {getSettings} from '../lib/dao/database';
 import { Router } from 'express';
@@ -105,6 +105,15 @@ export default function KSController(router: Router) {
 			try {
 				const tags = await getTags(({filter: req.query.filter, type: null, from: req.query.from, size: req.query.size}));
 				res.json(tags);
+			} catch(err) {
+				res.status(500).json(err);
+			}
+		});
+	router.route('/karas/medias')
+		.get(async (_req, res) => {
+			try {
+				const medias = await getAllmedias();
+				res.json(medias);
 			} catch(err) {
 				res.status(500).json(err);
 			}

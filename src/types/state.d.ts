@@ -6,6 +6,8 @@ export interface State {
 	EngineDefaultLocale?: string,
 	electron?: any,
 	os?: string,
+	osHost?: string,
+	wsLogNamespace?: string,
 	isTest?: boolean,
 	version?: {
 		number?: string,
