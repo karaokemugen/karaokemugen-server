@@ -255,5 +255,8 @@ export default {
 	},
 	titles: {
 		home: 'Accueil'
+	},
+	toast: {
+		ERROR_LOG: 'Identifiants incorrects.'
 	}
 }

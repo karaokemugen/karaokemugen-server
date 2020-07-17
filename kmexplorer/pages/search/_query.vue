@@ -20,7 +20,8 @@
             return {
                 karaokes: {infos: {count:0, from: 0, to: 0}, i18n: {}, content: []},
                 from: 0,
-                loading: false
+                loading: false,
+                sort: menuBarStore.sort || 'az'
             }
         },
 
@@ -31,7 +32,7 @@
                 this.loading = true;
                 const {data} = await this.$axios.get(`/api/karas/search`, {
                     params: {
-                        filter: `${this.$route.params.query}`,
+                        filter: `${typeof this.$route.params.query === 'string' ? this.$route.params.query:''}`,
                         from: (this.from * 20),
                         size: ((this.from+1) * 20)
                     }
@@ -53,7 +54,7 @@
         async asyncData({ params, $axios, error, app }) {
             const { data } = await $axios.get(`/api/karas/search`, {
                 params: {
-                    filter: `${params.query}`,
+                    filter: `${typeof params.query === 'string' ? params.query:''}`,
                     from: 0,
                     size: 20
                 }
@@ -72,6 +73,11 @@
         mounted() {
             window.addEventListener('scroll', this.scrollEvent, {passive: true});
             menuBarStore.setSearch(this.$route.params.query);
+            this.$store.subscribe((mutation, _payload) => {
+                if (mutation.type === 'menubar/setSort') {
+                    this.sort = mutation.payload;
+                }
+            });
         },
 
         watch: {

@@ -357,7 +357,6 @@ export default Vue.extend({
     async submitForm() {
       this.loading = true;
       let response = await this.$axios.put("/api/myaccount", this.user);
-      console.log(response.data.token);
       this.loading = false;
       this.closeModal();
     },

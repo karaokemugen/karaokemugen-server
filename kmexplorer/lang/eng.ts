@@ -232,5 +232,8 @@ export default {
 	},
 	titles: {
 		home: 'Home'
+	},
+	toast: {
+		ERROR_LOG: 'Incorrect credentials.'
 	}
 }

@@ -8,7 +8,7 @@ import { Router } from 'express';
 const loginErr = {
 	code: 'LOG_ERROR',
 	message: 'Incorrect credentials',
-	data: {}
+	data: undefined
 };
 
 async function checkLogin(username: string, password: string): Promise<Token> {

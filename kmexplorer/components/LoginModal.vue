@@ -38,8 +38,8 @@
                     v-model="login.username"
                   />
                 </div>
-                <div class="control">
-                  <div class="input is-static">{{`@${apiHost}`}}</div>
+                <div class="control is-expanded">
+                  <div class="button is-static">{{`@${apiHost}`}}</div>
                 </div>
               </div>
             </div>
@@ -86,8 +86,8 @@
                     v-model="login.username"
                   />
                 </div>
-                <div class="control">
-                  <div class="input is-static">{{`@${apiHost}`}}</div>
+                <div class="control is-expanded">
+                  <div class="button is-static">{{`@${apiHost}`}}</div>
                 </div>
               </div>
             </div>
@@ -213,13 +213,16 @@ export default Vue.extend({
       }
       this.$auth.loginWith("local", { data: this.login }).then(res => {
         this.$emit("login");
-        console.log(res);
         // Fetch user, its favorites
         /*const { data } = await this.$axios.get('/api/favorites');
                     let user = {name: res.username, favorites: data, role: res.role}
                     this.$auth.setUser(user);*/
+        this.$auth.setUser(res);
         this.loading = false;
         this.closeModal();
+      }).catch(err => {
+        console.error(err);
+        this.loading = false;
       });
     },
     closeModal() {
@@ -235,5 +238,8 @@ export default Vue.extend({
 }
 .is-active {
   color: #1dd2af;
+}
+.control.is-expanded .button {
+  width: 100%;
 }
 </style>

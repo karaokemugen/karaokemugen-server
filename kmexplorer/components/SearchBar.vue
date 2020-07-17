@@ -7,11 +7,15 @@
 			<span class="select">
 				<select :aria-label="$t('search.aria.sort')" v-model="sort">
 					<option value="az" selected>{{ $t('search.sort.a_z') }}</option>
-					<option value="karacount">{{ $t('search.sort.kara_count') }}</option>
-					<option value="recent">{{ $t('search.sort.recent') }}</option>
-					<option value="most_played">{{ $t('search.sort.most_played') }}</option>
-					<option value="most_favorites">{{ $t('search.sort.most_favorites') }}</option>
-					<option value="most_requested">{{ $t('search.sort.most_requested') }}</option>
+                    <template v-if="this.$route.name === 'types-id'">
+					    <option value="karacount">{{ $t('search.sort.kara_count') }}</option>
+                    </template>
+                    <template v-else>
+                        <option value="recent">{{ $t('search.sort.recent') }}</option>
+                        <option value="most_played">{{ $t('search.sort.most_played') }}</option>
+                        <option value="most_favorites">{{ $t('search.sort.most_favorites') }}</option>
+                        <option value="most_requested">{{ $t('search.sort.most_requested') }}</option>
+                    </template>
 				</select>
 			</span>
 		</div>

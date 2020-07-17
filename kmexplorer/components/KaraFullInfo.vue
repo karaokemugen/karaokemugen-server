@@ -109,6 +109,10 @@
             }
         },
 
+        created() {
+            if (this.karaoke?.flag_favorites) this.favorite = true;
+        },
+
         methods: {
             async toggleFavorite() {
                 if (this.$auth.loggedIn) {

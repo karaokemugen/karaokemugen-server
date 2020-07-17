@@ -356,7 +356,7 @@
         </p>
       </div>
     </footer>
-    <LoginModal :active="modal.auth" @close="modal.auth=false" @login="loggedIn=$auth.loggedIn" />
+    <LoginModal :active="modal.auth" @close="modal.auth=false" @login="loggedIn=true" />
     <ProfileModal :active="modal.profile" @close="modal.profile=false" @logout="logout" />
   </div>
 </template>
@@ -446,5 +446,10 @@ export default Vue.extend({
 .menu {
   margin-left: 15px;
   position: fixed;
+  overflow-y: auto;
+  height: 100%;
+}
+.menu > *:last-child {
+  margin-bottom: 5em;
 }
 </style>

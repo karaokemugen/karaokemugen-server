@@ -48,7 +48,6 @@ export default function KSController(router: Router) {
 		// Route used by KMExplorer
 		.get(optionalAuth, async (req: any, res) => {
 			try {
-				console.log(req.authToken);
 				const karas = await getAllKaras(req.query.filter, req.query.from, req.query.size, 'search', req.query.q, null, null, req.authToken?.username);
 				res.json(karas);
 			} catch(err) {
