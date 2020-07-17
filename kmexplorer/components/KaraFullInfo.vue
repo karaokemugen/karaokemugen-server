@@ -5,13 +5,13 @@
         </h1>
         <i18n path="kara.phrase" tag="h4" class="subtitle is-4">
             <template v-slot:songtype>
-                <nuxt-link :to="`/tags/${karaoke.songtypes[0].tid}~3`">
-                    {{ karaoke.songtypes[0].i18n[$i18n.locale] || karaoke.songtypes[0].i18n.eng || karaoke.songtypes[0].name }}
+                <nuxt-link :to="`/tags/${songtypeSlug}/${karaoke.songtypes[0].tid}~3`">
+                    {{ songtype }}
                 </nuxt-link>
                 {{ karaoke.songorder }}
             </template>
             <template v-slot:series>
-                <nuxt-link :to="`/tags/${serieSinger.tid}`">
+                <nuxt-link :to="`/tags/${serieSinger.slug}/${serieSinger.tid}`">
                     {{ serieSinger.name }}
                 </nuxt-link>
             </template>
@@ -56,6 +56,8 @@
 
 <script lang="ts">
     import Vue from 'vue';
+    import slug from 'slug';
+
     import { tagTypes } from "~/assets/constants";
     import Tag from '~/components/Tag.vue';
     import { modalStore } from "~/store";
@@ -78,28 +80,46 @@
         },
 
         computed: {
-            serieSinger() {
-                if (this.karaoke.series[0]) {
-                    return {
-                        name: this.karaoke.series[0].i18n[this.$i18n.locale] || this.karaoke.series[0].i18n.eng || this.karaoke.series[0].name,
-                        tid: `${this.karaoke.series[0].tid}~${tagTypes.series.type}`
-                    };
-                } else if (this.karaoke.singers[0]) {
-                    return {
-                        name: this.karaoke.singers[0].i18n[this.$i18n.locale] || this.karaoke.singers[0].i18n.eng || this.karaoke.singers[0].name,
-                        tid: `${this.karaoke.singers[0].tid}~${tagTypes.series.type}`
-                    };
-                } else {
-                    return {
-                        name: '¯\\_(ツ)_/¯',
-                        tid: '6339add6-b9a3-46c4-9488-2660caa30487~1'
-                    };
-                }
-            },
             tagTypesSorted() {
                 let tagTypes = this.tagTypes;
                 delete tagTypes.songtypes; // Don't show songtypes on full view, as it's already shown in the title
                 return tagTypes;
+            },
+            serieSinger() {
+                if (this.karaoke.series[0]) {
+                    return {
+                        name: this.i18n[this.karaoke.series[0].tid]?
+                            this.i18n[this.karaoke.series[0].tid][this.$i18n.locale]
+                            || this.i18n[this.karaoke.series[0].tid]?.eng
+                            || this.karaoke.series[0].name:this.karaoke.series[0].name,
+                        tid: `${this.karaoke.series[0].tid}~${tagTypes.series.type}`,
+                        slug: slug(this.karaoke.series[0].name)
+                    };
+                } else if (this.karaoke.singers[0]) {
+                    return {
+                        name: this.i18n[this.karaoke.singers[0].tid]?
+                            this.i18n[this.karaoke.singers[0].tid][this.$i18n.locale]
+                            || this.i18n[this.karaoke.singers[0].tid]?.eng
+                            || this.karaoke.singers[0].name:this.karaoke.singers[0].name,
+                        tid: `${this.karaoke.singers[0].tid}~${tagTypes.singers.type}`,
+                        slug: slug(this.karaoke.singers[0].name)
+                    };
+                } else { // You never know~
+                    return {
+                        name: '¯\\_(ツ)_/¯',
+                        tid: '6339add6-b9a3-46c4-9488-2660caa30487~1',
+                        slug: 'wtf'
+                    };
+                }
+            },
+            songtype() {
+                return this.i18n[this.karaoke.songtypes[0].tid]?
+                    this.i18n[this.karaoke.songtypes[0].tid][this.$i18n.locale]
+                    || this.i18n[this.karaoke.songtypes[0].tid]?.eng
+                    || this.karaoke.songtypes[0].name:this.karaoke.songtypes[0].name;
+            },
+            songtypeSlug() {
+                return slug(this.karaoke.songtypes[0].name);
             },
             kmAppUrl() {
                 return `km://download/${process.env.API_HOST}/${this.karaoke.kid}`;

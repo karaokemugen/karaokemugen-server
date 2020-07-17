@@ -8,7 +8,7 @@
 
     import KaraList from '~/components/KaraList.vue';
     import { menuBarStore } from "~/store";
-    import { tagRegex, tagTypesMap } from "../../assets/constants";
+    import { tagRegex, tagTypesMap } from "../../../assets/constants";
 
     export default Vue.extend({
         name: "KaraListTag",

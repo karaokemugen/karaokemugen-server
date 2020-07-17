@@ -23,6 +23,7 @@
     "nuxt-buefy": "^0.3.31",
     "nuxt-fontawesome": "^0.4.0",
     "nuxt-i18n": "^6.12.2",
+    "slug": "^3.3.2",
     "vuex-persist": "^2.2.0"
   },
   "devDependencies": {

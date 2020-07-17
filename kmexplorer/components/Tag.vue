@@ -1,5 +1,5 @@
 <template>
-    <nuxt-link :to="nolink ? ``:`/tags/${tag.tid}~${tagTypes[type].type}`" class="tag is-medium"
+    <nuxt-link :to="nolink ? ``:`/tags/${slug}/${tag.tid}~${tagTypes[type].type}`" class="tag is-medium"
                :class="tagTypes[type].class">
         <font-awesome-icon :icon="['fas', tagTypes[type].icon]" :fixed-width="true" v-if="icon" />
         {{ localizedName }}
@@ -9,6 +9,7 @@
 
 <script lang="ts">
     import Vue from 'vue';
+    import slug from 'slug';
     import { tagTypes } from "../assets/constants";
 
     export default Vue.extend({
@@ -41,6 +42,9 @@
                         return this.tag.name;
                     }
                 }
+            },
+            slug() {
+                return slug(this.tag.name);
             }
         }
     });

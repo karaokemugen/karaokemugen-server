@@ -2,18 +2,18 @@
     <div class="box">
         <div class="header">
             <div class="title-block">
-                <nuxt-link :to="`/kara/${karaoke.kid}`" class="title is-3 is-spaced">
+                <nuxt-link :to="`/kara/${slug}/${karaoke.kid}`" class="title is-3 is-spaced">
                     {{ karaoke.title }}
                 </nuxt-link>
                 <i18n path="kara.phrase" tag="h4" class="subtitle is-5">
                     <template v-slot:songtype>
-                        <nuxt-link :to="`/tags/${karaoke.songtypes[0].tid}~3`">
+                        <nuxt-link :to="`/tags/${songtypeSlug}/${karaoke.songtypes[0].tid}~3`">
                             {{ songtype }}
                         </nuxt-link>
                         {{ karaoke.songorder }}
                     </template>
                     <template v-slot:series>
-                        <nuxt-link :to="`/tags/${serieSinger.tid}`">
+                        <nuxt-link :to="`/tags/${serieSinger.slug}/${serieSinger.tid}`">
                             {{ serieSinger.name }}
                         </nuxt-link>
                     </template>
@@ -41,6 +41,7 @@
 
 <script lang="ts">
     import Vue from 'vue';
+    import slug from 'slug';
     import { tagTypes } from "~/assets/constants";
     import Tag from '~/components/Tag.vue';
 
@@ -81,7 +82,8 @@
                             this.i18n[this.karaoke.series[0].tid][this.$i18n.locale]
                             || this.i18n[this.karaoke.series[0].tid]?.eng
                             || this.karaoke.series[0].name:this.karaoke.series[0].name,
-                        tid: `${this.karaoke.series[0].tid}~${tagTypes.series.type}`
+                        tid: `${this.karaoke.series[0].tid}~${tagTypes.series.type}`,
+                        slug: slug(this.karaoke.series[0].name)
                     };
                 } else if (this.karaoke.singers[0]) {
                     return {
@@ -89,12 +91,14 @@
                             this.i18n[this.karaoke.singers[0].tid][this.$i18n.locale]
                             || this.i18n[this.karaoke.singers[0].tid]?.eng
                             || this.karaoke.singers[0].name:this.karaoke.singers[0].name,
-                        tid: `${this.karaoke.singers[0].tid}~${tagTypes.singers.type}`
+                        tid: `${this.karaoke.singers[0].tid}~${tagTypes.singers.type}`,
+                        slug: slug(this.karaoke.singers[0].name)
                     };
                 } else { // You never know~
                     return {
                         name: '¯\\_(ツ)_/¯',
-                        tid: '6339add6-b9a3-46c4-9488-2660caa30487~1'
+                        tid: '6339add6-b9a3-46c4-9488-2660caa30487~1',
+                        slug: 'wtf'
                     };
                 }
             },
@@ -103,6 +107,12 @@
                     this.i18n[this.karaoke.songtypes[0].tid][this.$i18n.locale]
                     || this.i18n[this.karaoke.songtypes[0].tid]?.eng
                     || this.karaoke.songtypes[0].name:this.karaoke.songtypes[0].name;
+            },
+            songtypeSlug() {
+                return slug(this.karaoke.songtypes[0].name);
+            },
+            slug() {
+                return slug(this.karaoke.title);
             }
         }
     });
