@@ -1,9 +1,12 @@
 import passport from 'passport';
 import {encode, decode} from 'jwt-simple';
+import { Router } from 'express';
+
 import {getConfig} from '../lib/utils/config';
 import {findUserByName, checkPassword} from '../services/user';
 import { Token, Role, User } from '../lib/types/user';
-import { Router } from 'express';
+import sentry from '../utils/sentry';
+import logger from '../lib/utils/logger';
 
 const loginErr = {
 	code: 'LOG_ERROR',
@@ -12,7 +15,7 @@ const loginErr = {
 };
 
 async function checkLogin(username: string, password: string): Promise<Token> {
-	const user = await findUserByName(username);
+	const user = await findUserByName(username, {password: true});
 	if (!user) throw false;
 	if (!await checkPassword(user, password)) throw false;
 	const role = getRole(user);
@@ -33,7 +36,11 @@ export default function authController(router: Router) {
 			const token = await checkLogin(req.body.username, req.body.password);
 			res.send(token);
 		} catch(err) {
-			res.status(401).send(loginErr);
+			if (err !== false) {
+				logger.error(`[User] Failed to login ${req.body.username}: ${err}`);
+				res.status(500);
+				sentry.error(err);
+			} else res.status(401).send(loginErr);
 		}
 	});
 

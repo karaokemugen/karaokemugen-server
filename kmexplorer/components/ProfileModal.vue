@@ -274,7 +274,7 @@ languages.registerLocale(require("@cospired/i18n-iso-languages/langs/en.json"));
 languages.registerLocale(require("@cospired/i18n-iso-languages/langs/fr.json"));
 
 export default Vue.extend({
-  name: "ProfileModale",
+  name: "ProfileModal",
 
   props: ["active"],
 
@@ -296,10 +296,6 @@ export default Vue.extend({
       mode: "general",
       loading: false
     };
-  },
-
-  mounted() {
-    this.getUser();
   },
 
   computed: {
@@ -336,32 +332,32 @@ export default Vue.extend({
         languages.alpha3BToAlpha2(this.$i18n.locale)
       );
     },
-    async getUser() {
-      let response = await this.$axios.get("/api/myaccount");
-      response.data.password = "";
-      this.user = response.data;
-      this.main_series_lang_name = languages.getName(
-        this.user.main_series_lang,
-        languages.alpha3BToAlpha2(this.$i18n.locale)
-      );
-      this.fallback_series_lang_name = languages.getName(
-        this.user.fallback_series_lang,
-        languages.alpha3BToAlpha2(this.$i18n.locale)
-      );
+    getUser() {
+      if (this.$auth.loggedIn) this.user = this.$auth.user;
     },
     deleteUser() {
-      this.$axios.delete("/api/myaccount");
+      this.$axios.delete('/api/myaccount');
       this.$emit("logout");
       this.closeModal();
     },
     async submitForm() {
       this.loading = true;
-      let response = await this.$axios.put("/api/myaccount", this.user);
+      let response = await this.$axios.put('/api/myaccount', this.user);
+      // Refresh auth
+      await this.$auth.setUserToken(response.data.data.token);
       this.loading = false;
       this.closeModal();
     },
     closeModal() {
       this.$emit("close");
+    }
+  },
+
+  watch: {
+    active(now, _old) {
+      if (now) {
+        this.getUser();
+      }
     }
   }
 });

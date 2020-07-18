@@ -210,14 +210,14 @@ export default Vue.extend({
         let signup = this.login;
         signup.login = this.login.username;
         await this.$axios.post("/api/users", signup);
+        this.loading = false;
+        this.closeModal();
       }
-      this.$auth.loginWith("local", { data: this.login }).then(res => {
+      this.$auth.loginWith("local", { data: this.login }).then(async _res => {
         this.$emit("login");
-        // Fetch user, its favorites
-        /*const { data } = await this.$axios.get('/api/favorites');
-                    let user = {name: res.username, favorites: data, role: res.role}
-                    this.$auth.setUser(user);*/
-        this.$auth.setUser(res);
+        // Fetch user
+        // const { data } = await this.$axios.get('/api/myaccount');
+        // this.$auth.setUser(data);
         this.loading = false;
         this.closeModal();
       }).catch(err => {

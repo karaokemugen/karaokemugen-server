@@ -33,7 +33,7 @@ export default function userController(router: Router) {
 			req.body.login = unescape(req.body.login.trim());
 			try {
 				await createUser(req.body);
-				res.json('USER_CREATED');
+				res.json({code: 'USER_CREATED'});
 			} catch(err) {
 				res.status(500).json(err.code);
 			}

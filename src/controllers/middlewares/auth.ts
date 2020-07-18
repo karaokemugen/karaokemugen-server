@@ -15,7 +15,8 @@ export const optionalAuth = (req, res, next) => {
 				if (!user) {
 					res.status(403).send('User logged in unknown');
 				} else {
-					if (token.passwordLastModifiedAt !== user.password_last_modified_at.toISOString()) {
+					const tokenDate = new Date(token.passwordLastModifiedAt);
+					if (tokenDate.toJSON() !== user.password_last_modified_at.toJSON()) {
 						res.status(403).send('Token has expired');
 					} else {
 						next();
@@ -34,7 +35,7 @@ export const optionalAuth = (req, res, next) => {
 export const requireValidUser = (req, res, next) => {
 	const token = decode(req.get('authorization'), getConfig().App.JwtSecret);
 	req.authToken = token;
-	findUserByName(token.username)
+	findUserByName(token.username, {password: true})
 		.then((user) => {
 			if (!user) {
 				res.status(403).send('User logged in unknown');

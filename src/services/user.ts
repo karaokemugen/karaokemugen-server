@@ -13,6 +13,7 @@ import { sendMail } from '../utils/mailer';
 import randomstring from 'randomstring';
 import sentry from '../utils/sentry';
 import {getRole, createJwtToken } from '../controllers/auth';
+import {UserOptions} from '../types/user';
 
 const passwordResetRequests = new Map();
 
@@ -119,19 +120,22 @@ export function hashPassword(password: string) {
 	return hash.digest('hex');
 }
 
-export async function findUserByName(username: string, opts: any = {}) {
+export async function findUserByName(username: string, opts: UserOptions = {}) {
 	try {
 		const user = await selectUser('pk_login', username);
 		if (!user) return false;
 		if (opts.public) {
-			delete user.password;
 			delete user.email;
+		}
+		if (opts.public || !opts.password) {
 			delete user.password_last_modified_at;
+			delete user.password;
 		}
 		return user;
 	} catch(err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
+		logger.error('Error when retrieving an user', {obj: err, service: 'User'});
 		throw err;
 	}
 }
@@ -165,7 +169,7 @@ export async function getAllUsers(opts: any = {}) {
 
 /** Hash passwords with bcrypt */
 export function hashPasswordbcrypt(password: string): Promise<string> {
-	return hash(password, getConfig().App.PasswordSalt);
+	return hash(password, 10);
 }
 
 
@@ -250,7 +254,7 @@ export async function changePassword(username: string, password: string) {
 
 export async function editUser(username: string, user: User, avatar: Express.Multer.File, token: Token) {
 	try {
-		const currentUser = await findUserByName(username);
+		const currentUser = await findUserByName(username, {password: true});
 		if (!currentUser) throw 'User unknown';
 		user.login = username;
 		if (!user.type) user.type = currentUser.type;
@@ -281,9 +285,11 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		}
 		await updateUser(user);
 		logger.debug(`[User] ${username} (${user.nickname}) profile updated`);
+		delete currentUser.password;
+		console.log(user);
 		return {
 			user,
-			token: createJwtToken(user.login, getRole(user), user.password_last_modified_at)
+			token: createJwtToken(user.login, getRole(user), new Date(user.password_last_modified_at instanceof Date ? user.password_last_modified_at:currentUser.password_last_modified_at))
 		};
 	} catch (err) {
 		logger.error(`[User] Failed to update ${username}'s profile : ${err}`);

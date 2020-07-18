@@ -31,12 +31,12 @@ export async function insertUser(user: User) {
 	]);
 }
 
-export async function updateUserPassword(username: string, password: string) {
+export async function updateUserPassword(username: string, password: string): Promise<Date> {
 	const res = await db().query(sql.updateUserPassword, [
 		username,
 		password
 	]);
-	return res.rows[0].password_last_modified_at;
+	return new Date(res.rows[0].password_last_modified_at);
 }
 
 
