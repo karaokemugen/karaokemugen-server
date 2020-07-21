@@ -2,7 +2,7 @@
 	<div>
 		<div v-if="checkboxes" class="tags">
 			<label class="checkbox" v-for="tag in data" :key="tag.tid">
-				<input type="checkbox" :value="tag.tid" v-model="values" @change="check"/>
+				<input type="checkbox" :value="tag" v-model="values" @change="check"/>
 				{{localizedName(tag)}}
 			</label>
 		</div>
