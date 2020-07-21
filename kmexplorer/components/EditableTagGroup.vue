@@ -88,10 +88,7 @@
 
 		methods: {
 			async getTags(type: number, filter?: string) {
-				if (!filter) {
-					return {data: []};
-				}
-				return this.$axios.$get(`/api/karas/tags/${type}`, {
+				return await this.$axios.$get(`/api/karas/tags/${type}`, {
 					params: {
 						type: type,
 						filter: filter

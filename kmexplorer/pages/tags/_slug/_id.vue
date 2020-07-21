@@ -16,7 +16,8 @@
 		karaokes: KaraListType,
 		from: number,
 		loading: boolean,
-		tag: Tag
+		tag: Tag,
+		sort: string
 	}
 
 	export default Vue.extend({
@@ -35,7 +36,8 @@
 					name: '',
 					tid: '',
 					types: []
-				}
+				},
+				sort: 'az'
 			}
 		},
 
@@ -91,6 +93,18 @@
 		},
 
 		transition: 'fade',
+
+		created() {
+			menuBarStore.setSort('az');
+			this.$store.subscribe((mutation, _payload) => {
+				if (mutation.type === 'menubar/setSort') {
+					this.sort = mutation.payload;
+					this.karaokes = {infos: {count: -1, from: 0, to: 0}, i18n: {}, content: []};
+					this.from = -1;
+					this.$nextTick(() => {this.loadNextPage();});
+				}
+			});
+		},
 
 		mounted() {
 			const tagInfo = tagRegex.exec(this.$route.params.id);

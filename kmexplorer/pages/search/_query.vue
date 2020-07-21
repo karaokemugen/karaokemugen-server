@@ -86,6 +86,7 @@
 		mounted() {
 			window.addEventListener('scroll', this.scrollEvent, {passive: true});
 			menuBarStore.setSearch(this.$route.params.query);
+			menuBarStore.setSort('az');
 			this.$store.subscribe((mutation, _payload) => {
 				if (mutation.type === 'menubar/setSort') {
 					this.sort = mutation.payload;
