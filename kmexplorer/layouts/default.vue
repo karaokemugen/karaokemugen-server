@@ -1,0 +1,475 @@
+<template>
+	<div>
+		<nav class="navbar is-primary is-fixed-top">
+			<div class="navbar-brand">
+				<nuxt-link class="navbar-item" to="/">
+					<img :src="require('../assets/nanami.png')" alt="Logo"/>
+					{{ explorerHost }}
+				</nuxt-link>
+				<div class="navbar-item has-dropdown is-hidden-desktop">
+					<a class="navbar-link" @click="openMenu('database')">
+						<font-awesome-icon :icon="['fas', 'database']" :fixed-width="true"/>
+					</a>
+				</div>
+				<div class="navbar-item has-dropdown is-hidden-desktop">
+					<a class="navbar-link" @click="openMenu('community')">
+						<font-awesome-icon :icon="['fas', 'cloud-upload-alt']" :fixed-width="true"/>
+					</a>
+				</div>
+				<div class="navbar-item has-dropdown is-hidden-desktop">
+					<a class="navbar-link" @click="openMenu('account')">
+						<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true"/>
+					</a>
+				</div>
+			</div>
+
+			<div class="navbar-menu">
+				<div class="navbar-item" v-if="tag">
+					<tag :type="tag.type" :tag="tag.tag" :icon="true" :nolink="true"/>
+				</div>
+				<div class="navbar-item is-expanded">
+					<search-bar/>
+				</div>
+			</div>
+
+			<div class="navbar-dropdown" v-if="communityMenu">
+				<nuxt-link class="navbar-item" to="/import" v-if="import_enabled === 'true'">
+					<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true"/>
+					{{$t('menu.kara_import')}}
+				</nuxt-link>
+			</div>
+
+			<div class="navbar-dropdown" v-if="accountMenu">
+				<a
+					class="navbar-item"
+					@click.prevent="modal.profile = true"
+					aria-label="Profile"
+					v-if="loggedIn"
+				>
+					<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true"/>
+					{{$t('menu.profile')}}
+				</a>
+				<a class="navbar-item" @click.prevent="logout" aria-label="Logout" v-if="loggedIn">
+					<font-awesome-icon :icon="['fas', 'sign-out-alt']" :fixed-width="true"/>
+					{{$t('menu.logout')}}
+				</a>
+				<a class="navbar-item" @click.prevent="modal.auth = true" aria-label="Login" v-else>
+					<font-awesome-icon :icon="['fas', 'sign-in-alt']" :fixed-width="true"/>
+					{{$t('menu.connection')}}
+				</a>
+			</div>
+
+			<div class="navbar-dropdown" v-if="databaseMenu">
+				<div class="navbar-item" v-if="tag">
+					<tag :type="tag.type" :tag="tag.tag" :icon="true" :nolink="true"/>
+				</div>
+				<div class="navbar-item is-expanded">
+					<search-bar/>
+				</div>
+				<div class="is-hidden-desktop">
+					<nuxt-link class="navbar-item" to="/search">
+						<font-awesome-icon :icon="['fas', 'music']" :fixed-width="true"/>
+						{{$t('menu.karas')}}
+					</nuxt-link>
+					<nuxt-link class="navbar-item" to="/types/songtypes">
+						<font-awesome-icon :icon="['fas', 'list']" :fixed-width="true"/>
+						{{$t('menu.songtypes')}}
+					</nuxt-link>
+					<div class="navbar-item">
+						<a :class="tagsMenu && 'is-active'" @click="tagsMenu = !tagsMenu">
+							<font-awesome-icon :icon="['fas', 'tags']" :fixed-width="true"/>
+							{{$t('menu.tags')}}
+						</a>
+
+						<div class="navbar-dropdown" v-if="tagsMenu">
+							<nuxt-link class="navbar-item" to="/types/misc">
+								<font-awesome-icon :icon="['fas', 'tags']" :fixed-width="true"/>
+								{{$t('menu.miscs')}}
+							</nuxt-link>
+
+							<nuxt-link class="navbar-item" to="/types/groups">
+								<font-awesome-icon :icon="['fas', 'boxes']" :fixed-width="true"/>
+								{{$t('menu.groups')}}
+							</nuxt-link>
+
+							<nuxt-link class="navbar-item" to="/types/families">
+								<font-awesome-icon :icon="['fas', 'photo-video']" :fixed-width="true"/>
+								{{$t('menu.families')}}
+							</nuxt-link>
+
+							<nuxt-link class="navbar-item" to="/types/origins">
+								<font-awesome-icon :icon="['fas', 'project-diagram']" :fixed-width="true"/>
+								{{$t('menu.origins')}}
+							</nuxt-link>
+
+							<nuxt-link class="navbar-item" to="/types/genres">
+								<font-awesome-icon :icon="['fas', 'chess']" :fixed-width="true"/>
+								{{$t('menu.genres')}}
+							</nuxt-link>
+
+							<nuxt-link class="navbar-item" to="/types/platforms">
+								<font-awesome-icon :icon="['fas', 'laptop']" :fixed-width="true"/>
+								{{$t('menu.platforms')}}
+							</nuxt-link>
+						</div>
+					</div>
+					<nuxt-link class="navbar-item" to="/types/singers">
+						<font-awesome-icon :icon="['fas', 'microphone-alt']" :fixed-width="true"/>
+						{{$t('menu.singers')}}
+					</nuxt-link>
+					<nuxt-link class="navbar-item" to="/types/series">
+						<font-awesome-icon :icon="['fas', 'tv']" :fixed-width="true"/>
+						{{$t('menu.series')}}
+					</nuxt-link>
+					<nuxt-link class="navbar-item" to="/types/songwriters">
+						<font-awesome-icon :icon="['fas', 'signature']" :fixed-width="true"/>
+						{{$t('menu.songwriters')}}
+					</nuxt-link>
+					<nuxt-link class="navbar-item" to="/types/creators">
+						<font-awesome-icon :icon="['fas', 'chalkboard-teacher']" :fixed-width="true"/>
+						{{$t('menu.creators')}}
+					</nuxt-link>
+					<nuxt-link class="navbar-item" to="/types/authors">
+						<font-awesome-icon :icon="['fas', 'user-secret']" :fixed-width="true"/>
+						{{$t('menu.authors')}}
+					</nuxt-link>
+					<nuxt-link class="navbar-item" to="/types/langs">
+						<font-awesome-icon :icon="['fas', 'language']" :fixed-width="true"/>
+						{{$t('menu.languages')}}
+					</nuxt-link>
+					<nuxt-link class="navbar-item" to="/types/years">
+						<font-awesome-icon :icon="['fas', 'calendar-alt']" :fixed-width="true"/>
+						{{$t('menu.years')}}
+					</nuxt-link>
+				</div>
+			</div>
+		</nav>
+
+		<div class="columns">
+			<aside class="menu is-hidden-touch">
+				<p class="menu-label">{{$t('menu.database')}}</p>
+				<ul class="menu-list">
+					<li>
+						<nuxt-link to="/search" active-class="is-active">
+							<font-awesome-icon :icon="['fas', 'music']" :fixed-width="true"/>
+							{{$t('menu.karas')}}
+						</nuxt-link>
+					</li>
+					<li>
+						<nuxt-link
+							to="/types/songtypes"
+							active-class="is-active"
+							:class="{'is-active': tagType === '~3'}"
+						>
+							<font-awesome-icon :icon="['fas', 'list']" :fixed-width="true"/>
+							{{$t('menu.songtypes')}}
+						</nuxt-link>
+					</li>
+					<li>
+						<nuxt-link
+							to="/types/series"
+							active-class="is-active"
+							:class="{'is-active': tagType === '~1'}"
+						>
+							<font-awesome-icon :icon="['fas', 'tv']" :fixed-width="true"/>
+							{{$t('menu.series')}}
+						</nuxt-link>
+					</li>
+					<li>
+						<a :class="tagsMenu && 'is-active'" @click="tagsMenu = !tagsMenu">
+							<font-awesome-icon :icon="['fas', 'tags']" :fixed-width="true"/>
+							{{$t('menu.tags')}}
+						</a>
+						<ul class="menu-list" v-if="tagsMenu">
+							<li>
+								<nuxt-link
+									to="/types/misc"
+									active-class="is-active"
+									:class="{'is-active': tagType === '~7'}"
+								>
+									<font-awesome-icon :icon="['fas', 'tags']" :fixed-width="true"/>
+									{{$t('menu.miscs')}}
+								</nuxt-link>
+							</li>
+							<li>
+								<nuxt-link
+									to="/types/groups"
+									active-class="is-active"
+									:class="{'is-active': tagType === '~9'}"
+								>
+									<font-awesome-icon :icon="['fas', 'boxes']" :fixed-width="true"/>
+									{{$t('menu.groups')}}
+								</nuxt-link>
+							</li>
+							<li>
+								<nuxt-link
+									to="/types/families"
+									active-class="is-active"
+									:class="{'is-active': tagType === '~10'}"
+								>
+									<font-awesome-icon :icon="['fas', 'photo-video']" :fixed-width="true"/>
+									{{$t('menu.families')}}
+								</nuxt-link>
+							</li>
+							<li>
+								<nuxt-link
+									to="/types/origins"
+									active-class="is-active"
+									:class="{'is-active': tagType === '~11'}"
+								>
+									<font-awesome-icon :icon="['fas', 'project-diagram']" :fixed-width="true"/>
+									{{$t('menu.origins')}}
+								</nuxt-link>
+							</li>
+							<li>
+								<nuxt-link
+									to="/types/genres"
+									active-class="is-active"
+									:class="{'is-active': tagType === '~12'}"
+								>
+									<font-awesome-icon :icon="['fas', 'chess']" :fixed-width="true"/>
+									{{$t('menu.genres')}}
+								</nuxt-link>
+							</li>
+							<li>
+								<nuxt-link
+									to="/types/platforms"
+									active-class="is-active"
+									:class="{'is-active': tagType === '~13'}"
+								>
+									<font-awesome-icon :icon="['fas', 'laptop']" :fixed-width="true"/>
+									{{$t('menu.platforms')}}
+								</nuxt-link>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<nuxt-link
+							to="/types/singers"
+							active-class="is-active"
+							:class="{'is-active': tagType === '~2'}"
+						>
+							<font-awesome-icon :icon="['fas', 'microphone-alt']" :fixed-width="true"/>
+							{{$t('menu.singers')}}
+						</nuxt-link>
+					</li>
+					<li>
+						<nuxt-link
+							to="/types/songwriters"
+							active-class="is-active"
+							:class="{'is-active': tagType === '~8'}"
+						>
+							<font-awesome-icon :icon="['fas', 'signature']" :fixed-width="true"/>
+							{{$t('menu.songwriters')}}
+						</nuxt-link>
+					</li>
+					<li>
+						<nuxt-link
+							to="/types/creators"
+							active-class="is-active"
+							:class="{'is-active': tagType === '~4'}"
+						>
+							<font-awesome-icon :icon="['fas', 'chalkboard-teacher']" :fixed-width="true"/>
+							{{$t('menu.creators')}}
+						</nuxt-link>
+					</li>
+					<li>
+						<nuxt-link
+							to="/types/authors"
+							active-class="is-active"
+							:class="{'is-active': tagType === '~6'}"
+						>
+							<font-awesome-icon :icon="['fas', 'user-secret']" :fixed-width="true"/>
+							{{$t('menu.authors')}}
+						</nuxt-link>
+					</li>
+					<li>
+						<nuxt-link
+							to="/types/langs"
+							active-class="is-active"
+							:class="{'is-active': tagType === '~5'}"
+						>
+							<font-awesome-icon :icon="['fas', 'language']" :fixed-width="true"/>
+							{{$t('menu.languages')}}
+						</nuxt-link>
+					</li>
+					<li>
+						<nuxt-link
+							to="/types/years"
+							active-class="is-active"
+							:class="{'is-active': $route.params.year}"
+						>
+							<font-awesome-icon :icon="['fas', 'calendar-alt']" :fixed-width="true"/>
+							{{$t('menu.years')}}
+						</nuxt-link>
+					</li>
+				</ul>
+				<p class="menu-label">{{$t('menu.community')}}</p>
+				<ul class="menu-list">
+					<li>
+						<nuxt-link to="/import" active-class="is-active">
+							<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true"/>
+							{{$t('menu.kara_import')}}
+						</nuxt-link>
+					</li>
+				</ul>
+				<p class="menu-label">{{$t('menu.account')}}</p>
+				<ul class="menu-list">
+					<li>
+						<a @click.prevent="modal.profile = true" aria-label="Profile" v-if="loggedIn">
+							<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true"/>
+							{{$t('menu.profile')}}
+						</a>
+						<a @click.prevent="logout" aria-label="Logout" v-if="loggedIn">
+							<font-awesome-icon :icon="['fas', 'sign-out-alt']" :fixed-width="true"/>
+							{{$t('menu.logout')}}
+						</a>
+						<a @click.prevent="modal.auth = true" aria-label="Login" v-else>
+							<font-awesome-icon :icon="['fas', 'sign-in-alt']" :fixed-width="true"/>
+							{{$t('menu.connection')}}
+						</a>
+					</li>
+				</ul>
+			</aside>
+			<section class="container column is-fluid">
+				<nuxt/>
+			</section>
+		</div>
+		<footer class="footer">
+			<div class="columns has-text-centered">
+				<p class="column">
+					Karaoke Mugen Server -
+					<a
+						href="https://lab.shelter.moe/karaokemugen/karaokemugen-server"
+					>GIT</a> -
+					<a href="http://karaokes.moe">{{$t('footer.home')}}</a>
+				</p>
+				<p class="column">
+					{{$t('footer.software_under_license')}}
+					<a
+						href="https://lab.shelter.moe/karaokemugen/karaokemugen-server/blob/master/LICENSE.md"
+					>MIT</a>
+					<template v-if="base_license_name">
+						/ {{$t('footer.base_under_licence')}}
+						<a :href="base_license_link">{{base_license_name}}</a>
+					</template>
+				</p>
+			</div>
+		</footer>
+		<LoginModal :active="modal.auth" @close="modal.auth=false" @login="loggedIn=true"/>
+		<ProfileModal :active="modal.profile" @close="modal.profile=false" @logout="logout"/>
+	</div>
+</template>
+
+<script lang="ts">
+	import Vue from "vue";
+	import Tag from "~/components/Tag.vue";
+	import SearchBar from "~/components/SearchBar.vue";
+	import LoginModal from "~/components/LoginModal.vue";
+	import ProfileModal from "~/components/ProfileModal.vue";
+	import {ModalType} from "~/store/modal";
+	import {TagExtend} from "~/store/menubar";
+
+	interface VState {
+		tag?: TagExtend,
+		import_enabled?: string,
+		base_license_name?: string,
+		base_license_link?: string,
+		explorerHost?: string,
+		loggedIn: boolean,
+		tagsMenu: boolean,
+		databaseMenu: boolean,
+		communityMenu: boolean,
+		accountMenu: boolean,
+		modal: {
+			auth: boolean,
+			profile: boolean
+		}
+	}
+
+	export default Vue.extend({
+		head: {
+			htmlAttrs: {
+				class: ["has-navbar-fixed-top"]
+			}
+		},
+
+		components: {
+			Tag,
+			SearchBar,
+			LoginModal,
+			ProfileModal
+		},
+
+		data(): VState {
+			return {
+				tag: undefined,
+				import_enabled: process.env.KM_IMPORT,
+				base_license_name: process.env.BASE_LICENSE_NAME,
+				base_license_link: process.env.BASE_LICENSE_LINK,
+				explorerHost: process.env.EXPLORER_HOST,
+				loggedIn: this.$auth.loggedIn,
+				tagsMenu: false,
+				databaseMenu: false,
+				communityMenu: false,
+				accountMenu: false,
+				modal: {
+					auth: false,
+					profile: false
+				}
+			};
+		},
+
+		created() {
+			this.$store.subscribe((mutation, _state) => {
+				if (mutation.type === "menubar/setTag") {
+					this.tag = mutation.payload;
+				} else if (mutation.type === "modal/openModal") {
+					this.modal[mutation.payload as ModalType] = true;
+				} else if (mutation.type === "modal/closeModal") {
+					this.modal[mutation.payload as ModalType] = false;
+				}
+			});
+		},
+
+		methods: {
+			logout() {
+				this.$auth.logout();
+				this.loggedIn = false;
+			},
+			openMenu(menu: string) {
+				if (menu === "database") {
+					this.databaseMenu = !this.databaseMenu;
+					this.communityMenu = false;
+					this.accountMenu = false;
+				} else if (menu === "community") {
+					this.databaseMenu = false;
+					this.communityMenu = !this.communityMenu;
+					this.accountMenu = false;
+				} else if (menu === "account") {
+					this.databaseMenu = false;
+					this.communityMenu = false;
+					this.accountMenu = !this.accountMenu;
+				}
+			}
+		},
+
+		computed: {
+			tagType() {
+				return this.$route.params?.id?.substring(36);
+			}
+		}
+	});
+</script>
+<style scoped lang="scss">
+	.menu {
+		margin-left: 15px;
+		position: fixed;
+		overflow-y: auto;
+		height: 100%;
+	}
+
+	.menu > *:last-child {
+		margin-bottom: 5em;
+	}
+</style>
