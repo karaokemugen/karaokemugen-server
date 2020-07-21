@@ -95,19 +95,13 @@
 			serieSinger(): serieSinger {
 				if (this.karaoke.series[0]) {
 					return {
-						name: this.i18n[this.karaoke.series[0].tid] ?
-							this.i18n[this.karaoke.series[0].tid][this.$i18n.locale]
-							|| this.i18n[this.karaoke.series[0].tid]?.eng
-							|| this.karaoke.series[0].name : this.karaoke.series[0].name,
+						name: this.karaoke.series[0].i18n[this.$i18n.locale] || this.karaoke.series[0].i18n.eng || this.karaoke.series[0].name,
 						tid: `${this.karaoke.series[0].tid}~${tagTypes.series.type}`,
 						slug: slug(this.karaoke.series[0].name)
 					};
 				} else if (this.karaoke.singers[0]) {
 					return {
-						name: this.i18n[this.karaoke.singers[0].tid] ?
-							this.i18n[this.karaoke.singers[0].tid][this.$i18n.locale]
-							|| this.i18n[this.karaoke.singers[0].tid]?.eng
-							|| this.karaoke.singers[0].name : this.karaoke.singers[0].name,
+						name: this.karaoke.singers[0].i18n[this.$i18n.locale] || this.karaoke.singers[0].i18n.eng || this.karaoke.singers[0].name,
 						tid: `${this.karaoke.singers[0].tid}~${tagTypes.singers.type}`,
 						slug: slug(this.karaoke.singers[0].name)
 					};
@@ -120,10 +114,7 @@
 				}
 			},
 			songtype(): string {
-				return this.i18n[this.karaoke.songtypes[0].tid] ?
-					this.i18n[this.karaoke.songtypes[0].tid][this.$i18n.locale]
-					|| this.i18n[this.karaoke.songtypes[0].tid]?.eng
-					|| this.karaoke.songtypes[0].name : this.karaoke.songtypes[0].name;
+				return this.karaoke.songtypes[0].i18n[this.$i18n.locale] || this.karaoke.songtypes[0].i18n.eng || this.karaoke.songtypes[0].name;
 			},
 			songtypeSlug(): string {
 				return slug(this.karaoke.songtypes[0].name);

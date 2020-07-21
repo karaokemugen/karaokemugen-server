@@ -11,7 +11,8 @@
 		"start": "ts-node src/index.ts --",
 		"qstart": "yarn prestart && node dist/index.js --",
 		"generate": "ts-node src/index.ts -- --generate",
-		"build": "npx rimraf \"dist\" && tsc --build"
+		"build": "npx rimraf \"dist\" && tsc --build",
+		"buildKMExplorer": "ts-node src/index.ts -- --build"
 	},
 	"devDependencies": {
 		"@nuxt/types": "^2.13.3",

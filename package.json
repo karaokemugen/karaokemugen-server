@@ -15,10 +15,15 @@
       ]
    },
    "scripts": {
-      "migrate": "db-migrate sync [all] --config app/database.json",
-      "migrateDown": "db-migrate down --config app/database.json --migrations-dir kmserver-core/migrations",
-      "migrateUp": "db-migrate up --config app/database.json --migrations-dir kmserver-core/migrations",
-      "buildAll": "yarn build && yarn buildKmexplorer",
+      "migrate": "db-migrate sync [all] --config app/database.json --migrations-dir kmserver-core/migrations",
+      "migrate:down": "db-migrate down --config app/database.json --migrations-dir kmserver-core/migrations",
+      "migrate:up": "db-migrate up --config app/database.json --migrations-dir kmserver-core/migrations",
+	  "build:core": "yarn workspace kmserver-core build",
+	  "build:kmexplorer": "yarn workspace kmserver-core buildKMExplorer",
+      "build:all": "yarn workspace kmserver-core build && yarn workspace kmserver-core buildKMExplorer",
+	  "start": "yarn workspace kmserver-core start",
+	  "start:quick": "yarn workspace kmserver-core qstart",
+	  "generate": "yarn workspace kmserver-core generate",
       "pull": "git pull && git submodule sync --recursive && git submodule update --init --recursive"
    },
    "bugs": {
@@ -26,6 +31,6 @@
       "email": "axel@teri-chan.net"
    },
    "engines": {
-      "node": ">=10.11.0"
+      "node": ">=12"
    }
 }

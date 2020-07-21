@@ -38,7 +38,7 @@
 
 	interface VState {
 		karaoke: DBKara,
-		liveURL: string,
+		liveURL?: string,
 		liveOpened: boolean
 	}
 
@@ -77,6 +77,7 @@
 
 		head() {
 			return {
+				// @ts-ignore: no?
 				title: this.karaoke.title
 			}
 		}

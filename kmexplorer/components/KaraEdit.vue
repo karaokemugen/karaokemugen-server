@@ -309,8 +309,8 @@
 				subfile: this.karaparam?.subfile,
 				mediafile_error: "",
 				subfile_error: "",
-				supportedLyrics: process.env.SUPPORTED_LYRICS,
-				supportedMedias: process.env.SUPPORTED_MEDIAS
+				supportedLyrics: process.env.SUPPORTED_LYRICS as unknown as string[],
+				supportedMedias: process.env.SUPPORTED_MEDIAS as unknown as string[]
 			};
 		},
 
@@ -318,65 +318,73 @@
 
 		methods: {
 			async handleMediafileUpload() {
-				let file = this.$refs.mediafile.files[0];
-				this.mediafile_error = "";
-				if (!this.isMediaFile(file.name)) {
-					this.mediafile_error = this.$t(
-						"kara.import.add_file_media_error",
-						{
-							name: file.name
-						}
-					);
-				} else {
-					this.mediafile = file.name;
-					let formData = new FormData();
-					formData.append("file", file);
-					let result = await this.$axios.$post(
-						`/api/karas/importfile`,
-						formData,
-						{
-							headers: {
-								"Content-Type": "multipart/form-data"
+				if ((this.$refs.mediafile as HTMLInputElement).files === null) throw new Error('handleMediafileUpload was called without files in input');
+				else {
+					// @ts-ignore: sisi y'a eu un typecheck en haut, ta gueule mtn :)
+					let file = (this.$refs.mediafile as HTMLInputElement).files[0];
+					this.mediafile_error = "";
+					if (!this.isMediaFile(file.name)) {
+						this.mediafile_error = this.$t(
+							"kara.import.add_file_media_error",
+							{
+								name: file.name
 							}
-						}
-					);
-					this.karaoke.mediafile = result.filename;
-					this.karaoke.mediafile_orig = result.originalname;
+						) as string;
+					} else {
+						this.mediafile = file.name;
+						let formData = new FormData();
+						formData.append("file", file);
+						let result = await this.$axios.$post(
+							`/api/karas/importfile`,
+							formData,
+							{
+								headers: {
+									"Content-Type": "multipart/form-data"
+								}
+							}
+						);
+						this.karaoke.mediafile = result.filename;
+						this.karaoke.mediafile_orig = result.originalname;
+					}
 				}
 			},
 			async handleSubfileUpload() {
-				let file = this.$refs.subfile.files[0];
-				this.mediafile_error = "";
-				if (!this.isSubFile(file.name)) {
-					this.subfile_error = this.$t(
-						"kara.import.add_file_lyrics_error",
-						{
-							name: file.name
-						}
-					);
-				} else {
-					this.subfile = file.name;
-					let formData = new FormData();
-					formData.append("file", file);
-					let result = this.$axios.$post(
-						`/api/karas/importfile`,
-						formData,
-						{
-							headers: {
-								"Content-Type": "multipart/form-data"
+				if ((this.$refs.subfile as HTMLInputElement).files === null) throw new Error('handleSubfileUpload was called without a file in the input');
+				else {
+					// @ts-ignore: sisi y'a eu un typecheck en haut, ta gueule mtn :)
+					let file = (this.$refs.subfile as HTMLInputElement).files[0];
+					this.mediafile_error = "";
+					if (!this.isSubFile(file.name)) {
+						this.subfile_error = this.$t(
+							"kara.import.add_file_lyrics_error",
+							{
+								name: file.name
 							}
-						}
-					);
-					this.karaoke.subfile = result.filename;
-					this.karaoke.subfile_orig = result.originalname;
+						) as string;
+					} else {
+						this.subfile = file.name;
+						let formData = new FormData();
+						formData.append("file", file);
+						let result = await this.$axios.$post(
+							`/api/karas/importfile`,
+							formData,
+							{
+								headers: {
+									"Content-Type": "multipart/form-data"
+								}
+							}
+						);
+						this.karaoke.subfile = result.filename;
+						this.karaoke.subfile_orig = result.originalname;
+					}
 				}
 			},
-			isMediaFile(filename) {
+			isMediaFile(filename: string) {
 				return new RegExp(
 					`^.+\\.(${this.supportedMedias.join("|")})$`
 				).test(filename);
 			},
-			isSubFile(filename) {
+			isSubFile(filename: string) {
 				return new RegExp(
 					`^.+\\.(${this.supportedLyrics.join("|")})$`
 				).test(filename);
@@ -394,10 +402,10 @@
 		},
 
 		computed: {
-			submitDisabled() {
+			submitDisabled(): boolean {
 				return (
-					this.mediafile_error ||
-					this.subfile_error ||
+					this.mediafile_error.length > 0 ||
+					this.subfile_error.length > 0 ||
 					!this.karaoke.title ||
 					(this.karaoke.series.length === 0 &&
 						this.karaoke.singers.length === 0) ||

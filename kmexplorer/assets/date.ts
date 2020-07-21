@@ -1,8 +1,8 @@
 //FormatDateString From Duration in Seconds
-export default function duration(duration) {
+export default function duration(duration: any) {
 	duration = parseInt(duration)
 	if (typeof duration !== 'number') {
-		throw `The parameter ${duration} is supposed to be a number !`;
+		throw `The parameter ${duration} is supposed to be a number!`;
 	}
 
 	if (Math.floor(duration) !== duration || duration <= 0) {
