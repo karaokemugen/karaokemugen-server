@@ -8,7 +8,16 @@
 
     import KaraList from '~/components/KaraList.vue';
     import { menuBarStore } from "~/store";
-    import { tagRegex, tagTypesMap } from "../../../assets/constants";
+    import { tagRegex, tagTypesMap } from "~/assets/constants";
+	import {KaraList as KaraListType} from "%/lib/types/kara";
+	import { Tag } from '%/lib/types/tag';
+
+    interface VState {
+		karaokes: KaraListType,
+		from: number,
+		loading: boolean,
+		tag: Tag
+	}
 
     export default Vue.extend({
         name: "KaraListTag",
@@ -17,19 +26,21 @@
             KaraList
         },
 
-        data() {
+        data(): VState {
             return {
                 karaokes: {infos: {count:0, from: 0, to: 0}, i18n: {}, content: []},
                 from: 0,
                 loading: false,
                 tag: {
-                    name: ''
+                    name: '',
+					tid: '',
+					types: []
                 }
             }
 		},
 		
 		validate({ params }) {
-			return params.id && tagRegex.exec(params.id);
+			return tagRegex.test(params?.id);
 		},
 
         methods: {
@@ -59,32 +70,40 @@
         },
 
         async asyncData({ params, $axios, error, app }) {
-            const { data } = await $axios.get(`/api/tags/${tagRegex.exec(params.id)[1]}`).catch(
-                _err => error({ statusCode: 404, message: app.i18n.t('tag.notfound') }));
+			const tagInfo = tagRegex.exec(params.id);
+			if (!tagInfo) throw new Error('Stealth check failed: Tag regex not matched');
+            const res = await $axios.get(`/api/tags/${tagInfo[1]}`).catch(
+                _err => error({ statusCode: 404, message: app.i18n.t('tag.notfound') as string }));
 
-            const { data: data2 } = await $axios.get(`/api/karas/search`, {
+            const res2 = await $axios.get(`/api/karas/search`, {
                 params: {
                     q: `t:${params.id}`,
                     from: 0,
                     size: 20
                 }
             }).catch(
-                _err => error({ statusCode: 404, message: app.i18n.t('error.generic') }));
-            return { karaokes: data2, tag: data };
+                _err => error({ statusCode: 404, message: app.i18n.t('error.generic') as string }));
+            if (res && res2) {
+				return { karaokes: res.data, tag: res2.data };
+			} else {
+            	error({ statusCode: 500, message: 'Huh?' });
+			}
         },
 
         transition: 'fade',
 
         mounted() {
+			const tagInfo = tagRegex.exec(this.$route.params.id);
+			if (!tagInfo) throw new Error('Stealth check failed: Tag regex not matched');
             menuBarStore.setTag({
-                type: tagTypesMap[tagRegex.exec(this.$route.params.id)[2]].name,
+                type: tagTypesMap[tagInfo[2] as unknown as number].name,
                 tag: this.tag
             });
             window.addEventListener('scroll', this.scrollEvent, {passive: true});
         },
 
         destroyed() {
-            menuBarStore.setTag(undefined);
+            menuBarStore.setTag(null);
             window.removeEventListener('scroll', this.scrollEvent);
         },
 

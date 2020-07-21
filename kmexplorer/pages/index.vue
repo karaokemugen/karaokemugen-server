@@ -1,7 +1,7 @@
 <template>
 	<div class="km-home">
 		<a href="http://karaokes.moe/">
-			<img class="km-home--logo" :src="require('../assets/km-logo.png')" />
+			<img class="km-home--logo" :src="require('~/assets/km-logo.png')" />
 		</a>
 		<h1 class="title">{{ explorerHost }}</h1>
 		<h2 class="subtitle">Explore! Find! Sing!</h2>
@@ -67,10 +67,9 @@
 <script lang="ts">
 import Vue from "vue";
 import prettyBytes from 'pretty-bytes';
-import duration from '../assets/date';
+import duration from '~/assets/date';
 
 export default Vue.extend({
-
 	data() {
 		return {
 			explorerHost: process.env.EXPLORER_HOST,
@@ -87,7 +86,7 @@ export default Vue.extend({
 			}
 		};
 	},
-	async asyncData({ params, $axios, error, app }) {
+	async asyncData({ $axios, app }) {
 		let result = await $axios.get("/api/karas/stats");
 		let count = result.data;
 		if (count.mediasize) count.mediasize = prettyBytes(Number(count.mediasize));
@@ -105,7 +104,7 @@ export default Vue.extend({
 	},
 	head() {
 		return {
-			title: this.$t('titles.home')
+			title: this.$t('titles.home') as string
 		}
 	}
 });

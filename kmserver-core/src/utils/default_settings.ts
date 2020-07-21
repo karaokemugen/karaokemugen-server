@@ -1,4 +1,5 @@
 import { Config } from '../types/config';
+import { NuxtConfig as NuxtConfigType } from '@nuxt/types';
 
 // Karaoke Mugen default configuration file
 
@@ -267,18 +268,18 @@ export const configConstraints = {
 	'Frontend.Port': { numericality: true}
 };
 
-export let NuxtConfig = {
+export let NuxtConfig: NuxtConfigType = {
 	mode: 'universal',
 	dev: false,
 
 	env: {
-		LIVE_URL: false,
-		KM_IMPORT: false,
+		LIVE_URL: 'false',
+		KM_IMPORT: 'false',
 		IN_PROGRESS_SONGS_LIST: '',
 		BASE_LICENSE_NAME: '',
 		BASE_LICENSE_LINK: '',
-		SUPPORTED_LYRICS: ['ass'],
-		SUPPORTED_MEDIAS: ['mp4'],
+		SUPPORTED_LYRICS: 'ass',
+		SUPPORTED_MEDIAS: 'mp4',
 		API_HOST: '',
 		EXPLORER_HOST: ''
 	},
@@ -338,7 +339,7 @@ export let NuxtConfig = {
 	},
 
 	css: [
-		{src: '~/assets/main.scss', lang: 'scss'},
+		'~/assets/main.scss',
 		'@fortawesome/fontawesome-svg-core/styles.css'
 	],
 
@@ -367,7 +368,7 @@ export let NuxtConfig = {
 	},
 
 	modulesDir: ['../node_modules/'],
-	rootDir: 'kmexplorer/',
+	rootDir: '../kmexplorer/',
 	// No.
 	telemetry: false
 };

@@ -20,8 +20,8 @@ import dotenv from 'dotenv';
 import sentry from './utils/sentry';
 import {buildKMExplorer} from './services/kmexplorer';
 
-const pjson = require('../package.json');
-const appPath = join(__dirname,'../');
+const pjson = require('../../package.json');
+const appPath = join(__dirname,'../../');
 const dataPath = resolve(appPath, 'app/');
 const resourcePath = appPath;
 
@@ -50,7 +50,7 @@ process.once('SIGINT', () => {
 
 export function exit(rc: number) {
 	process.exit(rc || 0);
-};
+}
 
 main().catch(err => {
 	logger.error(`[Launcher] Error during launch : ${JSON.stringify(err)}`);

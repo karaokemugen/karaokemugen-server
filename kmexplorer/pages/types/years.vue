@@ -6,43 +6,36 @@
 				{{ tag.year }} <label>&nbsp;({{ tag.karacount }})</label>
 			</nuxt-link>
 		</div>
-		<loading-nanami class="tile is-parent is-12" v-if="loading"></loading-nanami>
 	</div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import LoadingNanami from "../../components/LoadingNanami";
+import {DBYear} from "%/lib/types/database/kara";
+
+interface VState {
+	years: DBYear[]
+}
 
 export default Vue.extend({
 	name: "ListTag",
-	components: {
-		LoadingNanami
-	},
 
-	data() {
+	data(): VState {
 		return {
 			years: [],
-			loading: false
 		};
 	},
 
-	methods: {
-	},
-
-	async asyncData({ params, $axios, error, app }) {
-		const { data } = await $axios
+	async asyncData({ $axios, error, app }) {
+		const res = await $axios
 			.get('/api/karas/years/')
 			.catch(_err =>
-				error({ statusCode: 404, message: app.i18n.t("tag.notfound") })
+				error({ statusCode: 404, message: app.i18n.t("tag.notfound") as string })
 			);
-		return { years: data };
-	},
-
-    watch: {
-		loading(now, _old) {
-			if (now) this.$nuxt.$loading.start();
-			else this.$nuxt.$loading.finish();
+		if (res) {
+			return { years: res.data };
+		} else {
+			error({ statusCode: 500, message: 'Huh?' });
 		}
 	}
 });

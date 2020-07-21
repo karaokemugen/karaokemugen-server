@@ -1,5 +1,10 @@
 import { Module, VuexModule, Mutation } from 'vuex-module-decorators'
-import {Tag} from "../../src/lib/types/tag";
+import { Tag } from "%/lib/types/tag";
+
+interface TagExtend {
+	type?: string,
+	tag?: Tag
+}
 
 @Module({
     name: 'menubar',
@@ -7,27 +12,24 @@ import {Tag} from "../../src/lib/types/tag";
     namespaced: true,
 })
 export default class MenuBar extends VuexModule {
-    tag: {
-        type: string,
-        tag: Tag
-    }
+    tag: TagExtend|null = {}
 
-    search: string
+    search: string|null = ''
 
-	sort: string
+	sort: string = 'az'
 
     @Mutation
-    setTag(tag) {
+    setTag(tag: TagExtend|null) {
         this.tag = tag;
     }
 
     @Mutation
-    setSearch(search) {
+    setSearch(search: string|null) {
         this.search = search;
     }
 
     @Mutation
-	setSort(sort) {
+	setSort(sort: string) {
     	this.sort = sort;
 	}
 }

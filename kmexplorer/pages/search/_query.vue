@@ -8,6 +8,14 @@
 
     import KaraList from '~/components/KaraList.vue';
     import { menuBarStore } from "~/store";
+	import {KaraList as KaraListType} from "%/lib/types/kara";
+
+	interface VState {
+		karaokes: KaraListType,
+		from: number,
+		loading: boolean
+		sort: string
+	}
 
     export default Vue.extend({
         name: "KaraSearch",
@@ -16,7 +24,7 @@
             KaraList
         },
 
-        data() {
+        data(): VState {
             return {
                 karaokes: {infos: {count:0, from: 0, to: 0}, i18n: {}, content: []},
                 from: 0,
@@ -52,15 +60,19 @@
         },
 
         async asyncData({ params, $axios, error, app }) {
-            const { data } = await $axios.get(`/api/karas/search`, {
+            const res = await $axios.get(`/api/karas/search`, {
                 params: {
                     filter: `${typeof params.query === 'string' ? params.query:''}`,
                     from: 0,
                     size: 20
                 }
             }).catch(
-                _err => error({ statusCode: 404, message: app.i18n.t('error.generic') }));
-            return { karaokes: data };
+                _err => error({ statusCode: 404, message: app.i18n.t('error.generic') as string }));
+            if (res) {
+				return { karaokes: res.data };
+			} else {
+            	error({ statusCode: 500, message: app.i18n.t('error.generic') as string });
+			}
         },
 
         transition: 'fade',
