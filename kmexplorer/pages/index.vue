@@ -1,7 +1,7 @@
 <template>
 	<div class="km-home">
 		<a href="http://karaokes.moe/">
-			<img class="km-home--logo" :src="require('~/assets/km-logo.png')" />
+			<img class="km-home--logo" :src="require('~/assets/km-logo.png')"/>
 		</a>
 		<h1 class="title">{{ explorerHost }}</h1>
 		<h2 class="subtitle">Explore! Find! Sing!</h2>
@@ -65,82 +65,85 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import prettyBytes from 'pretty-bytes';
-import duration from '~/assets/date';
+	import Vue from "vue";
+	import prettyBytes from 'pretty-bytes';
+	import duration from '~/assets/date';
 
-export default Vue.extend({
-	data() {
-		return {
-			explorerHost: process.env.EXPLORER_HOST,
-			count: {
-				singers: 0,
-				creators: 0,
-				languages: 0,
-				authors: 0,
-				songwriters: 0,
-				series: 0,
-				karas: 0,
-				duration: 0,
-				mediasize: 0
+	export default Vue.extend({
+		data() {
+			return {
+				explorerHost: process.env.EXPLORER_HOST,
+				count: {
+					singers: 0,
+					creators: 0,
+					languages: 0,
+					authors: 0,
+					songwriters: 0,
+					series: 0,
+					karas: 0,
+					duration: 0,
+					mediasize: 0
+				}
+			};
+		},
+		async asyncData({$axios, app}) {
+			let result = await $axios.get("/api/karas/stats");
+			let count = result.data;
+			if (count.mediasize) count.mediasize = prettyBytes(Number(count.mediasize));
+			if (count.mediasize) {
+				const durationArray = duration(count.duration);
+				let returnString = '';
+				if (durationArray[0] !== 0) returnString += `${durationArray[0]} ${app.i18n.t("duration.days")} `;
+				if (durationArray[1] !== 0) returnString += `${durationArray[1]} ${app.i18n.t("duration.hours")} `;
+				if (durationArray[2] !== 0) returnString += `${durationArray[2]} ${app.i18n.t("duration.minutes")} `;
+				if (durationArray[3] !== 0) returnString += `${durationArray[3]} ${app.i18n.t("duration.seconds")} `;
+				count.duration = returnString;
 			}
-		};
-	},
-	async asyncData({ $axios, app }) {
-		let result = await $axios.get("/api/karas/stats");
-		let count = result.data;
-		if (count.mediasize) count.mediasize = prettyBytes(Number(count.mediasize));
-		if (count.mediasize) {
-			const durationArray = duration(count.duration);
-			let returnString = '';
-			if (durationArray[0] !== 0) returnString += `${durationArray[0]} ${app.i18n.t("duration.days")} `;
-			if (durationArray[1] !== 0) returnString += `${durationArray[1]} ${app.i18n.t("duration.hours")} `;
-			if (durationArray[2] !== 0) returnString += `${durationArray[2]} ${app.i18n.t("duration.minutes")} `;
-			if (durationArray[3] !== 0) returnString += `${durationArray[3]} ${app.i18n.t("duration.seconds")} `;
-			count.duration = returnString;
+			count.lastGeneration = (await $axios.get("/api/karas/lastUpdate")).data;
+			return {count: count};
+		},
+		head() {
+			return {
+				title: this.$t('titles.home') as string
+			}
 		}
-		count.lastGeneration = (await $axios.get("/api/karas/lastUpdate")).data;
-		return { count: count };
-	},
-	head() {
-		return {
-			title: this.$t('titles.home') as string
-		}
-	}
-});
+	});
 </script>
 <style scoped lang="scss">
-.km-home {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-
-	.km-home--logo {
-		max-width: 600px;
-	}
-
-	.km-home--stats {
-		max-width: 600px;
-		padding: 0;
-		margin: auto;
+	.km-home {
 		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-		list-style: none;
-		.km-home--stats--link {
-			cursor: pointer;
+		flex-direction: column;
+		align-items: center;
+
+		.km-home--logo {
+			max-width: 600px;
 		}
-		li {
-			padding: 0.5em;
-			width: calc(50% - 1em);
-			background: #26aacc;
-			color: #fff;
-			margin: 0.5em;
-			border-radius: 0.25em;
-		}
-		.km-home--stats--wide {
-			width: 100%;
+
+		.km-home--stats {
+			max-width: 600px;
+			padding: 0;
+			margin: auto;
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			list-style: none;
+
+			.km-home--stats--link {
+				cursor: pointer;
+			}
+
+			li {
+				padding: 0.5em;
+				width: calc(50% - 1em);
+				background: #26aacc;
+				color: #fff;
+				margin: 0.5em;
+				border-radius: 0.25em;
+			}
+
+			.km-home--stats--wide {
+				width: 100%;
+			}
 		}
 	}
-}
 </style>

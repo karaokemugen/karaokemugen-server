@@ -6,7 +6,7 @@
 	import Vue from 'vue';
 	import merge from "lodash.merge";
 	import KaraList from "~/components/KaraList.vue";
-	import { KaraList as KaraListType } from '%/lib/types/kara';
+	import {KaraList as KaraListType} from '%/lib/types/kara';
 
 	interface VState {
 		karaokes: KaraListType,
@@ -14,8 +14,8 @@
 		loading: boolean
 	}
 
-    export default Vue.extend({
-        name: "YearVue",
+	export default Vue.extend({
+		name: "YearVue",
 
 		components: {
 			KaraList
@@ -23,13 +23,13 @@
 
 		data(): VState {
 			return {
-				karaokes: {infos: {count:0, from: 0, to: 0}, i18n: {}, content: []},
+				karaokes: {infos: {count: 0, from: 0, to: 0}, i18n: {}, content: []},
 				from: 0,
 				loading: false
 			}
 		},
 
-		validate({ params }) {
+		validate({params}) {
 			return isNaN(parseInt(params.year));
 		},
 
@@ -42,7 +42,7 @@
 					params: {
 						q: `y:${this.$route.params.year}`,
 						from: (this.from * 20),
-						size: ((this.from+1) * 20)
+						size: ((this.from + 1) * 20)
 					}
 				});
 				this.karaokes.content.push(...data.content);
@@ -59,7 +59,7 @@
 			}
 		},
 
-		async asyncData({ params, $axios, error, app }) {
+		async asyncData({params, $axios, error, app}) {
 			const res = await $axios.get(`/api/karas/search`, {
 				params: {
 					q: `y:${params.year}`,
@@ -67,9 +67,9 @@
 					size: 20
 				}
 			}).catch(
-				_err => error({ statusCode: 404, message: app.i18n.t('error.generic') as string }));
-			if (res) return { karaokes: res.data };
-			else error({ statusCode: 500, message: 'Huh?' });
+				_err => error({statusCode: 404, message: app.i18n.t('error.generic') as string}));
+			if (res) return {karaokes: res.data};
+			else error({statusCode: 500, message: 'Huh?'});
 		},
 
 		transition: 'fade',
@@ -88,7 +88,7 @@
 				else this.$nuxt.$loading.finish();
 			}
 		}
-    });
+	});
 </script>
 
 <style scoped>

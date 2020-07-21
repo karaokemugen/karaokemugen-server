@@ -1,11 +1,11 @@
 //FormatDateString From Duration in Seconds
 export default function duration(duration) {
 	duration = parseInt(duration)
-	if(typeof duration !== 'number'){
+	if (typeof duration !== 'number') {
 		throw `The parameter ${duration} is supposed to be a number !`;
 	}
 
-	if(Math.floor(duration) !== duration || duration <= 0){
+	if (Math.floor(duration) !== duration || duration <= 0) {
 		throw `The parameter ${duration} is supposed to be "entier" and be superior to 0`;
 	}
 

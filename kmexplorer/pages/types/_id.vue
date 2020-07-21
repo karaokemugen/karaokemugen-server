@@ -6,11 +6,11 @@
 			<tag
 				v-for="tag in tags.content"
 				:key="tag.tid"
-				:icon="true"
+				icon
 				:type="type"
 				:tag="tag"
 				:i18n="tag.i18n"
-				:showkaracount="true"
+				showkaracount
 			/>
 		</div>
 		<pagination :page="page" :last-page="total" @page="setPage"></pagination>
@@ -26,12 +26,13 @@
 	import {tagTypesMap, tagTypes} from "~/assets/constants";
 	import LoadingNanami from "~/components/LoadingNanami.vue";
 	import Pagination from "~/components/Pagination.vue";
+	import {DBTag} from "%/lib/types/database/tag";
 
 	interface VState {
 		tagTypesMap: typeof tagTypesMap,
 		tags: {
-			infos: {count: number, from: number, to: number},
-			content: TagType[]
+			infos: { count: number, from: number, to: number },
+			content: DBTag[]
 		},
 		page: number,
 		loading: boolean,
@@ -75,7 +76,7 @@
 					}
 				);
 				data.content = data.content.filter(
-					tag => tag.karacount && Object.keys(tag.karacount).length > 0
+					(tag: DBTag) => tag.karacount && Object.keys(tag.karacount).length > 0
 				);
 				this.tags = data;
 				this.loading = false;

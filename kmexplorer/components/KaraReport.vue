@@ -2,11 +2,11 @@
 	<div class="box">
 		<h4 class="title is-4">{{ $t('kara.problem.title', {title: karaoke.title}) }}</h4>
 		<button class="button is-warning" @click="toggleModal" :disabled="submitted">
-			<font-awesome-icon :icon="['fas', 'meh']" />
+			<font-awesome-icon :icon="['fas', 'meh']"/>
 			{{ $t('kara.problem.btn.report') }}
 		</button>
 		<nuxt-link :to="`/import/${karaoke.kid}`" class="button is-success">
-			<font-awesome-icon :icon="['fas', 'pen']" />
+			<font-awesome-icon :icon="['fas', 'pen']"/>
 			{{ $t('kara.problem.btn.edit') }}
 		</nuxt-link>
 		<!-- Report Modal -->
@@ -94,13 +94,15 @@
 							class="button is-success"
 							@click.prevent="toggleModal"
 							v-if="submitted"
-						>{{ $t('kara.problem.form.thanks.btn') }}</button>
+						>{{ $t('kara.problem.form.thanks.btn') }}
+						</button>
 						<button
 							class="button is-success"
 							:class="{'is-loading': loading}"
 							type="submit"
 							v-else
-						>{{ $t('kara.problem.form.submit') }}</button>
+						>{{ $t('kara.problem.form.submit') }}
+						</button>
 					</footer>
 				</div>
 			</form>
@@ -109,20 +111,38 @@
 </template>
 
 <script lang="ts">
-	import Vue from 'vue';
+	import Vue, {PropOptions} from 'vue';
+	import {DBKara} from "%/lib/types/database/kara";
 
-    export default Vue.extend({
-        name: 'KaraReport',
+	interface VState {
+		modal: boolean,
+		loading: boolean,
+		submitted: boolean,
+		formData: {
+			type: 'time' | 'quality',
+			comment: string,
+			username: string
+		},
+		gitlabUrl: string
+	}
 
-		props: ['karaoke'],
+	export default Vue.extend({
+		name: 'KaraReport',
 
-		data() {
-        	return {
-        		modal: false,
+		props: {
+			karaoke: {
+				type: Object,
+				required: true
+			} as PropOptions<DBKara>
+		},
+
+		data(): VState {
+			return {
+				modal: false,
 				loading: false,
 				submitted: false,
 				formData: {
-        			type: 'time',
+					type: 'time',
 					comment: '',
 					username: ''
 				},
@@ -131,8 +151,8 @@
 		},
 
 		methods: {
-        	toggleModal() {
-        		this.modal = !this.modal;
+			toggleModal() {
+				this.modal = !this.modal;
 			},
 			submitProblem() {
 				this.loading = true;
@@ -143,7 +163,7 @@
 				});
 			}
 		}
-    });
+	});
 </script>
 
 <style scoped lang="scss">

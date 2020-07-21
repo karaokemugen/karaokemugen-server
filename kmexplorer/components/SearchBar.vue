@@ -1,8 +1,9 @@
 <template>
-    <div class="field is-expanded has-addons">
-        <div class="control is-expanded">
-            <input class="input is-fullwidth" type="text" :placeholder="$t('search.placeholder')" v-model="search" @keydown.enter="triggerSearch">
-        </div>
+	<div class="field is-expanded has-addons">
+		<div class="control is-expanded">
+			<input class="input is-fullwidth" type="text" :placeholder="$t('search.placeholder')" v-model="search"
+				   @keydown.enter="triggerSearch">
+		</div>
 		<div class="control">
 			<span class="select">
 				<select :aria-label="$t('search.aria.sort')" v-model="sort">
@@ -19,54 +20,57 @@
 				</select>
 			</span>
 		</div>
-    </div>
+	</div>
 </template>
 
 <script lang="ts">
-    import Vue from 'vue';
-    import { menuBarStore } from "~/store";
+	import Vue from 'vue';
+	import {menuBarStore} from "~/store";
 
-    export default Vue.extend({
-        name: "SearchBar",
+	export default Vue.extend({
+		name: "SearchBar",
 
-        data() {
-            return {
-                search: '',
+		data() {
+			return {
+				search: '',
 				sort: 'az'
-            }
-        },
-
-        methods: {
-            triggerSearch() {
-                this.$router.push(`/search/${this.search}`);
-            }
-        },
-
-        watch: {
-            search(now, _old) {
-                menuBarStore.setSearch(now);
-            },
-			sort(now, _old) {
-            	menuBarStore.setSort(now);
 			}
-        },
+		},
 
-        mounted() {
-            this.$store.subscribe((mutation, _state) => {
-                if (mutation.type === 'menubar/setSearch') {
-                    this.search = mutation.payload;
-                }
-            });
-        }
-    });
+		methods: {
+			triggerSearch() {
+				this.$router.push(`/search/${this.search}`);
+			}
+		},
+
+		watch: {
+			search(now, _old) {
+				menuBarStore.setSearch(now);
+			},
+			sort(now, _old) {
+				menuBarStore.setSort(now);
+			}
+		},
+
+		mounted() {
+			this.$store.subscribe((mutation, _state) => {
+				if (mutation.type === 'menubar/setSearch') {
+					this.search = mutation.payload;
+				} else if (mutation.type === 'menubar/setSort') {
+					this.sort = mutation.payload;
+				}
+			});
+		}
+	});
 </script>
 
 <style scoped lang="scss">
-    .field.is-expanded {
-        flex-grow: 1;
-        flex-shrink: 0;
-        .select select option {
-            color: white;
-        }
-    }
+	.field.is-expanded {
+		flex-grow: 1;
+		flex-shrink: 0;
+
+		.select select option {
+			color: white;
+		}
+	}
 </style>

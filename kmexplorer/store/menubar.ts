@@ -1,7 +1,7 @@
 import { Module, VuexModule, Mutation } from 'vuex-module-decorators'
 import { Tag } from "%/lib/types/tag";
 
-interface TagExtend {
+export interface TagExtend {
 	type?: string,
 	tag?: Tag
 }

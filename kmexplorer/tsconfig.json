@@ -29,6 +29,7 @@
 			"@types/node",
 			"@nuxt/types",
 			"@nuxtjs/axios",
+			"@types/nuxtjs__auth",
 			"nuxt-i18n",
 			"buefy/types"
 		],
