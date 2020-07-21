@@ -30,7 +30,7 @@
 		},
 
 		validate({params}) {
-			return isNaN(parseInt(params.year));
+			return !isNaN(parseInt(params.year));
 		},
 
 		methods: {

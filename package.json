@@ -1,6 +1,6 @@
 {
    "name": "karaokemugen-server",
-   "version": "0.9.1",
+   "version": "1.0.0",
    "description": "Karaoke Mugen online server",
    "main": "dist/index.js",
    "repository": "https://lab.shelter.moe/karaokemugen/karaokemugen-server.git",

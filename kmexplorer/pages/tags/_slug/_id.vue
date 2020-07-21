@@ -84,7 +84,7 @@
 			}).catch(
 				_err => error({statusCode: 404, message: app.i18n.t('error.generic') as string}));
 			if (res && res2) {
-				return {karaokes: res.data, tag: res2.data};
+				return {karaokes: res2.data, tag: res.data};
 			} else {
 				error({statusCode: 500, message: 'Huh?'});
 			}

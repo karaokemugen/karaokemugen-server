@@ -88,7 +88,7 @@
 
 		computed: {
 			tagTypesSorted(): object {
-				let tagTypes = this.tagTypes;
+				let tagTypes = {...this.tagTypes};
 				delete tagTypes.songtypes; // Don't show songtypes on full view, as it's already shown in the title
 				return tagTypes;
 			},

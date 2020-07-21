@@ -62,7 +62,7 @@
 		},
 
 		validate() {
-			return process.env.KM_IMPORT === 'true';
+			return (process.env.KM_IMPORT as unknown as boolean);
 		},
 
 		async asyncData({params, $axios, error, app}) {

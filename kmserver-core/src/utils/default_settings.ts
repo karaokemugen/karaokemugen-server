@@ -1,5 +1,6 @@
 import { Config } from '../types/config';
 import { NuxtConfig as NuxtConfigType } from '@nuxt/types';
+import {sentryDSN} from "./constants";
 
 // Karaoke Mugen default configuration file
 
@@ -300,7 +301,9 @@ export let NuxtConfig: NuxtConfigType = {
 		// Doc: https://auth.nuxtjs.org/
 		'@nuxtjs/auth',
 		// Doc: https://github.com/nuxt-community/modules/tree/master/packages/toast
-		'@nuxtjs/toast'
+		'@nuxtjs/toast',
+		// Doc: https://github.com/nuxt-community/sentry-module
+		'@nuxtjs/sentry'
 	],
 
 	plugins: [
@@ -365,6 +368,12 @@ export let NuxtConfig: NuxtConfigType = {
 		strategy: 'no_prefix',
 		langDir: 'lang/',
 		vuex: false
+	},
+
+	sentry: {
+		dsn: process.env.SENTRY_DSN || sentryDSN,
+		disabled: process.env.SENTRY_TEST,
+		publishRelease: false
 	},
 
 	modulesDir: ['../node_modules/'],

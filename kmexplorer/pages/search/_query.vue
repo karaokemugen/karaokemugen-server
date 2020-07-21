@@ -42,7 +42,8 @@
 					params: {
 						filter: `${typeof this.$route.params.query === 'string' ? this.$route.params.query : ''}`,
 						from: (this.from * 20),
-						size: ((this.from + 1) * 20)
+						size: ((this.from + 1) * 20),
+						order: this.sort
 					}
 				});
 				this.karaokes.content.push(...data.content);
@@ -88,6 +89,9 @@
 			this.$store.subscribe((mutation, _payload) => {
 				if (mutation.type === 'menubar/setSort') {
 					this.sort = mutation.payload;
+					this.karaokes = {infos: {count: -1, from: 0, to: 0}, i18n: {}, content: []};
+					this.from = -1;
+					this.$nextTick(() => {this.loadNextPage();});
 				}
 			});
 		},

@@ -39,20 +39,20 @@ export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 		favoritedGroupClause = 'f.fk_kid, ';
 		filterClauses.params.username = params.username;
 	}
-	if (params.mode === 'recent') orderClauses = 'created_at DESC, ';
-	if (params.mode === 'played') {
+	if (params.sort === 'recent') orderClauses = 'created_at DESC, ';
+	if (params.sort === 'played') {
 		statsSelectClause = 'COUNT(p.*)::integer AS played,';
 		statsJoinClause = 'LEFT OUTER JOIN stats_played AS p ON p.fk_kid = ak.kid ';
 		havingClause = 'HAVING COUNT(p.*) >= 5';
 		orderClauses = 'played DESC, ';
 	}
-	if (params.mode === 'favorited') {
+	if (params.sort === 'favorited') {
 		statsSelectClause = 'COUNT(f.*)::integer AS favorited,';
 		statsJoinClause = 'LEFT OUTER JOIN stats_favorites AS f ON f.fk_kid = ak.kid ';
 		havingClause = 'HAVING COUNT(f.*) >= 1';
 		orderClauses = 'favorited DESC, ';
 	}
-	if (params.mode === 'requested') {
+	if (params.sort === 'requested') {
 		statsSelectClause = 'COUNT(r.*)::integer AS requested,';
 		statsJoinClause = 'LEFT OUTER JOIN stats_requested AS r ON r.fk_kid = ak.kid ';
 		havingClause = 'HAVING COUNT(r.*) >= 5';

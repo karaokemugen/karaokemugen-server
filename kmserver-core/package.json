@@ -1,6 +1,6 @@
 {
 	"name": "kmserver-core",
-	"version": "0.9.1",
+	"version": "1.0.0",
 	"description": "API Server for KMServer",
 	"main": "src/index.ts",
 	"author": "Guillaume Lebigot <axel@teri-chan.net>",

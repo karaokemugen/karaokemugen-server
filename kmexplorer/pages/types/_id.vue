@@ -26,7 +26,15 @@
 	import {tagTypesMap, tagTypes} from "~/assets/constants";
 	import LoadingNanami from "~/components/LoadingNanami.vue";
 	import Pagination from "~/components/Pagination.vue";
+	import { menuBarStore } from "~/store";
 	import {DBTag} from "%/lib/types/database/tag";
+
+	interface TagsRequest {
+		from: number,
+		size: number,
+		order?: 'karacount'|'az',
+		filter?: string
+	}
 
 	interface VState {
 		tagTypesMap: typeof tagTypesMap,
@@ -34,6 +42,7 @@
 			infos: { count: number, from: number, to: number },
 			content: DBTag[]
 		},
+		sort: 'karacount'|'az',
 		page: number,
 		loading: boolean,
 		total: number,
@@ -55,11 +64,21 @@
 					infos: {count: 0, from: 0, to: 0},
 					content: []
 				},
+				sort: 'az',
 				page: 1,
 				loading: false,
 				total: 1,
 				type: -1
 			};
+		},
+
+		created() {
+			menuBarStore.setSort('az');
+			this.$store.subscribe((mutation, _payload) => {
+				if (mutation.type === 'menubar/setSort') {
+					this.sort = mutation.payload;
+				}
+			});
 		},
 
 		methods: {
@@ -69,10 +88,7 @@
 				const {data} = await this.$axios.get(
 					`/api/karas/tags/${tagTypes[this.type].type}`,
 					{
-						params: {
-							from: (this.page - 1) * 100,
-							size: 100
-						}
+						params: this.reqParams
 					}
 				);
 				data.content = data.content.filter(
@@ -116,6 +132,19 @@
 			loading(now, _old) {
 				if (now) this.$nuxt.$loading.start();
 				else this.$nuxt.$loading.finish();
+			},
+			sort(now, _old) {
+				this.setPage(1);
+			}
+		},
+
+		computed: {
+			reqParams(): TagsRequest {
+				return {
+					from: (this.page - 1) * 100,
+					size: 100,
+					order: this.sort
+				}
 			}
 		}
 	});

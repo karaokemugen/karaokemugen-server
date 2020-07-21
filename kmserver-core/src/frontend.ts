@@ -108,7 +108,7 @@ export function initFrontend(listenPort: number) {
 	}
 
 	// Load static assets from static folder (mostly error pages)
-	app.use('/static', express.static(resolve(state.appPath, 'static')));
+	app.use('/static', express.static(resolve(state.appPath, 'kmserver-core/static')));
 
 	/** Disabled code for KM Rooms
 	app.use(vhost(`*.${conf.Frontend.Host}`, getKMRoom), proxy(redirectKMRoom, {
@@ -119,7 +119,7 @@ export function initFrontend(listenPort: number) {
 
 	// The "catchall" handler: for any request that doesn't
 	// match one above, send a 404 page.
-	app.get('*', (_, res) => res.status(404).sendFile(resolve(state.appPath, 'static/404.html')));
+	app.get('*', (_, res) => res.status(404).sendFile(resolve(state.appPath, 'kmserver-core/static/404.html')));
 
 	const port = listenPort;
 	const server = createServer(app);
