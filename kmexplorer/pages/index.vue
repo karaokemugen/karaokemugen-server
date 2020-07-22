@@ -7,46 +7,46 @@
 		<h2 class="subtitle">Explore! Find! Sing!</h2>
 		<ul class="km-home--stats">
 			<li key="karas">
-				<div class="km-home--stats--link">
+				<nuxt-link to="/search" class="km-home--stats--link">
 					<strong>{{count.karas>0 ? count.karas : '-'}}</strong>
 					<span>{{$tc("stats.karaokes", count.karas)}}</span>
-				</div>
+				</nuxt-link>
 			</li>
 			<li key="serie">
-				<div class="km-home--stats--link">
+				<nuxt-link to="/types/series" class="km-home--stats--link">
 					<strong>{{count.series>0 ? count.series : '-'}}</strong>
 					<span>{{$tc("kara.tagtypes.series", count.series)}}</span>
-				</div>
+				</nuxt-link>
 			</li>
 			<li key="singer">
-				<div class="km-home--stats--link">
+				<nuxt-link to="/types/singers" class="km-home--stats--link">
 					<strong>{{count.singers>0 ? count.singers : '-'}}</strong>
 					<span>{{$tc("kara.tagtypes.singers", count.singers)}}</span>
-				</div>
+				</nuxt-link>
 			</li>
 			<li key="creator">
-				<div class="km-home--stats--link">
+				<nuxt-link to="/types/creators" class="km-home--stats--link">
 					<strong>{{count.creators>0 ? count.creators : '-'}}</strong>
 					<span>{{$tc("kara.tagtypes.creators", count.creators)}}</span>
-				</div>
+				</nuxt-link>
 			</li>
 			<li key="language">
-				<div class="km-home--stats--link">
+				<nuxt-link to="/types/languages" class="km-home--stats--link">
 					<strong>{{count.languages>0 ? count.languages : '-'}}</strong>
 					<span>{{$tc("kara.tagtypes.langs", count.languages)}}</span>
-				</div>
+				</nuxt-link>
 			</li>
 			<li key="author">
-				<div class="km-home--stats--link">
+				<nuxt-link to="/types/authors" class="km-home--stats--link">
 					<strong>{{count.authors>0 ? count.authors : '-'}}</strong>
 					<span>{{$tc("kara.tagtypes.authors", count.authors)}}</span>
-				</div>
+				</nuxt-link>
 			</li>
 			<li key="songwriter">
-				<div class="km-home--stats--link">
+				<nuxt-link to="/types/songwriters" class="km-home--stats--link">
 					<strong>{{count.songwriters>0 ? count.songwriters : '-'}}</strong>
 					<span>{{$tc("kara.tagtypes.songwriters", count.songwriters)}}</span>
-				</div>
+				</nuxt-link>
 			</li>
 			<li key="mediasize">
 				<span>{{$t("stats.media_size")}}</span> :
@@ -116,7 +116,7 @@
 		align-items: center;
 
 		.km-home--logo {
-			max-width: 600px;
+			max-height: 20em;
 		}
 
 		.km-home--stats {
@@ -130,6 +130,7 @@
 
 			.km-home--stats--link {
 				cursor: pointer;
+				color: unset;
 			}
 
 			li {

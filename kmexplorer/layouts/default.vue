@@ -332,7 +332,7 @@
 				</ul>
 			</aside>
 			<section class="container column is-fluid">
-				<nuxt/>
+				<nuxt keep-alive :keep-alive-props="{ max: 3 }"/>
 			</section>
 		</div>
 		<footer class="footer">

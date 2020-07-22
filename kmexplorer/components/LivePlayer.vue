@@ -54,11 +54,13 @@
 			}
 		},
 
-		mounted() {
+		activated() {
+			this.show = false;
+			this.transition = false;
 			window.addEventListener('keydown', this.keyEvent);
 		},
 
-		destroyed() {
+		deactivated() {
 			window.removeEventListener('keydown', this.keyEvent);
 		}
 	});

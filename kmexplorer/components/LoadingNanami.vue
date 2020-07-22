@@ -2,7 +2,7 @@
 	<div>
 		<div class="tile is-child">
 			<div class="box">
-				<p>Chargement...</p>
+				<p>{{ $t('layout.loading') }}</p>
 			</div>
 		</div>
 	</div>

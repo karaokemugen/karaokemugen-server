@@ -17,7 +17,8 @@
 		from: number,
 		loading: boolean,
 		tag: Tag,
-		sort: string
+		sort: string,
+		VuexUnsubscribe?: Function
 	}
 
 	export default Vue.extend({
@@ -94,9 +95,12 @@
 
 		transition: 'fade',
 
-		created() {
-			menuBarStore.setSort('az');
-			this.$store.subscribe((mutation, _payload) => {
+		activated() {
+			if (menuBarStore.sort === 'karacount') {
+				this.sort = 'az';
+				menuBarStore.setSort('az');
+			}
+			this.VuexUnsubscribe = this.$store.subscribe((mutation, _payload) => {
 				if (mutation.type === 'menubar/setSort') {
 					this.sort = mutation.payload;
 					this.karaokes = {infos: {count: -1, from: 0, to: 0}, i18n: {}, content: []};
@@ -104,9 +108,6 @@
 					this.$nextTick(() => {this.loadNextPage();});
 				}
 			});
-		},
-
-		mounted() {
 			const tagInfo = tagRegex.exec(this.$route.params.id);
 			if (!tagInfo) throw new Error('Stealth check failed: Tag regex not matched');
 			menuBarStore.setTag({
@@ -116,9 +117,10 @@
 			window.addEventListener('scroll', this.scrollEvent, {passive: true});
 		},
 
-		destroyed() {
+		deactivated() {
 			menuBarStore.setTag(null);
 			window.removeEventListener('scroll', this.scrollEvent);
+			if (this.VuexUnsubscribe) this.VuexUnsubscribe();
 		},
 
 		watch: {

@@ -118,6 +118,6 @@
 	}
 
 	.is-info {
-		max-width: 1000px;
+		max-width: 50em;
 	}
 </style>

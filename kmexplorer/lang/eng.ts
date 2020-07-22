@@ -31,6 +31,28 @@ export default {
 			btn: {
 				report: 'Report an issue',
 				edit: 'Purpose an edit'
+			},
+			form: {
+				title: 'Report an issue',
+				subtitle: 'We do our best to have a high-quality database, but sometimes some issues are there. Thanks for help!',
+				type: {
+					label: 'Problem type',
+					time: 'Lyrics not synchronised',
+					quality: 'Low quality video'
+				},
+				comment: {
+					label: 'Comment',
+					placeholder: 'After 2 minutes, the lyrics is not synchronised'
+				},
+				username: {
+					label: 'Your name',
+					placeholder: 'IAmMeticulous'
+				},
+				submit: 'Submit',
+				thanks: {
+					text: 'Thanks! We will address this issue as soon as possible: {url}',
+					btn: 'Close'
+				}
 			}
 		},
 		import: {
@@ -73,7 +95,7 @@ export default {
 			created_at: "Creation date",
 			modified_at: "Last updated date",
 			add_success: "Karaoke sent successfully.",
-			add_success_description: "An issue has been created on our tracker. You can check its progression at: ",
+			add_success_description: "An issue has been created on our tracker. You can check its progression at: {gitlabUrl}",
 			add_error: "An error has occurred, karaoke has not been sent properly",
 		}
 	},

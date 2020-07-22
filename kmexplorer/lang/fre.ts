@@ -96,8 +96,8 @@ export default {
 			created_at: "Date de création",
 			modified_at: "Date de dernière mise à jour",
 			add_success: "Karaoké envoyé avec succès.",
-			add_succes_description: "Un ticket a été crée sur notre outil de suivi. Vous pouvez consulter l'avancement de l'intégration de votre karaoké : ",
-			add_error: "Une erreur a eu lieu, le karaoké n'a pas pu être envoyé",
+			add_success_description: "Un ticket a été crée sur notre outil de suivi. Vous pouvez consulter l'avancement de l'intégration de votre karaoké : {gitlabUrl}",
+			add_error: "Une erreur a eu lieu, le karaoké n'a pas pu être envoyé"
 		}
 	},
 	layout: {

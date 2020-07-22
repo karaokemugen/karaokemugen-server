@@ -8,7 +8,7 @@
 			<span class="select">
 				<select :aria-label="$t('search.aria.sort')" v-model="sort">
 					<option value="az" selected>{{ $t('search.sort.a_z') }}</option>
-                    <template v-if="this.$route.name === 'types-id'">
+                    <template v-if="['types-id', 'years-year'].includes(this.$route.name)">
 					    <option value="karacount">{{ $t('search.sort.kara_count') }}</option>
                     </template>
                     <template v-else>
@@ -27,10 +27,16 @@
 	import Vue from 'vue';
 	import {menuBarStore} from "~/store";
 
+	interface VState {
+		search: string,
+		sort: string,
+		VuexUnsubscribe?: Function
+	}
+
 	export default Vue.extend({
 		name: "SearchBar",
 
-		data() {
+		data(): VState {
 			return {
 				search: '',
 				sort: 'az'
@@ -53,13 +59,17 @@
 		},
 
 		mounted() {
-			this.$store.subscribe((mutation, _state) => {
+			this.VuexUnsubscribe = this.$store.subscribe((mutation, _state) => {
 				if (mutation.type === 'menubar/setSearch') {
 					this.search = mutation.payload;
 				} else if (mutation.type === 'menubar/setSort') {
 					this.sort = mutation.payload;
 				}
 			});
+		},
+
+		destroyed() {
+			if (this.VuexUnsubscribe) this.VuexUnsubscribe();
 		}
 	});
 </script>

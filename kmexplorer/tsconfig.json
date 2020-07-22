@@ -30,6 +30,7 @@
 			"@nuxt/types",
 			"@nuxtjs/axios",
 			"@types/nuxtjs__auth",
+			"@nuxtjs/toast",
 			"nuxt-i18n",
 			"buefy/types"
 		],

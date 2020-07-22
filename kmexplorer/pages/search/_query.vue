@@ -15,6 +15,7 @@
 		from: number,
 		loading: boolean
 		sort: string
+		VuexUnsubscribe?: Function
 	}
 
 	export default Vue.extend({
@@ -78,16 +79,14 @@
 
 		transition: 'fade',
 
-		destroyed() {
-			// menuBarStore.setSearch(undefined);
-			window.removeEventListener('scroll', this.scrollEvent);
-		},
-
-		mounted() {
+		activated() {
 			window.addEventListener('scroll', this.scrollEvent, {passive: true});
 			menuBarStore.setSearch(this.$route.params.query);
-			menuBarStore.setSort('az');
-			this.$store.subscribe((mutation, _payload) => {
+			if (menuBarStore.sort === 'karacount') {
+				this.sort = 'az';
+				menuBarStore.setSort('az');
+			}
+			this.VuexUnsubscribe = this.$store.subscribe((mutation, _payload) => {
 				if (mutation.type === 'menubar/setSort') {
 					this.sort = mutation.payload;
 					this.karaokes = {infos: {count: -1, from: 0, to: 0}, i18n: {}, content: []};
@@ -95,6 +94,12 @@
 					this.$nextTick(() => {this.loadNextPage();});
 				}
 			});
+		},
+
+		deactivated() {
+			// menuBarStore.setSearch(undefined);
+			window.removeEventListener('scroll', this.scrollEvent);
+			if (this.VuexUnsubscribe) this.VuexUnsubscribe();
 		},
 
 		watch: {

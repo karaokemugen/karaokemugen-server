@@ -287,6 +287,18 @@
 				</button>
 			</div>
 		</div>
+		<div class="message is-success" v-if="gitlabUrl">
+			<div class="message-header">
+				<p>{{$t('kara.import.add_success')}}</p>
+			</div>
+			<i18n path="kara.import.add_success_description" tag="div" class="message-body">
+				<template v-slot:url>
+					<a :href="gitlabUrl" target="_blank">
+						{{ gitlabUrl }}
+					</a>
+				</template>
+			</i18n>
+		</div>
 	</div>
 </template>
 
@@ -310,7 +322,8 @@
 				mediafile_error: "",
 				subfile_error: "",
 				supportedLyrics: process.env.SUPPORTED_LYRICS as unknown as string[],
-				supportedMedias: process.env.SUPPORTED_MEDIAS as unknown as string[]
+				supportedMedias: process.env.SUPPORTED_MEDIAS as unknown as string[],
+				gitlabUrl: ''
 			};
 		},
 
@@ -394,9 +407,15 @@
 					this.$axios.$put(
 						`/api/karas/${this.karaoke.kid}`,
 						this.karaoke
-					);
+					).then(res => {
+						this.gitlabUrl = res.data;
+						this.$toast.success(this.$t('kara.import.add_success') as string, {duration: 1500});
+					});
 				} else {
-					this.$axios.$post("/api/karas/", this.karaoke);
+					this.$axios.$post("/api/karas/", this.karaoke).then(res => {
+						this.gitlabUrl = res.data;
+						this.$toast.success(this.$t('kara.import.add_success') as string, {duration: 1500});
+					});
 				}
 			}
 		},
@@ -412,7 +431,8 @@
 					this.karaoke.songtypes.length === 0 ||
 					this.karaoke.langs.length === 0 ||
 					!this.karaoke.year ||
-					this.karaoke.authors.length === 0
+					this.karaoke.authors.length === 0 ||
+					this.gitlabUrl.length > 0
 				);
 			}
 		}
@@ -435,5 +455,9 @@
 
 	.submit {
 		text-align: right;
+	}
+
+	.message {
+		max-width: 50em;
 	}
 </style>

@@ -29,7 +29,7 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 	   	WHERE  elem->>'type' = '${params.type}'
 	   	) a ON true
 		`;
-		orderClause = 'karacounttype DESC NULLS LAST, name';
+		orderClause = 'karacounttype::int2 DESC NULLS LAST, name';
 	}
 	if (params.from > 0) offsetClause = `OFFSET ${params.from} `;
 	if (params.size > 0) limitClause = `LIMIT ${params.size} `;

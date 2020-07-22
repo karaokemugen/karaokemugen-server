@@ -32,7 +32,7 @@
 	interface TagsRequest {
 		from: number,
 		size: number,
-		order?: 'karacount'|'az',
+		order?: string,
 		filter?: string
 	}
 
@@ -42,11 +42,12 @@
 			infos: { count: number, from: number, to: number },
 			content: DBTag[]
 		},
-		sort: 'karacount'|'az',
+		sort: string,
 		page: number,
 		loading: boolean,
 		total: number,
-		type: number
+		type: number,
+		VuexUnsubscribe?: Function
 	}
 
 	export default Vue.extend({
@@ -72,13 +73,22 @@
 			};
 		},
 
-		created() {
-			menuBarStore.setSort('az');
-			this.$store.subscribe((mutation, _payload) => {
+		activated() {
+			if (!['az', 'karacount'].includes(this.sort)) {
+				// Reset sort to karacount
+				menuBarStore.setSort('karacount');
+				this.sort = 'karacount';
+			}
+			this.VuexUnsubscribe = this.$store.subscribe((mutation, _payload) => {
 				if (mutation.type === 'menubar/setSort') {
 					this.sort = mutation.payload;
 				}
 			});
+		},
+
+		destroyed() {
+			// No need to unsubscribe on deactivated, it's only to refresh the sort mode
+			if (this.VuexUnsubscribe) this.VuexUnsubscribe();
 		},
 
 		methods: {

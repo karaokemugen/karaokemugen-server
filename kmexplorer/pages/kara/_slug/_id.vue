@@ -5,7 +5,7 @@
 				<kara-full-info :karaoke="karaoke"></kara-full-info>
 			</div>
 			<div class="tile is-4-desktop-only is-parent is-vertical">
-				<div class="tile is-child" v-if="liveURL">
+				<div class="tile is-child" v-if="liveURL && live">
 					<live-player :karaoke="karaoke" v-on:open="placeForLive"></live-player>
 				</div>
 				<div class="tile is-child" v-else>
@@ -13,7 +13,7 @@
 						<img :src="`/previews/${karaoke.kid}.${karaoke.mediasize}.25.jpg`" alt="">
 					</div>
 				</div>
-				<div class="tile is-child" v-show="!liveOpened">
+				<div class="tile is-child" v-show="!liveOpened" v-if="!mp3">
 					<div class="box">
 						<div class="imgGroup">
 							<img :src="`/previews/${karaoke.kid}.${karaoke.mediasize}.33.jpg`" alt="">
@@ -75,10 +75,23 @@
 			}
 		},
 
+		activated() {
+			this.liveOpened = false;
+		},
+
 		head() {
 			return {
 				// @ts-ignore: no?
 				title: this.karaoke.title
+			}
+		},
+
+		computed: {
+			mp3(): boolean {
+				return this.karaoke.mediafile.endsWith('.mp3');
+			},
+			live(): boolean {
+				return this.karaoke.mediafile.endsWith('.mp3') || this.karaoke.mediafile.endsWith('.mp4');
 			}
 		}
 	});
