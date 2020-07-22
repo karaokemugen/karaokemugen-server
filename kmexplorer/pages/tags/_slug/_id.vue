@@ -54,7 +54,7 @@
 					params: {
 						q: `t:${this.$route.params.id}`,
 						from: (this.from * 20),
-						size: ((this.from + 1) * 20)
+						size: 20
 					}
 				});
 				this.karaokes.content.push(...data.content);

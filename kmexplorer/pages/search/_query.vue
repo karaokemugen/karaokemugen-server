@@ -42,7 +42,7 @@
 					params: {
 						filter: `${typeof this.$route.params.query === 'string' ? this.$route.params.query : ''}`,
 						from: (this.from * 20),
-						size: ((this.from + 1) * 20),
+						size: 20,
 						order: this.sort
 					}
 				});
