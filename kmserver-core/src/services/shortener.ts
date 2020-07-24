@@ -8,6 +8,11 @@ import sentry from '../utils/sentry';
 export async function publishInstance(ip: string, data: InstanceData) {
 	try {
 		// Find cheaters; people who will publish for others IPs
+		if (!data.IID) {
+			// WTF. Ignoring for now, data didn't have any instance ID
+			logger.debug(`[Shortener] Ignoring ${ip} because of invalid IID : ${data.IID}`);
+			return false;
+		}
 		if ((data?.IP6 && data?.IP4) && // Couche de compatibilité pour les clients KM qui n'ont pas ffe3272f
 		(ip !== data?.IP6 && ip !== data?.IP4)) {
 			logger.debug(`${ip} is pretending to be ${JSON.stringify([data?.IP4, data?.IP6])}`, {service: 'Shortener', obj: data});
