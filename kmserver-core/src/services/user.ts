@@ -212,8 +212,12 @@ export async function createUser(user: User, opts: any = {}) {
 			throw ({ code: 'USER_CREATION_ERROR', data: err});
 		}
 	} catch(err) {
-		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
-		sentry.error(new Error(err.err));
+		if (err.code !== 'USER_ALREADY_EXISTS') {
+			const args: any = arguments;
+			delete args.user.password;
+			sentry.addErrorInfo('args', JSON.stringify(args, null, 2));
+			sentry.error(new Error(err.err));
+		}
 		throw err;
 	}
 }
