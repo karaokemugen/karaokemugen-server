@@ -34,6 +34,8 @@ deploy_moe:
     - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd kmserver; mirror -Rnev --parallel=10 --exclude .env --exclude .git/ --exclude app/ --exclude config.yml --exclude database.json --exclude karaokemugen-app/ --exclude logs/ --exclude node_modules/ --exclude kmexplorer/.nuxt/ "
     - ssh -l $USERNAME $HOST 'cd kmserver ; yarn install ; yarn migrate; yarn build:all'
     - ssh -l $USERNAME $HOST 'sudo systemctl restart karaokemugen-server'
+  variables:
+    NODE_ENV: production
   environment:
     name: production-moe
     url: https://kara.moe
@@ -46,6 +48,8 @@ deploy_world:
     - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd kmserver-world; mirror -Rnev --parallel=10 --exclude .env --exclude .git/ --exclude app/ --exclude config.yml --exclude database.json --exclude logs/ --exclude node_modules/ --exclude kmexplorer/.nuxt/ "
     - ssh -l $USERNAME $HOST 'cd kmserver-world ; yarn install ; yarn migrate; yarn build:all'
     - ssh -l $USERNAME $HOST 'sudo systemctl restart karaokemugen-server-world'
+  variables:
+    NODE_ENV: production
   environment:
     name: production-world
     url: https://world.karaokes.moe
@@ -58,6 +62,8 @@ deploy_dev:
     - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd kmserver-dev; mirror -Rnev --parallel=10 --exclude .env --exclude .git/ --exclude app/ --exclude config.yml --exclude database.json --exclude karaokemugen-app/ --exclude logs/ --exclude node_modules/ --exclude kmexplorer/.nuxt/ "
     - ssh -l $USERNAME $HOST 'cd kmserver-dev ; yarn install ; yarn migrate; yarn build:all'
     - ssh -l $USERNAME $HOST 'sudo systemctl restart karaokemugen-server-dev'
+  variables:
+    NODE_ENV: development
   environment:
     name: dev
     url: https://dev.kara.moe
