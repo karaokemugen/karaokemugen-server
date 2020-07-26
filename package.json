@@ -2,7 +2,7 @@
    "name": "karaokemugen-server",
    "version": "1.0.0",
    "description": "Karaoke Mugen online server",
-   "main": "dist/index.js",
+   "main": "kmserver-core/dist/index.js",
    "repository": "https://lab.shelter.moe/karaokemugen/karaokemugen-server.git",
    "author": "Guillaume Lebigot <axel@teri-chan.net>",
    "license": "MIT",
@@ -10,20 +10,21 @@
    "private": true,
    "workspaces": {
       "packages": [
-          "kmexplorer",
-		  "kmserver-core"
+        "kmexplorer",
+        "kmserver-core"
       ]
    },
    "scripts": {
       "migrate": "db-migrate sync [all] --config app/database.json --migrations-dir kmserver-core/migrations",
       "migrate:down": "db-migrate down --config app/database.json --migrations-dir kmserver-core/migrations",
       "migrate:up": "db-migrate up --config app/database.json --migrations-dir kmserver-core/migrations",
-	  "build:core": "yarn workspace kmserver-core build",
-	  "build:kmexplorer": "yarn workspace kmserver-core buildKMExplorer",
+      "build:core": "yarn workspace kmserver-core build",
+      "build:kmexplorer": "yarn workspace kmserver-core buildKMExplorer",
       "build:all": "yarn workspace kmserver-core build && yarn workspace kmserver-core buildKMExplorer",
-	  "start": "yarn workspace kmserver-core start",
-	  "start:quick": "yarn workspace kmserver-core qstart",
-	  "generate": "yarn workspace kmserver-core generate",
+      "start": "yarn workspace kmserver-core start",
+      "start:quick": "yarn workspace kmserver-core qstart",
+      "start:dev": "yarn workspace kmserver-core watch",
+      "generate": "yarn workspace kmserver-core generate",
       "pull": "git pull && git submodule sync --recursive && git submodule update --init --recursive"
    },
    "bugs": {

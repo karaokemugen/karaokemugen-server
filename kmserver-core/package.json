@@ -8,11 +8,12 @@
 	"private": true,
 	"scripts": {
 		"prestart": "db-migrate sync [all] --config ../app/database.json --migrations-dir migrations",
-		"start": "ts-node src/index.ts --",
+		"start": "cross-env NODE_ENV=production ts-node src/index.ts --",
+		"watch": "yarn prestart && cross-env NODE_ENV=development ts-node src/index.ts --",
 		"qstart": "yarn prestart && node dist/index.js --",
 		"generate": "ts-node src/index.ts -- --generate",
-		"build": "npx rimraf \"dist\" && tsc --build",
-		"buildKMExplorer": "ts-node src/index.ts -- --build"
+		"build": "rimraf \"dist\" && cross-env NODE_ENV=production tsc --build",
+		"buildKMExplorer": "rimraf \"../kmexplorer/.nuxt\" && cross-env NODE_ENV=production ts-node src/index.ts -- --build"
 	},
 	"devDependencies": {
 		"@nuxt/types": "^2.13.3",
@@ -42,6 +43,7 @@
 		"@types/yesql": "^3.2.2",
 		"@typescript-eslint/eslint-plugin": "^3.7.0",
 		"@typescript-eslint/parser": "^3.7.0",
+		"cross-env": "^7.0.2",
 		"eslint": "^7.5.0",
 		"rimraf": "^3.0.2",
 		"ts-loader": "^8.0.1",

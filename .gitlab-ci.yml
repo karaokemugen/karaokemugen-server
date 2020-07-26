@@ -63,7 +63,7 @@ deploy_dev:
     - ssh -l $USERNAME $HOST 'cd kmserver-dev ; yarn install ; yarn migrate; yarn build:all'
     - ssh -l $USERNAME $HOST 'sudo systemctl restart karaokemugen-server-dev'
   variables:
-    NODE_ENV: development
+    NODE_ENV: production
   environment:
     name: dev
     url: https://dev.kara.moe

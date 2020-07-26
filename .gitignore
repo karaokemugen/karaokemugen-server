@@ -25,6 +25,6 @@ logs/
 
 kmexplorer/.nuxt
 
-dist/
+kmserver-core/dist/
 
 .env
