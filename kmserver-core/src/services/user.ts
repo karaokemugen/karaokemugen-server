@@ -264,7 +264,7 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		if (token.username !== currentUser.login && token.role !== 'admin') throw 'Only admins can edit another user';
 		if (user.type !== currentUser.type && token.role !== 'admin') throw 'Only admins can change a user\'s type';
 		// Check if login already exists.
-		if (!user.series_lang_mode) user.series_lang_mode = -1;
+		if (isNaN(user.series_lang_mode)) user.series_lang_mode = -1;
 		if (user.series_lang_mode < -1 || user.series_lang_mode > 4) throw 'Invalid series_lang_mode';
 		if (user.main_series_lang && !hasLang('2B', user.main_series_lang)) throw `main_series_lang is not a valid ISO639-2B code (received ${user.main_series_lang})`;
 		if (user.fallback_series_lang && !hasLang('2B', user.fallback_series_lang)) throw `fallback_series_lang is not a valid ISO639-2B code (received ${user.fallback_series_lang})`;
@@ -286,7 +286,6 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		await updateUser(user);
 		logger.debug(`[User] ${username} (${user.nickname}) profile updated`);
 		delete currentUser.password;
-		console.log(user);
 		return {
 			user,
 			token: createJwtToken(user.login, getRole(user), new Date(user.password_last_modified_at instanceof Date ? user.password_last_modified_at:currentUser.password_last_modified_at))
