@@ -1,24 +1,29 @@
 <template>
-	<nuxt-link :to="nolink ? ``:`/tags/${slug}/${tag.tid}~${tagTypes[type].type}`" class="tag is-medium"
-			   :class="tagTypes[type].class">
-		<font-awesome-icon :icon="['fas', tagTypes[type].icon]" :fixed-width="true" v-if="icon"/>
+	<nuxt-link
+		:to="nolink ? ``:`/tags/${slug}/${tag.tid}~${tagTypes[type].type}`"
+		class="tag is-medium"
+		:class="tagTypes[type].class"
+	>
+		<font-awesome-icon v-if="icon" :icon="['fas', tagTypes[type].icon]" :fixed-width="true" />
 		{{ localizedName }}
-		<template v-if="showkaracount">&nbsp;({{ tag.karacount[tagTypes[type].type] }})</template>
+		<template v-if="showkaracount">
+			&nbsp;({{ tag.karacount[tagTypes[type].type] }})
+		</template>
 	</nuxt-link>
 </template>
 
 <script lang="ts">
-	import Vue, {PropOptions} from 'vue';
+	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
-	import {tagTypes} from "~/assets/constants";
-	import {DBTag} from "%/lib/types/database/tag";
+	import { tagTypes } from '~/assets/constants';
+	import { DBTag } from '%/lib/types/database/tag';
 
 	interface VState {
 		tagTypes: typeof tagTypes
 	}
 
 	export default Vue.extend({
-		name: "Tag",
+		name: 'Tag',
 
 		props: {
 			tag: {
@@ -46,7 +51,7 @@
 		data(): VState {
 			return {
 				tagTypes
-			}
+			};
 		},
 
 		computed: {

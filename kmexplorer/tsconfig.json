@@ -1,8 +1,8 @@
 {
 	"compilerOptions": {
-		"target": "ES2018",
-		"module": "ESNext",
-		"moduleResolution": "Node",
+		"target": "es2019",
+		"module": "esnext",
+		"moduleResolution": "node",
 		"lib": [
 			"ESNext",
 			"ESNext.AsyncIterable",
@@ -13,7 +13,8 @@
 		"sourceMap": true,
 		"strict": true,
 		"noEmit": true,
-		"baseUrl": ".",
+		"noImplicitThis": true,
+		"baseUrl": "./",
 		"paths": {
 			"~/*": [
 				"./*"
@@ -26,17 +27,18 @@
 			]
 		},
 		"types": [
-			"@types/node",
+			"node",
 			"@nuxt/types",
+			"@nuxt/vue-app",
 			"@nuxtjs/axios",
-			"@types/nuxtjs__auth",
+			"nuxtjs__auth",
 			"@nuxtjs/toast",
 			"nuxt-i18n",
 			"buefy/types"
 		],
 		"experimentalDecorators": true
 	},
-	"exclude": [
-		"../node_modules"
+	"include": [
+		"./"
 	]
 }

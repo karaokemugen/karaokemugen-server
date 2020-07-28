@@ -1,75 +1,95 @@
 <template>
 	<div class="km-home">
 		<a href="http://karaokes.moe/">
-			<img class="km-home--logo" :src="require('~/assets/km-logo.png')"/>
+			<img class="km-home--logo" :src="require('~/assets/km-logo.png')">
 		</a>
-		<h1 class="title">{{ explorerHost }}</h1>
-		<h2 class="subtitle">Explore! Find! Sing!</h2>
+		<h1 class="title">
+			{{ explorerHost }}
+		</h1>
+		<h2 class="subtitle">
+			Explore! Find! Sing!
+		</h2>
 		<ul class="km-home--stats">
 			<li key="karas">
 				<nuxt-link to="/search" class="km-home--stats--link">
-					<strong>{{count.karas>0 ? count.karas : '-'}}</strong>
-					<span>{{$tc("stats.karaokes", count.karas)}}</span>
+					<strong>{{ count.karas>0 ? count.karas : '-' }}</strong>
+					<span>{{ $tc("stats.karaokes", count.karas) }}</span>
 				</nuxt-link>
 			</li>
 			<li key="serie">
 				<nuxt-link to="/types/series" class="km-home--stats--link">
-					<strong>{{count.series>0 ? count.series : '-'}}</strong>
-					<span>{{$tc("kara.tagtypes.series", count.series)}}</span>
+					<strong>{{ count.series>0 ? count.series : '-' }}</strong>
+					<span>{{ $tc("kara.tagtypes.series", count.series) }}</span>
 				</nuxt-link>
 			</li>
 			<li key="singer">
 				<nuxt-link to="/types/singers" class="km-home--stats--link">
-					<strong>{{count.singers>0 ? count.singers : '-'}}</strong>
-					<span>{{$tc("kara.tagtypes.singers", count.singers)}}</span>
+					<strong>{{ count.singers>0 ? count.singers : '-' }}</strong>
+					<span>{{ $tc("kara.tagtypes.singers", count.singers) }}</span>
 				</nuxt-link>
 			</li>
 			<li key="creator">
 				<nuxt-link to="/types/creators" class="km-home--stats--link">
-					<strong>{{count.creators>0 ? count.creators : '-'}}</strong>
-					<span>{{$tc("kara.tagtypes.creators", count.creators)}}</span>
+					<strong>{{ count.creators>0 ? count.creators : '-' }}</strong>
+					<span>{{ $tc("kara.tagtypes.creators", count.creators) }}</span>
 				</nuxt-link>
 			</li>
 			<li key="language">
 				<nuxt-link to="/types/languages" class="km-home--stats--link">
-					<strong>{{count.languages>0 ? count.languages : '-'}}</strong>
-					<span>{{$tc("kara.tagtypes.langs", count.languages)}}</span>
+					<strong>{{ count.languages>0 ? count.languages : '-' }}</strong>
+					<span>{{ $tc("kara.tagtypes.langs", count.languages) }}</span>
 				</nuxt-link>
 			</li>
 			<li key="author">
 				<nuxt-link to="/types/authors" class="km-home--stats--link">
-					<strong>{{count.authors>0 ? count.authors : '-'}}</strong>
-					<span>{{$tc("kara.tagtypes.authors", count.authors)}}</span>
+					<strong>{{ count.authors>0 ? count.authors : '-' }}</strong>
+					<span>{{ $tc("kara.tagtypes.authors", count.authors) }}</span>
 				</nuxt-link>
 			</li>
 			<li key="songwriter">
 				<nuxt-link to="/types/songwriters" class="km-home--stats--link">
-					<strong>{{count.songwriters>0 ? count.songwriters : '-'}}</strong>
-					<span>{{$tc("kara.tagtypes.songwriters", count.songwriters)}}</span>
+					<strong>{{ count.songwriters>0 ? count.songwriters : '-' }}</strong>
+					<span>{{ $tc("kara.tagtypes.songwriters", count.songwriters) }}</span>
 				</nuxt-link>
 			</li>
 			<li key="mediasize">
-				<span>{{$t("stats.media_size")}}</span> :
-				<strong>{{count.mediasize !== 0 ? count.mediasize : '-'}}</strong>
+				<span>{{ $t("stats.media_size") }}</span> :
+				<strong>{{ count.mediasize !== 0 ? count.mediasize : '-' }}</strong>
 			</li>
-			<li class="km-home--stats--wide" key="lastGeneration">
-				<span>{{$t("stats.last_generation")}}</span> :
-				<strong>{{count.lastGeneration ? new Date(count.lastGeneration).toLocaleString() : '-'}}</strong>
+			<li key="lastGeneration" class="km-home--stats--wide">
+				<span>{{ $t("stats.last_generation") }}</span> :
+				<strong>{{ count.lastGeneration ? new Date(count.lastGeneration).toLocaleString() : '-' }}</strong>
 			</li>
-			<li class="km-home--stats--wide" key="duration">
-				<span>{{$t("stats.all_duration")}} :</span>
-				<strong>{{count.duration ? count.duration : '-'}}</strong>
+			<li key="duration" class="km-home--stats--wide">
+				<span>{{ $t("stats.all_duration") }} :</span>
+				<strong>{{ count.duration ? count.duration : '-' }}</strong>
 			</li>
 		</ul>
 	</div>
 </template>
 
 <script lang="ts">
-	import Vue from "vue";
+	import Vue from 'vue';
 	import prettyBytes from 'pretty-bytes';
 	import duration from '~/assets/date';
 
 	export default Vue.extend({
+		async asyncData({ $axios, app }) {
+			const result = await $axios.get('/api/karas/stats');
+			const count = result.data;
+			if (count.mediasize) { count.mediasize = prettyBytes(Number(count.mediasize)); }
+			if (count.mediasize) {
+				const durationArray = duration(count.duration);
+				let returnString = '';
+				if (durationArray[0] !== 0) { returnString += `${durationArray[0]} ${app.i18n.t('duration.days')} `; }
+				if (durationArray[1] !== 0) { returnString += `${durationArray[1]} ${app.i18n.t('duration.hours')} `; }
+				if (durationArray[2] !== 0) { returnString += `${durationArray[2]} ${app.i18n.t('duration.minutes')} `; }
+				if (durationArray[3] !== 0) { returnString += `${durationArray[3]} ${app.i18n.t('duration.seconds')} `; }
+				count.duration = returnString;
+			}
+			count.lastGeneration = (await $axios.get('/api/karas/lastUpdate')).data;
+			return { count };
+		},
 		data() {
 			return {
 				explorerHost: process.env.EXPLORER_HOST,
@@ -86,26 +106,10 @@
 				}
 			};
 		},
-		async asyncData({$axios, app}) {
-			let result = await $axios.get("/api/karas/stats");
-			let count = result.data;
-			if (count.mediasize) count.mediasize = prettyBytes(Number(count.mediasize));
-			if (count.mediasize) {
-				const durationArray = duration(count.duration);
-				let returnString = '';
-				if (durationArray[0] !== 0) returnString += `${durationArray[0]} ${app.i18n.t("duration.days")} `;
-				if (durationArray[1] !== 0) returnString += `${durationArray[1]} ${app.i18n.t("duration.hours")} `;
-				if (durationArray[2] !== 0) returnString += `${durationArray[2]} ${app.i18n.t("duration.minutes")} `;
-				if (durationArray[3] !== 0) returnString += `${durationArray[3]} ${app.i18n.t("duration.seconds")} `;
-				count.duration = returnString;
-			}
-			count.lastGeneration = (await $axios.get("/api/karas/lastUpdate")).data;
-			return {count: count};
-		},
 		head() {
 			return {
 				title: this.$t('titles.home') as string
-			}
+			};
 		}
 	});
 </script>

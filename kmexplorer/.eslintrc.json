@@ -1,5 +1,41 @@
 {
 	"extends": [
 		"@nuxtjs/eslint-config-typescript"
+	],
+	"rules": {
+		"no-tabs": "off",
+		"indent": [
+            "error",
+            "tab"
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+		],
+		"vue/script-indent": [
+			"error",
+			"tab",
+			{ "baseIndent": 1 }
+		],
+		"vue/html-indent": [
+			"error",
+			"tab",
+			{ "baseIndent": 1 }
+		],
+		"no-console": "warn",
+		"space-before-function-paren": "off",
+		"camelcase": "off"
+	},
+	"overrides": [
+		{
+			"files": ["*.vue"],
+			"rules": {
+				"indent": "off"
+			}
+		}
 	]
 }

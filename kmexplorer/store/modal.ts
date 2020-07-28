@@ -1,11 +1,11 @@
-import { Module, VuexModule, Mutation } from 'vuex-module-decorators'
+import { Module, VuexModule, Mutation } from 'vuex-module-decorators';
 
 export type ModalType = 'auth' | 'profile';
 
 @Module({
 	name: 'modal',
 	stateFactory: true,
-	namespaced: true,
+	namespaced: true
 })
 export default class Modal extends VuexModule {
 	auth: boolean = false

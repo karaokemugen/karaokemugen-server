@@ -1,8 +1,8 @@
 <template>
 	<div class="is-ancestor">
-		<pagination :page="page" :last-page="total" @page="setPage"></pagination>
+		<pagination :page="page" :last-page="total" @page="setPage" />
 
-		<div class="tags" v-if="tags.content.length > 0">
+		<div v-if="tags.content.length > 0" class="tags">
 			<tag
 				v-for="tag in tags.content"
 				:key="tag.tid"
@@ -13,21 +13,23 @@
 				showkaracount
 			/>
 		</div>
-		<pagination :page="page" :last-page="total" @page="setPage"></pagination>
+		<pagination :page="page" :last-page="total" @page="setPage" />
 
-		<loading-nanami class="tile is-parent is-12" v-if="loading"></loading-nanami>
+		<loading-nanami v-if="loading" class="tile is-parent is-12" />
 	</div>
 </template>
 
 <script lang="ts">
-	import Vue from "vue";
-	import Tag from "~/components/Tag.vue";
-	import {Tag as TagType} from '%/lib/types/tag';
-	import {tagTypesMap, tagTypes} from "~/assets/constants";
-	import LoadingNanami from "~/components/LoadingNanami.vue";
-	import Pagination from "~/components/Pagination.vue";
-	import { menuBarStore } from "~/store";
-	import {DBTag} from "%/lib/types/database/tag";
+	import Vue from 'vue';
+
+	import Tag from '~/components/Tag.vue';
+	import { tagTypesMap, tagTypes } from '~/assets/constants';
+	import LoadingNanami from '~/components/LoadingNanami.vue';
+	import Pagination from '~/components/Pagination.vue';
+	import { menuBarStore } from '~/store';
+
+	import { Tag as TagType } from '%/lib/types/tag';
+	import { DBTag } from '%/lib/types/database/tag';
 
 	interface TagsRequest {
 		from: number,
@@ -51,18 +53,43 @@
 	}
 
 	export default Vue.extend({
-		name: "ListTag",
+		name: 'ListTag',
 		components: {
 			LoadingNanami,
 			Tag,
 			Pagination
 		},
 
+		async asyncData({ params, $axios, error, app }) {
+			const res = await $axios
+				.get(`/api/karas/tags/${tagTypes[params.id].type}`, {
+					params: {
+						from: 0,
+						size: 100
+					}
+				})
+				.catch(_err =>
+					error({ statusCode: 404, message: app.i18n.t('tag.notfound') as string })
+				);
+			if (res && res.data) {
+				res.data.content = res.data.content.filter(
+					(tag: TagType) => tag.karacount && Object.keys(tag.karacount).length > 0
+				);
+				return {
+					tags: res.data,
+					type: params.id,
+					total: res.data.content.length > 0 && Math.ceil(res.data.content[0].count / 100)
+				};
+			} else {
+				error({ statusCode: 500, message: 'Huh?' });
+			}
+		},
+
 		data(): VState {
 			return {
 				tagTypesMap,
 				tags: {
-					infos: {count: 0, from: 0, to: 0},
+					infos: { count: 0, from: 0, to: 0 },
 					content: []
 				},
 				sort: 'az',
@@ -71,6 +98,25 @@
 				total: 1,
 				type: -1
 			};
+		},
+
+		computed: {
+			reqParams(): TagsRequest {
+				return {
+					from: (this.page - 1) * 100,
+					size: 100,
+					order: this.sort
+				};
+			}
+		},
+
+		watch: {
+			loading(now, _old) {
+				if (now) { this.$nuxt.$loading.start(); } else { this.$nuxt.$loading.finish(); }
+			},
+			sort(_now, _old) {
+				this.setPage(1);
+			}
 		},
 
 		activated() {
@@ -88,14 +134,14 @@
 
 		destroyed() {
 			// No need to unsubscribe on deactivated, it's only to refresh the sort mode
-			if (this.VuexUnsubscribe) this.VuexUnsubscribe();
+			if (this.VuexUnsubscribe) { this.VuexUnsubscribe(); }
 		},
 
 		methods: {
 			async setPage(e: number): Promise<void> {
 				this.page = e;
 				this.loading = true;
-				const {data} = await this.$axios.get(
+				const { data } = await this.$axios.get(
 					`/api/karas/tags/${tagTypes[this.type].type}`,
 					{
 						params: this.reqParams
@@ -109,53 +155,8 @@
 			}
 		},
 
-		validate({params}) {
+		validate({ params }) {
 			return typeof tagTypes[params.id] === 'object';
-		},
-
-		async asyncData({params, $axios, error, app}) {
-			const res = await $axios
-				.get(`/api/karas/tags/${tagTypes[params.id].type}`, {
-					params: {
-						from: 0,
-						size: 100
-					}
-				})
-				.catch(_err =>
-					error({statusCode: 404, message: app.i18n.t("tag.notfound") as string})
-				);
-			if (res && res.data) {
-				res.data.content = res.data.content.filter(
-					(tag: TagType) => tag.karacount && Object.keys(tag.karacount).length > 0
-				);
-				return {
-					tags: res.data,
-					type: params.id,
-					total: res.data.content.length > 0 && Math.ceil(res.data.content[0].count / 100)
-				};
-			} else {
-				error({statusCode: 500, message: 'Huh?'});
-			}
-		},
-
-		watch: {
-			loading(now, _old) {
-				if (now) this.$nuxt.$loading.start();
-				else this.$nuxt.$loading.finish();
-			},
-			sort(now, _old) {
-				this.setPage(1);
-			}
-		},
-
-		computed: {
-			reqParams(): TagsRequest {
-				return {
-					from: (this.page - 1) * 100,
-					size: 100,
-					order: this.sort
-				}
-			}
 		}
 	});
 </script>

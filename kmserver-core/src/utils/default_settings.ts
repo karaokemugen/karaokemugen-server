@@ -372,7 +372,7 @@ export let NuxtConfig: NuxtConfigType = {
 
 	sentry: {
 		dsn: process.env.SENTRY_DSN || sentryDSN,
-		disabled: process.env.SENTRY_TEST,
+		disabled: false,
 		publishRelease: false
 	},
 

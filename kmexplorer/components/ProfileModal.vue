@@ -1,7 +1,7 @@
 <template>
 	<div class="modal" :class="{'is-active': active}">
 		<form action="#" @submit.prevent="submitForm">
-			<div class="modal-background"></div>
+			<div class="modal-background" />
 			<div class="modal-card">
 				<header>
 					<div class="modal-card-head">
@@ -15,10 +15,10 @@
 							:class="{'is-active' : mode === 'series' }"
 							@click="mode='series'"
 						>{{ $t('modal.profile.series_name.label') }}</a>
-						<a class="delete" aria-label="close" @click="closeModal"></a>
+						<a class="delete" aria-label="close" @click="closeModal" />
 					</div>
 				</header>
-				<section class="modal-card-body" v-if="mode === 'general'">
+				<section v-if="mode === 'general'" class="modal-card-body">
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
 							<label for="title" class="label">{{ $t('modal.profile.fields.username.label') }}</label>
@@ -27,17 +27,19 @@
 							<div class="field has-addons">
 								<div class="control">
 									<input
+										id="title"
+										v-model="user.login"
 										type="text"
 										name="title"
-										id="title"
 										class="input is-static"
 										readonly
 										autocomplete="login"
-										v-model="user.login"
-									/>
+									>
 								</div>
 								<div class="control">
-									<div class="input is-static">{{`@${apiHost}`}}</div>
+									<div class="input is-static">
+										{{ `@${apiHost}` }}
+									</div>
 								</div>
 							</div>
 						</div>
@@ -50,14 +52,75 @@
 							<div class="field">
 								<div class="control">
 									<input
+										id="nickname"
+										v-model="user.nickname"
 										type="text"
 										name="nickname"
-										id="nickname"
 										class="input"
 										required
 										autocomplete="nickname"
-										v-model="user.nickname"
-									/>
+									>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="field is-horizontal">
+						<div class="field-label is-normal">
+							<label for="email" class="label">{{ $t('modal.profile.fields.email.label') }}</label>
+						</div>
+						<div class="field-body">
+							<div class="field">
+								<div class="control">
+									<input
+										id="email"
+										v-model="user.email"
+										type="text"
+										name="email"
+										class="input"
+										required
+										:placeholder="$t('modal.profile.fields.email.placeholder')"
+										autocomplete="email"
+									>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="field is-horizontal">
+						<div class="field-label is-normal">
+							<label for="url" class="label">{{ $t('modal.profile.fields.url.label') }}</label>
+						</div>
+						<div class="field-body">
+							<div class="field">
+								<div class="control">
+									<input
+										id="url"
+										v-model="user.url"
+										type="text"
+										name="url"
+										class="input"
+										:placeholder="$t('modal.profile.fields.url.placeholder')"
+										autocomplete="url"
+									>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="field is-horizontal">
+						<div class="field-label is-normal">
+							<label for="bio" class="label">{{ $t('modal.profile.fields.bio.label') }}</label>
+						</div>
+						<div class="field-body">
+							<div class="field">
+								<div class="control">
+									<input
+										id="bio"
+										v-model="user.bio"
+										type="text"
+										name="bio"
+										class="input"
+										:placeholder="$t('modal.profile.fields.bio.placeholder')"
+										autocomplete="bio"
+									>
 								</div>
 							</div>
 						</div>
@@ -70,14 +133,14 @@
 							<div class="field">
 								<div class="control">
 									<input
+										id="password"
+										v-model="user.password"
 										type="password"
 										name="password"
-										id="password"
 										class="input"
 										:placeholder="$t('modal.profile.fields.password.placeholder')"
 										autocomplete="current-password"
-										v-model="user.password"
-									/>
+									>
 								</div>
 							</div>
 						</div>
@@ -93,100 +156,26 @@
 							<div class="field">
 								<div class="control">
 									<input
+										id="password_confirmation"
+										v-model="user.password_confirmation"
 										type="password"
 										name="password_confirmation"
-										id="password_confirmation"
 										class="input"
 										:placeholder="$t('modal.profile.fields.password_confirmation.placeholder')"
 										autocomplete="password-confirmation"
-										v-model="user.password_confirmation"
-									/>
+									>
 									<p
+										v-if="passwordNotEquals"
 										class="help is-danger"
-										v-if="passwordNotEquals()"
-									>{{ $t('modal.profile.passwords_mismatch') }}</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="field is-horizontal">
-						<div class="field-label is-normal">
-							<label for="email" class="label">{{ $t('modal.profile.fields.email.label') }}</label>
-						</div>
-						<div class="field-body">
-							<div class="field">
-								<div class="control">
-									<input
-										type="text"
-										name="email"
-										id="email"
-										class="input"
-										required
-										:placeholder="$t('modal.profile.fields.email.placeholder')"
-										autocomplete="email"
-										v-model="user.email"
-									/>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="field is-horizontal">
-						<div class="field-label is-normal">
-							<label for="url" class="label">{{ $t('modal.profile.fields.url.label') }}</label>
-						</div>
-						<div class="field-body">
-							<div class="field">
-								<div class="control">
-									<input
-										type="text"
-										name="url"
-										id="url"
-										class="input"
-										:placeholder="$t('modal.profile.fields.url.placeholder')"
-										autocomplete="url"
-										v-model="user.url"
-									/>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="field is-horizontal">
-						<div class="field-label is-normal">
-							<label for="bio" class="label">{{ $t('modal.profile.fields.bio.label') }}</label>
-						</div>
-						<div class="field-body">
-							<div class="field">
-								<div class="control">
-									<input
-										type="text"
-										name="bio"
-										id="bio"
-										class="input"
-										:placeholder="$t('modal.profile.fields.bio.placeholder')"
-										autocomplete="bio"
-										v-model="user.bio"
-									/>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="field is-horizontal">
-						<div class="field-label is-normal"></div>
-						<div class="field-body">
-							<div class="field">
-								<div class="control">
-									<button
-										type="button"
-										class="button is-danger"
-										@click="deleteUser"
-									>{{$t('modal.profile.delete')}}
-									</button>
+									>
+										{{ $t('modal.profile.passwords_mismatch') }}
+									</p>
 								</div>
 							</div>
 						</div>
 					</div>
 				</section>
-				<section class="modal-card-body" v-if="mode === 'series'">
+				<section v-if="mode === 'series'" class="modal-card-body">
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
 							<label for="title" class="label">{{ $t('modal.profile.series_name.label') }}</label>
@@ -196,14 +185,23 @@
 								<div class="control">
 									<div class="select">
 										<select v-model="user.series_lang_mode">
-											<option :value="-1">{{ $t('modal.profile.series_name.mode_no_pref') }}
+											<option :value="-1">
+												{{ $t('modal.profile.series_name.mode_no_pref') }}
 											</option>
-											<option :value="0">{{ $t('modal.profile.series_name.original_name') }}
+											<option :value="0">
+												{{ $t('modal.profile.series_name.original_name') }}
 											</option>
-											<option :value="1">{{ $t('modal.profile.series_name.song_lang') }}</option>
-											<option :value="2">{{ $t('modal.profile.series_name.mode_admin') }}</option>
-											<option :value="3">{{ $t('modal.profile.series_name.user_lang') }}</option>
-											<option :value="4">{{ $t('modal.profile.series_name.force_lang_series') }}
+											<option :value="1">
+												{{ $t('modal.profile.series_name.song_lang') }}
+											</option>
+											<option :value="2">
+												{{ $t('modal.profile.series_name.mode_admin') }}
+											</option>
+											<option :value="3">
+												{{ $t('modal.profile.series_name.user_lang') }}
+											</option>
+											<option :value="4">
+												{{ $t('modal.profile.series_name.force_lang_series') }}
 											</option>
 										</select>
 									</div>
@@ -211,7 +209,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="field is-horizontal" v-if="user.series_lang_mode === 4">
+					<div v-if="user.series_lang_mode === 4" class="field is-horizontal">
 						<div class="field-label is-normal">
 							<label
 								for="title"
@@ -223,9 +221,9 @@
 								<div class="control">
 									<div class="select">
 										<b-autocomplete
+											v-model="main_series_lang_name"
 											keep-first
 											open-on-focus
-											v-model="main_series_lang_name"
 											:data="getListLangsMain"
 											@select="option => user.main_series_lang = get3BCode(option)"
 										/>
@@ -234,7 +232,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="field is-horizontal" v-if="user.series_lang_mode === 4">
+					<div v-if="user.series_lang_mode === 4" class="field is-horizontal">
 						<div class="field-label is-normal">
 							<label
 								for="title"
@@ -246,9 +244,9 @@
 								<div class="control">
 									<div class="select">
 										<b-autocomplete
+											v-model="fallback_series_lang_name"
 											keep-first
 											open-on-focus
-											v-model="fallback_series_lang_name"
 											:data="getListLangsFallback"
 											@select="option => user.fallback_series_lang = get3BCode(option)"
 										/>
@@ -262,9 +260,17 @@
 					<button
 						class="button is-success"
 						:class="{'is-loading': loading}"
-						:disabled="passwordNotEquals()"
+						:disabled="passwordNotEquals"
 						type="submit"
-					>{{ $t('modal.profile.submit') }}
+					>
+						{{ $t('modal.profile.submit') }}
+					</button>
+					<button
+						type="button"
+						class="button is-danger"
+						@click="deleteUser"
+					>
+						{{ $t('modal.profile.delete') }}
 					</button>
 				</footer>
 			</div>
@@ -273,13 +279,13 @@
 </template>
 
 <script lang="ts">
-	import Vue from "vue";
-	import languages from "@cospired/i18n-iso-languages";
+	import Vue from 'vue';
+	import languages from '@cospired/i18n-iso-languages';
 
-	languages.registerLocale(require("@cospired/i18n-iso-languages/langs/en.json"));
-	languages.registerLocale(require("@cospired/i18n-iso-languages/langs/fr.json"));
+	import { DBUser } from '%/lib/types/database/user';
 
-	import {DBUser} from "%/lib/types/database/user";
+	languages.registerLocale(require('@cospired/i18n-iso-languages/langs/en.json'));
+	languages.registerLocale(require('@cospired/i18n-iso-languages/langs/fr.json'));
 
 	interface DBUserEdit extends DBUser {
 		password_confirmation?: string
@@ -295,48 +301,59 @@
 	}
 
 	export default Vue.extend({
-		name: "ProfileModal",
+		name: 'ProfileModal',
 
-		props: ["active"],
+		props: ['active'],
 
 		data(): VState {
 			return {
 				apiHost: process.env.API_HOST,
 				user: {
-					login: "",
-					nickname: "",
-					password: "",
-					bio: "",
-					email: "",
+					login: '',
+					nickname: '',
+					password: '',
+					bio: '',
+					email: '',
 					series_lang_mode: -1,
 					main_series_lang: '',
 					fallback_series_lang: '',
 					url: '',
 					avatar_file: ''
 				},
-				main_series_lang_name: "",
-				fallback_series_lang_name: "",
-				mode: "general",
+				main_series_lang_name: '',
+				fallback_series_lang_name: '',
+				mode: 'general',
 				loading: false
 			};
 		},
 
 		computed: {
 			getListLangsMain(): string[] {
-				return this.listLangs(this.main_series_lang_name || "");
+				return this.listLangs(this.main_series_lang_name || '');
 			},
 			getListLangsFallback(): string[] {
-				return this.listLangs(this.fallback_series_lang_name || "");
+				return this.listLangs(this.fallback_series_lang_name || '');
+			},
+			storeUser(): DBUserEdit {
+				return this.$store.state.auth.user as unknown as DBUserEdit;
+			},
+			passwordNotEquals(): boolean {
+				return this.user.password !== this.user?.password_confirmation;
+			}
+		},
+
+		watch: {
+			active(now, _old) {
+				if (now) {
+					this.getUser();
+				}
 			}
 		},
 
 		methods: {
-			passwordNotEquals(): boolean {
-				return this.user.password !== this.user?.password_confirmation;
-			},
 			listLangs(name: string): string[] {
-				let listLangs = [];
-				for (let [key, value] of Object.entries(
+				const listLangs = [];
+				for (const [key, value] of Object.entries(
 					languages.getNames(languages.alpha3BToAlpha2(this.$i18n.locale))
 				)) {
 					listLangs.push(value);
@@ -352,31 +369,23 @@
 				);
 			},
 			getUser(): void {
-				if (this.$auth.loggedIn) this.user = this.$auth.user as unknown as DBUser;
+				if (this.storeUser) { this.user = { ...this.storeUser }; }
 			},
 			deleteUser(): void {
 				this.$axios.delete('/api/myaccount');
-				this.$emit("logout");
+				this.$emit('logout');
 				this.closeModal();
 			},
 			async submitForm(): Promise<void> {
 				this.loading = true;
-				let response = await this.$axios.put('/api/myaccount', this.user);
+				const response = await this.$axios.put('/api/myaccount', this.user);
 				// Refresh auth
 				await this.$auth.setUserToken(response.data.data.token);
 				this.loading = false;
 				this.closeModal();
 			},
 			closeModal(): void {
-				this.$emit("close");
-			}
-		},
-
-		watch: {
-			active(now, _old) {
-				if (now) {
-					this.getUser();
-				}
+				this.$emit('close');
 			}
 		}
 	});

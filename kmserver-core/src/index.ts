@@ -19,8 +19,8 @@ import { initMailer } from './utils/mailer';
 import dotenv from 'dotenv';
 import sentry from './utils/sentry';
 import {buildKMExplorer} from './services/kmexplorer';
+import pjson from '../../package.json';
 
-const pjson = require('../../package.json');
 const appPath = join(__dirname,'../../');
 const dataPath = resolve(appPath, 'app/');
 const resourcePath = appPath;
