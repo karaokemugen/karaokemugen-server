@@ -160,12 +160,12 @@
 			return {
 				meta: [
 					{
+						hid: 'twitter-title',
 						name: 'twitter:title', // @ts-ignore: mais.
 						content: this.$t('kara.meta', { // @ts-ignore: mais²
 							songtitle: this.karaoke.title, serieSinger: this.serieSinger.name
 						}) as string
 					}
-					// { name: 'twitter:title', content: `${this.karaoke.title} ${this.serieSinger}` }
 				]
 			};
 		}

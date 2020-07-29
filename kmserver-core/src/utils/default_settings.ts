@@ -320,9 +320,9 @@ export let NuxtConfig: NuxtConfigType = {
 		meta: [
 			{ charset: 'utf-8' },
 			{ name: 'viewport', content: 'width=device-width, initial-scale=1' },
-			{ name: 'twitter:card', content: 'summary' },
-			{ name: 'twitter:site', content: '@KaraokeMugen' },
-			{ name: 'twitter:title', content: 'Explore, Find, Sing!' }
+			{ hid: 'twitter-card', name: 'twitter:card', content: 'summary' },
+			{ hid: 'twitter-site', name: 'twitter:site', content: '@KaraokeMugen' },
+			{ hid: 'twitter-title', name: 'twitter:title', content: 'Explore, Find, Sing!' }
 		]
 	},
 
