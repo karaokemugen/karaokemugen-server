@@ -1,7 +1,7 @@
 <template>
 	<div class="modal" :class="{'is-active': active}">
 		<form action="#" @submit.prevent="submitForm">
-			<div class="modal-background" />
+			<div class="modal-background" @click="closeModal" />
 			<div class="modal-card">
 				<header>
 					<div class="modal-card-head">
@@ -58,7 +58,7 @@
 										name="nickname"
 										class="input"
 										required
-										autocomplete="nickname"
+										autocomplete="username"
 									>
 								</div>
 							</div>
@@ -79,7 +79,6 @@
 										class="input"
 										required
 										:placeholder="$t('modal.profile.fields.email.placeholder')"
-										autocomplete="email"
 									>
 								</div>
 							</div>
@@ -99,7 +98,6 @@
 										name="url"
 										class="input"
 										:placeholder="$t('modal.profile.fields.url.placeholder')"
-										autocomplete="url"
 									>
 								</div>
 							</div>
@@ -119,12 +117,14 @@
 										name="bio"
 										class="input"
 										:placeholder="$t('modal.profile.fields.bio.placeholder')"
-										autocomplete="bio"
 									>
 								</div>
 							</div>
 						</div>
 					</div>
+					<h2 class="subtitle">
+						{{ $t('modal.profile.fields.password.header') }}
+					</h2>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
 							<label for="password" class="label">{{ $t('modal.profile.fields.password.label') }}</label>
@@ -139,7 +139,7 @@
 										name="password"
 										class="input"
 										:placeholder="$t('modal.profile.fields.password.placeholder')"
-										autocomplete="current-password"
+										autocomplete="new-password"
 									>
 								</div>
 							</div>
@@ -162,7 +162,7 @@
 										name="password_confirmation"
 										class="input"
 										:placeholder="$t('modal.profile.fields.password_confirmation.placeholder')"
-										autocomplete="password-confirmation"
+										autocomplete="new-password"
 									>
 									<p
 										v-if="passwordNotEquals"
@@ -374,6 +374,7 @@
 			deleteUser(): void {
 				this.$axios.delete('/api/myaccount');
 				this.$emit('logout');
+				this.$auth.logout();
 				this.closeModal();
 			},
 			async submitForm(): Promise<void> {
@@ -398,6 +399,10 @@
 
 	.is-active {
 		color: #1dd2af;
+	}
+
+	h2.subtitle {
+		font-weight: bold;
 	}
 
 	.select select option {

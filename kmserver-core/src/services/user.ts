@@ -124,6 +124,7 @@ export async function findUserByName(username: string, opts: UserOptions = {}) {
 	try {
 		const user = await selectUser('pk_login', username);
 		if (!user) return false;
+		user.password_last_modified_at = new Date(user.password_last_modified_at);
 		if (opts.public) {
 			delete user.email;
 		}

@@ -10,7 +10,7 @@ export const optionalAuth = (req, res, next) => {
 	if (req.get('authorization')) {
 		const token = decode(req.get('authorization'), getConfig().App.JwtSecret);
 		req.authToken = token;
-		findUserByName(token.username)
+		findUserByName(token.username, {password: true})
 			.then((user) => {
 				if (!user) {
 					res.status(403).send('User logged in unknown');

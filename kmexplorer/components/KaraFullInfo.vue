@@ -17,38 +17,40 @@
 			</template>
 		</i18n>
 		<h6 class="subtitle is-6 no-top-margin">
-			<nuxt-link :to="`/years/${karaoke.year}`">{{ karaoke.year }}</nuxt-link>
+			<nuxt-link :to="`/years/${karaoke.year}`">
+				{{ karaoke.year }}
+			</nuxt-link>
 		</h6>
 		<table class="tagList">
 			<tbody>
-			<tr v-for="type in Object.keys(tagTypesSorted)" v-if="karaoke[type].length > 0">
-				<td>
-					<span class="name"><font-awesome-icon :icon="['fas', tagTypes[type].icon]" :fixed-width="true"/> {{ $tc(`kara.tagtypes.${type}`, karaoke[type].length) }}</span>
-				</td>
-				<td>
-					<div class="tags are-medium">
-						<tag :type="type" :tag="tag" v-for="tag in karaoke[type]" :key="tag.tid"></tag>
-					</div>
-				</td>
-			</tr>
+				<tr v-for="type in Object.keys(tagTypesSorted)" :key="type">
+					<td>
+						<span class="name"><font-awesome-icon :icon="['fas', tagTypes[type].icon]" :fixed-width="true" /> {{ $tc(`kara.tagtypes.${type}`, karaoke[type].length) }}</span>
+					</td>
+					<td>
+						<div class="tags are-medium">
+							<tag v-for="tag in karaoke[type]" :key="tag.tid" :type="type" :tag="tag" />
+						</div>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 		<div class="buttons">
 			<a :href="kmAppUrl" class="button is-success">
-				<font-awesome-icon :icon="['fas', 'cloud-download-alt']" :fixed-width="true"></font-awesome-icon>
-				{{$t('kara.add')}}
+				<font-awesome-icon :icon="['fas', 'cloud-download-alt']" :fixed-width="true" />
+				{{ $t('kara.add') }}
 			</a>
-			<button class="button is-warning" @click="toggleFavorite" v-if="favorite" :class="{'is-loading': loading}">
-				<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true"></font-awesome-icon>
-				{{$t('kara.favorites.remove')}}
+			<button v-if="favorite" class="button is-warning" :class="{'is-loading': loading}" @click="toggleFavorite">
+				<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
+				{{ $t('kara.favorites.remove') }}
 			</button>
-			<button class="button is-warning" @click="toggleFavorite" v-else :class="{'is-loading': loading}">
-				<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true"></font-awesome-icon>
-				{{$t('kara.favorites.add')}}
+			<button v-else class="button is-warning" :class="{'is-loading': loading}" @click="toggleFavorite">
+				<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
+				{{ $t('kara.favorites.add') }}
 			</button>
 			<a :href="bundleUrl" class="button" :download="`${serieSinger.name} - ${karaoke.title}.karabundle.json`">
-				<font-awesome-icon :icon="['fas', 'file-export']" :fixed-width="true"></font-awesome-icon>
-				{{$t('kara.download')}}
+				<font-awesome-icon :icon="['fas', 'file-export']" :fixed-width="true" />
+				{{ $t('kara.download') }}
 			</a>
 		</div>
 	</div>
@@ -58,10 +60,10 @@
 	import Vue from 'vue';
 	import slug from 'slug';
 
-	import {tagType, tagTypes} from "~/assets/constants";
+	import { tagTypes } from '~/assets/constants';
 	import Tag from '~/components/Tag.vue';
-	import {modalStore} from "~/store";
-	import {serieSinger} from "~/types/serieSinger";
+	import { modalStore } from '~/store';
+	import { serieSinger } from '~/types/serieSinger';
 
 	interface VState {
 		tagTypes: typeof tagTypes,
@@ -70,26 +72,32 @@
 	}
 
 	export default Vue.extend({
-		name: "KaraFullInfo",
-
-		props: ['karaoke'],
+		name: 'KaraFullInfo',
 
 		components: {
 			Tag
 		},
+
+		props: ['karaoke'],
 
 		data(): VState {
 			return {
 				tagTypes,
 				favorite: false,
 				loading: false
-			}
+			};
 		},
 
 		computed: {
 			tagTypesSorted(): object {
-				let tagTypes = {...this.tagTypes};
+				const tagTypes = { ...this.tagTypes };
 				delete tagTypes.songtypes; // Don't show songtypes on full view, as it's already shown in the title
+				// Remove unused tagTypes in context
+				for (const tagType in tagTypes) {
+					if (this.karaoke[tagType].length === 0) {
+						delete tagTypes[tagType];
+					}
+				}
 				return tagTypes;
 			},
 			serieSinger(): serieSinger {
@@ -128,7 +136,7 @@
 		},
 
 		created() {
-			if (this.karaoke?.flag_favorites) this.favorite = true;
+			if (this.karaoke?.flag_favorites) { this.favorite = true; }
 		},
 
 		methods: {
@@ -136,9 +144,9 @@
 				if (this.$auth.loggedIn) {
 					this.loading = true;
 					if (this.favorite) {
-						await this.$axios.delete(`/api/favorites/${this.karaoke.kid}`)
+						await this.$axios.delete(`/api/favorites/${this.karaoke.kid}`);
 					} else {
-						await this.$axios.post(`/api/favorites/${this.karaoke.kid}`)
+						await this.$axios.post(`/api/favorites/${this.karaoke.kid}`);
 					}
 					this.favorite = !this.favorite;
 					this.loading = false;
@@ -146,6 +154,20 @@
 					modalStore.openModal('auth');
 				}
 			}
+		},
+
+		head() {
+			return {
+				meta: [
+					{
+						name: 'twitter:title', // @ts-ignore: mais.
+						content: this.$t('kara.meta', { // @ts-ignore: mais²
+							songtitle: this.karaoke.title, serieSinger: this.serieSinger.name
+						}) as string
+					}
+					// { name: 'twitter:title', content: `${this.karaoke.title} ${this.serieSinger}` }
+				]
+			};
 		}
 	});
 </script>

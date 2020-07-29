@@ -91,7 +91,17 @@
 		head() {
 			return {
 				// @ts-ignore: no?
-				title: this.karaoke.title
+				title: this.karaoke.title,
+				meta: [
+					{ name: 'twitter:card', content: 'player' },
+					// @ts-ignore: No. :c
+					{ name: 'twitter:player', content: `${process.env.LIVE_URL}/?video=${this.karaoke.kid}` },
+					{ name: 'twitter:player:height', content: '720' },
+					{ name: 'twitter:player:width', content: '1280' },
+					// @ts-ignore: rah :O
+					{ name: 'twitter:image', content: `/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg` }
+					// The rest of meta tags is handled by KaraFullInfo.vue
+				]
 			};
 		}
 	});
