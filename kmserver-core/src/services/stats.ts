@@ -54,10 +54,10 @@ export async function processStatsPayload(payload: any) {
 			upsertPlayed(payload.viewcounts),
 			upsertRequests(payload.requests)
 		]);
-		logger.info(`[Stats] Received payload from instance ${payload.instance.instance_id}`);
+		logger.info(`Received payload from instance ${payload.instance.instance_id}`, {service: 'Shortener'});
 	} catch(err) {
-		logger.error(`[Stats] Error with payload from ${payload.instance.instance_id} : ${err}`);
-		logger.debug(`[Stats] Payload in error : ${JSON.stringify(payload, null, 2)}`);
+		logger.error(`Error with payload from ${payload.instance.instance_id}`, {service: 'Shortener', obj: err});
+		logger.debug('Payload in error', {service: 'Stats', obj: payload});
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
 		throw err;

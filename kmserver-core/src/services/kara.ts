@@ -51,7 +51,7 @@ export async function generate() {
 		const karas = await getAllKaras();
 		await createImagePreviews(karas);
 	} catch(err) {
-		logger.error(`[Gen] ${err}`);
+		logger.error('', {service: 'Gen', obj: err});
 		sentry.error(err, 'Fatal');
 	}
 }
@@ -136,7 +136,7 @@ export async function getAllKaras(filter?: string, from = 0, size = 0, mode?: Mo
 	} catch(err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
-		logger.error(`[GetAllKaras] ${err}`);
+		logger.error('', {service: 'GetAllKaras', obj: err});
 		throw err;
 	}
 }
@@ -203,6 +203,7 @@ export async function newKaraIssue(kid: string, type: 'quality' | 'time', commen
 		modeValue: kid
 	});
 	const kara = karas[0];
+	logger.debug('Kara:', {service: 'GitLab', obj: kara});
 	let singerOrSerie = kara.series.length > 0 && kara.series[0].name || (kara.singers.length > 0 && kara.singers[0].name) || '';
 	let langs = (kara.langs.length > 0 && kara.langs[0].name.toUpperCase()) || '';
 	let songtype = (kara.songtypes.length > 0 && kara.songtypes[0].name) || '';
@@ -210,7 +211,6 @@ export async function newKaraIssue(kid: string, type: 'quality' | 'time', commen
 	const conf = getConfig();
 	const issueTemplate = type === 'quality' ? conf.Gitlab.IssueTemplate.KaraProblem.Quality : conf.Gitlab.IssueTemplate.KaraProblem.Time;
 	let title = issueTemplate.Title || '$kara';
-	logger.debug('[GitLab] Kara: '+JSON.stringify(kara, null, 2));
 	title = title.replace('$kara', karaName);
 	let desc = issueTemplate.Description || '';
 	desc = desc.replace('$username', username)
@@ -219,7 +219,7 @@ export async function newKaraIssue(kid: string, type: 'quality' | 'time', commen
 	try {
 		if (conf.Gitlab.Enabled) return await gitlabPostNewIssue(title, desc, issueTemplate.Labels);
 	} catch(err) {
-		logger.error(`[KaraProblem] Call to Gitlab API failed : ${err}`);
+		logger.error('Call to Gitlab API failed', {service: 'GitLab', obj: err});
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err, 'Warning');
 		throw err;

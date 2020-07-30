@@ -124,7 +124,7 @@ export function initFrontend(listenPort: number) {
 	const port = listenPort;
 	const server = createServer(app);
 	initWS(server);
-	server.listen(port, () => logger.info(`[App] App listening on ${port}`));
+	server.listen(port, () => logger.info(`App listening on ${port}`, {service: 'App'}));
 }
 
 function api() {

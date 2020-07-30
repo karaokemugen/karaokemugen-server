@@ -37,7 +37,7 @@ export default function authController(router: Router) {
 			res.send(token);
 		} catch(err) {
 			if (err !== false) {
-				logger.error(`[User] Failed to login ${req.body.username}: ${err}`);
+				logger.error(`Failed to login ${req.body.username}`, {service: 'User', obj: err});
 				res.status(500);
 				sentry.error(err);
 			} else res.status(401).send(loginErr);

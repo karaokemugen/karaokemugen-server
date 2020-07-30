@@ -38,6 +38,7 @@ export async function editKara(kara: Kara): Promise<string> {
 		}
 		// Treat files
 		newKara = await generateKara(kara, resolvedPathImport(), resolvedPathImport(), resolvedPathImport());
+		logger.debug('Kara:', {service: 'GitLab', obj: newKara.data});
 		// Remove files if they're not new
 		if (kara.noNewSub && newKara.data.subfile) asyncUnlink(resolve(resolvedPathImport(), newKara.data.subfile));
 		if (kara.noNewVideo) {
@@ -49,7 +50,6 @@ export async function editKara(kara: Kara): Promise<string> {
 		const karaName = `${newKara.data.langs[0].name.toUpperCase()} - ${newKara.data.series[0]?.name || newKara.data.singers[0]?.name} - ${newKara.data.songtypes[0].name}${newKara.data.songorder || ''} - ${newKara.data.title}`;
 		const conf = getConfig();
 		let title = conf.Gitlab.IssueTemplate.Edit.Title || 'Edited kara: $kara';
-		logger.debug('[GitLab] Kara: '+JSON.stringify(newKara.data, null, 2));
 		title = title.replace('$kara', karaName);
 		let desc = conf.Gitlab.IssueTemplate.Edit.Description || '';
 		desc = desc.replace('$file', basename(newKara.file))
@@ -76,13 +76,13 @@ export async function editKara(kara: Kara): Promise<string> {
 		try {
 			if (conf.Gitlab.Enabled) return gitlabPostNewIssue(title, desc, conf.Gitlab.IssueTemplate.Edit.Labels);
 		} catch(err) {
-			logger.error(`[KaraImport] Call to Gitlab API failed : ${err}`);
+			logger.error('Call to Gitlab API failed', {service: 'GitLab', obj: err});
 			sentry.error(err, 'Warning');
 		}
 
 
 	} catch(err) {
-		logger.error(`[KaraGen] Error while editing kara : ${err}`);
+		logger.error('Error while editing kara', {service: 'KaraGen', obj: err});
 		sentry.addErrorInfo('Kara', JSON.stringify(kara, null, 2));
 		sentry.error(err);
 		throw err;
@@ -100,15 +100,15 @@ export async function createKara(kara: Kara) {
 			resolvedPathImport(),
 			resolvedPathImport()
 		);
+		logger.debug('Kara', {service: 'GitLab', obj: newKara.data});
 	} catch(err) {
-		logger.error(`[KaraImport] Error importing kara : ${err}. Kara Data ${JSON.stringify(kara)}`);
+		logger.error('Error importing kara', {service: 'KaraGen', obj: err});
 		sentry.addErrorInfo('Kara', JSON.stringify(kara, null, 2));
 		sentry.error(err);
 		throw err;
 	}
 	const karaName = `${newKara.data.langs[0].name.toUpperCase()} - ${newKara.data.series[0]?.name || newKara.data.singers[0]?.name} - ${newKara.data.songtypes[0].name}${newKara.data.songorder || ''} - ${newKara.data.title}`;
 	let title = conf.Gitlab.IssueTemplate.Import.Title || 'New kara: $kara';
-	logger.debug('[GitLab] Kara: '+JSON.stringify(newKara.data, null, 2));
 	title = title.replace('$kara', karaName);
 	let desc = conf.Gitlab.IssueTemplate.Import.Description || '';
 	desc = desc.replace('$file', basename(newKara.file))
@@ -133,7 +133,7 @@ export async function createKara(kara: Kara) {
 	try {
 		if (conf.Gitlab.Enabled) return gitlabPostNewIssue(title, desc, conf.Gitlab.IssueTemplate.Import.Labels);
 	} catch(err) {
-		logger.error(`[KaraImport] Call to Gitlab API failed : ${err}`);
+		logger.error('Call to Gitlab API failed', {service: 'KaraImport', obj: err});
 		sentry.error(err, 'Warning');
 		throw err;
 	}

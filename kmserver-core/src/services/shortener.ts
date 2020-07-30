@@ -10,13 +10,13 @@ export async function publishInstance(ip: string, data: InstanceData) {
 		// Find cheaters; people who will publish for others IPs
 		if ((data?.IP6 && data?.IP4) && // Couche de compatibilité pour les clients KM qui n'ont pas ffe3272f
 		(ip !== data?.IP6 && ip !== data?.IP4)) {
-			logger.debug(`[Shortener] ${ip} is pretending to be ${JSON.stringify([data?.IP4, data?.IP6])} with ${JSON.stringify(data)}!`);
+			logger.debug(`${ip} is pretending to be ${JSON.stringify([data?.IP4, data?.IP6])}`, {service: 'Shortener', obj: data});
 			return false;
 		}
 		const currentDate = new Date();
-		logger.debug(`[Shortener] Received publish request from ${ip} with ${JSON.stringify(data)}`);
+		logger.debug('Received publish request from ${ip}', {service: 'Shortener', obj: data});
 		const instance = await selectInstance(ip);
-		logger.debug(`[Shortener] Instance(s) found : ${JSON.stringify(instance)}`);
+		logger.debug('Instance(s) found', {service: 'Shortener', obj: instance});
 		if (isIPv6(ip)) {
 			await upsertInstance({
 				instance_id: data.IID,
@@ -39,7 +39,7 @@ export async function publishInstance(ip: string, data: InstanceData) {
 			});
 		}
 	} catch(err) {
-		logger.error(`[Shortener] Failed to publish instance : ${err}`);
+		logger.error('Failed to publish instance', {service: 'Shortener', obj: err});
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
 		throw err;
@@ -48,11 +48,11 @@ export async function publishInstance(ip: string, data: InstanceData) {
 
 export async function getInstance(ip: string) {
 	try {
-		logger.debug(`[Shortener] Received get request from ${ip}`);
+		logger.debug(`Received get request from ${ip}`, {service: 'Shortener'});
 		const instance = await selectInstance(ip);
-		logger.debug(`[Shortener] Found instance data ${JSON.stringify(instance)}`);
+		logger.debug('Found instance data', {service: 'Shortener', obj: instance});
 		if (instance.length > 0) return instance[0];
-		return false;
+		else return false;
 	} catch(err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
@@ -71,9 +71,9 @@ async function cleanInstances() {
 		const date = new Date();
 		date.setDate(date.getDate() - getConfig().Shortener.ExpireTimeDays);
 		await cleanupInstances(date);
-		logger.info('[Shortener] Cleaned up expired instances');
+		logger.info('Cleaned up expired instances', {service: 'Shortener'});
 	} catch(err) {
-		logger.error(`[Shortener] Expiring instances failed (better luck next time) : ${err}`);
+		logger.error('Expiring instances failed (better luck next time)', {service: 'Shortener', obj: err});
 		sentry.error(err, 'Warning');
 	}
 }

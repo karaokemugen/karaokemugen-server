@@ -39,12 +39,12 @@ process.on('unhandledRejection', (error) => {
 });
 
 process.once('SIGTERM', () => {
-	logger.info('[Launcher] Received SIGTERM, terminating properly.');
+	logger.info('Received SIGTERM, terminating properly.', {service: 'Launcher'});
 	exit(0);
 });
 
 process.once('SIGINT', () => {
-	logger.info('[Launcher] Received SIGINT, terminating properly.');
+	logger.info('Received SIGINT, terminating properly.', {service: 'Launcher'});
 	exit(0);
 });
 
@@ -53,8 +53,7 @@ export function exit(rc: number) {
 }
 
 main().catch(err => {
-	logger.error(`[Launcher] Error during launch : ${JSON.stringify(err)}`);
-	console.log(err);
+	logger.error('Error during launch', {service: 'Launcher', obj: err});
 	process.exit(1);
 });
 
@@ -134,7 +133,7 @@ async function main() {
 		}
 	});
 
-	logger.debug(`[Launcher] Port ${port} is available`);
+	logger.debug(`Port ${port} is available`, {service: 'Launcher'});
 	const inits = [];
 
 	// Clean temp periodically of files older than two hours
@@ -145,7 +144,7 @@ async function main() {
 	inits.push(initFavorites());
 	if (conf.Mail.Enabled) initMailer();
 	await Promise.all(inits);
-	logger.info('[Launcher] Karaoke Mugen Server is READY');
+	logger.info('Karaoke Mugen Server is READY', {service: 'Launcher'});
 }
 
 

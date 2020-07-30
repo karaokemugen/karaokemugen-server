@@ -32,11 +32,11 @@ export function sendMail(subject: string, message: string, to: string, toMail: s
 		to: `"${to}" <${toMail}>`
 	}, (error, info) => {
 		if (error) {
-			logger.debug(`[Mailer] Error sending mail : ${error}`);
+			logger.debug('Error sending mail', {service: 'Mailer', obj: error});
 			sentry.error(error);
 			throw error;
 		} else {
-			logger.debug(`[Mailer] Sent mail : ${JSON.stringify(info, null, 2)}`);
+			logger.debug('Sent mail', {service: 'Mailer', obj: info});
 		}
 	});
 }

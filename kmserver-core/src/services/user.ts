@@ -200,7 +200,7 @@ export async function createUser(user: User, opts: any = {}) {
 		if (!user.login) throw { code: 'USER_EMPTY_LOGIN'};
 		// Check if login or nickname already exists.
 		if (await selectUser('pk_login', user.login) || await selectUser('nickname', user.login)) {
-			logger.error(`[User] User/nickname ${user.login} already exists, cannot create it`);
+			logger.error(`User/nickname ${user.login} already exists, cannot create it`, {service: 'User'});
 			throw { code: 'USER_ALREADY_EXISTS', data: {username: user.login}};
 		}
 		if (user.password.length < 8) throw {code: 'PASSWORD_TOO_SHORT', data: user.password.length};
@@ -208,7 +208,7 @@ export async function createUser(user: User, opts: any = {}) {
 		try {
 			await insertUser(user);
 		} catch (err) {
-			logger.error(`[User] Unable to create user ${user.login} : ${err}`);
+			logger.error(`Unable to create user ${user.login}`, {service: 'User', obj: err});
 			throw ({ code: 'USER_CREATION_ERROR', data: err});
 		}
 	} catch(err) {
@@ -236,7 +236,7 @@ async function replaceAvatar(oldImageFile: string, avatar: Express.Multer.File) 
 		await asyncMove(avatar.path, newAvatarPath);
 		return newAvatarFile;
 	} catch (err) {
-		logger.error(`[User] Unable to replace avatar ${oldImageFile} with ${avatar.path} : ${err}`);
+		logger.error(`Unable to replace avatar ${oldImageFile} with ${avatar.path}`, {service: 'User', obj: err});
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
 		throw err;
@@ -285,14 +285,14 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 			user.avatar_file = currentUser.avatar_file;
 		}
 		await updateUser(user);
-		logger.debug(`[User] ${username} (${user.nickname}) profile updated`);
+		logger.debug(`${username} (${user.nickname}) profile updated`, {service: 'User'});
 		delete currentUser.password;
 		return {
 			user,
 			token: createJwtToken(user.login, getRole(user), new Date(user.password_last_modified_at instanceof Date ? user.password_last_modified_at:currentUser.password_last_modified_at))
 		};
 	} catch (err) {
-		logger.error(`[User] Failed to update ${username}'s profile : ${err}`);
+		logger.error(`Failed to update ${username}'s profile`, {service: 'User', obj: err});
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(new Error(err));
 		throw {
