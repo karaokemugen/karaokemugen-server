@@ -2,7 +2,7 @@
 	<nuxt-link
 		:to="nolink ? ``:`/tags/${slug}/${tag.tid}~${tagTypes[type].type}`"
 		class="tag is-medium"
-		:class="tagTypes[type].class"
+		:class="[tagTypes[type].class, staticheight ? '':'no-static-height']"
 	>
 		<font-awesome-icon v-if="icon" :icon="['fas', tagTypes[type].icon]" :fixed-width="true" />
 		{{ localizedName }}
@@ -42,6 +42,10 @@
 			},
 			nolink: {
 				type: Boolean
+			},
+			staticheight: {
+				type: Boolean,
+				default: true
 			},
 			showkaracount: {
 				type: Boolean
@@ -84,5 +88,11 @@
 <style scoped lang="scss">
 	.svg-inline--fa {
 		margin-right: 0.25rem;
+	}
+	.tag.no-static-height {
+		height: unset;
+		white-space: unset;
+		padding-top: .25em;
+		padding-bottom: .25em;
 	}
 </style>

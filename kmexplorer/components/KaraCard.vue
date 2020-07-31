@@ -19,7 +19,9 @@
 					</template>
 				</i18n>
 				<h6 class="subtitle is-6 no-top-margin">
-					<nuxt-link :to="`/years/${karaoke.year}`">{{ karaoke.year }}</nuxt-link>
+					<nuxt-link :to="`/years/${karaoke.year}`">
+						{{ karaoke.year }}
+					</nuxt-link>
 				</h6>
 			</div>
 			<div class="images">
@@ -29,20 +31,27 @@
 		</div>
 		<div class="tags are-medium">
 			<template v-for="type in Object.keys(tagTypes)" v-if="karaoke[type].length > 0">
-				<tag v-for="tag in karaoke[type]" :key="`${tag.tid}~${tagTypes[type].type}`"
-					 :type="type" :tag="tag" :i18n="i18n[tag.tid]" :icon="true"/>
+				<tag
+					v-for="tag in karaoke[type]"
+					:key="`${tag.tid}~${tagTypes[type].type}`"
+					:type="type"
+					:tag="tag"
+					:i18n="i18n[tag.tid]"
+					:icon="true"
+					:staticheight="false"
+				/>
 			</template>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-	import Vue, {PropOptions} from 'vue';
+	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
-	import {tagTypes} from "~/assets/constants";
+	import { tagTypes } from '~/assets/constants';
 	import Tag from '~/components/Tag.vue';
-	import {DBKara} from "%/lib/types/database/kara";
-	import {serieSinger} from "~/types/serieSinger";
+	import { DBKara } from '%/lib/types/database/kara';
+	import { serieSinger } from '~/types/serieSinger';
 
 	interface VState {
 		tagTypes: typeof tagTypes,
@@ -61,23 +70,17 @@
 			}
 		},
 
-		name: "KaraCard",
+		name: 'KaraCard',
 
 		data(): VState {
 			return {
 				tagTypes,
 				activate: false
-			}
+			};
 		},
 
 		components: {
 			Tag
-		},
-
-		methods: {
-			switchImage() {
-				this.activate = !this.activate;
-			}
 		},
 
 		computed: {
@@ -91,19 +94,19 @@
 			serieSinger(): serieSinger {
 				if (this.karaoke.series[0]) {
 					return {
-						name: this.i18n[this.karaoke.series[0].tid] ?
-							this.i18n[this.karaoke.series[0].tid][this.$i18n.locale]
-							|| this.i18n[this.karaoke.series[0].tid]?.eng
-							|| this.karaoke.series[0].name : this.karaoke.series[0].name,
+						name: this.i18n[this.karaoke.series[0].tid]
+							? this.i18n[this.karaoke.series[0].tid][this.$i18n.locale] ||
+							this.i18n[this.karaoke.series[0].tid]?.eng ||
+								this.karaoke.series[0].name : this.karaoke.series[0].name,
 						tid: `${this.karaoke.series[0].tid}~${tagTypes.series.type}`,
 						slug: slug(this.karaoke.series[0].name)
 					};
 				} else if (this.karaoke.singers[0]) {
 					return {
-						name: this.i18n[this.karaoke.singers[0].tid] ?
-							this.i18n[this.karaoke.singers[0].tid][this.$i18n.locale]
-							|| this.i18n[this.karaoke.singers[0].tid]?.eng
-							|| this.karaoke.singers[0].name : this.karaoke.singers[0].name,
+						name: this.i18n[this.karaoke.singers[0].tid]
+							? this.i18n[this.karaoke.singers[0].tid][this.$i18n.locale] ||
+							this.i18n[this.karaoke.singers[0].tid]?.eng ||
+								this.karaoke.singers[0].name : this.karaoke.singers[0].name,
 						tid: `${this.karaoke.singers[0].tid}~${tagTypes.singers.type}`,
 						slug: slug(this.karaoke.singers[0].name)
 					};
@@ -116,16 +119,22 @@
 				}
 			},
 			songtype(): string {
-				return this.i18n[this.karaoke.songtypes[0].tid] ?
-					this.i18n[this.karaoke.songtypes[0].tid][this.$i18n.locale]
-					|| this.i18n[this.karaoke.songtypes[0].tid]?.eng
-					|| this.karaoke.songtypes[0].name : this.karaoke.songtypes[0].name;
+				return this.i18n[this.karaoke.songtypes[0].tid]
+					? this.i18n[this.karaoke.songtypes[0].tid][this.$i18n.locale] ||
+					this.i18n[this.karaoke.songtypes[0].tid]?.eng ||
+						this.karaoke.songtypes[0].name : this.karaoke.songtypes[0].name;
 			},
 			songtypeSlug(): string {
 				return slug(this.karaoke.songtypes[0].name);
 			},
 			slug(): string {
 				return slug(this.karaoke.title);
+			}
+		},
+
+		methods: {
+			switchImage() {
+				this.activate = !this.activate;
 			}
 		}
 	});
