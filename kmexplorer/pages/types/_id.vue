@@ -65,7 +65,8 @@
 				.get(`/api/karas/tags/${tagTypes[params.id].type}`, {
 					params: {
 						from: 0,
-						size: 100
+						size: 100,
+						stripEmpty: true
 					}
 				})
 				.catch(_err =>

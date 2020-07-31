@@ -12,14 +12,14 @@
 	import { KaraList as KaraListType } from '%/lib/types/kara';
 	import { Tag } from '%/lib/types/tag';
 
-interface VState {
-	karaokes: KaraListType,
-	from: number,
-	loading: boolean,
-	tag: Tag,
-	sort: string,
-	VuexUnsubscribe?: Function
-}
+	interface VState {
+		karaokes: KaraListType,
+		from: number,
+		loading: boolean,
+		tag: Tag,
+		sort: string,
+		VuexUnsubscribe?: Function
+	}
 
 	export default Vue.extend({
 		name: 'KaraListTag',
