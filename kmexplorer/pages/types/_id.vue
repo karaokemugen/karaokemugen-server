@@ -1,6 +1,6 @@
 <template>
 	<div class="is-ancestor">
-		<pagination :page="page" :last-page="total" @page="setPage" />
+		<pagination v-if="total > 1" :page="page" :last-page="total" @page="setPage" />
 
 		<div v-if="tags.content.length > 0" class="tags">
 			<tag
@@ -13,7 +13,7 @@
 				showkaracount
 			/>
 		</div>
-		<pagination :page="page" :last-page="total" @page="setPage" />
+		<pagination v-if="total > 1" :page="page" :last-page="total" @page="setPage" />
 
 		<loading-nanami v-if="loading" class="tile is-parent is-12" />
 	</div>
@@ -28,7 +28,6 @@
 	import Pagination from '~/components/Pagination.vue';
 	import { menuBarStore } from '~/store';
 
-	import { Tag as TagType } from '%/lib/types/tag';
 	import { DBTag } from '%/lib/types/database/tag';
 
 	interface TagsRequest {
@@ -73,9 +72,6 @@
 					error({ statusCode: 404, message: app.i18n.t('tag.notfound') as string })
 				);
 			if (res && res.data) {
-				res.data.content = res.data.content.filter(
-					(tag: TagType) => tag.karacount && Object.keys(tag.karacount).length > 0
-				);
 				return {
 					tags: res.data,
 					type: params.id,
