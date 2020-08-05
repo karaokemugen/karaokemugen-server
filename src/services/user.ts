@@ -39,8 +39,10 @@ export async function resetPasswordRequest(username: string) {
 		username,
 		user.email);
 	} catch(err) {
-		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
-		sentry.error(err);
+		if (err.message !== 'User unknown' && err.message !== 'User has no configured mail. Ask server admin for a password reset') {
+			sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+			sentry.error(err);
+		}
 		throw err;
 	}
 };
