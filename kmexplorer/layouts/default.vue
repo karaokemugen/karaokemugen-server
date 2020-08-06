@@ -40,7 +40,7 @@
 			</div>
 
 			<div v-if="communityMenu" class="navbar-dropdown">
-				<nuxt-link v-if="import_enabled === 'true'" class="navbar-item" to="/import">
+				<nuxt-link v-if="import_enabled" class="navbar-item" to="/import">
 					<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true" />
 					{{ $t('menu.kara_import') }}
 				</nuxt-link>
@@ -318,7 +318,7 @@
 				</p>
 				<ul class="menu-list">
 					<li>
-						<nuxt-link to="/import" active-class="is-active">
+						<nuxt-link v-if="import_enabled" to="/import" active-class="is-active">
 							<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true" />
 							{{ $t('menu.kara_import') }}
 						</nuxt-link>
