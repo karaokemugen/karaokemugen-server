@@ -25,7 +25,14 @@
 
 			<div class="navbar-menu">
 				<div v-if="tag" class="navbar-item">
-					<tag :type="tag.type" :tag="tag.tag" :icon="true" :nolink="true" />
+					<tag
+						:type="tag.type"
+						:tag="tag.tag"
+						icon
+						nolink
+						deletebtn
+						@close="deleteTag"
+					/>
 				</div>
 				<div class="navbar-item is-expanded">
 					<search-bar />
@@ -373,6 +380,7 @@
 	import SearchBar from '~/components/SearchBar.vue';
 	import LoginModal from '~/components/LoginModal.vue';
 	import ProfileModal from '~/components/ProfileModal.vue';
+	import { menuBarStore } from '~/store';
 	import { ModalType } from '~/store/modal';
 	import { TagExtend } from '~/store/menubar';
 
@@ -424,6 +432,9 @@
 		computed: {
 			tagType() {
 				return this.$route.params?.id?.substring(36);
+			},
+			onKaraTagListView(): boolean {
+				return ['types-id', 'types-years', 'search-query', 'tags-slug-id'].includes(this.$route.name as string);
 			}
 		},
 
@@ -431,6 +442,11 @@
 			this.$store.subscribe((mutation, _state) => {
 				if (mutation.type === 'menubar/setTag') {
 					this.tag = mutation.payload;
+				} else if (mutation.type === 'menubar/setSearch') {
+					if (!this.onKaraTagListView) {
+						this.$router.push(`/search/${mutation.payload}`);
+					} // Each KaraList view handles a search change itself, either by swapping the route
+					// or by reset the KaraList with new filter
 				} else if (mutation.type === 'modal/openModal') {
 					this.modal[mutation.payload as ModalType] = true;
 				} else if (mutation.type === 'modal/closeModal') {
@@ -458,6 +474,10 @@
 					this.communityMenu = false;
 					this.accountMenu = !this.accountMenu;
 				}
+			},
+			deleteTag() {
+				menuBarStore.setTag(null);
+				this.$router.push(`/search/${menuBarStore.search}`);
 			}
 		},
 		head: {

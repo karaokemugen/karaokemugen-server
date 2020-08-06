@@ -21,6 +21,7 @@
 
 <script lang="ts">
 	import Vue from 'vue';
+	import { mapState } from 'vuex';
 
 	import Tag from '~/components/Tag.vue';
 	import { tagTypesMap, tagTypes } from '~/assets/constants';
@@ -43,7 +44,6 @@
 			infos: { count: number, from: number, to: number },
 			content: DBTag[]
 		},
-		sort: string,
 		page: number,
 		loading: boolean,
 		total: number,
@@ -65,7 +65,8 @@
 					params: {
 						from: 0,
 						size: 100,
-						stripEmpty: true
+						stripEmpty: true,
+						filter: menuBarStore.search || ''
 					}
 				})
 				.catch(_err =>
@@ -89,7 +90,6 @@
 					infos: { count: 0, from: 0, to: 0 },
 					content: []
 				},
-				sort: 'az',
 				page: 1,
 				loading: false,
 				total: 1,
@@ -102,9 +102,11 @@
 				return {
 					from: (this.page - 1) * 100,
 					size: 100,
-					order: this.sort
+					order: this.sort,
+					filter: this.search || undefined
 				};
-			}
+			},
+			...mapState('menubar', ['search', 'sort'])
 		},
 
 		watch: {
@@ -112,6 +114,9 @@
 				if (now) { this.$nuxt.$loading.start(); } else { this.$nuxt.$loading.finish(); }
 			},
 			sort(_now, _old) {
+				this.setPage(1);
+			},
+			search(_now, _old) {
 				this.setPage(1);
 			}
 		},
@@ -122,16 +127,6 @@
 				menuBarStore.setSort('karacount');
 				this.sort = 'karacount';
 			}
-			this.VuexUnsubscribe = this.$store.subscribe((mutation, _payload) => {
-				if (mutation.type === 'menubar/setSort') {
-					this.sort = mutation.payload;
-				}
-			});
-		},
-
-		destroyed() {
-			// No need to unsubscribe on deactivated, it's only to refresh the sort mode
-			if (this.VuexUnsubscribe) { this.VuexUnsubscribe(); }
 		},
 
 		methods: {

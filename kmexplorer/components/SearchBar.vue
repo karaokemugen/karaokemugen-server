@@ -11,9 +11,9 @@
 		</div>
 		<div class="control">
 			<span class="select">
-				<select v-model="sort" :aria-label="$t('search.aria.sort')">
+				<select v-model="sort" :aria-label="$t('search.aria.sort')" :disabled="!canSort">
 					<option value="az" selected>{{ $t('search.sort.a_z') }}</option>
-					<template v-if="['types-id', 'years-year'].includes(this.$route.name)">
+					<template v-if="['types-id', 'types-years'].includes(this.$route.name)">
 						<option value="karacount">{{ $t('search.sort.kara_count') }}</option>
 					</template>
 					<template v-else>
@@ -48,10 +48,13 @@
 			};
 		},
 
+		computed: {
+			canSort(): boolean {
+				return ['types-id', 'types-years', 'search-query', 'tags-slug-id'].includes(this.$route.name as string);
+			}
+		},
+
 		watch: {
-			search(now, _old) {
-				menuBarStore.setSearch(now);
-			},
 			sort(now, _old) {
 				menuBarStore.setSort(now);
 			}
@@ -73,7 +76,7 @@
 
 		methods: {
 			triggerSearch() {
-				this.$router.push(`/search/${this.search}`);
+				menuBarStore.setSearch(this.search);
 			}
 		}
 	});
@@ -86,6 +89,13 @@
 
 		.select select option {
 			color: white;
+		}
+
+		.select select[disabled] {
+			color: #849496;
+			border-color: unset;
+			box-shadow: unset;
+			background-color: #36393f;
 		}
 	}
 </style>

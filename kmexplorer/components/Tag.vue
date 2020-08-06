@@ -3,12 +3,14 @@
 		:to="nolink ? ``:`/tags/${slug}/${tag.tid}~${tagTypes[type].type}`"
 		class="tag is-medium"
 		:class="[tagTypes[type].class, staticheight ? '':'no-static-height']"
+		no-prefetch
 	>
 		<font-awesome-icon v-if="icon" :icon="['fas', tagTypes[type].icon]" :fixed-width="true" />
 		{{ localizedName }}
 		<template v-if="showkaracount">
 			&nbsp;({{ tag.karacount[tagTypes[type].type] }})
 		</template>
+		<button v-if="deletebtn" class="delete is-small" @click="$emit('close')" />
 	</nuxt-link>
 </template>
 
@@ -49,6 +51,10 @@
 			},
 			showkaracount: {
 				type: Boolean
+			},
+			deletebtn: {
+				type: Boolean,
+				default: false
 			}
 		},
 

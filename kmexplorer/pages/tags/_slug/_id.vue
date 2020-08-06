@@ -4,6 +4,7 @@
 
 <script lang="ts">
 	import Vue from 'vue';
+	import { mapState } from 'vuex';
 	import merge from 'lodash.merge';
 
 	import KaraList from '~/components/KaraList.vue';
@@ -16,9 +17,7 @@
 		karaokes: KaraListType,
 		from: number,
 		loading: boolean,
-		tag: Tag,
-		sort: string,
-		VuexUnsubscribe?: Function
+		tag: Tag
 	}
 
 	export default Vue.extend({
@@ -38,7 +37,8 @@
 				params: {
 					q: `t:${params.id}`,
 					from: 0,
-					size: 20
+					size: 20,
+					filter: menuBarStore.search || undefined
 				}
 			}).catch(
 				_err => error({ statusCode: 404, message: app.i18n.t('error.generic') as string }));
@@ -58,9 +58,12 @@
 					name: '',
 					tid: '',
 					types: []
-				},
-				sort: 'az'
+				}
 			};
+		},
+
+		computed: {
+			...mapState('menubar', ['search', 'sort'])
 		},
 
 		validate({ params }) {
@@ -70,22 +73,23 @@
 		watch: {
 			loading (now, _old) {
 				if (now) { this.$nuxt.$loading.start(); } else { this.$nuxt.$loading.finish(); }
+			},
+			sort(_now, _old) {
+				this.karaokes = { infos: { count: -1, from: 0, to: 0 }, i18n: {}, content: [] };
+				this.from = -1;
+				this.$nextTick(() => { this.loadNextPage(); });
+			},
+			search(_now, _old) {
+				this.karaokes = { infos: { count: -1, from: 0, to: 0 }, i18n: {}, content: [] };
+				this.from = -1;
+				this.$nextTick(() => { this.loadNextPage(); });
 			}
 		},
 
 		activated() {
-			if (menuBarStore.sort === 'karacount') {
-				this.sort = 'az';
+			if (this.sort === 'karacount') {
 				menuBarStore.setSort('az');
 			}
-			this.VuexUnsubscribe = this.$store.subscribe((mutation, _payload) => {
-				if (mutation.type === 'menubar/setSort') {
-					this.sort = mutation.payload;
-					this.karaokes = { infos: { count: -1, from: 0, to: 0 }, i18n: {}, content: [] };
-					this.from = -1;
-					this.$nextTick(() => { this.loadNextPage(); });
-				}
-			});
 			const tagInfo = tagRegex.exec(this.$route.params.id);
 			if (!tagInfo) { throw new Error('Stealth check failed: Tag regex not matched'); }
 			menuBarStore.setTag({
@@ -98,7 +102,6 @@
 		deactivated() {
 			menuBarStore.setTag(null);
 			window.removeEventListener('scroll', this.scrollEvent);
-			if (this.VuexUnsubscribe) { this.VuexUnsubscribe(); }
 		},
 
 		methods: {
@@ -110,7 +113,8 @@
 					params: {
 						q: `t:${this.$route.params.id}`,
 						from: (this.from * 20),
-						size: 20
+						size: 20,
+						filter: this.search || undefined
 					}
 				});
 				this.karaokes.content.push(...data.content);

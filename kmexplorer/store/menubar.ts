@@ -1,4 +1,4 @@
-import { Module, VuexModule, Mutation } from 'vuex-module-decorators';
+import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import { Tag } from '%/lib/types/tag';
 
 export interface TagExtend {
@@ -12,24 +12,24 @@ export interface TagExtend {
 	namespaced: true
 })
 export default class MenuBar extends VuexModule {
-    tag: TagExtend|null = {}
+	tag: TagExtend | null = {}
 
-    search: string|null = ''
+	search: string | null = ''
 
 	sort: string = 'az'
 
-    @Mutation
-	setTag(tag: TagExtend|null) {
+	@Mutation
+	setTag(tag: TagExtend | null) {
 		this.tag = tag;
 	}
 
-    @Mutation
-    setSearch(search: string|null) {
-    	this.search = search;
-    }
+	@Mutation
+	setSearch(search: string | null) {
+		this.search = search;
+	}
 
-    @Mutation
-    setSort(sort: string) {
-    	this.sort = sort;
-    }
+	@Mutation
+	setSort(sort: string) {
+		this.sort = sort;
+	}
 }

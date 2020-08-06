@@ -69,6 +69,10 @@
 					this.karaokes = { infos: { count: -1, from: 0, to: 0 }, i18n: {}, content: [] };
 					this.from = -1;
 					this.$nextTick(() => { this.loadNextPage(); });
+				} else if (mutation.type === 'menubar/setSearch') {
+					if (mutation.payload !== this.$route.params.query) {
+						this.$router.push(`/search/${mutation.payload}`);
+					}
 				}
 			});
 		},
