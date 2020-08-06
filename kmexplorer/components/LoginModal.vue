@@ -69,6 +69,22 @@
 							</div>
 						</div>
 					</div>
+					<div class="field is-horizontal">
+						<div class="field-label is-normal">
+							<label class="label">{{ $t('modal.login.fields.forgot_password.label') }}</label>
+						</div>
+						<div class="field-body">
+							<div class="field">
+								<button
+									class="button"
+									type="button"
+									@click="callForgetPasswordApi"
+								>
+									<font-awesome-icon :icon="['fas', 'lock']" :fixed-width="true"/>
+								</button>
+							</div>
+						</div>
+					</div>
 				</section>
 				<section v-if="mode === 'signup'" class="modal-card-body">
 					<h5 class="title is-5">
@@ -237,7 +253,7 @@
 					this.loading = false;
 					this.closeModal();
 				}
-				this.$auth.loginWith('local', { data: this.login }).then(async (_res) => {
+				this.$auth.loginWith('local', { data: this.login }).then((_res) => {
 					this.$emit('login');
 					this.loading = false;
 					this.closeModal();
@@ -245,6 +261,17 @@
 					console.error(err);
 					this.loading = false;
 				});
+			},
+			async callForgetPasswordApi () {
+				if (this.login) {
+					try {
+						await this.$axios.post(`/users/${this.login.username}/resetpassword`);
+						this.$toast.success(this.$t('modal.login.fields.forgot_password.success', { duration: 1500 }));
+					} catch (e) {
+						console.log(e)
+						this.$toast.error(this.$t('modal.login.fields.forgot_password.error', { duration: 1500 }));
+					}
+				}
 			},
 			closeModal() {
 				this.$emit('close');

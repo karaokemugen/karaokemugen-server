@@ -176,6 +176,11 @@ export default {
 				password: {
 					label: 'Password',
 					placeholder: 'ActuallyIdolM@sterIsBetter'
+				},
+				forgot_password: {
+					label: 'Forgot password?',
+					error: 'Could not reset your password: contact the the server\'s administrator your account belongs to.',
+					success: 'An email has been sent with a link to reset your password.'
 				}
 			},
 			submit: 'Login'

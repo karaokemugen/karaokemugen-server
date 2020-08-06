@@ -178,6 +178,11 @@ export default {
 				password: {
 					label: 'Mot de passe',
 					placeholder: 'EnVraiJePréfèreIdolM@ster'
+				},
+				forgot_password: {
+					label: 'Mot de passe oublié ?',
+					error: 'Impossible de vous envoyer un email de réinitialisation : contactez l\'administrateur du serveur dont vous dépendez',
+					success: 'Un email avec un lien pour réinitialiser votre mot de passe vous a été envoyé.'
 				}
 			},
 			submit: 'Se connecter'
