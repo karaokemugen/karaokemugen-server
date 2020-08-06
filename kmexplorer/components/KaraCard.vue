@@ -24,10 +24,10 @@
 					</nuxt-link>
 				</h6>
 			</div>
-			<div class="images">
+			<a :href="`${liveURL}?video=${karaoke.kid}`" target="_blank" class="images">
 				<img :src="images[0]" alt="">
 				<img :src="images[1]" :class="{activate}" alt="" @mouseenter="switchImage" @mouseleave="switchImage">
-			</div>
+			</a>
 		</div>
 		<div class="tags are-medium">
 			<template v-for="type in Object.keys(tagTypes)" v-if="karaoke[type].length > 0">
@@ -55,7 +55,8 @@
 
 	interface VState {
 		tagTypes: typeof tagTypes,
-		activate: boolean
+		activate: boolean,
+		liveURL?: string
 	}
 
 	export default Vue.extend({
@@ -75,7 +76,8 @@
 		data(): VState {
 			return {
 				tagTypes,
-				activate: false
+				activate: false,
+				liveURL: process.env.LIVE_URL
 			};
 		},
 
@@ -159,12 +161,13 @@
 	}
 
 	.title-block {
-		flex-basis: 70%;
+		flex-basis: 60%;
+		margin-right: 0.5em;
 	}
 
 	.images {
 		position: relative;
-		width: 30%;
+		width: 40%;
 		float: right;
 		flex-shrink: 0;
 
