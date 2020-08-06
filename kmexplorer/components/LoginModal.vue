@@ -268,7 +268,6 @@
 						await this.$axios.post(`/users/${this.login.username}/resetpassword`);
 						this.$toast.success(this.$t('modal.login.fields.forgot_password.success', { duration: 1500 }));
 					} catch (e) {
-						console.log(e)
 						this.$toast.error(this.$t('modal.login.fields.forgot_password.error', { duration: 1500 }));
 					}
 				}
