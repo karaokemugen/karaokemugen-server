@@ -154,6 +154,12 @@
 
 		<div class="columns">
 			<aside class="menu is-hidden-touch">
+				<ul class="menu-list">
+					<li class="addRepo" :title="$t('modal.add_repository.label')" @click="openAddRepoModal">
+						<font-awesome-icon :icon="['fas', 'folder-plus']" :fixed-width="true" />
+						{{ $t('menu.add_repository') }}
+					</li>
+				</ul>
 				<p class="menu-label">
 					{{ $t('menu.database') }}
 				</p>
@@ -371,6 +377,7 @@
 		</footer>
 		<LoginModal :active="modal.auth" @close="modal.auth=false" @login="loggedIn=true" />
 		<ProfileModal :active="modal.profile" @close="modal.profile=false" @logout="logout" />
+		<AddRepoModal :active="modal.addRepo" @close="modal.addRepo=false" />
 	</div>
 </template>
 
@@ -380,7 +387,9 @@
 	import SearchBar from '~/components/SearchBar.vue';
 	import LoginModal from '~/components/LoginModal.vue';
 	import ProfileModal from '~/components/ProfileModal.vue';
+	import AddRepoModal from '~/components/AddRepoModal.vue';
 	import { menuBarStore } from '~/store';
+	import { modalStore } from '~/store';
 	import { ModalType } from '~/store/modal';
 	import { TagExtend } from '~/store/menubar';
 
@@ -397,7 +406,8 @@
 		accountMenu: boolean,
 		modal: {
 			auth: boolean,
-			profile: boolean
+			profile: boolean,
+			addRepo: boolean
 		}
 	}
 
@@ -407,7 +417,8 @@
 			Tag,
 			SearchBar,
 			LoginModal,
-			ProfileModal
+			ProfileModal,
+			AddRepoModal
 		},
 
 		data(): VState {
@@ -424,7 +435,8 @@
 				accountMenu: false,
 				modal: {
 					auth: false,
-					profile: false
+					profile: false,
+					addRepo: false
 				}
 			};
 		},
@@ -478,6 +490,9 @@
 			deleteTag() {
 				menuBarStore.setTag(null);
 				this.$router.push(`/search/${menuBarStore.search}`);
+			},
+			openAddRepoModal() {
+				modalStore.openModal('addRepo');
 			}
 		},
 		head: {
@@ -497,5 +512,9 @@
 
 	.menu > *:last-child {
 		margin-bottom: 5em;
+	}
+
+	.addRepo {
+		cursor: pointer;
 	}
 </style>

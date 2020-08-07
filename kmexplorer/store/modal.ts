@@ -1,6 +1,6 @@
 import { Module, VuexModule, Mutation } from 'vuex-module-decorators';
 
-export type ModalType = 'auth' | 'profile';
+export type ModalType = 'auth' | 'profile' | 'addRepo';
 
 @Module({
 	name: 'modal',
@@ -10,6 +10,7 @@ export type ModalType = 'auth' | 'profile';
 export default class Modal extends VuexModule {
 	auth: boolean = false
 	profile: boolean = false
+	addRepo: boolean = false
 
 	@Mutation
 	openModal(type: ModalType) {

@@ -120,6 +120,7 @@ export default {
 		seconds: 'seconds'
 	},
 	menu: {
+		add_repository: 'Add to your app',
 		database: 'Database',
 		karas: 'Songs',
 		songtypes: 'Types',
@@ -256,6 +257,15 @@ export default {
 				force_lang_series_main: 'Series name language',
 				force_lang_series_fallback: 'Fallback series name language'
 			}
+		},
+		add_repository: {
+			label: 'Add this repository to your Karaoke Mugen app!',
+			desc: 'You can add this repository to your Karaoke Mugen app by clicking on the button below. If Karaoke Mugen is not installed on your computer, this button will have no effect.',
+			download: 'The application can be downloaded here.',
+			manual: 'To manually add this repository, open your Karaoke Mugen application, add the {repository} repository to it, checking "{online}" then go to the downloads manager',
+			online: 'Online',
+			add: 'Add',
+			cancel: 'Cancel'
 		}
 	},
 	titles: {

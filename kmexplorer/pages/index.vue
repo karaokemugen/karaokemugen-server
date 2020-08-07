@@ -3,8 +3,9 @@
 		<a href="http://karaokes.moe/">
 			<img class="km-home--logo" :src="require('~/assets/km-logo.png')">
 		</a>
-		<h1 class="title">
+		<h1 class="title" :title="$t('modal.add_repository.label')" @click="openAddRepoModal">
 			{{ explorerHost }}
+			<font-awesome-icon :icon="['fas', 'folder-plus']" :fixed-width="true" />
 		</h1>
 		<h2 class="subtitle">
 			Explore! Find! Sing!
@@ -72,6 +73,7 @@
 	import Vue from 'vue';
 	import prettyBytes from 'pretty-bytes';
 	import duration from '~/assets/date';
+	import { modalStore } from '~/store';
 
 	export default Vue.extend({
 		async asyncData({ $axios, app }) {
@@ -106,6 +108,11 @@
 				}
 			};
 		},
+		methods: {
+			openAddRepoModal() {
+				modalStore.openModal('addRepo');
+			}
+		},
 		head() {
 			return {
 				title: this.$t('titles.home') as string
@@ -121,6 +128,10 @@
 
 		.km-home--logo {
 			max-height: 20em;
+		}
+
+		.title {
+			cursor: pointer;
 		}
 
 		.km-home--stats {

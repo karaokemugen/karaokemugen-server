@@ -122,6 +122,7 @@ export default {
 		seconds: 'secondes'
 	},
 	menu: {
+		add_repository: 'Ajouter à votre app',
 		database: 'Base de données',
 		karas: 'Chansons',
 		songtypes: 'Types',
@@ -258,6 +259,15 @@ export default {
 				force_lang_series_main: 'Langue des noms de séries',
 				force_lang_series_fallback: 'Langue de secours des noms de séries'
 			}
+		},
+		add_repository: {
+			label: 'Ajoutez ce dépôt à votre application Karaoke Mugen !',
+			desc: 'Vous pouvez ajouter ce dépôt à votre application Karaoke Mugen en cliquant sur le bouton ci-dessous. Si Karaoke Mugen n\'est pas installé sur votre ordinateur, ce bouton n\'aura aucun effet.',
+			download: 'L\'application est téléchargeable ici.',
+			manual: 'Pour ajouter manuellement ce dépôt, ouvrez votre application Karaoke Mugen, ajoutez-y le dépôt {repository}, cochant la case "{online}" puis rendez-vous dans le gestionnaire de téléchargements.',
+			online: 'En ligne',
+			add: 'Ajouter',
+			cancel: 'Annuler'
 		}
 	},
 	titles: {
