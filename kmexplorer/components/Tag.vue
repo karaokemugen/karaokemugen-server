@@ -8,7 +8,7 @@
 		<font-awesome-icon v-if="icon" :icon="['fas', tagTypes[type].icon]" :fixed-width="true" />
 		{{ localizedName }}
 		<template v-if="showkaracount">
-			&nbsp;({{ tag.karacount[tagTypes[type].type] }})
+			<span class="karacount">&nbsp;({{ tag.karacount[tagTypes[type].type] }})</span>
 		</template>
 		<button v-if="deletebtn" class="delete is-small" @click="$emit('close')" />
 	</nuxt-link>
@@ -100,5 +100,9 @@
 		white-space: unset;
 		padding-top: .25em;
 		padding-bottom: .25em;
+	}
+	.karacount {
+		font-size: 0.8em;
+		opacity: 0.6;
 	}
 </style>
