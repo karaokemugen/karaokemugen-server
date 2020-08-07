@@ -10,8 +10,8 @@
 
 <script>
 	export default {
-		name: "LoadingNanami"
-	}
+		name: 'LoadingNanami'
+	};
 </script>
 
 <style scoped>

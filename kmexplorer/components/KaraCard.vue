@@ -60,6 +60,12 @@
 	}
 
 	export default Vue.extend({
+		name: 'KaraCard',
+
+		components: {
+			Tag
+		},
+
 		props: {
 			karaoke: {
 				type: Object,
@@ -71,18 +77,12 @@
 			}
 		},
 
-		name: 'KaraCard',
-
 		data(): VState {
 			return {
 				tagTypes,
 				activate: false,
 				liveURL: process.env.LIVE_URL
 			};
-		},
-
-		components: {
-			Tag
 		},
 
 		computed: {

@@ -1,25 +1,33 @@
 <template>
 	<div class="tile is-ancestor">
 		<div class="tile is-vertical">
-			<div class="tile is-parent is-12" v-for="n in Math.ceil(karaokes.infos.to / 3)">
-				<div class="tile is-child is-4" v-for="n2 in 3">
-					<kara-card :karaoke="karaokes.content[(n-1)*3+n2-1]" :i18n="karaokes.i18n"
-							   v-if="karaokes.content[(n-1)*3+n2-1]"></kara-card>
+			<div v-for="n in Math.ceil(karaokes.infos.to / 3)" class="tile is-parent is-12">
+				<div v-for="n2 in 3" class="tile is-child is-4">
+					<kara-card
+						v-if="karaokes.content[(n-1)*3+n2-1]"
+						:karaoke="karaokes.content[(n-1)*3+n2-1]"
+						:i18n="karaokes.i18n"
+					/>
 				</div>
 			</div>
-			<loading-nanami class="tile is-parent is-12" v-if="loading"></loading-nanami>
+			<loading-nanami v-if="loading" class="tile is-parent is-12" />
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-	import Vue, {PropOptions} from 'vue';
+	import Vue, { PropOptions } from 'vue';
 	import LoadingNanami from './LoadingNanami.vue';
 	import KaraCard from './KaraCard.vue';
-	import {KaraList} from "%/lib/types/kara";
+	import { KaraList } from '%/lib/types/kara';
 
 	export default Vue.extend({
-		name: "KaraList",
+		name: 'KaraList',
+
+		components: {
+			LoadingNanami,
+			KaraCard
+		},
 
 		props: {
 			karaokes: {
@@ -30,11 +38,6 @@
 				type: Boolean,
 				required: true
 			}
-		},
-
-		components: {
-			LoadingNanami,
-			KaraCard
 		}
 	});
 </script>

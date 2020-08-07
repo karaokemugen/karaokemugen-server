@@ -80,7 +80,7 @@
 									type="button"
 									@click="callForgetPasswordApi"
 								>
-									<font-awesome-icon :icon="['fas', 'lock']" :fixed-width="true"/>
+									<font-awesome-icon :icon="['fas', 'lock']" :fixed-width="true" />
 								</button>
 							</div>
 						</div>

@@ -1,26 +1,28 @@
 <template>
 	<div class="box">
-		<h4 class="title is-4">{{ $t('kara.problem.title', {title: karaoke.title}) }}</h4>
-		<button class="button is-warning" @click="toggleModal" :disabled="submitted">
-			<font-awesome-icon :icon="['fas', 'meh']"/>
+		<h4 class="title is-4">
+			{{ $t('kara.problem.title', {title: karaoke.title}) }}
+		</h4>
+		<button class="button is-warning" :disabled="submitted" @click="toggleModal">
+			<font-awesome-icon :icon="['fas', 'meh']" />
 			{{ $t('kara.problem.btn.report') }}
 		</button>
 		<nuxt-link :to="`/import/${karaoke.kid}`" class="button is-success">
-			<font-awesome-icon :icon="['fas', 'pen']"/>
+			<font-awesome-icon :icon="['fas', 'pen']" />
 			{{ $t('kara.problem.btn.edit') }}
 		</nuxt-link>
 		<!-- Report Modal -->
 		<div class="modal" :class="{'is-active': modal}">
 			<form action="#" @submit.prevent="submitProblem">
-				<div class="modal-background"></div>
+				<div class="modal-background" />
 				<div class="modal-card">
 					<header class="modal-card-head">
 						<h4 class="modal-card-title">
 							{{ $t('kara.problem.form.title') }}
 						</h4>
-						<a class="delete" aria-label="close" @click="toggleModal"></a>
+						<a class="delete" aria-label="close" @click="toggleModal" />
 					</header>
-					<section class="modal-card-body" v-if="submitted">
+					<section v-if="submitted" class="modal-card-body">
 						<i18n path="kara.problem.form.thanks.text" tag="h5" class="title is-5">
 							<template v-slot:url>
 								<a :href="gitlabUrl" target="_blank">
@@ -29,8 +31,10 @@
 							</template>
 						</i18n>
 					</section>
-					<section class="modal-card-body" v-else>
-						<h5 class="title is-5">{{ $t('kara.problem.form.subtitle') }}</h5>
+					<section v-else class="modal-card-body">
+						<h5 class="title is-5">
+							{{ $t('kara.problem.form.subtitle') }}
+						</h5>
 						<div class="field is-horizontal">
 							<div class="field-label is-normal">
 								<label for="type" class="label">{{ $t('kara.problem.form.type.label') }}</label>
@@ -38,9 +42,13 @@
 							<div class="field-body">
 								<div class="control">
 									<div class="select">
-										<select name="type" id="type" autocomplete="off" v-model="formData.type">
-											<option value="time">{{ $t('kara.problem.form.type.time') }}</option>
-											<option value="quality">{{ $t('kara.problem.form.type.quality') }}</option>
+										<select id="type" v-model="formData.type" name="type" autocomplete="off">
+											<option value="time">
+												{{ $t('kara.problem.form.type.time') }}
+											</option>
+											<option value="quality">
+												{{ $t('kara.problem.form.type.quality') }}
+											</option>
 										</select>
 									</div>
 								</div>
@@ -54,15 +62,15 @@
 								<div class="field">
 									<div class="control">
 										<input
+											id="comment"
+											v-model="formData.comment"
 											type="text"
 											name="comment"
-											id="comment"
 											class="input"
 											required
 											:placeholder="$t('kara.problem.form.comment.placeholder')"
 											autocomplete="off"
-											v-model="formData.comment"
-										/>
+										>
 									</div>
 								</div>
 							</div>
@@ -75,15 +83,15 @@
 								<div class="field">
 									<div class="control">
 										<input
+											id="username"
+											v-model="formData.username"
 											type="text"
 											name="username"
-											id="username"
 											class="input"
 											required
 											:placeholder="$t('kara.problem.form.username.placeholder')"
 											autocomplete="username"
-											v-model="formData.username"
-										/>
+										>
 									</div>
 								</div>
 							</div>
@@ -91,17 +99,19 @@
 					</section>
 					<footer class="modal-card-foot">
 						<button
+							v-if="submitted"
 							class="button is-success"
 							@click.prevent="toggleModal"
-							v-if="submitted"
-						>{{ $t('kara.problem.form.thanks.btn') }}
+						>
+							{{ $t('kara.problem.form.thanks.btn') }}
 						</button>
 						<button
+							v-else
 							class="button is-success"
 							:class="{'is-loading': loading}"
 							type="submit"
-							v-else
-						>{{ $t('kara.problem.form.submit') }}
+						>
+							{{ $t('kara.problem.form.submit') }}
 						</button>
 					</footer>
 				</div>
@@ -111,8 +121,8 @@
 </template>
 
 <script lang="ts">
-	import Vue, {PropOptions} from 'vue';
-	import {DBKara} from "%/lib/types/database/kara";
+	import Vue, { PropOptions } from 'vue';
+	import { DBKara } from '%/lib/types/database/kara';
 
 	interface VState {
 		modal: boolean,
@@ -147,7 +157,7 @@
 					username: ''
 				},
 				gitlabUrl: ''
-			}
+			};
 		},
 
 		methods: {
@@ -156,7 +166,7 @@
 			},
 			submitProblem() {
 				this.loading = true;
-				this.$axios.post(`/api/karas/${this.karaoke.kid}/problem`, this.formData).then(res => {
+				this.$axios.post(`/api/karas/${this.karaoke.kid}/problem`, this.formData).then((res) => {
 					this.gitlabUrl = res.data;
 					this.loading = false;
 					this.submitted = true;
