@@ -48,6 +48,7 @@
 <script lang="ts">
 	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
+	import { getSerieLanguage } from '../utils/tools';
 	import { tagTypes } from '~/assets/constants';
 	import Tag from '~/components/Tag.vue';
 	import { DBKara } from '%/lib/types/database/kara';
@@ -96,10 +97,7 @@
 			serieSinger(): serieSinger {
 				if (this.karaoke.series[0]) {
 					return {
-						name: this.i18n[this.karaoke.series[0].tid]
-							? this.i18n[this.karaoke.series[0].tid][this.$i18n.locale] ||
-							this.i18n[this.karaoke.series[0].tid]?.eng ||
-								this.karaoke.series[0].name : this.karaoke.series[0].name,
+						name: getSerieLanguage(this.karaoke.series[0], this.karaoke.langs[0].name, this.$store.state.auth.user, this.i18n),
 						tid: `${this.karaoke.series[0].tid}~${tagTypes.series.type}`,
 						slug: slug(this.karaoke.series[0].name)
 					};
