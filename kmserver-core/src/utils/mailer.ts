@@ -26,7 +26,7 @@ export function initMailer() {
 }
 
 export function sendMail(subject: string, message: string, to: string, toMail: string) {
-	transporter.sendMail({...mailOptions,
+	if (transporter) transporter.sendMail({...mailOptions,
 		subject: subject,
 		text: message,
 		to: `"${to}" <${toMail}>`
