@@ -272,6 +272,7 @@ export default {
 		home: 'Home'
 	},
 	toast: {
-		ERROR_LOG: 'Incorrect credentials.'
+		LOG_ERROR: 'Incorrect credentials.',
+		USER_CREATED: 'User successfully created'
 	}
 };

@@ -274,6 +274,7 @@ export default {
 		home: 'Accueil'
 	},
 	toast: {
-		ERROR_LOG: 'Identifiants incorrects.'
+		LOG_ERROR: 'Identifiants incorrects.',
+		USER_CREATED: 'Utilisateur créé avec succès'
 	}
 };
