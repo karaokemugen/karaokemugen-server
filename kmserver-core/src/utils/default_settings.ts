@@ -346,13 +346,7 @@ export let NuxtConfig: NuxtConfigType = {
 
 	toast: {
 		position: 'top-right',
-		register: [
-			{
-				options: {
-					duration: '1500'
-				}
-			}
-		]
+		duration: '1500'
 	},
 
 	router: {
