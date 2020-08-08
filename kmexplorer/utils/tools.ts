@@ -2,7 +2,10 @@ import languages from '@cospired/i18n-iso-languages';
 import { DBKaraTag } from "~/../kmserver-core/src/lib/types/database/kara";
 import { User } from "~/../kmserver-core/src/lib/types/user";
 
-const navigatorLanguage:string = languages.alpha2ToAlpha3B(navigator.languages[0].substring(0, 2));
+let navigatorLanguage:string;
+if (process.client) {
+	navigatorLanguage = languages.alpha2ToAlpha3B(navigator.languages[0].substring(0, 2));
+}
 
 export function getTagInLanguage(tag: DBKaraTag, mainLanguage: string, fallbackLanguage: string, i18nParam?: any) {
 	const i18n = (i18nParam && i18nParam[tag.tid]) ? i18nParam[tag.tid] : tag.i18n;
