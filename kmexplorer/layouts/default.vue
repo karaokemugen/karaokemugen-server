@@ -156,8 +156,10 @@
 			<aside class="menu is-hidden-touch">
 				<ul class="menu-list">
 					<li class="addRepo" :title="$t('modal.add_repository.label')" @click="openAddRepoModal">
-						<font-awesome-icon :icon="['fas', 'folder-plus']" :fixed-width="true" />
-						{{ $t('menu.add_repository') }}
+						<a href="#">
+							<font-awesome-icon :icon="['fas', 'folder-plus']" :fixed-width="true" />
+							{{ $t('menu.add_repository') }}
+						</a>
 					</li>
 				</ul>
 				<p class="menu-label">
