@@ -3,6 +3,9 @@
 ////////////////////////////////////////////////
 @import '~bulmaswatch/darkly/_variables';
 
+$bulmaswatch-import-font: false;
+@import "./lato/lato.css";
+
 $background: #36393f;
 $footer-background-color: $background;
 $button-background-color: $background;

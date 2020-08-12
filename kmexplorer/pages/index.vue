@@ -76,6 +76,8 @@
 	import { modalStore } from '~/store';
 
 	export default Vue.extend({
+		name: 'HomeStats',
+
 		async fetch() {
 			const stats = this.$axios.get('/api/karas/stats');
 			const lastGen = this.$axios.get('/api/karas/lastUpdate');

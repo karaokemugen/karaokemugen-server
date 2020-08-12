@@ -21,7 +21,7 @@ import helmet from 'helmet';
 import compression from 'compression';
 import { getState } from './utils/state';
 import { initWS } from './lib/utils/ws';
-import {startKMExplorer} from "./services/kmexplorer";
+import {startKMExplorer} from './services/kmexplorer';
 
 /**
  * Starting express which will serve our app.
@@ -42,7 +42,15 @@ export function initFrontend(listenPort: number) {
 			ip === '::ffff:127.0.0.1';
 	});
 	app.use(helmet({
-		hsts: false
+		hsts: false,
+		contentSecurityPolicy: {
+			directives: {
+				defaultSrc: ['\'self\'', 'data:'],
+				scriptSrc: ['\'self\'', '\'unsafe-inline\'', '\'unsafe-eval\''],
+				styleSrc: ['\'self\'', '\'unsafe-inline\''],
+				connectSrc: ['\'self\'', 'https:']
+			}
+		}
 	}));
 	app.use(compression());
 	app.use(bodyParser.json({limit: '1000mb'})); // support json encoded bodies
