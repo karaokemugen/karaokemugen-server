@@ -341,6 +341,9 @@ export let NuxtConfig: NuxtConfigType = {
 				},
 				tokenType: false
 			}
+		},
+		redirect: {
+			login: '/#login'
 		}
 	},
 

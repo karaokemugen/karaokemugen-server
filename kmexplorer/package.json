@@ -34,7 +34,7 @@
     "@types/lodash.debounce": "^4.0.6",
     "@types/nuxtjs__auth": "^4.8.4",
     "@types/slug": "^0.9.1",
-    "eslint": "^6.8.0",
+    "eslint": "^7.6.0",
     "node-sass": "^4.14.1",
     "sass-loader": "^9.0.3",
     "ts-loader": "^8.0.2",

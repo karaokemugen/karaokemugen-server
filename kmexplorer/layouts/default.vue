@@ -60,6 +60,10 @@
 					<font-awesome-icon :icon="['fas', 'sign-out-alt']" :fixed-width="true" />
 					{{ $t('menu.logout') }}
 				</a>
+				<nuxt-link to="/favorites" v-if="loggedIn" active-class="is-active">
+					<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
+					{{ $t('menu.favorites') }}
+				</nuxt-link>
 				<a v-else class="navbar-item" aria-label="Login" @click.prevent="modal.auth = true">
 					<font-awesome-icon :icon="['fas', 'sign-in-alt']" :fixed-width="true" />
 					{{ $t('menu.connection') }}
@@ -341,6 +345,10 @@
 							<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
 							{{ $t('menu.profile') }}
 						</a>
+						<nuxt-link to="/favorites" v-if="loggedIn" active-class="is-active">
+							<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
+							{{ $t('menu.favorites') }}
+						</nuxt-link>
 						<a v-if="loggedIn" aria-label="Logout" @click.prevent="logout">
 							<font-awesome-icon :icon="['fas', 'sign-out-alt']" :fixed-width="true" />
 							{{ $t('menu.logout') }}
@@ -448,7 +456,7 @@
 				return this.$route.params?.id?.substring(36);
 			},
 			onKaraTagListView(): boolean {
-				return ['types-id', 'types-years', 'search-query', 'tags-slug-id'].includes(this.$route.name as string);
+				return ['types-id', 'types-years', 'search-query', 'tags-slug-id', 'favorites'].includes(this.$route.name as string);
 			}
 		},
 

@@ -29,6 +29,24 @@
 				<img :src="images[1]" :class="{activate}" alt="" @mouseenter="switchImage" @mouseleave="switchImage">
 			</a>
 		</div>
+		<button
+			v-if="favorite && favorites"
+			class="button is-normal is-warning is-fullwidth"
+			:class="{'is-loading': loading}"
+			@click="toggleFavorite"
+		>
+			<font-awesome-icon :icon="['fas', 'eraser']" :fixed-width="true" />
+			{{ $t('kara.favorites.remove') }}
+		</button>
+		<button
+			v-else-if="favorites"
+			class="button is-normal is-warning is-fullwidth"
+			:class="{'is-loading': loading}"
+			@click="toggleFavorite"
+		>
+			<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
+			{{ $t('kara.favorites.add') }}
+		</button>
 		<div class="tags are-medium">
 			<template v-for="type in Object.keys(tagTypes)" v-if="karaoke[type].length > 0">
 				<tag
@@ -48,15 +66,18 @@
 <script lang="ts">
 	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
-	import { getSerieLanguage } from '../utils/tools';
+	import { getSerieLanguage } from '~/utils/tools';
 	import { tagTypes } from '~/assets/constants';
 	import Tag from '~/components/Tag.vue';
 	import { DBKara } from '%/lib/types/database/kara';
 	import { serieSinger } from '~/types/serieSinger';
+	import { modalStore } from '~/store';
 
 	interface VState {
 		tagTypes: typeof tagTypes,
 		activate: boolean,
+		loading: boolean,
+		favorite: boolean,
 		liveURL?: string
 	}
 
@@ -75,6 +96,10 @@
 			i18n: {
 				type: Object,
 				required: true
+			},
+			favorites: {
+				type: Boolean,
+				default: false
 			}
 		},
 
@@ -82,7 +107,9 @@
 			return {
 				tagTypes,
 				activate: false,
-				liveURL: process.env.LIVE_URL
+				liveURL: process.env.LIVE_URL,
+				loading: false,
+				favorite: true
 			};
 		},
 
@@ -132,9 +159,35 @@
 			}
 		},
 
+		watch: {
+			favorites(now) {
+				this.favorite = now;
+			}
+		},
+
+		created() {
+			if (this.favorites) {
+				this.favorite = true;
+			}
+		},
+
 		methods: {
 			switchImage() {
 				this.activate = !this.activate;
+			},
+			async toggleFavorite() {
+				if (this.$auth.loggedIn) {
+					this.loading = true;
+					if (this.favorite) {
+						await this.$axios.delete(`/api/favorites/${this.karaoke.kid}`);
+					} else {
+						await this.$axios.post(`/api/favorites/${this.karaoke.kid}`);
+					}
+					this.favorite = !this.favorite;
+					this.loading = false;
+				} else {
+					modalStore.openModal('auth');
+				}
 			}
 		}
 	});
@@ -145,6 +198,7 @@
 		height: 100%;
 		display: flex;
 		flex-wrap: wrap;
+		align-content: flex-start;
 	}
 
 	.header {

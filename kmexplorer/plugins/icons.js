@@ -38,7 +38,8 @@ import {
 	faCalendarAlt,
 	faPen,
 	faLock,
-	faFolderPlus
+	faFolderPlus,
+	faEraser
 } from '@fortawesome/free-solid-svg-icons';
 
 // This is important, we are going to let Nuxt.js worry about the CSS
@@ -81,6 +82,7 @@ library.add(faCalendarAlt);
 library.add(faPen);
 library.add(faLock);
 library.add(faFolderPlus);
+library.add(faEraser);
 
 // Register the component globally
 Vue.component('font-awesome-icon', FontAwesomeIcon);

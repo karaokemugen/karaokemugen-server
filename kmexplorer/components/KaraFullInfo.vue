@@ -41,7 +41,7 @@
 				{{ $t('kara.add') }}
 			</a>
 			<button v-if="favorite" class="button is-warning" :class="{'is-loading': loading}" @click="toggleFavorite">
-				<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
+				<font-awesome-icon :icon="['fas', 'eraser']" :fixed-width="true" />
 				{{ $t('kara.favorites.remove') }}
 			</button>
 			<button v-else class="button is-warning" :class="{'is-loading': loading}" @click="toggleFavorite">

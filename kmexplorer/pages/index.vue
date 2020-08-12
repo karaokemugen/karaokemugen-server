@@ -3,9 +3,11 @@
 		<a href="http://karaokes.moe/">
 			<img class="km-home--logo" :src="require('~/assets/km-logo.png')">
 		</a>
-		<h1 class="title" :title="$t('modal.add_repository.label')" @click="openAddRepoModal">
+		<h1 class="title" :title="$t('modal.add_repository.label')" @click.prevent="openAddRepoModal">
 			{{ explorerHost }}
-			<font-awesome-icon :icon="['fas', 'folder-plus']" :fixed-width="true" />
+			<a href="#">
+				<font-awesome-icon :icon="['fas', 'folder-plus']" :fixed-width="true" />
+			</a>
 		</h1>
 		<h2 class="subtitle">
 			Explore! Find! Sing!
@@ -138,6 +140,10 @@
 
 		.title {
 			cursor: pointer;
+		}
+
+		.title:hover > a {
+			color: #1dd2af;
 		}
 
 		.km-home--stats {

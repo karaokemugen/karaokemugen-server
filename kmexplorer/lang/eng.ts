@@ -102,7 +102,9 @@ export default {
 	layout: {
 		loading: 'Loading...',
 		suggest: 'Can\'t find what you\'re looking for?',
-		suggest_open: 'Suggest us!'
+		suggest_open: 'Suggest us!',
+		empty: 'You don\'t have any favorites.',
+		explore: 'Go add some!'
 	},
 	footer: {
 		home: 'Project home',
@@ -143,10 +145,11 @@ export default {
 		community: 'Community',
 		kara_import: 'Submit a kara',
 		account: 'Account',
+		favorites: 'Favorites',
 		login: 'Login',
 		logout: 'Logout',
 		register: 'Register',
-		connection: 'Connection',
+		connection: 'Login',
 		profile: 'Profile'
 	},
 	search: {

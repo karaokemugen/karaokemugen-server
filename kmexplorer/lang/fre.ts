@@ -104,7 +104,9 @@ export default {
 	layout: {
 		loading: 'Chargement...',
 		suggest: 'Vous ne trouvez pas ?',
-		suggest_open: 'Suggérez-le nous !'
+		suggest_open: 'Suggérez-le nous !',
+		empty: 'Vous n\'avez pas de favoris.',
+		explore: 'Allez en ajouter !'
 	},
 	footer: {
 		home: 'Accueil du projet',
@@ -145,6 +147,7 @@ export default {
 		community: 'Communauté',
 		kara_import: 'Envoyer un kara',
 		account: 'Compte',
+		favorites: 'Favoris',
 		login: 'Se connecter',
 		logout: 'Se déconnecter',
 		register: 'S\'inscrire',

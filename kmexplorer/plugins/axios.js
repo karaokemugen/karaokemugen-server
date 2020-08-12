@@ -5,7 +5,7 @@ export default function ({ $axios, app }) {
 		}
 	});
 	$axios.onError((err) => {
-		if (err.response.data.code && typeof err.response.data.data !== 'object') { // ?
+		if (err?.response.data?.code && typeof err?.response?.data?.data !== 'object') { // ?
 			app.$toast.error(app.i18n.t(`toast.${err.response.data.code}`));
 		}
 	});

@@ -22,7 +22,10 @@ SELECT
   COALESCE(ak.platforms, '[]'::jsonb) AS platforms,
   COALESCE(ak.families, '[]'::jsonb) AS families,
   COALESCE(ak.genres, '[]'::jsonb) AS genres,
+  COALESCE(ak.groups, '[]'::jsonb) AS groups,
   ak.duration AS duration,
+  ak.mediasize AS mediasize,
+  ak.mediafile AS mediafile,
   ak.created_at AS created_at,
   ak.modified_at AS modified_at,
   count(ak.kid) OVER()::integer AS count
