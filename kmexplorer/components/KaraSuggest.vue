@@ -2,13 +2,11 @@
 	<div class="tile is-parent">
 		<div class="tile is-child">
 			<div class="box">
-				<h4 class="title is-4">
-					{{ $t('layout.suggest') }}
+				<h4 class="title is-4 with-img">
+					<img :src="require('~/assets/nanami-surpris.png')" alt="Nanamin surprised">
+					{{ $t('layout.suggest') }}&nbsp;
+					<a @click.prevent="modal = true">{{ $t('layout.suggest_open') }}</a>
 				</h4>
-				<button class="button is-success" @click.prevent="modal = true">
-					<font-awesome-icon :icon="['fas', 'pen']" />
-					{{ $t('layout.suggest_open') }}
-				</button>
 				<!-- Suggestion Modal -->
 				<div class="modal" :class="{'is-active': modal}">
 					<form action="#" @submit.prevent="submitForm">
@@ -229,5 +227,15 @@
 <style scoped lang="scss">
 .field-label {
 	flex-grow: 2;
+}
+
+.title.is-4.with-img {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	img {
+		height: 2.5em;
+	}
+	margin-bottom: 0;
 }
 </style>
