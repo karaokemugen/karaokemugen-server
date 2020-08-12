@@ -11,6 +11,7 @@
 				</div>
 			</div>
 			<loading-nanami v-if="loading" class="tile is-parent is-12" />
+			<kara-suggest></kara-suggest>
 		</div>
 	</div>
 </template>
@@ -19,6 +20,7 @@
 	import Vue, { PropOptions } from 'vue';
 	import LoadingNanami from './LoadingNanami.vue';
 	import KaraCard from './KaraCard.vue';
+	import KaraSuggest from './KaraSuggest.vue';
 	import { KaraList } from '%/lib/types/kara';
 
 	export default Vue.extend({
@@ -26,7 +28,8 @@
 
 		components: {
 			LoadingNanami,
-			KaraCard
+			KaraCard,
+			KaraSuggest
 		},
 
 		props: {
@@ -37,6 +40,12 @@
 			loading: {
 				type: Boolean,
 				required: true
+			}
+		},
+
+		computed: {
+			fullyLoaded(): boolean {
+				return this.karaokes.infos.to === this.karaokes.infos.count;
 			}
 		}
 	});

@@ -102,7 +102,9 @@ export default {
 		}
 	},
 	layout: {
-		loading: 'Chargement...'
+		loading: 'Chargement...',
+		suggest: 'Vous ne trouvez pas ?',
+		suggest_open: 'Suggérez-le nous !'
 	},
 	footer: {
 		home: 'Accueil du projet',
@@ -268,6 +270,38 @@ export default {
 			online: 'En ligne',
 			add: 'Ajouter',
 			cancel: 'Annuler'
+		},
+		suggest: {
+			title: 'Suggestion',
+			subtitle: 'Vous n\'avez pas trouvé votre bonheur ? Vous pouvez quand même nous formuler une recommandation.',
+			fields: {
+				title: {
+					label: 'Titre',
+					placeholder: 'JINGO JUNGLE'
+				},
+				series: {
+					label: 'Série / Chanteur',
+					placeholder: 'Yôjo Senki: Saga of Tanya the Evil'
+				},
+				type: {
+					label: 'Type'
+				},
+				link: {
+					label: 'Lien',
+					placeholder: 'https://www.youtube.com/watch?v=5VRyiaszGtA'
+				},
+				name: {
+					label: 'Votre nom',
+					placeholder: 'Anonyme magique'
+				}
+			},
+			submit: 'Envoyer',
+			submitted: {
+				subtitle: 'Message reçu !',
+				text: 'Votre suggestion a été reçue, vous pouvez voir le suivi de cette suggestion en cliquant {here}.',
+				here: 'ici',
+				close: 'Fermer'
+			}
 		}
 	},
 	titles: {
