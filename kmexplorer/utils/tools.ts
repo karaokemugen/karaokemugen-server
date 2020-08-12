@@ -18,7 +18,7 @@ export function getTagInLanguage(tag: DBKaraTag | DBTag, mainLanguage: string, f
 	}
 }
 
-export function getSerieLanguage(tag: DBKaraTag, karaLanguage: string, user:User, i18nParam?: any) {
+export function getSerieLanguage(tag: DBKaraTag | DBTag, karaLanguage: string, user:User, i18nParam?: any) {
 	let mode: number | undefined = user && user.series_lang_mode;
 	if (!user || user.series_lang_mode === -1) {
 		mode = 3;

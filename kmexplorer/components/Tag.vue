@@ -7,9 +7,7 @@
 	>
 		<font-awesome-icon v-if="icon" :icon="['fas', tagTypes[type].icon]" :fixed-width="true" />
 		{{ localizedName }}
-		<template v-if="showkaracount">
-			<span class="karacount">&nbsp;({{ tag.karacount[tagTypes[type].type] }})</span>
-		</template>
+		<span v-if="showkaracount" class="karacount">&nbsp;({{ tag.karacount[tagTypes[type].type] }})</span>
 		<button v-if="deletebtn" class="delete is-small" @click="$emit('close')" />
 	</nuxt-link>
 </template>
@@ -18,7 +16,7 @@
 	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
 	import { tagTypes } from '~/assets/constants';
-	import { getTagInLanguage } from '~/utils/tools';
+	import { getSerieLanguage, getTagInLanguage } from '~/utils/tools';
 	import { DBTag } from '%/lib/types/database/tag';
 
 	interface VState {
@@ -67,7 +65,11 @@
 
 		computed: {
 			localizedName(): string {
-				return getTagInLanguage(this.tag, this.$i18n.locale, 'eng', this.i18n);
+				if (this.type === 'series') {
+					return getSerieLanguage(this.tag, 'jpn', this.$store.state.auth.user, this.i18n); // TODO: true value for karaLanguage
+				} else {
+					return getTagInLanguage(this.tag, this.$i18n.locale, 'eng', this.i18n);
+				}
 			},
 			slug(): string {
 				return slug(this.tag.name);

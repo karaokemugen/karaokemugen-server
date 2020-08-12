@@ -1,5 +1,5 @@
 <template>
-	<kara-list :karaokes="karaokes" :loading="loading" />
+	<kara-list :karaokes="karaokes" :loading="loading || $fetchState.pending" />
 </template>
 
 <script lang="ts">
@@ -27,25 +27,27 @@
 			KaraList
 		},
 
-		async asyncData({ params, $axios, error, app }) {
-			const tagInfo = tagRegex.exec(params.id);
+		async fetch() {
+			const tagInfo = tagRegex.exec(this.$route.params.id);
 			if (!tagInfo) { throw new Error('Stealth check failed: Tag regex not matched'); }
-			const res = await $axios.get(`/api/tags/${tagInfo[1]}`).catch(
-				_err => error({ statusCode: 404, message: app.i18n.t('tag.notfound') as string }));
+			const res = this.$axios.get<Tag>(`/api/tags/${tagInfo[1]}`).catch(
+				_err => this.$nuxt.error({ statusCode: 404, message: this.$t('tag.notfound') as string }));
 
-			const res2 = await $axios.get('/api/karas/search', {
+			const res2 = this.$axios.get<KaraListType>('/api/karas/search', {
 				params: {
-					q: `t:${params.id}`,
+					q: `t:${this.$route.params.id}`,
 					from: 0,
 					size: 20,
-					filter: menuBarStore.search || undefined
+					filter: this.search || undefined
 				}
 			}).catch(
-				_err => error({ statusCode: 404, message: app.i18n.t('error.generic') as string }));
-			if (res && res2) {
-				return { karaokes: res2.data, tag: res.data };
+				_err => this.$nuxt.error({ statusCode: 404, message: this.$t('error.generic') as string }));
+			const all = await Promise.all([res, res2]);
+			if (all[0] && all[1]) {
+				this.karaokes = all[1].data;
+				this.tag = all[0].data;
 			} else {
-				error({ statusCode: 500, message: 'Huh?' });
+				this.$nuxt.error({ statusCode: 500, message: 'Huh?' });
 			}
 		},
 
@@ -83,6 +85,14 @@
 				this.karaokes = { infos: { count: -1, from: 0, to: 0 }, i18n: {}, content: [] };
 				this.from = -1;
 				this.$nextTick(() => { this.loadNextPage(); });
+			},
+			tag(now) {
+				const tagInfo = tagRegex.exec(this.$route.params.id);
+				if (!tagInfo) { throw new Error('Stealth check failed: Tag regex not matched'); }
+				menuBarStore.setTag({
+					type: tagTypesMap[tagInfo[2] as unknown as number].name,
+					tag: now
+				});
 			}
 		},
 
@@ -90,12 +100,6 @@
 			if (this.sort === 'karacount') {
 				menuBarStore.setSort('az');
 			}
-			const tagInfo = tagRegex.exec(this.$route.params.id);
-			if (!tagInfo) { throw new Error('Stealth check failed: Tag regex not matched'); }
-			menuBarStore.setTag({
-				type: tagTypesMap[tagInfo[2] as unknown as number].name,
-				tag: this.tag
-			});
 			window.addEventListener('scroll', this.scrollEvent, { passive: true });
 		},
 

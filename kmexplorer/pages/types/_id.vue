@@ -15,7 +15,7 @@
 		</div>
 		<pagination v-if="total > 1" :page="page" :last-page="total" @page="setPage" />
 
-		<loading-nanami v-if="loading" class="tile is-parent is-12" />
+		<loading-nanami v-if="loading || $fetchState.pending" class="tile is-parent is-12" />
 	</div>
 </template>
 
@@ -30,6 +30,7 @@
 	import { menuBarStore } from '~/store';
 
 	import { DBTag } from '%/lib/types/database/tag';
+	import { TagList } from '%/lib/types/tag';
 
 	interface TagsRequest {
 		from: number,
@@ -40,14 +41,11 @@
 
 	interface VState {
 		tagTypesMap: typeof tagTypesMap,
-		tags: {
-			infos: { count: number, from: number, to: number },
-			content: DBTag[]
-		},
+		tags: TagList,
 		page: number,
 		loading: boolean,
 		total: number,
-		type: number
+		type: string
 	}
 
 	export default Vue.extend({
@@ -58,27 +56,25 @@
 			Pagination
 		},
 
-		async asyncData({ params, $axios, error, app }) {
-			const res = await $axios
-				.get(`/api/karas/tags/${tagTypes[params.id].type}`, {
+		async fetch() {
+			const res = await this.$axios
+				.get<TagList>(`/api/karas/tags/${tagTypes[this.$route.params.id].type}`, {
 					params: {
 						from: 0,
 						size: 100,
 						stripEmpty: true,
-						filter: menuBarStore.search || ''
-					}
+						filter: this.search || ''
+					} as TagsRequest
 				})
 				.catch(_err =>
-					error({ statusCode: 404, message: app.i18n.t('tag.notfound') as string })
+					this.$nuxt.error({ statusCode: 404, message: this.$t('tag.notfound') as string })
 				);
 			if (res && res.data) {
-				return {
-					tags: res.data,
-					type: params.id,
-					total: res.data.content.length > 0 && Math.ceil(res.data.content[0].count / 100)
-				};
+				this.type = this.$route.params.id;
+				this.total = res.data.content.length > 0 ? Math.ceil(res.data.content[0].count / 100) : 0;
+				this.tags = res.data;
 			} else {
-				error({ statusCode: 500, message: 'Huh?' });
+				this.$nuxt.error({ statusCode: 500, message: 'Huh?' });
 			}
 		},
 
@@ -92,7 +88,7 @@
 				page: 1,
 				loading: false,
 				total: 1,
-				type: -1
+				type: ''
 			};
 		},
 
@@ -109,13 +105,13 @@
 		},
 
 		watch: {
-			loading(now, _old) {
+			loading(now) {
 				if (now) { this.$nuxt.$loading.start(); } else { this.$nuxt.$loading.finish(); }
 			},
-			sort(_now, _old) {
+			sort() {
 				this.setPage(1);
 			},
-			search(_now, _old) {
+			search() {
 				this.setPage(1);
 			}
 		},

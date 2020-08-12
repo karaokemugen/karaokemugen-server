@@ -1,5 +1,5 @@
 <template>
-	<kara-list :karaokes="karaokes" :loading="loading" />
+	<kara-list :karaokes="karaokes" :loading="loading || $fetchState.pending" />
 </template>
 
 <script lang="ts">
@@ -24,19 +24,19 @@
 			KaraList
 		},
 
-		async asyncData({ params, $axios, error, app }) {
-			const res = await $axios.get('/api/karas/search', {
+		async fetch() {
+			const res = await this.$axios.get<KaraListType>('/api/karas/search', {
 				params: {
-					filter: `${typeof params.query === 'string' ? params.query : ''}`,
+					filter: `${typeof this.$route.params.query === 'string' ? this.$route.params.query : ''}`,
 					from: 0,
 					size: 20
 				}
 			}).catch(
-				_err => error({ statusCode: 404, message: app.i18n.t('error.generic') as string }));
+				_err => this.$nuxt.error({ statusCode: 404, message: this.$t('error.generic') as string }));
 			if (res) {
-				return { karaokes: res.data };
+				this.karaokes = res.data;
 			} else {
-				error({ statusCode: 500, message: app.i18n.t('error.generic') as string });
+				this.$nuxt.error({ statusCode: 500, message: this.$t('error.generic') as string });
 			}
 		},
 

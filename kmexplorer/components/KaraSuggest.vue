@@ -201,7 +201,7 @@
 			};
 		},
 
-		activated() {
+		mounted() {
 			// Prefill the username field if user is logged in
 			if (this.$auth.loggedIn) {
 				this.formData.username = this.$auth.user.nickname;

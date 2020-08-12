@@ -2,7 +2,10 @@
 	<div class="tile is-parent">
 		<div class="tile is-child">
 			<div class="box">
-				<p>{{ $t('layout.loading') }}</p>
+				<h4 class="title is-4 with-img">
+					<img :src="require('~/assets/nanami-surpris.png')" alt="Nanamin surprised">
+					{{ $t('layout.loading') }}
+				</h4>
 			</div>
 		</div>
 	</div>
@@ -14,8 +17,17 @@
 	};
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 	.tile.is-child {
 		padding: 0 1em;
+	}
+	.title.is-4.with-img {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		img {
+			height: 2.5em;
+		}
+		margin-bottom: 0;
 	}
 </style>

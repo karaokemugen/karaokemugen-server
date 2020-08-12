@@ -11,7 +11,7 @@
 				</div>
 			</div>
 			<loading-nanami v-if="loading" class="tile is-parent is-12" />
-			<kara-suggest></kara-suggest>
+			<kara-suggest v-if="fullyLoaded && !loading" class="tile is-parent is-12" />
 		</div>
 	</div>
 </template>
