@@ -48,7 +48,8 @@ export function initFrontend(listenPort: number) {
 				defaultSrc: ['\'self\'', 'data:'],
 				scriptSrc: ['\'self\'', '\'unsafe-inline\'', '\'unsafe-eval\''],
 				styleSrc: ['\'self\'', '\'unsafe-inline\''],
-				connectSrc: ['\'self\'', 'https:']
+				connectSrc: ['\'self\'', 'https:'],
+				frameSrc: ['\'self\'', getConfig().KaraExplorer.LiveURL]
 			}
 		}
 	}));
