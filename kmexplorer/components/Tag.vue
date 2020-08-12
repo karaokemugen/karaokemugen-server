@@ -18,6 +18,7 @@
 	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
 	import { tagTypes } from '~/assets/constants';
+	import { getTagInLanguage } from '~/utils/tools';
 	import { DBTag } from '%/lib/types/database/tag';
 
 	interface VState {
@@ -66,23 +67,7 @@
 
 		computed: {
 			localizedName(): string {
-				if (this.i18n) {
-					return this.i18n[this.$i18n.locale] || this.i18n.eng || this.tag.name;
-				} else {
-					/* Name resolving strategy
-					return this.tag.i18n?.hasOwnProperty(this.$i18n.locale) ? // If i18n exists in user language
-						this.tag.i18n[this.$i18n.locale]: // Display this
-						this.tag.i18n?.hasOwnProperty('eng') ? this.tag.i18n.eng // Else, fallback on English or worst!
-							:this.tag.name; // The tag raw name
-					// Why not this.tag.i18n[this.$i18n.locale]? Because we cannot do speculative access (?.) before []
-					// It returns an error if this.tag.i18n is undefined
-					*/
-					if (this.tag.i18n) {
-						return this.tag.i18n[this.$i18n.locale] || this.tag.i18n.eng || this.tag.name;
-					} else {
-						return this.tag.name;
-					}
-				}
+				return getTagInLanguage(this.tag, this.$i18n.locale, 'eng', this.i18n);
 			},
 			slug(): string {
 				return slug(this.tag.name);

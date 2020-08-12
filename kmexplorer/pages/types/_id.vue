@@ -47,8 +47,7 @@
 		page: number,
 		loading: boolean,
 		total: number,
-		type: number,
-		VuexUnsubscribe?: Function
+		type: number
 	}
 
 	export default Vue.extend({

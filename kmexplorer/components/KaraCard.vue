@@ -36,7 +36,7 @@
 					:key="`${tag.tid}~${tagTypes[type].type}`"
 					:type="type"
 					:tag="tag"
-					:i18n="i18n[tag.tid]"
+					:i18n="i18n"
 					:icon="true"
 					:staticheight="false"
 				/>

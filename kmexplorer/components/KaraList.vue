@@ -1,8 +1,8 @@
 <template>
 	<div class="tile is-ancestor">
 		<div class="tile is-vertical">
-			<div v-for="n in Math.ceil(karaokes.infos.to / 3)" class="tile is-parent is-12">
-				<div v-for="n2 in 3" class="tile is-child is-4">
+			<div v-for="n in Math.ceil(karaokes.infos.to / 3)" :key="n" class="tile is-parent is-12">
+				<div v-for="n2 in 3" :key="`${n}_${n2}`" class="tile is-child is-4">
 					<kara-card
 						v-if="karaokes.content[(n-1)*3+n2-1]"
 						:karaoke="karaokes.content[(n-1)*3+n2-1]"

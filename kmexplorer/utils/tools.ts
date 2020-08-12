@@ -1,13 +1,14 @@
 import languages from '@cospired/i18n-iso-languages';
-import { DBKaraTag } from "~/../kmserver-core/src/lib/types/database/kara";
-import { User } from "~/../kmserver-core/src/lib/types/user";
+import { DBKaraTag } from '~/../kmserver-core/src/lib/types/database/kara';
+import { User } from '~/../kmserver-core/src/lib/types/user';
+import { DBTag } from '%/lib/types/database/tag';
 
 let navigatorLanguage:string;
 if (process.client) {
 	navigatorLanguage = languages.alpha2ToAlpha3B(navigator.languages[0].substring(0, 2));
 }
 
-export function getTagInLanguage(tag: DBKaraTag, mainLanguage: string, fallbackLanguage: string, i18nParam?: any) {
+export function getTagInLanguage(tag: DBKaraTag | DBTag, mainLanguage: string, fallbackLanguage: string, i18nParam?: any) {
 	const i18n = (i18nParam && i18nParam[tag.tid]) ? i18nParam[tag.tid] : tag.i18n;
 	if (i18n) {
 		return i18n[mainLanguage] ? i18n[mainLanguage]
@@ -35,6 +36,5 @@ export function getSerieLanguage(tag: DBKaraTag, karaLanguage: string, user:User
 		} else {
 			return getTagInLanguage(tag, navigatorLanguage, 'eng', i18nParam);
 		}
-	}
-	return tag.name;
+	} else { return tag.name; }
 }

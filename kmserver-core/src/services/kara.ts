@@ -47,7 +47,7 @@ export async function getAllYears() {
 
 export async function generate() {
 	try {
-		await generateDatabase({validateOnly: false, progressBar: false});
+		await generateDatabase({validateOnly: false});
 		const karas = await getAllKaras();
 		await createImagePreviews(karas);
 	} catch(err) {

@@ -51,11 +51,11 @@
 			}
 		},
 
-		mounted() {
+		activated() {
 			window.addEventListener('scroll', this.scrollEvent, { passive: true });
 		},
 
-		destroyed() {
+		deactivated() {
 			window.removeEventListener('scroll', this.scrollEvent);
 		},
 

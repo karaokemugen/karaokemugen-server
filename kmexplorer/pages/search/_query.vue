@@ -4,6 +4,7 @@
 
 <script lang="ts">
 	import Vue from 'vue';
+	import { mapState } from 'vuex';
 	import merge from 'lodash.merge';
 
 	import KaraList from '~/components/KaraList.vue';
@@ -14,8 +15,6 @@
 		karaokes: KaraListType,
 		from: number,
 		loading: boolean
-		sort: string
-		VuexUnsubscribe?: Function
 	}
 
 	export default Vue.extend({
@@ -45,14 +44,22 @@
 			return {
 				karaokes: { infos: { count: 0, from: 0, to: 0 }, i18n: {}, content: [] },
 				from: 0,
-				loading: false,
-				sort: menuBarStore.sort || 'az'
+				loading: false
 			};
 		},
 
+		computed: {
+			...mapState('menubar', ['sort'])
+		},
+
 		watch: {
-			loading(now, _old) {
+			loading(now) {
 				if (now) { this.$nuxt.$loading.start(); } else { this.$nuxt.$loading.finish(); }
+			},
+			sort() {
+				this.karaokes = { infos: { count: -1, from: 0, to: 0 }, i18n: {}, content: [] };
+				this.from = -1;
+				this.$nextTick(() => { this.loadNextPage(); });
 			}
 		},
 
@@ -60,27 +67,12 @@
 			window.addEventListener('scroll', this.scrollEvent, { passive: true });
 			menuBarStore.setSearch(this.$route.params.query);
 			if (menuBarStore.sort === 'karacount') {
-				this.sort = 'az';
 				menuBarStore.setSort('az');
 			}
-			this.VuexUnsubscribe = this.$store.subscribe((mutation, _payload) => {
-				if (mutation.type === 'menubar/setSort') {
-					this.sort = mutation.payload;
-					this.karaokes = { infos: { count: -1, from: 0, to: 0 }, i18n: {}, content: [] };
-					this.from = -1;
-					this.$nextTick(() => { this.loadNextPage(); });
-				} else if (mutation.type === 'menubar/setSearch') {
-					if (mutation.payload !== this.$route.params.query) {
-						this.$router.push(`/search/${mutation.payload}`);
-					}
-				}
-			});
 		},
 
 		deactivated() {
-			// menuBarStore.setSearch(undefined);
 			window.removeEventListener('scroll', this.scrollEvent);
-			if (this.VuexUnsubscribe) { this.VuexUnsubscribe(); }
 		},
 
 		methods: {
