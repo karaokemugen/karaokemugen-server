@@ -2,7 +2,7 @@
 	<nuxt-link
 		:to="nolink ? ``:`/tags/${slug}/${tag.tid}~${tagTypes[type].type}`"
 		class="tag is-medium"
-		:class="[tagTypes[type].class, staticheight ? '':'no-static-height']"
+		:class="[tagTypes[type].class, staticheight ? '':'no-static-height', tag.problematic ? 'problematic':'']"
 		no-prefetch
 	>
 		<font-awesome-icon v-if="icon" :icon="['fas', tagTypes[type].icon]" :fixed-width="true" />
@@ -87,6 +87,9 @@
 		white-space: unset;
 		padding-top: .25em;
 		padding-bottom: .25em;
+	}
+	.tag.problematic {
+		color: gold;
 	}
 	.karacount {
 		font-size: 0.8em;
