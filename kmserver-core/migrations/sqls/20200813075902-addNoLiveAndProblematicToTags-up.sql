@@ -19,7 +19,7 @@ DROP MATERIALIZED VIEW songwriters;
 
 DROP VIEW tag_tid;
 CREATE VIEW tag_tid AS
-SELECT pk_tid AS tid, name, short, aliases, i18n, types, problematic FROM tag;
+SELECT pk_tid AS tid, name, short, aliases, i18n, types, problematic, noLiveDownload FROM tag;
 
 CREATE MATERIALIZED VIEW series AS
 SELECT kt.fk_kid, jsonb_agg(to_jsonb(t_series)) AS series, string_agg(t_series.name, ', ' ORDER BY name) AS series_sortable
