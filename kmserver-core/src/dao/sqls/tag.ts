@@ -11,6 +11,8 @@ SELECT tid,
 	karacount,
 	tagfile,
 	count(tid) OVER()::integer AS count,
+	problematic,
+	noLiveDownload,
 	repository,
 	modified_at
 FROM all_tags
@@ -44,6 +46,8 @@ SELECT tid,
 	karacount,
 	tagfile,
 	repository,
+	problematic,
+	noLiveDownload,
 	modified_at
 FROM all_tags
 WHERE tid = $1
