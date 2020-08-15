@@ -73,70 +73,70 @@ export const tagTypesMap: { [key: number]: tagType } = {
 		class: 'is-black',
 		name: 'misc'
 	}
-}
+};
 
 export const tagTypes: { [key: string]: tagType } = {
-	'songtypes': {
+	songtypes: {
 		icon: 'tasks',
 		class: 'is-success',
 		type: 3
 	},
-	'series': {
+	series: {
 		icon: 'tv',
 		class: 'is-success',
 		type: 1
 	},
-	'langs': {
+	langs: {
 		icon: 'globe',
 		class: 'is-success',
 		type: 5
 	},
-	'singers': {
+	singers: {
 		icon: 'microphone-alt',
 		class: 'is-warning',
 		type: 2
 	},
-	'songwriters': {
+	songwriters: {
 		icon: 'signature',
 		class: 'is-warning',
 		type: 8
 	},
-	'families': {
+	families: {
 		icon: 'photo-video',
 		class: 'is-info',
 		type: 10
 	},
-	'origins': {
+	origins: {
 		icon: 'project-diagram',
 		class: 'is-info',
 		type: 11
 	},
-	'genres': {
+	genres: {
 		icon: 'chess',
 		class: 'is-info',
 		type: 12
 	},
-	'platforms': {
+	platforms: {
 		icon: 'laptop',
 		class: 'is-info',
 		type: 13
 	},
-	'creators': {
+	creators: {
 		icon: 'chalkboard-teacher',
 		class: 'is-purple',
 		type: 4
 	},
-	'authors': {
+	authors: {
 		icon: 'user-secret',
 		class: 'is-purple',
 		type: 6
 	},
-	'groups': {
+	groups: {
 		icon: 'box',
 		class: 'is-black',
 		type: 9
 	},
-	'misc': {
+	misc: {
 		icon: 'tag',
 		class: 'is-black',
 		type: 7

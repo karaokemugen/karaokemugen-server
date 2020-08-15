@@ -35,6 +35,8 @@
 	import KaraFullInfo from '~/components/KaraFullInfo.vue';
 	import KaraReport from '~/components/KaraReport.vue';
 	import { DBKara } from '%/lib/types/database/kara';
+	import {tagTypes} from "~/assets/constants";
+	import {DBTag} from "%/lib/types/database/tag";
 
 	interface VState {
 		karaoke: DBKara,
@@ -74,7 +76,17 @@
 				return this.karaoke.mediafile.endsWith('.mp3');
 			},
 			live(): boolean {
-				return this.karaoke.mediafile.endsWith('.mp3') || this.karaoke.mediafile.endsWith('.mp4');
+				// Loop all tags to find a tag with noLiveDownload
+				let noLiveDownload = false;
+				for (const tagType in tagTypes) {
+					// @ts-ignore: il est 23h27 <- ceci n'est pas une raison
+					for (const tag of this.karaoke[tagType]) {
+						if (tag.nolivedownload) {
+							noLiveDownload = true;
+						}
+					}
+				}
+				return !noLiveDownload && (this.karaoke.mediafile.endsWith('.mp3') || this.karaoke.mediafile.endsWith('.mp4'));
 			}
 		},
 
@@ -133,7 +145,7 @@
 	.tile.is-vertical {
 		padding: 0 1em;
 	}
-	
+
 	@media (max-width: 769px) {
 		.tile.is-vertical {
 			padding: 1em 0;
