@@ -24,7 +24,7 @@
 	import { mapState } from 'vuex';
 
 	import Tag from '~/components/Tag.vue';
-	import { tagTypesMap, tagTypes } from '~/assets/constants';
+	import { tagTypes } from '~/assets/constants';
 	import LoadingNanami from '~/components/LoadingNanami.vue';
 	import Pagination from '~/components/Pagination.vue';
 	import { menuBarStore } from '~/store';
@@ -40,12 +40,10 @@
 	}
 
 	interface VState {
-		tagTypesMap: typeof tagTypesMap,
 		tags: TagList,
 		page: number,
 		loading: boolean,
-		total: number,
-		type: string
+		total: number
 	}
 
 	export default Vue.extend({
@@ -70,7 +68,6 @@
 					this.$nuxt.error({ statusCode: 404, message: this.$t('tag.notfound') as string })
 				);
 			if (res && res.data) {
-				this.type = this.$route.params.id;
 				this.total = res.data.content.length > 0 ? Math.ceil(res.data.content[0].count / 100) : 0;
 				this.tags = res.data;
 			} else {
@@ -80,15 +77,13 @@
 
 		data(): VState {
 			return {
-				tagTypesMap,
 				tags: {
 					infos: { count: 0, from: 0, to: 0 },
 					content: []
 				},
 				page: 1,
 				loading: false,
-				total: 1,
-				type: ''
+				total: 1
 			};
 		},
 
@@ -119,7 +114,7 @@
 			}
 		},
 
-		mounted() {
+		created() {
 			if (!['az', 'karacount'].includes(this.sort)) {
 				// Reset sort to karacount
 				menuBarStore.setSort('karacount');
@@ -130,8 +125,8 @@
 			async setPage(e: number): Promise<void> {
 				this.page = e;
 				this.loading = true;
-				const { data } = await this.$axios.get(
-					`/api/karas/tags/${tagTypes[this.type].type}`,
+				const { data } = await this.$axios.get<TagList>(
+					`/api/karas/tags/${tagTypes[this.$route.params.id].type}`,
 					{
 						params: this.reqParams
 					}
