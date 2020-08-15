@@ -89,10 +89,6 @@
 			}
 		},
 
-		activated() {
-			this.liveOpened = false;
-		},
-
 		methods: {
 			placeForLive() {
 				this.liveOpened = true;

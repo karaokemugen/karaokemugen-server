@@ -75,11 +75,11 @@
 			}
 		},
 
-		activated() {
+		mounted() {
 			window.addEventListener('scroll', this.scrollEvent, { passive: true });
 		},
 
-		deactivated() {
+		destroyed() {
 			window.removeEventListener('scroll', this.scrollEvent);
 		},
 

@@ -119,7 +119,7 @@
 			}
 		},
 
-		activated() {
+		mounted() {
 			if (!['az', 'karacount'].includes(this.sort)) {
 				// Reset sort to karacount
 				menuBarStore.setSort('karacount');
