@@ -29,7 +29,8 @@
 				params: {
 					filter: `${typeof this.$route.params.query === 'string' ? this.$route.params.query : ''}`,
 					from: 0,
-					size: 20
+					size: 20,
+					order: this.sort
 				}
 			}).catch(
 				_err => this.$nuxt.error({ statusCode: 404, message: this.$t('error.generic') as string }));
@@ -57,12 +58,15 @@
 				if (now) { this.$nuxt.$loading.start(); } else { this.$nuxt.$loading.finish(); }
 			},
 			sort() {
-				this.karaokes = { infos: { count: -1, from: 0, to: 0 }, i18n: {}, content: [] };
-				this.from = -1;
-				this.$nextTick(() => { this.loadNextPage(); });
+				this.from = 0;
+				this.$fetch();
 			},
 			search(now) {
-				this.$router.push(`/search/${now}`);
+				if (typeof now === 'string' && now.length > 0) {
+					this.$router.push(`/search/${now}`);
+				} else {
+					this.$router.push(`/search/`);
+				}
 			}
 		},
 
