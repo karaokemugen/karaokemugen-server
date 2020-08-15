@@ -48,13 +48,11 @@
 			}
 		},
 
-		activated() {
-			this.show = false;
-			this.transition = false;
+		mounted() {
 			window.addEventListener('keydown', this.keyEvent);
 		},
 
-		deactivated() {
+		destroyed() {
 			window.removeEventListener('keydown', this.keyEvent);
 		},
 
