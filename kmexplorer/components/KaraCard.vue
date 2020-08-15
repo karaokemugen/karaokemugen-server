@@ -25,8 +25,8 @@
 				</h6>
 			</div>
 			<a :href="`${liveURL}?video=${karaoke.kid}`" target="_blank" class="images">
-				<img :src="images[0]" alt="">
-				<img :src="images[1]" :class="{activate}" alt="" @mouseenter="switchImage" @mouseleave="switchImage">
+				<v-lazy-image :src="images[0]" alt="" />
+				<v-lazy-image :src="images[1]" :class="{activate}" alt="" @mouseenter="switchImage" @mouseleave="switchImage" />
 			</a>
 		</div>
 		<button
@@ -66,6 +66,7 @@
 <script lang="ts">
 	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
+	import VLazyImage from 'v-lazy-image';
 	import { getSerieLanguage } from '~/utils/tools';
 	import { tagTypes } from '~/assets/constants';
 	import Tag from '~/components/Tag.vue';
@@ -85,7 +86,8 @@
 		name: 'KaraCard',
 
 		components: {
-			Tag
+			Tag,
+			VLazyImage
 		},
 
 		props: {

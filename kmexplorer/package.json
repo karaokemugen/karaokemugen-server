@@ -25,6 +25,7 @@
     "nuxt-fontawesome": "^0.4.0",
     "nuxt-i18n": "^6.13.8",
     "slug": "^3.3.4",
+    "v-lazy-image": "^1.4.0",
     "vuex-persist": "^2.2.0"
   },
   "devDependencies": {
