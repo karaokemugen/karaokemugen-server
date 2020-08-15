@@ -24,9 +24,9 @@
 					</nuxt-link>
 				</h6>
 			</div>
-			<a :href="`${liveURL}?video=${karaoke.kid}`" target="_blank" class="images">
+			<a :href="`${liveURL}?video=${karaoke.kid}`" target="_blank" class="images" @mouseenter="switchImage" @mouseleave="switchImage">
 				<v-lazy-image :src="images[0]" alt="" />
-				<v-lazy-image :src="images[1]" :class="{activate}" alt="" @mouseenter="switchImage" @mouseleave="switchImage" />
+				<v-lazy-image :src="images[1]" :class="{activate}" alt="" />
 			</a>
 		</div>
 		<button

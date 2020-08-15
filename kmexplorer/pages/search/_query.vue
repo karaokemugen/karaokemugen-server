@@ -74,11 +74,14 @@
 		},
 
 		created() {
-			window.addEventListener('scroll', this.scrollEvent, { passive: true });
 			menuBarStore.setSearch(this.$route.params.query);
 			if (menuBarStore.sort === 'karacount') {
 				menuBarStore.setSort('recent');
 			}
+		},
+
+		mounted() {
+			window.addEventListener('scroll', this.scrollEvent, { passive: true });
 		},
 
 		destroyed() {

@@ -96,10 +96,13 @@
 			}
 		},
 
-		mounted() {
+		created() {
 			if (this.sort === 'karacount') {
 				menuBarStore.setSort('az');
 			}
+		},
+
+		mounted() {
 			window.addEventListener('scroll', this.scrollEvent, { passive: true });
 		},
 
