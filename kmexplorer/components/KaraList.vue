@@ -60,4 +60,12 @@
 	.tile.is-child.is-4 {
 		padding: 0 1em;
 	}
+	@media (max-width: 769px) {
+		.tile.is-child.is-4 {
+			padding: 1em 1em;
+		}
+		.tile.is-parent.is-12 {
+			padding: 0;
+		}
+	}
 </style>

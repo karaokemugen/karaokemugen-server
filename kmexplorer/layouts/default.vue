@@ -477,6 +477,15 @@
 			});
 		},
 
+		mounted() {
+			this.$router.afterEach(() => {
+				// Close all the menus after a navigation
+				this.accountMenu = false;
+				this.databaseMenu = false;
+				this.communityMenu = false;
+			});
+		},
+
 		methods: {
 			logout() {
 				this.$auth.logout();

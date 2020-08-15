@@ -80,13 +80,13 @@
 <style scoped lang="scss">
 	.box > *:first-child, .box img {
 		width: 100%;
-		height: 18vw;
+		height: 16rem;
 		transition: height 0.8s;
 	}
 
 	@media (min-width: 700px) {
 		.box *:first-child.live {
-			height: 31vw;
+			height: 20rem;
 		}
 	}
 
@@ -96,8 +96,8 @@
 
 	.fa-layers {
 		position: relative;
-		bottom: calc(50% + 2em);
-		left: calc(50% - 2.5em);
+		bottom: calc(50% + 1em);
+		left: calc(50% - 2em);
 
 		svg:first-child > path {
 			stroke: black;

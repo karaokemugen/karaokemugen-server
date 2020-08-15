@@ -133,4 +133,10 @@
 	.tile.is-vertical {
 		padding: 0 1em;
 	}
+	
+	@media (max-width: 769px) {
+		.tile.is-vertical {
+			padding: 1em 0;
+		}
+	}
 </style>

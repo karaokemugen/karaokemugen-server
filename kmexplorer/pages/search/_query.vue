@@ -65,7 +65,7 @@
 				if (typeof now === 'string' && now.length > 0) {
 					this.$router.push(`/search/${now}`);
 				} else {
-					this.$router.push(`/search/`);
+					this.$router.push('/search/');
 				}
 			}
 		},
