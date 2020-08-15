@@ -9,6 +9,11 @@
 				@keydown.enter="triggerSearch"
 			>
 		</div>
+		<div class="control" v-if="resultsCount > 0 && ['search-query', 'types-id'].includes($route.name)">
+			<button class="button is-static">
+				{{ $tc('layout.results', resultsCount, {count: resultsCount}) }}
+			</button>
+		</div>
 		<div class="control">
 			<span class="select">
 				<select v-model="sort" :aria-label="$t('search.aria.sort')" :disabled="!canSort">
@@ -30,6 +35,7 @@
 
 <script lang="ts">
 	import Vue from 'vue';
+	import { mapState } from 'vuex';
 	import { menuBarStore } from '~/store';
 
 	interface VState {
@@ -51,7 +57,8 @@
 		computed: {
 			canSort(): boolean {
 				return ['types-id', 'types-years', 'search-query', 'tags-slug-id'].includes(this.$route.name as string);
-			}
+			},
+			...mapState('menubar', ['resultsCount'])
 		},
 
 		watch: {

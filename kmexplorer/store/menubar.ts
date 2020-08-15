@@ -18,6 +18,8 @@ export default class MenuBar extends VuexModule {
 
 	sort: string = 'az'
 
+	resultsCount: number = 0
+
 	@Mutation
 	setTag(tag: TagExtend | null) {
 		this.tag = tag;
@@ -31,5 +33,10 @@ export default class MenuBar extends VuexModule {
 	@Mutation
 	setSort(sort: string) {
 		this.sort = sort;
+	}
+
+	@Mutation
+	setResultsCount(count: number) {
+		this.resultsCount = count;
 	}
 }

@@ -106,7 +106,8 @@ export default {
 		suggest: 'Vous ne trouvez pas ?',
 		suggest_open: 'Suggérez-le nous !',
 		empty: 'Vous n\'avez pas de favoris.',
-		explore: 'Allez en ajouter !'
+		explore: 'Allez en ajouter !',
+		results: '{count} résulat | {count} résultats'
 	},
 	footer: {
 		home: 'Accueil du projet',

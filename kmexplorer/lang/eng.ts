@@ -104,7 +104,8 @@ export default {
 		suggest: 'Can\'t find what you\'re looking for?',
 		suggest_open: 'Suggest us!',
 		empty: 'You don\'t have any favorites.',
-		explore: 'Go add some!'
+		explore: 'Go add some!',
+		results: '{count} result | {count} results'
 	},
 	footer: {
 		home: 'Project home',

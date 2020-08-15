@@ -67,10 +67,13 @@
 				} else {
 					this.$router.push('/search/');
 				}
+			},
+			karaokes(now) {
+				menuBarStore.setResultsCount(now.infos.count);
 			}
 		},
 
-		activated() {
+		mounted() {
 			window.addEventListener('scroll', this.scrollEvent, { passive: true });
 			menuBarStore.setSearch(this.$route.params.query);
 			if (menuBarStore.sort === 'karacount') {
@@ -78,7 +81,7 @@
 			}
 		},
 
-		deactivated() {
+		destroyed() {
 			window.removeEventListener('scroll', this.scrollEvent);
 		},
 
