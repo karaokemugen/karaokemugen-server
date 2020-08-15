@@ -6,6 +6,8 @@ export interface TagExtend {
 	tag?: Tag
 }
 
+export type sortTypes = 'az' | 'karacount' | 'recent' | 'most_played' | 'most_favorites' | 'most_requested';
+
 @Module({
 	name: 'menubar',
 	stateFactory: true,
@@ -16,7 +18,7 @@ export default class MenuBar extends VuexModule {
 
 	search: string | null = ''
 
-	sort: string = 'az'
+	sort: sortTypes = 'recent'
 
 	resultsCount: number = 0
 
@@ -31,7 +33,7 @@ export default class MenuBar extends VuexModule {
 	}
 
 	@Mutation
-	setSort(sort: string) {
+	setSort(sort: sortTypes) {
 		this.sort = sort;
 	}
 

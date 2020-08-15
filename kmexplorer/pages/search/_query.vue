@@ -77,7 +77,7 @@
 			window.addEventListener('scroll', this.scrollEvent, { passive: true });
 			menuBarStore.setSearch(this.$route.params.query);
 			if (menuBarStore.sort === 'karacount') {
-				menuBarStore.setSort('az');
+				menuBarStore.setSort('recent');
 			}
 		},
 

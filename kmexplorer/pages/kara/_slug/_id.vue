@@ -35,8 +35,7 @@
 	import KaraFullInfo from '~/components/KaraFullInfo.vue';
 	import KaraReport from '~/components/KaraReport.vue';
 	import { DBKara } from '%/lib/types/database/kara';
-	import {tagTypes} from "~/assets/constants";
-	import {DBTag} from "%/lib/types/database/tag";
+	import { tagTypes } from '~/assets/constants';
 
 	interface VState {
 		karaoke: DBKara,
@@ -111,7 +110,7 @@
 					{ hid: 'twitter-player-height', name: 'twitter:player:height', content: '720' },
 					{ hid: 'twitter-player-width', name: 'twitter:player:width', content: '1280' },
 					// @ts-ignore: rah :O
-					{ hid: 'twitter-image', name: 'twitter:image', content: `/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg` },
+					{ hid: 'twitter-image', name: 'twitter:image', content: `/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg` }
 					// { hid: 'twitter-description', name: 'twitter:description', content: 'smth' }
 					// The rest of meta tags is handled by KaraFullInfo.vue
 				]

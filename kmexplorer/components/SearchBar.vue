@@ -9,7 +9,7 @@
 				@keydown.enter="triggerSearch"
 			>
 		</div>
-		<div class="control" v-if="resultsCount > 0 && ['search-query', 'types-id'].includes($route.name)">
+		<div v-if="resultsCount > 0 && ['search-query', 'types-id'].includes($route.name)" class="control">
 			<button class="button is-static">
 				{{ $tc('layout.results', resultsCount, {count: resultsCount}) }}
 			</button>
@@ -37,10 +37,11 @@
 	import Vue from 'vue';
 	import { mapState } from 'vuex';
 	import { menuBarStore } from '~/store';
+	import { sortTypes } from '~/store/menubar';
 
 	interface VState {
 		search: string,
-		sort: string,
+		sort: sortTypes,
 		VuexUnsubscribe?: Function
 	}
 
@@ -50,7 +51,7 @@
 		data(): VState {
 			return {
 				search: '',
-				sort: 'az'
+				sort: 'recent'
 			};
 		},
 
