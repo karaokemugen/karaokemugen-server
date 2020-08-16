@@ -411,9 +411,6 @@ export let NuxtConfig: NuxtConfigType = {
 			display: 'minimal-ui'
 		},
 		workbox: {
-			config: {
-				debug: true
-			},
 			runtimeCaching: [
 				{
 					urlPattern: '/previews/.*',
