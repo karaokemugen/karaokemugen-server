@@ -3,7 +3,11 @@
 		<div class="tile is-child">
 			<div class="box">
 				<h4 class="title is-4 with-img">
-					<img :src="require('~/assets/nanami-surpris.png')" alt="Nanamin surprised">
+					<picture>
+						<source type="image/webp" :srcset="require('~/assets/nanami-surpris.webp')">
+						<source type="image/png" :srcset="require('~/assets/nanami-surpris.png')">
+						<img :src="require('~/assets/nanami-surpris.png')" alt="Surprised Nanami">
+					</picture>
 					{{ $t('layout.suggest') }}&nbsp;
 					<a @click.prevent="modal = true">{{ $t('layout.suggest_open') }}</a>
 				</h4>

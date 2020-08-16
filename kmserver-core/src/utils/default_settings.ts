@@ -271,6 +271,7 @@ export const configConstraints = {
 
 export let NuxtConfig: NuxtConfigType = {
 	mode: 'universal',
+	modern: 'server',
 	dev: false,
 
 	env: {

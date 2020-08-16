@@ -1,7 +1,11 @@
 <template>
 	<div class="km-home">
 		<a href="http://karaokes.moe/">
-			<img class="km-home--logo" :src="require('~/assets/km-logo.png')">
+			<picture class="km-home--logo">
+				<source type="image/webp" :srcset="require('~/assets/km-logo.webp')">
+				<source type="image/png" :srcset="require('~/assets/km-logo.png')">
+				<img :src="require('~/assets/km-logo.png')" alt="Logo">
+			</picture>
 		</a>
 		<h1 class="title" :title="$t('modal.add_repository.label')" @click.prevent="openAddRepoModal">
 			{{ explorerHost }}

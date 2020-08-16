@@ -3,7 +3,11 @@
 		<nav class="navbar is-primary is-fixed-top">
 			<div class="navbar-brand">
 				<nuxt-link class="navbar-item" to="/">
-					<img :src="require('../assets/nanami.png')" alt="Logo">
+					<picture>
+						<source type="image/webp" :srcset="require('~/assets/nanami.webp')">
+						<source type="image/png" :srcset="require('~/assets/nanami.png')">
+						<img :src="require('~/assets/nanami.png')" alt="Logo">
+					</picture>
 					{{ explorerHost }}
 				</nuxt-link>
 				<div class="navbar-item has-dropdown is-hidden-desktop">
