@@ -49,7 +49,8 @@ export function initFrontend(listenPort: number) {
 				scriptSrc: ['\'self\'', '\'unsafe-inline\'', '\'unsafe-eval\''],
 				styleSrc: ['\'self\'', '\'unsafe-inline\''],
 				connectSrc: ['\'self\'', 'https:'],
-				frameSrc: ['\'self\'', getConfig().KaraExplorer.LiveURL]
+				frameSrc: ['\'self\'', getConfig().KaraExplorer.LiveURL],
+				workerSrc: ['\'self\'', 'https://cdn.jsdelivr.net']
 			}
 		}
 	}));
