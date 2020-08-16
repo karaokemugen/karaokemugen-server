@@ -1,6 +1,6 @@
 import { Config } from '../types/config';
 import { NuxtConfig as NuxtConfigType } from '@nuxt/types';
-import {sentryDSN} from "./constants";
+import { sentryDSN } from './constants';
 
 // Karaoke Mugen default configuration file
 
@@ -303,7 +303,9 @@ export let NuxtConfig: NuxtConfigType = {
 		// Doc: https://github.com/nuxt-community/modules/tree/master/packages/toast
 		'@nuxtjs/toast',
 		// Doc: https://github.com/nuxt-community/sentry-module
-		'@nuxtjs/sentry'
+		'@nuxtjs/sentry',
+		// Doc: https://pwa.nuxtjs.org/
+		'@nuxtjs/pwa'
 	],
 
 	plugins: [
@@ -389,6 +391,23 @@ export let NuxtConfig: NuxtConfigType = {
 		dsn: process.env.SENTRY_DSN || sentryDSN,
 		disabled: false,
 		publishRelease: false
+	},
+
+	pwa: {
+		meta: false,
+		manifest: {
+			name: 'Karaoke Mugen Explorer',
+			lang: 'fr',
+			short_name: 'KMExplorer',
+			description: 'Explorez la base de données de karaokés!',
+			background_color: '#36393f',
+			display: 'minimal-ui'
+		},
+		workbox: {
+			config: {
+				debug: true
+			}
+		}
 	},
 
 	modulesDir: ['../node_modules/'],

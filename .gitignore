@@ -24,6 +24,7 @@ logs/
 !app/avatars/blank.png
 
 kmexplorer/.nuxt
+sw.*
 
 kmserver-core/dist/
 
