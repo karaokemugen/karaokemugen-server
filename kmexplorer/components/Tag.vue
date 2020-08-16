@@ -1,21 +1,33 @@
 <template>
 	<nuxt-link
+		v-if="direct"
 		:to="nolink ? ``:`/tags/${slug}/${tag.tid}~${tagTypes[type].type}`"
 		class="tag is-medium"
 		:class="[tagTypes[type].class, staticheight ? '':'no-static-height', tag.problematic ? 'problematic':'']"
-		no-prefetch
 	>
 		<font-awesome-icon v-if="icon" :icon="['fas', tagTypes[type].icon]" :fixed-width="true" />
 		{{ localizedName }}
 		<span v-if="showkaracount" class="karacount">&nbsp;({{ tag.karacount[tagTypes[type].type] }})</span>
 		<button v-if="deletebtn" class="delete is-small" @click="$emit('close')" />
 	</nuxt-link>
+	<a
+		v-else
+		:class="[tagTypes[type].class, staticheight ? '':'no-static-height', tag.problematic ? 'problematic':'']"
+		class="tag is-medium"
+		@click.prevent="handleLink"
+	>
+		<font-awesome-icon v-if="icon" :icon="['fas', tagTypes[type].icon]" :fixed-width="true" />
+		{{ localizedName }}
+		<span v-if="showkaracount" class="karacount">&nbsp;({{ tag.karacount[tagTypes[type].type] }})</span>
+		<button v-if="deletebtn" class="delete is-small" @click="$emit('close')" />
+	</a>
 </template>
 
 <script lang="ts">
 	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
 	import { tagTypes } from '~/assets/constants';
+	import { menuBarStore } from '~/store';
 	import { getSerieLanguage, getTagInLanguage } from '~/utils/tools';
 	import { DBTag } from '%/lib/types/database/tag';
 
@@ -32,7 +44,8 @@
 				required: true
 			} as PropOptions<DBTag>,
 			icon: {
-				type: Boolean
+				type: Boolean,
+				default: false
 			},
 			type: {
 				type: String,
@@ -42,7 +55,12 @@
 				type: Object
 			},
 			nolink: {
-				type: Boolean
+				type: Boolean,
+				default: false
+			},
+			direct: {
+				type: Boolean,
+				default: false
 			},
 			staticheight: {
 				type: Boolean,
@@ -73,6 +91,30 @@
 			},
 			slug(): string {
 				return slug(this.tag.name);
+			}
+		},
+
+		methods: {
+			handleLink() {
+				if (!this.nolink) {
+					// If no tags are present, redirect the user to the KaraList view with this tag.
+					const payload = { tag: this.tag, type: this.type };
+					// Put i18n in tag directly
+					if (this.i18n) {
+						const tag = { ...this.tag };
+						tag.i18n = this.i18n[this.tag.tid];
+						payload.tag = tag;
+					}
+					menuBarStore.addTag(payload);
+					if (!['search-query', 'tags-slug-id', 'years-year'].includes(this.$route.name as string)) {
+						const navigation = { path: `/search/${menuBarStore.search}`, query: { tags: '' } };
+						// TODO: Fully-featured shareable URL
+						for (const tag of menuBarStore.tags) {
+							navigation.query.tags += `${tag.tag.tid}~${tagTypes[tag.type].type},`;
+						}
+						this.$router.push(navigation);
+					}
+				}
 			}
 		}
 	});

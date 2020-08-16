@@ -1,9 +1,10 @@
 import { Module, VuexModule, Mutation } from 'vuex-module-decorators';
 import { Tag } from '%/lib/types/tag';
+import { DBTag } from '%/lib/types/database/tag';
 
 export interface TagExtend {
-	type?: string,
-	tag?: Tag
+	type: string,
+	tag: Tag | DBTag
 }
 
 export type sortTypes = 'az' | 'karacount' | 'recent' | 'most_played' | 'most_favorites' | 'most_requested';
@@ -14,21 +15,38 @@ export type sortTypes = 'az' | 'karacount' | 'recent' | 'most_played' | 'most_fa
 	namespaced: true
 })
 export default class MenuBar extends VuexModule {
-	tag: TagExtend | null = {}
+	tags: TagExtend[] = []
 
-	search: string | null = ''
+	search: string = ''
 
 	sort: sortTypes = 'recent'
 
 	resultsCount: number = 0
 
 	@Mutation
-	setTag(tag: TagExtend | null) {
-		this.tag = tag;
+	addTag(tag: TagExtend) {
+		if (!this.tags.some(val => val.tag.tid === tag.tag.tid && val.type === tag.type)) {
+			this.tags.push(tag);
+		}
 	}
 
 	@Mutation
-	setSearch(search: string | null) {
+	removeTag(tag: TagExtend) {
+		this.tags.splice(this.tags.indexOf(tag), 1);
+	}
+
+	@Mutation
+	clearTags() {
+		this.tags = [];
+	}
+
+	@Mutation
+	setTags(tags: TagExtend[]) {
+		this.tags = tags;
+	}
+
+	@Mutation
+	setSearch(search: string) {
 		this.search = search;
 	}
 

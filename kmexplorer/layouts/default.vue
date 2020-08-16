@@ -28,16 +28,7 @@
 			</div>
 
 			<div class="navbar-menu">
-				<div v-if="tag" class="navbar-item">
-					<tag
-						:type="tag.type"
-						:tag="tag.tag"
-						icon
-						nolink
-						deletebtn
-						@close="deleteTag"
-					/>
-				</div>
+				<search-tags class="navbar-item is-desktop" />
 				<div class="navbar-item is-expanded">
 					<search-bar />
 				</div>
@@ -75,9 +66,7 @@
 			</div>
 
 			<div v-if="databaseMenu" class="navbar-dropdown">
-				<div v-if="tag" class="navbar-item">
-					<tag :type="tag.type" :tag="tag.tag" :icon="true" :nolink="true" />
-				</div>
+				<search-tags class="navbar-item" />
 				<div class="navbar-item is-expanded">
 					<search-bar />
 				</div>
@@ -398,18 +387,16 @@
 
 <script lang="ts">
 	import Vue from 'vue';
-	import Tag from '~/components/Tag.vue';
+	import SearchTags from '~/components/SearchTags.vue';
 	import SearchBar from '~/components/SearchBar.vue';
 	import LoginModal from '~/components/LoginModal.vue';
 	import ProfileModal from '~/components/ProfileModal.vue';
 	import AddRepoModal from '~/components/AddRepoModal.vue';
-	import { menuBarStore, modalStore } from '~/store';
+	import { modalStore } from '~/store';
 
 	import { ModalType } from '~/store/modal';
-	import { TagExtend } from '~/store/menubar';
 
 	interface VState {
-		tag?: TagExtend,
 		import_enabled?: string,
 		base_license_name?: string,
 		base_license_link?: string,
@@ -429,7 +416,7 @@
 	export default Vue.extend({
 
 		components: {
-			Tag,
+			SearchTags,
 			SearchBar,
 			LoginModal,
 			ProfileModal,
@@ -438,7 +425,6 @@
 
 		data(): VState {
 			return {
-				tag: undefined,
 				import_enabled: process.env.KM_IMPORT,
 				base_license_name: process.env.BASE_LICENSE_NAME,
 				base_license_link: process.env.BASE_LICENSE_LINK,
@@ -467,9 +453,7 @@
 
 		created() {
 			this.$store.subscribe((mutation: Record<string, any>, _state: any) => {
-				if (mutation.type === 'menubar/setTag') {
-					this.tag = mutation.payload;
-				} else if (mutation.type === 'menubar/setSearch') {
+				if (mutation.type === 'menubar/setSearch') {
 					if (!this.onKaraTagListView) {
 						this.$router.push(`/search/${mutation.payload}`);
 					} // Each KaraList view handles a search change itself, either by swapping the route
@@ -510,10 +494,6 @@
 					this.communityMenu = false;
 					this.accountMenu = !this.accountMenu;
 				}
-			},
-			deleteTag() {
-				menuBarStore.setTag(null);
-				this.$router.push(`/search/${menuBarStore.search}`);
 			},
 			openAddRepoModal() {
 				modalStore.openModal('addRepo');
