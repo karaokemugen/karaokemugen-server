@@ -34,6 +34,11 @@ function generateConfig(production: boolean = false) {
 		},
 		sentry: {
 			disabled: Boolean(process.env.SENTRY_TEST)
+		},
+		pwa: {
+			workbox: {
+				enabled: production ? true:process.env.NODE_ENV !== 'production'
+			}
 		}
 	};
 	const overrideNuxt = conf.KaraExplorer.NuxtOverrides;

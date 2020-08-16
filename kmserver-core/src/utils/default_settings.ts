@@ -406,7 +406,13 @@ export let NuxtConfig: NuxtConfigType = {
 		workbox: {
 			config: {
 				debug: true
-			}
+			},
+			runtimeCaching: [
+				{
+					urlPattern: '/previews/.*',
+					handler: 'cacheFirst'
+				}
+			]
 		}
 	},
 
