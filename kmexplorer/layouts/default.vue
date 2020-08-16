@@ -60,7 +60,7 @@
 					<font-awesome-icon :icon="['fas', 'sign-out-alt']" :fixed-width="true" />
 					{{ $t('menu.logout') }}
 				</a>
-				<nuxt-link to="/favorites" v-if="loggedIn" active-class="is-active">
+				<nuxt-link v-if="loggedIn" to="/favorites" active-class="is-active">
 					<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
 					{{ $t('menu.favorites') }}
 				</nuxt-link>
@@ -345,7 +345,7 @@
 							<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
 							{{ $t('menu.profile') }}
 						</a>
-						<nuxt-link to="/favorites" v-if="loggedIn" active-class="is-active">
+						<nuxt-link v-if="loggedIn" to="/favorites" active-class="is-active">
 							<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
 							{{ $t('menu.favorites') }}
 						</nuxt-link>
@@ -399,8 +399,8 @@
 	import LoginModal from '~/components/LoginModal.vue';
 	import ProfileModal from '~/components/ProfileModal.vue';
 	import AddRepoModal from '~/components/AddRepoModal.vue';
-	import { menuBarStore } from '~/store';
-	import { modalStore } from '~/store';
+	import { menuBarStore, modalStore } from '~/store';
+
 	import { ModalType } from '~/store/modal';
 	import { TagExtend } from '~/store/menubar';
 
@@ -462,7 +462,7 @@
 		},
 
 		created() {
-			this.$store.subscribe((mutation, _state) => {
+			this.$store.subscribe((mutation: Record<string, any>, _state: any) => {
 				if (mutation.type === 'menubar/setTag') {
 					this.tag = mutation.payload;
 				} else if (mutation.type === 'menubar/setSearch') {
@@ -515,10 +515,8 @@
 				modalStore.openModal('addRepo');
 			}
 		},
-		head: {
-			htmlAttrs: {
-				class: ['has-navbar-fixed-top']
-			}
+		head() {
+			return this.$nuxtI18nSeo();
 		}
 	});
 </script>

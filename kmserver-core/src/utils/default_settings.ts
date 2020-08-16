@@ -315,6 +315,9 @@ export let NuxtConfig: NuxtConfigType = {
 	],
 
 	head: {
+		htmlAttrs: {
+			class: ['has-navbar-fixed-top']
+		},
 		titleTemplate: (titleChunk) => {
 			// If undefined or blank then we don't need the hyphen
 			return titleChunk ? `${titleChunk} - Karaoke Mugen` : 'Karaoke Mugen';
@@ -324,7 +327,9 @@ export let NuxtConfig: NuxtConfigType = {
 			{ name: 'viewport', content: 'width=device-width, initial-scale=1' },
 			{ hid: 'twitter-card', name: 'twitter:card', content: 'summary' },
 			{ hid: 'twitter-site', name: 'twitter:site', content: '@KaraokeMugen' },
-			{ hid: 'twitter-title', name: 'twitter:title', content: 'Explore, Find, Sing!' }
+			{ hid: 'twitter-title', name: 'twitter:title', content: 'Explore, Find, Sing!' },
+			{ hid: 'description', name: 'description', content: 'Explore, Find, Sing!' },
+			{ name: 'theme-color', content: '#375a7f' }
 		]
 	},
 
@@ -401,6 +406,7 @@ export let NuxtConfig: NuxtConfigType = {
 			short_name: 'KMExplorer',
 			description: 'Explorez la base de données de karaokés!',
 			background_color: '#36393f',
+			theme_color: '#375a7f',
 			display: 'minimal-ui'
 		},
 		workbox: {

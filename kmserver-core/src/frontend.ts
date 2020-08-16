@@ -46,7 +46,7 @@ export function initFrontend(listenPort: number) {
 		contentSecurityPolicy: {
 			directives: {
 				defaultSrc: ['\'self\'', 'data:'],
-				scriptSrc: ['\'self\'', '\'unsafe-inline\'', '\'unsafe-eval\''],
+				scriptSrc: ['\'self\'', '\'unsafe-inline\'', '\'unsafe-eval\'', 'https://cdn.jsdelivr.net/'],
 				styleSrc: ['\'self\'', '\'unsafe-inline\''],
 				connectSrc: ['\'self\'', 'https:'],
 				frameSrc: ['\'self\'', getConfig().KaraExplorer.LiveURL],
