@@ -138,8 +138,8 @@
 		flex-direction: column;
 		align-items: center;
 
-		.km-home--logo {
-			max-height: 20em;
+		.km-home--logo img {
+			max-height: 15rem;
 		}
 
 		.title {
@@ -167,7 +167,7 @@
 			li {
 				padding: 0.5em;
 				width: calc(50% - 1em);
-				background: #26aacc;
+				background: #375a7f;
 				color: #fff;
 				margin: 0.5em;
 				border-radius: 0.25em;
