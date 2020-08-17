@@ -9,7 +9,7 @@
 				@keydown.enter="triggerSearch"
 			>
 		</div>
-		<div v-if="resultsCount > 0 && ['search-query', 'types-id'].includes($route.name)" class="control">
+		<div v-if="resultsCount > 0 && ['search-query', 'tags-slug-id', 'types-id'].includes($route.name)" class="control">
 			<button class="button is-static">
 				{{ $tc('layout.results', resultsCount, {count: resultsCount}) }}
 			</button>

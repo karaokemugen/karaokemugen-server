@@ -1,47 +1,17 @@
 <template>
-	<kara-query v-if="tag.type" :tag="tag" />
+	<p>Huh? What do you do here? Not normal.</p>
 </template>
 
 <script lang="ts">
 	import Vue from 'vue';
-
-	import KaraQuery from '~/components/KaraQuery.vue';
-	import { TagExtend } from '~/store/menubar';
-	import { tagRegex, tagTypesMap } from '~/assets/constants';
-	import { Tag } from '%/lib/types/tag';
-	import { menuBarStore } from '~/store';
-
-	interface VState {
-		tag: TagExtend | null
-	}
+	import { tagRegex } from '~/assets/constants';
 
 	export default Vue.extend({
 		name: 'KaraListTag',
 
-		components: {
-			KaraQuery
-		},
-
-		async fetch() {
-			const tagInfo = tagRegex.exec(this.$route.params.id);
-			if (!tagInfo) { throw new Error('Stealth check failed: Tag regex not matched'); }
-			const res = await this.$axios.get<Tag>(`/api/tags/${tagInfo[1]}`).catch(
-				_err => this.$nuxt.error({ statusCode: 404, message: this.$t('tag.notfound') as string }));
-			if (res) {
-				this.tag = {
-					type: tagTypesMap[parseInt(tagInfo[2])].name as string,
-					tag: res.data
-				};
-				if (!process.server) {
-					menuBarStore.setTags([this.tag]);
-				}
-			}
-		},
-
-		data(): VState {
-			return {
-				tag: { type: '', tag: { name: '', types: [], tid: '' } }
-			};
+		// Dummy page to assure redirects
+		asyncData({ redirect, params }) {
+			redirect(301, '/search/', { q: `t:${params.id}` });
 		},
 
 		validate({ params }) {

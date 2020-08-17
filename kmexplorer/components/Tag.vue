@@ -1,17 +1,6 @@
 <template>
-	<nuxt-link
-		v-if="direct"
-		:to="nolink ? ``:`/tags/${slug}/${tag.tid}~${tagTypes[type].type}`"
-		class="tag is-medium"
-		:class="[tagTypes[type].class, staticheight ? '':'no-static-height', tag.problematic ? 'problematic':'']"
-	>
-		<font-awesome-icon v-if="icon" :icon="['fas', tagTypes[type].icon]" :fixed-width="true" />
-		{{ localizedName }}
-		<span v-if="showkaracount" class="karacount">&nbsp;({{ tag.karacount[tagTypes[type].type] }})</span>
-		<button v-if="deletebtn" class="delete is-small" @click="$emit('close')" />
-	</nuxt-link>
 	<a
-		v-else
+		:href="nolink ? `#`:`tags/${slug}/${tag.tid}~${tagTypes[type].type}`"
 		:class="[tagTypes[type].class, staticheight ? '':'no-static-height', tag.problematic ? 'problematic':'']"
 		class="tag is-medium"
 		@click.prevent="handleLink"
@@ -55,10 +44,6 @@
 				type: Object
 			},
 			nolink: {
-				type: Boolean,
-				default: false
-			},
-			direct: {
 				type: Boolean,
 				default: false
 			},
@@ -106,12 +91,14 @@
 						payload.tag = tag;
 					}
 					menuBarStore.addTag(payload);
-					if (!['search-query', 'tags-slug-id', 'years-year'].includes(this.$route.name as string)) {
-						const navigation = { path: `/search/${menuBarStore.search}`, query: { tags: '' } };
+					if (!['search-query', 'years-year'].includes(this.$route.name as string)) {
+						const navigation = { path: `/search/${menuBarStore.search}`, query: { q: '' } };
 						// TODO: Fully-featured shareable URL
+						const tags: string[] = [];
 						for (const tag of menuBarStore.tags) {
-							navigation.query.tags += `${tag.tag.tid}~${tagTypes[tag.type].type},`;
+							tags.push(`${tag.tag.tid}~${tagTypes[tag.type].type}`);
 						}
+						navigation.query.q = `t:${tags.join(',')}`;
 						this.$router.push(navigation);
 					}
 				}

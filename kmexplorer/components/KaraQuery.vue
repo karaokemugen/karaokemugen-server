@@ -10,8 +10,9 @@
 	import KaraList from '~/components/KaraList.vue';
 	import { KaraList as KaraListType } from '%/lib/types/kara';
 	import { menuBarStore } from '~/store';
-	import { tagTypes } from '~/assets/constants';
+	import { tagRegex, tagTypes, tagTypesMap } from '~/assets/constants';
 	import { TagExtend } from '~/store/menubar';
+	import { DBTag } from '%/lib/types/database/tag';
 
 	interface KaraRequest {
 		from: number,
@@ -48,7 +49,38 @@
 		},
 
 		async fetch() {
-			await this.loadNextPage(true);
+			if (process.server) {
+				if (typeof this.$route.query.q === 'string') {
+					const criterias = this.$route.query.q.split('!');
+					for (const c of criterias) {
+						// Splitting only after the first ":" and removing potentially harmful stuff
+						const type = c.split(/:(.+)/)[0];
+						let values = c.replace(/'/, '\'');
+						values = values.split(/:(.+)/)[1];
+						// Validating values
+						// Technically searching tags called null or undefined is possible. You never know. Repositories or years however, shouldn't be.
+						if (type === 't') {
+							const tags = values.split(',');
+							if (tags.some((v: string) => !tagRegex.test(v))) { throw new Error(`Incorrect tag ${tags.toString()}`); }
+							const tagExtends: TagExtend[] = [];
+							for (const tag of tags) {
+								const parsedTag = tagRegex.exec(tag);
+								if (!parsedTag) { throw new Error('Mais merde à la fin !'); }
+								const res = await this.$axios.get<DBTag>(`/api/tags/${parsedTag[1]}`);
+								const payload = {
+									type: tagTypesMap[parseInt(parsedTag[2])].name as string,
+									tag: res.data
+								};
+								tagExtends.push(payload);
+							}
+							menuBarStore.setTags(tagExtends);
+						} // else if (type === 'y');
+					}
+				}
+				await this.loadNextPage(true);
+			} else {
+				await this.loadNextPage(true);
+			}
 		},
 
 		data(): VState {
@@ -87,12 +119,9 @@
 
 		watch: {
 			sort() { this.resetList(); },
-			search() { this.resetList(); },
-			tags() { this.resetList(); },
+			search() { this.resetList(true); },
+			tags() { this.resetList(true); },
 			year() { this.resetList(); },
-			karaokes(now) {
-				menuBarStore.setResultsCount(now.infos.count);
-			},
 			loading(now) {
 				if (now) { this.$nuxt.$loading.start(); } else { this.$nuxt.$loading.finish(); }
 			}
@@ -100,12 +129,15 @@
 
 		created() {
 			if (menuBarStore.sort === 'karacount') {
-				menuBarStore.setSort('az');
+				menuBarStore.setSort('recent');
 			}
 		},
 
 		mounted() {
 			window.addEventListener('scroll', this.scrollEvent, { passive: true });
+			if (this.tag) {
+				menuBarStore.addTag(this.tag);
+			}
 		},
 
 		destroyed() {
@@ -123,6 +155,7 @@
 				this.karaokes.content.push(...data.content);
 				this.karaokes.i18n = merge(this.karaokes.i18n, data.i18n);
 				this.karaokes.infos.count = data.infos.count;
+				menuBarStore.setResultsCount(data.infos.count);
 				this.karaokes.infos.to = data.infos.to;
 				this.loading = false;
 			},
@@ -133,16 +166,16 @@
 					this.loadNextPage();
 				}
 			},
-			resetList() {
+			resetList(navigation = false) {
 				this.karaokes = { infos: { count: 0, to: 0, from: 0 }, i18n: {}, content: [] };
+				menuBarStore.setResultsCount(0);
 				this.from = -1;
 				this.loadNextPage(true);
-				const navigation = { path: `/search/${menuBarStore.search}`, query: { tags: '' } };
-				// TODO: Fully-featured shareable URL
-				for (const tag of menuBarStore.tags) {
-					navigation.query.tags += `${tag.tag.tid}~${tagTypes[tag.type].type},`;
+				if (navigation && this.$route.name === 'search-query') {
+					const navigation = { path: `/search/${menuBarStore.search}`, query: { q: this.reqParams.q } };
+					// TODO: Fully-featured shareable URL
+					this.$router.replace(navigation);
 				}
-				this.$router.replace(navigation);
 			}
 		}
 	});

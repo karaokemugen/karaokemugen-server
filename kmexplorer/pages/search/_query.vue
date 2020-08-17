@@ -16,9 +16,8 @@
 		},
 
 		created() {
-			menuBarStore.setSearch(this.$route.params.query ? this.$route.params.query : '');
-			if (menuBarStore.sort === 'karacount') {
-				menuBarStore.setSort('recent');
+			if (process.server && this.$route.params.query) {
+				menuBarStore.setSearch(this.$route.params.query);
 			}
 		},
 

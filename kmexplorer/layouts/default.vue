@@ -28,10 +28,12 @@
 			</div>
 
 			<div class="navbar-menu">
-				<search-tags class="navbar-item is-desktop" />
-				<div class="navbar-item is-expanded">
-					<search-bar />
-				</div>
+				<client-only placeholder="You need to enable JavaScript in order to use search.">
+					<search-tags class="navbar-item is-desktop" />
+					<div class="navbar-item is-expanded">
+						<search-bar />
+					</div>
+				</client-only>
 			</div>
 
 			<div v-if="communityMenu" class="navbar-dropdown">
@@ -66,10 +68,12 @@
 			</div>
 
 			<div v-if="databaseMenu" class="navbar-dropdown">
-				<search-tags class="navbar-item" />
-				<div class="navbar-item is-expanded">
-					<search-bar />
-				</div>
+				<client-only placeholder="You need to enable JavaScript in order to use search.">
+					<search-tags class="navbar-item" />
+					<div class="navbar-item is-expanded">
+						<search-bar />
+					</div>
+				</client-only>
 				<div class="is-hidden-desktop">
 					<nuxt-link class="navbar-item" to="/search">
 						<font-awesome-icon :icon="['fas', 'music']" :fixed-width="true" />
@@ -152,8 +156,8 @@
 		<div class="columns">
 			<aside class="menu is-hidden-touch">
 				<ul class="menu-list">
-					<li class="addRepo" :title="$t('modal.add_repository.label')" @click="openAddRepoModal">
-						<a href="#">
+					<li class="addRepo" :title="$t('modal.add_repository.label')" >
+						<a @click.prevent="openAddRepoModal">
 							<font-awesome-icon :icon="['fas', 'folder-plus']" :fixed-width="true" />
 							{{ $t('menu.add_repository') }}
 						</a>

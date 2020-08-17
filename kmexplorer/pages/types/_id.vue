@@ -7,7 +7,6 @@
 				v-for="tag in tags.content"
 				:key="tag.tid"
 				icon
-				direct
 				:type="$route.params.id"
 				:tag="tag"
 				:i18n="tag.i18n"
