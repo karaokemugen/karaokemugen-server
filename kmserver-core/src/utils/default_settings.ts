@@ -79,6 +79,7 @@ export const defaults: Config = {
 	KaraExplorer: {
 		Enabled: true,
 		Host: 'localhost',
+		Tagline: 'Explore! Find! Sing!',
 		Path: '/base/',
 		LiveURL: 'https://live.karaokes.moe',
 		MediaLinks: true,
@@ -328,8 +329,6 @@ export let NuxtConfig: NuxtConfigType = {
 			{ name: 'viewport', content: 'width=device-width, initial-scale=1' },
 			{ hid: 'twitter-card', name: 'twitter:card', content: 'summary' },
 			{ hid: 'twitter-site', name: 'twitter:site', content: '@KaraokeMugen' },
-			{ hid: 'twitter-title', name: 'twitter:title', content: 'Explore, Find, Sing!' },
-			{ hid: 'description', name: 'description', content: 'Explore, Find, Sing!' },
 			{ name: 'theme-color', content: '#375a7f' }
 		]
 	},

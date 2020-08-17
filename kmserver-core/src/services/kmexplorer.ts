@@ -18,7 +18,8 @@ function generateConfig(production: boolean = false) {
 			SUPPORTED_LYRICS: supportedFiles.lyrics,
 			SUPPORTED_MEDIAS: [].concat(supportedFiles.video, supportedFiles.audio),
 			API_HOST: conf.API.Host,
-			EXPLORER_HOST: conf.KaraExplorer.Host
+			EXPLORER_HOST: conf.KaraExplorer.Host,
+			EXPLORER_TAGLINE: conf.KaraExplorer.Tagline
 		},
 		router: {
 			base: conf.KaraExplorer.Path
@@ -39,6 +40,12 @@ function generateConfig(production: boolean = false) {
 			workbox: {
 				enabled: production ? true:process.env.NODE_ENV !== 'production'
 			}
+		},
+		head: {
+			meta: [
+				{ hid: 'twitter-title', name: 'twitter:title', content: conf.KaraExplorer.Tagline },
+				{ hid: 'description', name: 'description', content: conf.KaraExplorer.Tagline }
+			]
 		}
 	};
 	const overrideNuxt = conf.KaraExplorer.NuxtOverrides;

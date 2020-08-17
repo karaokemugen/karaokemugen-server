@@ -32,6 +32,7 @@ export interface Config {
   	KaraExplorer: {
 		Enabled: boolean
 		Host: string
+		Tagline: string
 		Path: string
 		LiveURL: string
 		MediaLinks: boolean

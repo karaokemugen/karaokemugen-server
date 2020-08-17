@@ -14,7 +14,7 @@
 			</a>
 		</h1>
 		<h2 class="subtitle">
-			Explore! Find! Sing!
+			{{ explorerTagline }}
 		</h2>
 		<ul class="km-home--stats">
 			<li key="karas">
@@ -107,6 +107,7 @@
 		data() {
 			return {
 				explorerHost: process.env.EXPLORER_HOST,
+				explorerTagline: process.env.EXPLORER_TAGLINE,
 				count: {
 					singers: 0,
 					creators: 0,
