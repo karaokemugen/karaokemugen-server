@@ -46,4 +46,7 @@
 		flex-shrink: 1;
 		flex-wrap: wrap;
 	}
+	.tag {
+		margin: 0.1em;
+	}
 </style>
