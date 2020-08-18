@@ -16,7 +16,7 @@
 		"buildKMExplorer": "rimraf \"../kmexplorer/.nuxt\" && cross-env NODE_ENV=production ts-node src/index.ts -- --build"
 	},
 	"devDependencies": {
-		"@nuxt/types": "2.14.3",
+		"@nuxt/types": "2.14.1",
 		"@sentry/cli": "^1.55.1",
 		"@types/compression": "^1.7.0",
 		"@types/detect-port": "^1.3.0",
