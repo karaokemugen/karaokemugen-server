@@ -37,23 +37,5 @@ export default function favoritesController(router: Router) {
 			} catch(err) {
 				res.status(500).json(err);
 			}
-		})
-		//KM <3.1 route
-		.post(requireAuth, requireValidUser, async (req: any, res) => {
-			try {
-				await addFavorite(req.authToken, req.body.kid);
-				res.status(200).json();
-			} catch(err) {
-				res.status(500).json(err);
-			}
-		})
-		//KM <3.1 route
-		.delete(requireAuth, requireValidUser, async (req: any, res) => {
-			try {
-				await removeFavorite(req.authToken, req.body.kid);
-				res.status(200).json();
-			} catch(err) {
-				res.status(500).json(err);
-			}
 		});
 }
