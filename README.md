@@ -2,6 +2,8 @@
 
 This is the online server component of Karaoke Mugen.
 
+Check its main instance at https://kara.moe/base
+
 Features :
 
 - Publish instance IP addresses to a domain name KM Server listens to (ex. kara.moe) so people who go to kara.moe are redirected to their local network's KM App instance.
