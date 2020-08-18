@@ -16,9 +16,7 @@ export default function ShortenerController(router: Router) {
 						res.redirect(`http://${ret.local_ip4}:${ret.local_port}`);
 					}
 				} else {
-					const locale = new Locales(req.headers['accept-language'], 'en');
-					const supported_languages = new Locales(['fr', 'en']);
-					res.redirect(`/static/shortener/notfound.${locale.best(supported_languages)}.html`);
+					res.redirect('/base/?noinstance=true');
 				}
 			} catch(err) {
 				res.status(500).json(err);
