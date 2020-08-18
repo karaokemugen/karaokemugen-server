@@ -1,6 +1,5 @@
 import {publishInstance, getInstance} from '../services/shortener';
 import { Router } from 'express';
-import { Locales } from 'locale';
 import { isIPv6 } from 'net';
 
 export default function ShortenerController(router: Router) {
