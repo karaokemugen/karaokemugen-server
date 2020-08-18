@@ -3,7 +3,7 @@ import {encode, decode} from 'jwt-simple';
 import { Router } from 'express';
 
 import {getConfig} from '../lib/utils/config';
-import {findUserByName, checkPassword} from '../services/user';
+import {findUserByName, checkPassword, updateUserLastLogin} from '../services/user';
 import { Token, Role, User } from '../lib/types/user';
 import sentry from '../utils/sentry';
 import logger from '../lib/utils/logger';
@@ -34,6 +34,7 @@ export default function authController(router: Router) {
 	router.post('/auth/login', async (req, res) => {
 		try {
 			const token = await checkLogin(req.body.username, req.body.password);
+			updateUserLastLogin(req.body.username);
 			res.send(token);
 		} catch(err) {
 			if (err !== false) {

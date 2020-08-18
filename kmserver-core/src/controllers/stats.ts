@@ -26,6 +26,7 @@ export default function statsController(router: Router) {
 			res.status(500).json(`Error while retrieving played stats : ${err}`);
 		}
 	});
+	// Played songs are usually sent via instance data in POST /stats but this route is usable to add a single played song, for Live for example
 	router.post('/stats/played', async (req: any, res) => {
 		try {
 			await addPlayed(req.body.seid, req.body.kid, req.body.played_at);

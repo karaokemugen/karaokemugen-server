@@ -10,8 +10,9 @@ INSERT INTO users(
 	bio,
 	url,
 	email,
-	password_last_modified_at
-) VALUES($1, $2, $3, $4, $5, $6, $7, $8, NOW())
+	password_last_modified_at,
+	last_login_at
+) VALUES($1, $2, $3, $4, $5, $6, $7, $8, NOW(), NOW())
 `;
 
 export const selectUser = `
@@ -27,7 +28,8 @@ SELECT
 	series_lang_mode,
 	main_series_lang,
 	fallback_series_lang,
-	password_last_modified_at
+	password_last_modified_at,
+	last_login_at
 FROM users
 `;
 
@@ -38,6 +40,10 @@ WHERE pk_login = $1
 
 export const updateUserPassword = `
 UPDATE users SET password = $2, password_last_modified_at = NOW() WHERE pk_login = $1 RETURNING password_last_modified_at;
+`;
+
+export const updateLastLogin = `
+UPDATE users SET last_login_at = NOW() WHERE pk_login = $1 RETURNING last_login_at;
 `;
 
 export const updateUser = `

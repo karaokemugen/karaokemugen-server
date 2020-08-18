@@ -117,6 +117,7 @@ export default function KSController(router: Router) {
 				res.status(500).json(err);
 			}
 		});
+	// KM <4.0 route
 	router.route('/karas/series')
 		.get(async (req: any, res) => {
 			try {

@@ -3,6 +3,11 @@ import { User } from '../lib/types/user';
 import { DBUser } from '../lib/types/database/user';
 const sql = require('./sqls/user');
 
+export async function updateLastLogin(username: string): Promise<String> {
+	const res = await db().query(sql.updateLastLogin, [username]);
+	return res.rows[0].last_login_at;
+}
+
 export async function selectUser(searchType: string, value: any): Promise<DBUser> {
 	const query = `${sql.selectUser} WHERE ${searchType} = $1`;
 	const res = await db().query(query, [value]);

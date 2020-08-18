@@ -5,7 +5,7 @@ import {getConfig} from '../lib/utils/config';
 import {resolve} from 'path';
 import { Router } from 'express';
 import { getState } from '../utils/state';
-import {requireAuth, requireValidUser} from './middlewares/auth';
+import {requireAuth, requireValidUser, updateLoginTime} from './middlewares/auth';
 
 export default function userController(router: Router) {
 	const conf = getConfig();
@@ -21,7 +21,7 @@ export default function userController(router: Router) {
 				res.status(500).json(err);
 			}
 		})
-		.delete(requireAuth, requireValidUser, async (req: any, res) => {
+		.delete(requireAuth, requireValidUser, updateLoginTime, async (req: any, res) => {
 			try {
 				await removeUser(req.authToken.username);
 				res.send('User deleted');
@@ -47,7 +47,7 @@ export default function userController(router: Router) {
 				res.status(500).json(err);
 			}
 		})
-		.put(upload.single('avatarfile'), requireAuth, requireValidUser,  async (req: any, res) => {
+		.put(upload.single('avatarfile'), requireAuth, requireValidUser, updateLoginTime, async (req: any, res) => {
 			const validationErrors = check(req.body, {
 				nickname: {presence: true}
 			});
@@ -144,7 +144,7 @@ export default function userController(router: Router) {
  * @apiErrorExample Error-Response:
  * HTTP/1.1 403 Forbidden
  */
-		.get(requireAuth, requireValidUser, async (req: any, res: any) => {
+		.get(requireAuth, requireValidUser, updateLoginTime, async (req: any, res: any) => {
 			try {
 				const userData = await findUserByName(req.authToken.username, {public:false});
 				res.json(userData);
@@ -172,7 +172,7 @@ export default function userController(router: Router) {
 	 * @apiErrorExample Error-Response:
 	 * HTTP/1.1 403 Forbidden
 	 */
-		.delete(requireAuth, requireValidUser, async (req: any, res: any) => {
+		.delete(requireAuth, requireValidUser, updateLoginTime, async (req: any, res: any) => {
 			try {
 				await removeUser(req.authToken.username);
 				res.status(200).json('USER_DELETED');
@@ -206,7 +206,7 @@ export default function userController(router: Router) {
  * @apiErrorExample Error-Response:
  * HTTP/1.1 403 Forbidden
  */
-		.put(upload.single('avatarfile'), requireAuth, requireValidUser, async (req: any, res: any) => {
+		.put(upload.single('avatarfile'), requireAuth, requireValidUser, updateLoginTime, async (req: any, res: any) => {
 			const validationErrors = check(req.body, {
 				nickname: {presence: true}
 			});

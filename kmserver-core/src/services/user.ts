@@ -1,6 +1,6 @@
 import {createHash} from 'crypto';
 import {hash, compare, genSalt} from 'bcryptjs';
-import {updateUser, updateUserPassword, insertUser, selectUser, selectAllUsers, deleteUser} from '../dao/user';
+import {updateUser, updateUserPassword, insertUser, selectUser, selectAllUsers, deleteUser, updateLastLogin} from '../dao/user';
 import logger from '../lib/utils/logger';
 import {getConfig, resolvedPathAvatars, setConfig} from '../lib/utils/config';
 import {asyncReadDir, asyncExists, asyncUnlink, asyncMove, detectFileType} from '../lib/utils/files';
@@ -305,5 +305,13 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 			message: err,
 			data: user.nickname
 		};
+	}
+}
+
+export async function updateUserLastLogin(username: string) {
+	try {
+		await updateLastLogin(username);
+	} catch(err) {
+		logger.error(`[Users] Unable to update login time for ${username} : ${err}`);
 	}
 }

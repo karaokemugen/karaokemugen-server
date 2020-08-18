@@ -1,7 +1,7 @@
 import { getConfig } from '../../lib/utils/config';
 import { decode } from 'jwt-simple';
 import passport from 'passport';
-import { findUserByName } from '../../services/user';
+import { findUserByName, updateUserLastLogin } from '../../services/user';
 
 
 export const requireAuth = passport.authenticate('jwt', { session: false });
@@ -63,3 +63,8 @@ export const requireAdmin = (req, res, next) => {
 	}
 
 };
+
+export async function updateLoginTime(req, _res, next) {
+	updateUserLastLogin(req.authToken.username);
+	next();
+}
