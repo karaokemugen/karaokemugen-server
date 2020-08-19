@@ -72,6 +72,11 @@ export const tagTypesMap: { [key: number]: tagType } = {
 		icon: 'tag',
 		class: 'is-black',
 		name: 'misc'
+	},
+	0: {
+		icon: 'calendar-alt',
+		class: 'is-grey',
+		name: 'years'
 	}
 };
 
@@ -140,5 +145,10 @@ export const tagTypes: { [key: string]: tagType } = {
 		icon: 'tag',
 		class: 'is-black',
 		type: 7
+	},
+	years: {
+		icon: 'calendar-alt',
+		class: 'is-grey',
+		type: 0
 	}
 };

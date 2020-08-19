@@ -57,8 +57,11 @@
 </script>
 
 <style lang="scss" scoped>
+	.tile.is-parent.is-12 {
+		padding: 0.25rem;
+	}
 	.tile.is-child.is-4 {
-		padding: 0 1em;
+		padding: 0 0.25rem;
 	}
 	@media (max-width: 769px) {
 		.tile.is-child.is-4 {

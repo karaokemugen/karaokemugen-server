@@ -1,33 +1,28 @@
 <template>
 	<div class="box">
 		<div class="header">
-			<div class="title-block">
-				<nuxt-link :to="`/kara/${slug}/${karaoke.kid}`" class="title is-3 is-spaced">
-					{{ karaoke.title }}
-				</nuxt-link>
-				<i18n path="kara.phrase" tag="h4" class="subtitle is-5">
-					<template v-slot:songtype>
-						<nuxt-link :to="`/tags/${songtypeSlug}/${karaoke.songtypes[0].tid}~3`">
-							{{ songtype }}
-						</nuxt-link>
-						{{ karaoke.songorder }}
-					</template>
-					<template v-slot:series>
-						<nuxt-link :to="`/tags/${serieSinger.slug}/${serieSinger.tid}`">
-							{{ serieSinger.name }}
-						</nuxt-link>
-					</template>
-				</i18n>
-				<h6 class="subtitle is-6 no-top-margin">
-					<nuxt-link :to="`/years/${karaoke.year}`">
-						{{ karaoke.year }}
-					</nuxt-link>
-				</h6>
-			</div>
 			<a :href="`${liveURL}?video=${karaoke.kid}`" target="_blank" class="images" @mouseenter="switchImage" @mouseleave="switchImage">
 				<v-lazy-image :src="images[0]" alt="" />
 				<v-lazy-image :src="images[1]" :class="{activate}" alt="" />
 			</a>
+		</div>
+		<div class="title-block">
+			<nuxt-link :to="`/kara/${slug}/${karaoke.kid}`" class="title is-3 is-spaced">
+				{{ karaoke.title }}
+			</nuxt-link>
+			<i18n path="kara.phrase" tag="h5" class="subtitle is-6">
+				<template v-slot:songtype>
+					<nuxt-link :to="`/tags/${songtypeSlug}/${karaoke.songtypes[0].tid}~3`">
+						{{ songtype }}
+					</nuxt-link>
+					{{ karaoke.songorder }}
+				</template>
+				<template v-slot:series>
+					<nuxt-link :to="`/tags/${serieSinger.slug}/${serieSinger.tid}`">
+						{{ serieSinger.name }}
+					</nuxt-link>
+				</template>
+			</i18n>
 		</div>
 		<button
 			v-if="favorite && favorites"
@@ -48,17 +43,15 @@
 			{{ $t('kara.favorites.add') }}
 		</button>
 		<div class="tags are-medium">
-			<template v-for="type in Object.keys(tagTypes)" v-if="karaoke[type].length > 0">
-				<tag
-					v-for="tag in karaoke[type]"
-					:key="`${tag.tid}~${tagTypes[type].type}`"
-					:type="type"
-					:tag="tag"
-					:i18n="i18n"
-					:icon="true"
-					:staticheight="false"
-				/>
-			</template>
+			<tag
+				v-for="tag in tags"
+				:key="`${karaoke.kid}-${tag.tag.tid}~${tagTypes[tag.type].type}`"
+				:type="tag.type"
+				:tag="tag.tag"
+				:i18n="i18n"
+				:icon="true"
+				:staticheight="false"
+			/>
 		</div>
 	</div>
 </template>
@@ -67,12 +60,13 @@
 	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
 	import VLazyImage from 'v-lazy-image';
-	import { getSerieLanguage } from '~/utils/tools';
+	import { fakeYearTag, getSerieLanguage } from '~/utils/tools';
 	import { tagTypes } from '~/assets/constants';
 	import Tag from '~/components/Tag.vue';
 	import { DBKara } from '%/lib/types/database/kara';
 	import { serieSinger } from '~/types/serieSinger';
 	import { modalStore } from '~/store';
+	import { TagExtend } from '~/store/menubar';
 
 	interface VState {
 		tagTypes: typeof tagTypes,
@@ -158,6 +152,47 @@
 			},
 			slug(): string {
 				return slug(this.karaoke.title);
+			},
+			tagTypesSorted(): object {
+				const tagTypes = { ...this.tagTypes };
+				delete tagTypes.years; // This is a decoy for fake years tag
+				// Remove unused tagTypes in context
+				for (const tagType in tagTypes) {
+					// @ts-ignore
+					if (this.karaoke[tagType].length === 0) {
+						delete tagTypes[tagType];
+					}
+				}
+				return tagTypes;
+			},
+			tags(): TagExtend[] {
+				const tags: TagExtend[] = [];
+				for (const tagType in this.tagTypesSorted) {
+					let i = 0;
+					// @ts-ignore
+					for (const tag of this.karaoke[tagType]) {
+						// Removing all tags mentioned in the karaphrase
+						if (!(
+							// Remove the first series
+							(tagType === 'series' && i === 0) ||
+							// Remove the first songtype
+							(tagType === 'songtypes' && i === 0) ||
+							// Remove the first singer if the karaoke has no series
+							(tagType === 'singers' && i === 0 && this.karaoke.series.length === 0)
+						)) {
+							tags.push({
+								type: tagType,
+								tag
+							});
+						}
+						i++;
+					}
+				}
+				tags.push({
+					type: 'years',
+					tag: fakeYearTag(this.karaoke.year.toString())
+				});
+				return tags;
 			}
 		},
 
@@ -203,30 +238,26 @@
 		align-content: flex-start;
 	}
 
-	.header {
-		display: flex;
-		justify-content: space-between;
-		width: 100%;
-	}
-
 	.title, .subtitle {
 		margin-bottom: unset;
 		margin-top: unset;
 	}
 
-	.title-block {
-		flex-basis: 60%;
-		margin-right: 0.5em;
+	.header {
+		width: 100%;
+		flex-shrink: 0;
 	}
 
 	.images {
+		display: inline-block;
 		position: relative;
-		width: 40%;
-		float: right;
-		flex-shrink: 0;
+		width: 100%;
 
 		img {
-			border-radius: 4px;
+			width: 100%;
+			height: 11em;
+			object-fit: cover;
+			border-radius: 0.25rem;
 		}
 
 		img:last-child {

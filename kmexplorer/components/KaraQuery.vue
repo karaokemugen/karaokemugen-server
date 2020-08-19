@@ -3,9 +3,8 @@
 </template>
 
 <script lang="ts">
-	import Vue, { PropOptions } from 'vue';
+	import Vue from 'vue';
 	import { mapState } from 'vuex';
-	import merge from 'lodash.merge';
 
 	import KaraList from '~/components/KaraList.vue';
 	import { KaraList as KaraListType } from '%/lib/types/kara';
@@ -13,6 +12,7 @@
 	import { tagRegex, tagTypes, tagTypesMap } from '~/assets/constants';
 	import { TagExtend } from '~/store/menubar';
 	import { DBTag } from '%/lib/types/database/tag';
+	import { fakeYearTag } from '~/utils/tools';
 
 	interface KaraRequest {
 		from: number,
@@ -24,7 +24,7 @@
 
 	interface VState {
 		loading: boolean,
-		karaokes: KaraListType
+		karaokes: KaraListType,
 		from: number
 	}
 
@@ -35,21 +35,9 @@
 			KaraList
 		},
 
-		props: {
-			year: {
-				type: Number,
-				required: false,
-				default: -1
-			},
-			// eslint-disable-next-line vue/require-default-prop
-			tag: {
-				type: Object,
-				required: false
-			} as PropOptions<TagExtend>
-		},
-
 		async fetch() {
 			if (process.server) {
+				const tagExtends: TagExtend[] = [];
 				if (typeof this.$route.query.q === 'string') {
 					const criterias = this.$route.query.q.split('!');
 					for (const c of criterias) {
@@ -61,11 +49,14 @@
 						// Technically searching tags called null or undefined is possible. You never know. Repositories or years however, shouldn't be.
 						if (type === 't') {
 							const tags = values.split(',');
-							if (tags.some((v: string) => !tagRegex.test(v))) { throw new Error(`Incorrect tag ${tags.toString()}`); }
-							const tagExtends: TagExtend[] = [];
+							if (tags.some((v: string) => !tagRegex.test(v))) {
+								this.$nuxt.error({ message: `Incorrect tag ${tags.toString()}` });
+							}
 							for (const tag of tags) {
 								const parsedTag = tagRegex.exec(tag);
-								if (!parsedTag) { throw new Error('Mais merde à la fin !'); }
+								if (!parsedTag) {
+									throw new Error('Mais merde à la fin !');
+								}
 								const res = await this.$axios.get<DBTag>(`/api/tags/${parsedTag[1]}`);
 								const payload = {
 									type: tagTypesMap[parseInt(parsedTag[2])].name as string,
@@ -73,14 +64,19 @@
 								};
 								tagExtends.push(payload);
 							}
-							menuBarStore.setTags(tagExtends);
-						} // else if (type === 'y');
+						} else if (type === 'y') {
+							if (isNaN(values as unknown as number)) { this.$nuxt.error({ message: 'Invalid year' }); }
+							tagExtends.push({
+								type: 'years',
+								tag: fakeYearTag(values)
+							});
+						}
 					}
+					menuBarStore.setTags(tagExtends);
 				}
-				await this.loadNextPage(true);
-			} else {
-				await this.loadNextPage(true);
 			}
+			// Load the first page
+			await this.loadNextPage(true);
 		},
 
 		data(): VState {
@@ -95,16 +91,17 @@
 			reqParams(): KaraRequest {
 				const queries: string[] = [];
 				const tags: string[] = [];
-				if (this.tag) {
-					queries.push(`t:${this.tag.tag.tid}~${tagTypes[this.tag.type].type}`);
-				} else if (this.tags.length > 0) {
+				if (this.tags.length > 0) {
 					for (const tag of this.tags) {
-						tags.push(`${tag.tag.tid}~${tagTypes[tag.type].type}`);
+						if (tag.type === 'years') {
+							queries.push(`y:${tag.tag.name}`);
+						} else {
+							tags.push(`${tag.tag.tid}~${tagTypes[tag.type].type}`);
+						}
 					}
-					queries.push(`t:${tags.join(',')}`);
-				}
-				if (this.year !== -1) {
-					queries.push(`y:${this.year}`);
+					if (tags.length > 0) {
+						queries.push(`t:${tags.join(',')}`);
+					}
 				}
 				return {
 					q: queries.join('!'),
@@ -135,9 +132,6 @@
 
 		mounted() {
 			window.addEventListener('scroll', this.scrollEvent, { passive: true });
-			if (this.tag) {
-				menuBarStore.addTag(this.tag);
-			}
 		},
 
 		destroyed() {
@@ -153,7 +147,7 @@
 					params: this.reqParams
 				});
 				this.karaokes.content.push(...data.content);
-				this.karaokes.i18n = merge(this.karaokes.i18n, data.i18n);
+				this.karaokes.i18n = Object.assign(this.karaokes.i18n, data.i18n);
 				this.karaokes.infos.count = data.infos.count;
 				menuBarStore.setResultsCount(data.infos.count);
 				this.karaokes.infos.to = data.infos.to;
@@ -171,10 +165,9 @@
 				menuBarStore.setResultsCount(0);
 				this.from = -1;
 				this.loadNextPage(true);
-				if (navigation && this.$route.name === 'search-query') {
-					const navigation = { path: `/search/${menuBarStore.search}`, query: { q: this.reqParams.q } };
+				if (navigation && (this.$route.params.query !== (menuBarStore.search || undefined) || this.$route.query.q !== this.reqParams.q)) {
 					// TODO: Fully-featured shareable URL
-					this.$router.replace(navigation);
+					this.$router.replace({ path: `/search/${menuBarStore.search}`, query: { q: this.reqParams.q } });
 				}
 			}
 		}

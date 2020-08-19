@@ -16,8 +16,6 @@
 
 		validate({ params }) {
 			return tagRegex.test(params?.id);
-		},
-
-		transition: 'fade'
+		}
 	});
 </script>

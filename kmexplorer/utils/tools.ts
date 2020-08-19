@@ -2,6 +2,7 @@ import languages from '@cospired/i18n-iso-languages';
 import { DBKaraTag } from '~/../kmserver-core/src/lib/types/database/kara';
 import { User } from '~/../kmserver-core/src/lib/types/user';
 import { DBTag } from '%/lib/types/database/tag';
+import { Tag } from '%/lib/types/tag';
 
 let navigatorLanguage:string;
 if (process.client) {
@@ -37,4 +38,20 @@ export function getSerieLanguage(tag: DBKaraTag | DBTag, karaLanguage: string, u
 			return getTagInLanguage(tag, navigatorLanguage, 'eng', i18nParam);
 		}
 	} else { return tag.name; }
+}
+
+// Generate a fake tag with tid
+export function fakeYearTag(year: string, count?: number): Tag {
+	// That's really crappy, but at least the function will return the same tag tid
+	const tagTid = `09b149df-dec1-${year}-9083-829000e60199`;
+	return {
+		name: year,
+		short: year,
+		tid: tagTid,
+		types: [0],
+		i18n: {},
+		karacount: {
+			0: count || 0
+		}
+	};
 }

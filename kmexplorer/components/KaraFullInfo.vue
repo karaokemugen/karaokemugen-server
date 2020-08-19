@@ -57,13 +57,14 @@
 </template>
 
 <script lang="ts">
-	import Vue from 'vue';
+	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
 	import { getSerieLanguage } from '../utils/tools';
 	import { tagTypes } from '~/assets/constants';
 	import Tag from '~/components/Tag.vue';
 	import { modalStore } from '~/store';
 	import { serieSinger } from '~/types/serieSinger';
+	import { DBKara } from '%/lib/types/database/kara';
 
 	interface VState {
 		tagTypes: typeof tagTypes,
@@ -78,7 +79,12 @@
 			Tag
 		},
 
-		props: ['karaoke'],
+		props: {
+			karaoke: {
+				type: Object,
+				required: true
+			} as PropOptions<DBKara>
+		},
 
 		data(): VState {
 			return {
@@ -92,8 +98,10 @@
 			tagTypesSorted(): object {
 				const tagTypes = { ...this.tagTypes };
 				delete tagTypes.songtypes; // Don't show songtypes on full view, as it's already shown in the title
+				delete tagTypes.years; // This is a decoy for fake years tag
 				// Remove unused tagTypes in context
 				for (const tagType in tagTypes) {
+					// @ts-ignore
 					if (this.karaoke[tagType].length === 0) {
 						delete tagTypes[tagType];
 					}

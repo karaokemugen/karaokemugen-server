@@ -1,16 +1,15 @@
 <template>
 	<div class="is-ancestor">
 		<loading-nanami v-if="$fetchState.pending" />
-		<div v-if="years.length > 0" class="tags">
-			<nuxt-link
-				v-for="tag in years"
-				:key="tag.year"
-				:to="`/years/${tag.year}`"
-				class="tag is-medium"
-			>
-				<font-awesome-icon :icon="['fas', 'calendar-alt']" :fixed-width="true" />
-				{{ tag.year }}&nbsp;<span class="karacount">({{ tag.karacount }})</span>
-			</nuxt-link>
+		<div v-if="tags.length > 0" class="tags">
+			<tag
+				v-for="tag in tags"
+				:key="tag.name"
+				:tag="tag"
+				type="years"
+				icon
+				showkaracount
+			/>
 		</div>
 	</div>
 </template>
@@ -19,7 +18,10 @@
 	import Vue from 'vue';
 
 	import LoadingNanami from '~/components/LoadingNanami.vue';
+	import Tag from '~/components/Tag.vue';
 	import { DBYear } from '%/lib/types/database/kara';
+	import { fakeYearTag } from '~/utils/tools';
+	import { Tag as TagType } from '%/lib/types/tag';
 
 	interface VState {
 		years: DBYear[]
@@ -29,7 +31,8 @@
 		name: 'ListYears',
 
 		components: {
-			LoadingNanami
+			LoadingNanami,
+			Tag
 		},
 
 		async fetch() {
@@ -49,6 +52,16 @@
 			return {
 				years: []
 			};
+		},
+
+		computed: {
+			tags(): TagType[] {
+				const tags: TagType[] = [];
+				for (const year of this.years) {
+					tags.push(fakeYearTag(year.year.toString(), year.karacount));
+				}
+				return tags;
+			}
 		}
 	});
 </script>

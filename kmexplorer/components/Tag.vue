@@ -1,6 +1,6 @@
 <template>
 	<a
-		:href="nolink ? `#`:`tags/${slug}/${tag.tid}~${tagTypes[type].type}`"
+		:href="nolink ? `./#`:(type === 'years' ? `years/${tag.name}`:`tags/${slug}/${tag.tid}~${tagTypes[type].type}`)"
 		:class="[tagTypes[type].class, staticheight ? '':'no-static-height', tag.problematic ? 'problematic':'']"
 		class="tag is-medium"
 		@click.prevent="handleLink"
@@ -91,14 +91,20 @@
 						payload.tag = tag;
 					}
 					menuBarStore.addTag(payload);
-					if (!['search-query', 'years-year'].includes(this.$route.name as string)) {
+					if (this.$route.name !== 'search-query') {
 						const navigation = { path: `/search/${menuBarStore.search}`, query: { q: '' } };
 						// TODO: Fully-featured shareable URL
+						const criterias: string[] = [];
 						const tags: string[] = [];
 						for (const tag of menuBarStore.tags) {
-							tags.push(`${tag.tag.tid}~${tagTypes[tag.type].type}`);
+							if (tag.type === 'years') {
+								criterias.push(`y:${tag.tag.name}`);
+							} else {
+								tags.push(`${tag.tag.tid}~${tagTypes[tag.type].type}`);
+							}
 						}
-						navigation.query.q = `t:${tags.join(',')}`;
+						criterias.push(`t:${tags.join(',')}`);
+						navigation.query.q = criterias.join('!');
 						this.$router.push(navigation);
 					}
 				}
