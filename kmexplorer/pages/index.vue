@@ -8,6 +8,7 @@
 			</picture>
 		</a>
 		<h1 class="title" :title="$t('modal.add_repository.label')" @click.prevent="openAddRepoModal">
+			{{ $t('modal.add_repository.button') }}
 			{{ explorerHost }}
 			<a href="#">
 				<font-awesome-icon :icon="['fas', 'folder-plus']" :fixed-width="true" />

@@ -17,7 +17,7 @@ export default {
 			genres: 'Genre | Genres',
 			platforms: 'Plateforme | Plateformes',
 			creators: 'Créateur | Créateurs',
-			authors: 'Auteur du karaoké | Auteurs du karaoké',
+			authors: 'Auteur de karaokés | Auteurs de karaokés',
 			groups: 'Groupe | Groupes',
 			misc: 'Divers'
 		},
@@ -127,7 +127,7 @@ export default {
 		seconds: 'secondes'
 	},
 	menu: {
-		add_repository: 'Ajouter à votre app',
+		add_repository: 'Ajouter ce dépôt à votre app',
 		database: 'Base de données',
 		karas: 'Chansons',
 		songtypes: 'Types',
@@ -267,6 +267,7 @@ export default {
 			}
 		},
 		add_repository: {
+			button: 'Dépôt :',
 			label: 'Ajoutez ce dépôt à votre application Karaoke Mugen !',
 			desc: 'Vous pouvez ajouter ce dépôt à votre application Karaoke Mugen en cliquant sur le bouton ci-dessous. Si Karaoke Mugen n\'est pas installé sur votre ordinateur, ce bouton n\'aura aucun effet.',
 			download: 'L\'application est téléchargeable ici.',

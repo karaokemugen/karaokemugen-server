@@ -156,7 +156,7 @@
 		<div class="columns">
 			<aside class="menu is-hidden-touch">
 				<ul class="menu-list">
-					<li class="addRepo" :title="$t('modal.add_repository.label')" >
+					<li class="addRepo" :title="$t('modal.add_repository.label')">
 						<a @click.prevent="openAddRepoModal">
 							<font-awesome-icon :icon="['fas', 'folder-plus']" :fixed-width="true" />
 							{{ $t('menu.add_repository') }}
@@ -522,5 +522,6 @@
 
 	.addRepo {
 		cursor: pointer;
+		max-width: 10em;
 	}
 </style>

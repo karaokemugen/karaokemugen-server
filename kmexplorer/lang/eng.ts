@@ -16,7 +16,7 @@ export default {
 			genres: 'Kind | Kinds',
 			platforms: 'Platform | Platforms',
 			creators: 'Creator | Creators',
-			authors: 'Kara author | Kara authors',
+			authors: 'Karaokes author | Karaokes authors',
 			groups: 'Group | Groups',
 			misc: 'Miscellaneous'
 		},
@@ -125,7 +125,7 @@ export default {
 		seconds: 'seconds'
 	},
 	menu: {
-		add_repository: 'Add to your app',
+		add_repository: 'Add this repository to your app',
 		database: 'Database',
 		karas: 'Songs',
 		songtypes: 'Types',
@@ -265,6 +265,7 @@ export default {
 			}
 		},
 		add_repository: {
+			button: 'Repository :',
 			label: 'Add this repository to your Karaoke Mugen app!',
 			desc: 'You can add this repository to your Karaoke Mugen app by clicking on the button below. If Karaoke Mugen is not installed on your computer, this button will have no effect.',
 			download: 'The application can be downloaded here.',
