@@ -4,6 +4,7 @@ import logger from '../lib/utils/logger';
 import {getConfig} from '../lib/utils/config';
 import merge from 'lodash.merge';
 import { supportedFiles } from '../lib/utils/constants';
+import { sentryDSN } from '../utils/constants';
 
 function generateConfig(production: boolean = false) {
 	const conf = getConfig();
@@ -34,7 +35,8 @@ function generateConfig(production: boolean = false) {
 				(production || conf.API.Port === 443 || conf.API.Port === 80)?'':`:${conf.Frontend.Port}`}${conf.KaraExplorer.Path}`
 		},
 		sentry: {
-			disabled: Boolean(process.env.SENTRY_TEST)
+			disabled: Boolean(process.env.SENTRY_TEST),
+			dsn: process.env.SENTRY_DSN || sentryDSN
 		},
 		pwa: {
 			workbox: {

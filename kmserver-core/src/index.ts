@@ -25,7 +25,7 @@ const appPath = join(__dirname,'../../');
 const dataPath = resolve(appPath, 'app/');
 const resourcePath = appPath;
 
-dotenv.config({path: appPath});
+dotenv.config({path: join(appPath, '.env')});
 sentry.init();
 
 process.on('uncaughtException', (exception) => {
