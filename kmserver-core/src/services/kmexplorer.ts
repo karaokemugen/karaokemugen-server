@@ -43,8 +43,13 @@ function generateConfig(production: boolean = false) {
 		},
 		head: {
 			meta: [
+				{ charset: 'utf-8' },
+				{ hid: 'viewport', name: 'viewport', content: 'width=device-width, initial-scale=1' },
+				{ hid: 'twitter-card', name: 'twitter:card', content: 'summary' },
+				{ hid: 'twitter-site', name: 'twitter:site', content: '@KaraokeMugen' },
 				{ hid: 'twitter-title', name: 'twitter:title', content: conf.KaraExplorer.Tagline },
-				{ hid: 'description', name: 'description', content: conf.KaraExplorer.Tagline }
+				{ hid: 'description', name: 'description', content: conf.KaraExplorer.Tagline },
+				{ name: 'theme-color', content: '#375a7f' }
 			]
 		}
 	};

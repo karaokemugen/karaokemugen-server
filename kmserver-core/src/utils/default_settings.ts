@@ -325,11 +325,7 @@ export let NuxtConfig: NuxtConfigType = {
 			return titleChunk ? `${titleChunk} - Karaoke Mugen` : 'Karaoke Mugen';
 		},
 		meta: [
-			{ charset: 'utf-8' },
-			{ name: 'viewport', content: 'width=device-width, initial-scale=1' },
-			{ hid: 'twitter-card', name: 'twitter:card', content: 'summary' },
-			{ hid: 'twitter-site', name: 'twitter:site', content: '@KaraokeMugen' },
-			{ name: 'theme-color', content: '#375a7f' }
+
 		]
 	},
 
