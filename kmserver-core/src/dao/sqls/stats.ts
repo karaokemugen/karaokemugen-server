@@ -69,14 +69,16 @@ DELETE FROM instance WHERE pk_iid = $1
 `;
 
 export const insertSession = `
-INSERT INTO stats_session(fk_iid, pk_seid, started_at, name)
+INSERT INTO stats_session(fk_iid, pk_seid, started_at, name, ended_at)
 VALUES(
 	$1,
 	$2,
 	$3,
-	$4
+	$4,
+	$5
 ) ON CONFLICT(pk_seid) DO UPDATE SET
 fk_iid = $1,
 started_at = $3,
-name = $4
+name = $4,
+ended_at = $5
 `;

@@ -28,7 +28,8 @@ export interface Played {
 export interface Session {
 	seid: string,
 	started_at: Date,
-	name: string
+	name: string,
+	ended_at: Date,
 }
 
 export interface Requested {

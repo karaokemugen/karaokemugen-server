@@ -46,7 +46,8 @@ export async function upsertSessions(instance_id: string, sessions: Session[]) {
 		instance_id,
 		s.seid,
 		s.started_at,
-		s.name
+		s.name,
+		s.ended_at || null
 	]);
 	if (sessions.length > 0) await transaction({sql: sql.insertSession, params: params});
 }
