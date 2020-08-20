@@ -1,6 +1,7 @@
 export default {
 	error: {
-		generic: 'Erreur'
+		generic: 'Erreur',
+		home: 'Aller à l\'accueil'
 	},
 	kara: {
 		phrase: '{songtype} de {series}',

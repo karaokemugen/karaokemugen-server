@@ -1,9 +1,11 @@
 export default {
 	error: {
-		generic: 'Error'
+		generic: 'Error',
+		home: 'Go home'
 	},
 	kara: {
 		phrase: '{songtype} from {series}',
+		meta: '{songtitle} from {serieSinger}',
 		notfound: 'Karaoke not found',
 		tagtypes: {
 			series: 'Series',

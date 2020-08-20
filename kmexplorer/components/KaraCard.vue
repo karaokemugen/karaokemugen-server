@@ -12,15 +12,23 @@
 			</nuxt-link>
 			<i18n path="kara.phrase" tag="h5" class="subtitle is-6">
 				<template v-slot:songtype>
-					<nuxt-link :to="`/tags/${songtypeSlug}/${karaoke.songtypes[0].tid}~3`">
+					<a
+						:href="`/tags/${songtypeSlug}/${karaoke.songtypes[0].tid}~3`"
+						@click.prevent="handleLink('songtypes')"
+					>
 						{{ songtype }}
-					</nuxt-link>
-					{{ karaoke.songorder }}
+						<template v-if="karaoke.songorder">
+							&nbsp;{{ karaoke.songorder }}
+						</template>
+					</a>
 				</template>
 				<template v-slot:series>
-					<nuxt-link :to="`/tags/${serieSinger.slug}/${serieSinger.tid}`">
+					<a
+						:href="`/tags/${serieSinger.slug}/${serieSinger.tid}`"
+						@click.prevent="handleLink('serieSinger')"
+					>
 						{{ serieSinger.name }}
-					</nuxt-link>
+					</a>
 				</template>
 			</i18n>
 		</div>
@@ -63,9 +71,9 @@
 	import { fakeYearTag, getSerieLanguage } from '~/utils/tools';
 	import { tagTypes } from '~/assets/constants';
 	import Tag from '~/components/Tag.vue';
-	import { DBKara } from '%/lib/types/database/kara';
+	import { DBKara, DBKaraTag } from '%/lib/types/database/kara';
 	import { serieSinger } from '~/types/serieSinger';
-	import { modalStore } from '~/store';
+	import { menuBarStore, modalStore } from '~/store';
 	import { TagExtend } from '~/store/menubar';
 
 	interface VState {
@@ -122,7 +130,8 @@
 					return {
 						name: getSerieLanguage(this.karaoke.series[0], this.karaoke.langs[0].name, this.$store.state.auth.user, this.i18n),
 						tid: `${this.karaoke.series[0].tid}~${tagTypes.series.type}`,
-						slug: slug(this.karaoke.series[0].name)
+						slug: slug(this.karaoke.series[0].name),
+						type: 'series'
 					};
 				} else if (this.karaoke.singers[0]) {
 					return {
@@ -131,13 +140,15 @@
 							this.i18n[this.karaoke.singers[0].tid]?.eng ||
 								this.karaoke.singers[0].name : this.karaoke.singers[0].name,
 						tid: `${this.karaoke.singers[0].tid}~${tagTypes.singers.type}`,
-						slug: slug(this.karaoke.singers[0].name)
+						slug: slug(this.karaoke.singers[0].name),
+						type: 'singers'
 					};
 				} else { // You never know~
 					return {
 						name: '¯\\_(ツ)_/¯',
 						tid: '6339add6-b9a3-46c4-9488-2660caa30487~1',
-						slug: 'wtf'
+						slug: 'wtf',
+						type: 'singers'
 					};
 				}
 			},
@@ -224,6 +235,27 @@
 					this.loading = false;
 				} else {
 					modalStore.openModal('auth');
+				}
+			},
+			handleLink(type: 'serieSinger' | 'songtypes') {
+				let tag: DBKaraTag;
+				switch (type) {
+				case 'serieSinger':
+					tag = { ...this.karaoke[this.serieSinger.type][0] };
+					tag.i18n = this.i18n[tag.tid];
+					menuBarStore.addTag({
+						type: this.serieSinger.type,
+						tag
+					});
+					break;
+				case 'songtypes':
+					tag = { ...this.karaoke.songtypes[0] };
+					tag.i18n = this.i18n[tag.tid];
+					menuBarStore.addTag({
+						type: 'songtypes',
+						tag
+					});
+					break;
 				}
 			}
 		}

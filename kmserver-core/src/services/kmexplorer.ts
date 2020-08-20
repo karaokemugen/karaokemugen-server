@@ -20,7 +20,9 @@ function generateConfig(production: boolean = false) {
 			SUPPORTED_MEDIAS: [].concat(supportedFiles.video, supportedFiles.audio),
 			API_HOST: conf.API.Host,
 			EXPLORER_HOST: conf.KaraExplorer.Host,
-			EXPLORER_TAGLINE: conf.KaraExplorer.Tagline
+			EXPLORER_TAGLINE: conf.KaraExplorer.Tagline,
+			BASE_URL: `http${conf.KaraExplorer.Secure?'s':''}://${conf.KaraExplorer.Host}${
+				(production || conf.API.Port === 443 || conf.API.Port === 80)?'':`:${conf.Frontend.Port}`}${conf.KaraExplorer.Path}`
 		},
 		router: {
 			base: conf.KaraExplorer.Path
@@ -51,7 +53,10 @@ function generateConfig(production: boolean = false) {
 				{ hid: 'twitter-site', name: 'twitter:site', content: '@KaraokeMugen' },
 				{ hid: 'twitter-title', name: 'twitter:title', content: conf.KaraExplorer.Tagline },
 				{ hid: 'description', name: 'description', content: conf.KaraExplorer.Tagline },
-				{ name: 'theme-color', content: '#375a7f' }
+				{ name: 'theme-color', content: '#375a7f' },
+				{ hid: 'og-title', name: 'og:title', content: conf.KaraExplorer.Tagline },
+				{ hid: 'og-type', name: 'og:type', content: 'website' },
+				{ hid: 'og-image', name: 'og:image', content: 'https://lab.shelter.moe/karaokemugen/main/-/raw/master/Resources/banniere/banner-website-small.png' }
 			]
 		}
 	};

@@ -5,15 +5,23 @@
 		</h1>
 		<i18n path="kara.phrase" tag="h4" class="subtitle is-4">
 			<template v-slot:songtype>
-				<nuxt-link :to="`/tags/${songtypeSlug}/${karaoke.songtypes[0].tid}~3`">
+				<a
+					:href="`/tags/${songtypeSlug}/${karaoke.songtypes[0].tid}~3`"
+					@click.prevent="handleLink('songtypes')"
+				>
 					{{ songtype }}
-				</nuxt-link>
-				{{ karaoke.songorder }}
+					<template v-if="karaoke.songorder">
+						&nbsp;{{ karaoke.songorder }}
+					</template>
+				</a>
 			</template>
 			<template v-slot:series>
-				<nuxt-link :to="`/tags/${serieSinger.slug}/${serieSinger.tid}`">
+				<a
+					:href="`/tags/${serieSinger.slug}/${serieSinger.tid}`"
+					@click.prevent="handleLink('serieSinger')"
+				>
 					{{ serieSinger.name }}
-				</nuxt-link>
+				</a>
 			</template>
 		</i18n>
 		<h6 class="subtitle is-6 no-top-margin">
@@ -62,9 +70,9 @@
 	import { getSerieLanguage } from '../utils/tools';
 	import { tagTypes } from '~/assets/constants';
 	import Tag from '~/components/Tag.vue';
-	import { modalStore } from '~/store';
+	import { menuBarStore, modalStore } from '~/store';
 	import { serieSinger } from '~/types/serieSinger';
-	import { DBKara } from '%/lib/types/database/kara';
+	import { DBKara, DBKaraTag } from '%/lib/types/database/kara';
 
 	interface VState {
 		tagTypes: typeof tagTypes,
@@ -113,19 +121,22 @@
 					return {
 						name: getSerieLanguage(this.karaoke.series[0], this.karaoke.langs[0].name, this.$store.state.auth.user),
 						tid: `${this.karaoke.series[0].tid}~${tagTypes.series.type}`,
-						slug: slug(this.karaoke.series[0].name)
+						slug: slug(this.karaoke.series[0].name),
+						type: 'series'
 					};
 				} else if (this.karaoke.singers[0]) {
 					return {
 						name: this.karaoke.singers[0].i18n[this.$i18n.locale] || this.karaoke.singers[0].i18n.eng || this.karaoke.singers[0].name,
 						tid: `${this.karaoke.singers[0].tid}~${tagTypes.singers.type}`,
-						slug: slug(this.karaoke.singers[0].name)
+						slug: slug(this.karaoke.singers[0].name),
+						type: 'singers'
 					};
 				} else { // You never know~
 					return {
 						name: '¯\\_(ツ)_/¯',
 						tid: '6339add6-b9a3-46c4-9488-2660caa30487~1',
-						slug: 'wtf'
+						slug: 'wtf',
+						type: 'singers'
 					};
 				}
 			},
@@ -161,6 +172,22 @@
 				} else {
 					modalStore.openModal('auth');
 				}
+			},
+			handleLink(type: 'serieSinger' | 'songtypes') {
+				switch (type) {
+				case 'serieSinger':
+					menuBarStore.addTag({
+						type: this.serieSinger.type,
+						tag: this.karaoke[this.serieSinger.type][0]
+					});
+					break;
+				case 'songtypes':
+					menuBarStore.addTag({
+						type,
+						tag: this.karaoke.songtypes[0]
+					});
+					break;
+				}
 			}
 		},
 
@@ -169,7 +196,7 @@
 				meta: [
 					{
 						hid: 'twitter-title',
-						name: 'twitter:title', // @ts-ignore: mais.
+						name: 'twitter:title',
 						content: this.$t('kara.meta', { // @ts-ignore: mais²
 							songtitle: this.karaoke.title, serieSinger: this.serieSinger.name
 						}) as string
@@ -177,6 +204,13 @@
 					{
 						hid: 'description',
 						name: 'description',
+						content: this.$t('kara.meta', { // @ts-ignore: mais²
+							songtitle: this.karaoke.title, serieSinger: this.serieSinger.name
+						}) as string
+					},
+					{
+						hid: 'og-title',
+						name: 'og:title',
 						content: this.$t('kara.meta', { // @ts-ignore: mais²
 							songtitle: this.karaoke.title, serieSinger: this.serieSinger.name
 						}) as string

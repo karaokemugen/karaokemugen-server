@@ -1,10 +1,11 @@
 import { Module, VuexModule, Mutation } from 'vuex-module-decorators';
 import { Tag } from '%/lib/types/tag';
 import { DBTag } from '%/lib/types/database/tag';
+import { DBKaraTag } from '%/lib/types/database/kara';
 
 export interface TagExtend {
 	type: string,
-	tag: Tag | DBTag
+	tag: Tag | DBTag | DBKaraTag
 }
 
 export type sortTypes = 'az' | 'karacount' | 'recent' | 'most_played' | 'most_favorites' | 'most_requested';
