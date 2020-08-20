@@ -75,5 +75,8 @@ VALUES(
 	$2,
 	$3,
 	$4
-)
+) ON CONFLICT(pk_seid) DO UPDATE SET
+fk_iid = $1,
+started_at = $3,
+name = $4
 `;
