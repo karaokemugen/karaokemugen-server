@@ -24,6 +24,9 @@
 					<span class="file-name">{{ mediafile }}</span>
 				</label>
 			</div>
+			<p v-if="!mediafile" class="help is-danger">
+				{{ $t('kara.import.media_file_required') }}
+			</p>
 			<p v-if="mediafile_error" class="help is-danger">
 				{{ mediafile_error }}
 			</p>
@@ -106,6 +109,9 @@
 			</label>
 			<div class="control">
 				<input v-model="karaoke.songorder" class="input" type="number">
+				<p v-if="karaoke.songorder > 999" class="help is-danger">
+					{{ $t('kara.import.songorder_invalid') }}
+				</p>
 			</div>
 		</div>
 		<div class="field">
@@ -130,6 +136,9 @@
 				<input v-model="karaoke.year" class="input" type="number">
 				<p v-if="!karaoke.year" class="help is-danger">
 					{{ $t('kara.import.year_required') }}
+				</p>
+				<p v-if="karaoke.year && (karaoke.year < 1800 || karaoke.year > new Date().getFullYear())" class="help is-danger">
+					{{ $t('kara.import.year_invalid') }}
 				</p>
 			</div>
 		</div>
@@ -351,6 +360,7 @@
 		computed: {
 			submitDisabled(): boolean {
 				return (
+					!this.mediafile ||
 					this.mediafile_error.length > 0 ||
 					this.subfile_error.length > 0 ||
 					!this.karaoke.title ||
@@ -359,8 +369,10 @@
 					this.karaoke.songtypes.length === 0 ||
 					this.karaoke.langs.length === 0 ||
 					!this.karaoke.year ||
-					this.karaoke.authors.length === 0 ||
-					this.gitlabUrl.length > 0
+					this.karaoke.year < 1800 ||
+					this.karaoke.year > new Date().getFullYear() ||
+					this.karaoke.songorder > 999 ||
+					this.karaoke.authors.length === 0
 				);
 			}
 		},

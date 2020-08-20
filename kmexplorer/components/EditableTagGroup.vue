@@ -128,9 +128,11 @@
 				}
 			},
 			newValue() {
-				// @ts-ignore: Oh ta gueule hein, c'est magique !
-				// Petit KaraTag deviendra grand DBTag une fois l'issue publiée
-				this.addValue({ name: this.currentVal });
+				if (this.currentVal) {
+					// @ts-ignore: Oh ta gueule hein, c'est magique !
+					// Petit KaraTag deviendra grand DBTag une fois l'issue publiée
+					this.addValue({ name: this.currentVal });
+				}
 			},
 			deleteValue(option: KaraTag) {
 				this.values = this.values.filter(tag => tag.name !== option.name);
