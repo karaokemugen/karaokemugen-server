@@ -67,12 +67,12 @@
 <script lang="ts">
 	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
-	import { getSerieLanguage } from '../utils/tools';
+	import { getSerieLanguage } from '~/utils/tools';
 	import { tagTypes } from '~/assets/constants';
 	import Tag from '~/components/Tag.vue';
 	import { menuBarStore, modalStore } from '~/store';
 	import { serieSinger } from '~/types/serieSinger';
-	import { DBKara, DBKaraTag } from '%/lib/types/database/kara';
+	import { DBKara } from '%/lib/types/database/kara';
 
 	interface VState {
 		tagTypes: typeof tagTypes,
@@ -210,7 +210,7 @@
 					},
 					{
 						hid: 'og-title',
-						name: 'og:title',
+						property: 'og:title',
 						content: this.$t('kara.meta', { // @ts-ignore: mais²
 							songtitle: this.karaoke.title, serieSinger: this.serieSinger.name
 						}) as string

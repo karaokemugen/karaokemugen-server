@@ -54,9 +54,9 @@ function generateConfig(production: boolean = false) {
 				{ hid: 'twitter-title', name: 'twitter:title', content: conf.KaraExplorer.Tagline },
 				{ hid: 'description', name: 'description', content: conf.KaraExplorer.Tagline },
 				{ name: 'theme-color', content: '#375a7f' },
-				{ hid: 'og-title', name: 'og:title', content: conf.KaraExplorer.Tagline },
-				{ hid: 'og-type', name: 'og:type', content: 'website' },
-				{ hid: 'og-image', name: 'og:image', content: 'https://lab.shelter.moe/karaokemugen/main/-/raw/master/Resources/banniere/banner-website-small.png' }
+				{ hid: 'og-title', property: 'og:title', content: conf.KaraExplorer.Tagline },
+				{ hid: 'og-type', property: 'og:type', content: 'website' },
+				{ hid: 'og-image', property: 'og:image', content: 'https://lab.shelter.moe/karaokemugen/main/-/raw/master/Resources/banniere/banner-website-small.png' }
 			]
 		}
 	};

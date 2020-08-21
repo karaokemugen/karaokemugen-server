@@ -102,13 +102,14 @@
 				title: this.karaoke.title,
 				meta: [
 					{ hid: 'twitter-card', name: 'twitter:card', content: 'player' },
-					{ hid: 'og-type', name: 'og:type', content: 'article' },
+					{ hid: 'og-type', property: 'og:type', content: 'article' },
+					{ hid: 'og-description', property: 'og:description', content: this.$t('layout.slogan') as string },
 					// @ts-ignore: No. :c
 					{ hid: 'twitter-player', name: 'twitter:player', content: `${process.env.LIVE_URL}/?video=${this.karaoke.kid}` },
 					{ hid: 'twitter-player-height', name: 'twitter:player:height', content: '720' },
 					{ hid: 'twitter-player-width', name: 'twitter:player:width', content: '1280' },
 					// @ts-ignore: No. :c
-					{ hid: 'og-image', name: 'og:image', content: `https://${process.env.EXPLORER_HOST}/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg` },
+					{ hid: 'og-image', property: 'og:image', content: `https://${process.env.EXPLORER_HOST}/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg` },
 					// @ts-ignore: rah :O
 					{ hid: 'twitter-image', name: 'twitter:image', content: `/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg` }
 					// The rest of meta tags is handled by KaraFullInfo.vue

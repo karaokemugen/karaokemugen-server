@@ -110,7 +110,8 @@ export default {
 		suggest_open: 'Suggest us!',
 		empty: 'You don\'t have any favorites.',
 		explore: 'Go add some!',
-		results: '{count} result | {count} results'
+		results: '{count} result | {count} results',
+		slogan: 'This song is available on the Karaoke Mugen songbase!'
 	},
 	footer: {
 		home: 'Project home',

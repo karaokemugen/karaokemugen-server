@@ -111,7 +111,8 @@ export default {
 		suggest_open: 'Suggérez-le nous !',
 		empty: 'Vous n\'avez pas de favoris.',
 		explore: 'Allez en ajouter !',
-		results: '{count} résulat | {count} résultats'
+		results: '{count} résulat | {count} résultats',
+		slogan: 'Ce son est disponible sur la base Karaoke Mugen !'
 	},
 	footer: {
 		home: 'Accueil du projet',
