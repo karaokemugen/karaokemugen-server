@@ -10,7 +10,7 @@
 			<nuxt-link :to="`/kara/${slug}/${karaoke.kid}`" class="title is-3 is-spaced">
 				{{ karaoke.title }}
 			</nuxt-link>
-			<i18n path="kara.phrase" tag="h5" class="subtitle is-6">
+			<i18n path="kara.phrase" tag="h5" class="subtitle is-56">
 				<template v-slot:songtype>
 					<a
 						:href="`/tags/${songtypeSlug}/${karaoke.songtypes[0].tid}~3`"
@@ -278,6 +278,10 @@
 	.header {
 		width: 100%;
 		flex-shrink: 0;
+	}
+
+	h5.subtitle.is-56 {
+		font-size: 18px;
 	}
 
 	.images {
