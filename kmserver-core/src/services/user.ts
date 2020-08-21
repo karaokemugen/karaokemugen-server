@@ -1,8 +1,8 @@
 import {createHash} from 'crypto';
-import {hash, compare, genSalt} from 'bcryptjs';
+import {hash, compare} from 'bcryptjs';
 import {updateUser, updateUserPassword, insertUser, selectUser, selectAllUsers, deleteUser, updateLastLogin} from '../dao/user';
 import logger from '../lib/utils/logger';
-import {getConfig, resolvedPathAvatars, setConfig} from '../lib/utils/config';
+import {getConfig, resolvedPathAvatars} from '../lib/utils/config';
 import {asyncReadDir, asyncExists, asyncUnlink, asyncMove, detectFileType} from '../lib/utils/files';
 import { v4 as uuidV4 } from 'uuid';
 import {resolve} from 'path';
@@ -84,8 +84,6 @@ export async function initUsers() {
 	cleanupAvatars();
 	setInterval(cleanupAvatars, 60 * 60 * 1000);
 	setInterval(cleanupPasswordResetRequests, 60 * 1000);
-	// Generate password salt if it doesn't exist in config
-	if (!getConfig().App.PasswordSalt) setConfig({ App: {PasswordSalt: await genSalt(10)}});
 }
 
 function cleanupPasswordResetRequests() {
