@@ -124,7 +124,7 @@
 			}
 		},
 
-		created() {
+		beforeCreate() {
 			if (menuBarStore.sort === 'karacount') {
 				menuBarStore.setSort('recent');
 			}

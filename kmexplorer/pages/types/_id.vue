@@ -36,7 +36,8 @@
 		from: number,
 		size: number,
 		order?: string,
-		filter?: string
+		filter?: string,
+		stripEmpty?: boolean
 	}
 
 	interface VState {
@@ -55,14 +56,10 @@
 		},
 
 		async fetch() {
+			console.trace();
 			const res = await this.$axios
 				.get<TagList>(`/api/karas/tags/${tagTypes[this.$route.params.id].type}`, {
-					params: {
-						from: 0,
-						size: 100,
-						stripEmpty: true,
-						filter: this.search || ''
-					} as TagsRequest
+					params: this.reqParams
 				})
 				.catch(_err =>
 					this.$nuxt.error({ statusCode: 404, message: this.$t('tag.notfound') as string })
@@ -93,6 +90,7 @@
 					from: (this.page - 1) * 100,
 					size: 100,
 					order: this.sort,
+					stripEmpty: true,
 					filter: this.search || undefined
 				};
 			},
@@ -114,8 +112,8 @@
 			}
 		},
 
-		created() {
-			if (!['az', 'karacount'].includes(this.sort)) {
+		beforeCreate() {
+			if (!['az', 'karacount'].includes(menuBarStore.sort)) {
 				// Reset sort to karacount
 				menuBarStore.setSort('karacount');
 			}
@@ -125,6 +123,7 @@
 			async setPage(e: number): Promise<void> {
 				this.page = e;
 				this.loading = true;
+				console.trace();
 				const { data } = await this.$axios.get<TagList>(
 					`/api/karas/tags/${tagTypes[this.$route.params.id].type}`,
 					{
