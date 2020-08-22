@@ -56,7 +56,6 @@
 		},
 
 		async fetch() {
-			console.trace();
 			const res = await this.$axios
 				.get<TagList>(`/api/karas/tags/${tagTypes[this.$route.params.id].type}`, {
 					params: this.reqParams
@@ -123,7 +122,6 @@
 			async setPage(e: number): Promise<void> {
 				this.page = e;
 				this.loading = true;
-				console.trace();
 				const { data } = await this.$axios.get<TagList>(
 					`/api/karas/tags/${tagTypes[this.$route.params.id].type}`,
 					{
