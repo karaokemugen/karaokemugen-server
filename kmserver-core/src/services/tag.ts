@@ -12,7 +12,7 @@ import sentry from '../utils/sentry';
 export function formatTagList(tagList: DBTag[], from: number, count: number): TagList {
 	return {
 		infos: {
-			count: count,
+			count: +count,
 			from: +from,
 			to: +from + +count
 		},
@@ -23,7 +23,7 @@ export function formatTagList(tagList: DBTag[], from: number, count: number): Ta
 export async function getTags(params: TagParams) {
 	try {
 		const tags = await selectTags(params);
-		return formatTagList(tags, +params.from, tags.length);
+		return formatTagList(tags, +params.from, tags[0].count);
 	} catch(err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
