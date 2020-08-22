@@ -28,7 +28,7 @@ export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 	let favoritedSelectClause = '';
 	let favoritedJoinClause = '';
 	let favoritedGroupClause = '';
-	if (params.username) {
+	if (params.username && params.favorites) {
 		favoritedSelectClause = `
 		(CASE WHEN f.fk_kid IS NULL
 			THEN FALSE

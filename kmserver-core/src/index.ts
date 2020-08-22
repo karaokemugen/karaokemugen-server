@@ -97,7 +97,7 @@ async function main() {
 	await initUsers();
 
 	if (argv.createPreviews) {
-		const karas = await getAllKaras();
+		const karas = await getAllKaras({});
 		await createImagePreviews(karas);
 		exit(0);
 	}

@@ -19,9 +19,13 @@ export default function KSController(router: Router) {
 		});
 
 	router.route('/karas')
-		.get(optionalAuth, async (req: any, res) => {
+		.get(async (req: any, res) => {
 			try {
-				const karas = await getAllKaras(req.query.filter, req.query.from, req.query.size, null, null, null, null, req.authToken?.username);
+				const karas = await getAllKaras({
+					filter: req.query.filter,
+					from: req.query.from,
+					size: req.query.size
+				});
 				res.json(karas);
 			} catch(err) {
 				res.status(500).json(err);
@@ -37,9 +41,20 @@ export default function KSController(router: Router) {
 		});
 	router.route('/karas/search')
 		// Route used by KMApp to get Kara lists with comparison
-		.post(async (req: any, res) => {
+		.post(optionalAuth, async (req: any, res) => {
 			try {
-				const karas = await getAllKaras(req.body.filter, req.body.from, req.body.size, 'search', req.body.q, req.body.compare, req.body.localKaras, null, req.body.order);
+				const karas = await getAllKaras({
+					filter: req.body.filter,
+					from: req.body.from,
+					size: req.body.size,
+					mode: 'search',
+					modeValue: req.body.q,
+					compare: req.body.compare,
+					localKaras: req.body.localKaras,
+					sort: req.body.order,
+					username: req.authToken?.username,
+					favorites: req.body.favorites
+				}, req.authToken);
 				res.json(karas);
 			} catch(err) {
 				res.status(500).json(err);
@@ -48,7 +63,15 @@ export default function KSController(router: Router) {
 		// Route used by KMExplorer
 		.get(optionalAuth, async (req: any, res) => {
 			try {
-				const karas = await getAllKaras(req.query.filter, req.query.from, req.query.size, 'search', req.query.q, null, null, req.authToken?.username, req.query.order);
+				const karas = await getAllKaras({
+					filter: req.query.filter,
+					from: req.query.from,
+					size: req.query.size,
+					mode: 'search',
+					modeValue: req.query.q,
+					username: req.authToken?.username,
+					sort: req.query.order
+				}, req.authToken);
 				res.json(karas);
 			} catch(err) {
 				res.status(500).json(err);
@@ -84,7 +107,12 @@ export default function KSController(router: Router) {
 	router.route('/karas/recent')
 		.get(async (req: any, res) => {
 			try {
-				const karas = await getAllKaras(req.query.filter, req.query.from, req.query.size,'recent');
+				const karas = await getAllKaras({
+					filter: req.query.filter,
+					from: req.query.from,
+					size: req.query.size,
+					mode: 'recent'
+				});
 				res.json(karas);
 			} catch(err) {
 				res.status(500).json(err);

@@ -1,5 +1,5 @@
 import {selectAllKaras, selectAllYears, selectBaseStats, selectAllMedias} from '../dao/kara';
-import { KaraList, ModeParam, CompareParam } from '../lib/types/kara';
+import { KaraList, ModeParam, KaraParams } from '../lib/types/kara';
 import { consolidateData } from '../lib/services/kara';
 import { DBKara } from '../lib/types/database/kara';
 import { ASSToLyrics } from '../lib/utils/ass';
@@ -13,6 +13,7 @@ import { asyncReadFile, sanitizeFile } from '../lib/utils/files';
 import { resolve, basename } from 'path';
 import { DownloadBundle } from '../lib/types/downloads';
 import sentry from '../utils/sentry';
+import { Token } from '../lib/types/user';
 
 export async function getBaseStats() {
 	try {
@@ -48,7 +49,7 @@ export async function getAllYears() {
 export async function generate() {
 	try {
 		await generateDatabase({validateOnly: false});
-		const karas = await getAllKaras();
+		const karas = await getAllKaras({});
 		await createImagePreviews(karas);
 	} catch(err) {
 		logger.error('', {service: 'Gen', obj: err});
@@ -84,37 +85,40 @@ export async function getKara(filter?: string, from = 0, size = 0, mode?: ModePa
 	}
 }
 
-export async function getAllKaras(filter?: string, from = 0, size = 0, mode?: ModeParam, modeValue?: string, compare?: CompareParam, localKarasObj?: any, username?: string, sort?: string): Promise<KaraList> {
+export async function getAllKaras(params: KaraParams, token?: Token): Promise<KaraList> {
 	try {
+		// Remove than once we launch KaraBook, our super social network.
+		if (token && token.username !== params.username) throw {code: 403, msg: 'You can only view your own favorites'};
 		// When compare is used because we're queried from KM App in order to tell which karaoke is missing or updated, we redefine from/size so we get absolutely all songs from database.
-		let trueFrom = from;
-		let trueSize = size;
-		if (compare) {
+		let trueFrom = params.from;
+		let trueSize = params.size;
+		if (params.compare) {
 			trueFrom = null;
 			trueSize = null;
 		}
 		let pl = await selectAllKaras({
-			filter: filter,
+			filter: params.filter,
 			from: +trueFrom,
 			size: +trueSize,
-			mode: mode,
-			modeValue: modeValue || '',
-			username: username,
-			sort: sort
+			mode: params.mode,
+			modeValue: params.modeValue || '',
+			username: params.username,
+			sort: params.sort,
+			favorites: params.favorites
 		});
 		// Let's build a map of KM App's KIDs if it's provided, and then filter the results depending on if we want updated songs or missing songs.
 		// Missing songs are those not present in localKaras, updated songs are present but have a lower modification date
 		const localKaras = new Map();
-		if (localKarasObj && Object.keys(localKarasObj).length > 0){
-			Object.keys(localKarasObj).forEach(kid => localKaras.set(kid, localKarasObj[kid]));
+		if (params.localKaras && Object.keys(params.localKaras).length > 0){
+			Object.keys(params.localKaras).forEach(kid => localKaras.set(kid, params.localKaras[kid]));
 		}
-		if (compare === 'updated') {
+		if (params.compare === 'updated') {
 			pl = pl.filter((k: DBKara) => new Date(localKaras.get(k.kid)) < k.modified_at);
 			for (const i in pl) {
 				pl[i].count = pl.length;
 			}
 		}
-		if (compare === 'missing') {
+		if (params.compare === 'missing') {
 			pl = pl.filter((k: DBKara) => !localKaras.has(k.kid));
 			for (const i in pl) {
 				pl[i].count = pl.length;
@@ -124,15 +128,15 @@ export async function getAllKaras(filter?: string, from = 0, size = 0, mode?: Mo
 		let count = 0;
 		if (pl[0]) count = pl[0].count;
 		// If compare is provided, we slice our list according to the real from/size asked by KM App's so we return the correct set of results.
-		if (compare) {
+		if (params.compare) {
 			count = pl.length;
-			if (from > 0) {
-				pl = pl.slice(+from, +from + +size || (pl.length - +from));
+			if (params.from > 0) {
+				pl = pl.slice(+params.from, +params.from + +params.size || (pl.length - +params.from));
 			} else {
-				pl = pl.slice(0, +size || pl.length);
+				pl = pl.slice(0, +params.size || pl.length);
 			}
 		}
-		return formatKaraList(pl, +from, count);
+		return formatKaraList(pl, +params.from, count);
 	} catch(err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);

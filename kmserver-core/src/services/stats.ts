@@ -66,7 +66,7 @@ export async function processStatsPayload(payload: any) {
 
 export async function getFavoritesStats(filter: string, from = 0, size = 0) {
 	try {
-		return await getAllKaras(filter, from, size, 'favorited');
+		return await getAllKaras({filter, from, size, mode: 'favorited'});
 	} catch(err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
@@ -76,7 +76,7 @@ export async function getFavoritesStats(filter: string, from = 0, size = 0) {
 
 export async function getRequestedStats(filter: string, from = 0, size = 0) {
 	try {
-		return await getAllKaras(filter, from, size, 'requested');
+		return await getAllKaras({filter, from, size, mode: 'requested'});
 	} catch(err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
@@ -86,7 +86,7 @@ export async function getRequestedStats(filter: string, from = 0, size = 0) {
 
 export async function getPlayedStats(filter: string, from = 0, size = 0) {
 	try {
-		return await getAllKaras(filter, from, size, 'played');
+		return await getAllKaras({filter, from, size, mode: 'played'});
 	} catch(err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
