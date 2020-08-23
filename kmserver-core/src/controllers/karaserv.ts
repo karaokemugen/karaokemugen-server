@@ -70,7 +70,8 @@ export default function KSController(router: Router) {
 					mode: 'search',
 					modeValue: req.query.q,
 					username: req.authToken?.username,
-					sort: req.query.order
+					sort: req.query.order,
+					favorites: req.body.favorites
 				}, req.authToken);
 				res.json(karas);
 			} catch(err) {
