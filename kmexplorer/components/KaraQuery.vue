@@ -1,5 +1,14 @@
 <template>
-	<kara-list :karaokes="karaokes" :loading="loading || $fetchState.pending" />
+	<div class="tile is-ancestor">
+		<div class="tile is-vertical">
+			<div class="tile is-parent is-12 is-hidden-desktop">
+				<search-tags />
+				<search-bar :filter="false" :results="false" />
+				<search-edit />
+			</div>
+			<kara-list :karaokes="karaokes" :loading="loading || $fetchState.pending" :favorites="favorites" />
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
@@ -7,6 +16,9 @@
 	import { mapState } from 'vuex';
 
 	import KaraList from '~/components/KaraList.vue';
+	import SearchBar from '~/components/SearchBar.vue';
+	import SearchTags from '~/components/SearchTags.vue';
+	import SearchEdit from '~/components/SearchEdit.vue';
 	import { KaraList as KaraListType } from '%/lib/types/kara';
 	import { menuBarStore } from '~/store';
 	import { tagRegex, tagTypes, tagTypesMap } from '~/assets/constants';
@@ -19,7 +31,8 @@
 		size: number,
 		order?: string,
 		filter?: string,
-		q?: string
+		q?: string,
+		favorites?: boolean
 	}
 
 	interface VState {
@@ -32,7 +45,17 @@
 		name: 'KaraQuery',
 
 		components: {
-			KaraList
+			KaraList,
+			SearchBar,
+			SearchTags,
+			SearchEdit
+		},
+
+		props: {
+			favorites: {
+				type: Boolean,
+				default: false
+			}
 		},
 
 		async fetch() {
@@ -104,11 +127,12 @@
 					}
 				}
 				return {
-					q: queries.join('!'),
-					filter: this.search,
+					q: queries.join('!') || undefined,
+					filter: this.search || undefined,
 					from: (this.from * 20),
 					size: 20,
-					order: this.sort
+					order: this.sort || undefined,
+					favorites: this.favorites || undefined
 				};
 			},
 			...mapState('menubar', ['sort', 'search', 'tags'])
@@ -165,7 +189,7 @@
 				menuBarStore.setResultsCount(0);
 				this.from = -1;
 				this.loadNextPage(true);
-				if (navigation && (this.$route.params.query !== (menuBarStore.search || undefined) || this.$route.query.q !== this.reqParams.q)) {
+				if (navigation && !this.favorites && (this.$route.params.query !== (menuBarStore.search || undefined) || this.$route.query.q !== this.reqParams.q)) {
 					// TODO: Fully-featured shareable URL
 					this.$router.replace({ path: `/search/${menuBarStore.search}`, query: { q: this.reqParams.q } });
 				}

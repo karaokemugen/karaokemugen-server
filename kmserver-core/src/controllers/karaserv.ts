@@ -71,7 +71,7 @@ export default function KSController(router: Router) {
 					modeValue: req.query.q,
 					username: req.authToken?.username,
 					sort: req.query.order,
-					favorites: req.body.favorites
+					favorites: req.query.favorites
 				}, req.authToken);
 				res.json(karas);
 			} catch(err) {

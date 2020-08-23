@@ -109,7 +109,7 @@ export default {
 		loading: 'Chargement...',
 		suggest: 'Vous ne trouvez pas ?',
 		suggest_open: 'Suggérez-le nous !',
-		empty: 'Vous n\'avez pas de favoris.',
+		empty: 'C\'est la fin de vos favoris.',
 		explore: 'Allez en ajouter !',
 		results: '{count} résulat | {count} résultats',
 		slogan: 'Ce son est disponible sur la base Karaoke Mugen !'

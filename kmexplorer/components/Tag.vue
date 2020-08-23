@@ -91,7 +91,7 @@
 						payload.tag = tag;
 					}
 					menuBarStore.addTag(payload);
-					if (this.$route.name !== 'search-query') {
+					if (!['search-query', 'favorites'].includes(this.$route.name as string)) {
 						const navigation = { path: `/search/${menuBarStore.search}`, query: { q: '' } };
 						// TODO: Fully-featured shareable URL
 						const criterias: string[] = [];

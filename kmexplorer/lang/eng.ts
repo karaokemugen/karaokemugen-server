@@ -108,7 +108,7 @@ export default {
 		loading: 'Loading...',
 		suggest: 'Can\'t find what you\'re looking for?',
 		suggest_open: 'Suggest us!',
-		empty: 'You don\'t have any favorites.',
+		empty: 'This is the end of your favorites.',
 		explore: 'Go add some!',
 		results: '{count} result | {count} results',
 		slogan: 'This song is available on the Karaoke Mugen songbase!'

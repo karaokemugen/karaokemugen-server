@@ -53,11 +53,7 @@
 					<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
 					{{ $t('menu.profile') }}
 				</a>
-				<a v-if="loggedIn" class="navbar-item" aria-label="Logout" @click.prevent="logout">
-					<font-awesome-icon :icon="['fas', 'sign-out-alt']" :fixed-width="true" />
-					{{ $t('menu.logout') }}
-				</a>
-				<nuxt-link v-if="loggedIn" to="/favorites" active-class="is-active">
+				<nuxt-link v-if="loggedIn" to="/favorites" class="navbar-item" active-class="is-active">
 					<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
 					{{ $t('menu.favorites') }}
 				</nuxt-link>
@@ -65,15 +61,13 @@
 					<font-awesome-icon :icon="['fas', 'sign-in-alt']" :fixed-width="true" />
 					{{ $t('menu.connection') }}
 				</a>
+				<a v-if="loggedIn" class="navbar-item" aria-label="Logout" @click.prevent="logout">
+					<font-awesome-icon :icon="['fas', 'sign-out-alt']" :fixed-width="true" />
+					{{ $t('menu.logout') }}
+				</a>
 			</div>
 
 			<div v-if="databaseMenu" class="navbar-dropdown">
-				<client-only placeholder="You need to enable JavaScript in order to use search.">
-					<search-tags class="navbar-item" />
-					<div class="navbar-item is-expanded">
-						<search-bar />
-					</div>
-				</client-only>
 				<div class="is-hidden-desktop">
 					<nuxt-link class="navbar-item" to="/search">
 						<font-awesome-icon :icon="['fas', 'music']" :fixed-width="true" />
@@ -451,7 +445,7 @@
 				return this.$route.params?.id?.substring(36);
 			},
 			onKaraTagListView(): boolean {
-				return ['types-id', 'types-years', 'search-query', 'tags-slug-id', 'favorites'].includes(this.$route.name as string);
+				return ['types-id', 'types-years', 'search-query', 'favorites'].includes(this.$route.name as string);
 			}
 		},
 
@@ -471,7 +465,8 @@
 		},
 
 		mounted() {
-			this.$router.afterEach(() => {
+			this.$router.beforeEach((_to: Location, _from: Location, next: Function) => {
+				next();
 				// Close all the menus after a navigation
 				this.accountMenu = false;
 				this.databaseMenu = false;
@@ -503,6 +498,7 @@
 				modalStore.openModal('addRepo');
 			}
 		},
+
 		head() {
 			const seo = this.$nuxtI18nSeo();
 			if (!Array.isArray(seo.meta)) { seo.meta = []; }

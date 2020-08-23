@@ -21,23 +21,17 @@
 				<section v-if="mode === 'general'" class="modal-card-body">
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
-							<label for="title" class="label">{{ $t('modal.profile.fields.username.label') }}</label>
+							<label class="label">{{ $t('modal.profile.fields.username.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field has-addons">
 								<div class="control">
-									<input
-										id="title"
-										v-model="user.login"
-										type="text"
-										name="title"
-										class="input is-static"
-										readonly
-										autocomplete="login"
-									>
+									<div class="button is-static">
+										{{ user.login }}
+									</div>
 								</div>
 								<div class="control">
-									<div class="input is-static">
+									<div class="button is-static">
 										{{ `@${apiHost}` }}
 									</div>
 								</div>
@@ -178,13 +172,13 @@
 				<section v-if="mode === 'series'" class="modal-card-body">
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
-							<label for="title" class="label">{{ $t('modal.profile.series_name.label') }}</label>
+							<label for="series_lang_mode" class="label">{{ $t('modal.profile.series_name.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
 								<div class="control">
 									<div class="select">
-										<select v-model="user.series_lang_mode">
+										<select id="series_lang_mode" v-model="user.series_lang_mode">
 											<option :value="-1">
 												{{ $t('modal.profile.series_name.mode_no_pref') }}
 											</option>
@@ -211,10 +205,7 @@
 					</div>
 					<div v-if="user.series_lang_mode === 4" class="field is-horizontal">
 						<div class="field-label is-normal">
-							<label
-								for="title"
-								class="label"
-							>{{ $t('modal.profile.series_name.force_lang_series_main') }}</label>
+							<label class="label">{{ $t('modal.profile.series_name.force_lang_series_main') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
@@ -235,7 +226,6 @@
 					<div v-if="user.series_lang_mode === 4" class="field is-horizontal">
 						<div class="field-label is-normal">
 							<label
-								for="title"
 								class="label"
 							>{{ $t('modal.profile.series_name.force_lang_series_fallback') }}</label>
 						</div>
@@ -303,7 +293,12 @@
 	export default Vue.extend({
 		name: 'ProfileModal',
 
-		props: ['active'],
+		props: {
+			active: {
+				type: Boolean,
+				required: true
+			}
+		},
 
 		data(): VState {
 			return {
@@ -353,7 +348,7 @@
 		methods: {
 			listLangs(name: string): string[] {
 				const listLangs = [];
-				for (const [key, value] of Object.entries(
+				for (const [_key, value] of Object.entries(
 					languages.getNames(languages.alpha3BToAlpha2(this.$i18n.locale))
 				)) {
 					listLangs.push(value);

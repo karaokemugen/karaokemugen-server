@@ -1,19 +1,28 @@
 <template>
-	<div class="is-ancestor">
-		<pagination v-if="total > 1" :page="page" :last-page="total" @page="setPage" />
-
-		<div v-if="tags.content.length > 0" class="tags">
-			<tag
-				v-for="tag in tags.content"
-				:key="tag.tid"
-				icon
-				:type="$route.params.id"
-				:tag="tag"
-				:i18n="tag.i18n"
-				showkaracount
-			/>
+	<div class="tile is-ancestor">
+		<div class="tile is-parent is-12 is-hidden-desktop">
+			<search-tags />
+			<search-bar :filter="false" :results="false" />
+			<search-edit />
 		</div>
-		<pagination v-if="total > 1" :page="page" :last-page="total" @page="setPage" />
+
+		<pagination class="tile is-parent is-12" v-if="total > 1" :page="page" :last-page="total" @page="setPage" />
+
+		<div class="tile is-parent is-12">
+			<div v-if="tags.content.length > 0" class="tags">
+				<tag
+					v-for="tag in tags.content"
+					:key="tag.tid"
+					icon
+					:type="$route.params.id"
+					:tag="tag"
+					:i18n="tag.i18n"
+					showkaracount
+				/>
+			</div>
+		</div>
+
+		<pagination class="tile is-parent is-12" v-if="total > 1" :page="page" :last-page="total" @page="setPage" />
 
 		<loading-nanami v-if="loading || $fetchState.pending" class="tile is-parent is-12" />
 	</div>
@@ -24,9 +33,12 @@
 	import { mapState } from 'vuex';
 
 	import Tag from '~/components/Tag.vue';
-	import { tagTypes } from '~/assets/constants';
 	import LoadingNanami from '~/components/LoadingNanami.vue';
 	import Pagination from '~/components/Pagination.vue';
+	import SearchEdit from '~/components/SearchEdit.vue';
+	import SearchBar from '~/components/SearchBar.vue';
+	import SearchTags from '~/components/SearchTags.vue';
+	import { tagTypes } from '~/assets/constants';
 	import { menuBarStore } from '~/store';
 
 	import { DBTag } from '%/lib/types/database/tag';
@@ -49,10 +61,14 @@
 
 	export default Vue.extend({
 		name: 'ListTag',
+
 		components: {
 			LoadingNanami,
 			Tag,
-			Pagination
+			Pagination,
+			SearchEdit,
+			SearchBar,
+			SearchTags
 		},
 
 		async fetch() {

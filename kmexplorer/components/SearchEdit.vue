@@ -1,20 +1,11 @@
 <template>
 	<div class="field is-expanded has-addons">
-		<div class="control is-expanded">
-			<input
-				v-model="search"
-				class="input is-fullwidth"
-				type="text"
-				:placeholder="$t('search.placeholder')"
-				@keydown.enter="triggerSearch"
-			>
-		</div>
-		<div v-if="results && resultsCount > 0 && ['search-query', 'types-id', 'types-years', 'favorites'].includes($route.name)" class="control">
+		<div v-if="results && resultsCount > 0 && ['search-query', 'tags-slug-id', 'types-id'].includes($route.name)" class="control is-expanded">
 			<button class="button is-static">
 				{{ $tc('layout.results', resultsCount, {count: resultsCount}) }}
 			</button>
 		</div>
-		<div v-if="filter" class="control">
+		<div class="control">
 			<span class="select">
 				<select v-model="sort" :aria-label="$t('search.aria.sort')" :disabled="!canSort">
 					<option value="az" selected>{{ $t('search.sort.a_z') }}</option>
@@ -40,20 +31,15 @@
 	import { sortTypes } from '~/store/menubar';
 
 	interface VState {
-		search: string,
 		sort: sortTypes,
 		VuexUnsubscribe?: Function
 	}
 
 	export default Vue.extend({
-		name: 'SearchBar',
+		name: 'SearchEdit',
 
 		props: {
 			results: {
-				type: Boolean,
-				default: true
-			},
-			filter: {
 				type: Boolean,
 				default: true
 			}
@@ -61,14 +47,13 @@
 
 		data(): VState {
 			return {
-				search: '',
 				sort: 'recent'
 			};
 		},
 
 		computed: {
 			canSort(): boolean {
-				return ['types-id', 'types-years', 'search-query', 'favorites'].includes(this.$route.name as string);
+				return ['types-id', 'types-years', 'search-query', 'tags-slug-id'].includes(this.$route.name as string);
 			},
 			...mapState('menubar', ['resultsCount'])
 		},
@@ -81,9 +66,7 @@
 
 		mounted() {
 			this.VuexUnsubscribe = this.$store.subscribe((mutation, _state) => {
-				if (mutation.type === 'menubar/setSearch') {
-					this.search = mutation.payload;
-				} else if (mutation.type === 'menubar/setSort') {
+				if (mutation.type === 'menubar/setSort') {
 					this.sort = mutation.payload;
 				}
 			});
@@ -91,12 +74,6 @@
 
 		destroyed() {
 			if (this.VuexUnsubscribe) { this.VuexUnsubscribe(); }
-		},
-
-		methods: {
-			triggerSearch() {
-				menuBarStore.setSearch(this.search);
-			}
 		}
 	});
 </script>
@@ -105,6 +82,10 @@
 	.field.is-expanded {
 		flex-grow: 1;
 		flex-shrink: 0;
+
+		.button.is-static {
+			width: 100%;
+		}
 
 		.select select option {
 			color: white;
