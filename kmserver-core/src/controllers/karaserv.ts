@@ -80,7 +80,10 @@ export default function KSController(router: Router) {
 	router.route('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})')
 		.get(optionalAuth, async (req: any, res) => {
 			try {
-				const kara = await getKara(null, null, null, 'kid', req.params.kid, req?.authToken?.username);
+				const kara = await getKara({
+					mode: 'kid',
+					modeValue: req.params.kid,
+				}, req?.authToken?.username);
 				res.json(kara);
 			} catch(err) {
 				res.status(500).json(err);

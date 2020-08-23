@@ -1,5 +1,5 @@
 import {selectAllKaras, selectAllYears, selectBaseStats, selectAllMedias} from '../dao/kara';
-import { KaraList, ModeParam, KaraParams } from '../lib/types/kara';
+import { KaraList, KaraParams } from '../lib/types/kara';
 import { consolidateData } from '../lib/services/kara';
 import { DBKara } from '../lib/types/database/kara';
 import { ASSToLyrics } from '../lib/utils/ass';
@@ -61,15 +61,12 @@ export function getAllmedias() {
 	return selectAllMedias();
 }
 
-export async function getKara(filter?: string, from = 0, size = 0, mode?: ModeParam, modeValue?: string, username?: string) {
+export async function getKara(params: KaraParams, token?: Token) {
 	try {
 		const karas = await selectAllKaras({
-			filter: filter,
-			from: +from,
-			size: +size,
-			mode: mode,
-			modeValue: modeValue,
-			username: username
+			mode: params.mode,
+			modeValue: params.modeValue,
+			username: token?.username
 		});
 		if (!karas[0]) return;
 		karas[0].lyrics = null;
@@ -87,8 +84,6 @@ export async function getKara(filter?: string, from = 0, size = 0, mode?: ModePa
 
 export async function getAllKaras(params: KaraParams, token?: Token): Promise<KaraList> {
 	try {
-		// Remove than once we launch KaraBook, our super social network.
-		if (token && token.username !== params.username) throw {code: 403, msg: 'You can only view your own favorites'};
 		// When compare is used because we're queried from KM App in order to tell which karaoke is missing or updated, we redefine from/size so we get absolutely all songs from database.
 		let trueFrom = params.from;
 		let trueSize = params.size;
@@ -102,7 +97,7 @@ export async function getAllKaras(params: KaraParams, token?: Token): Promise<Ka
 			size: +trueSize,
 			mode: params.mode,
 			modeValue: params.modeValue || '',
-			username: params.username,
+			username: token?.username,
 			sort: params.sort,
 			favorites: params.favorites
 		});

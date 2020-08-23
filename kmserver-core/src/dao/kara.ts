@@ -28,16 +28,18 @@ export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 	let favoritedSelectClause = '';
 	let favoritedJoinClause = '';
 	let favoritedGroupClause = '';
-	if (params.username && params.favorites) {
+	let whereClauses = '';
+	if (params.username) {
 		favoritedSelectClause = `
-		(CASE WHEN f.fk_kid IS NULL
-			THEN FALSE
-			ELSE TRUE
-	  	END) as flag_favorites,
-		`;
+			(CASE WHEN f.fk_kid IS NULL
+				THEN FALSE
+				ELSE TRUE
+			END) as flag_favorites,
+			`;
 		favoritedJoinClause = 'LEFT OUTER JOIN users_favorites AS f ON f.fk_login = :username AND f.fk_kid = ak.kid';
 		favoritedGroupClause = 'f.fk_kid, ';
 		filterClauses.params.username = params.username;
+		if (params.favorites) whereClauses = 'AND f.fk_login = :username';
 	}
 	if (params.sort === 'recent') orderClauses = 'created_at DESC, ';
 	if (params.sort === 'played') {
@@ -60,7 +62,7 @@ export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 	}
 	if (params.from > 0) offsetClause = `OFFSET ${params.from} `;
 	if (params.size > 0) limitClause = `LIMIT ${params.size} `;
-	const query = sql.getAllKaras(filterClauses.sql, typeClauses, orderClauses, havingClause, limitClause, offsetClause, statsSelectClause, statsJoinClause, favoritedSelectClause, favoritedJoinClause, favoritedGroupClause,);
+	const query = sql.getAllKaras(filterClauses.sql, typeClauses, orderClauses, havingClause, limitClause, offsetClause, statsSelectClause, statsJoinClause, favoritedSelectClause, favoritedJoinClause, favoritedGroupClause, whereClauses);
 	const res = await db().query(yesql(query)(filterClauses.params));
 	return res.rows;
 }

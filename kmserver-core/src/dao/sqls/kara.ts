@@ -6,7 +6,7 @@ export const selectAllMedias = `
 	FROM kara
 `;
 
-export const getAllKaras = (filterClauses: string[], typeClauses: string, orderClauses: string, havingClause: string, limitClause: string, offsetClause: string, statsSelectClause: string, statsJoinClause: string, favoritedSelectClause: string, favoritedJoinClause: string, favoritedGroupClause: string) => `SELECT
+export const getAllKaras = (filterClauses: string[], typeClauses: string, orderClauses: string, havingClause: string, limitClause: string, offsetClause: string, statsSelectClause: string, statsJoinClause: string, favoritedSelectClause: string, favoritedJoinClause: string, favoritedGroupClause: string, whereClauses: string) => `SELECT
   ak.kid AS kid,
   ak.title AS title,
   ak.songorder AS songorder,
@@ -45,6 +45,7 @@ ${statsJoinClause}
 ${favoritedJoinClause}
 WHERE 1 = 1
   ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
+  ${whereClauses}
   ${typeClauses}
 GROUP BY ${favoritedGroupClause} ak.kid, ak.title, ak.songorder, ak.serie_singer_sortable, ak.subfile, ak.series, ak.singers, ak.songtypes, ak.creators, ak.songwriters, ak.year, ak.languages, ak.groups, ak.authors, ak.misc, ak.genres, ak.families, ak.platforms, ak.origins, ak.mediafile, ak.karafile, ak.duration, ak.gain, ak.created_at, ak.modified_at, ak.mediasize, ak.groups, ak.repository, ak.songtypes_sortable, ak.tagfiles, ak.subchecksum
 ${havingClause}
