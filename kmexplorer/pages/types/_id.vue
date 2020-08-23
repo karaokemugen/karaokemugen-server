@@ -1,30 +1,37 @@
 <template>
 	<div class="tile is-ancestor">
-		<div class="tile is-parent is-12 is-hidden-desktop">
-			<search-tags />
-			<search-bar :filter="false" :results="false" />
-			<search-edit />
-		</div>
-
-		<pagination class="tile is-parent is-12" v-if="total > 1" :page="page" :last-page="total" @page="setPage" />
-
-		<div class="tile is-parent is-12">
-			<div v-if="tags.content.length > 0" class="tags">
-				<tag
-					v-for="tag in tags.content"
-					:key="tag.tid"
-					icon
-					:type="$route.params.id"
-					:tag="tag"
-					:i18n="tag.i18n"
-					showkaracount
-				/>
+		<div class="tile is-vertical">
+			<div class="tile is-parent is-12 is-hidden-desktop">
+				<search-tags />
+				<search-bar :filter="false" :results="false" />
+				<search-edit />
 			</div>
+
+			<div class="tile is-parent is-12" v-if="total > 1">
+				<pagination :page="page" :last-page="total" @page="setPage" />
+			</div>
+
+			<div class="tile is-parent is-12">
+				<div v-if="tags.content.length > 0" class="tags">
+					<tag
+						v-for="tag in tags.content"
+						:key="tag.tid"
+						icon
+						:type="$route.params.id"
+						:tag="tag"
+						:i18n="tag.i18n"
+						showkaracount
+					/>
+				</div>
+			</div>
+
+			<div class="tile is-parent is-12" v-if="total > 1">
+				<pagination v-if="total > 1" :page="page" :last-page="total" @page="setPage" />
+			</div>
+
+			<loading-nanami v-if="loading || $fetchState.pending" class="tile is-parent is-12" />
+
 		</div>
-
-		<pagination class="tile is-parent is-12" v-if="total > 1" :page="page" :last-page="total" @page="setPage" />
-
-		<loading-nanami v-if="loading || $fetchState.pending" class="tile is-parent is-12" />
 	</div>
 </template>
 
