@@ -222,7 +222,12 @@
 	export default Vue.extend({
 		name: 'LoginModal',
 
-		props: ['active'],
+		props: {
+			active: {
+				type: Boolean,
+				required: true
+			}
+		},
 
 		data(): VState {
 			return {
@@ -247,18 +252,17 @@
 			async submitForm() {
 				this.loading = true;
 				if (this.mode === 'signup') {
-					const signup = this.login;
+					const signup = { ...this.login };
 					signup.login = this.login.username;
-					await this.$axios.post('/api/users', signup);
-					this.loading = false;
-					this.closeModal();
+					await this.$axios.post('/api/users', signup).catch(() => {
+						this.loading = false;
+					});
 				}
 				this.$auth.loginWith('local', { data: this.login }).then((_res) => {
 					this.$emit('login');
 					this.loading = false;
 					this.closeModal();
-				}).catch((err) => {
-					console.error(err);
+				}).catch(() => {
 					this.loading = false;
 				});
 			},

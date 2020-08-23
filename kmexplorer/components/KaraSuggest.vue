@@ -14,7 +14,7 @@
 				<!-- Suggestion Modal -->
 				<div class="modal" :class="{'is-active': modal}">
 					<form action="#" @submit.prevent="submitForm">
-						<div class="modal-background" />
+						<div class="modal-background" @click.prevent="modal = false" />
 						<div class="modal-card">
 							<header class="modal-card-head">
 								<p class="modal-card-title">
