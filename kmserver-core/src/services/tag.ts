@@ -23,7 +23,7 @@ export function formatTagList(tagList: DBTag[], from: number, count: number): Ta
 export async function getTags(params: TagParams) {
 	try {
 		const tags = await selectTags(params);
-		return formatTagList(tags, +params.from, tags[0].count);
+		return formatTagList(tags, +params.from, tags[0]?.count || 0);
 	} catch(err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
