@@ -1,3 +1,3 @@
 [submodule "src/lib"]
-	path = src/lib
+	path = kmserver-core/src/lib
 	url = ../modules/lib.git

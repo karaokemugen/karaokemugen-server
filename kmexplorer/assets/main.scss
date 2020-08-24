@@ -1,0 +1,89 @@
+////////////////////////////////////////////////
+// DARKLY
+////////////////////////////////////////////////
+@import '~bulmaswatch/darkly/_variables';
+
+$bulmaswatch-import-font: false;
+@import "./lato/lato.css";
+
+$background: #36393f;
+$footer-background-color: $background;
+$button-background-color: $background;
+$button-border-color: lighten($button-background-color, 15);
+
+$blue: #3771dc;
+$info: $blue;
+
+$input-background-color: $background;
+$input-color: $grey-lighter;
+$input-icon-active-color: white;
+
+$box-background-color: darken($grey, 17);
+$subtitle-color: $grey-lighter;
+$subtitle-strong-color: $grey-lighter;
+$subtitle-strong-color: $grey-lighter;
+
+$success: darken($green, 20);
+
+$link: lighten($turquoise, 15);
+
+$warning: darken($orange, 15);
+
+$footer-padding: 3rem 1.5rem 3rem;
+
+@import "~bulma";
+
+@import '~bulmaswatch/darkly/_overrides';
+
+body.has-navbar-fixed-top, html.has-navbar-fixed-top {
+	padding-top: 5rem;
+}
+
+.input::placeholder, .taginput .taginput-container.is-focusable::placeholder, .textarea::placeholder, .select select::placeholder {
+	color: lighten($grey, 15);
+}
+
+.fade-enter-active, .fade-leave-active {
+	transition: opacity 100ms;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+	opacity: 0;
+}
+
+.button.is-static {
+	background-color: $grey-darker;
+}
+
+.navbar.is-fixed-top {
+	border: none;
+	border-radius: 0;
+}
+
+.tag:not(body).is-purple {
+	background-color: #8702a3;
+	color: white;
+}
+
+.dropdown .dropdown-menu .has-link a:hover, a.dropdown-item:hover, button.dropdown-item:hover {
+	color: unset !important;
+}
+
+.autocomplete .dropdown-item.is-hovered, .autocomplete .dropdown .dropdown-menu .has-link a.is-hovered, .dropdown .dropdown-menu .has-link .autocomplete a.is-hovered {
+	color: unset !important;
+}
+
+.footer {
+	background-color: unset;
+}
+
+.button .svg-inline--fa {
+	margin-right: 0.25em ;
+}
+
+@media (min-width: $desktop) {
+	.container.is-fluid {
+		margin-left: 160px;
+	}
+}
+
+@import '~buefy/src/scss/buefy';

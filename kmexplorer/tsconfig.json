@@ -1,0 +1,44 @@
+{
+	"compilerOptions": {
+		"target": "es2019",
+		"module": "esnext",
+		"moduleResolution": "node",
+		"lib": [
+			"ESNext",
+			"ESNext.AsyncIterable",
+			"DOM"
+		],
+		"esModuleInterop": true,
+		"allowJs": true,
+		"sourceMap": true,
+		"strict": true,
+		"noEmit": true,
+		"noImplicitThis": true,
+		"baseUrl": "./",
+		"paths": {
+			"~/*": [
+				"./*"
+			],
+			"@/*": [
+				"./*"
+			],
+			"%/*": [
+				"../kmserver-core/src/*"
+			]
+		},
+		"types": [
+			"node",
+			"@nuxt/types",
+			"@nuxt/vue-app",
+			"@nuxtjs/axios",
+			"nuxtjs__auth",
+			"@nuxtjs/toast",
+			"nuxt-i18n",
+			"buefy/types"
+		],
+		"experimentalDecorators": true
+	},
+	"include": [
+		"./"
+	]
+}

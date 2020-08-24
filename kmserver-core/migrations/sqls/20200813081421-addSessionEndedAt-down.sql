@@ -1,0 +1,1 @@
+ALTER TABLE stats_session DROP COLUMN ended_at;

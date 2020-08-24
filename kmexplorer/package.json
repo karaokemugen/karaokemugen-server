@@ -1,44 +1,45 @@
 {
-  "name": "km-karaexplorer",
-  "version": "1.0.0",
-  "main": "./dist/index.js",
-  "license": "MIT",
-  "engines": {
-    "node": ">=8"
-  },
+  "name": "kmexplorer",
+  "//": "The nuxt.config.js is at /kmserver-core/src/utils/default_settings.ts and at /kmserver-core/src/services/kmexplorer.ts",
+  "private": true,
+  "version": "2.0.0",
   "scripts": {
-    "dev": "node server.js --api=http://localhost:1350 --port=3000 --path=http://localhost:3000",
-    "kms": "node server.js --api=http://localhost:1350 --port=1351 --path=/base",
-    "i18n": "i18next-scanner --config i18next-scanner.config.js \"{components,pages}/**.js\""
-  },
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-plugin-module-resolver": "^4.0.0",
-    "babel-preset-env": "^1.6.1",
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-plugin-import": "^2.20.2",
-    "i18next-scanner": "^2.11.0"
+    "build": "echo \"Go back, you are not in the right folder (and do yarn build:kmexplorer) :)\"",
+    "start": "echo \"Go back, you are not in the right folder :)\""
   },
   "dependencies": {
-    "@cospired/i18n-iso-languages": "^2.1.1",
-    "@fortawesome/fontawesome-svg-core": "^1.2.28",
-    "@fortawesome/free-brands-svg-icons": "^5.13.0",
-    "@fortawesome/free-solid-svg-icons": "^5.13.0",
-    "@fortawesome/react-fontawesome": "^0.1.9",
-    "@zeit/next-sass": "^1.0.1",
-    "axios": "^0.19.2",
-    "dotenv": "^8.2.0",
-    "express": "^4.16.4",
-    "localforage": "^1.7.3",
-    "lodash": "^4.17.15",
-    "next": "^9.3.6",
-    "next-i18next": "^4.4.1",
-    "next-images": "^1.4.0",
+    "@cospired/i18n-iso-languages": "^2.1.2",
+    "@fortawesome/fontawesome-svg-core": "^1.2.30",
+    "@fortawesome/free-solid-svg-icons": "^5.14.0",
+    "@fortawesome/vue-fontawesome": "^0.1.9",
+    "@nuxtjs/auth": "^4.9.1",
+    "@nuxtjs/axios": "^5.12.1",
+    "@nuxtjs/pwa": "^3.0.1",
+    "@nuxtjs/sentry": "^4.3.4",
+    "@nuxtjs/toast": "^3.3.1",
+    "bulma": "^0.9.0",
+    "bulmaswatch": "^0.8.1",
+    "lodash.debounce": "^4.0.8",
+    "lodash.merge": "^4.6.2",
+    "nuxt": "^2.14.3",
+    "nuxt-buefy": "^0.4.2",
+    "nuxt-fontawesome": "^0.4.0",
+    "nuxt-i18n": "^6.13.12",
+    "slug": "^3.3.4",
+    "v-lazy-image": "^1.4.0",
+    "vuex-persist": "^2.2.0"
+  },
+  "devDependencies": {
+    "@nuxt/types": "^2.14.3",
+    "@nuxt/typescript-build": "^2.0.2",
+    "@nuxtjs/eslint-config-typescript": "^3.0.0",
+    "@types/lodash.debounce": "^4.0.6",
+    "@types/nuxtjs__auth": "^4.8.4",
+    "@types/slug": "^0.9.1",
+    "eslint": "^7.7.0",
     "node-sass": "^4.14.1",
-    "pretty-bytes": "^5.3.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "winston": "^3.2.1"
+    "sass-loader": "^9.0.3",
+    "ts-loader": "^8.0.3",
+    "vuex-module-decorators": "^0.17.0"
   }
 }
