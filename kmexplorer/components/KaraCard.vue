@@ -57,8 +57,8 @@
 				:type="tag.type"
 				:tag="tag.tag"
 				:i18n="i18n"
-				:icon="true"
 				:staticheight="false"
+				icon
 			/>
 		</div>
 	</div>
@@ -189,7 +189,9 @@
 							// Remove the first songtype
 							(tagType === 'songtypes' && i === 0) ||
 							// Remove the first singer if the karaoke has no series
-							(tagType === 'singers' && i === 0 && this.karaoke.series.length === 0)
+							(tagType === 'singers' && i === 0 && this.karaoke.series.length === 0) ||
+							// Remove the next tags to avoid overflow
+							(i > 1)
 						)) {
 							tags.push({
 								type: tagType,
