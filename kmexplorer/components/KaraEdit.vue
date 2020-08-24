@@ -408,8 +408,8 @@
 								}
 							}
 						);
-						this.karaoke.mediafile = result.filename;
-						this.karaoke.mediafile_orig = result.originalname;
+						this.karaoke.mediafile = result.data.filename;
+						this.karaoke.mediafile_orig = result.data.originalname;
 					}
 				}
 			},

@@ -323,6 +323,7 @@ export default {
 		GENERATED_KARA: 'Karaoke sent successfully.',
 		EDITED_KARA: 'Modification sent successfully.',
 		CANNOT_GENERATE_KARA: 'Cannot send karaoke.',
-		CANNOT_EDIT_KARA: 'Cannot send modification.'
+		CANNOT_EDIT_KARA: 'Cannot send modification.',
+		FILE_UPLOADED: 'File uploaded.'
 	}
 };

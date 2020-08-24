@@ -324,6 +324,7 @@ export default {
 		GENERATED_KARA: 'Karaoké envoyé avec succès.',
 		EDITED_KARA: 'Modification envoyée avec succès.',
 		CANNOT_GENERATE_KARA: 'Impossible d\'envoyer le karaoké.',
-		CANNOT_EDIT_KARA: 'Impossible d\'envoyer la modification.'
+		CANNOT_EDIT_KARA: 'Impossible d\'envoyer la modification.',
+		FILE_UPLOADED: 'Fichier mis en ligne.'
 	}
 };

@@ -29,6 +29,6 @@ export default function KIController(router: Router) {
 		}
 	});
 	router.post('/karas/importfile', upload.single('file'), (req, res) => {
-		res.status(200).send(JSON.stringify(req.file));
+		res.status(200).json(APIMessage('FILE_UPLOADED', req.file));
 	});
 }
