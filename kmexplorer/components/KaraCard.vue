@@ -286,6 +286,23 @@
 		font-size: 18px;
 	}
 
+	@media (max-width: 769px), (hover: none) {
+		.images {
+			width: 100%;
+
+			img {
+				width: 100%;
+				height: 11em;
+				object-fit: cover;
+				border-radius: 0.25rem;
+			}
+
+			img:last-child {
+				display: none;
+			}
+		}
+	}
+
 	.images {
 		display: inline-block;
 		position: relative;
