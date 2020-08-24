@@ -17,6 +17,19 @@
 		<h2 class="subtitle">
 			{{ explorerTagline }}
 		</h2>
+		<article v-if="noInstance" class="message is-warning middle-size">
+			<div class="message-header">
+				<p>
+					{{ $t('home.noInstance.title') }}
+				</p>
+				<button class="delete" aria-label="delete" @click="noInstance = false" />
+			</div>
+			<div class="message-body">
+				{{ $t('home.noInstance.1') }}
+				<br>{{ $t('home.noInstance.2') }}
+				<br>{{ $t('home.noInstance.3') }}
+			</div>
+		</article>
 		<ul class="km-home--stats">
 			<li key="karas">
 				<nuxt-link to="/search" class="km-home--stats--link">
@@ -119,8 +132,14 @@
 					karas: 0,
 					duration: 0,
 					mediasize: 0
-				}
+				},
+				noInstance: false
 			};
+		},
+		mounted() {
+			if (this.$route.query.noinstance) {
+				this.noInstance = true;
+			}
 		},
 		methods: {
 			openAddRepoModal() {
@@ -134,6 +153,7 @@
 		}
 	});
 </script>
+
 <style scoped lang="scss">
 	.km-home {
 		display: flex;
@@ -142,6 +162,10 @@
 
 		.km-home--logo img {
 			max-height: 15rem;
+		}
+
+		.middle-size {
+			width: 50%;
 		}
 
 		.title {
