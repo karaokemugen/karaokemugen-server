@@ -333,6 +333,7 @@ export default {
 		EDITED_KARA: 'Modification envoyée avec succès.',
 		CANNOT_GENERATE_KARA: 'Impossible d\'envoyer le karaoké.',
 		CANNOT_EDIT_KARA: 'Impossible d\'envoyer la modification.',
-		FILE_UPLOADED: 'Fichier mis en ligne.'
+		FILE_UPLOADED: 'Fichier mis en ligne.',
+		USER_EDITED: 'Utilisateur édité avec succès'
 	}
 };
