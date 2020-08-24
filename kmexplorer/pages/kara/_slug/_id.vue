@@ -141,6 +141,10 @@
 		}
 	}
 
+	.tile.is-4-desktop-only.is-parent.is-vertical > .tile.is-child {
+		flex-grow: 0;
+	}
+
 	.tile.is-vertical {
 		padding: 0 1em;
 	}

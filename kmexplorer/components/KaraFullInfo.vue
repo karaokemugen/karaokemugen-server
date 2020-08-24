@@ -29,7 +29,7 @@
 				{{ karaoke.year }}
 			</nuxt-link>
 		</h6>
-		<table class="tagList">
+		<table class="table tagList">
 			<tbody>
 				<tr v-for="type in Object.keys(tagTypesSorted)" :key="type">
 					<td>
@@ -37,7 +37,7 @@
 					</td>
 					<td>
 						<div class="tags are-medium">
-							<tag v-for="tag in karaoke[type]" :key="tag.tid" :type="type" :tag="tag" />
+							<tag v-for="tag in karaoke[type]" :key="tag.tid" :type="type" :tag="tag" :staticheight="false" />
 						</div>
 					</td>
 				</tr>
@@ -222,13 +222,20 @@
 </script>
 
 <style scoped lang="scss">
-	.tagList {
-		border-collapse: unset;
-		border-spacing: 0 1em;
-	}
+	.table.tagList {
+		width: calc(2.5rem + 100%);
+		left: -1.25rem;
+		position: relative;
+		background-color: unset;
 
-	.tagList span.name {
-		margin-right: 3em;
+		tr:first-child > td, tr:last-child > td {
+			border-width: 1px 0 1px;
+		}
+
+		td:first-child {
+			padding-left: 1.25rem;
+			vertical-align: middle;
+		}
 	}
 
 	.subtitle.no-top-margin {
