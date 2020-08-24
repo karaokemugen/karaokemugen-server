@@ -272,7 +272,7 @@
 						await this.$axios.post(`/api/users/${this.login.username}/resetpassword`);
 						this.$toast.success(this.$t('modal.login.fields.forgot_password.success') as string);
 					} catch (e) {
-						this.$toast.error(this.$t('modal.login.fields.forgot_password.error') as string);
+						this.$toast.error(this.$t('modal.login.fields.forgot_password.error') as string, { icon: 'error' });
 					}
 				}
 			},
