@@ -64,6 +64,14 @@ body.has-navbar-fixed-top, html.has-navbar-fixed-top {
 	color: white;
 }
 
+.dropdown .dropdown-menu .has-link a:hover, a.dropdown-item:hover, button.dropdown-item:hover {
+	color: unset !important;
+}
+
+.autocomplete .dropdown-item.is-hovered, .autocomplete .dropdown .dropdown-menu .has-link a.is-hovered, .dropdown .dropdown-menu .has-link .autocomplete a.is-hovered {
+	color: unset !important;
+}
+
 .footer {
 	background-color: unset;
 }

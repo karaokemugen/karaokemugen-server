@@ -154,8 +154,4 @@
 	.checkbox {
 		width: 250px;
 	}
-
-	a.dropdown-item:hover, .dropdown .dropdown-menu .has-link a:hover, button.dropdown-item:hover {
-		color: unset;
-	}
 </style>
