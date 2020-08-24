@@ -131,6 +131,15 @@ export default function KSController(router: Router) {
 				res.status(500).json(err);
 			}
 		});
+	router.route('/karas/tags/:tid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})')
+		.get(async (req, res) => {
+			try {
+				const tag = await getTag(req.params.tid, false);
+				res.json(tag);
+			} catch (err) {
+				res.status(500).json(err);
+			}
+		});
 	router.route('/karas/tags')
 		.get(async (req: any, res) => {
 			try {
@@ -178,16 +187,6 @@ export default function KSController(router: Router) {
 					res.status(403).json('Gitlab is not enabled');
 				}
 			} catch(err) {
-				res.status(500).json(err);
-			}
-		});
-
-	router.route('/tags/:tid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})')
-		.get(async (req, res) => {
-			try {
-				const tag = await getTag(req.params.tid, false);
-				res.json(tag);
-			} catch (err) {
 				res.status(500).json(err);
 			}
 		});

@@ -80,7 +80,7 @@
 								if (!parsedTag) {
 									throw new Error('Mais merde à la fin !');
 								}
-								const res = await this.$axios.get<DBTag>(`/api/tags/${parsedTag[1]}`);
+								const res = await this.$axios.get<DBTag>(`/api/karas/tags/${parsedTag[1]}`);
 								const payload = {
 									type: tagTypesMap[parseInt(parsedTag[2])].name as string,
 									tag: res.data
