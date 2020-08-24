@@ -22,6 +22,7 @@
 	import { DBYear } from '%/lib/types/database/kara';
 	import { fakeYearTag } from '~/utils/tools';
 	import { Tag as TagType } from '%/lib/types/tag';
+	import { menuBarStore } from '~/store';
 
 	interface VState {
 		years: DBYear[]
@@ -43,6 +44,7 @@
 				);
 			if (res) {
 				this.years = res.data;
+				menuBarStore.setResultsCount(res.data.length);
 			} else {
 				this.$nuxt.error({ statusCode: 500, message: 'Huh?' });
 			}
