@@ -445,7 +445,7 @@
 				return this.$route.params?.id?.substring(36);
 			},
 			onKaraTagListView(): boolean {
-				return ['types-id', 'types-years', 'search-query', 'favorites'].includes(this.$route.name as string);
+				return ['types-id', 'search-query', 'favorites'].includes(this.$route.name as string);
 			}
 		},
 

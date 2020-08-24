@@ -9,7 +9,7 @@
 			<span class="select">
 				<select v-model="sort" :aria-label="$t('search.aria.sort')" :disabled="!canSort">
 					<option value="az" selected>{{ $t('search.sort.a_z') }}</option>
-					<template v-if="['types-id', 'types-years'].includes(this.$route.name)">
+					<template v-if="$route.name === 'types-id'">
 						<option value="karacount">{{ $t('search.sort.kara_count') }}</option>
 					</template>
 					<template v-else>
@@ -53,7 +53,7 @@
 
 		computed: {
 			canSort(): boolean {
-				return ['types-id', 'types-years', 'search-query', 'tags-slug-id'].includes(this.$route.name as string);
+				return ['types-id', 'search-query', 'tags-slug-id'].includes(this.$route.name as string);
 			},
 			...mapState('menubar', ['resultsCount'])
 		},
