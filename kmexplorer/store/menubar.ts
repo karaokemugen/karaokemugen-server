@@ -8,7 +8,7 @@ export interface TagExtend {
 	tag: Tag | DBTag | DBKaraTag
 }
 
-export type sortTypes = 'az' | 'karacount' | 'recent' | 'most_played' | 'most_favorites' | 'most_requested';
+export type sortTypes = 'az' | 'karacount' | 'recent' | 'played' | 'favorited' | 'requested';
 
 @Module({
 	name: 'menubar',
