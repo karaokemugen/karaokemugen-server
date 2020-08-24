@@ -14,9 +14,9 @@
 					</template>
 					<template v-else>
 						<option value="recent">{{ $t('search.sort.recent') }}</option>
-						<option value="most_played">{{ $t('search.sort.most_played') }}</option>
-						<option value="most_favorites">{{ $t('search.sort.most_favorites') }}</option>
-						<option value="most_requested">{{ $t('search.sort.most_requested') }}</option>
+						<option value="played">{{ $t('search.sort.most_played') }}</option>
+						<option value="favorited">{{ $t('search.sort.most_favorites') }}</option>
+						<option value="requested">{{ $t('search.sort.most_requested') }}</option>
 					</template>
 				</select>
 			</span>
