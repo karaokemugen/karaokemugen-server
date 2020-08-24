@@ -1,23 +1,8 @@
-import { selectAllFavorites, deleteFavorite, selectFavorites, insertFavorite, selectFavoritesFull } from '../dao/favorites';
+import { selectAllFavorites, deleteFavorite, selectFavorites, insertFavorite } from '../dao/favorites';
 import { getConfig } from '../lib/utils/config';
 import { replaceFavorites } from '../dao/stats';
 import { Token } from '../lib/types/user';
 import sentry from '../utils/sentry';
-import { FavParams } from '../lib/types/favorites';
-import { KaraList } from '../lib/types/kara';
-import { formatKaraList } from './kara';
-
-export async function getFavoritesFull(params: FavParams): Promise<KaraList> {
-	try {
-		const favs = await selectFavoritesFull(params);
-		const count = favs.length > 0 ? favs[0].count : 0;
-		return formatKaraList(favs, params.from, count);
-	} catch(err) {
-		const error = new Error(err);
-		sentry.error(error);
-		throw error;
-	}
-}
 
 export async function getFavorites(token: Token) {
 	try {

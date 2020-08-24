@@ -1,5 +1,5 @@
 import {requireAuth, requireValidUser, updateLoginTime} from './middlewares/auth';
-import { getFavorites, addFavorite, removeFavorite, getFavoritesFull } from '../services/favorites';
+import { getFavorites, addFavorite, removeFavorite } from '../services/favorites';
 import { Router } from 'express';
 
 export default function favoritesController(router: Router) {
@@ -16,15 +16,6 @@ export default function favoritesController(router: Router) {
 			try {
 				await removeFavorite(req.authToken, req.params.kid);
 				res.status(200).json();
-			} catch(err) {
-				res.status(500).json(err);
-			}
-		});
-	router.route('/favorites/full')
-		.get(requireAuth, requireValidUser, updateLoginTime, async (req: any, res) => {
-			try {
-				const karas = await getFavoritesFull({filter: req.query.filter, from: req.query.from, size: req.query.size, username: req.authToken.username});
-				res.json(karas);
 			} catch(err) {
 				res.status(500).json(err);
 			}
