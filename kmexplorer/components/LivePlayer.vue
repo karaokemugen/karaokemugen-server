@@ -84,7 +84,7 @@
 
 	@media (min-width: 700px) {
 		.box *:first-child.live {
-			height: 25rem;
+			height: 22rem;
 		}
 	}
 

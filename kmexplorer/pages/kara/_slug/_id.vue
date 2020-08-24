@@ -1,7 +1,7 @@
 <template>
 	<div class="tile is-ancestor">
 		<div class="tile is-parent is-12">
-			<div class="tile is-child" :class="{'is-8': !liveOpened, 'is-4': liveOpened}">
+			<div class="tile is-child" :class="{'is-8': !liveOpened, 'is-5': liveOpened}">
 				<kara-full-info :karaoke="karaoke" />
 			</div>
 			<div class="tile is-4-desktop-only is-parent is-vertical">
