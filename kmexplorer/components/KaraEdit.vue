@@ -308,6 +308,7 @@
 			<div class="control submit">
 				<button
 					class="button is-link"
+					:class="{'is-loading': loading}"
 					:disabled="submitDisabled"
 					@click="submit"
 				>
@@ -334,6 +335,7 @@
 	import Vue from 'vue';
 	import { tagTypes } from '~/assets/constants';
 	import EditableTagGroup from '~/components/EditableTagGroup.vue';
+	import { APIMessageType } from '%/lib/types/frontend';
 
 	export default Vue.extend({
 
@@ -353,7 +355,8 @@
 				subfile_error: '',
 				supportedLyrics: process.env.SUPPORTED_LYRICS as unknown as string[],
 				supportedMedias: process.env.SUPPORTED_MEDIAS as unknown as string[],
-				gitlabUrl: ''
+				gitlabUrl: '',
+				loading: false
 			};
 		},
 
@@ -453,20 +456,20 @@
 				).test(filename);
 			},
 			submit() {
+				this.loading = true;
 				if (this.karaoke.kid) {
 					this.$axios.$put(
 						`/api/karas/${this.karaoke.kid}`,
 						this.karaoke
 					).then((res) => {
 						this.gitlabUrl = res.data;
-						this.$toast.success(this.$t('kara.import.add_success') as string);
-					});
+					}).catch(() => { this.loading = false; });
 				} else {
-					this.$axios.$post('/api/karas/', this.karaoke).then((res) => {
+					this.$axios.$post<APIMessageType>('/api/karas/', this.karaoke).then((res) => {
 						this.gitlabUrl = res.data;
-						this.$toast.success(this.$t('kara.import.add_success') as string);
-					});
+					}).catch(() => { this.loading = false; });
 				}
+				this.loading = false;
 			}
 		}
 	});

@@ -66,6 +66,7 @@ export default {
 			license_reminder: 'Your karaoke will be published with the {name} license',
 			license_link: 'Learn more about this license by clicking here.',
 			add: 'Add',
+			create: 'Create',
 			choose_file: 'Choose a file',
 			add_file_media_error: '{name} is not a media file',
 			add_file_lyrics_error: '{name} is not a subtitle file',
@@ -99,8 +100,8 @@ export default {
 			groups_tooltip: 'Download groups for this song. The song will be included in these download packs',
 			created_at: 'Creation date',
 			modified_at: 'Last updated date',
-			add_success: 'Karaoke sent successfully.',
-			add_success_description: 'An issue has been created on our tracker. You can check its progression at: {gitlabUrl}',
+			add_success: 'Your karaoke has been successfully sent!',
+			add_success_description: 'An issue has been created on our tracker. You can check its progression at {url}',
 			add_error: 'An error has occurred, karaoke has not been sent properly'
 		}
 	},
@@ -318,6 +319,10 @@ export default {
 	},
 	toast: {
 		LOG_ERROR: 'Incorrect credentials.',
-		USER_CREATED: 'User successfully created'
+		USER_CREATED: 'User successfully created',
+		GENERATED_KARA: 'Karaoke sent successfully.',
+		EDITED_KARA: 'Modification sent successfully.',
+		CANNOT_GENERATE_KARA: 'Cannot send karaoke.',
+		CANNOT_EDIT_KARA: 'Cannot send modification.'
 	}
 };

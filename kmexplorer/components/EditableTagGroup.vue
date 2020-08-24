@@ -12,7 +12,8 @@
 					{{ localizedName(tag) }}
 					<div class="delete is-small" @click="() => deleteValue(tag)" />
 				</span>
-				<div class="button tag is-small" @click="inputVisible=true">
+				<div class="button tag is-small" @click="inputVisible = true">
+					<font-awesome-icon :icon="['fas', 'plus']" />
 					{{ $t('kara.import.add') }}
 				</div>
 			</div>
@@ -29,8 +30,9 @@
 					@select="addValue"
 				>
 					<template slot="header">
-						<a @click="newValue">
-							<span>{{ $t('kara.import.add') }}</span>
+						<a class="button" @click="newValue">
+							<font-awesome-icon :icon="['fas', 'plus']" />
+							<span>{{ $t('kara.import.create') }}</span>
 						</a>
 					</template>
 				</b-autocomplete>
@@ -151,5 +153,9 @@
 <style scoped lang="scss">
 	.checkbox {
 		width: 250px;
+	}
+
+	a.dropdown-item:hover, .dropdown .dropdown-menu .has-link a:hover, button.dropdown-item:hover {
+		color: unset;
 	}
 </style>

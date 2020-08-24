@@ -66,6 +66,7 @@ export default {
 			license_reminder: 'Votre karaoké sera publié avec la licence {name}',
 			license_link: 'Renseignez-vous sur cette licence en cliquant ici.',
 			add: 'Ajout',
+			create: 'Créer',
 			choose_file: 'Choisissez un fichier',
 			add_file_media_error: '{name} n\'est pas un fichier vidéo',
 			add_file_lyrics_error: '{name} n\'est pas un fichier de sous-titres',
@@ -100,8 +101,8 @@ export default {
 			groups_tooltip: 'Groupes de téléchargement pour ce morceau. Le morceau sera ajouté dans ces paquets pour le téléchargement',
 			created_at: 'Date de création',
 			modified_at: 'Date de dernière mise à jour',
-			add_success: 'Karaoké envoyé avec succès.',
-			add_success_description: 'Un ticket a été crée sur notre outil de suivi. Vous pouvez consulter l\'avancement de l\'intégration de votre karaoké : {gitlabUrl}',
+			add_success: 'Votre karaoké est envoyé !',
+			add_success_description: 'Un ticket a été crée sur notre outil de suivi. Vous pouvez consulter l\'avancement de l\'intégration de votre karaoké : {url}',
 			add_error: 'Une erreur a eu lieu, le karaoké n\'a pas pu être envoyé'
 		}
 	},
@@ -319,6 +320,10 @@ export default {
 	},
 	toast: {
 		LOG_ERROR: 'Identifiants incorrects.',
-		USER_CREATED: 'Utilisateur créé avec succès'
+		USER_CREATED: 'Utilisateur créé avec succès',
+		GENERATED_KARA: 'Karaoké envoyé avec succès.',
+		EDITED_KARA: 'Modification envoyée avec succès.',
+		CANNOT_GENERATE_KARA: 'Impossible d\'envoyer le karaoké.',
+		CANNOT_EDIT_KARA: 'Impossible d\'envoyer la modification.'
 	}
 };
