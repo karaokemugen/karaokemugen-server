@@ -402,7 +402,7 @@ export let NuxtConfig: NuxtConfigType = {
 			description: 'Explorez la base de données de karaokés!',
 			background_color: '#36393f',
 			theme_color: '#375a7f',
-			display: 'minimal-ui'
+			display: 'standalone'
 		},
 		workbox: {
 			runtimeCaching: [
