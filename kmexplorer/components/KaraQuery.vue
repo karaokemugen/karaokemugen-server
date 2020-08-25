@@ -129,8 +129,8 @@
 				return {
 					q: queries.join('!') || undefined,
 					filter: this.search || undefined,
-					from: (this.from * 20),
-					size: 20,
+					from: (this.from * 12),
+					size: 12,
 					order: this.sort || undefined,
 					favorites: this.favorites || undefined
 				};
