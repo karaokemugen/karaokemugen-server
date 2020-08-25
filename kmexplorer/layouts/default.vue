@@ -65,6 +65,27 @@
 					<font-awesome-icon :icon="['fas', 'sign-out-alt']" :fixed-width="true" />
 					{{ $t('menu.logout') }}
 				</a>
+				<div class="navbar-item">
+					<a :class="languageMenu && 'is-active'" @click="languageMenu = !languageMenu">
+						<font-awesome-icon :icon="['fas', 'globe']" :fixed-width="true" />
+						{{ $t('menu.switch_language') }}
+					</a>
+
+					<div v-if="languageMenu" class="navbar-dropdown">
+						<div
+							v-for="locale in availableLocales"
+							:key="locale.code"
+							class="navbar-item"
+							href="#"
+							@click.prevent.stop="
+								$i18n.setLocale(locale.code);
+								languageMenu = !languageMenu;
+								accountMenu = !accountMenu;"
+						>
+							{{ locale.name }}
+						</div>
+					</div>
+				</div>
 			</div>
 
 			<div v-if="databaseMenu" class="navbar-dropdown">
@@ -348,6 +369,18 @@
 							<font-awesome-icon :icon="['fas', 'sign-in-alt']" :fixed-width="true" />
 							{{ $t('menu.connection') }}
 						</a>
+						<a :class="languageMenu && 'is-active'" @click="languageMenu = !languageMenu">
+							<font-awesome-icon :icon="['fas', 'globe']" :fixed-width="true" />
+							{{ $t('menu.switch_language') }}
+						</a>
+						<ul v-if="languageMenu" class="menu-list">
+							<li v-for="locale in availableLocales" :key="locale.code">
+								<a
+									href="#"
+									@click.prevent.stop="$i18n.setLocale(locale.code)"
+								>{{ locale.name }}</a>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</aside>
@@ -404,6 +437,7 @@
 		databaseMenu: boolean,
 		communityMenu: boolean,
 		accountMenu: boolean,
+		languageMenu: boolean,
 		modal: {
 			auth: boolean,
 			profile: boolean,
@@ -432,6 +466,7 @@
 				databaseMenu: false,
 				communityMenu: false,
 				accountMenu: false,
+				languageMenu: false,
 				modal: {
 					auth: false,
 					profile: false,
@@ -446,6 +481,9 @@
 			},
 			onKaraTagListView(): boolean {
 				return ['types-id', 'search-query', 'favorites'].includes(this.$route.name as string);
+			},
+			availableLocales() {
+				return this.$i18n.locales.filter((i:{code:string}) => i.code && i.code !== this.$i18n.locale);
 			}
 		},
 
@@ -471,6 +509,7 @@
 				this.accountMenu = false;
 				this.databaseMenu = false;
 				this.communityMenu = false;
+				this.languageMenu = false;
 			});
 		},
 

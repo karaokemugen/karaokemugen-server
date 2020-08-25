@@ -168,7 +168,8 @@ export default {
 		logout: 'Se déconnecter',
 		register: 'S\'inscrire',
 		connection: 'Connexion',
-		profile: 'Profil'
+		profile: 'Profil',
+		switch_language: 'Changer la langue'
 	},
 	search: {
 		placeholder: 'Séries, chanteurs, noms...',
