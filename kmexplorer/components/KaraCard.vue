@@ -1,10 +1,10 @@
 <template>
 	<div class="box">
 		<div class="header">
-			<a :href="`${liveURL}?video=${karaoke.kid}`" target="_blank" class="images" @mouseenter="switchImage" @mouseleave="switchImage">
+			<nuxt-link :to="`/kara/${slug}/${karaoke.kid}`" class="images" @mouseenter="switchImage" @mouseleave="switchImage">
 				<v-lazy-image :src="images[0]" alt="" />
 				<v-lazy-image :src="images[1]" :class="{activate}" alt="" />
-			</a>
+			</nuxt-link>
 		</div>
 		<div class="title-block">
 			<nuxt-link :to="`/kara/${slug}/${karaoke.kid}`" class="title is-3 is-spaced">
@@ -77,8 +77,7 @@
 		tagTypes: typeof tagTypes,
 		activate: boolean,
 		loading: boolean,
-		favorite: boolean,
-		liveURL?: string
+		favorite: boolean
 	}
 
 	export default Vue.extend({
@@ -108,7 +107,6 @@
 			return {
 				tagTypes,
 				activate: false,
-				liveURL: process.env.LIVE_URL,
 				loading: false,
 				favorite: true
 			};
