@@ -16,10 +16,7 @@
 						:href="`/tags/${songtypeSlug}/${karaoke.songtypes[0].tid}~3`"
 						@click.prevent="handleLink('songtypes')"
 					>
-						{{ songtype }}
-						<template v-if="karaoke.songorder">
-							&nbsp;{{ karaoke.songorder }}
-						</template>
+						{{ songtype }}<template v-if="karaoke.songorder"> {{ karaoke.songorder }}</template>
 					</a>
 				</template>
 				<template v-slot:series>
