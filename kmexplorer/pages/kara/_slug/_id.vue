@@ -53,7 +53,12 @@
 		},
 
 		async asyncData({ params, $axios, error, app }) {
-			const res = await $axios.get(`/api/karas/${params.id}`).catch(
+			let kid = params.id;
+			if (!kid) {
+				// Resolve a slug-less url scheme (/base/kara/<kid>)
+				kid = params.slug;
+			}
+			const res = await $axios.get(`/api/karas/${kid}`).catch(
 				_err => error({ statusCode: 404, message: app.i18n.t('kara.notfound') as string }));
 			if (res) {
 				return { karaoke: res.data };
@@ -64,7 +69,7 @@
 
 		data(): VState {
 			return {
-				karaoke: {} as unknown as DBKara, // A little
+				karaoke: {} as unknown as DBKara, // A little cheat, this is filled by asyncData in all cases
 				liveURL: process.env.LIVE_URL,
 				liveOpened: false
 			};
