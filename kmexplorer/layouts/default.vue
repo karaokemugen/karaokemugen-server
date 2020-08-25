@@ -483,7 +483,7 @@
 				return ['types-id', 'search-query', 'favorites'].includes(this.$route.name as string);
 			},
 			availableLocales() {
-				return this.$i18n.locales.filter((i:{code:string}) => i.code && i.code !== this.$i18n.locale);
+				return this.$i18n.locales?.filter((i: any) => i.code && i.code !== this.$i18n.locale);
 			}
 		},
 
