@@ -209,7 +209,7 @@
 						}) as string
 					},
 					{
-						hid: 'og-title',
+						hid: 'og:title',
 						property: 'og:title',
 						content: this.$t('kara.meta', { // @ts-ignore: mais²
 							songtitle: this.karaoke.title, serieSinger: this.serieSinger.name

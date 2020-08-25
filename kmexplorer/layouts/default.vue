@@ -502,7 +502,7 @@
 		head() {
 			const seo = this.$nuxtI18nSeo();
 			if (!Array.isArray(seo.meta)) { seo.meta = []; }
-			seo.meta.push({ hid: 'og-url', property: 'og:url', content: `${process.env.BASE_URL}${this.$route.fullPath}` });
+			seo.meta.push({ hid: 'og:url', property: 'og:url', content: `${process.env.BASE_URL}${this.$route.fullPath}` });
 			return seo;
 		}
 	});

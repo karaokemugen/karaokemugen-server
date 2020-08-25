@@ -49,14 +49,19 @@ function generateConfig(production: boolean = false) {
 			meta: [
 				{ charset: 'utf-8' },
 				{ hid: 'viewport', name: 'viewport', content: 'width=device-width, initial-scale=1' },
-				{ hid: 'twitter-card', name: 'twitter:card', content: 'summary' },
-				{ hid: 'twitter-site', name: 'twitter:site', content: '@KaraokeMugen' },
-				{ hid: 'twitter-title', name: 'twitter:title', content: conf.KaraExplorer.Tagline },
+				{ hid: 'twitter:card', name: 'twitter:card', content: 'summary' },
+				{ hid: 'twitter:site', name: 'twitter:site', content: '@KaraokeMugen' },
+				{ hid: 'twitter:title', name: 'twitter:title', content: conf.KaraExplorer.Tagline },
 				{ hid: 'description', name: 'description', content: conf.KaraExplorer.Tagline },
-				{ name: 'theme-color', content: '#375a7f' },
-				{ hid: 'og-title', property: 'og:title', content: conf.KaraExplorer.Tagline },
-				{ hid: 'og-type', property: 'og:type', content: 'website' },
-				{ hid: 'og-image', property: 'og:image', content: 'https://lab.shelter.moe/karaokemugen/main/-/raw/master/Resources/banniere/banner-website-small.png' }
+				{ hid: 'theme-color', name: 'theme-color', content: '#375a7f' },
+				{ hid: 'og:title', property: 'og:title', content: conf.KaraExplorer.Host },
+				{ hid: 'og:description', property: 'og:description', content: conf.KaraExplorer.Tagline },
+				{ hid: 'og:type', property: 'og:type', content: 'website' },
+				{ hid: 'og:image', property: 'og:image', content: 'https://lab.shelter.moe/karaokemugen/main/-/raw/master/Resources/banniere/banner-website-small.png' },
+				{ hid: 'author', name: 'author', content: 'Karaoke Mugen contributors' }
+			],
+			link: [
+				{ rel: 'author', href: `/${conf.KaraExplorer.Path}/humans.txt` }
 			]
 		}
 	};

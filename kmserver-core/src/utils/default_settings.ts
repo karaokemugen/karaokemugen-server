@@ -395,7 +395,6 @@ export let NuxtConfig: NuxtConfigType = {
 	},
 
 	pwa: {
-		meta: false,
 		manifest: {
 			name: 'Karaoke Mugen Explorer',
 			lang: 'fr',
