@@ -24,6 +24,7 @@ export default {
 		},
 		add: 'Add to application',
 		download: 'Download the karaoke with karabundle format',
+		live: 'Open karaoke on Live in a new tab',
 		favorites: {
 			add: 'Add to favorites',
 			remove: 'Remove from favorites'

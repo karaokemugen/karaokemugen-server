@@ -21,6 +21,10 @@
 				<font-awesome-icon :icon="['fas', 'play']" color="black" size="2x" />
 			</font-awesome-layers>
 		</div>
+		<a v-if="!show" :href="`${liveURL}?video=${karaoke.kid}`" target="_blank" class="button is-info">
+			<font-awesome-icon :icon="['fas', 'play']" :fixed-width="true" />
+			{{ $t('kara.live') }}
+		</a>
 	</div>
 </template>
 
@@ -105,6 +109,11 @@
 		.fa-play {
 			left: 125%;
 		}
+	}
+
+	.button.is-info {
+		margin-top: 1em;
+		display: block;
 	}
 
 	.image-container {

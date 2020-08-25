@@ -24,6 +24,7 @@ export default {
 		},
 		add: 'Télécharger dans l\'application',
 		download: 'Télécharger le karaoké au format karabundle',
+		live: 'Ouvrir le karaoké sur Live dans un nouvel onglet',
 		favorites: {
 			add: 'Ajouter aux favoris',
 			remove: 'Retirer des favoris'
