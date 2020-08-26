@@ -440,8 +440,8 @@
 								}
 							}
 						);
-						this.karaoke.subfile = result.filename;
-						this.karaoke.subfile_orig = result.originalname;
+						this.karaoke.subfile = result.data.filename;
+						this.karaoke.subfile_orig = result.data.originalname;
 					}
 				}
 			},
