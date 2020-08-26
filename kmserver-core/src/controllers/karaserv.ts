@@ -84,7 +84,7 @@ export default function KSController(router: Router) {
 				const kara = await getKara({
 					mode: 'kid',
 					modeValue: req.params.kid,
-				}, req?.authToken?.username);
+				}, req?.authToken);
 				res.json(kara);
 			} catch(err) {
 				res.status(500).json(err);
