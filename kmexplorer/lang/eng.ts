@@ -167,7 +167,8 @@ export default {
 		logout: 'Logout',
 		register: 'Register',
 		connection: 'Login',
-		profile: 'Profile'
+		profile: 'Profile',
+		switch_language: 'Switch language'
 	},
 	search: {
 		placeholder: 'Series, singers, names...',

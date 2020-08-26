@@ -367,13 +367,13 @@ export let NuxtConfig: NuxtConfigType = {
 	i18n: {
 		locales: [
 			{
-				code: 'eng',
+				code: 'en',
 				name: 'English',
 				iso: 'en',
 				file: 'eng.ts'
 			},
 			{
-				code: 'fre',
+				code: 'fr',
 				name: 'Français',
 				iso: 'fr',
 				file: 'fre.ts'
@@ -382,8 +382,13 @@ export let NuxtConfig: NuxtConfigType = {
 		baseUrl: 'http://localhost:1350/base',
 		seo: false,
 		lazy: true,
-		defaultLocale: 'fre',
+		defaultLocale: 'en',
+		fallbackLocale: 'en',
 		strategy: 'no_prefix',
+		detectBrowserLanguage: {
+			useCookie: true,
+			cookieKey: 'i18n_redirected'
+		},
 		langDir: 'lang/',
 		vuex: false
 	},
