@@ -65,6 +65,7 @@
 	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
 	import VLazyImage from 'v-lazy-image';
+	import languages from '@cospired/i18n-iso-languages';
 	import { fakeYearTag, getSerieLanguage } from '~/utils/tools';
 	import { tagTypes } from '~/assets/constants';
 	import Tag from '~/components/Tag.vue';
@@ -131,7 +132,7 @@
 				} else if (this.karaoke.singers[0]) {
 					return {
 						name: this.i18n[this.karaoke.singers[0].tid]
-							? this.i18n[this.karaoke.singers[0].tid][this.$i18n.locale] ||
+							? this.i18n[this.karaoke.singers[0].tid][languages.alpha2ToAlpha3B(this.$i18n.locale)] ||
 							this.i18n[this.karaoke.singers[0].tid]?.eng ||
 								this.karaoke.singers[0].name : this.karaoke.singers[0].name,
 						tid: `${this.karaoke.singers[0].tid}~${tagTypes.singers.type}`,
@@ -149,7 +150,7 @@
 			},
 			songtype(): string {
 				return this.i18n[this.karaoke.songtypes[0].tid]
-					? this.i18n[this.karaoke.songtypes[0].tid][this.$i18n.locale] ||
+					? this.i18n[this.karaoke.songtypes[0].tid][languages.alpha2ToAlpha3B(this.$i18n.locale)] ||
 					this.i18n[this.karaoke.songtypes[0].tid]?.eng ||
 						this.karaoke.songtypes[0].name : this.karaoke.songtypes[0].name;
 			},

@@ -15,6 +15,7 @@
 <script lang="ts">
 	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
+	import languages from '@cospired/i18n-iso-languages';
 	import { tagTypes } from '~/assets/constants';
 	import { menuBarStore } from '~/store';
 	import { getSerieLanguage, getTagInLanguage } from '~/utils/tools';
@@ -71,7 +72,7 @@
 				if (this.type === 'series') {
 					return getSerieLanguage(this.tag, 'jpn', this.$store.state.auth.user, this.i18n); // TODO: true value for karaLanguage
 				} else {
-					return getTagInLanguage(this.tag, this.$i18n.locale, 'eng', this.i18n);
+					return getTagInLanguage(this.tag, languages.alpha2ToAlpha3B(this.$i18n.locale), 'eng', this.i18n);
 				}
 			},
 			slug(): string {

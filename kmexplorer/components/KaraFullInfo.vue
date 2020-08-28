@@ -67,6 +67,7 @@
 <script lang="ts">
 	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
+	import languages from '@cospired/i18n-iso-languages';
 	import { getSerieLanguage } from '~/utils/tools';
 	import { tagTypes } from '~/assets/constants';
 	import Tag from '~/components/Tag.vue';
@@ -126,7 +127,7 @@
 					};
 				} else if (this.karaoke.singers[0]) {
 					return {
-						name: this.karaoke.singers[0].i18n[this.$i18n.locale] || this.karaoke.singers[0].i18n.eng || this.karaoke.singers[0].name,
+						name: this.karaoke.singers[0].i18n[languages.alpha2ToAlpha3B(this.$i18n.locale)] || this.karaoke.singers[0].i18n.eng || this.karaoke.singers[0].name,
 						tid: `${this.karaoke.singers[0].tid}~${tagTypes.singers.type}`,
 						slug: slug(this.karaoke.singers[0].name),
 						type: 'singers'
@@ -141,7 +142,7 @@
 				}
 			},
 			songtype(): string {
-				return this.karaoke.songtypes[0].i18n[this.$i18n.locale] || this.karaoke.songtypes[0].i18n.eng || this.karaoke.songtypes[0].name;
+				return this.karaoke.songtypes[0].i18n[languages.alpha2ToAlpha3B(this.$i18n.locale)] || this.karaoke.songtypes[0].i18n.eng || this.karaoke.songtypes[0].name;
 			},
 			songtypeSlug(): string {
 				return slug(this.karaoke.songtypes[0].name);

@@ -44,6 +44,7 @@
 <script lang="ts">
 	import Vue, { PropOptions } from 'vue';
 	import debounce from 'lodash/debounce';
+	import languages from '@cospired/i18n-iso-languages';
 	import { DBTagMini } from '%/lib/types/database/tag';
 	import { KaraTag } from '%/lib/types/kara';
 
@@ -111,7 +112,7 @@
 			},
 			localizedName(tag: DBTagMini) {
 				if (tag.i18n) {
-					return tag.i18n[this.$i18n.locale] || tag.i18n.eng || tag.name;
+					return tag.i18n[languages.alpha2ToAlpha3B(this.$i18n.locale)] || tag.i18n.eng || tag.name;
 				} else {
 					return tag.name;
 				}
