@@ -1,12 +1,12 @@
 <template>
 	<div class="tile is-ancestor">
 		<div class="tile is-parent is-12">
-			<div class="tile is-child" :class="{'is-8': !liveOpened, 'is-5': liveOpened}">
+			<div ref="leftTile" class="tile is-child" :class="{'is-8': !liveOpened, 'is-5': liveOpened}">
 				<kara-full-info :karaoke="karaoke" />
 			</div>
 			<div class="tile is-4-desktop-only is-parent is-vertical">
 				<div v-if="liveURL && live" class="tile is-child">
-					<live-player :karaoke="karaoke" @open="placeForLive" />
+					<live-player :karaoke="karaoke" :transition="liveTransition" @open="placeForLive" />
 				</div>
 				<div v-else class="tile is-child">
 					<div class="box">
@@ -40,7 +40,8 @@
 	interface VState {
 		karaoke: DBKara,
 		liveURL?: string,
-		liveOpened: boolean
+		liveOpened: boolean,
+		liveTransition: boolean
 	}
 
 	export default Vue.extend({
@@ -71,7 +72,8 @@
 			return {
 				karaoke: {} as unknown as DBKara, // A little cheat, this is filled by asyncData in all cases
 				liveURL: process.env.LIVE_URL,
-				liveOpened: false
+				liveOpened: false,
+				liveTransition: false
 			};
 		},
 
@@ -98,6 +100,11 @@
 		methods: {
 			placeForLive() {
 				this.liveOpened = true;
+				(this.$refs.leftTile as HTMLElement).addEventListener('transitionend', this.transitionLive, { once: true });
+			},
+			transitionLive() {
+				console.trace();
+				this.liveTransition = true;
 			}
 		},
 
@@ -125,7 +132,7 @@
 </script>
 
 <style scoped lang="scss">
-	.tile .is-child {
+	.tile.is-child {
 		transition: width 0.8s;
 	}
 

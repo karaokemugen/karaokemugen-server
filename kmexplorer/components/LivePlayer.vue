@@ -2,8 +2,10 @@
 	<div class="box">
 		<iframe
 			v-if="show"
+			ref="liveEmbed"
+			:class="{ live: showTick }"
 			:src="`${liveURL}?video=${karaoke.kid}&autoplay=1`"
-			:class="{live: transition}"
+			:style="{ height: size === -1 ? undefined:`${size.toString()}px` }"
 			allowfullscreen
 			title="VideoPlayer"
 		/>
@@ -29,50 +31,81 @@
 </template>
 
 <script lang="ts">
-	import Vue from 'vue';
+	import Vue, { PropOptions } from 'vue';
+	import { DBKara } from '%/lib/types/database/kara';
+
+	interface VState {
+		liveURL?: string,
+		show: boolean,
+		showTick: boolean,
+		size: number,
+		interval?: NodeJS.Timeout
+	}
 
 	export default Vue.extend({
 		name: 'LivePlayer',
 
-		props: ['karaoke'],
+		props: {
+			karaoke: {
+				required: true,
+				type: Object
+			} as PropOptions<DBKara>,
+			transition: {
+				required: true,
+				type: Boolean
+			}
+		},
 
-		data() {
+		data(): VState {
 			return {
 				liveURL: process.env.LIVE_URL,
 				show: false,
-				transition: false
+				showTick: false,
+				size: -1
 			};
 		},
 
-		updated() {
-			if (this.show && !this.transition) {
-				this.$nextTick(() => {
-					setTimeout(this.createTransition, 25);
-				});
+		watch: {
+			transition(now: boolean) {
+				if (now) {
+					this.resizeEvent();
+				}
+				if (this.interval) {
+					clearInterval(this.interval);
+				}
 			}
 		},
 
 		mounted() {
 			window.addEventListener('keydown', this.keyEvent);
+			window.addEventListener('resize', this.resizeEvent);
 		},
 
 		destroyed() {
 			window.removeEventListener('keydown', this.keyEvent);
+			window.removeEventListener('resize', this.resizeEvent);
 		},
 
 		methods: {
 			createTransition() {
-				this.transition = true;
+				this.showTick = true;
+				this.interval = setInterval(this.resizeEvent, 100);
 			},
 			showPlayer() {
 				this.show = true;
 				this.$emit('open');
+				setTimeout(this.createTransition, 25);
 			},
 			keyEvent(e: KeyboardEvent) { // Fancy shortcut, don't tell anyone! :p
 				if (e.code === 'KeyL' && e.ctrlKey) {
 					e.preventDefault();
 					this.showPlayer();
 					window.removeEventListener('keydown', this.keyEvent);
+				}
+			},
+			resizeEvent() {
+				if (this.show) {
+					this.size = (this.$refs.liveEmbed as HTMLIFrameElement)?.scrollWidth * 0.5625;
 				}
 			}
 		}
@@ -83,13 +116,7 @@
 	.box > *:first-child, .box img {
 		width: 100%;
 		height: 16rem;
-		transition: height 0.8s;
-	}
-
-	@media (min-width: 700px) {
-		.box *:first-child.live {
-			height: 22rem;
-		}
+		transition: height 200ms;
 	}
 
 	.box img {
