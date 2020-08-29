@@ -36,6 +36,7 @@
 	import KaraReport from '~/components/KaraReport.vue';
 	import { DBKara } from '%/lib/types/database/kara';
 	import { tagTypes } from '~/assets/constants';
+	import { sortTypesKara } from '~/utils/tools';
 
 	interface VState {
 		karaoke: DBKara,
@@ -62,7 +63,8 @@
 			const res = await $axios.get(`/api/karas/${kid}`).catch(
 				_err => error({ statusCode: 404, message: app.i18n.t('kara.notfound') as string }));
 			if (res) {
-				return { karaoke: res.data };
+				const karaoke = sortTypesKara(res.data);
+				return { karaoke };
 			} else {
 				error({ statusCode: 500, message: 'Huh?' });
 			}
@@ -103,7 +105,6 @@
 				(this.$refs.leftTile as HTMLElement).addEventListener('transitionend', this.transitionLive, { once: true });
 			},
 			transitionLive() {
-				console.trace();
 				this.liveTransition = true;
 			}
 		},

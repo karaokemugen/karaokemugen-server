@@ -1,7 +1,7 @@
 import languages from '@cospired/i18n-iso-languages';
-import { DBKaraTag } from '~/../kmserver-core/src/lib/types/database/kara';
 import { User } from '~/../kmserver-core/src/lib/types/user';
 import { DBTag } from '%/lib/types/database/tag';
+import { DBKara, DBKaraTag } from '%/lib/types/database/kara';
 import { Tag } from '%/lib/types/tag';
 
 let navigatorLanguage:string;
@@ -54,4 +54,29 @@ export function fakeYearTag(year: string, count?: number): Tag {
 			0: count || 0
 		}
 	};
+}
+
+export function sortTypesKara(karaoke: DBKara): DBKara {
+	// Sorting algorithm, as suggested in https://discord.com/channels/84245347336982528/324208228680466434/730387614460543016
+	const high_prio: DBKaraTag[] = [];
+	const std_prio: DBKaraTag[] = [];
+	const low_prio: DBKaraTag[] = [];
+	for (const songtype of karaoke.songtypes) {
+		// Opening, Ending, MV, Insert
+		if (['f02ad9b3-0bd9-4aad-85b3-9976739ba0e4',
+			'38c77c56-2b95-4040-b676-0994a8cb0597',
+			'7be1b15c-cff8-4b37-a649-5c90f3d569a9',
+			'5e5250d9-351a-4a82-98eb-55db50ad8962'].includes(songtype.tid)) {
+			high_prio.push(songtype);
+		// Audio, Other
+		} else if (['97769615-a2e5-4f36-8c23-b2ce2ce3c460',
+			'42a262ae-acba-4ab5-a446-c5789c96c821'].includes(songtype.tid)) {
+			low_prio.push(songtype);
+		// All others
+		} else {
+			std_prio.push(songtype);
+		}
+	}
+	karaoke.songtypes = [...high_prio, ...std_prio, ...low_prio];
+	return karaoke;
 }
