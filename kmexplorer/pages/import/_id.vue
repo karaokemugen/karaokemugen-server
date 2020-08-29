@@ -55,15 +55,12 @@
 
 		async asyncData({ params, $axios, error, app }) {
 			if (params.id) {
-				const result = await $axios
-					.get(`/api/karas/${params.id}`)
-					.catch(_err =>
-						error({ statusCode: 404, message: app.i18n.t('kara.notfound') as string })
-					);
-				if (result) {
+				try {
+					const result = await $axios
+						.get(`/api/karas/${params.id}`);
 					return { karaparam: result.data };
-				} else {
-					error({ statusCode: 500, message: 'Huh?' });
+				} catch (e) {
+					error({ statusCode: 404, message: app.i18n.t('kara.notfound') as string });
 				}
 			} else {
 				return {

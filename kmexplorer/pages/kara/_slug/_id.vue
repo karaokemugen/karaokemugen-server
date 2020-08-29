@@ -60,13 +60,12 @@
 				// Resolve a slug-less url scheme (/base/kara/<kid>)
 				kid = params.slug;
 			}
-			const res = await $axios.get(`/api/karas/${kid}`).catch(
-				_err => error({ statusCode: 404, message: app.i18n.t('kara.notfound') as string }));
-			if (res) {
+			try {
+				const res = await $axios.get<DBKara>(`/api/karas/${kid}`);
 				const karaoke = sortTypesKara(res.data);
 				return { karaoke };
-			} else {
-				error({ statusCode: 500, message: 'Huh?' });
+			} catch (e) {
+				error({ statusCode: 404, message: app.i18n.t('kara.notfound') as string });
 			}
 		},
 
