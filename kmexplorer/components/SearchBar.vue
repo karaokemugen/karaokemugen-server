@@ -87,6 +87,8 @@
 					this.sort = mutation.payload;
 				}
 			});
+			this.search = menuBarStore.search;
+			this.sort = menuBarStore.sort;
 		},
 
 		destroyed() {
