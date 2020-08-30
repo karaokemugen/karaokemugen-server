@@ -1,4 +1,4 @@
-import {cleanupInstances, upsertInstance, selectInstance} from '../dao/shortener';
+import {cleanupInstances, upsertInstance, selectInstance, removeInstances} from '../dao/shortener';
 import logger from 'winston';
 import {getConfig} from '../lib/utils/config';
 import { InstanceData } from '../types/shortener';
@@ -83,4 +83,8 @@ async function cleanInstances() {
 		logger.error('Expiring instances failed (better luck next time)', {service: 'Shortener', obj: err});
 		sentry.error(err, 'Warning');
 	}
+}
+
+export async function removeInstance(ip: string) {
+	await removeInstances(ip);
 }

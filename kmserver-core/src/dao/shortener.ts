@@ -39,6 +39,10 @@ export async function upsertInstance(data: ShortURLData) {
 	}
 }
 
+export async function removeInstances(ip: string) {
+	return await db().query(sql.deleteInstance, [ip]);
+}
+
 export async function cleanupInstances(date: Date) {
 	return await db().query(sql.cleanupInstances, [date]);
 }

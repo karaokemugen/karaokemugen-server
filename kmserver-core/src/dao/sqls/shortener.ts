@@ -13,7 +13,7 @@ WHERE remote_ip4 = $1
 OR ip6_prefix >>= $1
 `;
 
-export const deleteInstace = `
+export const deleteInstance = `
 DELETE FROM short_url
 WHERE remote_ip4 = $1
 OR ip6_prefix >>= $1

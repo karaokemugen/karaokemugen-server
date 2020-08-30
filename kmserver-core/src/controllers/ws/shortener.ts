@@ -4,7 +4,7 @@ import { publishInstance } from '../../services/shortener';
 
 async function publishShortener(this: Socket, instanceData: InstanceData, cb: Function) {
 	try {
-		if (await publishInstance(this.handshake.address, instanceData)) {
+		if (await publishInstance(this.conn.remoteAddress, instanceData)) {
 			cb(true);
 		} else {
 			cb(false);
