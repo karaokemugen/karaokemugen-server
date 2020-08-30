@@ -1,5 +1,6 @@
 import merge from 'lodash.merge';
 import {State} from '../types/state';
+import pjson from '../../package.json';
 
 // Internal settings
 let state: State = {
@@ -14,6 +15,11 @@ let state: State = {
 		validate: false,
 		debug: false,
 		staticServe: false
+	},
+	version: {
+		number: pjson.version,
+		name: pjson.name,
+		sha: ''
 	}
 };
 

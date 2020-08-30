@@ -1,6 +1,5 @@
 // Shortener SQL
 
-
 export const getInstance = `
 SELECT modified_at,
 	remote_ip4,
@@ -10,6 +9,12 @@ SELECT modified_at,
 	ip6,
 	instance_id
 FROM short_url
+WHERE remote_ip4 = $1
+OR ip6_prefix >>= $1
+`;
+
+export const deleteInstace = `
+DELETE FROM short_url
 WHERE remote_ip4 = $1
 OR ip6_prefix >>= $1
 `;

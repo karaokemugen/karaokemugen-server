@@ -1,10 +1,10 @@
-import {createKara, editKara} from '../services/kara_import';
+import {createKara, editKara} from '../../services/kara_import';
 import multer from 'multer';
-import {getConfig} from '../lib/utils/config';
+import {getConfig} from '../../lib/utils/config';
 import {resolve} from 'path';
 import { Router } from 'express';
-import { getState } from '../utils/state';
-import { APIMessage, errMessage } from '../lib/services/frontend';
+import { getState } from '../../utils/state';
+import { APIMessage, errMessage } from '../../lib/services/frontend';
 
 export default function KIController(router: Router) {
 	const conf = getConfig();

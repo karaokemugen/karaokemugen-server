@@ -3,14 +3,15 @@ import express from 'express';
 import {resolve} from 'path';
 import bodyParser from 'body-parser';
 import passport from 'passport';
-import adminController from './controllers/admin';
-import authController from './controllers/auth';
-import KServerController from './controllers/karaserv';
-import KImportController from './controllers/karaimport';
-import statsController from './controllers/stats';
-import shortenerController from './controllers/shortener';
-import userController from './controllers/user';
-import favoritesController from './controllers/favorites';
+import adminController from './controllers/http/admin';
+import authController from './controllers/http/auth';
+import KServerController from './controllers/http/karaserv';
+import KImportController from './controllers/http/karaimport';
+import statsController from './controllers/http/stats';
+import shortenerController from './controllers/http/shortener';
+import userController from './controllers/http/user';
+import favoritesController from './controllers/http/favorites';
+import shortenerSocketController from './controllers/ws/shortener';
 import {configurePassport} from './lib/utils/passport_manager';
 import {getConfig, resolvedPathAvatars, resolvedPathPreviews, resolvedPathRepos} from './lib/utils/config';
 import range from 'express-range';
@@ -133,7 +134,10 @@ export function initFrontend(listenPort: number) {
 
 	const port = listenPort;
 	const server = createServer(app);
-	initWS(server);
+
+	const ws = initWS(server);
+	shortenerSocketController(ws);
+
 	server.listen(port, () => logger.info(`App listening on ${port}`, {service: 'App'}));
 }
 

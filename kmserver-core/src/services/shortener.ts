@@ -10,7 +10,7 @@ export async function publishInstance(ip: string, data: InstanceData) {
 		// Find cheaters; people who will publish for others IPs
 		if (!data.IID) {
 			// WTF. Ignoring for now, data didn't have any instance ID
-			logger.debug(`[Shortener] Ignoring ${ip} because of invalid IID : ${data.IID}`);
+			logger.debug(`Ignoring ${ip} because of invalid IID`, {service: 'Shortener', obj: data});
 			return false;
 		}
 		if ((data?.IP6 && data?.IP4) && // Couche de compatibilité pour les clients KM qui n'ont pas ffe3272f
@@ -19,7 +19,7 @@ export async function publishInstance(ip: string, data: InstanceData) {
 			return false;
 		}
 		const currentDate = new Date();
-		logger.debug('Received publish request from ${ip}', {service: 'Shortener', obj: data});
+		logger.debug(`Received publish request from ${ip}`, {service: 'Shortener', obj: data});
 		const instance = await selectInstance(ip);
 		logger.debug('Instance(s) found', {service: 'Shortener', obj: instance});
 		if (isIPv6(ip)) {
@@ -32,6 +32,7 @@ export async function publishInstance(ip: string, data: InstanceData) {
 				ip6_prefix: data.IP6Prefix,
 				ip6: ip
 			});
+			return true;
 		} else {
 			await upsertInstance({
 				instance_id: data.IID,
@@ -42,6 +43,7 @@ export async function publishInstance(ip: string, data: InstanceData) {
 				ip6_prefix: data?.IP6Prefix || 'fe80::/56',
 				ip6: data?.IP6 || 'fe80::1' // Assume default addresses to avoid some disasters
 			});
+			return true;
 		}
 	} catch(err) {
 		logger.error('Failed to publish instance', {service: 'Shortener', obj: err});

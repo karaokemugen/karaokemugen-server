@@ -1,4 +1,4 @@
-import {publishInstance, getInstance} from '../services/shortener';
+import {publishInstance, getInstance} from '../../services/shortener';
 import { Router } from 'express';
 import { isIPv6 } from 'net';
 
