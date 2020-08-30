@@ -2,7 +2,7 @@
 	<div>
 		<nav class="navbar is-primary is-fixed-top">
 			<div class="navbar-brand">
-				<nuxt-link class="navbar-item" to="/">
+				<nuxt-link class="navbar-item" to="/" @click.native="resetSearch">
 					<picture>
 						<source type="image/webp" :srcset="require('~/assets/nanami.webp')">
 						<source type="image/png" :srcset="require('~/assets/nanami.png')">
@@ -423,7 +423,7 @@
 	import LoginModal from '~/components/LoginModal.vue';
 	import ProfileModal from '~/components/ProfileModal.vue';
 	import AddRepoModal from '~/components/AddRepoModal.vue';
-	import { modalStore } from '~/store';
+	import { menuBarStore, modalStore } from '~/store';
 
 	import { ModalType } from '~/store/modal';
 
@@ -535,6 +535,9 @@
 			},
 			openAddRepoModal() {
 				modalStore.openModal('addRepo');
+			},
+			resetSearch() {
+				menuBarStore.reset();
 			}
 		},
 
@@ -546,6 +549,7 @@
 		}
 	});
 </script>
+
 <style scoped lang="scss">
 	.menu {
 		margin-left: 15px;
