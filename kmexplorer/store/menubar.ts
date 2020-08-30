@@ -60,4 +60,12 @@ export default class MenuBar extends VuexModule {
 	setResultsCount(count: number) {
 		this.resultsCount = count;
 	}
+
+	@Mutation
+	reset() {
+		this.resultsCount = 0;
+		this.search = '';
+		this.tags = [];
+		this.sort = 'recent';
+	}
 }

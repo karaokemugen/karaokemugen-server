@@ -24,7 +24,7 @@
 	import { tagRegex, tagTypes, tagTypesMap } from '~/assets/constants';
 	import { TagExtend } from '~/store/menubar';
 	import { DBTag } from '%/lib/types/database/tag';
-	import { fakeYearTag } from '~/utils/tools';
+	import { fakeYearTag, sortTypesKara } from '~/utils/tools';
 
 	interface KaraRequest {
 		from: number,
@@ -170,6 +170,9 @@
 				const { data } = await this.$axios.get<KaraListType>('/api/karas/search', {
 					params: this.reqParams
 				});
+				for (const karaoke of data.content) {
+					sortTypesKara(karaoke);
+				}
 				this.karaokes.content.push(...data.content);
 				this.karaokes.i18n = Object.assign(this.karaokes.i18n, data.i18n);
 				this.karaokes.infos.count = data.infos.count;

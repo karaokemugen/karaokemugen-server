@@ -85,8 +85,13 @@
 					this.search = mutation.payload;
 				} else if (mutation.type === 'menubar/setSort') {
 					this.sort = mutation.payload;
+				} else if (mutation.type === 'menubar/reset') {
+					this.sort = 'recent';
+					this.search = '';
 				}
 			});
+			this.search = menuBarStore.search;
+			this.sort = menuBarStore.sort;
 		},
 
 		destroyed() {

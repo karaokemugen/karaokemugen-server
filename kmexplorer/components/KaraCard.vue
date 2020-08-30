@@ -1,7 +1,7 @@
 <template>
 	<div class="box">
-		<div class="header">
-			<nuxt-link :to="`/kara/${slug}/${karaoke.kid}`" class="images" @mouseenter="switchImage" @mouseleave="switchImage">
+		<div class="header" @mouseenter="switchImage" @mouseleave="switchImage">
+			<nuxt-link :to="`/kara/${slug}/${karaoke.kid}`" class="images">
 				<v-lazy-image :src="images[0]" alt="" />
 				<v-lazy-image :src="images[1]" :class="{activate}" alt="" />
 			</nuxt-link>
