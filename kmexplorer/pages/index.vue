@@ -56,7 +56,7 @@
 				</nuxt-link>
 			</li>
 			<li key="language">
-				<nuxt-link to="/types/languages" class="km-home--stats--link">
+				<nuxt-link to="/types/langs" class="km-home--stats--link">
 					<strong>{{ count.languages>0 ? count.languages : '-' }}</strong>
 					<span>{{ $tc("kara.tagtypes.langs", count.languages) }}</span>
 				</nuxt-link>

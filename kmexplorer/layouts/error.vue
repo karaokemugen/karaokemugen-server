@@ -9,7 +9,7 @@
 							<source type="image/png" :srcset="require('~/assets/nanami-surpris.png')">
 							<img :src="require('~/assets/nanami-surpris.png')" alt="Surprised Nanami">
 						</picture>
-						{{ error.message || $t('error.generic') }}
+						{{ error.message || $t('error.generic') }}&nbsp;
 						<nuxt-link to="/">
 							{{ $t('error.home') }}
 						</nuxt-link>
