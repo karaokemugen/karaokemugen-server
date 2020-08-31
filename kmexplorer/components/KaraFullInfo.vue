@@ -196,7 +196,7 @@
 			return {
 				meta: [
 					{
-						hid: 'twitter-title',
+						hid: 'twitter:title',
 						name: 'twitter:title',
 						content: this.$t('kara.meta', { // @ts-ignore: mais²
 							songtitle: this.karaoke.title, serieSinger: this.serieSinger.name
