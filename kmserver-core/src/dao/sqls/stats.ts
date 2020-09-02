@@ -52,7 +52,7 @@ VALUES(
 	$1,
 	$2,
 	$3
-)
+) ON CONFLICT DO NOTHING;
 `;
 
 export const insertRequested = `
@@ -61,7 +61,7 @@ VALUES(
 	$1,
 	$2,
 	$3
-)
+) ON CONFLICT DO NOTHING;
 `;
 
 export const wipeInstance = `
