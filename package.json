@@ -10,8 +10,8 @@
    "private": true,
    "workspaces": {
       "packages": [
-        "kmexplorer",
-        "kmserver-core"
+         "kmexplorer",
+         "kmserver-core"
       ]
    },
    "scripts": {

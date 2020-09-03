@@ -27,11 +27,11 @@
 			]
 		},
 		"types": [
-			"node",
+			"@types/node",
 			"@nuxt/types",
 			"@nuxt/vue-app",
 			"@nuxtjs/axios",
-			"nuxtjs__auth",
+			"@types/nuxtjs__auth",
 			"@nuxtjs/toast",
 			"nuxt-i18n",
 			"buefy/types"
