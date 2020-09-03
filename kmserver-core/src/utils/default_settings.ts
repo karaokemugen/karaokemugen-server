@@ -396,7 +396,10 @@ export let NuxtConfig: NuxtConfigType = {
 	sentry: {
 		dsn: sentryDSN,
 		disabled: false,
-		publishRelease: false
+		publishRelease: false,
+		config: {
+			ignoreErrors: ['document.querySelector(\'video\').webkitPresentationMode']
+		}
 	},
 
 	pwa: {
