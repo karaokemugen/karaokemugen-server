@@ -155,6 +155,16 @@
 </script>
 
 <style scoped lang="scss">
+	.middle-size {
+		max-width: 90%;
+	}
+
+	@media (min-width: 1024px) {
+		.middle-size {
+			width: 50%;
+		}
+	}
+
 	.km-home {
 		display: flex;
 		flex-direction: column;
@@ -162,10 +172,6 @@
 
 		.km-home--logo img {
 			max-height: 15rem;
-		}
-
-		.middle-size {
-			width: 50%;
 		}
 
 		.title {
