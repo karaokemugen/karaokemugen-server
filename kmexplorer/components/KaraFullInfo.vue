@@ -3,28 +3,11 @@
 		<h1 class="title is-1">
 			{{ karaoke.title }}
 		</h1>
-		<i18n path="kara.phrase" tag="h4" class="subtitle is-4">
-			<template v-slot:songtype>
-				<a
-					:href="`/tags/${songtypeSlug}/${karaoke.songtypes[0].tid}~3`"
-					@click.prevent="handleLink('songtypes')"
-				>
-					{{ songtype }}<template v-if="karaoke.songorder">&nbsp;{{ karaoke.songorder }}</template>
-				</a>
-			</template>
-			<template v-slot:series>
-				<a
-					:href="`/tags/${serieSinger.slug}/${serieSinger.tid}`"
-					@click.prevent="handleLink('serieSinger')"
-				>
-					{{ serieSinger.name }}
-				</a>
-			</template>
-		</i18n>
+		<kara-phrase tag="h4" class="subtitle is-4" :karaoke="karaoke" />
 		<h6 class="subtitle is-6 no-top-margin">
-			<nuxt-link :to="`/years/${karaoke.year}`">
+			<a :href="`/years/${karaoke.year}`" @click.prevent="handleLink">
 				{{ karaoke.year }}
-			</nuxt-link>
+			</a>
 		</h6>
 		<table class="table tagList">
 			<tbody>
@@ -65,7 +48,7 @@
 				{{ lyrics ? $t('kara.lyrics.hide'):$t('kara.lyrics.show') }}
 			</button>
 		</div>
-		<div v-if="lyrics" class="box is-clear">
+		<div v-show="lyrics" class="box is-clear">
 			<ul>
 				<li v-for="(line, i) in karaoke.lyrics" :key="`lyrics-${i}`">
 					{{ line }}
@@ -79,12 +62,13 @@
 	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
 	import languages from '@cospired/i18n-iso-languages';
-	import { getSerieLanguage } from '~/utils/tools';
+	import { fakeYearTag, generateNavigation, getSerieLanguage } from '~/utils/tools';
 	import { tagTypes } from '~/assets/constants';
 	import Tag from '~/components/Tag.vue';
+	import KaraPhrase from '~/components/KaraPhrase.vue';
 	import { menuBarStore, modalStore } from '~/store';
-	import { serieSinger } from '~/types/serieSinger';
 	import { DBKara } from '%/lib/types/database/kara';
+	import { serieSinger } from '~/types/serieSinger';
 	import duration from '~/assets/date';
 
 	interface VState {
@@ -98,7 +82,8 @@
 		name: 'KaraFullInfo',
 
 		components: {
-			Tag
+			Tag,
+			KaraPhrase
 		},
 
 		props: {
@@ -200,21 +185,12 @@
 			toggleLyrics() {
 				this.lyrics = !this.lyrics;
 			},
-			handleLink(type: 'serieSinger' | 'songtypes') {
-				switch (type) {
-				case 'serieSinger':
-					menuBarStore.addTag({
-						type: this.serieSinger.type,
-						tag: this.karaoke[this.serieSinger.type][0]
-					});
-					break;
-				case 'songtypes':
-					menuBarStore.addTag({
-						type,
-						tag: this.karaoke.songtypes[0]
-					});
-					break;
-				}
+			handleLink() {
+				menuBarStore.addTag({
+					tag: fakeYearTag(this.karaoke.year.toString()),
+					type: 'years'
+				});
+				this.$router.push(generateNavigation(menuBarStore));
 			}
 		},
 

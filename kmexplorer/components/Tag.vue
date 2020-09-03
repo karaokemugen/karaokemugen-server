@@ -18,7 +18,7 @@
 	import languages from '@cospired/i18n-iso-languages';
 	import { tagTypes } from '~/assets/constants';
 	import { menuBarStore } from '~/store';
-	import { getSerieLanguage, getTagInLanguage } from '~/utils/tools';
+	import { generateNavigation, getSerieLanguage, getTagInLanguage } from '~/utils/tools';
 	import { DBTag } from '%/lib/types/database/tag';
 
 	interface VState {
@@ -93,20 +93,7 @@
 					}
 					menuBarStore.addTag(payload);
 					if (!['search-query', 'favorites'].includes(this.$route.name as string)) {
-						const navigation = { path: `/search/${menuBarStore.search}`, query: { q: '' } };
-						// TODO: Fully-featured shareable URL
-						const criterias: string[] = [];
-						const tags: string[] = [];
-						for (const tag of menuBarStore.tags) {
-							if (tag.type === 'years') {
-								criterias.push(`y:${tag.tag.name}`);
-							} else {
-								tags.push(`${tag.tag.tid}~${tagTypes[tag.type].type}`);
-							}
-						}
-						criterias.push(`t:${tags.join(',')}`);
-						navigation.query.q = criterias.join('!');
-						this.$router.push(navigation);
+						this.$router.push(generateNavigation(menuBarStore));
 					}
 				}
 			}

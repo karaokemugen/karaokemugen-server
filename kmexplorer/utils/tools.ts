@@ -3,6 +3,8 @@ import { User } from '~/../kmserver-core/src/lib/types/user';
 import { DBTag } from '%/lib/types/database/tag';
 import { DBKara, DBKaraTag } from '%/lib/types/database/kara';
 import { Tag } from '%/lib/types/tag';
+import menubar from '~/store/menubar';
+import { tagTypes } from '~/assets/constants';
 
 let navigatorLanguage:string;
 if (process.client) {
@@ -79,4 +81,20 @@ export function sortTypesKara(karaoke: DBKara): DBKara {
 	}
 	karaoke.songtypes = [...high_prio, ...std_prio, ...low_prio];
 	return karaoke;
+}
+
+export function generateNavigation(menuBarStore: menubar) {
+	const navigation = { path: `/search/${menuBarStore.search}`, query: { q: '' } };
+	const criterias: string[] = [];
+	const tags: string[] = [];
+	for (const tag of menuBarStore.tags) {
+		if (tag.type === 'years') {
+			criterias.push(`y:${tag.tag.name}`);
+		} else {
+			tags.push(`${tag.tag.tid}~${tagTypes[tag.type].type}`);
+		}
+	}
+	criterias.push(`t:${tags.join(',')}`);
+	navigation.query.q = criterias.join('!');
+	return navigation;
 }

@@ -1,6 +1,9 @@
-export interface serieSinger {
+export interface ShortTag {
 	name: string,
 	tid: string,
-	slug: string,
+	slug: string
+}
+
+export interface serieSinger extends ShortTag {
 	type: 'series' | 'singers'
 }

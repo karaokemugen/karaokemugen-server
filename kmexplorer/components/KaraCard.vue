@@ -10,24 +10,7 @@
 			<nuxt-link :to="`/kara/${slug}/${karaoke.kid}`" class="title is-3 is-spaced">
 				{{ karaoke.title }}
 			</nuxt-link>
-			<i18n path="kara.phrase" tag="h5" class="subtitle is-56">
-				<template v-slot:songtype>
-					<a
-						:href="`/tags/${songtypeSlug}/${karaoke.songtypes[0].tid}~3`"
-						@click.prevent="handleLink('songtypes')"
-					>
-						{{ songtype }}<template v-if="karaoke.songorder"> {{ karaoke.songorder }}</template>
-					</a>
-				</template>
-				<template v-slot:series>
-					<a
-						:href="`/tags/${serieSinger.slug}/${serieSinger.tid}`"
-						@click.prevent="handleLink('serieSinger')"
-					>
-						{{ serieSinger.name }}
-					</a>
-				</template>
-			</i18n>
+			<kara-phrase :karaoke="karaoke" :i18n="i18n" tag="h5" class="subtitle is-56" />
 		</div>
 		<button
 			v-if="favorite && favorites"
@@ -65,13 +48,12 @@
 	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
 	import VLazyImage from 'v-lazy-image';
-	import languages from '@cospired/i18n-iso-languages';
-	import { fakeYearTag, getSerieLanguage } from '~/utils/tools';
+	import { fakeYearTag } from '~/utils/tools';
 	import { tagTypes } from '~/assets/constants';
 	import Tag from '~/components/Tag.vue';
-	import { DBKara, DBKaraTag } from '%/lib/types/database/kara';
-	import { serieSinger } from '~/types/serieSinger';
-	import { menuBarStore, modalStore } from '~/store';
+	import KaraPhrase from '~/components/KaraPhrase.vue';
+	import { DBKara } from '%/lib/types/database/kara';
+	import { modalStore } from '~/store';
 	import { TagExtend } from '~/store/menubar';
 
 	interface VState {
@@ -86,7 +68,8 @@
 
 		components: {
 			Tag,
-			VLazyImage
+			VLazyImage,
+			KaraPhrase
 		},
 
 		props: {
@@ -120,42 +103,6 @@
 					`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.33.jpg`,
 					`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.50.jpg`
 				];
-			},
-			serieSinger(): serieSinger {
-				if (this.karaoke.series[0]) {
-					return {
-						name: getSerieLanguage(this.karaoke.series[0], this.karaoke.langs[0].name, this.$store.state.auth.user, this.i18n),
-						tid: `${this.karaoke.series[0].tid}~${tagTypes.series.type}`,
-						slug: slug(this.karaoke.series[0].name),
-						type: 'series'
-					};
-				} else if (this.karaoke.singers[0]) {
-					return {
-						name: this.i18n[this.karaoke.singers[0].tid]
-							? this.i18n[this.karaoke.singers[0].tid][languages.alpha2ToAlpha3B(this.$i18n.locale)] ||
-							this.i18n[this.karaoke.singers[0].tid]?.eng ||
-								this.karaoke.singers[0].name : this.karaoke.singers[0].name,
-						tid: `${this.karaoke.singers[0].tid}~${tagTypes.singers.type}`,
-						slug: slug(this.karaoke.singers[0].name),
-						type: 'singers'
-					};
-				} else { // You never know~
-					return {
-						name: '¯\\_(ツ)_/¯',
-						tid: '6339add6-b9a3-46c4-9488-2660caa30487~1',
-						slug: 'wtf',
-						type: 'singers'
-					};
-				}
-			},
-			songtype(): string {
-				return this.i18n[this.karaoke.songtypes[0].tid]
-					? this.i18n[this.karaoke.songtypes[0].tid][languages.alpha2ToAlpha3B(this.$i18n.locale)] ||
-					this.i18n[this.karaoke.songtypes[0].tid]?.eng ||
-						this.karaoke.songtypes[0].name : this.karaoke.songtypes[0].name;
-			},
-			songtypeSlug(): string {
-				return slug(this.karaoke.songtypes[0].name);
 			},
 			slug(): string {
 				return slug(this.karaoke.title);
@@ -233,27 +180,6 @@
 					this.loading = false;
 				} else {
 					modalStore.openModal('auth');
-				}
-			},
-			handleLink(type: 'serieSinger' | 'songtypes') {
-				let tag: DBKaraTag;
-				switch (type) {
-				case 'serieSinger':
-					tag = { ...this.karaoke[this.serieSinger.type][0] };
-					tag.i18n = this.i18n[tag.tid];
-					menuBarStore.addTag({
-						type: this.serieSinger.type,
-						tag
-					});
-					break;
-				case 'songtypes':
-					tag = { ...this.karaoke.songtypes[0] };
-					tag.i18n = this.i18n[tag.tid];
-					menuBarStore.addTag({
-						type: 'songtypes',
-						tag
-					});
-					break;
 				}
 			}
 		}
