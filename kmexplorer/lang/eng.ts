@@ -27,7 +27,7 @@ export default {
 		modified_at: 'Last update ',
 		add: 'Add to application',
 		download: 'Download the karaoke with karabundle format',
-		live: 'Open karaoke on Live in a new tab',
+		live: 'Open in a new tab',
 		lyrics: {
 			show: 'Show lyrics',
 			hide: 'Hide lyrics'

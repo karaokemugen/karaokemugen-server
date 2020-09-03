@@ -27,7 +27,7 @@ export default {
 		modified_at: 'Denière modification ',
 		add: 'Télécharger dans l\'application',
 		download: 'Télécharger le karaoké au format karabundle',
-		live: 'Ouvrir le karaoké sur Live dans un nouvel onglet',
+		live: 'Ouvrir dans un nouvel onglet',
 		lyrics: {
 			show: 'Afficher les paroles',
 			hide: 'Masquer les paroles'

@@ -23,8 +23,9 @@
 				<font-awesome-icon :icon="['fas', 'play']" color="black" size="2x" />
 			</font-awesome-layers>
 		</div>
-		<a v-if="!show" :href="`${liveURL}?video=${karaoke.kid}`" target="_blank" class="button is-info">
-			<font-awesome-icon :icon="['fas', 'play']" :fixed-width="true" />
+		<a :href="`${liveURL}?video=${karaoke.kid}`" target="_blank" class="button is-info">
+			<font-awesome-icon v-if="show" :icon="['fas', 'external-link-alt']" :fixed-width="true" />
+			<font-awesome-icon v-else :icon="['fas', 'play']" :fixed-width="true" />
 			{{ $t('kara.live') }}
 		</a>
 	</div>
