@@ -9,10 +9,7 @@
 					:href="`/tags/${songtypeSlug}/${karaoke.songtypes[0].tid}~3`"
 					@click.prevent="handleLink('songtypes')"
 				>
-					{{ songtype }}
-					<template v-if="karaoke.songorder">
-						&nbsp;{{ karaoke.songorder }}
-					</template>
+					{{ songtype }}<template v-if="karaoke.songorder">&nbsp;{{ karaoke.songorder }}</template>
 				</a>
 			</template>
 			<template v-slot:series>
@@ -43,6 +40,9 @@
 				</tr>
 			</tbody>
 		</table>
+		<div class="content">
+			{{ $t('kara.duration') }}:&nbsp;{{ duration }}&nbsp;/&nbsp;{{ $t('kara.created_at') }}:&nbsp;{{ new Date(karaoke.created_at).toLocaleString() }}&nbsp;/&nbsp;{{ $t('kara.modified_at') }}:&nbsp;{{ new Date(karaoke.modified_at).toLocaleString() }}
+		</div>
 		<div class="buttons">
 			<a :href="kmAppUrl" class="button is-success">
 				<font-awesome-icon :icon="['fas', 'cloud-download-alt']" :fixed-width="true" />
@@ -60,6 +60,17 @@
 				<font-awesome-icon :icon="['fas', 'file-export']" :fixed-width="true" />
 				{{ $t('kara.download') }}
 			</a>
+			<button class="button" @click="toggleLyrics">
+				<font-awesome-icon :icon="['fas', 'closed-captioning']" :fixed-width="true" />
+				{{ lyrics ? $t('kara.lyrics.hide'):$t('kara.lyrics.show') }}
+			</button>
+		</div>
+		<div v-if="lyrics" class="box is-clear">
+			<ul>
+				<li v-for="(line, i) in karaoke.lyrics" :key="`lyrics-${i}`">
+					{{ line }}
+				</li>
+			</ul>
 		</div>
 	</div>
 </template>
@@ -74,10 +85,12 @@
 	import { menuBarStore, modalStore } from '~/store';
 	import { serieSinger } from '~/types/serieSinger';
 	import { DBKara } from '%/lib/types/database/kara';
+	import duration from '~/assets/date';
 
 	interface VState {
 		tagTypes: typeof tagTypes,
 		favorite: boolean,
+		lyrics: boolean,
 		loading: boolean
 	}
 
@@ -99,6 +112,7 @@
 			return {
 				tagTypes,
 				favorite: false,
+				lyrics: false,
 				loading: false
 			};
 		},
@@ -152,6 +166,15 @@
 			},
 			bundleUrl(): string {
 				return `${this.$axios.defaults.baseURL}api/karas/${this.karaoke.kid}/raw`;
+			},
+			duration(): string {
+				const durationArray = duration(this.karaoke.duration);
+				const returnString = [];
+				if (durationArray[0] !== 0) { returnString.push(`${durationArray[0]} ${this.$t('duration.days')}`); }
+				if (durationArray[1] !== 0) { returnString.push(`${durationArray[1]} ${this.$t('duration.hours')}`); }
+				if (durationArray[2] !== 0) { returnString.push(`${durationArray[2]} ${this.$t('duration.minutes')}`); }
+				if (durationArray[3] !== 0) { returnString.push(`${durationArray[3]} ${this.$t('duration.seconds')}`); }
+				return returnString.join(' ');
 			}
 		},
 
@@ -173,6 +196,9 @@
 				} else {
 					modalStore.openModal('auth');
 				}
+			},
+			toggleLyrics() {
+				this.lyrics = !this.lyrics;
 			},
 			handleLink(type: 'serieSinger' | 'songtypes') {
 				switch (type) {
@@ -241,5 +267,10 @@
 
 	.subtitle.no-top-margin {
 		margin-top: -1.25rem;
+	}
+
+	.box.is-clear {
+		background-color: lighten(#373f40, 5);
+		width: max-content;
 	}
 </style>

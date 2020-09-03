@@ -40,7 +40,8 @@ import {
 	faLock,
 	faFolderPlus,
 	faEraser,
-	faPlus
+	faPlus,
+	faClosedCaptioning
 } from '@fortawesome/free-solid-svg-icons';
 
 // This is important, we are going to let Nuxt.js worry about the CSS
@@ -85,6 +86,7 @@ library.add(faLock);
 library.add(faFolderPlus);
 library.add(faEraser);
 library.add(faPlus);
+library.add(faClosedCaptioning);
 
 // Register the component globally
 Vue.component('font-awesome-icon', FontAwesomeIcon);
