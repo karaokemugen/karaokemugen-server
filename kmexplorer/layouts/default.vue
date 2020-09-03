@@ -72,7 +72,7 @@
 					</a>
 
 					<div v-if="languageMenu" class="navbar-dropdown">
-						<div
+						<a
 							v-for="locale in availableLocales"
 							:key="locale.code"
 							class="navbar-item"
@@ -83,7 +83,7 @@
 								accountMenu = !accountMenu;"
 						>
 							{{ locale.name }}
-						</div>
+						</a>
 					</div>
 				</div>
 			</div>
@@ -384,7 +384,7 @@
 					</li>
 				</ul>
 			</aside>
-			<section class="container column is-fluid">
+			<section class="container column is-fluid main">
 				<!-- <nuxt keep-alive :keep-alive-props="{ max: 3, exclude: ['KaraSearch'] }" /> -->
 				<nuxt />
 			</section>

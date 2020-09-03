@@ -81,9 +81,20 @@ body.has-navbar-fixed-top, html.has-navbar-fixed-top {
 }
 
 @media (min-width: $desktop) {
-	.container.is-fluid {
-		margin-left: 160px;
+	.container.is-fluid.main {
+		margin-left: 180px;
 	}
+}
+
+@media (max-width: $desktop) {
+	.columns {
+		margin: 0;
+	}
+}
+
+
+.container.is-fluid.main {
+	padding: 0.75rem;
 }
 
 @import '~buefy/src/scss/buefy';
