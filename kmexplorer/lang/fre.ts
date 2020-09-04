@@ -24,7 +24,7 @@ export default {
 		},
 		duration: 'Durée ',
 		created_at: 'Création ',
-		modified_at: 'Denière modification ',
+		modified_at: 'Dernière modification ',
 		add: 'Télécharger dans l\'application',
 		download: 'Télécharger le karaoké au format karabundle',
 		live: 'Ouvrir dans un nouvel onglet',
@@ -264,7 +264,6 @@ export default {
 					label: 'Email',
 					placeholder: 'test@shelter.moe'
 				},
-
 				url: {
 					label: 'Url',
 					placeholder: 'https://karaokes.moe'
