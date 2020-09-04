@@ -24,7 +24,7 @@
 	import slug from 'slug';
 	import languages from '@cospired/i18n-iso-languages';
 	import { serieSinger, ShortTag } from '~/types/serieSinger';
-	import { generateNavigation, getSerieLanguage } from '~/utils/tools';
+	import { generateNavigation, getSerieLanguage, getTagInLanguage } from '~/utils/tools';
 	import { tagTypes } from '~/assets/constants';
 	import { DBKara } from '%/lib/types/database/kara';
 	import { menuBarStore } from '~/store';
@@ -58,7 +58,7 @@
 					};
 				} else if (this.karaoke.singers[0]) {
 					return {
-						name: this.karaoke.singers[0].i18n[languages.alpha2ToAlpha3B(this.$i18n.locale)] || this.karaoke.singers[0].i18n.eng || this.karaoke.singers[0].name,
+						name: getTagInLanguage(this.karaoke.singers[0], languages.alpha2ToAlpha3B(this.$i18n.locale), 'eng', this.i18n),
 						tid: `${this.karaoke.singers[0].tid}~${tagTypes.singers.type}`,
 						slug: slug(this.karaoke.singers[0].name),
 						type: 'singers'
@@ -73,20 +73,11 @@
 				}
 			},
 			songtype(): ShortTag {
-				const stag: ShortTag = {
+				return {
 					tid: this.karaoke.songtypes[0].tid,
 					slug: slug(this.karaoke.songtypes[0].name),
-					name: ''
+					name: getTagInLanguage(this.karaoke.songtypes[0], languages.alpha2ToAlpha3B(this.$i18n.locale), 'eng', this.i18n)
 				};
-				if (this.i18n) {
-					stag.name = this.i18n[this.karaoke.songtypes[0].tid]
-						? this.i18n[this.karaoke.songtypes[0].tid][languages.alpha2ToAlpha3B(this.$i18n.locale)] ||
-						this.i18n[this.karaoke.songtypes[0].tid]?.eng ||
-							this.karaoke.songtypes[0].name : this.karaoke.songtypes[0].name;
-				} else {
-					stag.name = this.karaoke.songtypes[0].i18n[languages.alpha2ToAlpha3B(this.$i18n.locale)] || this.karaoke.songtypes[0].i18n.eng || this.karaoke.songtypes[0].name;
-				}
-				return stag;
 			}
 		},
 
