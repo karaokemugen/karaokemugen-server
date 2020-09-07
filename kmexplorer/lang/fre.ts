@@ -22,9 +22,9 @@ export default {
 			groups: 'Groupe | Groupes',
 			misc: 'Divers'
 		},
-		duration: 'Durée ',
-		created_at: 'Création ',
-		modified_at: 'Dernière modification ',
+		duration: 'Durée ',
+		created_at: 'Création ',
+		modified_at: 'Dernière modification ',
 		add: 'Télécharger dans l\'application',
 		download: 'Télécharger le karaoké au format karabundle',
 		live: 'Ouvrir dans un nouvel onglet',
@@ -37,7 +37,7 @@ export default {
 			remove: 'Retirer des favoris'
 		},
 		problem: {
-			title: 'Un problème avec {title} ?',
+			title: 'Un problème avec {title} ?',
 			btn: {
 				report: 'Signaler un problème',
 				edit: 'Proposer une modification'
@@ -60,14 +60,14 @@ export default {
 				},
 				submit: 'Envoyer',
 				thanks: {
-					text: 'Merci ! Nous allons résoudre le problème dès que possible, le problème est suivi à cette adresse : {url}',
+					text: 'Merci ! Nous allons résoudre le problème dès que possible, le problème est suivi à cette adresse : {url}',
 					btn: 'Fermer'
 				}
 			}
 		},
 		import: {
 			description: 'Ce formulaire permet d\'envoyer un karaoké à l\'équipe de Karaoke Mugen. Il ne sera pas intégré immédiatement dans la base de karaokés car il nécessite une validation préalable. Aussi, votre karaoké peut être modifié par l\'équipe de Karaoke Mugen s\'il ne convient pas aux normes. Reportez-vous à la documentation pour plus d\'information, section "Guide du contributeur" puis "Documents de référence".',
-			attention: 'ATTENTION :',
+			attention: 'ATTENTION :',
 			check_in_progress: 'Merci de vérifier la liste des karaokés en cours de réalisation avant de proposer un karaoké. Cela évitera à tout le monde de faire deux fois le travail, et le monde sera meilleur.',
 			documentation_link: 'Documentation',
 			in_progress_link: 'Liste des karaokés en cours',
@@ -79,15 +79,15 @@ export default {
 			add_file_media_error: '{name} n\'est pas un fichier vidéo',
 			add_file_lyrics_error: '{name} n\'est pas un fichier de sous-titres',
 			add_file_success: 'Le fichier {name} a été ajouté avec succès',
-			comment_tooltip: 'Si vous voulez donner des indications aux mainteneurs de la base de karaokés ou simplement dire merci, faites-le ici !',
-			comment: 'Un commentaire ?',
-			comment_edit: 'N\'hésitez pas à signer votre correction pour qu\'on sache qui vous êtes !',
+			comment_tooltip: 'Si vous voulez donner des indications aux mainteneurs de la base de karaokés ou simplement dire merci, faites-le ici !',
+			comment: 'Un commentaire ?',
+			comment_edit: 'N\'hésitez pas à signer votre correction pour qu\'on sache qui vous êtes !',
 			submit: 'Envoyer ce karaoké',
 			media_file: 'Fichier vidéo',
 			media_file_required: 'Le fichier média est obligatoire',
-			media_file_tooltip: 'Formats de fichier acceptés : {formats}',
+			media_file_tooltip: 'Formats de fichier acceptés : {formats}',
 			lyrics_file: 'Fichier de sous-titres',
-			lyrics_file_tooltip: 'Format de fichier accepté : {formats}',
+			lyrics_file_tooltip: 'Format de fichier accepté : {formats}',
 			title: 'Titre du morceau',
 			title_required: 'Le titre est obligatoire',
 			title_tooltip: 'Si vous ne le connaissez pas, mettez le nom de la série. Dans le cas d\'une version alternative, nommez votre titre ainsi : \'Mon titre ~ Disco vers.\' par exemple',
@@ -116,12 +116,12 @@ export default {
 	},
 	layout: {
 		loading: 'Chargement...',
-		suggest: 'Vous ne trouvez pas ?',
-		suggest_open: 'Suggérez-le nous !',
+		suggest: 'Vous ne trouvez pas ?',
+		suggest_open: 'Suggérez-le nous !',
 		empty: 'C\'est la fin de vos favoris.',
-		explore: 'Allez en ajouter !',
+		explore: 'Allez en ajouter !',
 		results: '{count} résulat | {count} résultats',
-		slogan: 'Ce son est disponible sur la base Karaoke Mugen !'
+		slogan: 'Ce son est disponible sur la base Karaoke Mugen !'
 	},
 	footer: {
 		home: 'Accueil du projet',
@@ -264,6 +264,7 @@ export default {
 					label: 'Email',
 					placeholder: 'test@shelter.moe'
 				},
+
 				url: {
 					label: 'Url',
 					placeholder: 'https://karaokes.moe'
@@ -342,6 +343,7 @@ export default {
 		CANNOT_GENERATE_KARA: 'Impossible d\'envoyer le karaoké.',
 		CANNOT_EDIT_KARA: 'Impossible d\'envoyer la modification.',
 		FILE_UPLOADED: 'Fichier mis en ligne.',
-		USER_EDITED: 'Utilisateur édité avec succès'
+		USER_EDITED: 'Utilisateur édité avec succès',
+		FUTURE_PROFILES: 'Ce bouton servira à afficher votre profil pour partager vos favoris avec tous, mais c\'est pour une prochaine fois !'
 	}
 };

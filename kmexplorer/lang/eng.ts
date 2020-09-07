@@ -81,12 +81,13 @@ export default {
 			add_file_success: '{name} file added successfully',
 			comment: 'Leave a comment?',
 			comment_edit: 'If you\'re submitting an edit, tell us who you are here!',
+			comment_tooltip: 'If you want to add a message for the integrators or just say thanks, say it here!',
 			submit: 'Send karaoke',
 			media_file: 'Media file',
 			media_file_required: 'Media file is mandatory',
 			media_file_tooltip: 'Supported file formats: {formats}',
 			lyrics_file: 'Lyrics file',
-			lyrics_file_toolitp: 'Supported file formats: {formats}',
+			lyrics_file_tooltip: 'Supported file formats: {formats}',
 			title: 'Song title',
 			title_required: 'Please enter a song title',
 			title_tooltip: 'If you don\'t know, put the name of the series here as well. In the case of an alternative version, name your title as: \'My title ~ Disco vers.\' for example',
@@ -342,6 +343,7 @@ export default {
 		CANNOT_GENERATE_KARA: 'Cannot send karaoke.',
 		CANNOT_EDIT_KARA: 'Cannot send modification.',
 		FILE_UPLOADED: 'File uploaded.',
-		USER_EDITED: 'User successfully edited'
+		USER_EDITED: 'User successfully edited',
+		FUTURE_PROFILES: 'This button will be used to share your profile to everyone else, but that\'s for another moment!'
 	}
 };

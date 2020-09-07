@@ -84,6 +84,9 @@ body.has-navbar-fixed-top, html.has-navbar-fixed-top {
 	.container.is-fluid.main {
 		margin-left: 180px;
 	}
+	footer.footer {
+		margin-left: 180px;
+	}
 }
 
 @media (max-width: $desktop) {

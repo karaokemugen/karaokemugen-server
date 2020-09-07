@@ -353,8 +353,12 @@
 				</p>
 				<ul class="menu-list">
 					<li>
-						<a v-if="loggedIn" aria-label="Profile" @click.prevent="modal.profile = true">
+						<a v-if="loggedIn" aria-label="Profile" @click.prevent="$toast.success($t('toast.FUTURE_PROFILES'))">
 							<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
+							{{ $auth.user.nickname }}
+						</a>
+						<a v-if="loggedIn" aria-label="Profile" @click.prevent="modal.profile = true">
+							<font-awesome-icon :icon="['fas', 'edit']" :fixed-width="true" />
 							{{ $t('menu.profile') }}
 						</a>
 						<nuxt-link v-if="loggedIn" to="/favorites" active-class="is-active">
