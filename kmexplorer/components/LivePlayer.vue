@@ -23,7 +23,7 @@
 				<font-awesome-icon :icon="['fas', 'play']" color="black" size="2x" />
 			</font-awesome-layers>
 		</div>
-		<a :href="`${liveURL}?video=${karaoke.kid}`" target="_blank" class="button is-info">
+		<a :href="`${liveURL}?video=${karaoke.kid}`" target="_blank" class="button is-info" @click="closeLive">
 			<font-awesome-icon v-if="show" :icon="['fas', 'external-link-alt']" :fixed-width="true" />
 			<font-awesome-icon v-else :icon="['fas', 'play']" :fixed-width="true" />
 			{{ $t('kara.live') }}
@@ -70,9 +70,14 @@
 			transition(now: boolean) {
 				if (now) {
 					this.resizeEvent();
-				}
-				if (this.interval) {
-					clearInterval(this.interval);
+					if (this.interval) {
+						clearInterval(this.interval);
+					}
+				} else {
+					// Reset component
+					this.show = false;
+					this.showTick = false;
+					this.size = -1;
 				}
 			}
 		},
@@ -107,6 +112,11 @@
 			resizeEvent() {
 				if (this.show) {
 					this.size = (this.$refs.liveEmbed as HTMLIFrameElement)?.scrollWidth * 0.5625;
+				}
+			},
+			closeLive() {
+				if (this.show) {
+					this.$emit('close');
 				}
 			}
 		}

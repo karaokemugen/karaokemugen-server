@@ -6,7 +6,7 @@
 			</div>
 			<div class="tile is-4-desktop-only is-parent is-vertical">
 				<div v-if="liveURL && live" class="tile is-child">
-					<live-player :karaoke="karaoke" :transition="liveTransition" @open="placeForLive" />
+					<live-player :karaoke="karaoke" :transition="liveTransition" @open="placeForLive" @close="closeLive" />
 				</div>
 				<div v-else class="tile is-child">
 					<div class="box">
@@ -105,6 +105,10 @@
 			},
 			transitionLive() {
 				this.liveTransition = true;
+			},
+			closeLive() {
+				this.liveTransition = false;
+				this.liveOpened = false;
 			}
 		},
 
