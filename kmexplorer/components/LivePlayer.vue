@@ -92,7 +92,7 @@
 				if (now && this.show) {
 					// Lock the vertical scroll to let user set volume in Live
 					this.scrollY = window.scrollY;
-					window.addEventListener('scroll', this.blockScroll);
+					window.addEventListener('scroll', this.blockScroll, { passive: true });
 				} else {
 					window.removeEventListener('scroll', this.blockScroll);
 				}
