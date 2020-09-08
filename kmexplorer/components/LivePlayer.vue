@@ -107,6 +107,7 @@
 		destroyed() {
 			window.removeEventListener('keydown', this.keyEvent);
 			window.removeEventListener('resize', this.resizeEvent);
+			window.removeEventListener('scroll', this.blockScroll);
 		},
 
 		methods: {
