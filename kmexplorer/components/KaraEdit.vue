@@ -108,7 +108,7 @@
 				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
 			</label>
 			<div class="control">
-				<input v-model="karaoke.songorder" class="input" type="number">
+				<input v-model="karaoke.songorder" class="input short" type="number">
 				<p v-if="karaoke.songorder > 999" class="help is-danger">
 					{{ $t('kara.import.songorder_invalid') }}
 				</p>
@@ -133,7 +133,7 @@
 				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
 			</label>
 			<div class="control">
-				<input v-model="karaoke.year" class="input" type="number">
+				<input v-model="karaoke.year" class="input short" type="number" min="1800" :max="new Date().getFullYear()">
 				<p v-if="!karaoke.year" class="help is-danger">
 					{{ $t('kara.import.year_required') }}
 				</p>
@@ -565,5 +565,9 @@
 
 	.message {
 		max-width: 50em;
+	}
+
+	.input.short {
+		width: 6em;
 	}
 </style>
