@@ -38,7 +38,8 @@
 	interface VState {
 		loading: boolean,
 		karaokes: KaraListType,
-		from: number
+		from: number,
+		activated: boolean
 	}
 
 	export default Vue.extend({
@@ -106,7 +107,8 @@
 			return {
 				loading: false,
 				karaokes: { infos: { count: 0, from: 0, to: 0 }, i18n: {}, content: [] },
-				from: -1
+				from: -1,
+				activated: false
 			};
 		},
 
@@ -142,7 +144,6 @@
 			sort() { this.resetList(); },
 			search() { this.resetList(true); },
 			tags() { this.resetList(true); },
-			year() { this.resetList(); },
 			loading(now) {
 				if (now) { this.$nuxt.$loading.start(); } else { this.$nuxt.$loading.finish(); }
 			}
@@ -154,12 +155,17 @@
 			}
 		},
 
-		mounted() {
+		activated() {
+			if (menuBarStore.sort === 'karacount') {
+				menuBarStore.setSort('recent');
+			}
 			window.addEventListener('scroll', this.scrollEvent, { passive: true });
+			this.activated = true;
 		},
 
-		destroyed() {
+		deactivated() {
 			window.removeEventListener('scroll', this.scrollEvent);
+			this.activated = false;
 		},
 
 		methods: {
@@ -188,6 +194,9 @@
 				}
 			},
 			resetList(navigation = false) {
+				if (!this.activated) {
+					return;
+				}
 				this.karaokes = { infos: { count: 0, to: 0, from: 0 }, i18n: {}, content: [] };
 				menuBarStore.setResultsCount(0);
 				this.from = -1;
