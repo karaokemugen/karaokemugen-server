@@ -1,5 +1,9 @@
 <template>
-	<div class="box">
+	<div
+		class="box"
+		@mouseenter="hover = true"
+		@mouseleave="hover = false"
+	>
 		<iframe
 			v-if="show"
 			ref="liveEmbed"
@@ -40,6 +44,8 @@
 		show: boolean,
 		showTick: boolean,
 		size: number,
+		hover: boolean,
+		scrollY: number,
 		interval?: NodeJS.Timeout
 	}
 
@@ -62,7 +68,9 @@
 				liveURL: process.env.LIVE_URL,
 				show: false,
 				showTick: false,
-				size: -1
+				size: -1,
+				hover: false,
+				scrollY: 0
 			};
 		},
 
@@ -78,6 +86,15 @@
 					this.show = false;
 					this.showTick = false;
 					this.size = -1;
+				}
+			},
+			hover(now) {
+				if (now && this.show) {
+					// Lock the vertical scroll to let user set volume in Live
+					this.scrollY = window.scrollY;
+					window.addEventListener('scroll', this.blockScroll);
+				} else {
+					window.removeEventListener('scroll', this.blockScroll);
 				}
 			}
 		},
@@ -118,6 +135,9 @@
 				if (this.show) {
 					this.$emit('close');
 				}
+			},
+			blockScroll() {
+				window.scrollTo(window.scrollX, this.scrollY);
 			}
 		}
 	});
