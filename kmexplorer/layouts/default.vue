@@ -398,8 +398,7 @@
 				</ul>
 			</aside>
 			<section class="container column is-fluid main">
-				<!-- <nuxt keep-alive :keep-alive-props="{ max: 3, exclude: ['KaraSearch'] }" /> -->
-				<nuxt />
+				<nuxt keep-alive :keep-alive-props="{ max: 1, include: ['KaraSearch'] }" />
 			</section>
 		</div>
 		<footer class="footer">
