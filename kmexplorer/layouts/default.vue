@@ -46,11 +46,20 @@
 			<div v-if="accountMenu" class="navbar-dropdown">
 				<a
 					v-if="loggedIn"
-					class="navbar-item"
 					aria-label="Profile"
-					@click.prevent="modal.profile = true"
+					class="navbar-item"
+					@click.prevent="$toast.success($t('toast.FUTURE_PROFILES'))"
 				>
 					<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
+					{{ $auth.user.nickname }}
+				</a>
+				<a
+					v-if="loggedIn"
+					class="navbar-item"
+					aria-label="Edit profile"
+					@click.prevent="modal.profile = true"
+				>
+					<font-awesome-icon :icon="['fas', 'edit']" :fixed-width="true" />
 					{{ $t('menu.profile') }}
 				</a>
 				<nuxt-link v-if="loggedIn" to="/favorites" class="navbar-item" active-class="is-active">
@@ -90,10 +99,10 @@
 
 			<div v-if="databaseMenu" class="navbar-dropdown">
 				<div class="is-hidden-desktop">
-					<nuxt-link class="navbar-item" to="/search">
+					<a href="search" class="navbar-item" @click.prevent="pushSearch">
 						<font-awesome-icon :icon="['fas', 'music']" :fixed-width="true" />
 						{{ $t('menu.karas') }}
-					</nuxt-link>
+					</a>
 					<nuxt-link class="navbar-item" to="/types/songtypes">
 						<font-awesome-icon :icon="['fas', 'list']" :fixed-width="true" />
 						{{ $t('menu.songtypes') }}
@@ -183,10 +192,10 @@
 				</p>
 				<ul class="menu-list">
 					<li>
-						<nuxt-link to="/search" active-class="is-active">
+						<a href="search" :class="{'is-active': $route.name === 'search-query'}" @click.prevent="pushSearch">
 							<font-awesome-icon :icon="['fas', 'music']" :fixed-width="true" />
 							{{ $t('menu.karas') }}
-						</nuxt-link>
+						</a>
 					</li>
 					<li>
 						<nuxt-link
@@ -357,7 +366,7 @@
 							<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
 							{{ $auth.user.nickname }}
 						</a>
-						<a v-if="loggedIn" aria-label="Profile" @click.prevent="modal.profile = true">
+						<a v-if="loggedIn" aria-label="Edit profile" @click.prevent="modal.profile = true">
 							<font-awesome-icon :icon="['fas', 'edit']" :fixed-width="true" />
 							{{ $t('menu.profile') }}
 						</a>
@@ -428,6 +437,7 @@
 	import ProfileModal from '~/components/ProfileModal.vue';
 	import AddRepoModal from '~/components/AddRepoModal.vue';
 	import { menuBarStore, modalStore } from '~/store';
+	import { generateNavigation } from '~/utils/tools';
 
 	import { ModalType } from '~/store/modal';
 
@@ -542,6 +552,11 @@
 			},
 			resetSearch() {
 				menuBarStore.reset();
+			},
+			pushSearch() {
+				if (this.$route.name !== 'search-query') {
+					this.$router.push(generateNavigation(menuBarStore));
+				}
 			}
 		},
 
