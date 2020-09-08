@@ -1,6 +1,6 @@
 import logger from './lib/utils/logger';
 import express from 'express';
-import {resolve} from 'path';
+import {resolve, join} from 'path';
 import bodyParser from 'body-parser';
 import passport from 'passport';
 import adminController from './controllers/admin';
@@ -101,6 +101,10 @@ export function initFrontend(listenPort: number) {
 			return;
 		});
 	}
+	// Old import route
+	app.get('/import', (_req, res) => {
+		res.redirect(join(conf.KaraExplorer.Path, 'import'));
+	});
 	// KMExplorer
 	if (conf.KaraExplorer.Enabled) {
 		app.use(vhost(`${conf.KaraExplorer.Host}`, KMExplorer));
