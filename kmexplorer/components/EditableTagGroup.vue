@@ -10,7 +10,7 @@
 			<div class="tags">
 				<span v-for="tag in values" :key="tag.tid" class="tag">
 					{{ localizedName(tag) }}
-					<div class="delete is-small" @click="() => deleteValue(tag)" />
+					<a class="delete is-small" @click.prevent="() => deleteValue(tag)" />
 				</span>
 				<div class="button tag is-small" @click="inputVisible = true">
 					<font-awesome-icon :icon="['fas', 'plus']" />
@@ -43,7 +43,8 @@
 
 <script lang="ts">
 	import Vue, { PropOptions } from 'vue';
-	import debounce from 'lodash/debounce';
+	import debounce from 'lodash.debounce';
+	import clonedeep from 'lodash.clonedeep';
 	import languages from '@cospired/i18n-iso-languages';
 	import { DBTagMini } from '%/lib/types/database/tag';
 	import { KaraTag } from '%/lib/types/kara';
@@ -76,11 +77,17 @@
 		data(): VState {
 			return {
 				data: [],
-				values: this.params,
+				values: clonedeep(this.params),
 				inputVisible: false,
 				currentVal: '',
 				isFetching: false
 			};
+		},
+
+		watch: {
+			params(now) {
+				this.values = clonedeep(now);
+			}
 		},
 
 		async mounted() {
@@ -88,6 +95,18 @@
 			if (this.checkboxes) {
 				const result = await this.getTags(this.tagType);
 				this.data = result.content;
+				if (this.params.length > 0) {
+					const tags: DBTagMini[] = [];
+					for (const tag of this.params) {
+						const tag2 = this.data.find(val => val.tid === tag.tid);
+						if (tag2) {
+							tags.push(tag2);
+						} else {
+							throw new TypeError(`Tag ${tag.tid} unknown`);
+						}
+					}
+					this.$emit('change', tags);
+				}
 			}
 		},
 
@@ -124,6 +143,7 @@
 			},
 			addValue(option: DBTagMini) {
 				this.inputVisible = false;
+				this.currentVal = '';
 				if (option) {
 					const values: DBTagMini[] = this.values;
 					values.push(option);
@@ -138,8 +158,7 @@
 				}
 			},
 			deleteValue(option: KaraTag) {
-				this.values = this.values.filter(tag => tag.name !== option.name);
-				this.$emit('change', this.values);
+				this.$emit('change', this.values.filter(tag => tag.name !== option.name));
 			},
 			check() {
 				this.$emit(

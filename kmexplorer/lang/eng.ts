@@ -111,7 +111,8 @@ export default {
 			modified_at: 'Last updated date',
 			add_success: 'Your karaoke has been successfully sent!',
 			add_success_description: 'An issue has been created on our tracker. You can check its progression at {url}',
-			add_error: 'An error has occurred, karaoke has not been sent properly'
+			add_error: 'An error has occurred, karaoke has not been sent properly',
+			restart: 'Submit new karaoke'
 		}
 	},
 	layout: {

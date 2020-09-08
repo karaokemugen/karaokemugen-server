@@ -109,9 +109,10 @@ export default {
 			groups_tooltip: 'Groupes de téléchargement pour ce morceau. Le morceau sera ajouté dans ces paquets pour le téléchargement',
 			created_at: 'Date de création',
 			modified_at: 'Date de dernière mise à jour',
-			add_success: 'Votre karaoké est envoyé !',
-			add_success_description: 'Un ticket a été crée sur notre outil de suivi. Vous pouvez consulter l\'avancement de l\'intégration de votre karaoké : {url}',
-			add_error: 'Une erreur a eu lieu, le karaoké n\'a pas pu être envoyé'
+			add_success: 'Votre karaoké est envoyé !',
+			add_success_description: 'Un ticket a été crée sur notre outil de suivi. Vous pouvez consulter l\'avancement de l\'intégration de votre karaoké : {url}',
+			add_error: 'Une erreur a eu lieue, le karaoké n\'a pas pu être envoyé',
+			restart: 'Soumettre un nouveau karaoké'
 		}
 	},
 	layout: {

@@ -316,39 +316,83 @@
 				</button>
 			</div>
 		</div>
-		<div v-if="gitlabUrl" class="message is-success">
-			<div class="message-header">
-				<p>{{ $t('kara.import.add_success') }}</p>
+		<div class="modal" :class="{'is-active': gitlabUrl}">
+			<div class="modal-background" />
+			<div class="modal-card">
+				<header class="modal-card-head">
+					<p class="modal-card-title">
+						{{ $t('kara.import.add_success') }}
+					</p>
+					<a class="delete" aria-label="close" @click.prevent="reset" />
+				</header>
+				<i18n path="kara.import.add_success_description" tag="section" class="modal-card-body">
+					<template v-slot:url>
+						<a :href="gitlabUrl" target="_blank">
+							{{ gitlabUrl }}
+						</a>
+					</template>
+				</i18n>
+				<footer class="modal-card-foot">
+					<button class="button is-success" @click.prevent="reset">
+						{{ $t('kara.import.restart') }}
+					</button>
+				</footer>
 			</div>
-			<i18n path="kara.import.add_success_description" tag="div" class="message-body">
-				<template v-slot:url>
-					<a :href="gitlabUrl" target="_blank">
-						{{ gitlabUrl }}
-					</a>
-				</template>
-			</i18n>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-	import Vue from 'vue';
+	import Vue, { PropOptions } from 'vue';
+	import cloneDeep from 'lodash.clonedeep';
+
 	import { tagTypes } from '~/assets/constants';
 	import EditableTagGroup from '~/components/EditableTagGroup.vue';
 	import { APIMessageType } from '%/lib/types/frontend';
+	import { DBKara } from '%/lib/types/database/kara';
+
+	interface DBKaraEdit extends DBKara {
+		mediafile_orig?: string,
+		subfile_orig?: string
+	}
+
+	interface VState {
+		tagTypes: typeof tagTypes,
+		karaoke: DBKaraEdit,
+		mediafile: string,
+		subfile: string,
+		mediafile_error: string,
+		subfile_error: string,
+		supportedLyrics: string[],
+		supportedMedias: string[],
+		gitlabUrl: string,
+		loading: boolean,
+		uploading: {
+			media: boolean,
+			sub: boolean
+		}
+	}
 
 	export default Vue.extend({
 
 		name: 'KaraEdit',
 
 		components: { EditableTagGroup },
-		props: ['karaparam', 'i18n'],
+		props: {
+			karaparam: {
+				type: Object,
+				required: false
+			} as PropOptions<DBKara>,
+			i18n: {
+				type: Object,
+				required: false
+			}
+		},
 
-		data() {
+		data(): VState {
 			return {
 				tagTypes,
-				activate: false,
-				karaoke: this.karaparam ? this.karaparam : {},
+				karaoke: cloneDeep(this.karaparam),
 				mediafile: this.karaparam?.mediafile,
 				subfile: this.karaparam?.subfile,
 				mediafile_error: '',
@@ -356,7 +400,11 @@
 				supportedLyrics: process.env.SUPPORTED_LYRICS as unknown as string[],
 				supportedMedias: process.env.SUPPORTED_MEDIAS as unknown as string[],
 				gitlabUrl: '',
-				loading: false
+				loading: false,
+				uploading: {
+					media: false,
+					sub: false
+				}
 			};
 		},
 
@@ -375,7 +423,9 @@
 					this.karaoke.year < 1800 ||
 					this.karaoke.year > new Date().getFullYear() ||
 					this.karaoke.songorder > 999 ||
-					this.karaoke.authors.length === 0
+					this.karaoke.authors.length === 0 ||
+					this.uploading.media ||
+					this.uploading.sub
 				);
 			}
 		},
@@ -397,6 +447,8 @@
 						) as string;
 					} else {
 						this.mediafile = file.name;
+						this.uploading.media = true;
+						this.mediafile_error = '';
 						const formData = new FormData();
 						formData.append('file', file);
 						const result = await this.$axios.$post(
@@ -410,6 +462,7 @@
 						);
 						this.karaoke.mediafile = result.data.filename;
 						this.karaoke.mediafile_orig = result.data.originalname;
+						this.uploading.media = false;
 					}
 				}
 			},
@@ -429,6 +482,8 @@
 						) as string;
 					} else {
 						this.subfile = file.name;
+						this.uploading.sub = true;
+						this.subfile_error = '';
 						const formData = new FormData();
 						formData.append('file', file);
 						const result = await this.$axios.$post(
@@ -442,6 +497,7 @@
 						);
 						this.karaoke.subfile = result.data.filename;
 						this.karaoke.subfile_orig = result.data.originalname;
+						this.uploading.sub = false;
 					}
 				}
 			},
@@ -470,6 +526,20 @@
 					}).catch(() => { this.loading = false; });
 				}
 				this.loading = false;
+			},
+			reset() {
+				if (this.$route.params.id) {
+					this.$router.push('/import');
+				} else {
+					this.karaoke = this.karaparam;
+					this.mediafile = '';
+					this.subfile = '';
+					this.mediafile_error = '';
+					this.subfile_error = '';
+					this.gitlabUrl = '';
+					(this.$refs.mediafile as HTMLInputElement).value = '';
+					(this.$refs.subfile as HTMLInputElement).value = '';
+				}
 			}
 		}
 	});
