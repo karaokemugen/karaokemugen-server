@@ -45,7 +45,7 @@
 
 			<div v-if="accountMenu" class="navbar-dropdown">
 				<a
-					v-if="loggedIn"
+					v-if="loggedIn && $auth.user"
 					aria-label="Profile"
 					class="navbar-item"
 					@click.prevent="$toast.success($t('toast.FUTURE_PROFILES'))"
@@ -362,7 +362,7 @@
 				</p>
 				<ul class="menu-list">
 					<li>
-						<a v-if="loggedIn" aria-label="Profile" @click.prevent="$toast.success($t('toast.FUTURE_PROFILES'))">
+						<a v-if="loggedIn && $auth.user" aria-label="Profile" @click.prevent="$toast.success($t('toast.FUTURE_PROFILES'))">
 							<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
 							{{ $auth.user.nickname }}
 						</a>
