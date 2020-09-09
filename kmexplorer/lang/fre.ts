@@ -26,7 +26,10 @@ export default {
 		created_at: 'Création ',
 		modified_at: 'Dernière modification ',
 		add: 'Télécharger dans l\'application',
-		download: 'Télécharger le karaoké au format karabundle',
+		download: {
+			karabundle: 'Télécharger les données du karaoké',
+			media: 'Télécharger le média'
+		},
 		live: 'Ouvrir dans un nouvel onglet',
 		lyrics: {
 			show: 'Afficher les paroles',

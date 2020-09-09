@@ -26,7 +26,10 @@ export default {
 		created_at: 'Created ',
 		modified_at: 'Last update ',
 		add: 'Add to application',
-		download: 'Download the karaoke with karabundle format',
+		download: {
+			karabundle: 'Download karaoke data',
+			media: 'Download media'
+		},
 		live: 'Open in a new tab',
 		lyrics: {
 			show: 'Show lyrics',

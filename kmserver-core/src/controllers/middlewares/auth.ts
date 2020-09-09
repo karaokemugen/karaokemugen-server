@@ -13,18 +13,18 @@ export const optionalAuth = (req, res, next) => {
 		findUserByName(token.username, {password: true})
 			.then((user) => {
 				if (!user) {
-					res.status(403).send('User logged in unknown');
+					res.status(403).json('User logged in unknown');
 				} else {
 					const tokenDate = new Date(token.passwordLastModifiedAt);
 					if (tokenDate.toJSON() !== user.password_last_modified_at.toJSON()) {
-						res.status(403).send('Token has expired');
+						res.status(403).json('Token has expired');
 					} else {
 						next();
 					}
 				}
 			})
 			.catch(() => {
-				res.status(403).send('User logged in unknown');
+				res.status(403).json('User logged in unknown');
 			});
 	} else {
 		// No Auth, continue.
@@ -38,18 +38,18 @@ export const requireValidUser = (req, res, next) => {
 	findUserByName(token.username, {password: true})
 		.then((user) => {
 			if (!user) {
-				res.status(403).send('User logged in unknown');
+				res.status(403).json('User logged in unknown');
 			} else {
 				const tokenDate = new Date(token.passwordLastModifiedAt);
 				if (tokenDate.toJSON() !== user.password_last_modified_at.toJSON()) {
-					res.status(403).send('Token has expired');
+					res.status(403).json('Token has expired');
 				} else {
 					next();
 				}
 			}
 		})
 		.catch(() => {
-			res.status(403).send('User logged in unknown');
+			res.status(403).json('User logged in unknown');
 		});
 };
 

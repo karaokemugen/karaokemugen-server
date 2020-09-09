@@ -45,13 +45,13 @@
 
 			<div v-if="accountMenu" class="navbar-dropdown">
 				<a
-					v-if="loggedIn && $auth.user"
+					v-if="loggedIn && user"
 					aria-label="Profile"
 					class="navbar-item"
 					@click.prevent="$toast.success($t('toast.FUTURE_PROFILES'))"
 				>
 					<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
-					{{ $auth.user.nickname }}
+					{{ user.nickname }}
 				</a>
 				<a
 					v-if="loggedIn"
@@ -362,9 +362,9 @@
 				</p>
 				<ul class="menu-list">
 					<li>
-						<a v-if="loggedIn && $auth.user" aria-label="Profile" @click.prevent="$toast.success($t('toast.FUTURE_PROFILES'))">
+						<a v-if="loggedIn && user" aria-label="Profile" @click.prevent="$toast.success($t('toast.FUTURE_PROFILES'))">
 							<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
-							{{ $auth.user.nickname }}
+							{{ user.nickname }}
 						</a>
 						<a v-if="loggedIn" aria-label="Edit profile" @click.prevent="modal.profile = true">
 							<font-awesome-icon :icon="['fas', 'edit']" :fixed-width="true" />
@@ -422,7 +422,7 @@
 				</p>
 			</div>
 		</footer>
-		<LoginModal :active="modal.auth" @close="modal.auth=false" @login="loggedIn=true" />
+		<LoginModal :active="modal.auth" @close="modal.auth=false" />
 		<ProfileModal :active="modal.profile" @close="modal.profile=false" @logout="logout" />
 		<AddRepoModal :active="modal.addRepo" @close="modal.addRepo=false" />
 	</div>
@@ -430,6 +430,7 @@
 
 <script lang="ts">
 	import Vue from 'vue';
+	import { mapState } from 'vuex';
 	import SearchTags from '~/components/SearchTags.vue';
 	import SearchBar from '~/components/SearchBar.vue';
 	import LoginModal from '~/components/LoginModal.vue';
@@ -445,7 +446,6 @@
 		base_license_name?: string,
 		base_license_link?: string,
 		explorerHost?: string,
-		loggedIn: boolean,
 		tagsMenu: boolean,
 		databaseMenu: boolean,
 		communityMenu: boolean,
@@ -474,7 +474,6 @@
 				base_license_name: process.env.BASE_LICENSE_NAME,
 				base_license_link: process.env.BASE_LICENSE_LINK,
 				explorerHost: process.env.EXPLORER_HOST,
-				loggedIn: this.$auth.loggedIn,
 				tagsMenu: false,
 				databaseMenu: false,
 				communityMenu: false,
@@ -497,7 +496,8 @@
 			},
 			availableLocales() {
 				return this.$i18n.locales?.filter((i: any) => i.code && i.code !== this.$i18n.locale);
-			}
+			},
+			...mapState('auth', ['loggedIn', 'user'])
 		},
 
 		created() {
@@ -529,7 +529,6 @@
 		methods: {
 			logout() {
 				this.$auth.logout();
-				this.loggedIn = false;
 			},
 			openMenu(menu: string) {
 				if (menu === 'database') {
