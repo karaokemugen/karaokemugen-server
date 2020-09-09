@@ -113,6 +113,11 @@ export default {
 			add_success_description: 'An issue has been created on our tracker. You can check its progression at {url}',
 			add_error: 'An error has occurred, karaoke has not been sent properly',
 			restart: 'Submit new karaoke'
+		},
+		stats: {
+			favorited: 'Added to favorites by {number} users',
+			requested: 'Requested {number} times',
+			played: 'Played {number} times'
 		}
 	},
 	layout: {

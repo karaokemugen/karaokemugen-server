@@ -6,7 +6,6 @@
 					v-if="karaokes.content[(n-1)*3+n2-1]"
 					:karaoke="karaokes.content[(n-1)*3+n2-1]"
 					:i18n="karaokes.i18n"
-					:favorites="favorites"
 				/>
 			</div>
 		</div>
@@ -52,10 +51,6 @@
 			loading: {
 				type: Boolean,
 				required: true
-			},
-			favorites: {
-				type: Boolean,
-				default: false
 			}
 		},
 

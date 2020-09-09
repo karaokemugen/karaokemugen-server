@@ -14,7 +14,7 @@
 		</div>
 		<button
 			v-if="favorite && favorites"
-			class="button is-normal is-warning is-fullwidth"
+			class="button inline is-normal is-yellow is-fullwidth"
 			:class="{'is-loading': loading}"
 			@click="toggleFavorite"
 		>
@@ -23,23 +23,40 @@
 		</button>
 		<button
 			v-else-if="favorites"
-			class="button is-normal is-warning is-fullwidth"
+			class="button inline is-normal is-yellow is-fullwidth"
 			:class="{'is-loading': loading}"
 			@click="toggleFavorite"
 		>
 			<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
 			{{ $t('kara.favorites.add') }}
 		</button>
-		<div class="tags are-medium">
-			<tag
-				v-for="tag in tags"
-				:key="`${karaoke.kid}-${tag.tag.tid}~${tagTypes[tag.type].type}`"
-				:type="tag.type"
-				:tag="tag.tag"
-				:i18n="i18n"
-				:staticheight="false"
-				icon
-			/>
+		<div class="lebonflex">
+			<div class="tags are-medium">
+				<tag
+					v-for="tag in tags"
+					:key="`${karaoke.kid}-${tag.tag.tid}~${tagTypes[tag.type].type}`"
+					:type="tag.type"
+					:tag="tag.tag"
+					:i18n="i18n"
+					:staticheight="false"
+					icon
+				/>
+			</div>
+			<i18n v-if="karaoke.favorited" path="kara.stats.favorited" tag="div" class="box stats">
+				<template v-slot:number>
+					<span class="nb">{{ karaoke.favorited }}</span>
+				</template>
+			</i18n>
+			<i18n v-if="karaoke.requested" path="kara.stats.requested" tag="div" class="box stats blue">
+				<template v-slot:number>
+					<span class="nb">{{ karaoke.requested }}</span>
+				</template>
+			</i18n>
+			<i18n v-if="karaoke.played" path="kara.stats.played" tag="div" class="box stats blue">
+				<template v-slot:number>
+					<span class="nb">{{ karaoke.played }}</span>
+				</template>
+			</i18n>
 		</div>
 	</div>
 </template>
@@ -60,7 +77,8 @@
 		tagTypes: typeof tagTypes,
 		activate: boolean,
 		loading: boolean,
-		favorite: boolean
+		favorite: boolean,
+		favorites: boolean
 	}
 
 	export default Vue.extend({
@@ -80,10 +98,6 @@
 			i18n: {
 				type: Object,
 				required: true
-			},
-			favorites: {
-				type: Boolean,
-				default: false
 			}
 		},
 
@@ -92,7 +106,8 @@
 				tagTypes,
 				activate: false,
 				loading: false,
-				favorite: true
+				favorite: false,
+				favorites: false
 			};
 		},
 
@@ -152,15 +167,12 @@
 			}
 		},
 
-		watch: {
-			favorites(now) {
-				this.favorite = now;
-			}
-		},
-
 		created() {
-			if (this.favorites) {
-				this.favorite = true;
+			if (typeof this.karaoke.flag_favorites === 'boolean') { // If the tag is present, the user is logged in
+				this.favorite = this.karaoke.flag_favorites;
+				this.favorites = true;
+			} else {
+				this.favorites = false;
 			}
 		},
 
@@ -192,6 +204,14 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-content: flex-start;
+	}
+
+	.lebonflex {
+		display: flex;
+	}
+
+	.button.inline {
+		margin: 0.5em 0;
 	}
 
 	.title, .subtitle {
@@ -256,5 +276,22 @@
 		.tag *:first-child {
 			margin-right: 0.25rem;
 		}
+	}
+
+	.box.stats {
+		display: unset;
+		background-color: #7e6f1875;
+		width: 70%;
+		height: min-content;
+		padding: 1rem;
+		text-align: center;
+		.nb {
+			display: block;
+			font-size: 2.5rem;
+		}
+	}
+
+	.box.stats.blue {
+		background-color: #315eb575;
 	}
 </style>

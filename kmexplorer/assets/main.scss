@@ -77,7 +77,14 @@ body.has-navbar-fixed-top, html.has-navbar-fixed-top {
 }
 
 .button .svg-inline--fa {
-	margin-right: 0.25em ;
+	margin-right: 0.25em;
+}
+
+.button.is-yellow {
+	background-color: #7e6f18;
+}
+.button.is-yellow:focus {
+	color: unset;
 }
 
 @media (min-width: $desktop) {
