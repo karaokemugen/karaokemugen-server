@@ -31,7 +31,7 @@ export const tagTypesMap: { [key: number]: tagType } = {
 	8: {
 		icon: 'signature',
 		class: 'is-warning',
-		name: 'singers'
+		name: 'songwriters'
 	},
 	10: {
 		icon: 'photo-video',
