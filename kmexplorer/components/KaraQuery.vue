@@ -6,7 +6,7 @@
 				<search-bar :filter="false" :results="false" />
 				<search-edit />
 			</div>
-			<kara-list :karaokes="karaokes" :loading="loading || $fetchState.pending" />
+			<kara-list :karaokes="karaokes" :loading="loading || $fetchState.pending" :favorites="favorites" />
 		</div>
 	</div>
 </template>

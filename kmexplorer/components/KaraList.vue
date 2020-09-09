@@ -51,6 +51,10 @@
 			loading: {
 				type: Boolean,
 				required: true
+			},
+			favorites: {
+				type: Boolean,
+				default: false
 			}
 		},
 
