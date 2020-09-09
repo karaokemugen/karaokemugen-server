@@ -11,6 +11,7 @@
 				v-if="favorite && favorites"
 				class="button inline is-normal is-yellow"
 				:class="{'is-loading': loading}"
+				:title="$t('kara.favorites.remove')"
 				@click="toggleFavorite"
 			>
 				<font-awesome-icon :icon="['fas', 'eraser']" :fixed-width="true" />
@@ -19,6 +20,7 @@
 				v-else-if="favorites"
 				class="button inline is-normal is-yellow"
 				:class="{'is-loading': loading}"
+				:title="$t('kara.favorites.add')"
 				@click="toggleFavorite"
 			>
 				<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
