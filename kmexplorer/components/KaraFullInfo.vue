@@ -35,18 +35,22 @@
 			{{ $t('kara.duration') }}:&nbsp;{{ duration }}&nbsp;/&nbsp;{{ $t('kara.created_at') }}:&nbsp;{{ new Date(karaoke.created_at).toLocaleString() }}&nbsp;/&nbsp;{{ $t('kara.modified_at') }}:&nbsp;{{ new Date(karaoke.modified_at).toLocaleString() }}
 		</div>
 		<div class="buttons">
+			<button class="button is-info" @click="toggleLyrics">
+				<font-awesome-icon :icon="['fas', 'closed-captioning']" :fixed-width="true" />
+				{{ lyrics ? $t('kara.lyrics.hide'):$t('kara.lyrics.show') }}
+			</button>
 			<a :href="kmAppUrl" class="button is-success">
 				<font-awesome-icon :icon="['fas', 'cloud-download-alt']" :fixed-width="true" />
 				{{ $t('kara.add') }}
 			</a>
 			<a :href="bundleUrl" class="button" :download="`${serieSinger.name} - ${karaoke.title}.karabundle.json`">
 				<font-awesome-icon :icon="['fas', 'file-export']" :fixed-width="true" />
-				{{ $t('kara.download') }}
+				{{ $t('kara.download.karabundle') }}
 			</a>
-			<button class="button" @click="toggleLyrics">
-				<font-awesome-icon :icon="['fas', 'closed-captioning']" :fixed-width="true" />
-				{{ lyrics ? $t('kara.lyrics.hide'):$t('kara.lyrics.show') }}
-			</button>
+			<a :href="mediaUrl" class="button" download>
+				<font-awesome-icon :icon="['fas', 'file-video']" :fixed-width="true" />
+				{{ $t('kara.download.media') }}
+			</a>
 		</div>
 		<div v-show="lyrics" class="box is-clear">
 			<ul>
@@ -151,6 +155,9 @@
 			},
 			bundleUrl(): string {
 				return `${this.$axios.defaults.baseURL}api/karas/${this.karaoke.kid}/raw`;
+			},
+			mediaUrl(): string {
+				return `${this.$axios.defaults.baseURL}downloads/medias/${this.karaoke.mediafile}`;
 			},
 			duration(): string {
 				const durationArray = duration(this.karaoke.duration);
