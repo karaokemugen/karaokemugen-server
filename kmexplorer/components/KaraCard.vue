@@ -7,29 +7,29 @@
 			</nuxt-link>
 		</div>
 		<div class="title-block">
-			<nuxt-link :to="`/kara/${slug}/${karaoke.kid}`" class="title is-3 is-spaced">
-				{{ karaoke.title }}
-			</nuxt-link>
-			<kara-phrase :karaoke="karaoke" :i18n="i18n" tag="h5" class="subtitle is-56" />
+			<button
+				v-if="favorite && favorites"
+				class="button inline is-normal is-yellow"
+				:class="{'is-loading': loading}"
+				@click="toggleFavorite"
+			>
+				<font-awesome-icon :icon="['fas', 'eraser']" :fixed-width="true" />
+			</button>
+			<button
+				v-else-if="favorites"
+				class="button inline is-normal is-yellow"
+				:class="{'is-loading': loading}"
+				@click="toggleFavorite"
+			>
+				<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
+			</button>
+			<div>
+				<nuxt-link :to="`/kara/${slug}/${karaoke.kid}`" class="title is-3 is-spaced">
+					{{ karaoke.title }}
+				</nuxt-link>
+				<kara-phrase :karaoke="karaoke" :i18n="i18n" tag="h5" class="subtitle is-56" />
+			</div>
 		</div>
-		<button
-			v-if="favorite && favorites"
-			class="button inline is-normal is-yellow is-fullwidth"
-			:class="{'is-loading': loading}"
-			@click="toggleFavorite"
-		>
-			<font-awesome-icon :icon="['fas', 'eraser']" :fixed-width="true" />
-			{{ $t('kara.favorites.remove') }}
-		</button>
-		<button
-			v-else-if="favorites"
-			class="button inline is-normal is-yellow is-fullwidth"
-			:class="{'is-loading': loading}"
-			@click="toggleFavorite"
-		>
-			<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
-			{{ $t('kara.favorites.add') }}
-		</button>
 		<div class="lebonflex">
 			<div class="tags are-medium">
 				<tag
@@ -293,5 +293,18 @@
 
 	.box.stats.blue {
 		background-color: #315eb575;
+	}
+
+	.button.is-yellow {
+		margin-right: 0.5em;
+
+		.svg-inline--fa {
+			margin: 0;
+		}
+
+	}
+
+	.title-block {
+		display: flex;
 	}
 </style>
