@@ -9,6 +9,14 @@
 				{{ karaoke.year }}
 			</a>
 		</h6>
+		<button v-if="favorite" class="button margin is-yellow" :class="{'is-loading': loading}" @click="toggleFavorite">
+			<font-awesome-icon :icon="['fas', 'eraser']" :fixed-width="true" />
+			{{ $t('kara.favorites.remove') }}
+		</button>
+		<button v-else class="button margin is-yellow" :class="{'is-loading': loading}" @click="toggleFavorite">
+			<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
+			{{ $t('kara.favorites.add') }}
+		</button>
 		<table class="table tagList">
 			<tbody>
 				<tr v-for="type in Object.keys(tagTypesSorted)" :key="type">
@@ -31,14 +39,6 @@
 				<font-awesome-icon :icon="['fas', 'cloud-download-alt']" :fixed-width="true" />
 				{{ $t('kara.add') }}
 			</a>
-			<button v-if="favorite" class="button is-warning" :class="{'is-loading': loading}" @click="toggleFavorite">
-				<font-awesome-icon :icon="['fas', 'eraser']" :fixed-width="true" />
-				{{ $t('kara.favorites.remove') }}
-			</button>
-			<button v-else class="button is-warning" :class="{'is-loading': loading}" @click="toggleFavorite">
-				<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
-				{{ $t('kara.favorites.add') }}
-			</button>
 			<a :href="bundleUrl" class="button" :download="`${serieSinger.name} - ${karaoke.title}.karabundle.json`">
 				<font-awesome-icon :icon="['fas', 'file-export']" :fixed-width="true" />
 				{{ $t('kara.download') }}
@@ -241,8 +241,13 @@
 		}
 	}
 
+	.button.margin {
+		margin: 1em 0;
+	}
+
 	.subtitle.no-top-margin {
 		margin-top: -1.25rem;
+		margin-bottom: 0;
 	}
 
 	.box.is-clear {
