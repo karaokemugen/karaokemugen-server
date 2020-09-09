@@ -39,7 +39,8 @@
 		loading: boolean,
 		karaokes: KaraListType,
 		from: number,
-		activated: boolean
+		activated: boolean,
+		resetNeeded: boolean
 	}
 
 	export default Vue.extend({
@@ -108,7 +109,8 @@
 				loading: false,
 				karaokes: { infos: { count: 0, from: 0, to: 0 }, i18n: {}, content: [] },
 				from: -1,
-				activated: false
+				activated: false,
+				resetNeeded: false
 			};
 		},
 
@@ -161,6 +163,9 @@
 			}
 			window.addEventListener('scroll', this.scrollEvent, { passive: true });
 			this.activated = true;
+			if (this.resetNeeded) {
+				this.resetList(true);
+			}
 		},
 
 		deactivated() {
@@ -195,6 +200,7 @@
 			},
 			resetList(navigation = false) {
 				if (!this.activated) {
+					this.resetNeeded = true;
 					return;
 				}
 				this.karaokes = { infos: { count: 0, to: 0, from: 0 }, i18n: {}, content: [] };
