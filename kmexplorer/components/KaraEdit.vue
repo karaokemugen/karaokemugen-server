@@ -5,7 +5,7 @@
 				{{ $t('kara.import.media_file') }}
 				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
 			</label>
-			<div class="file has-name is-fullwidth">
+			<div class="file has-name is-fullwidth" :class="{'is-attached-bottom': uploading.media}">
 				<label class="file-label">
 					<input
 						ref="mediafile"
@@ -24,6 +24,7 @@
 					<span class="file-name">{{ mediafile }}</span>
 				</label>
 			</div>
+			<progress v-if="uploading.media" class="progress is-success is-attached-top" :value="uploading.media === true ? undefined:uploading.media" max="100" />
 			<p v-if="!mediafile" class="help is-danger">
 				{{ $t('kara.import.media_file_required') }}
 			</p>
@@ -36,13 +37,14 @@
 				{{ $t('kara.import.lyrics_file') }}
 				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
 			</label>
-			<div class="file has-name is-fullwidth">
+			<div class="file has-name is-fullwidth" :class="{'is-attached-bottom': uploading.sub}">
 				<label class="file-label">
 					<input
 						ref="subfile"
 						class="file-input"
 						type="file"
 						name="resume"
+						:accept="supportedLyrics.map(val => '.'+val).join(',')"
 						@change="handleSubfileUpload()"
 					>
 					<span class="file-cta">
@@ -54,6 +56,7 @@
 					<span class="file-name">{{ subfile }}</span>
 				</label>
 			</div>
+			<progress v-if="uploading.sub" class="progress is-success is-attached-top" :value="uploading.sub === true ? undefined:uploading.sub" max="100" />
 			<p v-if="subfile_error" class="help is-danger">
 				{{ subfile_error }}
 			</p>
@@ -368,8 +371,8 @@
 		gitlabUrl: string,
 		loading: boolean,
 		uploading: {
-			media: boolean,
-			sub: boolean
+			media: boolean | number,
+			sub: boolean | number
 		}
 	}
 
@@ -410,22 +413,22 @@
 
 		computed: {
 			submitDisabled(): boolean {
-				return (
+				return Boolean(
 					!this.mediafile ||
-					this.mediafile_error.length > 0 ||
-					this.subfile_error.length > 0 ||
-					!this.karaoke.title ||
-					(this.karaoke.series.length === 0 &&
-						this.karaoke.singers.length === 0) ||
-					this.karaoke.songtypes.length === 0 ||
-					this.karaoke.langs.length === 0 ||
-					!this.karaoke.year ||
-					this.karaoke.year < 1800 ||
-					this.karaoke.year > new Date().getFullYear() ||
-					this.karaoke.songorder > 999 ||
-					this.karaoke.authors.length === 0 ||
-					this.uploading.media ||
-					this.uploading.sub
+						this.mediafile_error.length > 0 ||
+						this.subfile_error.length > 0 ||
+						!this.karaoke.title ||
+						(this.karaoke.series.length === 0 &&
+							this.karaoke.singers.length === 0) ||
+						this.karaoke.songtypes.length === 0 ||
+						this.karaoke.langs.length === 0 ||
+						!this.karaoke.year ||
+						this.karaoke.year < 1800 ||
+						this.karaoke.year > new Date().getFullYear() ||
+						this.karaoke.songorder > 999 ||
+						this.karaoke.authors.length === 0 ||
+						this.uploading.media ||
+						this.uploading.sub
 				);
 			}
 		},
@@ -457,6 +460,9 @@
 							{
 								headers: {
 									'Content-Type': 'multipart/form-data'
+								},
+								onUploadProgress: (progressEvent) => {
+									this.uploading.media = Math.round((progressEvent.loaded * 100) / progressEvent.total);
 								}
 							}
 						);
@@ -492,6 +498,9 @@
 							{
 								headers: {
 									'Content-Type': 'multipart/form-data'
+								},
+								onUploadProgress: (progressEvent) => {
+									this.uploading.sub = Math.round((progressEvent.loaded * 100) / progressEvent.total);
 								}
 							}
 						);
@@ -569,5 +578,24 @@
 
 	.input.short {
 		width: 6em;
+	}
+
+	.file.has-name.is-attached-bottom {
+		.file-cta {
+			border-bottom-left-radius: 0;
+			border-bottom: 0;
+		}
+		.file-name {
+			border-bottom-right-radius: 0;
+			border-bottom: 0;
+		}
+	}
+
+	.progress.is-attached-top {
+		border: 1px #5e6d6f solid;
+		border-top-left-radius: 0;
+		border-top-right-radius: 0;
+		margin-bottom: 0;
+		background-color: inherit;
 	}
 </style>
