@@ -271,7 +271,7 @@ export const configConstraints = {
 };
 
 export let NuxtConfig: NuxtConfigType = {
-	mode: 'universal',
+	target: 'server',
 	modern: 'server',
 	dev: false,
 
@@ -312,7 +312,6 @@ export let NuxtConfig: NuxtConfigType = {
 
 	plugins: [
 		'~/plugins/icons.js',
-		{src: '~/plugins/vuex-persist.js', ssr: false},
 		{src: '~/plugins/axios.js', ssr: false}
 	],
 
