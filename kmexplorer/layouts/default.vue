@@ -504,7 +504,7 @@
 			this.$store.subscribe((mutation: Record<string, any>, _state: any) => {
 				if (mutation.type === 'menubar/setSearch') {
 					if (!this.onKaraTagListView) {
-						this.$router.push(`/search/${mutation.payload}`);
+						this.$router.push(generateNavigation(menuBarStore));
 					} // Each KaraList view handles a search change itself, either by swapping the route
 					// or by reset the KaraList with new filter
 				} else if (mutation.type === 'modal/openModal') {

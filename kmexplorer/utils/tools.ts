@@ -84,7 +84,7 @@ export function sortTypesKara(karaoke: DBKara): DBKara {
 }
 
 export function generateNavigation(menuBarStore: menubar) {
-	const navigation = { path: `/search/${menuBarStore.search}`, query: { q: '' } };
+	const navigation = { path: `/search/${encodeURIComponent(menuBarStore.search)}`, query: { q: '' } };
 	const criterias: string[] = [];
 	const tags: string[] = [];
 	for (const tag of menuBarStore.tags) {
