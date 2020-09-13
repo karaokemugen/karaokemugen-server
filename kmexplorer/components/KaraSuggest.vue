@@ -76,7 +76,7 @@
 										<div class="control">
 											<div class="select">
 												<select id="type" v-model="formData.type" name="type" autocomplete="off">
-													<option v-for="songtype in Object.keys(songtypes)" :value="songtype" :key="songtype">
+													<option v-for="songtype in Object.keys(songtypes)" :key="songtype" :value="songtype">
 														{{ songtypes[songtype][$i18n.locale] || songtypes[songtype]['eng'] || songtype }}
 													</option>
 												</select>
@@ -229,17 +229,21 @@
 </script>
 
 <style scoped lang="scss">
-.field-label {
-	flex-grow: 2;
-}
-
-.title.is-4.with-img {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	img {
-		height: 2.5em;
+	.field-label {
+		flex-grow: 2;
 	}
-	margin-bottom: 0;
-}
+
+	.title.is-4.with-img {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		img {
+			height: 2.5em;
+		}
+		margin-bottom: 0;
+	}
+
+	.select select option {
+		color: white;
+	}
 </style>
