@@ -46,3 +46,7 @@ export async function removeInstances(ip: string) {
 export async function cleanupInstances(date: Date) {
 	return await db().query(sql.cleanupInstances, [date]);
 }
+
+export async function bootClearInstances() {
+	return await db().query(sql.clearInstances);
+}

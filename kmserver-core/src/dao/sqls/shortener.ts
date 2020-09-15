@@ -59,3 +59,8 @@ ON CONFLICT (ip6_prefix, remote_ip4) DO UPDATE SET
 	instance_id = $7
 ;`,
 };
+
+export const clearInstances = `
+DELETE FROM short_url
+WHERE modified_at IS NULL;
+`;
