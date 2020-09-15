@@ -1,4 +1,4 @@
-import {getRequestedStats, getFavoritesStats, getPlayedStats, processStatsPayload, addPlayed} from '../services/stats';
+import {getRequestedStats, getFavoritesStats, getPlayedStats, processStatsPayload, addPlayed} from '../../services/stats';
 import { Router } from 'express';
 
 export default function statsController(router: Router) {

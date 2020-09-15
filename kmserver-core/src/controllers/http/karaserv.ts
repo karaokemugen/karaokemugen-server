@@ -1,11 +1,11 @@
-import {getRawKara, getBaseStats, getKara, getAllKaras, getAllYears, newKaraIssue, getAllmedias} from '../services/kara';
-import {getTags, getTag} from '../services/tag';
-import {getAllSeries} from '../services/series';
-import {getSettings} from '../lib/dao/database';
+import {getRawKara, getBaseStats, getKara, getAllKaras, getAllYears, newKaraIssue, getAllmedias} from '../../services/kara';
+import {getTags, getTag} from '../../services/tag';
+import {getAllSeries} from '../../services/series';
+import {getSettings} from '../../lib/dao/database';
 import { Router } from 'express';
-import {getConfig} from '../lib/utils/config';
-import { postSuggestionToKaraBase } from '../lib/services/gitlab';
-import { optionalAuth } from './middlewares/auth';
+import {getConfig} from '../../lib/utils/config';
+import { postSuggestionToKaraBase } from '../../lib/services/gitlab';
+import { optionalAuth } from '../middlewares/auth';
 
 export default function KSController(router: Router) {
 	router.route('/karas/lastUpdate')

@@ -12,7 +12,7 @@ import { User, Token } from '../lib/types/user';
 import { sendMail } from '../utils/mailer';
 import randomstring from 'randomstring';
 import sentry from '../utils/sentry';
-import {getRole, createJwtToken } from '../controllers/auth';
+import {getRole, createJwtToken } from '../controllers/http/auth';
 import {UserOptions} from '../types/user';
 
 const passwordResetRequests = new Map();

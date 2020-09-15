@@ -1,11 +1,11 @@
-import {removeUser, editUser, createUser, findUserByName, getAllUsers, resetPasswordRequest, resetPassword} from '../services/user';
-import {check, unescape} from '../lib/utils/validators';
+import {removeUser, editUser, createUser, findUserByName, getAllUsers, resetPasswordRequest, resetPassword} from '../../services/user';
+import {check, unescape} from '../../lib/utils/validators';
 import multer from 'multer';
-import {getConfig} from '../lib/utils/config';
+import {getConfig} from '../../lib/utils/config';
 import {resolve} from 'path';
 import { Router } from 'express';
-import { getState } from '../utils/state';
-import {requireAuth, requireValidUser, updateLoginTime} from './middlewares/auth';
+import { getState } from '../../utils/state';
+import {requireAuth, requireValidUser, updateLoginTime} from '../middlewares/auth';
 
 export default function userController(router: Router) {
 	const conf = getConfig();

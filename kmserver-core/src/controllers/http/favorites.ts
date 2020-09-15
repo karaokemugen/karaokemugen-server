@@ -1,5 +1,5 @@
-import {requireAuth, requireValidUser, updateLoginTime} from './middlewares/auth';
-import { getFavorites, addFavorite, removeFavorite } from '../services/favorites';
+import {requireAuth, requireValidUser, updateLoginTime} from '../middlewares/auth';
+import { getFavorites, addFavorite, removeFavorite } from '../../services/favorites';
 import { Router } from 'express';
 
 export default function favoritesController(router: Router) {

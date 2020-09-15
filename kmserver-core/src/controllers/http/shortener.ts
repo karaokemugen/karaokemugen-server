@@ -1,4 +1,4 @@
-import {publishInstance, getInstance} from '../services/shortener';
+import { publishInstance, getInstance } from '../../services/shortener';
 import { Router } from 'express';
 import { isIPv6 } from 'net';
 
@@ -23,7 +23,7 @@ export default function ShortenerController(router: Router) {
 		})
 		.post(async (req, res) => {
 			try {
-				await publishInstance(req.headers['x-forwarded-for'] as string, req.body);
+				await publishInstance((req.headers['x-forwarded-for'] as string).split(', ')[0], req.body);
 				res.status(200).send('Update OK');
 			} catch(err) {
 				res.status(500).send(err);
