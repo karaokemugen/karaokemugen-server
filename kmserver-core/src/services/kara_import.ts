@@ -80,11 +80,12 @@ export async function editKara(kara: Kara): Promise<string> {
 			sentry.error(err, 'Warning');
 		}
 
-
 	} catch(err) {
 		logger.error('Error while editing kara', {service: 'KaraGen', obj: err});
-		sentry.addErrorInfo('Kara', JSON.stringify(kara, null, 2));
-		sentry.error(err);
+		if (!err.msg) {
+			sentry.addErrorInfo('Kara', JSON.stringify(kara, null, 2));
+			sentry.error(err);
+		}
 		throw err;
 	}
 }
@@ -103,8 +104,10 @@ export async function createKara(kara: Kara) {
 		logger.debug('Kara', {service: 'GitLab', obj: newKara.data});
 	} catch(err) {
 		logger.error('Error importing kara', {service: 'KaraGen', obj: err});
-		sentry.addErrorInfo('Kara', JSON.stringify(kara, null, 2));
-		sentry.error(err);
+		if (!err.msg) {
+			sentry.addErrorInfo('Kara', JSON.stringify(kara, null, 2));
+			sentry.error(err);
+		}
 		throw err;
 	}
 	const karaName = `${newKara.data.langs[0].name.toUpperCase()} - ${newKara.data.series[0]?.name || newKara.data.singers[0]?.name} - ${newKara.data.songtypes[0].name}${newKara.data.songorder || ''} - ${newKara.data.title}`;

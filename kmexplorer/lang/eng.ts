@@ -350,6 +350,7 @@ export default {
 		GENERATED_KARA: 'Karaoke sent successfully.',
 		EDITED_KARA: 'Modification sent successfully.',
 		CANNOT_GENERATE_KARA: 'Cannot send karaoke.',
+		SUBFILE_FORMAT_UNKOWN: 'Subfile format unkown',
 		CANNOT_EDIT_KARA: 'Cannot send modification.',
 		FILE_UPLOADED: 'File uploaded.',
 		USER_EDITED: 'User successfully edited',

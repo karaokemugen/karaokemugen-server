@@ -350,6 +350,7 @@ export default {
 		GENERATED_KARA: 'Karaoké envoyé avec succès.',
 		EDITED_KARA: 'Modification envoyée avec succès.',
 		CANNOT_GENERATE_KARA: 'Impossible d\'envoyer le karaoké.',
+		SUBFILE_FORMAT_UNKOWN: 'Format du fichier de sous-titres inconnus',
 		CANNOT_EDIT_KARA: 'Impossible d\'envoyer la modification.',
 		FILE_UPLOADED: 'Fichier mis en ligne.',
 		USER_EDITED: 'Utilisateur édité avec succès',

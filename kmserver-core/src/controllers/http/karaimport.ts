@@ -15,8 +15,9 @@ export default function KIController(router: Router) {
 			const url = await createKara(req.body);
 			res.status(200).json(APIMessage('GENERATED_KARA', url || ''));
 		} catch(err) {
-			errMessage('CANNOT_GENERATE_KARA', err);
-			res.status(500).json(APIMessage('CANNOT_GENERATE_KARA', err));
+			const code = 'CANNOT_GENERATE_KARA';
+			errMessage(code, err);
+			res.status(err?.code || 500).json(APIMessage(err?.msg || code));
 		}
 	});
 	router.put('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})',  async (req: any, res: any) => {
@@ -24,8 +25,9 @@ export default function KIController(router: Router) {
 			const url = await editKara(req.body);
 			res.status(200).json(APIMessage('EDITED_KARA', url || ''));
 		} catch(err) {
-			errMessage('CANNOT_EDIT_KARA', err);
-			res.status(500).json(APIMessage('CANNOT_EDIT_KARA', err));
+			const code = 'CANNOT_EDIT_KARA'; 
+			errMessage(code, err);
+			res.status(err?.code || 500).json(APIMessage(err?.msg || code));
 		}
 	});
 	router.post('/karas/importfile', upload.single('file'), (req, res) => {
