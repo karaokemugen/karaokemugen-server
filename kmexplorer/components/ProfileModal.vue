@@ -258,7 +258,7 @@
 					<button
 						type="button"
 						class="button is-danger"
-						@click="deleteUser"
+						@click.prevent="openDeleteAccountModal"
 					>
 						{{ $t('modal.profile.delete') }}
 					</button>
@@ -273,6 +273,7 @@
 	import languages from '@cospired/i18n-iso-languages';
 
 	import { DBUser } from '%/lib/types/database/user';
+	import { modalStore } from '~/store';
 
 	languages.registerLocale(require('@cospired/i18n-iso-languages/langs/en.json'));
 	languages.registerLocale(require('@cospired/i18n-iso-languages/langs/fr.json'));
@@ -366,12 +367,6 @@
 			getUser(): void {
 				if (this.storeUser) { this.user = { ...this.storeUser }; }
 			},
-			deleteUser(): void {
-				this.$axios.delete('/api/myaccount');
-				this.$emit('logout');
-				this.$auth.logout();
-				this.closeModal();
-			},
 			async submitForm(): Promise<void> {
 				this.loading = true;
 				const response = await this.$axios.put('/api/myaccount', this.user);
@@ -382,6 +377,10 @@
 			},
 			closeModal(): void {
 				this.$emit('close');
+			},
+			openDeleteAccountModal() {
+				modalStore.openModal('deleteAccount');
+				this.closeModal();
 			}
 		}
 	});

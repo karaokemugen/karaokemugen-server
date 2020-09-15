@@ -425,6 +425,7 @@
 		<LoginModal :active="modal.auth" @close="modal.auth=false" />
 		<ProfileModal :active="modal.profile" @close="modal.profile=false" @logout="logout" />
 		<AddRepoModal :active="modal.addRepo" @close="modal.addRepo=false" />
+		<DeleteAccountModal :active="modal.deleteAccount" @close="modal.deleteAccount=false" @logout="logout" />
 	</div>
 </template>
 
@@ -436,6 +437,7 @@
 	import LoginModal from '~/components/LoginModal.vue';
 	import ProfileModal from '~/components/ProfileModal.vue';
 	import AddRepoModal from '~/components/AddRepoModal.vue';
+	import DeleteAccountModal from '~/components/DeleteAccountModal.vue';
 	import { menuBarStore, modalStore } from '~/store';
 	import { generateNavigation } from '~/utils/tools';
 
@@ -454,7 +456,8 @@
 		modal: {
 			auth: boolean,
 			profile: boolean,
-			addRepo: boolean
+			addRepo: boolean,
+			deleteAccount: boolean
 		}
 	}
 
@@ -465,7 +468,8 @@
 			SearchBar,
 			LoginModal,
 			ProfileModal,
-			AddRepoModal
+			AddRepoModal,
+			DeleteAccountModal
 		},
 
 		data(): VState {
@@ -482,7 +486,8 @@
 				modal: {
 					auth: false,
 					profile: false,
-					addRepo: false
+					addRepo: false,
+					deleteAccount: false
 				}
 			};
 		},

@@ -308,6 +308,11 @@ export default {
 			add: 'Ajouter',
 			cancel: 'Annuler'
 		},
+		delete_account: {
+			label: 'Êtes-vous réellement sûr de vouloir supprimer votre compte ?',
+			add: 'Supprimer le compte',
+			cancel: 'Annuler'
+		},
 		suggest: {
 			title: 'Suggestion',
 			subtitle: 'Vous n\'avez pas trouvé votre bonheur ? Vous pouvez quand même nous formuler une recommandation.',

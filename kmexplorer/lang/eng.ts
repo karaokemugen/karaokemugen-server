@@ -308,6 +308,11 @@ export default {
 			add: 'Add',
 			cancel: 'Cancel'
 		},
+		delete_account: {
+			label: 'Do you really want to delete your account?',
+			add: 'Delete the account',
+			cancel: 'Cancel'
+		},
 		suggest: {
 			title: 'Suggestion',
 			subtitle: 'You couldn\'t find what you\'ve searched for? You can still fill a suggestion ',
