@@ -1,7 +1,7 @@
 <template>
 	<div class="box">
 		<div class="header" @mouseenter="switchImage" @mouseleave="switchImage">
-			<nuxt-link :to="`/kara/${slug}/${karaoke.kid}`" class="images">
+			<nuxt-link :to="`/kara/${slug}/${karaoke.kid}`" class="images" :class="{blur: problematic}">
 				<v-lazy-image :src="images[0]" alt="" />
 				<v-lazy-image :src="images[1]" :class="{activate}" alt="" />
 			</nuxt-link>
@@ -136,6 +136,20 @@
 				}
 				return tagTypes;
 			},
+			problematic(): boolean {
+				// Loop all tags to find a tag with problematic
+				let problematic = false;
+				for (const tagType in tagTypes) {
+					if (tagType === 'years') { continue; }
+					// @ts-ignore: il est 23h27 <- ceci n'est pas une raison
+					for (const tag of this.karaoke[tagType]) {
+						if (tag.problematic) {
+							problematic = true;
+						}
+					}
+				}
+				return problematic;
+			},
 			tags(): TagExtend[] {
 				const tags: TagExtend[] = [];
 				for (const tagType in this.tagTypesSorted) {
@@ -269,6 +283,10 @@
 		img:last-child.activate {
 			opacity: 1;
 		}
+	}
+
+	.images.blur > img {
+		filter: blur(10px) brightness(75%);
 	}
 
 	.tags {
