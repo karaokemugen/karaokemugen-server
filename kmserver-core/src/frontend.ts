@@ -2,7 +2,6 @@ import logger from './lib/utils/logger';
 import express from 'express';
 import {resolve, join} from 'path';
 import bodyParser from 'body-parser';
-import passport from 'passport';
 import adminController from './controllers/http/admin';
 import authController from './controllers/http/auth';
 import KServerController from './controllers/http/karaserv';
@@ -12,7 +11,6 @@ import shortenerController from './controllers/http/shortener';
 import userController from './controllers/http/user';
 import favoritesController from './controllers/http/favorites';
 import shortenerSocketController from './controllers/ws/shortener';
-import {configurePassport} from './lib/utils/passport_manager';
 import {getConfig, resolvedPathAvatars, resolvedPathPreviews, resolvedPathRepos} from './lib/utils/config';
 import range from 'express-range';
 import vhost from 'vhost';
@@ -62,8 +60,6 @@ export function initFrontend(listenPort: number) {
 		extended: true
 	})); // support encoded bodies
 
-	app.use(passport.initialize());
-	configurePassport();
 	// Server allows resuming file downloads :
 	app.use(range());
 	app.use((req, res, next) => {

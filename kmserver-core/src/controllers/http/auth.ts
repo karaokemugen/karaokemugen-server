@@ -1,10 +1,10 @@
-import passport from 'passport';
 import {encode, decode} from 'jwt-simple';
 import { Router } from 'express';
 
 import {getConfig} from '../../lib/utils/config';
 import {findUserByName, checkPassword, updateUserLastLogin} from '../../services/user';
 import { Token, Role, User } from '../../lib/types/user';
+import { requireAuth } from '../middlewares/auth';
 import sentry from '../../utils/sentry';
 import logger from '../../lib/utils/logger';
 
@@ -28,8 +28,6 @@ async function checkLogin(username: string, password: string): Promise<Token> {
 
 
 export default function authController(router: Router) {
-
-	const requireAuth = passport.authenticate('jwt', { session: false });
 
 	router.post('/auth/login', async (req, res) => {
 		try {
