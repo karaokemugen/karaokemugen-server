@@ -1,4 +1,3 @@
-import passport from 'passport';
 import {encode, decode} from 'jwt-simple';
 import { Router } from 'express';
 
@@ -7,6 +6,7 @@ import {findUserByName, checkPassword, updateUserLastLogin} from '../../services
 import { Token, Role, User } from '../../lib/types/user';
 import sentry from '../../utils/sentry';
 import logger from '../../lib/utils/logger';
+import { requireAuth } from '../middlewares/auth';
 
 const loginErr = {
 	code: 'LOG_ERROR',
@@ -28,8 +28,6 @@ async function checkLogin(username: string, password: string): Promise<Token> {
 
 
 export default function authController(router: Router) {
-
-	const requireAuth = passport.authenticate('jwt', { session: false });
 
 	router.post('/auth/login', async (req, res) => {
 		try {

@@ -1,10 +1,15 @@
 import { getConfig } from '../../lib/utils/config';
 import { decode } from 'jwt-simple';
-import passport from 'passport';
 import { findUserByName, updateUserLastLogin } from '../../services/user';
 
 
-export const requireAuth = passport.authenticate('jwt', { session: false });
+export const requireAuth = (req, res, next) => {
+	if (req.get('authorization')) {
+		next();
+	} else {
+		res.status(401).json();
+	}
+};
 
 export const optionalAuth = (req, res, next) => {
 	if (req.get('authorization')) {
