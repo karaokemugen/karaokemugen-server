@@ -136,7 +136,9 @@ export function initFrontend(listenPort: number) {
 	const server = createServer(app);
 
 	const ws = initWS(server);
-	shortenerSocketController(ws);
+	if (conf.Shortener.Enabled) {
+		shortenerSocketController(ws);
+	}
 
 	server.listen(port, () => logger.info(`App listening on ${port}`, {service: 'App'}));
 }

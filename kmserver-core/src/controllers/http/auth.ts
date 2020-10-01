@@ -4,6 +4,7 @@ import { Router } from 'express';
 import {getConfig} from '../../lib/utils/config';
 import {findUserByName, checkPassword, updateUserLastLogin} from '../../services/user';
 import { Token, Role, User } from '../../lib/types/user';
+import { requireAuth } from '../middlewares/auth';
 import sentry from '../../utils/sentry';
 import logger from '../../lib/utils/logger';
 import { requireAuth } from '../middlewares/auth';

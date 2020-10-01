@@ -2,8 +2,7 @@ import { getConfig } from '../../lib/utils/config';
 import { decode } from 'jwt-simple';
 import { findUserByName, updateUserLastLogin } from '../../services/user';
 
-
-export const requireAuth = (req, res, next) => {
+export const requireAuth = (req: any, res: any, next: any) => {
 	if (req.get('authorization')) {
 		next();
 	} else {
