@@ -7,7 +7,6 @@ import { Token, Role, User } from '../../lib/types/user';
 import { requireAuth } from '../middlewares/auth';
 import sentry from '../../utils/sentry';
 import logger from '../../lib/utils/logger';
-import { requireAuth } from '../middlewares/auth';
 
 const loginErr = {
 	code: 'LOG_ERROR',
