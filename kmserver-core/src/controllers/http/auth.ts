@@ -4,7 +4,7 @@ import { Router } from 'express';
 import {getConfig} from '../../lib/utils/config';
 import {findUserByName, checkPassword, updateUserLastLogin} from '../../services/user';
 import { Token, Role, User } from '../../lib/types/user';
-import { requireAuth } from '../middlewares/auth';
+import { requireAuth, requireValidUser } from '../middlewares/auth';
 import sentry from '../../utils/sentry';
 import logger from '../../lib/utils/logger';
 
@@ -43,7 +43,7 @@ export default function authController(router: Router) {
 		}
 	});
 
-	router.get('/auth/check', requireAuth, (req, res) => {
+	router.get('/auth/check', requireAuth, requireValidUser, (req, res) => {
 		res.send(decodeJwtToken(req.get('authorization')));
 	});
 }
