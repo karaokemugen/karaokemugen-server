@@ -11,20 +11,14 @@ export const defaults: Config = {
 		JwtSecret: 'Change me',
 		InstanceID: 'Change me',
 	},
-	Database: {
-		'sql-file': true,
-		defaultEnv: 'prod',
-		prod: {
-			driver: 'pg',
-			user: 'karaokemugen_server',
+	System: {
+		Database: {
+			username: 'karaokemugen_server',
 			password: 'musubi',
 			host: 'localhost',
 			port: 5432,
 			database: 'karaokemugen_server',
-			schema: 'public'
-		}
-	},
-	System: {
+		},
 		Binaries: {
 			ffmpeg: {
 				Linux: '/usr/bin/ffmpeg',

@@ -56,6 +56,15 @@ export interface Config {
 		}
 	}
 	System: {
+		Database: {
+			host?: string,
+			port?: number,
+			username?: string,
+			password?: string,
+			database?: string,
+			superuser?: string,
+			superuserPassword?: string,
+		},
 		Binaries: {
 			ffmpeg: {
 				OSX: string,
@@ -79,22 +88,6 @@ export interface Config {
 			Outros?: string[],
 			Encores?: string[],
 			Sponsors?: string[]
-		}
-	},
-	Database: {
-		'sql-file'?: boolean,
-		defaultEnv?: string,
-		prod: {
-			driver?: string,
-			host?: string,
-			port?: number,
-			user?: string,
-			password?: string,
-			superuser?: string,
-			superuserPassword?: string,
-			schema?: string,
-			database?: string,
-			bundledPostgresBinary?: boolean
 		}
 	},
 	Mail: {

@@ -9,7 +9,7 @@ import { createImagePreviews } from '../lib/utils/previews';
 import logger from '../lib/utils/logger';
 import { getConfig, resolvedPathRepos } from '../lib/utils/config';
 import { gitlabPostNewIssue } from '../lib/services/gitlab';
-import { asyncReadFile, sanitizeFile } from '../lib/utils/files';
+import { asyncReadFile } from '../lib/utils/files';
 import { resolve, basename } from 'path';
 import { DownloadBundle } from '../lib/types/downloads';
 import sentry from '../utils/sentry';
