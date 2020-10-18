@@ -1,12 +1,13 @@
-import { InstanceData } from '../../types/shortener';
 import { publishInstance, removeInstance } from '../../services/shortener';
 import { SocketIOApp } from '../../lib/utils/ws';
 import logger from '../../lib/utils/logger';
+import { APIData } from '../../lib/types/api';
+import { InstanceData } from '../../types/shortener';
 
 export default function shortenerSocketController(app: SocketIOApp) {
-	app.route('shortener publish', async (socket, instanceData: InstanceData) => {
+	app.route('shortener publish', async (socket, req: APIData<InstanceData>) => {
 		try {
-			return await publishInstance(socket.handshake.headers['x-forwarded-for']?.split(', ')[0] || socket.conn.remoteAddress, instanceData);
+			return await publishInstance(socket.handshake.headers['x-forwarded-for']?.split(', ')[0] || socket.conn.remoteAddress, req.body);
 		} catch (e) {
 			return false;
 		}
@@ -15,7 +16,8 @@ export default function shortenerSocketController(app: SocketIOApp) {
 		try {
 			await removeInstance(socket.handshake.headers['x-forwarded-for']?.split(', ')[0] || this.conn.remoteAddress);
 		} catch(e) {
-			logger.error('Cannot delete instance after socket disconnect', {service: 'Shortener', obj: this});
+			// Non-fatal
+			logger.warn('Cannot delete instance after socket disconnect', {service: 'Shortener', obj: this});
 		}
 	});
 }
