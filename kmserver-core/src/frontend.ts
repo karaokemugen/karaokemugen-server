@@ -83,7 +83,6 @@ export function initFrontend(listenPort: number) {
 		KMServer.use('/downloads/karaokes', express.static(resolvedPathRepos('Karas')[0]));
 		KMServer.use('/downloads/lyrics', express.static(resolvedPathRepos('Lyrics')[0]));
 		KMServer.use('/downloads/medias', express.static(resolvedPathRepos('Medias')[0]));
-		KMServer.use('/downloads/series', express.static(resolvedPathRepos('Series')[0]));
 		KMServer.use('/downloads/tags', express.static(resolvedPathRepos('Tags')[0]));
 	}
 

@@ -41,7 +41,6 @@ export const defaults: Config = {
 					Karas: ['data/karaokes'],
 					Lyrics: ['data/lyrics'],
 					Medias: ['data/medias'],
-					Series: ['data/series'],
 					Tags: ['data/tags']
 				}
 			}

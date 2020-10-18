@@ -20,8 +20,6 @@ System:
           - app/data/lyrics
         Medias:
           - app/data/medias
-        Series:
-          - app/data/series
         Tags:
           - app/data/tags
 Frontend:

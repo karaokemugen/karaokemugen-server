@@ -66,7 +66,6 @@ export interface Config {
 		Repositories: Repository[]
 		Path: {
 			Karas?: string,
-			Series?: string,
 			Tags?: string,
 			Medias?: string,
 			Lyrics?: string,

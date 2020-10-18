@@ -149,11 +149,6 @@ export async function getRawKara(kid: string): Promise<DownloadBundle> {
 		if (!kara) throw 'Unknown song';
 		const files = {
 			kara: resolve(resolvedPathRepos('Karas')[0], kara.karafile),
-			series: kara.series.map(s => {
-				return s
-					? resolve(resolvedPathRepos('Series')[0], `${sanitizeFile(s.name)}.series.json`)
-					: null;
-			}),
 			tags: kara.tagfiles.map(f => {
 				return f
 					? resolve(resolvedPathRepos('Tags')[0], f)
@@ -169,12 +164,6 @@ export async function getRawKara(kid: string): Promise<DownloadBundle> {
 			series: [],
 			tags: [],
 		};
-		for (const seriesFile of files.series) {
-			if (seriesFile) data.series.push({
-				file: basename(seriesFile),
-				data: JSON.parse(await asyncReadFile(seriesFile, 'utf-8'))
-			});
-		}
 		for (const tagFile of files.tags) {
 			if (tagFile) data.tags.push({
 				file: basename(tagFile),
