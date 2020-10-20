@@ -254,10 +254,10 @@ A proposal to modify a karaoke has been sent. You will find all the new files in
 export const configConstraints = {
 	'App.JwtSecret': { presence: {allowEmpty: false}},
 	'App.InstanceID': { presence: {allowEmpty: false}},
-	'Database.prod.user': { presence: {allowEmpty: false}},
-	'Database.prod.password': { presence: true },
-	'Database.prod.host': { presence: {allowEmpty: false}},
-	'Database.prod.database': { presence: {allowEmpty: false}},
+	'System.Database.user': { presence: {allowEmpty: false}},
+	'System.Database.password': { presence: true },
+	'System.Database.host': { presence: {allowEmpty: false}},
+	'System.Database.database': { presence: {allowEmpty: false}},
 	'System.Binaries.ffmpeg': { presence: {allowEmpty: false}},
 	'Shortener.ExpireTimeDays': { numericality: { greaterThan: 0 }},
 	'Frontend.Port': { numericality: true}

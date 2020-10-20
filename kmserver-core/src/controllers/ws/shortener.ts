@@ -7,7 +7,8 @@ import { InstanceData } from '../../types/shortener';
 export default function shortenerSocketController(app: SocketIOApp) {
 	app.route('shortener publish', async (socket, req: APIData<InstanceData>) => {
 		try {
-			return await publishInstance(socket.handshake.headers['x-forwarded-for']?.split(', ')[0] || socket.conn.remoteAddress, req.body);
+			const body = req.body || (req as unknown) as InstanceData; // Retro-compat: 4.0.13-4.1.7
+			return await publishInstance(socket.handshake.headers['x-forwarded-for']?.split(', ')[0] || socket.conn.remoteAddress, body);
 		} catch (e) {
 			return false;
 		}
