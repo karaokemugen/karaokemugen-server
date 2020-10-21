@@ -7824,6 +7824,11 @@ neo-async@^2.5.0, neo-async@^2.6.0, neo-async@^2.6.1, neo-async@^2.6.2:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
+newline@0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/newline/-/newline-0.0.3.tgz#0f6a74493223dba04fe7dbfb6cdc804bf7e46dd0"
+  integrity sha1-D2p0STIj26BP59v7bNyAS/fkbdA=
+
 no-case@^2.2.0:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/no-case/-/no-case-2.3.2.tgz#60b813396be39b3f1288a4c1ed5d1e7d28b464ac"
@@ -9399,6 +9404,14 @@ postcss@7.x.x, postcss@^7.0.0, postcss@^7.0.1, postcss@^7.0.14, postcss@^7.0.17,
     chalk "^2.4.2"
     source-map "^0.6.1"
     supports-color "^6.1.0"
+
+postgrator@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/postgrator/-/postgrator-4.1.0.tgz#9427a24c34a08d711b8aa1696be2852f5b015f45"
+  integrity sha512-rctRaBh4U2ALJKZkDByfCvGStXjaw1+usjelbaC4xg3eJH0PYbuVDayYgUR7yzvWDUswPcKEZPjjSgKCnueSbA==
+  dependencies:
+    glob "^7.1.6"
+    newline "0.0.3"
 
 postgres-array@~2.0.0:
   version "2.0.0"

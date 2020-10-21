@@ -7,7 +7,7 @@
 	"license": "MIT",
 	"private": true,
 	"scripts": {
-		"prestart": "db-migrate sync [all] --config ../app/database.json --migrations-dir migrations",
+		"prestart": "yarn ts-node ../util/runMigrations.ts",
 		"start": "cross-env NODE_ENV=production ts-node src/index.ts --",
 		"watch": "yarn prestart && cross-env NODE_ENV=development ts-node src/index.ts --",
 		"qstart": "yarn prestart && node dist/index.js --",
@@ -91,6 +91,7 @@
 		"p-cancelable": "^2.0.0",
 		"pg": "^8.4.1",
 		"pg-copy-streams": "^5.1.1",
+		"postgrator": "^4.1.0",
 		"randomstring": "^1.1.5",
 		"sanitize-filename": "^1.6.3",
 		"slugify": "^1.4.5",

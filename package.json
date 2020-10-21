@@ -15,9 +15,7 @@
       ]
    },
    "scripts": {
-      "migrate": "db-migrate sync [all] --config app/database.json --migrations-dir kmserver-core/migrations",
-      "migrate:down": "db-migrate down --config app/database.json --migrations-dir kmserver-core/migrations",
-      "migrate:up": "db-migrate up --config app/database.json --migrations-dir kmserver-core/migrations",
+      "migrate": "cd kmserver-core ; ts-node ../util/runMigrations.ts",
       "build:core": "yarn workspace kmserver-core build",
       "build:kmexplorer": "yarn workspace kmserver-core buildKMExplorer",
       "build:all": "yarn workspace kmserver-core build && yarn workspace kmserver-core buildKMExplorer",
