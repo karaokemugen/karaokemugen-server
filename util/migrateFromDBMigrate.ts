@@ -14,9 +14,9 @@ async function migrateFromDBMigrate() {
 	}
 	const oldConfig = JSON.parse(jsonConfig);
 	const dbConfig = {
-		username: oldConfig.prod.username,
+		username: oldConfig.prod.user,
 		password: oldConfig.prod.password,
-		port: oldConfig.prod.port,
+		port: oldConfig.prod.port || 5432,
 		host: oldConfig.prod.host,
 		database: oldConfig.prod.database
 	};
@@ -68,6 +68,7 @@ async function migrateFromDBMigrate() {
 		db.query(`INSERT INTO schemaversion VALUES('${migration.version}', '${migration.name}', '${migration.md5}', '${new Date().toISOString()}')`);
 	}
 	await db.query('DROP TABLE migrations;');
+	await db.end();
 	unlinkSync('app/database.json');
 }
 
