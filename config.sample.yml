@@ -5,6 +5,12 @@ BaseLicense:
   Name: ODbL/CC BY-NC-SA 4.0
   Link: https://lab.shelter.moe/karaokemugen/bases/karaokebase/-/blob/master/LICENSE.md
 System:
+  Database:
+    username: karaokemugen_server
+    password: blabla
+    host: localhost
+    database: karaokemugen_server
+    port: 5432
   Binaries:
     ffmpeg:
       Linux: /usr/bin/ffmpeg
