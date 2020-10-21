@@ -14,7 +14,6 @@ async function migrateFromDBMigrate() {
 	}
 	const oldConfig = JSON.parse(jsonConfig);
 	const dbConfig = {
-		user: undefined,
 		username: oldConfig.prod.username,
 		password: oldConfig.prod.password,
 		port: oldConfig.prod.port,
@@ -25,12 +24,11 @@ async function migrateFromDBMigrate() {
 	const newConfig: any = safeLoad(ymlConfig);
 	newConfig.System.Database = dbConfig;
 	writeFileSync('app/config.yml', safeDump(newConfig), 'utf-8');
-	dbConfig.user = dbConfig.username;
 
 	const migrations = [];
 	const oldMigrations = readFileSync('util/migrationsBeforePostgrator.csv', 'utf-8').split('\n');
 	for (const migration of oldMigrations) {
-		const mig = migration.split(',');
+		const mig = migration.split(' ');
 		migrations.push({
 			version: +mig[0],
 			name: mig[1],
@@ -38,7 +36,13 @@ async function migrateFromDBMigrate() {
 		});
 	}
 	// Connect DB
-	const db = new Client(dbConfig);
+	const db = new Client({
+		user: dbConfig.username,
+		password: dbConfig.password,
+		port: dbConfig.port,
+		host: dbConfig.host,
+		database: dbConfig.database
+	});
 	await db.connect();
 	// Return early if migrations table does not exist
 	let migrationsDone = [];
