@@ -1,33 +1,6 @@
-drop materialized view all_karas;
-drop materialized view all_kara_tag;
-drop materialized view all_tags;
+ALTER TABLE tag ADD COLUMN priority SMALLINT DEFAULT(0) NOT NULL;
 
-DO
-$$BEGIN
-   CREATE TEXT SEARCH CONFIGURATION unaccent_conf ( COPY = simple );
-EXCEPTION
-   WHEN unique_violation THEN
-      NULL;  -- ignore error
-END;$$;
-
-alter text search configuration unaccent_conf
-    alter mapping for hword, hword_part, word
-        with unaccent, simple;
-
-create materialized view all_kara_tag as
-SELECT k.pk_kid                                                  AS kid,
-       jsonb_agg(DISTINCT t.tagfile)                             AS tagfiles,
-       jsonb_agg(DISTINCT (t.pk_tid || '~'::text) || kt.type)    AS tid,
-       to_tsvector('public.unaccent_conf', btrim(regexp_replace(jsonb_agg(t.aliases)::character varying::text, '[\]\,\[\"]'::text, ''::text,
-                                        'g'::text)))             AS aliases,
-       to_tsvector('public.unaccent_conf', regexp_replace(
-               regexp_replace(jsonb_agg(DISTINCT t.i18n)::text, '".+?": "(.+?)"'::text, '\1'::text, 'g'::text),
-               '[\[\{\}\],]'::text, ''::text, 'g'::text))        AS i18n,
-       to_tsvector('public.unaccent_conf', string_agg(DISTINCT t.name::text, ' '::text)) AS tags
-FROM kara k
-         LEFT JOIN kara_tag kt on k.pk_kid = kt.fk_kid
-         LEFT JOIN tag t on kt.fk_tid = t.pk_tid
-GROUP BY k.pk_kid;
+DROP MATERIALIZED VIEW all_tags;
 
 create materialized view all_tags as
 WITH t_count AS (
@@ -74,6 +47,130 @@ create index idx_at_tid
 
 create index idx_at_search_vector
     on all_tags using gin (search_vector);
+
+DROP MATERIALIZED VIEW all_karas;
+DROP MATERIALIZED VIEW authors;
+DROP MATERIALIZED VIEW creators;
+DROP MATERIALIZED VIEW families;
+DROP MATERIALIZED VIEW genres;
+DROP MATERIALIZED VIEW groups;
+DROP MATERIALIZED VIEW languages;
+DROP MATERIALIZED VIEW misc;
+DROP MATERIALIZED VIEW origins;
+DROP MATERIALIZED VIEW platforms;
+DROP MATERIALIZED VIEW series;
+DROP MATERIALIZED VIEW singers;
+DROP MATERIALIZED VIEW songtypes;
+DROP MATERIALIZED VIEW songwriters;
+
+DROP VIEW tag_tid;
+
+CREATE VIEW tag_tid AS
+SELECT pk_tid AS tid, name, short, aliases, i18n, types, problematic, priority, noLiveDownload FROM tag ORDER BY name, priority DESC;
+
+CREATE MATERIALIZED VIEW series AS
+SELECT kt.fk_kid, jsonb_agg(to_jsonb(t_series)) AS series, string_agg(t_series.name, ', ' ORDER BY name) AS series_sortable
+    FROM kara_tag kt
+    INNER JOIN tag_tid t_series ON kt.fk_tid = t_series.tid
+	WHERE kt.type = 1
+   GROUP BY  kt.fk_kid;
+
+CREATE INDEX idx_series_kid ON series(fk_kid);
+
+CREATE MATERIALIZED VIEW singers AS
+SELECT kt.fk_kid, jsonb_agg(to_jsonb(t_singer)) AS singers, string_agg(t_singer.name, ', ' ORDER BY priority, name) AS singers_sortable
+    FROM kara_tag kt
+    INNER JOIN tag_tid t_singer ON kt.fk_tid = t_singer.tid
+	WHERE kt.type = 2
+   GROUP BY  kt.fk_kid;
+
+CREATE MATERIALIZED VIEW songtypes AS
+SELECT kt.fk_kid, jsonb_agg(to_jsonb(t_songtype)) AS songtypes, string_agg(t_songtype.name, ', ' ORDER BY priority, name) AS songtypes_sortable
+    FROM kara_tag kt
+    INNER JOIN tag_tid t_songtype ON kt.fk_tid = t_songtype.tid WHERE kt.type = 3
+GROUP BY  kt.fk_kid;
+
+CREATE MATERIALIZED VIEW creators AS
+SELECT kt.fk_kid, jsonb_agg(to_jsonb(t_creator)) AS creators
+    FROM kara_tag kt
+    INNER JOIN tag_tid t_creator ON kt.fk_tid = t_creator.tid
+	WHERE kt.type = 4
+GROUP BY  kt.fk_kid;
+
+CREATE MATERIALIZED VIEW languages AS
+SELECT kt.fk_kid, jsonb_agg(to_jsonb(t_language)) AS languages, string_agg(t_language.name, ', ' ORDER BY name) AS languages_sortable
+    FROM kara_tag kt
+    INNER JOIN tag_tid t_language ON kt.fk_tid = t_language.tid
+	WHERE kt.type = 5
+GROUP BY  kt.fk_kid;
+
+CREATE MATERIALIZED VIEW authors AS
+SELECT kt.fk_kid, jsonb_agg(to_jsonb(t_author)) AS authors
+    FROM kara_tag kt
+    INNER JOIN tag_tid t_author ON kt.fk_tid = t_author.tid
+	WHERE kt.type = 6
+GROUP BY kt.fk_kid;
+
+CREATE MATERIALIZED VIEW misc AS
+SELECT kt.fk_kid, jsonb_agg(to_jsonb(t_misc)) AS misc
+    FROM kara_tag kt
+    INNER JOIN tag_tid t_misc ON kt.fk_tid = t_misc.tid
+	WHERE kt.type = 7
+GROUP BY kt.fk_kid;
+
+CREATE MATERIALIZED VIEW songwriters AS
+SELECT kt.fk_kid, jsonb_agg(to_jsonb(t_songwriter)) AS songwriters
+    FROM kara_tag kt
+    INNER JOIN tag_tid t_songwriter ON kt.fk_tid = t_songwriter.tid WHERE kt.type = 8
+GROUP BY kt.fk_kid;
+
+CREATE MATERIALIZED VIEW groups AS
+SELECT kt.fk_kid, jsonb_agg(to_jsonb(t_group)) AS groups
+    FROM kara_tag kt
+    INNER JOIN tag_tid t_group ON kt.fk_tid = t_group.tid
+	WHERE kt.type = 9
+GROUP BY kt.fk_kid;
+
+CREATE MATERIALIZED VIEW families AS
+SELECT kt.fk_kid, jsonb_agg(to_jsonb(t_family)) AS families
+    FROM kara_tag kt
+    INNER JOIN tag_tid t_family ON kt.fk_tid = t_family.tid
+	WHERE kt.type = 10
+GROUP BY kt.fk_kid;
+
+CREATE MATERIALIZED VIEW genres AS
+SELECT kt.fk_kid, jsonb_agg(to_jsonb(t_genre)) AS genres
+    FROM kara_tag kt
+    INNER JOIN tag_tid t_genre ON kt.fk_tid = t_genre.tid
+	WHERE kt.type = 12
+GROUP BY kt.fk_kid;
+
+CREATE MATERIALIZED VIEW origins AS
+SELECT kt.fk_kid, jsonb_agg(to_jsonb(t_origin)) AS origins
+    FROM kara_tag kt
+    INNER JOIN tag_tid t_origin ON kt.fk_tid = t_origin.tid
+	WHERE kt.type = 11
+GROUP BY kt.fk_kid;
+
+CREATE MATERIALIZED VIEW platforms AS
+SELECT kt.fk_kid, jsonb_agg(to_jsonb(t_platform)) AS platforms
+    FROM kara_tag kt
+    INNER JOIN tag_tid t_platform ON kt.fk_tid = t_platform.tid
+	WHERE kt.type = 13
+GROUP BY kt.fk_kid;
+
+CREATE INDEX idx_authors_kid ON authors(fk_kid);
+CREATE INDEX idx_creators_kid ON creators(fk_kid);
+CREATE INDEX idx_groups_kid ON groups(fk_kid);
+CREATE INDEX idx_languages_kid ON languages(fk_kid);
+CREATE INDEX idx_misc_kid ON misc(fk_kid);
+CREATE INDEX idx_singers_kid ON singers(fk_kid);
+CREATE INDEX idx_songwriters_kid ON songwriters(fk_kid);
+CREATE INDEX idx_songtypes_kid ON songtypes(fk_kid);
+CREATE INDEX idx_families_kid ON families(fk_kid);
+CREATE INDEX idx_genres_kid ON genres(fk_kid);
+CREATE INDEX idx_origins_kid ON origins(fk_kid);
+CREATE INDEX idx_platforms_kid ON platforms(fk_kid);
 
 create materialized view all_karas as
 SELECT k.pk_kid AS kid,
