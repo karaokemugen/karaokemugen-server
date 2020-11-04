@@ -209,7 +209,7 @@
 				this.loadNextPage(true);
 				if (navigation && !this.favorites && (this.$route.params.query !== (menuBarStore.search || undefined) || this.$route.query.q !== this.reqParams.q)) {
 					// TODO: Fully-featured shareable URL
-					this.$router.replace({ path: `/search/${menuBarStore.search}`, query: { q: this.reqParams.q } });
+					this.$router.replace({ path: `/search/${encodeURIComponent(menuBarStore.search)}`, query: { q: this.reqParams.q } });
 				}
 			}
 		}
