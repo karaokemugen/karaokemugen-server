@@ -15,7 +15,7 @@ export default {
 			songwriters: 'Songwriter | Songwriters',
 			families: 'Family | Families',
 			origins: 'Origin | Origins',
-			genres: 'Kind | Kinds',
+			genres: 'Genre | Genres',
 			platforms: 'Platform | Platforms',
 			creators: 'Creator | Creators',
 			authors: 'Karaokes author | Karaokes authors',
