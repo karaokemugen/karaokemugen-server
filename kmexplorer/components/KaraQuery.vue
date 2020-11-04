@@ -24,7 +24,7 @@
 	import { tagRegex, tagTypes, tagTypesMap } from '~/assets/constants';
 	import { TagExtend } from '~/store/menubar';
 	import { DBTag } from '%/lib/types/database/tag';
-	import { fakeYearTag, sortTypesKara } from '~/utils/tools';
+	import { fakeYearTag, generateNavigation, sortTypesKara } from '~/utils/tools';
 
 	interface KaraRequest {
 		from: number,
@@ -209,7 +209,7 @@
 				this.loadNextPage(true);
 				if (navigation && !this.favorites && (this.$route.params.query !== (menuBarStore.search || undefined) || this.$route.query.q !== this.reqParams.q)) {
 					// TODO: Fully-featured shareable URL
-					this.$router.replace({ path: `/search/${encodeURIComponent(menuBarStore.search)}`, query: { q: this.reqParams.q } });
+					this.$router.replace(generateNavigation(menuBarStore));
 				}
 			}
 		}

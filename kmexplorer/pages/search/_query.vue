@@ -17,7 +17,7 @@
 
 		created() {
 			if (process.server && this.$route.params.query) {
-				menuBarStore.setSearch(this.$route.params.query);
+				menuBarStore.setSearch(decodeURIComponent(this.$route.params.query));
 			}
 		},
 
