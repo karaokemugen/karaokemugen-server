@@ -127,6 +127,7 @@ export default {
 		loading: 'Loading...',
 		suggest: 'Can\'t find what you\'re looking for?',
 		suggest_open: 'Suggest us!',
+		remove_tags: 'Remove some tags to expand your search :',
 		empty: 'This is the end of your favorites.',
 		explore: 'Go add some!',
 		results: '{count} result | {count} results',

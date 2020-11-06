@@ -11,6 +11,10 @@
 					{{ $t('layout.suggest') }}&nbsp;
 					<a @click.prevent="modal = true">{{ $t('layout.suggest_open') }}</a>
 				</h4>
+				<h4 class="title is-4 with-img">
+					{{ $t('layout.remove_tags') }}&nbsp;
+					<search-tags />
+				</h4>
 				<!-- Suggestion Modal -->
 				<div class="modal" :class="{'is-active': modal}">
 					<form action="#" @submit.prevent="submitForm">
@@ -155,6 +159,7 @@
 
 <script lang="ts">
 	import Vue from 'vue';
+	import SearchTags from './SearchTags.vue';
 	import { TagList } from '%/lib/types/tag';
 
 	interface VState {
@@ -174,6 +179,10 @@
 
 	export default Vue.extend({
 		name: 'KaraSuggest',
+
+		components: {
+			SearchTags
+		},
 
 		async fetch() {
 			const res = await this.$axios.get<TagList>('/api/karas/tags/3', {

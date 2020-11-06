@@ -127,6 +127,7 @@ export default {
 		loading: 'Chargement...',
 		suggest: 'Vous ne trouvez pas ?',
 		suggest_open: 'Suggérez-le nous !',
+		remove_tags: 'Retirez certains tags pour élargir votre recherche :',
 		empty: 'C\'est la fin de vos favoris.',
 		explore: 'Allez en ajouter !',
 		results: '{count} résulat | {count} résultats',
