@@ -7,7 +7,7 @@
 				<search-edit />
 			</div>
 
-			<div class="tile is-parent is-12" v-if="total > 1">
+			<div v-if="total > 1" class="tile is-parent is-12">
 				<pagination :page="page" :last-page="total" @page="setPage" />
 			</div>
 
@@ -25,12 +25,11 @@
 				</div>
 			</div>
 
-			<div class="tile is-parent is-12" v-if="total > 1">
+			<div v-if="total > 1" class="tile is-parent is-12">
 				<pagination v-if="total > 1" :page="page" :last-page="total" @page="setPage" />
 			</div>
 
 			<loading-nanami v-if="loading || $fetchState.pending" class="tile is-parent is-12" />
-
 		</div>
 	</div>
 </template>
