@@ -338,7 +338,8 @@ export let NuxtConfig: NuxtConfigType = {
 			}
 		},
 		redirect: {
-			login: '/#login'
+			login: '/#login',
+			home: false
 		}
 	},
 
