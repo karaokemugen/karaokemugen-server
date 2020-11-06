@@ -88,7 +88,7 @@
 					// Put i18n in tag directly
 					if (this.i18n) {
 						const tag = { ...this.tag };
-						tag.i18n = this.i18n[this.tag.tid];
+						tag.i18n = this.i18n;
 						payload.tag = tag;
 					}
 					menuBarStore.addTag(payload);
