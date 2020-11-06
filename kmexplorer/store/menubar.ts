@@ -27,6 +27,9 @@ export default class MenuBar extends VuexModule {
 	@Mutation
 	addTag(tag: TagExtend) {
 		if (!this.tags.some(val => val.tag.tid === tag.tag.tid && val.type === tag.type)) {
+			if (tag.type === 'years') {
+				this.tags = this.tags.filter(val => val.type !== 'years');
+			}
 			this.tags.push(tag);
 		}
 	}
