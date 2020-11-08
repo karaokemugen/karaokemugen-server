@@ -4,11 +4,6 @@ FROM  users_favorites uf
 WHERE uf.fk_login = $1
 `;
 
-export const selectAllFavorites = `
-SELECT uf.fk_kid AS kid
-FROM  users_favorites uf
-`;
-
 export const insertFavorite = `
 INSERT INTO users_favorites (fk_login, fk_kid)
 VALUES($1, $2)

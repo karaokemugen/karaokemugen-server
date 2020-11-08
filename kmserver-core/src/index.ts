@@ -7,7 +7,6 @@ import cli from 'commander';
 import detect from 'detect-port';
 import {initDB} from './dao/database';
 import {initShortener} from './services/shortener';
-import {initFavorites} from './services/favorites';
 import {createUser, changePassword, initUsers} from './services/user';
 import sudoBlock from 'sudo-block';
 import {asyncCheckOrMkdir} from './lib/utils/files';
@@ -141,7 +140,6 @@ async function main() {
 
 	inits.push(initShortener());
 	inits.push(initFrontend(port));
-	inits.push(initFavorites());
 	if (conf.Mail.Enabled) initMailer();
 	await Promise.all(inits);
 	logger.info('Karaoke Mugen Server is READY', {service: 'Launcher'});

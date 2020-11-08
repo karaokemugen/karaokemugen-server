@@ -49,9 +49,9 @@ export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 		orderClauses = 'played DESC, ';
 	}
 	if (params.sort === 'favorited') {
-		statsSelectClause = 'COUNT(sf.*)::integer AS favorited,';
-		statsJoinClause = 'LEFT OUTER JOIN stats_favorites AS sf ON sf.fk_kid = ak.kid ';
-		havingClause = 'HAVING COUNT(sf.*) >= 1';
+		statsSelectClause = 'COUNT(uf.*)::integer AS favorited,';
+		statsJoinClause = 'LEFT OUTER JOIN users_favorites AS uf ON uf.fk_kid = ak.kid ';
+		havingClause = 'HAVING COUNT(uf.*) >= 1';
 		orderClauses = 'favorited DESC, ';
 	}
 	if (params.sort === 'requested') {

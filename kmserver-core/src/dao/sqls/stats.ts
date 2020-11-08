@@ -33,19 +33,6 @@ INSERT INTO instance(
 	config = $15;
 `;
 
-export const deleteFavorites = `
-DELETE FROM stats_favorites
-WHERE fk_iid = $1;
-`;
-
-export const insertFavorite = `
-INSERT INTO stats_favorites(fk_iid, fk_kid)
-VALUES(
-	$1,
-	$2
-)
-`;
-
 export const insertViewcount = `
 INSERT INTO stats_played(fk_kid, fk_seid, played_at)
 VALUES(
