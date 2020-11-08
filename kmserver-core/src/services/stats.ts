@@ -4,19 +4,16 @@ import { check } from '../lib/utils/validators';
 import {
 	upsertInstance,
 	upsertSessions,
-	replaceFavorites,
 	upsertPlayed,
 	upsertRequests,
 	wipeInstance} from '../dao/stats';
 import logger from '../lib/utils/logger';
-import { getAllKaras } from './kara';
 import sentry from '../utils/sentry';
 
 const payloadConstraints = {
 	'instance.instance_id': {presence: true, format: uuidRegexp},
 	'instance.version': {presence: {allowEmpty: false }},
 	'instance.config': {presence: {allowEmpty: false }},
-	favorites: {favoritesValidator: true},
 	viewcounts: {songItemValidator: true},
 	requests: {songItemValidator: true},
 	sessions: {sessionValidator: true}
@@ -50,7 +47,6 @@ export async function processStatsPayload(payload: any) {
 		await upsertInstance(payload.instance);
 		await upsertSessions(payload.instance.instance_id, payload.sessions);
 		await Promise.all([
-			replaceFavorites(payload.instance.instance_id, payload.favorites),
 			upsertPlayed(payload.viewcounts),
 			upsertRequests(payload.requests)
 		]);
@@ -58,36 +54,6 @@ export async function processStatsPayload(payload: any) {
 	} catch(err) {
 		logger.error(`Error with payload from ${payload.instance.instance_id}`, {service: 'Shortener', obj: err});
 		logger.debug('Payload in error', {service: 'Stats', obj: payload});
-		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
-		sentry.error(err);
-		throw err;
-	}
-}
-
-export async function getFavoritesStats(filter: string, from = 0, size = 0) {
-	try {
-		return await getAllKaras({filter, from, size, mode: 'favorited'});
-	} catch(err) {
-		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
-		sentry.error(err);
-		throw err;
-	}
-}
-
-export async function getRequestedStats(filter: string, from = 0, size = 0) {
-	try {
-		return await getAllKaras({filter, from, size, mode: 'requested'});
-	} catch(err) {
-		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
-		sentry.error(err);
-		throw err;
-	}
-}
-
-export async function getPlayedStats(filter: string, from = 0, size = 0) {
-	try {
-		return await getAllKaras({filter, from, size, mode: 'played'});
-	} catch(err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
 		throw err;

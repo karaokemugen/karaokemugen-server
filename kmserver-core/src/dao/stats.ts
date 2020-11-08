@@ -1,5 +1,5 @@
 import {db, transaction} from '../lib/dao/database';
-import { Session, Favorite, Played, Requested, Instance } from '../types/stats';
+import { Session, Played, Requested, Instance } from '../types/stats';
 const sql = require('./sqls/stats');
 
 export async function upsertInstance(i: Instance) {
@@ -20,12 +20,6 @@ export async function upsertInstance(i: Instance) {
 		i.os_release,
 		JSON.stringify(i.config)
 	]);
-}
-
-export async function replaceFavorites(instance_id: string, favorites: Favorite[]) {
-	await db().query(sql.deleteFavorites, [instance_id]);
-	const params = favorites.map(f => [instance_id, f.kid]);
-	if (favorites.length > 0) await transaction({sql: sql.insertFavorite, params: params});
 }
 
 export async function upsertPlayed(viewcounts: Played[]) {
