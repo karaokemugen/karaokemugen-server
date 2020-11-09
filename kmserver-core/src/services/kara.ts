@@ -66,7 +66,7 @@ export async function getKara(params: KaraParams, token?: Token) {
 		const karas = await selectAllKaras({
 			mode: params.mode,
 			modeValue: params.modeValue,
-			username: token?.username
+			username: token?.username.toLowerCase()
 		});
 		if (!karas[0]) return;
 		karas[0].lyrics = null;
@@ -85,6 +85,7 @@ export async function getKara(params: KaraParams, token?: Token) {
 export async function getAllKaras(params: KaraParams, token?: Token): Promise<KaraList> {
 	try {
 		// When compare is used because we're queried from KM App in order to tell which karaoke is missing or updated, we redefine from/size so we get absolutely all songs from database.
+		if (token) token.username = token.username.toLowerCase();
 		let trueFrom = params.from;
 		let trueSize = params.size;
 		if (params.compare) {

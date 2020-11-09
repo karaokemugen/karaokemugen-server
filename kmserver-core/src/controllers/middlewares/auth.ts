@@ -69,6 +69,6 @@ export const requireAdmin = (req, res, next) => {
 };
 
 export async function updateLoginTime(req, _res, next) {
-	updateUserLastLogin(req.authToken.username);
+	updateUserLastLogin(req.authToken.username.toLowerCase());
 	next();
 }
