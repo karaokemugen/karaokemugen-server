@@ -19,6 +19,8 @@ const passwordResetRequests = new Map();
 
 export async function resetPasswordRequest(username: string) {
 	try {
+		if (!username) throw('No user provided');
+		username = username.toLowerCase();
 		const user = await findUserByName(username);
 		if (!user) throw new Error('User unknown');
 		if (!user.email) throw new Error('User has no configured mail. Ask server admin for a password reset');
@@ -122,6 +124,8 @@ export function hashPassword(password: string) {
 
 export async function findUserByName(username: string, opts: UserOptions = {}) {
 	try {
+		if (!username) throw('No user provided');
+		username = username.toLowerCase();
 		const user = await selectUser('pk_login', username);
 		if (!user) return false;
 		user.password_last_modified_at = new Date(user.password_last_modified_at);
@@ -143,6 +147,8 @@ export async function findUserByName(username: string, opts: UserOptions = {}) {
 
 export async function removeUser(username: string) {
 	try {
+		if (!username) throw('No user provided');
+		username = username.toLowerCase();
 		return await deleteUser(username);
 	} catch(err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
@@ -198,6 +204,7 @@ export async function createUser(user: User, opts: any = {}) {
 		opts.admin ? user.type = 2 : user.type = 1;
 		if (!user.password) throw { code: 'USER_EMPTY_PASSWORD'};
 		if (!user.login) throw { code: 'USER_EMPTY_LOGIN'};
+		user.login = user.login.toLowerCase();
 		// Check if login or nickname already exists.
 		if (await selectUser('pk_login', user.login) || await selectUser('nickname', user.login)) {
 			logger.error(`User/nickname ${user.login} already exists, cannot create it`, {service: 'User'});
@@ -259,6 +266,8 @@ export async function changePassword(username: string, password: string) {
 
 export async function editUser(username: string, user: User, avatar: Express.Multer.File, token: Token) {
 	try {
+		if (!username) throw('No user provided');
+		username = username.toLowerCase();
 		const currentUser = await findUserByName(username, {password: true});
 		if (!currentUser) throw 'User unknown';
 		user.login = username;
