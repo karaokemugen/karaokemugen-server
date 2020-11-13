@@ -32,7 +32,7 @@ export default function authController(router: Router) {
 	router.post('/auth/login', async (req, res) => {
 		try {
 			const token = await checkLogin(req.body.username, req.body.password);
-			updateUserLastLogin(req.body.username);
+			updateUserLastLogin(req.body.username.toLowerCase());
 			res.send(token);
 		} catch(err) {
 			if (err !== false) {
