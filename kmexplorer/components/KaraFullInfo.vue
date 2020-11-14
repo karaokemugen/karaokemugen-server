@@ -21,7 +21,13 @@
 			<tbody>
 				<tr v-for="type in Object.keys(tagTypesSorted)" :key="type">
 					<td>
-						<span class="name"><font-awesome-icon :icon="['fas', tagTypes[type].icon]" :fixed-width="true" /> {{ $tc(`kara.tagtypes.${type}`, karaoke[type].length) }}</span>
+						<span class="name">
+							<font-awesome-icon :icon="['fas', tagTypes[type].icon]" :fixed-width="true" />
+							{{ ['singers', 'songwriters', 'creators', 'authors'].includes(type) ?
+								$t(`kara.${type}_by`) :
+								$tc(`kara.tagtypes.${type}`, karaoke[type].length)
+							}}
+						</span>
 					</td>
 					<td>
 						<div class="tags are-medium">
