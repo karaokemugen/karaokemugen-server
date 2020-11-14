@@ -146,7 +146,7 @@
 			</div>
 		</div>
 		<div class="field">
-			<label class="label">{{ $tc('kara.tagtypes.singers', karaoke.singers.length) }}</label>
+			<label class="label">{{ $t('kara.singers_by') }}</label>
 			<div class="control">
 				<editable-tag-group
 					:tag-type="2"
@@ -163,7 +163,7 @@
 		</div>
 		<div class="field">
 			<label class="label" :title="$t('kara.import.songwriters_tooltip')">
-				{{ $tc('kara.tagtypes.songwriters', karaoke.songwriters.length) }}
+				{{ $t('kara.songwriters_by') }}
 				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
 			</label>
 			<div class="control">
@@ -176,7 +176,7 @@
 		</div>
 		<div class="field">
 			<label class="label" :title="$t('kara.import.creators_tooltip')">
-				{{ $tc('kara.tagtypes.creators', karaoke.creators.length) }}
+				{{ $t('kara.creators_by') }}
 				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
 			</label>
 			<div class="control">
@@ -189,7 +189,7 @@
 		</div>
 		<div class="field">
 			<label class="label" :title="$t('kara.import.authors_tooltip')">
-				{{ $tc('kara.tagtypes.authors', karaoke.authors.length) }}
+				{{ $t('kara.authors_by') }}
 				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
 			</label>
 			<div class="control">
