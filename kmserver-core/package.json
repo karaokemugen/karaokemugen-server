@@ -92,7 +92,7 @@
 		"randomstring": "^1.1.5",
 		"sanitize-filename": "^1.6.3",
 		"slugify": "^1.4.6",
-		"socket.io": "leonekmi/socket.io#1c29ab0",
+		"socket.io": "^3.0.1",
 		"sudo-block": "^3.0.0",
 		"systeminformation": "^4.29.0",
 		"toyunda2ass": "^1.0.12",

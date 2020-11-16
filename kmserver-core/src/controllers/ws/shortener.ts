@@ -13,7 +13,7 @@ export default function shortenerSocketController(app: SocketIOApp) {
 			return false;
 		}
 	});
-	app.onDisconnect(async (socket) => {
+	app.on('disconnect', async (socket) => {
 		try {
 			await removeInstance(socket.handshake.headers['x-forwarded-for']?.split(', ')[0] || this.conn.remoteAddress);
 		} catch(e) {

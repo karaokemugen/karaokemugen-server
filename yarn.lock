@@ -1536,7 +1536,7 @@
     "@sentry/utils" "5.24.1"
     tslib "^1.9.3"
 
-"@sentry/cli@^1.55.0", "@sentry/cli@^1.59.0":
+"@sentry/cli@^1.55.0", "@sentry/cli@^1.58.0", "@sentry/cli@^1.59.0":
   version "1.59.0"
   resolved "https://registry.yarnpkg.com/@sentry/cli/-/cli-1.59.0.tgz#8154c6426a105c6c8a2437db085837aff8e29834"
   integrity sha512-9nK4uVHW7HIbOwFZNvHRWFJcD+bqjW3kMWK2UUMqQWse0Lf3xM+2o+REGGkk0S69+E4elSiukVjUPTI5aijNlA==
@@ -10183,9 +10183,10 @@ socket.io-parser@~4.0.1:
     component-emitter "~1.3.0"
     debug "~4.1.0"
 
-socket.io@leonekmi/socket.io#1c29ab0:
-  version "3.0.0"
-  resolved "https://codeload.github.com/leonekmi/socket.io/tar.gz/1c29ab07af45edfbac7279af90182dfdaadba9ac"
+socket.io@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/socket.io/-/socket.io-3.0.1.tgz#7e60375f9154968cdae45363a4d7c0570bcfd653"
+  integrity sha512-oVYbCQ4sCwm4wVi+f1bsE3YFXcvd6b4JjVP8D7IZnQqBeJOKX9XrdgJWSbXqBEqUXPY3jdTqb1M3s4KFTa/IHg==
   dependencies:
     accepts "~1.3.4"
     base64id "~2.0.0"
