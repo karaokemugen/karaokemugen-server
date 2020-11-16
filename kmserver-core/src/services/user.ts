@@ -275,7 +275,7 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		if (!user.bio) user.bio = null;
 		if (!user.url) user.url = null;
 		if (!user.email) user.email = null;
-		if (token.username !== currentUser.login && token.role !== 'admin') throw 'Only admins can edit another user';
+		if (token.username.toLowerCase() !== currentUser.login.toLowerCase() && token.role !== 'admin') throw 'Only admins can edit another user';
 		if (user.type !== currentUser.type && token.role !== 'admin') throw 'Only admins can change a user\'s type';
 		// Check if login already exists.
 		if (isNaN(user.series_lang_mode)) user.series_lang_mode = -1;
