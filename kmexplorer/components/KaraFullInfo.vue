@@ -61,7 +61,7 @@
 		<div v-show="lyrics" class="box is-clear">
 			<ul>
 				<li v-for="(line, i) in karaoke.lyrics" :key="`lyrics-${i}`">
-					{{ line }}
+					{{ line.text }}
 				</li>
 			</ul>
 		</div>
@@ -265,6 +265,7 @@
 
 	.box.is-clear {
 		background-color: lighten(#373f40, 5);
-		width: max-content;
+		width: fit-content;
+		overflow-wrap: anywhere;
 	}
 </style>
