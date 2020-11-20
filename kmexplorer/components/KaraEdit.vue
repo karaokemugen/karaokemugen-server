@@ -441,11 +441,11 @@
 					// @ts-ignore: sisi y'a eu un typecheck en haut, ta gueule mtn :)
 					const file = (this.$refs.mediafile as HTMLInputElement).files[0];
 					this.mediafile_error = '';
-					if (!this.isMediaFile(file.name)) {
+					if (!file || !this.isMediaFile(file.name)) {
 						this.mediafile_error = this.$t(
 							'kara.import.add_file_media_error',
 							{
-								name: file.name
+								name: file?.name
 							}
 						) as string;
 					} else {
@@ -479,11 +479,11 @@
 					// @ts-ignore: sisi y'a eu un typecheck en haut, ta gueule mtn :)
 					const file = (this.$refs.subfile as HTMLInputElement).files[0];
 					this.mediafile_error = '';
-					if (!this.isSubFile(file.name)) {
+					if (!file || !this.isSubFile(file.name)) {
 						this.subfile_error = this.$t(
 							'kara.import.add_file_lyrics_error',
 							{
-								name: file.name
+								name: file?.name
 							}
 						) as string;
 					} else {
