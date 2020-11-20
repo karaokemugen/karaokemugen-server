@@ -435,7 +435,8 @@
 
 		methods: {
 			async handleMediafileUpload() {
-				if ((this.$refs.mediafile as HTMLInputElement).files === null) {
+				if ((this.$refs.mediafile as HTMLInputElement).files === null ||
+					(this.$refs.mediafile as HTMLInputElement).files?.length === 0) {
 					throw new Error('handleMediafileUpload was called without files in input');
 				} else {
 					// @ts-ignore: sisi y'a eu un typecheck en haut, ta gueule mtn :)
@@ -473,7 +474,8 @@
 				}
 			},
 			async handleSubfileUpload() {
-				if ((this.$refs.subfile as HTMLInputElement).files === null) {
+				if ((this.$refs.subfile as HTMLInputElement).files === null ||
+					(this.$refs.subfile as HTMLInputElement).files?.length === 0) {
 					throw new Error('handleSubfileUpload was called without a file in the input');
 				} else {
 					// @ts-ignore: sisi y'a eu un typecheck en haut, ta gueule mtn :)
