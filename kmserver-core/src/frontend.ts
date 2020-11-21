@@ -11,7 +11,7 @@ import shortenerController from './controllers/http/shortener';
 import userController from './controllers/http/user';
 import favoritesController from './controllers/http/favorites';
 import shortenerSocketController from './controllers/ws/shortener';
-import {getConfig, resolvedPathAvatars, resolvedPathPreviews, resolvedPathRepos} from './lib/utils/config';
+import {getConfig, resolvedPathAvatars, resolvedPathPreviews, resolvedPathRepos, resolvedPathTemp} from './lib/utils/config';
 import range from 'express-range';
 import vhost from 'vhost';
 //import {getInstanceRoom} from './dao/proxy'; For KM instances hosting
@@ -21,6 +21,7 @@ import compression from 'compression';
 import { getState } from './utils/state';
 import { initWS } from './lib/utils/ws';
 import {startKMExplorer} from './services/kmexplorer';
+import fileupload from 'express-fileupload';
 
 /**
  * Starting express which will serve our app.
@@ -70,6 +71,12 @@ export function initFrontend(listenPort: number) {
 			? res.json()
 			: next();
 	});
+	app.use(fileupload({
+		useTempFiles: true,
+		tempFileDir: resolvedPathTemp(),
+		debug: true,
+		uploadTimeout: 0
+	}));
 
 	KMExplorer.get('/favicon.ico', (_, res) => {
 		res.redirect('/static/favicon.ico');

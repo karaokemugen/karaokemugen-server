@@ -1,14 +1,9 @@
 import {createKara, editKara} from '../../services/kara_import';
-import multer from 'multer';
-import {getConfig} from '../../lib/utils/config';
-import {resolve} from 'path';
 import { Router } from 'express';
-import { getState } from '../../utils/state';
 import { APIMessage, errMessage } from '../../lib/services/frontend';
+import {basename} from 'path';
 
 export default function KIController(router: Router) {
-	const conf = getConfig();
-	let upload = multer({ dest: resolve(getState().dataPath,conf.System.Path.Temp)});
 
 	router.post('/karas', async (req, res) => {
 		try {
@@ -25,12 +20,16 @@ export default function KIController(router: Router) {
 			const url = await editKara(req.body);
 			res.status(200).json(APIMessage('EDITED_KARA', url || ''));
 		} catch(err) {
-			const code = 'CANNOT_EDIT_KARA'; 
+			const code = 'CANNOT_EDIT_KARA';
 			errMessage(code, err);
 			res.status(err?.code || 500).json(APIMessage(err?.msg || code));
 		}
 	});
-	router.post('/karas/importfile', upload.single('file'), (req, res) => {
-		res.status(200).json(APIMessage('FILE_UPLOADED', req.file));
+	router.post('/karas/importfile', (req: any, res) => {
+		const files = {
+			filename: basename(req.files.file.tempFilePath),
+			originalname: req.files.file.name
+		};
+		res.status(200).json(APIMessage('FILE_UPLOADED', files));
 	});
 }
