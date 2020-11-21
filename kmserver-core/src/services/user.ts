@@ -14,7 +14,6 @@ import randomstring from 'randomstring';
 import sentry from '../utils/sentry';
 import {getRole, createJwtToken } from '../controllers/http/auth';
 import {UserOptions} from '../types/user';
-import { UploadedFile } from 'express-fileupload';
 
 const passwordResetRequests = new Map();
 
@@ -230,9 +229,9 @@ export async function createUser(user: User, opts: any = {}) {
 	}
 }
 
-async function replaceAvatar(oldImageFile: string, avatar: UploadedFile) {
+async function replaceAvatar(oldImageFile: string, avatar: Express.Multer.File) {
 	try {
-		const fileType = await detectFileType(avatar.tempFilePath);
+		const fileType = await detectFileType(avatar.path);
 		if (fileType !== 'jpg' &&
 				fileType !== 'gif' &&
 				fileType !== 'png') {
@@ -245,10 +244,10 @@ async function replaceAvatar(oldImageFile: string, avatar: UploadedFile) {
 		const oldAvatarPath = resolve(avatarPath, oldImageFile);
 		if (await asyncExists(oldAvatarPath) &&
 			oldImageFile !== 'blank.png') await asyncUnlink(oldAvatarPath);
-		await asyncMove(avatar.tempFilePath, newAvatarPath);
+		await asyncMove(avatar.path, newAvatarPath);
 		return newAvatarFile;
 	} catch (err) {
-		logger.error(`Unable to replace avatar ${oldImageFile} with ${avatar.tempFilePath}`, {service: 'User', obj: err});
+		logger.error(`Unable to replace avatar ${oldImageFile} with ${avatar.path}`, {service: 'User', obj: err});
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
 		throw err;
@@ -265,7 +264,7 @@ export async function changePassword(username: string, password: string) {
 	}
 }
 
-export async function editUser(username: string, user: User, avatar: UploadedFile, token: Token) {
+export async function editUser(username: string, user: User, avatar: Express.Multer.File, token: Token) {
 	try {
 		if (!username) throw('No user provided');
 		username = username.toLowerCase();

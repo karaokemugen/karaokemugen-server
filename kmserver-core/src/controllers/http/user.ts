@@ -1,10 +1,16 @@
 import {removeUser, editUser, createUser, findUserByName, getAllUsers, resetPasswordRequest, resetPassword} from '../../services/user';
 import {check, unescape} from '../../lib/utils/validators';
+import multer from 'multer';
+import {getConfig} from '../../lib/utils/config';
+import {resolve} from 'path';
 import { Router } from 'express';
+import { getState } from '../../utils/state';
 import {requireAuth, requireValidUser, updateLoginTime} from '../middlewares/auth';
 
 export default function userController(router: Router) {
+	const conf = getConfig();
 	// Middleware for playlist and files import
+	let upload = multer({ dest: resolve(getState().dataPath,conf.System.Path.Temp)});
 
 	router.route('/users')
 		.get(async (_, res) => {
@@ -41,7 +47,7 @@ export default function userController(router: Router) {
 				res.status(500).json(err);
 			}
 		})
-		.put(requireAuth, requireValidUser, updateLoginTime, async (req: any, res) => {
+		.put(upload.single('avatarfile'), requireAuth, requireValidUser, updateLoginTime, async (req: any, res) => {
 			const validationErrors = check(req.body, {
 				nickname: {presence: true}
 			});
@@ -211,7 +217,7 @@ export default function userController(router: Router) {
 				if (req.body.url) req.body.url = unescape(req.body.url.trim());
 				if (req.body.nickname) req.body.nickname = unescape(req.body.nickname.trim());
 				//Now we edit user
-				const avatar = req.files.avatar_file || null;
+				const avatar: Express.Multer.File = req.file || null;
 				//Get username
 				try {
 					const response = await editUser(req.authToken.username, req.body, avatar , req.authToken);
