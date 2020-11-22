@@ -54,6 +54,10 @@ export const defaults: Config = {
 		Name: null,
 		Link: null
 	},
+	Remote: {
+		Enabled: true,
+		BaseHost: 'localhost'
+	},
 	Frontend: {
 		Port: 1350,
 		SeriesLanguageMode: 3

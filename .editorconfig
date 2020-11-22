@@ -12,3 +12,11 @@ tab_width = 4
 [*.yml]
 indent_style = space
 indent_size = 2
+
+[package.json]
+indent_style = space
+indent_size = 3
+
+[tsconfig.json]
+indent_style = space
+indent_size = 2
