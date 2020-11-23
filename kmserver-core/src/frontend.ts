@@ -48,7 +48,8 @@ export function initFrontend(listenPort: number) {
 				defaultSrc: ['\'self\'', 'data:'],
 				scriptSrc: ['\'self\'', '\'unsafe-inline\'', '\'unsafe-eval\'', 'https://cdn.jsdelivr.net/'],
 				styleSrc: ['\'self\'', '\'unsafe-inline\''],
-				connectSrc: ['\'self\'', 'https:'],
+				connectSrc: ['\'self\'', 'https:', 'wss:'],
+				imgSrc: ['\'self\'', 'https:'],
 				frameSrc: ['\'self\'', getConfig().KaraExplorer.LiveURL],
 				workerSrc: ['\'self\'', 'https://cdn.jsdelivr.net']
 			}
