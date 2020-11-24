@@ -19,6 +19,7 @@ import dotenv from 'dotenv';
 import sentry from './utils/sentry';
 import {buildKMExplorer} from './services/kmexplorer';
 import pjson from '../../package.json';
+import { promoteToken } from './dao/remote';
 
 const appPath = join(__dirname,'../../');
 const dataPath = resolve(appPath, 'app/');
@@ -119,6 +120,11 @@ async function main() {
 		exit(0);
 	}
 
+	if (argv.promoteToken) {
+		await promoteToken(argv.promoteToken[0], argv.promoteToken[1]);
+		exit(0);
+	}
+
 	if (argv.build) {
 		await buildKMExplorer();
 		exit(0);
@@ -163,6 +169,7 @@ function parseArgs() {
 		.option('--createPreviews', 'generate image previews')
 		.option('--createAdmin [user],[password]', 'Create a new admin user', login)
 		.option('--changePassword [user],[password]', 'Change a user password', login)
+		.option('--promoteToken [token],[newcode]', 'Promote a remote token to a permanent one', login)
 		.option('--build', 'Build KMExplorer (required in production environments)')
 		.parse(argv);
 }

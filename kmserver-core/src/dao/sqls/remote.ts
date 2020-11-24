@@ -25,3 +25,10 @@ export const sqlTestCodeExistence = `
 select code from remote_tokens
 where code = $1
 limit 1;`;
+
+export const sqlPromoteToken = `
+update remote_tokens
+set code = $1,
+    permanent = true
+where token = $2
+`;

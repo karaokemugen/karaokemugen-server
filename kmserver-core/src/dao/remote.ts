@@ -29,3 +29,7 @@ export async function testCodeExistence(code: string) {
 	const data = await db().query(sql.sqlTestCodeExistence, [code]);
 	return data.rowCount === 1;
 }
+
+export async function promoteToken(token: string, newCode: string) {
+	return db().query(sql.sqlPromoteToken, [newCode, token]);
+}
