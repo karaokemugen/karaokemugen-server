@@ -76,8 +76,10 @@ export async function resetPassword(username: string, requestCode: string) {
 		username,
 		user.email);
 	} catch(err) {
-		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
-		sentry.error(err);
+		if (err.message !== 'No request' && err.message !== 'User unknown') {
+			sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+			sentry.error(err);
+		}
 		throw err;
 	}
 }
