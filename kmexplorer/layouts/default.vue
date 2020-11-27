@@ -357,45 +357,47 @@
 						</nuxt-link>
 					</li>
 				</ul>
-				<p class="menu-label">
-					{{ $t('menu.account') }}
-				</p>
-				<ul class="menu-list">
-					<li>
-						<a v-if="loggedIn && user" aria-label="Profile" @click.prevent="$toast.success($t('toast.FUTURE_PROFILES'))">
-							<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
-							{{ user.nickname }}
-						</a>
-						<a v-if="loggedIn" aria-label="Edit profile" @click.prevent="modal.profile = true">
-							<font-awesome-icon :icon="['fas', 'edit']" :fixed-width="true" />
-							{{ $t('menu.profile') }}
-						</a>
-						<nuxt-link v-if="loggedIn" to="/favorites" active-class="is-active">
-							<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
-							{{ $t('menu.favorites') }}
-						</nuxt-link>
-						<a v-if="loggedIn" aria-label="Logout" @click.prevent="logout">
-							<font-awesome-icon :icon="['fas', 'sign-out-alt']" :fixed-width="true" />
-							{{ $t('menu.logout') }}
-						</a>
-						<a v-else aria-label="Login" @click.prevent="modal.auth = true">
-							<font-awesome-icon :icon="['fas', 'sign-in-alt']" :fixed-width="true" />
-							{{ $t('menu.connection') }}
-						</a>
-						<a :class="languageMenu && 'is-active'" @click="languageMenu = !languageMenu">
-							<font-awesome-icon :icon="['fas', 'globe']" :fixed-width="true" />
-							{{ $t('menu.switch_language') }}
-						</a>
-						<ul v-if="languageMenu" class="menu-list">
-							<li v-for="locale in availableLocales" :key="locale.code">
-								<a
-									href="#"
-									@click.prevent.stop="$i18n.setLocale(locale.code)"
-								>{{ locale.name }}</a>
-							</li>
-						</ul>
-					</li>
-				</ul>
+				<client-only>
+					<p class="menu-label">
+						{{ $t('menu.account') }}
+					</p>
+					<ul class="menu-list">
+						<li>
+							<a v-if="loggedIn && user" aria-label="Profile" @click.prevent="$toast.success($t('toast.FUTURE_PROFILES'))">
+								<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
+								{{ user.nickname }}
+							</a>
+							<a v-if="loggedIn" aria-label="Edit profile" @click.prevent="modal.profile = true">
+								<font-awesome-icon :icon="['fas', 'edit']" :fixed-width="true" />
+								{{ $t('menu.profile') }}
+							</a>
+							<nuxt-link v-if="loggedIn" to="/favorites" active-class="is-active">
+								<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
+								{{ $t('menu.favorites') }}
+							</nuxt-link>
+							<a v-if="loggedIn" aria-label="Logout" @click.prevent="logout">
+								<font-awesome-icon :icon="['fas', 'sign-out-alt']" :fixed-width="true" />
+								{{ $t('menu.logout') }}
+							</a>
+							<a v-else aria-label="Login" @click.prevent="modal.auth = true">
+								<font-awesome-icon :icon="['fas', 'sign-in-alt']" :fixed-width="true" />
+								{{ $t('menu.connection') }}
+							</a>
+							<a :class="languageMenu && 'is-active'" @click="languageMenu = !languageMenu">
+								<font-awesome-icon :icon="['fas', 'globe']" :fixed-width="true" />
+								{{ $t('menu.switch_language') }}
+							</a>
+							<ul v-if="languageMenu" class="menu-list">
+								<li v-for="locale in availableLocales" :key="locale.code">
+									<a
+										href="#"
+										@click.prevent.stop="$i18n.setLocale(locale.code)"
+									>{{ locale.name }}</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</client-only>
 			</aside>
 			<section class="container column is-fluid main">
 				<nuxt keep-alive :keep-alive-props="{ max: 1, include: ['KaraSearch', 'KaraFavorites'] }" />
