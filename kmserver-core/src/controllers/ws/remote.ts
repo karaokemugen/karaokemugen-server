@@ -9,6 +9,9 @@ export default function remoteSocketController(app: SocketIOApp) {
 		logger.info(`Start remote for ${req.body.InstanceID}`, {service: 'Remote'});
 		return startRemote(socket, req.body.InstanceID, req.body.token);
 	});
+	app.route('remote stop', async (socket) => {
+		return stopRemote(socket);
+	});
 	app.route('remote broadcast', async (socket, req: APIData) => {
 		proxyBroadcast(socket, req.body);
 	});
