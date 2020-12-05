@@ -122,6 +122,7 @@ async function main() {
 
 	if (argv.promoteToken) {
 		await promoteToken(argv.promoteToken[0], argv.promoteToken[1]);
+		logger.info('Token was promoted to permanent token. Restart the app to see changes.', {service: 'Remote'});
 		exit(0);
 	}
 
