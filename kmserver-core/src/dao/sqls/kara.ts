@@ -6,7 +6,7 @@ export const selectAllMedias = `
 	FROM kara
 `;
 
-export const getAllKaras = (filterClauses: string[], typeClauses: string, orderClauses: string, havingClause: string, limitClause: string, offsetClause: string, statsSelectClause: string, statsJoinClause: string, favoritedSelectClause: string, favoritedJoinClause: string, favoritedGroupClause: string, whereClauses: string) => `SELECT
+export const getAllKaras = (filterClauses: string[], typeClauses: string, orderClauses: string, havingClause: string, limitClause: string, offsetClause: string, statsSelectClause: string, statsJoinClause: string, favoritedSelectClause: string, favoritedJoinClause: string, favoritedGroupClause: string, whereClauses: string, additionalFrom: string[]) => `SELECT
   ak.kid AS kid,
   ak.title AS title,
   ak.songorder AS songorder,
@@ -41,6 +41,7 @@ export const getAllKaras = (filterClauses: string[], typeClauses: string, orderC
   ${favoritedSelectClause}
   count(ak.kid) OVER()::integer AS count
 FROM all_karas AS ak
+${additionalFrom.join('')}
 ${statsJoinClause}
 ${favoritedJoinClause}
 WHERE 1 = 1

@@ -3,7 +3,7 @@ import {pg as yesql} from 'yesql';
 import { KaraParams } from '../lib/types/kara';
 import { DBKara, DBYear, DBMedia } from '../lib/types/database/kara';
 import { DBStats } from '../types/database/kara';
-import { Filter } from '../lib/types/database/database';
+import { WhereClause } from '../lib/types/database';
 const sql = require('./sqls/kara');
 
 export async function selectAllMedias(): Promise<DBMedia[]> {
@@ -17,7 +17,7 @@ export async function selectAllYears(): Promise<DBYear[]> {
 }
 
 export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
-	const filterClauses: Filter = params.filter ? buildClauses(params.filter) : {sql: [], params: {}};
+	const filterClauses: WhereClause = params.filter ? buildClauses(params.filter) : {sql: [], params: {}, additionalFrom: []};
 	let typeClauses = params.mode ? buildTypeClauses(params.mode, params.modeValue) : '';
 	let orderClauses = '';
 	let limitClause = '';
@@ -62,7 +62,9 @@ export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 	}
 	if (params.from > 0) offsetClause = `OFFSET ${params.from} `;
 	if (params.size > 0) limitClause = `LIMIT ${params.size} `;
-	const query = sql.getAllKaras(filterClauses.sql, typeClauses, orderClauses, havingClause, limitClause, offsetClause, statsSelectClause, statsJoinClause, favoritedSelectClause, favoritedJoinClause, favoritedGroupClause, whereClauses);
+	const query = sql.getAllKaras(
+		filterClauses.sql, typeClauses, orderClauses, havingClause, limitClause, offsetClause, statsSelectClause,
+		statsJoinClause, favoritedSelectClause, favoritedJoinClause, favoritedGroupClause, whereClauses, filterClauses.additionalFrom);
 	const res = await db().query(yesql(query)(filterClauses.params));
 	return res.rows;
 }

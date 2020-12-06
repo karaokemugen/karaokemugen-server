@@ -17,7 +17,7 @@ export async function selectTag(tid: string): Promise<Tag> {
 export async function selectTags(params: TagParams): Promise<DBTag[]> {
 	let filterClauses = params.filter
 		? buildTagClauses(params.filter)
-		: {sql: [], params: {}};
+		: {sql: [], params: {}, additionalFrom: []};
 	let typeClauses = params.type ? ` AND types @> ARRAY[${params.type}]` : '';
 	let stripClause = '';
 	let limitClause = '';
@@ -40,7 +40,8 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 	}
 	if (params.from > 0) offsetClause = `OFFSET ${params.from} `;
 	if (params.size > 0) limitClause = `LIMIT ${params.size} `;
-	const query = sql.getAllTags(filterClauses.sql, typeClauses, limitClause, offsetClause, joinClauses, orderClause, stripClause);
+	const query = sql.getAllTags(filterClauses.sql, typeClauses, limitClause, offsetClause, joinClauses, orderClause,
+		stripClause, filterClauses.additionalFrom);
 	const res = await db().query(yesql(query)(filterClauses.params));
 	res.rows.forEach((e: any, i: number) => {
 		const karacounts = e.karacount;
