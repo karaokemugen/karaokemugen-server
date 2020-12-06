@@ -86,6 +86,7 @@ export interface Config {
 			Previews?: string,
 			Avatars?: string,
 			Import?: string,
+			SessionExports?: string,
 			Jingles?: string[],
 			Backgrounds?: string[],
 			Intros?: string[],
