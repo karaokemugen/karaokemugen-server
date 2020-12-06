@@ -1,3 +1,6 @@
 [submodule "src/lib"]
 	path = kmserver-core/src/lib
-	url = ../modules/lib.git
+	url = ../lib.git
+[submodule "kmapp-remote"]
+	path = kmapp-remote
+	url = ../karaokemugen-app.git

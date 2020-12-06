@@ -51,12 +51,11 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 }
 
 function buildTagClauses(words: string): WhereClause {
-	const params = paramWords(words);
-	const tsquery = params.join(' & ');
-	const sql = ['search_vector @@ to_tsquery(:tsquery)'];
+	const sql = ['search_vector @@ query'];
 	return {
 		sql: sql,
-		params: {tsquery}
+		params: {tsquery: paramWords(words).join(' & ')},
+		additionalFrom: [', to_tsquery(\'public.unaccent_conf\', :tsquery) as query, ts_rank_cd(search_vector, query) as relevance']
 	};
 }
 

@@ -8,26 +8,30 @@ export interface Config {
 	BaseLicense: {
 		Name: string
 		Link: string
-	}
+	},
+	Remote: {
+		Enabled: boolean
+		BaseHost: string
+	},
 	Frontend: {
 		Port: number
 		SeriesLanguageMode: number
-	}
+	},
 	API: {
 		Secure: boolean
 		Host: string
 		Port: number
-	}
+	},
   	Users: {
 		Enabled: boolean
-	}
+	},
 	Stats: {
 		Enabled: boolean,
-	}
+	},
 	Shortener: {
 		Enabled: boolean
 		ExpireTimeDays: number
-	}
+	},
   	KaraExplorer: {
 		Enabled: boolean
 		Host: string
@@ -39,7 +43,7 @@ export interface Config {
 		InProgressSongsList: string
 		Secure: boolean
 		NuxtOverrides?: any
-	}
+	},
 	Gitlab?: {
 		Enabled?: boolean,
 		Host?: string,
@@ -54,7 +58,7 @@ export interface Config {
 				Time?: GitlabTemplate
 			}
 		}
-	}
+	},
 	System: {
 		Database: {
 			host?: string,
@@ -82,6 +86,7 @@ export interface Config {
 			Previews?: string,
 			Avatars?: string,
 			Import?: string,
+			SessionExports?: string,
 			Jingles?: string[],
 			Backgrounds?: string[],
 			Intros?: string[],

@@ -14,13 +14,14 @@ import shortenerSocketController from './controllers/ws/shortener';
 import {getConfig, resolvedPathAvatars, resolvedPathPreviews, resolvedPathRepos} from './lib/utils/config';
 import range from 'express-range';
 import vhost from 'vhost';
-//import {getInstanceRoom} from './dao/proxy'; For KM instances hosting
 import {createServer} from 'http';
 import helmet from 'helmet';
 import compression from 'compression';
 import { getState } from './utils/state';
 import { initWS } from './lib/utils/ws';
 import {startKMExplorer} from './services/kmexplorer';
+import {initRemote} from './services/remote';
+import remoteSocketController from './controllers/ws/remote';
 
 /**
  * Starting express which will serve our app.
@@ -47,7 +48,8 @@ export function initFrontend(listenPort: number) {
 				defaultSrc: ['\'self\'', 'data:'],
 				scriptSrc: ['\'self\'', '\'unsafe-inline\'', '\'unsafe-eval\'', 'https://cdn.jsdelivr.net/'],
 				styleSrc: ['\'self\'', '\'unsafe-inline\''],
-				connectSrc: ['\'self\'', 'https:'],
+				connectSrc: ['\'self\'', 'https:', 'wss:'],
+				imgSrc: ['\'self\'', 'https:'],
 				frameSrc: ['\'self\'', getConfig().KaraExplorer.LiveURL],
 				workerSrc: ['\'self\'', 'https://cdn.jsdelivr.net']
 			}
@@ -79,7 +81,6 @@ export function initFrontend(listenPort: number) {
 	//KMServer
 	// If static serve is enabled, we're serving all files from KMServer instead of Apache/nginx
 	if (state.opt.staticServe) {
-		app.use(vhost(`${conf.API.Host}`, API));
 		KMServer.use('/downloads/karaokes', express.static(resolvedPathRepos('Karas')[0]));
 		KMServer.use('/downloads/lyrics', express.static(resolvedPathRepos('Lyrics')[0]));
 		KMServer.use('/downloads/medias', express.static(resolvedPathRepos('Medias')[0]));
@@ -120,17 +121,6 @@ export function initFrontend(listenPort: number) {
 	// Load static assets from static folder (mostly error pages)
 	app.use('/static', express.static(resolve(state.appPath, 'kmserver-core/static')));
 
-	/** Disabled code for KM Rooms
-	app.use(vhost(`*.${conf.Frontend.Host}`, getKMRoom), proxy(redirectKMRoom, {
-		memoizeHost: false
-	}));
-	*/
-
-
-	// The "catchall" handler: for any request that doesn't
-	// match one above, send a 404 page.
-	app.get('*', (_, res) => res.status(404).sendFile(resolve(state.appPath, 'kmserver-core/static/404.html')));
-
 	const port = listenPort;
 	const server = createServer(app);
 
@@ -138,6 +128,14 @@ export function initFrontend(listenPort: number) {
 	if (conf.Shortener.Enabled) {
 		shortenerSocketController(ws);
 	}
+	if (conf.Remote.Enabled) {
+		remoteSocketController(ws);
+		app.use(vhost(`*.${conf.Remote.BaseHost}`, initRemote()));
+	}
+
+	// The "catchall" handler: for any request that doesn't
+	// match one above, send a 404 page.
+	app.get('*', (_, res) => res.status(404).sendFile(resolve(state.appPath, 'kmserver-core/static/404.html')));
 
 	server.listen(port, () => logger.info(`App listening on ${port}`, {service: 'App'}));
 }
@@ -162,21 +160,3 @@ function api() {
 	}
 	return apiRouter;
 }
-
-/* This code is disabled until we get to host our own KM Apps on this server code
-function getKMRoom(_req: any, _res: Response, next: any) {
-
-	const instance = getInstanceRoom(req.vhost[0]);
-    if (!instance) {
-        res.status(404).send('No room exists by this name');
-    } else {
-        req.KMAppPort = instance.port;
-        next();
-	}
-	next();
-}
-
-function redirectKMRoom(req: any) {
-	return `http://localhost:${req.KMAppPort}`;
-}
-*/

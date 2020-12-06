@@ -13,6 +13,16 @@ export default function shortenerSocketController(app: SocketIOApp) {
 			return false;
 		}
 	});
+	app.route('shortener stop', async (socket) => {
+		try {
+			await removeInstance(socket.handshake.headers['x-forwarded-for']?.split(', ')[0] || this.conn.remoteAddress);
+			return true;
+		} catch(e) {
+			// Non-fatal
+			logger.warn('Cannot delete instance after socket disable', {service: 'Shortener', obj: this});
+			return false;
+		}
+	});
 	app.on('disconnect', async (socket) => {
 		try {
 			await removeInstance(socket.handshake.headers['x-forwarded-for']?.split(', ')[0] || this.conn.remoteAddress);

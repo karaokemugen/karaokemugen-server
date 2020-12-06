@@ -43,7 +43,7 @@ export async function editKara(kara: Kara): Promise<string> {
 		if (kara.noNewSub && newKara.data.subfile) asyncUnlink(resolve(resolvedPathImport(), newKara.data.subfile));
 		if (kara.noNewVideo) {
 			asyncUnlink(resolve(resolvedPathImport(), newKara.data.mediafile));
-			newKara.data.mediaduration = 0;
+			newKara.data.duration = 0;
 		}
 
 		// Post issue to gitlab
@@ -72,7 +72,7 @@ export async function editKara(kara: Kara): Promise<string> {
 			.replace('$genres', newKara.data.genres.map(t => t.name).join(', '))
 			.replace('$platforms', newKara.data.platforms.map(t => t.name).join(', '))
 			.replace('$origins', newKara.data.origins.map(t => t.name).join(', '))
-			.replace('$duration', duration(newKara.data.mediaduration));
+			.replace('$duration', duration(newKara.data.duration));
 		try {
 			if (conf.Gitlab.Enabled) return gitlabPostNewIssue(title, desc, conf.Gitlab.IssueTemplate.Edit.Labels);
 		} catch(err) {
@@ -132,7 +132,7 @@ export async function createKara(kara: Kara) {
 		.replace('$genres', newKara.data.genres.map(t => t.name).join(', '))
 		.replace('$platforms', newKara.data.platforms.map(t => t.name).join(', '))
 		.replace('$origins', newKara.data.origins.map(t => t.name).join(', '))
-		.replace('$duration', duration(newKara.data.mediaduration));
+		.replace('$duration', duration(newKara.data.duration));
 	try {
 		if (conf.Gitlab.Enabled) return gitlabPostNewIssue(title, desc, conf.Gitlab.IssueTemplate.Import.Labels);
 	} catch(err) {
