@@ -41,9 +41,9 @@ export const getAllKaras = (filterClauses: string[], typeClauses: string, orderC
   ${favoritedSelectClause}
   count(ak.kid) OVER()::integer AS count
 FROM all_karas AS ak
-${additionalFrom.join('')}
 ${statsJoinClause}
 ${favoritedJoinClause}
+${additionalFrom.join('')}
 WHERE 1 = 1
   ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
   ${whereClauses}
