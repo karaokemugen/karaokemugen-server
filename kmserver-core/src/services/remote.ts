@@ -124,7 +124,7 @@ function deleteOldRemote() {
 export function initRemote() {
 	app = express();
 	app.use('/', express.static(resolve(getState().appPath, 'kmapp-remote/kmfrontend/build'), { index: false }));
-	app.use('/guests/', express.static(resolve(getState().appPath, 'kmapp-remote/kmfrontend/assets/guestAvatars'),
+	app.use('/guests/', express.static(resolve(getState().appPath, 'kmapp-remote/assets/guestAvatars'),
 		{ index: false, fallthrough: false }));
 	app.get('/*', async (req: any, res, next) => {
 		if (remotes.has(req.vhost[0])) {
