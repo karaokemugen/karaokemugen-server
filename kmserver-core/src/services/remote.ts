@@ -2,14 +2,13 @@ import express, { Express } from 'express';
 import { resolve } from 'path';
 import { v4 as uuidV4 } from 'uuid';
 import logger from '../lib/utils/logger';
-import { getState } from '../utils/state';
 import { Socket } from 'socket.io';
 import { generate } from 'randomstring';
 import { getWS } from '../lib/utils/ws';
 import { APIDataProxied } from '../lib/types/api';
-import { asyncReadFile } from '../lib/utils/files';
-import { RemoteResponse } from '../lib/types/remote';
-import {getConfig} from '../lib/utils/config';
+import { asyncCheckOrMkdir, asyncReadFile } from '../lib/utils/files';
+import { RemoteResponse, RemoteSettings } from '../lib/types/remote';
+import { getConfig } from '../lib/utils/config';
 import {
 	deleteOldRemoteTokens,
 	getRemoteByToken,
@@ -17,21 +16,27 @@ import {
 	testCodeExistence,
 	updateRemoteToken
 } from '../dao/remote';
+import { getVersion, watchRemotes } from '../utils/remote';
 
 let app: Express;
 
 let proxiedCodes: Set<string> = new Set();
+// Room code -> Socket instance
 let remotes: Map<string, Socket> = new Map();
+// IPs address -> Room code
 let remotesIPs: Map<string, string> = new Map();
+// Code -> KMFrontend version to serve
+let remotesVersions: Map<string, string> = new Map();
 
 function nspMiddleware(client: Socket, next: () => void) {
 	client.onAny((cmd, data, ack) => proxyHandler(client, client.nsp.name.substring(1), cmd, data, ack));
 	next();
 }
 
-function setupRemote(code: string, socket: Socket) {
+function setupRemote(code: string, version: string, socket: Socket) {
 	remotes.set(code, socket);
 	remotesIPs.set(socket.handshake.address, code);
+	remotesVersions.set(code, version);
 	if (!proxiedCodes.has(code)) {
 		getWS().ws.of(code).use(nspMiddleware);
 		proxiedCodes.add(code);
@@ -49,16 +54,16 @@ async function findFreeCode() {
 	return code;
 }
 
-export async function startRemote(socket: Socket, _instanceId: string, token: string): Promise<RemoteResponse> {
-	if (token) {
-		const instance = await getRemoteByToken(token);
+export async function startRemote(socket: Socket, req: RemoteSettings): Promise<RemoteResponse> {
+	if (req.token) {
+		const instance = await getRemoteByToken(req.token);
 		if (instance) {
 			try {
 				// All good! Setup remote with the authenticated code
 				updateRemoteToken(instance.token, socket.handshake.address).catch(err => {
 					logger.warn('Cannot update instance last use', {service: 'Remote', obj: err});
 				});
-				setupRemote(instance.code, socket);
+				setupRemote(instance.code, req.version, socket);
 				return {
 					host: `${instance.code}.${getConfig().Remote.BaseHost}`,
 					code: instance.code,
@@ -76,7 +81,7 @@ export async function startRemote(socket: Socket, _instanceId: string, token: st
 			const code = await findFreeCode();
 			const token = uuidV4();
 			await insertNewToken(code, token, socket.handshake.address);
-			setupRemote(code, socket);
+			setupRemote(code, req.version, socket);
 			return { host: `${code}.${getConfig().Remote.BaseHost}`, code, token };
 		} catch (err) {
 			logger.error('Cannot start remote and assign new token', {service: 'Remote', obj: err});
@@ -123,18 +128,37 @@ function deleteOldRemote() {
 
 export function initRemote() {
 	app = express();
-	app.use('/', express.static(resolve(getState().appPath, 'kmapp-remote/kmfrontend/build'), { index: false }));
-	app.use('/guests/', express.static(resolve(getState().appPath, 'kmapp-remote/assets/guestAvatars'),
-		{ index: false, fallthrough: false }));
-	app.get('/*', async (req: any, res, next) => {
+	app.use('/', (req: any, res, next) => {
 		if (remotes.has(req.vhost[0])) {
-			let kmfrontend = await asyncReadFile(resolve(getState().appPath, 'kmapp-remote/kmfrontend/build/index.html'));
-			kmfrontend = kmfrontend.toString().replace('NO-REMOTE', req.vhost[0]);
-			res.send(kmfrontend);
+			const frontend = getVersion(remotesVersions.get(req.vhost[0]));
+			if (frontend) {
+				return express.static(frontend,
+					{ index: false })(req, res, next);
+			} else {
+				res.status(500).send('Cannot find KMFrontend required version.');
+			}
 		} else {
 			next();
 		}
 	});
+	/*app.use('/guests/', express.static(resolve(getState().appPath, 'kmapp-remote/assets/guestAvatars'),
+		{ index: false, fallthrough: false }));*/
+	app.get('/*', async (req: any, res, next) => {
+		if (remotes.has(req.vhost[0])) {
+			const frontend = getVersion(remotesVersions.get(req.vhost[0]));
+			if (frontend) {
+				let kmfrontend = await asyncReadFile(resolve(frontend, 'index.html'));
+				kmfrontend = kmfrontend.toString().replace('NO-REMOTE', req.vhost[0]);
+				res.send(kmfrontend);
+			} else {
+				res.status(500).send('Cannot find KMFrontend required version.');
+			}
+		} else {
+			next();
+		}
+	});
+	asyncCheckOrMkdir(getConfig().Remote.FrontendRoot);
+	watchRemotes();
 	deleteOldRemote();
 	setTimeout(deleteOldRemote, 60 * 60 * 1000 * 24);
 	return app;

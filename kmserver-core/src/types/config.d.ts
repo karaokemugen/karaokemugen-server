@@ -12,6 +12,7 @@ export interface Config {
 	Remote: {
 		Enabled: boolean
 		BaseHost: string
+		FrontendRoot: string
 	},
 	Frontend: {
 		Port: number

@@ -56,7 +56,8 @@ export const defaults: Config = {
 	},
 	Remote: {
 		Enabled: true,
-		BaseHost: 'localhost'
+		BaseHost: 'localhost',
+		FrontendRoot: '/'
 	},
 	Frontend: {
 		Port: 1350,
