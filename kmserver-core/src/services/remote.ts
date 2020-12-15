@@ -23,8 +23,8 @@ let app: Express;
 let proxiedCodes: Set<string> = new Set();
 // Room code -> Socket instance
 let remotes: Map<string, Socket> = new Map();
-// IPs address -> Room code
-let remotesIPs: Map<string, string> = new Map();
+// Socket instance -> Room code
+let remotesReverse: WeakMap<Socket, string> = new WeakMap();
 // Code -> KMFrontend version to serve
 let remotesVersions: Map<string, string> = new Map();
 
@@ -35,7 +35,7 @@ function nspMiddleware(client: Socket, next: () => void) {
 
 function setupRemote(code: string, version: string, socket: Socket) {
 	remotes.set(code, socket);
-	remotesIPs.set(socket.handshake.address, code);
+	remotesReverse.set(socket, code);
 	remotesVersions.set(code, version);
 	if (!proxiedCodes.has(code)) {
 		getWS().ws.of(code).use(nspMiddleware);
@@ -90,10 +90,12 @@ export async function startRemote(socket: Socket, req: RemoteSettings): Promise<
 	}
 }
 
-export function stopRemote(socket: Socket) {
-	if (remotesIPs.has(socket.handshake.address)) {
-		const code = remotesIPs.get(socket.handshake.address);
-		remotesIPs.delete(socket.handshake.address);
+export function stopRemote(socket: Socket, reason?: string) {
+	if (remotesReverse.has(socket)) {
+		const code = remotesReverse.get(socket);
+		logger.debug(`Stop remote for ${code} (hosted by ${socket.handshake.address})`, {service: 'Remote', obj: reason});
+		remotesReverse.delete(socket);
+		remotesVersions.delete(code);
 		remotes.delete(code);
 	}
 }
@@ -113,8 +115,8 @@ function proxyHandler(client: Socket, code: string, command: string, data: APIDa
 }
 
 export function proxyBroadcast(socket: Socket, data: any) {
-	if (remotesIPs.has(socket.handshake.address)) {
-		getWS().ws.of(remotesIPs.get(socket.handshake.address)).emit(data.type, data.data);
+	if (remotesReverse.has(socket)) {
+		getWS().ws.of(remotesReverse.get(socket)).emit(data.type, data.data);
 	}
 }
 
