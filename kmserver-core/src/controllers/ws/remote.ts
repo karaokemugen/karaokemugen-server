@@ -18,7 +18,8 @@ export default function remoteSocketController(app: SocketIOApp) {
 		return stopRemote(socket);
 	});
 	app.route('remote broadcast', async (socket, req: APIData) => {
-		return proxyBroadcast(socket, req.body);
+		setImmediate(proxyBroadcast, socket, req.body);
+		return true;
 	});
 	app.on('disconnect', stopRemote);
 }
