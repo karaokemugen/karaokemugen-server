@@ -1,6 +1,7 @@
 import { deleteFavorite, selectFavorites, insertFavorite } from '../dao/favorites';
 import { Token } from '../lib/types/user';
 import sentry from '../utils/sentry';
+import { pubUser } from './user_pubsub';
 
 export async function getFavorites(token: Token) {
 	try {
@@ -15,6 +16,7 @@ export async function getFavorites(token: Token) {
 export async function addFavorite(token: Token, kid: string) {
 	try {
 		token.username = token.username.toLowerCase();
+		pubUser(token.username);
 		return await insertFavorite(token.username, kid);
 	} catch(err) {
 		sentry.error(err);
@@ -25,6 +27,7 @@ export async function addFavorite(token: Token, kid: string) {
 export async function removeFavorite(token: Token, kid: string) {
 	try {
 		token.username = token.username.toLowerCase();
+		pubUser(token.username);
 		return await deleteFavorite(token.username, kid);
 	} catch(err) {
 		sentry.error(err);

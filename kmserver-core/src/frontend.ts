@@ -11,6 +11,8 @@ import shortenerController from './controllers/http/shortener';
 import userController from './controllers/http/user';
 import favoritesController from './controllers/http/favorites';
 import shortenerSocketController from './controllers/ws/shortener';
+import remoteSocketController from './controllers/ws/remote';
+import userSubSocketController from './controllers/ws/user';
 import {getConfig, resolvedPathAvatars, resolvedPathPreviews, resolvedPathRepos} from './lib/utils/config';
 import range from 'express-range';
 import vhost from 'vhost';
@@ -19,9 +21,8 @@ import helmet from 'helmet';
 import compression from 'compression';
 import { getState } from './utils/state';
 import { initWS } from './lib/utils/ws';
-import {startKMExplorer} from './services/kmexplorer';
-import {initRemote} from './services/remote';
-import remoteSocketController from './controllers/ws/remote';
+import { startKMExplorer } from './services/kmexplorer';
+import { initRemote } from './services/remote';
 
 /**
  * Starting express which will serve our app.
@@ -132,6 +133,7 @@ export function initFrontend(listenPort: number) {
 		remoteSocketController(ws);
 		app.use(vhost(`*.${conf.Remote.BaseHost}`, initRemote()));
 	}
+	userSubSocketController(ws);
 
 	// The "catchall" handler: for any request that doesn't
 	// match one above, send a 404 page.

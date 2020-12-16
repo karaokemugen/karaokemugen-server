@@ -14,6 +14,7 @@ import randomstring from 'randomstring';
 import sentry from '../utils/sentry';
 import {getRole, createJwtToken } from '../controllers/http/auth';
 import {UserOptions} from '../types/user';
+import { delPubUser, pubUser } from './user_pubsub';
 
 const passwordResetRequests = new Map();
 
@@ -151,6 +152,7 @@ export async function removeUser(username: string) {
 	try {
 		if (!username) throw('No user provided');
 		username = username.toLowerCase();
+		delPubUser(username);
 		return await deleteUser(username);
 	} catch(err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
@@ -216,6 +218,8 @@ export async function createUser(user: User, opts: any = {}) {
 		user.password = await hashPasswordbcrypt(user.password);
 		try {
 			await insertUser(user);
+			delete user.password;
+			pubUser(user.login);
 		} catch (err) {
 			logger.error(`Unable to create user ${user.login}`, {service: 'User', obj: err});
 			throw ({ code: 'USER_CREATION_ERROR', data: err});
@@ -302,6 +306,7 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		await updateUser(user);
 		logger.debug(`${username} (${user.nickname}) profile updated`, {service: 'User'});
 		delete currentUser.password;
+		pubUser(user.login);
 		return {
 			user,
 			token: createJwtToken(user.login, getRole(user), new Date(user.password_last_modified_at instanceof Date ? user.password_last_modified_at:currentUser.password_last_modified_at))
