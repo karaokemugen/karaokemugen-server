@@ -9,6 +9,7 @@ import { APIDataProxied } from '../lib/types/api';
 import { asyncCheckOrMkdir, asyncReadFile } from '../lib/utils/files';
 import { RemoteResponse, RemoteSettings } from '../lib/types/remote';
 import { getConfig } from '../lib/utils/config';
+import { getState } from '../utils/state';
 import {
 	deleteOldRemoteTokens,
 	getRemoteByToken,
@@ -143,8 +144,8 @@ export function initRemote() {
 			next();
 		}
 	});
-	/*app.use('/guests/', express.static(resolve(getState().appPath, 'kmapp-remote/assets/guestAvatars'),
-		{ index: false, fallthrough: false }));*/
+	app.use('/guests/', express.static(resolve(getState().appPath, 'assets/guestAvatars'),
+		{ index: false, fallthrough: false }));
 	app.get('/*', async (req: any, res, next) => {
 		if (remotes.has(req.vhost[0])) {
 			const frontend = getVersion(remotesVersions.get(req.vhost[0]));

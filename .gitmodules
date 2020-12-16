@@ -1,3 +1,6 @@
 [submodule "src/lib"]
 	path = kmserver-core/src/lib
 	url = ../lib.git
+[submodule "assets/guestAvatars"]
+	path = assets/guestAvatars
+	url = ../guest-avatars.git
