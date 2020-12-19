@@ -14,6 +14,12 @@ const loginErr = {
 	data: undefined
 };
 
+const loginNoUser = {
+	code: 'LOG_ERROR',
+	message: 'No user provided',
+	data: undefined
+};
+
 async function checkLogin(username: string, password: string): Promise<Token> {
 	const user = await findUserByName(username, {password: true});
 	if (!user) throw false;
@@ -39,7 +45,11 @@ export default function authController(router: Router) {
 				logger.error(`Failed to login ${req.body.username}`, {service: 'User', obj: err});
 				res.status(500);
 				sentry.error(err);
-			} else res.status(401).send(loginErr);
+			} else if(err === 'No user provided') {
+				res.status(400).send(loginNoUser);
+			} else {
+				res.status(401).send(loginErr);
+			}
 		}
 	});
 
