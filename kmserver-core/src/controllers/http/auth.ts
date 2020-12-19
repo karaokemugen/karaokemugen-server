@@ -41,12 +41,12 @@ export default function authController(router: Router) {
 			updateUserLastLogin(req.body.username.toLowerCase());
 			res.send(token);
 		} catch(err) {
-			if (err !== false) {
+			if(err === 'No user provided') {
+				res.status(400).send(loginNoUser);
+			} else if (err !== false) {
 				logger.error(`Failed to login ${req.body.username}`, {service: 'User', obj: err});
 				res.status(500);
 				sentry.error(err);
-			} else if(err === 'No user provided') {
-				res.status(400).send(loginNoUser);
 			} else {
 				res.status(401).send(loginErr);
 			}
