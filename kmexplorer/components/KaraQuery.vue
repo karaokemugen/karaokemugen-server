@@ -13,6 +13,7 @@
 
 <script lang="ts">
 	import Vue from 'vue';
+	import debounce from 'lodash.debounce';
 	import { mapState } from 'vuex';
 
 	import KaraList from '~/components/KaraList.vue';
@@ -40,7 +41,8 @@
 		karaokes: KaraListType,
 		from: number,
 		activated: boolean,
-		resetNeeded: boolean
+		resetNeeded: boolean,
+		resetListDebounced?: (navigation?: boolean) => void
 	}
 
 	export default Vue.extend({
@@ -58,6 +60,16 @@
 				type: Boolean,
 				default: false
 			}
+		},
+
+		data(): VState {
+			return {
+				loading: false,
+				karaokes: { infos: { count: 0, from: 0, to: 0 }, i18n: {}, content: [] },
+				from: -1,
+				activated: false,
+				resetNeeded: false
+			};
 		},
 
 		async fetch() {
@@ -104,16 +116,6 @@
 			await this.loadNextPage(true);
 		},
 
-		data(): VState {
-			return {
-				loading: false,
-				karaokes: { infos: { count: 0, from: 0, to: 0 }, i18n: {}, content: [] },
-				from: -1,
-				activated: false,
-				resetNeeded: false
-			};
-		},
-
 		computed: {
 			reqParams(): KaraRequest {
 				const queries: string[] = [];
@@ -157,20 +159,24 @@
 			}
 		},
 
+		mounted() {
+			this.resetListDebounced = debounce(this.actualResetList, 75);
+		},
+
 		activated() {
+			this.activated = true;
 			if (menuBarStore.sort === 'karacount') {
 				menuBarStore.setSort('recent');
 			}
 			window.addEventListener('scroll', this.scrollEvent, { passive: true });
-			this.activated = true;
 			if (this.resetNeeded) {
 				this.resetList(true);
 			}
 		},
 
 		deactivated() {
-			window.removeEventListener('scroll', this.scrollEvent);
 			this.activated = false;
+			window.removeEventListener('scroll', this.scrollEvent);
 		},
 
 		methods: {
@@ -198,7 +204,7 @@
 					this.loadNextPage();
 				}
 			},
-			resetList(navigation = false) {
+			actualResetList(navigation = false) {
 				if (!this.activated) {
 					this.resetNeeded = true;
 					return;
@@ -210,6 +216,13 @@
 				if (navigation && !this.favorites && (this.$route.params.query !== (menuBarStore.search || undefined) || this.$route.query.q !== this.reqParams.q)) {
 					// TODO: Fully-featured shareable URL
 					this.$router.replace(generateNavigation(menuBarStore));
+				}
+			},
+			resetList(navigation = false) {
+				if (this.resetListDebounced) {
+					this.resetListDebounced(navigation);
+				} else {
+					this.actualResetList(navigation);
 				}
 			}
 		}
