@@ -45,17 +45,17 @@
 				/>
 			</div>
 			<i18n v-if="karaoke.favorited" path="kara.stats.favorited" tag="div" class="box stats">
-				<template v-slot:number>
+				<template #number>
 					<span class="nb">{{ karaoke.favorited }}</span>
 				</template>
 			</i18n>
 			<i18n v-if="karaoke.requested" path="kara.stats.requested" tag="div" class="box stats blue">
-				<template v-slot:number>
+				<template #number>
 					<span class="nb">{{ karaoke.requested }}</span>
 				</template>
 			</i18n>
 			<i18n v-if="karaoke.played" path="kara.stats.played" tag="div" class="box stats blue">
-				<template v-slot:number>
+				<template #number>
 					<span class="nb">{{ karaoke.played }}</span>
 				</template>
 			</i18n>
@@ -276,6 +276,7 @@
 		img:last-child {
 			position: absolute;
 			left: 0;
+			top: 0;
 			opacity: 0;
 			transition: opacity 0.25s linear;
 		}
