@@ -19,6 +19,15 @@
 		</button>
 		<table class="table tagList">
 			<tbody>
+				<tr class="tr-line">
+					<td>
+						<font-awesome-icon :icon="['fas', 'clock']" :fixed-width="true" />
+						{{ duration }}
+					</td>
+					<td :title="`${$t('kara.created_at')}: ${new Date(karaoke.created_at).toLocaleString()}`">
+						{{ $t('kara.modified_at') }}:&nbsp;{{ new Date(karaoke.modified_at).toLocaleString() }}
+					</td>
+				</tr>
 				<tr v-for="type in Object.keys(tagTypesSorted)" :key="type">
 					<td>
 						<span class="name">
@@ -37,9 +46,9 @@
 				</tr>
 			</tbody>
 		</table>
-		<div class="content">
+		<!-- <div class="content">
 			{{ $t('kara.duration') }}:&nbsp;{{ duration }}&nbsp;/&nbsp;{{ $t('kara.created_at') }}:&nbsp;{{ new Date(karaoke.created_at).toLocaleString() }}&nbsp;/&nbsp;{{ $t('kara.modified_at') }}:&nbsp;{{ new Date(karaoke.modified_at).toLocaleString() }}
-		</div>
+		</div> -->
 		<div class="buttons">
 			<button class="button is-info" @click="toggleLyrics">
 				<font-awesome-icon :icon="['fas', 'closed-captioning']" :fixed-width="true" />
@@ -267,5 +276,10 @@
 		background-color: lighten(#373f40, 5);
 		width: fit-content;
 		overflow-wrap: anywhere;
+	}
+
+	.tr-line > td {
+		height: 2em;
+		line-height: 2em;
 	}
 </style>
