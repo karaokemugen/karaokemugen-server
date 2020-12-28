@@ -108,10 +108,10 @@ function proxyHandler(client: Socket, code: string, command: string, data: APIDa
 		// Emit the command and send response
 		data.headers = client.handshake.headers as any;
 		server.emit(`proxy ${command}`, data, res => {
-			ack(res);
+			if (ack) ack(res);
 		});
 	} else {
-		ack({err: true, data: 'Unknown namespace'});
+		if (ack) ack({err: true, data: 'Unknown namespace'});
 	}
 }
 
