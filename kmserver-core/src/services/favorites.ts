@@ -16,8 +16,9 @@ export async function getFavorites(token: Token) {
 export async function addFavorite(token: Token, kid: string) {
 	try {
 		token.username = token.username.toLowerCase();
+		await insertFavorite(token.username, kid);
 		pubUser(token.username);
-		return await insertFavorite(token.username, kid);
+		return true;
 	} catch(err) {
 		sentry.error(err);
 		throw err;
@@ -27,8 +28,9 @@ export async function addFavorite(token: Token, kid: string) {
 export async function removeFavorite(token: Token, kid: string) {
 	try {
 		token.username = token.username.toLowerCase();
+		await deleteFavorite(token.username, kid);
 		pubUser(token.username);
-		return await deleteFavorite(token.username, kid);
+		return true;
 	} catch(err) {
 		sentry.error(err);
 		throw err;
