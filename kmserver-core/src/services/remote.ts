@@ -112,6 +112,7 @@ function proxyHandler(client: Socket, code: string, command: string, data: APIDa
 		});
 	} else {
 		if (ack) ack({err: true, data: 'Unknown namespace'});
+		client.disconnect(true);
 	}
 }
 
