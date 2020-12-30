@@ -5,7 +5,7 @@ export default function ({ $axios, app }) {
 		}
 	});
 	$axios.onError((err) => {
-		if (err?.response.data?.code) { // if no code is present don't display toast
+		if (err?.response?.data?.code) { // if no code is present don't display toast
 			app.$toast.error(app.i18n.t(`toast.${err.response.data.code}`), { icon: 'error' });
 		}
 		if (err?.response?.data === 'Token has expired') {
