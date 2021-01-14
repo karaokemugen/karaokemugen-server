@@ -106,6 +106,15 @@
 			</p>
 		</div>
 		<div class="field">
+			<label class="label">{{ $tc('kara.tagtypes.versions', karaoke.songtypes.length) }}</label>
+			<editable-tag-group
+				:checkboxes="true"
+				:tag-type="14"
+				:params="karaoke.versions"
+				@change="(tags) => karaoke.versions = tags"
+			/>
+		</div>
+		<div class="field">
 			<label class="label" :title="$t('kara.import.songorder_tooltip')">
 				{{ $t('kara.import.songorder') }}
 				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />

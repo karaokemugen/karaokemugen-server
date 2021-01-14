@@ -127,6 +127,7 @@
 			tagTypesSorted(): object {
 				const tagTypes = { ...this.tagTypes };
 				delete tagTypes.years; // This is a decoy for fake years tag
+				delete tagTypes.versions; // Versions are in KaraPhrase
 				// Remove unused tagTypes in context
 				for (const tagType in tagTypes) {
 					// @ts-ignore

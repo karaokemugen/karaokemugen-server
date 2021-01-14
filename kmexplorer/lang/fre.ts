@@ -20,7 +20,8 @@ export default {
 			creators: 'Créateur | Créateurs',
 			authors: 'Auteur de karaokés | Auteurs de karaokés',
 			groups: 'Groupe | Groupes',
-			misc: 'Divers'
+			misc: 'Divers',
+			versions: 'Version | Versions'
 		},
 		singers_by: 'Chanté par',
 		songwriters_by: 'Composé par',
@@ -174,6 +175,7 @@ export default {
 		origins: 'Origines',
 		genres: 'Thèmes',
 		platforms: 'Plateformes',
+		versions: 'Versions',
 		singers: 'Chanteurs',
 		series: 'Séries',
 		songwriters: 'Compositeurs',

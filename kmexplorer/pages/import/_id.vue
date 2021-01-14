@@ -66,6 +66,7 @@
 				return {
 					karaparam: {
 						series: [],
+						versions: [],
 						singers: [],
 						misc: [],
 						groups: [],

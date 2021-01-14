@@ -1,14 +1,21 @@
 <template>
 	<i18n path="kara.phrase" :tag="tag">
-		<template v-slot:songtype>
+		<template #songtype>
 			<a
 				:href="`/tags/${songtype.slug}/${songtype.tid}~3`"
 				@click.prevent="handleLink('songtypes')"
 			>
 				{{ songtype.name }}<template v-if="karaoke.songorder">&nbsp;{{ karaoke.songorder }}</template>
 			</a>
+			<span v-if="versions.length > 0">
+				(<a
+					v-for="(version, index) in versions"
+					:key="version.tid"
+					:href="`/tags/${version.slug}/${songtype.tid}~14`"
+				>{{ version.name }}<span v-if="index+1 < versions.length">, </span></a>)
+			</span>
 		</template>
-		<template v-slot:series>
+		<template #series>
 			<a
 				:href="`/tags/${serieSinger.slug}/${serieSinger.tid}`"
 				@click.prevent="handleLink('serieSinger')"
@@ -78,6 +85,17 @@
 					slug: slug(this.karaoke.songtypes[0].name),
 					name: getTagInLanguage(this.karaoke.songtypes[0], languages.alpha2ToAlpha3B(this.$i18n.locale), 'eng', this.i18n)
 				};
+			},
+			versions(): ShortTag[] {
+				const tab = [];
+				for (const version of this.karaoke.versions) {
+					tab.push({
+						tid: version.tid,
+						slug: slug(version.name),
+						name: getTagInLanguage(version, languages.alpha2ToAlpha3B(this.$i18n.locale), 'eng', this.i18n)
+					});
+				}
+				return tab;
 			}
 		},
 

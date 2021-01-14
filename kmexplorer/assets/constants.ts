@@ -77,6 +77,11 @@ export const tagTypesMap: { [key: number]: tagType } = {
 		icon: 'calendar-alt',
 		class: 'is-grey',
 		name: 'years'
+	},
+	14: {
+		icon: 'tachometer-alt',
+		class: 'is-white',
+		name: 'versions'
 	}
 };
 
@@ -150,5 +155,10 @@ export const tagTypes: { [key: string]: tagType } = {
 		icon: 'calendar-alt',
 		class: 'is-grey',
 		type: 0
+	},
+	versions: {
+		icon: 'tachometer-alt',
+		class: 'is-white',
+		type: 14
 	}
 };

@@ -143,6 +143,11 @@
 								<font-awesome-icon :icon="['fas', 'laptop']" :fixed-width="true" />
 								{{ $t('menu.platforms') }}
 							</nuxt-link>
+
+							<nuxt-link class="navbar-item" to="/types/versions">
+								<font-awesome-icon :icon="['fas', 'tachometer-alt']" :fixed-width="true" />
+								{{ $t('menu.versions') }}
+							</nuxt-link>
 						</div>
 					</div>
 					<nuxt-link class="navbar-item" to="/types/singers">
@@ -281,6 +286,16 @@
 								>
 									<font-awesome-icon :icon="['fas', 'laptop']" :fixed-width="true" />
 									{{ $t('menu.platforms') }}
+								</nuxt-link>
+							</li>
+							<li>
+								<nuxt-link
+									to="/types/versions"
+									active-class="is-active"
+									:class="{'is-active': tagType === '~14'}"
+								>
+									<font-awesome-icon :icon="['fas', 'tachometer-alt']" :fixed-width="true" />
+									{{ $t('menu.versions') }}
 								</nuxt-link>
 							</li>
 						</ul>
