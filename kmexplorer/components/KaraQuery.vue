@@ -159,7 +159,7 @@
 			}
 		},
 
-		mounted() {
+		created() {
 			this.resetListDebounced = debounce(this.actualResetList, 75);
 		},
 
@@ -170,6 +170,7 @@
 			}
 			window.addEventListener('scroll', this.scrollEvent, { passive: true });
 			if (this.resetNeeded) {
+				this.resetNeeded = false;
 				this.resetList(true);
 			}
 		},
@@ -213,12 +214,19 @@
 				menuBarStore.setResultsCount(0);
 				this.from = -1;
 				this.loadNextPage(true);
-				if (navigation && !this.favorites && (this.$route.params.query !== (menuBarStore.search || undefined) || this.$route.query.q !== this.reqParams.q)) {
-					// TODO: Fully-featured shareable URL
+				if (navigation && !this.favorites &&
+					(this.$route.params.query !== (menuBarStore.search || undefined) ||
+						this.$route.query.q !== this.reqParams.q)) {
 					this.$router.replace(generateNavigation(menuBarStore));
 				}
 			},
 			resetList(navigation = false) {
+				console.log('resetList!');
+				console.table({
+					q: { old: this.$route.query.q, now: this.reqParams.q },
+					query: { old: menuBarStore.search, now: this.$route.params.query }
+				});
+				console.trace();
 				if (this.resetListDebounced) {
 					this.resetListDebounced(navigation);
 				} else {

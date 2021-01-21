@@ -84,7 +84,7 @@ export function sortTypesKara(karaoke: DBKara): DBKara {
 }
 
 export function generateNavigation(menuBarStore: menubar) {
-	const navigation = { path: `/search/${encodeURIComponent(menuBarStore.search)}`, query: { q: '' } };
+	const navigation = { path: `/search/${encodeURIComponent(menuBarStore.search)}`, query: {} as { q?: string } };
 	const criterias: string[] = [];
 	const tags: string[] = [];
 	for (const tag of menuBarStore.tags) {
@@ -94,7 +94,11 @@ export function generateNavigation(menuBarStore: menubar) {
 			tags.push(`${tag.tag.tid}~${tagTypes[tag.type].type}`);
 		}
 	}
-	criterias.push(`t:${tags.join(',')}`);
-	navigation.query.q = criterias.join('!');
+	if (tags.length > 0) {
+		criterias.push(`t:${tags.join(',')}`);
+	}
+	if (criterias.length > 0) {
+		navigation.query.q = criterias.join('!');
+	}
 	return navigation;
 }
