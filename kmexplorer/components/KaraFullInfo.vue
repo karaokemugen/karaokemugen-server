@@ -81,13 +81,13 @@
 	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
 	import languages from '@cospired/i18n-iso-languages';
-	import { fakeYearTag, generateNavigation, getSerieLanguage } from '~/utils/tools';
+	import { fakeYearTag, generateNavigation, getSerieLanguage, getTagInLanguage } from '~/utils/tools';
 	import { tagTypes } from '~/assets/constants';
 	import Tag from '~/components/Tag.vue';
 	import KaraPhrase from '~/components/KaraPhrase.vue';
 	import { menuBarStore, modalStore } from '~/store';
 	import { DBKara } from '%/lib/types/database/kara';
-	import { serieSinger } from '~/types/serieSinger';
+	import { ShortTag } from '~/types/tags';
 	import duration from '~/assets/date';
 
 	interface VState {
@@ -121,6 +121,34 @@
 			};
 		},
 
+		head() {
+			return {
+				meta: [
+					{
+						hid: 'twitter:title',
+						name: 'twitter:title',
+						content: this.$t('kara.meta', { // @ts-ignore: mais²
+							songtitle: this.karaoke.title, serieSinger: this.serieSinger.name
+						}) as string
+					},
+					{
+						hid: 'description',
+						name: 'description',
+						content: this.$t('kara.meta', { // @ts-ignore: mais²
+							songtitle: this.karaoke.title, serieSinger: this.serieSinger.name
+						}) as string
+					},
+					{
+						hid: 'og:title',
+						property: 'og:title',
+						content: this.$t('kara.meta', { // @ts-ignore: mais²
+							songtitle: this.karaoke.title, serieSinger: this.serieSinger.name
+						}) as string
+					}
+				]
+			};
+		},
+
 		computed: {
 			tagTypesSorted(): object {
 				const tagTypes = { ...this.tagTypes };
@@ -135,28 +163,23 @@
 				}
 				return tagTypes;
 			},
-			serieSinger(): serieSinger {
+			serieSinger(): ShortTag {
 				if (this.karaoke.series[0]) {
 					return {
 						name: getSerieLanguage(this.karaoke.series[0], this.karaoke.langs[0].name, this.$store.state.auth.user),
-						tid: `${this.karaoke.series[0].tid}~${tagTypes.series.type}`,
 						slug: slug(this.karaoke.series[0].name),
-						type: 'series'
+						type: 'series',
+						tag: this.karaoke.series[0]
 					};
 				} else if (this.karaoke.singers[0]) {
 					return {
-						name: this.karaoke.singers[0].i18n[languages.alpha2ToAlpha3B(this.$i18n.locale)] || this.karaoke.singers[0].i18n.eng || this.karaoke.singers[0].name,
-						tid: `${this.karaoke.singers[0].tid}~${tagTypes.singers.type}`,
+						name: getTagInLanguage(this.karaoke.singers[0], languages.alpha2ToAlpha3B(this.$i18n.locale), 'eng'),
 						slug: slug(this.karaoke.singers[0].name),
-						type: 'singers'
+						type: 'singers',
+						tag: this.karaoke.singers[0]
 					};
 				} else { // You never know~
-					return {
-						name: '¯\\_(ツ)_/¯',
-						tid: '6339add6-b9a3-46c4-9488-2660caa30487~1',
-						slug: 'wtf',
-						type: 'singers'
-					};
+					throw new TypeError('The karaoke does not have any series nor singers, wtf?');
 				}
 			},
 			songtype(): string {
@@ -214,34 +237,6 @@
 				});
 				this.$router.push(generateNavigation(menuBarStore));
 			}
-		},
-
-		head() {
-			return {
-				meta: [
-					{
-						hid: 'twitter:title',
-						name: 'twitter:title',
-						content: this.$t('kara.meta', { // @ts-ignore: mais²
-							songtitle: this.karaoke.title, serieSinger: this.serieSinger.name
-						}) as string
-					},
-					{
-						hid: 'description',
-						name: 'description',
-						content: this.$t('kara.meta', { // @ts-ignore: mais²
-							songtitle: this.karaoke.title, serieSinger: this.serieSinger.name
-						}) as string
-					},
-					{
-						hid: 'og:title',
-						property: 'og:title',
-						content: this.$t('kara.meta', { // @ts-ignore: mais²
-							songtitle: this.karaoke.title, serieSinger: this.serieSinger.name
-						}) as string
-					}
-				]
-			};
 		}
 	});
 </script>
