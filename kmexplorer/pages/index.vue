@@ -17,6 +17,9 @@
 		<h2 class="subtitle">
 			{{ explorerTagline }}
 		</h2>
+		<div class="mobile-search-bar is-hidden-desktop">
+			<search-bar :filter="false" :results="false" icon />
+		</div>
 		<article v-if="noInstance" class="message is-warning middle-size">
 			<div class="message-header">
 				<p>
@@ -31,57 +34,57 @@
 			</div>
 		</article>
 		<ul class="km-home--stats">
-			<li key="karas">
+			<li>
 				<nuxt-link to="/search" class="km-home--stats--link">
 					<strong>{{ count.karas>0 ? count.karas : '-' }}</strong>
 					<span>{{ $tc("stats.karaokes", count.karas) }}</span>
 				</nuxt-link>
 			</li>
-			<li key="serie">
+			<li>
 				<nuxt-link to="/types/series" class="km-home--stats--link">
 					<strong>{{ count.series>0 ? count.series : '-' }}</strong>
 					<span>{{ $tc("kara.tagtypes.series", count.series) }}</span>
 				</nuxt-link>
 			</li>
-			<li key="singer">
+			<li>
 				<nuxt-link to="/types/singers" class="km-home--stats--link">
 					<strong>{{ count.singers>0 ? count.singers : '-' }}</strong>
 					<span>{{ $tc("kara.tagtypes.singers", count.singers) }}</span>
 				</nuxt-link>
 			</li>
-			<li key="creator">
+			<li>
 				<nuxt-link to="/types/creators" class="km-home--stats--link">
 					<strong>{{ count.creators>0 ? count.creators : '-' }}</strong>
 					<span>{{ $tc("kara.tagtypes.creators", count.creators) }}</span>
 				</nuxt-link>
 			</li>
-			<li key="language">
+			<li>
 				<nuxt-link to="/types/langs" class="km-home--stats--link">
 					<strong>{{ count.languages>0 ? count.languages : '-' }}</strong>
 					<span>{{ $tc("kara.tagtypes.langs", count.languages) }}</span>
 				</nuxt-link>
 			</li>
-			<li key="author">
+			<li>
 				<nuxt-link to="/types/authors" class="km-home--stats--link">
 					<strong>{{ count.authors>0 ? count.authors : '-' }}</strong>
 					<span>{{ $tc("kara.tagtypes.authors", count.authors) }}</span>
 				</nuxt-link>
 			</li>
-			<li key="songwriter">
+			<li>
 				<nuxt-link to="/types/songwriters" class="km-home--stats--link">
 					<strong>{{ count.songwriters>0 ? count.songwriters : '-' }}</strong>
 					<span>{{ $tc("kara.tagtypes.songwriters", count.songwriters) }}</span>
 				</nuxt-link>
 			</li>
-			<li key="mediasize">
+			<li>
 				<span>{{ $t("stats.media_size") }}</span> :
 				<strong>{{ count.mediasize !== 0 ? count.mediasize : '-' }}</strong>
 			</li>
-			<li key="lastGeneration" class="km-home--stats--wide">
+			<li class="km-home--stats--wide">
 				<span>{{ $t("stats.last_generation") }}</span> :
 				<strong>{{ count.lastGeneration ? new Date(count.lastGeneration).toLocaleString() : '-' }}</strong>
 			</li>
-			<li key="duration" class="km-home--stats--wide">
+			<li class="km-home--stats--wide">
 				<span>{{ $t("stats.all_duration") }} :</span>
 				<strong>{{ count.duration ? count.duration : '-' }}</strong>
 			</li>
@@ -94,9 +97,33 @@
 	import prettyBytes from 'pretty-bytes';
 	import duration from '~/assets/date';
 	import { modalStore } from '~/store';
+	import SearchBar from '~/components/SearchBar.vue';
 
 	export default Vue.extend({
 		name: 'HomeStats',
+
+		components: {
+			SearchBar
+		},
+
+		data() {
+			return {
+				explorerHost: process.env.EXPLORER_HOST,
+				explorerTagline: process.env.EXPLORER_TAGLINE,
+				count: {
+					singers: 0,
+					creators: 0,
+					languages: 0,
+					authors: 0,
+					songwriters: 0,
+					series: 0,
+					karas: 0,
+					duration: 0,
+					mediasize: 0
+				},
+				noInstance: false
+			};
+		},
 
 		async fetch() {
 			const stats = this.$axios.get('/api/karas/stats');
@@ -118,22 +145,9 @@
 				this.count = count;
 			}
 		},
-		data() {
+		head() {
 			return {
-				explorerHost: process.env.EXPLORER_HOST,
-				explorerTagline: process.env.EXPLORER_TAGLINE,
-				count: {
-					singers: 0,
-					creators: 0,
-					languages: 0,
-					authors: 0,
-					songwriters: 0,
-					series: 0,
-					karas: 0,
-					duration: 0,
-					mediasize: 0
-				},
-				noInstance: false
+				title: this.$t('titles.home') as string
 			};
 		},
 		mounted() {
@@ -145,11 +159,6 @@
 			openAddRepoModal() {
 				modalStore.openModal('addRepo');
 			}
-		},
-		head() {
-			return {
-				title: this.$t('titles.home') as string
-			};
 		}
 	});
 </script>
@@ -209,5 +218,10 @@
 				width: 100%;
 			}
 		}
+	}
+
+	.mobile-search-bar {
+		width: 80%;
+		margin: 1em 0;
 	}
 </style>

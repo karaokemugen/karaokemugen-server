@@ -1,6 +1,6 @@
 <template>
 	<div class="field is-expanded has-addons">
-		<div class="control is-expanded">
+		<div class="control is-expanded" :class="{'has-icons-left': icon}">
 			<input
 				v-model="search"
 				class="input is-fullwidth"
@@ -8,6 +8,9 @@
 				:placeholder="$t('search.placeholder')"
 				@keydown.enter="triggerSearch"
 			>
+			<span v-if="icon" class="icon is-small is-left">
+				<font-awesome-icon :icon="['fas', 'search']" />
+			</span>
 		</div>
 		<div v-if="results && resultsCount > 0 && ['search-query', 'types-id', 'types-years', 'favorites'].includes($route.name)" class="control">
 			<button class="button is-static">
@@ -56,6 +59,10 @@
 			filter: {
 				type: Boolean,
 				default: true
+			},
+			icon: {
+				type: Boolean,
+				default: false
 			}
 		},
 
