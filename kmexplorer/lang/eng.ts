@@ -130,10 +130,11 @@ export default {
 	},
 	layout: {
 		loading: 'Loading...',
+		empty: 'We looked everywhere, we didn\'t find anything.',
 		suggest: 'Can\'t find what you\'re looking for?',
 		suggest_open: 'Suggest us!',
-		remove_tags: 'Remove some tags to expand your search :',
-		empty: 'This is the end of your favorites.',
+		remove_tags: 'Did you try removing some of the filter tags from the search?',
+		end_favorites: 'This is the end of your favorites.',
 		explore: 'Go add some!',
 		results: '{count} result | {count} results',
 		slogan: 'This song is available on the Karaoke Mugen songbase!'

@@ -130,10 +130,11 @@ export default {
 	},
 	layout: {
 		loading: 'Chargement...',
+		empty: 'On a cherché très loin, on a rien trouvé.',
 		suggest: 'Vous ne trouvez pas ?',
 		suggest_open: 'Suggérez-le nous !',
-		remove_tags: 'Retirez certains tags pour élargir votre recherche :',
-		empty: 'C\'est la fin de vos favoris.',
+		remove_tags: 'Avez-vous essayé de retirer les tags qui ne vous servent plus ?',
+		end_favorites: 'C\'est la fin de vos favoris.',
 		explore: 'Allez en ajouter !',
 		results: '{count} résulat | {count} résultats',
 		slogan: 'Ce son est disponible sur la base Karaoke Mugen !'
