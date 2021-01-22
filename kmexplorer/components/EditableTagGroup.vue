@@ -19,6 +19,7 @@
 			</div>
 			<div v-if="inputVisible">
 				<b-autocomplete
+					ref="input"
 					v-model="currentVal"
 					keep-first
 					open-on-focus
@@ -87,11 +88,18 @@
 		watch: {
 			params(now) {
 				this.values = clonedeep(now);
+			},
+			inputVisible(now) {
+				if (now) {
+					this.$nextTick(() => {
+						this.$refs.input.$refs.input.$refs.input.focus();
+					});
+				}
 			}
 		},
 
 		async mounted() {
-			this.debouncedGetAsyncData = debounce(this.getAsyncData, 500);
+			this.debouncedGetAsyncData = debounce(this.getAsyncData, 500, { leading: true, trailing: true, maxWait: 750 });
 			if (this.checkboxes) {
 				const result = await this.getTags(this.tagType);
 				this.data = result.content;
