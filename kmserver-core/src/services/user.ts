@@ -313,8 +313,10 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		};
 	} catch (err) {
 		logger.error(`Failed to update ${username}'s profile`, {service: 'User', obj: err});
-		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
-		sentry.error(new Error(err));
+		if (err !== 'Nickname already exists') {
+			sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+			sentry.error(new Error(err));
+		}
 		throw {
 			message: err,
 			data: user.nickname
