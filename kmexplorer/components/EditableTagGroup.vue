@@ -92,7 +92,7 @@
 			inputVisible(now) {
 				if (now) {
 					this.$nextTick(() => {
-						this.$refs.input.$refs.input.$refs.input.focus();
+						(this.$refs.input as any).$refs.input.$refs.input.focus();
 					});
 				}
 			}
