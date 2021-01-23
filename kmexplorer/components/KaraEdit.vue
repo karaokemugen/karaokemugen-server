@@ -75,7 +75,7 @@
 		</div>
 		<div class="field">
 			<label class="label" :title="$t('kara.import.series_tooltip')">
-				{{ $tc('kara.tagtypes.series', karaoke.series?.length) }}
+				{{ $tc('kara.tagtypes.series', karaoke.series.length) }}
 				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
 			</label>
 			<editable-tag-group
@@ -84,14 +84,14 @@
 				@change="(tags) => karaoke.series = tags"
 			/>
 			<p
-				v-if="karaoke.series?.length === 0 && karaoke.singers?.length === 0"
+				v-if="karaoke.series.length === 0 && karaoke.singers.length === 0"
 				class="help is-danger"
 			>
 				{{ $t('kara.import.series_singers_required') }}
 			</p>
 		</div>
 		<div class="field">
-			<label class="label">{{ $tc('kara.tagtypes.songtypes', karaoke.songtypes?.length) }}</label>
+			<label class="label">{{ $tc('kara.tagtypes.songtypes', karaoke.songtypes.length) }}</label>
 			<editable-tag-group
 				:checkboxes="true"
 				:tag-type="3"
@@ -99,14 +99,14 @@
 				@change="(tags) => karaoke.songtypes = tags"
 			/>
 			<p
-				v-if="karaoke.songtypes?.length === 0"
+				v-if="karaoke.songtypes.length === 0"
 				class="help is-danger"
 			>
 				{{ $t('kara.import.songtypes_required') }}
 			</p>
 		</div>
 		<div class="field">
-			<label class="label">{{ $tc('kara.tagtypes.versions', karaoke.songtypes?.length) }}</label>
+			<label class="label">{{ $tc('kara.tagtypes.versions', karaoke.songtypes.length) }}</label>
 			<editable-tag-group
 				:checkboxes="true"
 				:tag-type="14"
@@ -127,14 +127,14 @@
 			</div>
 		</div>
 		<div class="field">
-			<label class="label">{{ $tc('kara.tagtypes.langs', karaoke.langs?.length) }}</label>
+			<label class="label">{{ $tc('kara.tagtypes.langs', karaoke.langs.length) }}</label>
 			<div class="control">
 				<editable-tag-group
 					:tag-type="5"
 					:params="karaoke.langs"
 					@change="(tags) => karaoke.langs = tags"
 				/>
-				<p v-if="karaoke.langs?.length === 0" class="help is-danger">
+				<p v-if="karaoke.langs.length === 0" class="help is-danger">
 					{{ $t('kara.import.langs_required') }}
 				</p>
 			</div>
@@ -163,7 +163,7 @@
 					@change="(tags) => karaoke.singers = tags"
 				/>
 				<p
-					v-if="karaoke.series?.length === 0 && karaoke.singers?.length === 0"
+					v-if="karaoke.series.length === 0 && karaoke.singers.length === 0"
 					class="help is-danger"
 				>
 					{{ $t('kara.import.series_singers_required') }}
@@ -208,7 +208,7 @@
 					@change="(tags) => karaoke.authors = tags"
 				/>
 				<p
-					v-if="karaoke.authors?.length === 0"
+					v-if="karaoke.authors.length === 0"
 					class="help is-danger"
 				>
 					{{ $t('kara.import.authors_required') }}
@@ -216,7 +216,7 @@
 			</div>
 		</div>
 		<div class="field">
-			<label class="label">{{ $tc('kara.tagtypes.families', karaoke.families?.length) }}</label>
+			<label class="label">{{ $tc('kara.tagtypes.families', karaoke.families.length) }}</label>
 			<div class="control">
 				<editable-tag-group
 					:checkboxes="true"
@@ -227,7 +227,7 @@
 			</div>
 		</div>
 		<div class="field">
-			<label class="label">{{ $tc('kara.tagtypes.platforms', karaoke.platforms?.length) }}</label>
+			<label class="label">{{ $tc('kara.tagtypes.platforms', karaoke.platforms.length) }}</label>
 			<div class="control">
 				<editable-tag-group
 					:checkboxes="true"
@@ -238,7 +238,7 @@
 			</div>
 		</div>
 		<div class="field">
-			<label class="label">{{ $tc('kara.tagtypes.genres', karaoke.genres?.length) }}</label>
+			<label class="label">{{ $tc('kara.tagtypes.genres', karaoke.genres.length) }}</label>
 			<div class="control">
 				<editable-tag-group
 					:checkboxes="true"
@@ -249,7 +249,7 @@
 			</div>
 		</div>
 		<div class="field">
-			<label class="label">{{ $tc('kara.tagtypes.origins', karaoke.origins?.length) }}</label>
+			<label class="label">{{ $tc('kara.tagtypes.origins', karaoke.origins.length) }}</label>
 			<div class="control">
 				<editable-tag-group
 					:checkboxes="true"
@@ -260,7 +260,7 @@
 			</div>
 		</div>
 		<div class="field">
-			<label class="label">{{ $tc('kara.tagtypes.misc', karaoke.misc?.length) }}</label>
+			<label class="label">{{ $tc('kara.tagtypes.misc', karaoke.misc.length) }}</label>
 			<div class="control">
 				<editable-tag-group
 					:checkboxes="true"
@@ -272,7 +272,7 @@
 		</div>
 		<div class="field">
 			<label class="label" :title="$t('kara.import.groups_tooltip')">
-				{{ $tc('kara.tagtypes.groups', karaoke.groups?.length) }}
+				{{ $tc('kara.tagtypes.groups', karaoke.groups.length) }}
 				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
 			</label>
 			<div class="control">
@@ -424,18 +424,18 @@
 			submitDisabled(): boolean {
 				return Boolean(
 					!this.mediafile ||
-						this.mediafile_error?.length > 0 ||
-						this.subfile_error?.length > 0 ||
+						this.mediafile_error.length > 0 ||
+						this.subfile_error.length > 0 ||
 						!this.karaoke.title ||
-						(this.karaoke.series?.length === 0 &&
-							this.karaoke.singers?.length === 0) ||
-						this.karaoke.songtypes?.length === 0 ||
-						this.karaoke.langs?.length === 0 ||
+						(this.karaoke.series.length === 0 &&
+							this.karaoke.singers.length === 0) ||
+						this.karaoke.songtypes.length === 0 ||
+						this.karaoke.langs.length === 0 ||
 						!this.karaoke.year ||
 						this.karaoke.year < 1800 ||
 						this.karaoke.year > new Date().getFullYear() ||
 						this.karaoke.songorder > 999 ||
-						this.karaoke.authors?.length === 0 ||
+						this.karaoke.authors.length === 0 ||
 						this.uploading.media ||
 						this.uploading.sub
 				);
