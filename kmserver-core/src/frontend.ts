@@ -12,9 +12,7 @@ import remoteSocketController from './controllers/ws/remote';
 import userSubSocketController from './controllers/ws/user';
 import {
 	getConfig,
-	resolvedPathAvatars,
-	resolvedPathBanners,
-	resolvedPathPreviews,
+	resolvedPath,
 	resolvedPathRepos
 } from './lib/utils/config';
 import range from 'express-range';
@@ -61,13 +59,13 @@ export function initFrontend(listenPort: number) {
 				workerSrc: ['\'self\'', 'https://cdn.jsdelivr.net']
 			}
 		}
-	}));
+	}) as express.Handler);
 	app.use(compression());
-	app.use(express.json({limit: '1000mb'})); // support json encoded bodies
+	app.use(express.json({limit: '1000mb'}) as express.Handler); // support json encoded bodies
 	app.use(express.urlencoded({
 		limit: '1000mb',
 		extended: true
-	})); // support encoded bodies
+	}) as express.Handler); // support encoded bodies
 
 	// Server allows resuming file downloads :
 	app.use(range());
@@ -91,8 +89,8 @@ export function initFrontend(listenPort: number) {
 	// API router
 	app.use('/api', api());
 	if (conf.Users.Enabled) {
-		app.use('/avatars', express.static(resolvedPathAvatars()));
-		app.use('/banners', express.static(resolvedPathBanners()));
+		app.use('/avatars', express.static(resolvedPath('Avatars')));
+		app.use('/banners', express.static(resolvedPath('Banners')));
 	}
 	// Redirect old base route to root
 	app.get('/base*', (req, res) => {
@@ -100,7 +98,7 @@ export function initFrontend(listenPort: number) {
 	});
 	// KMExplorer
 	if (conf.KaraExplorer.Enabled) {
-		app.use('/previews', express.static(resolvedPathPreviews()));
+		app.use('/previews', express.static(resolvedPath('Previews')));
 
 		startKMExplorer().then(nuxt => {
 			app.use(nuxt.render);
