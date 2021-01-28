@@ -99,6 +99,10 @@
 
 			<div v-if="databaseMenu" class="navbar-dropdown">
 				<div class="is-hidden-desktop">
+					<a class="navbar-item" @click.prevent="openRandomKara">
+						<font-awesome-icon :icon="['fas', 'dice']" :fixed-width="true" />
+						{{ $t('menu.random') }}
+					</a>
 					<a href="search" class="navbar-item" @click.prevent="pushSearch">
 						<font-awesome-icon :icon="['fas', 'music']" :fixed-width="true" />
 						{{ $t('menu.karas') }}
@@ -189,6 +193,12 @@
 						<a @click.prevent="openAddRepoModal">
 							<font-awesome-icon :icon="['fas', 'folder-plus']" :fixed-width="true" />
 							{{ $t('menu.add_repository') }}
+						</a>
+					</li>
+					<li class="addRepo">
+						<a @click.prevent="openRandomKara">
+							<font-awesome-icon :icon="['fas', 'dice']" :fixed-width="true" />
+							{{ $t('menu.random') }}
 						</a>
 					</li>
 				</ul>
@@ -569,6 +579,11 @@
 			},
 			openAddRepoModal() {
 				modalStore.openModal('addRepo');
+			},
+			async openRandomKara() {
+				const res = await this.$axios.get('/api/karas/random', { params: { size: 1 } });
+				const kid = res.data[0];
+				this.$router.push(`/kara/${kid}`);
 			},
 			resetSearch() {
 				menuBarStore.reset();

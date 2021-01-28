@@ -166,6 +166,7 @@ export default {
 	},
 	menu: {
 		add_repository: 'Ajouter ce dépôt à votre app',
+		random: 'Lancer les dés',
 		database: 'Base de données',
 		karas: 'Chansons',
 		songtypes: 'Types',

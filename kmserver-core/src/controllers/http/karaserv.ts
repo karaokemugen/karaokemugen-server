@@ -6,6 +6,7 @@ import { Router } from 'express';
 import {getConfig} from '../../lib/utils/config';
 import { postSuggestionToKaraBase } from '../../lib/services/gitlab';
 import { optionalAuth } from '../middlewares/auth';
+import { selectAllKaras } from '../../dao/kara';
 
 export default function KSController(router: Router) {
 	router.route('/karas/lastUpdate')
@@ -38,6 +39,15 @@ export default function KSController(router: Router) {
 			} catch(err) {
 				res.status(500).json(err);
 			}
+		});
+	router.route('/karas/random')
+		.get(optionalAuth, async (req: any, res) => {
+			const karas = await selectAllKaras({
+				filter: req.query.filter,
+				random: req.query.size,
+				username: req.authToken?.username
+			});
+			res.json(karas.map(k => k.kid));
 		});
 	router.route('/karas/search')
 		// Route used by KMApp to get Kara lists with comparison
