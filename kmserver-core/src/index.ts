@@ -88,6 +88,11 @@ async function main() {
 
 	await Promise.all(checks);
 
+	if (argv.build) {
+		await buildKMExplorer();
+		exit(0);
+	}
+
 	if (argv.sql) setState({ opt: {sql: true }});
 
 	await initDB(getState().opt.sql);
@@ -126,10 +131,6 @@ async function main() {
 		exit(0);
 	}
 
-	if (argv.build) {
-		await buildKMExplorer();
-		exit(0);
-	}
 
 	const port = await detect(+argv.port || conf.Frontend.Port);
 
