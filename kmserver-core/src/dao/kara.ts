@@ -62,6 +62,11 @@ export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 	}
 	if (params.from > 0) offsetClause = `OFFSET ${params.from} `;
 	if (params.size > 0) limitClause = `LIMIT ${params.size} `;
+	// If we're asking for random songs, here we modify the query to get them.
+	if (params.random > 0) {
+		orderClauses = `RANDOM(), ${orderClauses}`;
+		limitClause = `LIMIT ${params.random}`;
+	}
 	const query = sql.getAllKaras(
 		filterClauses.sql, typeClauses, orderClauses, havingClause, limitClause, offsetClause, statsSelectClause,
 		statsJoinClause, favoritedSelectClause, favoritedJoinClause, favoritedGroupClause, whereClauses, filterClauses.additionalFrom);

@@ -166,6 +166,7 @@ export default {
 	},
 	menu: {
 		add_repository: 'Add this repository to your app',
+		random: 'Launch a dice',
 		database: 'Database',
 		karas: 'Songs',
 		songtypes: 'Types',

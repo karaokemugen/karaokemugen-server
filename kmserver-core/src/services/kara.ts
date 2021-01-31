@@ -100,7 +100,8 @@ export async function getAllKaras(params: KaraParams, token?: Token): Promise<Ka
 			modeValue: params.modeValue || '',
 			username: token?.username,
 			sort: params.sort,
-			favorites: params.favorites
+			favorites: params.favorites,
+			random: params.random
 		});
 		// Let's build a map of KM App's KIDs if it's provided, and then filter the results depending on if we want updated songs or missing songs.
 		// Missing songs are those not present in localKaras, updated songs are present but have a lower modification date

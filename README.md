@@ -19,35 +19,22 @@ Make sure node and yarn are up to date
 - yarn 1 or later
 - PostgreSQL 10.6 or later
 
-Clone this repository, install dependencies and build react pages
+Clone this repository and install dependencies
 
 ```sh
-yarn installAll
-yarn buildAll
+yarn pull
+yarn install
+yarn build:all
 ```
 
 ## Setup database
 
-Use the supplied `database.sample.json` file and copy it to `database.json`. Edit it and fill in the blanks (username, password, port, host and database name of your choosing.). It should look like this :
+Use the supplied `config.sample.yml` file and copy it to `app/config.yml`. Edit it and fill in the blanks (username, password, port, host and database name of your choosing.).
 
-```JSON
-{
-  "sql-file": true,
-  "defaultEnv": "prod",
-  "prod": {
-    "driver": "pg",
-    "user": "karaokemugen_server",
-    "password": "musubi",
-    "host": "localhost",
-    "database": "karaokemugen_server",
-    "schema": "public"
-  }
-}
-```
+As a superuser on PostgreSQL, you need to create the database properly. Use the `psql` command-line tool to connect to your PostgreSQL database.
 
-As a superuser on PostgreSQL, you need to create the database properly. Use the `psql` command-line tool to connect to your PostgreSQL database. Example with the `database.json` above :
+Example with a database called karaokemugen_server (don't forget to put your own password instead of `musubi`) :
 
-Example with a database called karaokemugen_server :
 ```SQL
 CREATE DATABASE karaokemugen_server ENCODING 'UTF8';
 CREATE USER karaokemugen_server WITH ENCRYPTED PASSWORD 'musubi';
@@ -63,14 +50,15 @@ CREATE EXTENSION unaccent;
 
 Karaoke Mugen Server will create tables and such on first run.
 
-Use the supplied `config.sample.yml` file and copy it to `config.yml`. Edit it and fill in the blanks (Karas, Lyrics, Medias, Series and host of your choosing.). And use the command above to generate the database :
+Edit the `app/config.yml` file and fill in the blanks (Karas, Lyrics, Medias, Series and host of your choosing.). Use the command above to generate the database :
+
 ```sh
 yarn start --generate
 ```
 
 ## Configure frontend
 
-For local use, please put this in your `config.yml` file :
+For local use, please put this in your `app/config.yml` file :
 
 ```yaml
 Frontend:
