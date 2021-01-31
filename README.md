@@ -24,6 +24,7 @@ Clone this repository and install dependencies
 ```sh
 yarn pull
 yarn install
+yarn build:all
 ```
 
 ## Setup database
@@ -53,14 +54,6 @@ Edit the `app/config.yml` file and fill in the blanks (Karas, Lyrics, Medias, Se
 
 ```sh
 yarn start --generate
-```
-
-## Build app
-
-Run this to build VueJS pages :
-
-```sh
-yarn build:all
 ```
 
 ## Configure frontend
