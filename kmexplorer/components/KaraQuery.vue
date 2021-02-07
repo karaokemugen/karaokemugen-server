@@ -221,12 +221,6 @@
 				}
 			},
 			resetList(navigation = false) {
-				console.log('resetList!');
-				console.table({
-					q: { old: this.$route.query.q, now: this.reqParams.q },
-					query: { old: menuBarStore.search, now: this.$route.params.query }
-				});
-				console.trace();
 				if (this.resetListDebounced) {
 					this.resetListDebounced(navigation);
 				} else {
