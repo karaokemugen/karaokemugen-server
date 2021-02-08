@@ -5,6 +5,7 @@
 import logger from 'winston';
 import {basename, resolve} from 'path';
 import {getConfig, resolvedPathImport, resolvedPathTemp, resolvedPathRepos} from '../lib/utils/config';
+import {asyncReadDir} from '../lib/utils/files';
 import {duration} from '../lib/utils/date';
 import { generateKara } from '../lib/services/kara_creation';
 import { NewKara, Kara } from '../lib/types/kara';
@@ -43,9 +44,13 @@ export async function editKara(kara: Kara): Promise<string> {
 		const importDir = resolve(resolvedPathImport(), basename(newKara.file, '.kara.json'));
 		await asyncMkdirp(importDir);
 		await asyncMove(newKara.file, resolve(importDir, basename(newKara.file)));
-		await asyncMove(resolve(resolvedPathImport(), newKara.data.mediafile), resolve(resolvedPathImport(), importDir, newKara.data.mediafile));
-		if (newKara.data.subfile) await asyncMove(resolve(resolvedPathImport(), newKara.data.subfile), resolve(resolvedPathImport(), importDir, newKara.data.subfile));
-
+		await asyncMove(resolve(resolvedPathImport(), newKara.data.mediafile), resolve(importDir, newKara.data.mediafile));
+		if (newKara.data.subfile) await asyncMove(resolve(resolvedPathImport(), newKara.data.subfile), resolve(importDir, newKara.data.subfile));
+		let tags = await asyncReadDir(resolvedPathImport());
+		tags = tags.filter((f: string) => f.endsWith('.tag.json'));
+		for (const tag of tags) {
+			await asyncMove(resolve(resolvedPathImport(), tag), resolve(importDir, tag));
+		}
 		// Remove files if they're not new
 		if (kara.noNewSub && newKara.data.subfile) asyncUnlink(resolve(resolvedPathImport(), importDir, newKara.data.subfile));
 		if (kara.noNewVideo) {
@@ -114,8 +119,13 @@ export async function createKara(kara: Kara) {
 		const importDir = resolve(resolvedPathImport(), basename(newKara.file, '.kara.json'));
 		await asyncMkdirp(importDir);
 		await asyncMove(newKara.file, resolve(importDir, basename(newKara.file)));
-		await asyncMove(resolve(resolvedPathImport(), newKara.data.mediafile), resolve(resolvedPathImport(), importDir, newKara.data.mediafile));
-		if (newKara.data.subfile) await asyncMove(resolve(resolvedPathImport(), newKara.data.subfile), resolve(resolvedPathImport(), importDir, newKara.data.subfile));
+		await asyncMove(resolve(resolvedPathImport(), newKara.data.mediafile), resolve(importDir, newKara.data.mediafile));
+		if (newKara.data.subfile) await asyncMove(resolve(resolvedPathImport(), newKara.data.subfile), resolve(importDir, newKara.data.subfile));
+		let tags = await asyncReadDir(resolvedPathImport());
+		tags = tags.filter((f: string) => f.endsWith('.tag.json'));
+		for (const tag of tags) {
+			await asyncMove(resolve(resolvedPathImport(), tag), resolve(importDir, tag));
+		}
 	} catch(err) {
 		logger.error('Error importing kara', {service: 'KaraGen', obj: err});
 		if (!err.msg) {
