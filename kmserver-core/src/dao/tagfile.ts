@@ -9,7 +9,7 @@ export async function findTagInImportedFiles(name: string, types: number[]): Pro
 	// Read import directory
 	const directories: Dirent[] = await asyncReadDir(resolvedPathImport(), {encoding: 'utf8', withFileTypes: true});
 	let list = directories.filter(e => e.isDirectory()).map(e => e.name);
-	let files: string[];
+	let files: string[] = [];
 	for (const dir of list) {
 		const dirPath = resolve(resolvedPathImport(), dir);
 		let tags = await asyncReadDir(dirPath);

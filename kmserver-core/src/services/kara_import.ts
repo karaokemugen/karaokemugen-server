@@ -6,10 +6,10 @@ import logger from 'winston';
 import {basename, resolve} from 'path';
 import {getConfig, resolvedPathImport, resolvedPathTemp, resolvedPathRepos} from '../lib/utils/config';
 import {duration} from '../lib/utils/date';
-import { defineFilename, generateKara } from '../lib/services/kara_creation';
+import { generateKara } from '../lib/services/kara_creation';
 import { NewKara, Kara } from '../lib/types/kara';
 import { gitlabPostNewIssue } from '../lib/services/gitlab';
-import { asyncExists, asyncCopy, asyncUnlink, asyncMkdirp } from '../lib/utils/files';
+import { asyncExists, asyncCopy, asyncUnlink, asyncMkdirp, asyncMove } from '../lib/utils/files';
 import sentry from '../utils/sentry';
 
 export async function editKara(kara: Kara): Promise<string> {
@@ -37,20 +37,26 @@ export async function editKara(kara: Kara): Promise<string> {
 			}
 		}
 		// Treat files
-		const karaName = defineFilename(kara);
-		const importDir = resolve(resolvedPathImport(), karaName);
-		await asyncMkdirp(importDir);
 		newKara = await generateKara(kara, resolvedPathImport(), resolvedPathImport(), resolvedPathImport());
-		logger.debug('Kara:', {service: 'GitLab', obj: newKara.data});
+
+		// Move files to their own dir
+		const importDir = resolve(resolvedPathImport(), basename(newKara.file, '.kara.json'));
+		await asyncMkdirp(importDir);
+		await asyncMove(newKara.file, resolve(importDir, basename(newKara.file)));
+		await asyncMove(resolve(resolvedPathImport(), newKara.data.mediafile), resolve(resolvedPathImport(), importDir, newKara.data.mediafile));
+		if (newKara.data.subfile) await asyncMove(resolve(resolvedPathImport(), newKara.data.subfile), resolve(resolvedPathImport(), importDir, newKara.data.subfile));
+
 		// Remove files if they're not new
-		if (kara.noNewSub && newKara.data.subfile) asyncUnlink(resolve(importDir, newKara.data.subfile));
+		if (kara.noNewSub && newKara.data.subfile) asyncUnlink(resolve(resolvedPathImport(), importDir, newKara.data.subfile));
 		if (kara.noNewVideo) {
-			asyncUnlink(resolve(importDir, newKara.data.mediafile));
+			asyncUnlink(resolve(resolvedPathImport(), importDir, newKara.data.mediafile));
 			newKara.data.duration = 0;
 		}
 
 		// Post issue to gitlab
+		logger.debug('Kara:', {service: 'GitLab', obj: newKara.data});
 		const conf = getConfig();
+		const karaName = basename(newKara.file, '.kara.json');
 		let title = conf.Gitlab.IssueTemplate.Edit.Title || 'Edited kara: $kara';
 		title = title.replace('$kara', karaName);
 		let desc = conf.Gitlab.IssueTemplate.Edit.Description || '';
@@ -98,16 +104,18 @@ export async function createKara(kara: Kara) {
 	const conf = getConfig();
 	let newKara: NewKara;
 	kara.repository = conf.System.Repositories[0].Name;
-	const karaName = defineFilename(kara);
 	try {
-		const importDir = resolve(resolvedPathImport(), karaName);
-		await asyncMkdirp(importDir);
 		newKara = await generateKara(kara,
-			importDir,
-			importDir,
-			importDir
+			resolvedPathImport(),
+			resolvedPathImport(),
+			resolvedPathImport()
 		);
-		logger.debug('Kara', {service: 'GitLab', obj: newKara.data});
+		// Move files to their own directory
+		const importDir = resolve(resolvedPathImport(), basename(newKara.file, '.kara.json'));
+		await asyncMkdirp(importDir);
+		await asyncMove(newKara.file, resolve(importDir, basename(newKara.file)));
+		await asyncMove(resolve(resolvedPathImport(), newKara.data.mediafile), resolve(resolvedPathImport(), importDir, newKara.data.mediafile));
+		if (newKara.data.subfile) await asyncMove(resolve(resolvedPathImport(), newKara.data.subfile), resolve(resolvedPathImport(), importDir, newKara.data.subfile));
 	} catch(err) {
 		logger.error('Error importing kara', {service: 'KaraGen', obj: err});
 		if (!err.msg) {
@@ -116,6 +124,8 @@ export async function createKara(kara: Kara) {
 		}
 		throw err;
 	}
+	const karaName = basename(newKara.file, '.kara.json');
+	;logger.debug('Kara', {service: 'GitLab', obj: newKara.data});
 	let title = conf.Gitlab.IssueTemplate.Import.Title || 'New kara: $kara';
 	title = title.replace('$kara', karaName);
 	let desc = conf.Gitlab.IssueTemplate.Import.Description || '';
