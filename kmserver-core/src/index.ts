@@ -88,51 +88,51 @@ async function main() {
 
 	await Promise.all(checks);
 
-	if (argv.build) {
+	if (argv.opts().build) {
 		await buildKMExplorer();
 		exit(0);
 	}
 
-	if (argv.sql) setState({ opt: {sql: true }});
+	if (argv.opts().sql) setState({ opt: {sql: true }});
 
 	await initDB(getState().opt.sql);
 
-	if (argv.staticServe) setState({opt: {staticServe: true}});
+	if (argv.opts().staticServe) setState({opt: {staticServe: true}});
 
 	await initUsers();
 
-	if (argv.createPreviews) {
+	if (argv.opts().createPreviews) {
 		const karas = await getAllKaras({});
 		await createImagePreviews(karas);
 		exit(0);
 	}
 
-	if (argv.generate) {
+	if (argv.opts().generate) {
 		await generate();
 		exit(0);
 	}
 
-	if (argv.createAdmin) {
+	if (argv.opts().createAdmin) {
 		await createUser({
-			login: argv.createAdmin[0],
-			password: argv.createAdmin[1]
+			login: argv.opts().createAdmin[0],
+			password: argv.opts().createAdmin[1]
 		}, {admin: true});
 		exit(0);
 	}
 
-	if (argv.changePassword) {
-		await changePassword(argv.changePassword[0], argv.changePassword[1]);
+	if (argv.opts().changePassword) {
+		await changePassword(argv.opts().changePassword[0], argv.opts().changePassword[1]);
 		exit(0);
 	}
 
-	if (argv.promoteToken) {
-		await promoteToken(argv.promoteToken[0], argv.promoteToken[1]);
+	if (argv.opts().promoteToken) {
+		await promoteToken(argv.opts().promoteToken[0], argv.opts().promoteToken[1]);
 		logger.info('Token was promoted to permanent token. Restart the app to see changes.', {service: 'Remote'});
 		exit(0);
 	}
 
 
-	const port = await detect(+argv.port || conf.Frontend.Port);
+	const port = await detect(+argv.opts().port || conf.Frontend.Port);
 
 	if (port !== conf.Frontend.Port) setConfig({
 		Frontend: {

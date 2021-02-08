@@ -8,14 +8,16 @@ export default function shortenerSocketController(app: SocketIOApp) {
 	app.route('shortener publish', async (socket, req: APIData<InstanceData>) => {
 		try {
 			const body = req.body || (req as unknown) as InstanceData; // Retro-compat: 4.0.13-4.1.7
-			return await publishInstance(socket.handshake.headers['x-forwarded-for']?.split(', ')[0] || socket.conn.remoteAddress, body);
+			const forwarded = socket.handshake.headers['x-forwarded-for'] as string;
+			return await publishInstance(forwarded?.split(', ')[0] || socket.conn.remoteAddress, body);
 		} catch (e) {
 			return false;
 		}
 	});
 	app.route('shortener stop', async (socket) => {
 		try {
-			await removeInstance(socket.handshake.headers['x-forwarded-for']?.split(', ')[0] || this.conn.remoteAddress);
+			const forwarded = socket.handshake.headers['x-forwarded-for'] as string;
+			await removeInstance(forwarded?.split(', ')[0] || this.conn.remoteAddress);
 			return true;
 		} catch(e) {
 			// Non-fatal

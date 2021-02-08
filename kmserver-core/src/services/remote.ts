@@ -61,7 +61,8 @@ export async function startRemote(socket: Socket, req: RemoteSettings): Promise<
 		if (instance) {
 			try {
 				// All good! Setup remote with the authenticated code
-				updateRemoteToken(instance.token, socket.handshake.headers['x-forwarded-for']?.split(', ')[0] || socket.conn.remoteAddress).catch(err => {
+				const forwarded = socket.handshake.headers['x-forwarded-for'] as string;
+				updateRemoteToken(instance.token, forwarded?.split(', ')[0] || socket.conn.remoteAddress).catch(err => {
 					logger.warn('Cannot update instance last use', {service: 'Remote', obj: err});
 				});
 				setupRemote(instance.code, req.version, socket);
