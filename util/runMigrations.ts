@@ -1,10 +1,10 @@
-import {safeLoad} from 'js-yaml';
+import {load} from 'js-yaml';
 import {readFileSync} from 'fs';
 import Postgrator from 'postgrator';
 
 async function migrate() {
 	const ymlConfig = readFileSync('../app/config.yml', 'utf-8');
-	const conf: any = safeLoad(ymlConfig);
+	const conf: any = load(ymlConfig);
 	const migrator = new Postgrator({
 		migrationPattern: 'migrations/*.sql',
 		host: conf.System.Database.host,
