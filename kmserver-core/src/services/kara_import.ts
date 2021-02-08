@@ -6,10 +6,10 @@ import logger from 'winston';
 import {basename, resolve} from 'path';
 import {getConfig, resolvedPathImport, resolvedPathTemp, resolvedPathRepos} from '../lib/utils/config';
 import {duration} from '../lib/utils/date';
-import { generateKara } from '../lib/services/kara_creation';
+import { defineFilename, generateKara } from '../lib/services/kara_creation';
 import { NewKara, Kara } from '../lib/types/kara';
 import { gitlabPostNewIssue } from '../lib/services/gitlab';
-import { asyncExists, asyncCopy, asyncUnlink } from '../lib/utils/files';
+import { asyncExists, asyncCopy, asyncUnlink, asyncMkdirp } from '../lib/utils/files';
 import sentry from '../utils/sentry';
 
 export async function editKara(kara: Kara): Promise<string> {
@@ -37,17 +37,19 @@ export async function editKara(kara: Kara): Promise<string> {
 			}
 		}
 		// Treat files
+		const karaName = defineFilename(kara);
+		const importDir = resolve(resolvedPathImport(), karaName);
+		await asyncMkdirp(importDir);
 		newKara = await generateKara(kara, resolvedPathImport(), resolvedPathImport(), resolvedPathImport());
 		logger.debug('Kara:', {service: 'GitLab', obj: newKara.data});
 		// Remove files if they're not new
-		if (kara.noNewSub && newKara.data.subfile) asyncUnlink(resolve(resolvedPathImport(), newKara.data.subfile));
+		if (kara.noNewSub && newKara.data.subfile) asyncUnlink(resolve(importDir, newKara.data.subfile));
 		if (kara.noNewVideo) {
-			asyncUnlink(resolve(resolvedPathImport(), newKara.data.mediafile));
+			asyncUnlink(resolve(importDir, newKara.data.mediafile));
 			newKara.data.duration = 0;
 		}
 
 		// Post issue to gitlab
-		const karaName = `${newKara.data.langs[0].name.toUpperCase()} - ${newKara.data.series[0]?.name || newKara.data.singers[0]?.name} - ${newKara.data.songtypes[0].name}${newKara.data.songorder || ''} - ${newKara.data.title}`;
 		const conf = getConfig();
 		let title = conf.Gitlab.IssueTemplate.Edit.Title || 'Edited kara: $kara';
 		title = title.replace('$kara', karaName);
@@ -72,6 +74,7 @@ export async function editKara(kara: Kara): Promise<string> {
 			.replace('$genres', newKara.data.genres.map(t => t.name).join(', '))
 			.replace('$platforms', newKara.data.platforms.map(t => t.name).join(', '))
 			.replace('$origins', newKara.data.origins.map(t => t.name).join(', '))
+			.replace('$versions', newKara.data.versions.map(t => t.name).join(', '))
 			.replace('$duration', duration(newKara.data.duration));
 		try {
 			if (conf.Gitlab.Enabled) return gitlabPostNewIssue(title, desc, conf.Gitlab.IssueTemplate.Edit.Labels);
@@ -95,11 +98,14 @@ export async function createKara(kara: Kara) {
 	const conf = getConfig();
 	let newKara: NewKara;
 	kara.repository = conf.System.Repositories[0].Name;
+	const karaName = defineFilename(kara);
 	try {
+		const importDir = resolve(resolvedPathImport(), karaName);
+		await asyncMkdirp(importDir);
 		newKara = await generateKara(kara,
-			resolvedPathImport(),
-			resolvedPathImport(),
-			resolvedPathImport()
+			importDir,
+			importDir,
+			importDir
 		);
 		logger.debug('Kara', {service: 'GitLab', obj: newKara.data});
 	} catch(err) {
@@ -110,7 +116,6 @@ export async function createKara(kara: Kara) {
 		}
 		throw err;
 	}
-	const karaName = `${newKara.data.langs[0].name.toUpperCase()} - ${newKara.data.series[0]?.name || newKara.data.singers[0]?.name} - ${newKara.data.songtypes[0].name}${newKara.data.songorder || ''} - ${newKara.data.title}`;
 	let title = conf.Gitlab.IssueTemplate.Import.Title || 'New kara: $kara';
 	title = title.replace('$kara', karaName);
 	let desc = conf.Gitlab.IssueTemplate.Import.Description || '';
@@ -132,6 +137,7 @@ export async function createKara(kara: Kara) {
 		.replace('$genres', newKara.data.genres.map(t => t.name).join(', '))
 		.replace('$platforms', newKara.data.platforms.map(t => t.name).join(', '))
 		.replace('$origins', newKara.data.origins.map(t => t.name).join(', '))
+		.replace('$versions', newKara.data.versions.map(t => t.name).join(', '))
 		.replace('$duration', duration(newKara.data.duration));
 	try {
 		if (conf.Gitlab.Enabled) return gitlabPostNewIssue(title, desc, conf.Gitlab.IssueTemplate.Import.Labels);
