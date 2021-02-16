@@ -95,7 +95,7 @@
 		"slugify": "^1.4.6",
 		"socket.io": "^3.0.4",
 		"sudo-block": "^3.0.0",
-		"systeminformation": "^4.33.4",
+		"systeminformation": "^5.3.1",
 		"toyunda2ass": "^1.0.12",
 		"ultrastar2ass": "^1.0.13",
 		"uuid": "^8.3.2",
