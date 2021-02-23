@@ -58,7 +58,7 @@ main().catch(err => {
 });
 
 async function main() {
-	sudoBlock('You should not run Karaoke Mugen Server with root permissions, it\'s dangerous.');
+	if (!process.env.ROOT_OVERRIDE) sudoBlock('You should not run Karaoke Mugen Server with root permissions, it\'s dangerous.');
 	const argv = parseArgs();
 	setState({
 		appPath: appPath,
