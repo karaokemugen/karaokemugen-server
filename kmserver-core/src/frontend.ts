@@ -42,6 +42,10 @@ export function initFrontend(listenPort: number) {
 		return ip === '127.0.0.1' ||
 			ip === '::ffff:127.0.0.1';
 	});
+	// Remove double-slashes at the start of URLs
+	app.all(/\/\//g, (req, res) => {
+	    res.redirect(req.path.replace(/\/\//g, '/'));
+	});
 	app.use(helmet({
 		hsts: false,
 		contentSecurityPolicy: {
