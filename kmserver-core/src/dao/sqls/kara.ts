@@ -7,7 +7,7 @@ export const selectAllMedias = `
 `;
 
 export const getAllKaras = (filterClauses: string[], typeClauses: string, orderClauses: string, havingClause: string, limitClause: string, offsetClause: string, statsSelectClause: string, statsJoinClause: string, favoritedSelectClause: string, favoritedJoinClause: string, favoritedGroupClause: string, whereClauses: string, additionalFrom: string[]) => `SELECT
-  ak.kid AS kid,
+  ak.pk_kid AS kid,
   ak.title AS title,
   ak.songorder AS songorder,
   ak.series->0->>'name' AS serie,
@@ -40,7 +40,7 @@ export const getAllKaras = (filterClauses: string[], typeClauses: string, orderC
   ak.tagfiles AS tagfiles,
   ${statsSelectClause}
   ${favoritedSelectClause}
-  count(ak.kid) OVER()::integer AS count
+  count(ak.pk_kid) OVER()::integer AS count
 FROM all_karas AS ak
 ${statsJoinClause}
 ${favoritedJoinClause}
@@ -49,7 +49,7 @@ WHERE 1 = 1
   ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
   ${whereClauses}
   ${typeClauses}
-GROUP BY ${favoritedGroupClause} ak.kid, ak.title, ak.songorder, ak.serie_singer_sortable, ak.subfile, ak.series, ak.versions, ak.singers, ak.songtypes, ak.creators, ak.songwriters, ak.year, ak.languages, ak.groups, ak.authors, ak.misc, ak.genres, ak.families, ak.platforms, ak.origins, ak.mediafile, ak.karafile, ak.duration, ak.gain, ak.created_at, ak.modified_at, ak.mediasize, ak.groups, ak.repository, ak.songtypes_sortable, ak.tagfiles, ak.subchecksum
+GROUP BY ${favoritedGroupClause} ak.pk_kid, ak.title, ak.songorder, ak.serie_singer_sortable, ak.subfile, ak.series, ak.versions, ak.singers, ak.songtypes, ak.creators, ak.songwriters, ak.year, ak.languages, ak.groups, ak.authors, ak.misc, ak.genres, ak.families, ak.platforms, ak.origins, ak.mediafile, ak.karafile, ak.duration, ak.gain, ak.created_at, ak.modified_at, ak.mediasize, ak.groups, ak.repository, ak.songtypes_sortable, ak.tagfiles, ak.subchecksum
 ${havingClause}
 ORDER BY ${orderClauses} ak.serie_singer_sortable, ak.songtypes_sortable DESC, ak.songorder, lower(unaccent(ak.title))
 ${limitClause}
@@ -59,13 +59,13 @@ ${offsetClause}
 export const getYears = 'SELECT year, karacount::integer FROM all_years ORDER BY year';
 
 export const selectBaseStats = `SELECT
-(SELECT COUNT(tid) FROM all_tags WHERE types @> ARRAY[2])::integer AS singers,
-(SELECT COUNT(tid) FROM all_tags WHERE types @> ARRAY[8])::integer AS songwriters,
-(SELECT COUNT(tid) FROM all_tags WHERE types @> ARRAY[4])::integer AS creators,
-(SELECT COUNT(tid) FROM all_tags WHERE types @> ARRAY[6])::integer AS authors,
-(SELECT COUNT(pk_kid) FROM kara)::integer AS karas,
-(SELECT COUNT(tid)::integer FROM all_tags WHERE types @> ARRAY[5] AND karacount::text NOT LIKE '{"count": 0}' ) AS languages,
-(SELECT COUNT(tid)::integer FROM all_tags WHERE types @> ARRAY[1] AND karacount::text NOT LIKE '{"count": 0}' ) AS series,
+(SELECT COUNT(1) FROM all_tags WHERE types @> ARRAY[2])::integer AS singers,
+(SELECT COUNT(1) FROM all_tags WHERE types @> ARRAY[8])::integer AS songwriters,
+(SELECT COUNT(1) FROM all_tags WHERE types @> ARRAY[4])::integer AS creators,
+(SELECT COUNT(1) FROM all_tags WHERE types @> ARRAY[6])::integer AS authors,
+(SELECT COUNT(1) FROM kara)::integer AS karas,
+(SELECT COUNT(1)::integer FROM all_tags WHERE types @> ARRAY[5] AND karacount::text NOT LIKE '{"count": 0}' ) AS languages,
+(SELECT COUNT(1)::integer FROM all_tags WHERE types @> ARRAY[1] AND karacount::text NOT LIKE '{"count": 0}' ) AS series,
 (SELECT SUM(mediasize) FROM kara)::bigint AS mediasize,
 (SELECT SUM(duration) FROM kara)::integer AS duration;
 `;

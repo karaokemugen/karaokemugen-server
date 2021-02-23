@@ -36,7 +36,7 @@ export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 				ELSE TRUE
 			END) as flag_favorites,
 			`;
-		favoritedJoinClause = 'LEFT OUTER JOIN users_favorites AS f ON f.fk_login = :username AND f.fk_kid = ak.kid';
+		favoritedJoinClause = 'LEFT OUTER JOIN users_favorites AS f ON f.fk_login = :username AND f.fk_kid = ak.pk_kid';
 		favoritedGroupClause = 'f.fk_kid, ';
 		filterClauses.params.username = params.username;
 		if (params.favorites) whereClauses = 'AND f.fk_login = :username';
@@ -44,19 +44,19 @@ export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 	if (params.sort === 'recent') orderClauses = 'created_at DESC, ';
 	if (params.sort === 'played') {
 		statsSelectClause = 'COUNT(p.*)::integer AS played,';
-		statsJoinClause = 'LEFT OUTER JOIN stats_played AS p ON p.fk_kid = ak.kid ';
+		statsJoinClause = 'LEFT OUTER JOIN stats_played AS p ON p.fk_kid = ak.pk_kid ';
 		havingClause = 'HAVING COUNT(p.*) >= 1';
 		orderClauses = 'played DESC, ';
 	}
 	if (params.sort === 'favorited') {
 		statsSelectClause = 'COUNT(uf.*)::integer AS favorited,';
-		statsJoinClause = 'LEFT OUTER JOIN users_favorites AS uf ON uf.fk_kid = ak.kid ';
+		statsJoinClause = 'LEFT OUTER JOIN users_favorites AS uf ON uf.fk_kid = ak.pk_kid ';
 		havingClause = 'HAVING COUNT(uf.*) >= 1';
 		orderClauses = 'favorited DESC, ';
 	}
 	if (params.sort === 'requested') {
 		statsSelectClause = 'COUNT(r.*)::integer AS requested,';
-		statsJoinClause = 'LEFT OUTER JOIN stats_requested AS r ON r.fk_kid = ak.kid ';
+		statsJoinClause = 'LEFT OUTER JOIN stats_requested AS r ON r.fk_kid = ak.pk_kid ';
 		havingClause = 'HAVING COUNT(r.*) >= 1';
 		orderClauses = 'requested DESC, ';
 	}
