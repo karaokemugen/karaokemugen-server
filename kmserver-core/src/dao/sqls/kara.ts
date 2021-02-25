@@ -32,6 +32,7 @@ export const getAllKaras = (filterClauses: string[], typeClauses: string, orderC
   ak.karafile AS karafile,
   ak.duration AS duration,
   ak.gain AS gain,
+  ak.loudnorm AS loudnorm,
   ak.created_at AS created_at,
   ak.modified_at AS modified_at,
   ak.mediasize AS mediasize,
@@ -49,7 +50,7 @@ WHERE 1 = 1
   ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
   ${whereClauses}
   ${typeClauses}
-GROUP BY ${favoritedGroupClause} ak.pk_kid, ak.title, ak.songorder, ak.serie_singer_sortable, ak.subfile, ak.series, ak.versions, ak.singers, ak.songtypes, ak.creators, ak.songwriters, ak.year, ak.languages, ak.groups, ak.authors, ak.misc, ak.genres, ak.families, ak.platforms, ak.origins, ak.mediafile, ak.karafile, ak.duration, ak.gain, ak.created_at, ak.modified_at, ak.mediasize, ak.groups, ak.repository, ak.songtypes_sortable, ak.tagfiles, ak.subchecksum
+GROUP BY ${favoritedGroupClause} ak.pk_kid, ak.title, ak.songorder, ak.serie_singer_sortable, ak.subfile, ak.series, ak.versions, ak.singers, ak.songtypes, ak.creators, ak.songwriters, ak.year, ak.languages, ak.groups, ak.authors, ak.misc, ak.genres, ak.families, ak.platforms, ak.origins, ak.mediafile, ak.karafile, ak.duration, ak.gain, ak.loudnorm, ak.created_at, ak.modified_at, ak.mediasize, ak.groups, ak.repository, ak.songtypes_sortable, ak.tagfiles, ak.subchecksum
 ${havingClause}
 ORDER BY ${orderClauses} ak.serie_singer_sortable, ak.songtypes_sortable DESC, ak.songorder, lower(unaccent(ak.title))
 ${limitClause}
