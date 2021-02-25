@@ -201,7 +201,7 @@ export default {
 		sort: {
 			a_z: 'De A à Z',
 			kara_count: 'Kara count',
-			recent: 'Recent',
+			recent: 'By date added',
 			most_played: 'Most played',
 			most_favorites: 'Plus favoris',
 			most_requested: 'Plus demandés'

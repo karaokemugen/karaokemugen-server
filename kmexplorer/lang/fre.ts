@@ -201,7 +201,7 @@ export default {
 		sort: {
 			a_z: 'De A à Z',
 			kara_count: 'Nombre de chansons',
-			recent: 'Mise à jour récente',
+			recent: 'Par date d\'ajout',
 			most_played: 'Plus joués',
 			most_favorites: 'Plus favoris',
 			most_requested: 'Plus demandés'
