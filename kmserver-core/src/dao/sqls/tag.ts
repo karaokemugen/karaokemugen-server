@@ -10,7 +10,7 @@ SELECT pk_tid AS tid,
 	i18n,
 	karacount,
 	tagfile,
-	count(tid) OVER()::integer AS count,
+	count(pk_tid) OVER()::integer AS count,
 	problematic,
 	noLiveDownload,
 	repository,
@@ -51,5 +51,5 @@ SELECT pk_tid AS tid,
 	noLiveDownload,
 	modified_at
 FROM all_tags
-WHERE tid = $1
+WHERE pk_tid = $1
 `;
