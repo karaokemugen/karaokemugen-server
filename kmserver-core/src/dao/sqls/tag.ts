@@ -2,7 +2,7 @@
 
 
 export const getAllTags = (filterClauses: string[], typeClauses: string, limitClause: string, offsetClause: string, joinClauses: string, orderClauses: string, stripClause: string, additionalFrom: string[]) => `
-SELECT tid,
+SELECT pk_tid AS tid,
 	types,
 	name,
 	short,
@@ -38,7 +38,7 @@ WHERE name = $1
 `;
 
 export const selectTag = `
-SELECT tid,
+SELECT pk_tid AS tid,
 	types,
 	name,
 	short,
