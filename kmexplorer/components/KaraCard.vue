@@ -115,11 +115,12 @@
 
 		computed: {
 			images(): string[] {
-				return [
-					`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg`,
-					`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.33.jpg`,
-					`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.50.jpg`
-				];
+				return this.karaoke.mediafile.endsWith('.mp3')
+					? [`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg`]
+					: [
+						`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg`,
+						`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.33.jpg`
+					];
 			},
 			slug(): string {
 				return slug(this.karaoke.title);
