@@ -3,7 +3,7 @@
 		<div class="header" @mouseenter="switchImage" @mouseleave="switchImage">
 			<nuxt-link :to="`/kara/${slug}/${karaoke.kid}`" class="images" :class="{blur: problematic}">
 				<v-lazy-image :src="images[0]" alt="" />
-				<v-lazy-image :src="images[1]" :class="{activate}" alt="" />
+				<v-lazy-image :src="images[images.length-1]" :class="{activate}" alt="" />
 			</nuxt-link>
 		</div>
 		<div class="title-block">
