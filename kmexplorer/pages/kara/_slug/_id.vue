@@ -127,7 +127,7 @@
 					// @ts-ignore: No. :c
 					{ hid: 'og:image', property: 'og:image', content: `https://${process.env.EXPLORER_HOST}/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg` },
 					// @ts-ignore: rah :O
-					{ hid: 'twitter:image', name: 'twitter:image', content: `/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg` }
+					{ hid: 'twitter:image', name: 'twitter:image', content: `https://${process.env.EXPLORER_HOST}/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg` }
 					// The rest of meta tags is handled by KaraFullInfo.vue
 				]
 			};
