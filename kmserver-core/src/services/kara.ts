@@ -11,9 +11,10 @@ import { getConfig, resolvedPathRepos } from '../lib/utils/config';
 import { gitlabPostNewIssue } from '../lib/services/gitlab';
 import { asyncReadFile } from '../lib/utils/files';
 import { resolve, basename } from 'path';
-import { DownloadBundle } from '../lib/types/downloads';
+import { DownloadBundle, KaraMetaFile, MetaFile, ShinDownloadBundle, TagMetaFile } from '../lib/types/downloads';
 import sentry from '../utils/sentry';
 import { Token } from '../lib/types/user';
+import { TagFile } from '../lib/types/tag';
 
 export async function getBaseStats() {
 	try {
@@ -140,6 +141,43 @@ export async function getAllKaras(params: KaraParams, token?: Token): Promise<Ka
 		logger.error('', {service: 'GetAllKaras', obj: err});
 		throw err;
 	}
+}
+
+export async function aggregateKaras(kids: string[]): Promise<ShinDownloadBundle> {
+	const DBKaras = (await selectAllKaras({
+		mode: 'kid',
+		modeValue: kids.join(',')
+	}));
+	const allTagFiles: Set<string> = new Set();
+	const lyrics: MetaFile[] = [];
+	const karas: KaraMetaFile[] = [];
+	const tags: TagMetaFile[] = [];
+	for (const kara of DBKaras) {
+		for (const tagFile of kara.tagfiles) {
+			if (!allTagFiles.has(tagFile)) {
+				allTagFiles.add(tagFile);
+				const tagPath = resolve(resolvedPathRepos('Tags')[0], tagFile);
+				const tagData: TagFile = JSON.parse(await asyncReadFile(tagPath, 'utf-8'));
+				tags.push({file: tagFile, data: tagData});
+			}
+		}
+		if (kara.subfile) {
+			const lyricsData = await asyncReadFile(resolve(resolvedPathRepos('Lyrics')[0], kara.subfile), 'utf-8');
+			lyrics.push({
+				file: kara.subfile,
+				data: lyricsData
+			});
+		}
+		karas.push({
+			file: kara.karafile,
+			data: JSON.parse(await asyncReadFile(resolve(resolvedPathRepos('Karas')[0], kara.karafile), 'utf-8'))
+		});
+	}
+	return {
+		karas,
+		lyrics,
+		tags
+	};
 }
 
 export async function getRawKara(kid: string): Promise<DownloadBundle> {

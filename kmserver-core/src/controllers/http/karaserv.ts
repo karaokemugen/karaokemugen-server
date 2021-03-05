@@ -1,4 +1,4 @@
-import {getRawKara, getBaseStats, getKara, getAllKaras, getAllYears, newKaraIssue, getAllmedias} from '../../services/kara';
+import {aggregateKaras, getRawKara, getBaseStats, getKara, getAllKaras, getAllYears, newKaraIssue, getAllmedias} from '../../services/kara';
 import {getTags, getTag} from '../../services/tag';
 import {getAllSeries} from '../../services/series';
 import {getSettings} from '../../lib/dao/database';
@@ -48,6 +48,16 @@ export default function KSController(router: Router) {
 				username: req.authToken?.username
 			});
 			res.json(karas.map(k => k.kid));
+		});
+	router.route('/karas/download')
+		.get(optionalAuth, async (req: any, res) => {
+			try {
+				const payload = await aggregateKaras(req.body.kids);
+				res.json(payload);
+			} catch(err) {
+				console.log(err);
+				res.status(500).json(err);
+			}
 		});
 	router.route('/karas/search')
 		// Route used by KMApp to get Kara lists with comparison
