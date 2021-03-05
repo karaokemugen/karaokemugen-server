@@ -149,9 +149,11 @@ export async function getRawKara(kid: string): Promise<DownloadBundle> {
 			modeValue: kid
 		}))[0];
 		if (!kara) throw 'Unknown song';
+		// Create a set of tagfiles to get only unique tagfiles.
+		const tagfiles = new Set(kara.tagfiles);
 		const files = {
 			kara: resolve(resolvedPathRepos('Karas')[0], kara.karafile),
-			tags: kara.tagfiles.map(f => {
+			tags: Array.from(tagfiles).map(f => {
 				return f
 					? resolve(resolvedPathRepos('Tags')[0], f)
 					: null;
