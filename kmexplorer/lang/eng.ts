@@ -299,7 +299,7 @@ export default {
 				label: 'Series language display',
 				original_name: 'Original name',
 				song_lang: 'Song language',
-				mode_admin: 'Karaoke Mugen language',
+				mode_admin: 'Karaoke Mugen software language',
 				user_lang: 'User language',
 				mode_no_pref: 'No preference',
 				force_lang_series: 'Force your own language',
