@@ -65,8 +65,8 @@ export function getAllmedias() {
 export async function getKara(params: KaraParams, token?: Token) {
 	try {
 		const karas = await selectAllKaras({
-			mode: params.mode,
-			modeValue: params.modeValue,
+			order: params.order,
+			q: params.q,
 			username: token?.username.toLowerCase()
 		});
 		if (!karas[0]) return;
@@ -97,10 +97,9 @@ export async function getAllKaras(params: KaraParams, token?: Token): Promise<Ka
 			filter: params.filter,
 			from: +trueFrom,
 			size: +trueSize,
-			mode: params.mode,
-			modeValue: params.modeValue || '',
+			order: params.order,
+			q: params.q || '',
 			username: token?.username,
-			sort: params.sort,
 			favorites: params.favorites,
 			random: params.random
 		});
@@ -145,8 +144,7 @@ export async function getAllKaras(params: KaraParams, token?: Token): Promise<Ka
 
 export async function aggregateKaras(kids: string[]): Promise<ShinDownloadBundle> {
 	const DBKaras = (await selectAllKaras({
-		mode: 'kid',
-		modeValue: kids.join(',')
+		q: `k:${kids.join(',')}`
 	}));
 	const allTagFiles: Set<string> = new Set();
 	const lyrics: MetaFile[] = [];
@@ -183,8 +181,7 @@ export async function aggregateKaras(kids: string[]): Promise<ShinDownloadBundle
 export async function getRawKara(kid: string): Promise<DownloadBundle> {
 	try {
 		const kara = (await selectAllKaras({
-			mode: 'kid',
-			modeValue: kid
+			q: `k:${kid}`
 		}))[0];
 		if (!kara) throw 'Unknown song';
 		// Create a set of tagfiles to get only unique tagfiles.
@@ -229,8 +226,7 @@ export async function getRawKara(kid: string): Promise<DownloadBundle> {
 
 export async function newKaraIssue(kid: string, type: 'quality' | 'time', comment: string, username: string) {
 	const karas = await selectAllKaras({
-		mode: 'kid',
-		modeValue: kid
+		q: `k:${kid}`
 	});
 	const kara = karas[0];
 	logger.debug('Kara:', {service: 'GitLab', obj: kara});

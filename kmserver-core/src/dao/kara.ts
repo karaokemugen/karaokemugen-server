@@ -18,7 +18,7 @@ export async function selectAllYears(): Promise<DBYear[]> {
 
 export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 	const filterClauses: WhereClause = params.filter ? buildClauses(params.filter) : {sql: [], params: {}, additionalFrom: []};
-	let typeClauses = params.mode ? buildTypeClauses(params.mode, params.modeValue) : '';
+	let typeClauses = params.order ? buildTypeClauses(params.q, params.order) : '';
 	let orderClauses = '';
 	let limitClause = '';
 	let offsetClause = '';
@@ -41,20 +41,20 @@ export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 		filterClauses.params.username = params.username;
 		if (params.favorites) whereClauses = 'AND f.fk_login = :username';
 	}
-	if (params.sort === 'recent') orderClauses = 'created_at DESC, ';
-	if (params.sort === 'played') {
+	if (params.order === 'recent') orderClauses = 'created_at DESC, ';
+	if (params.order === 'played') {
 		statsSelectClause = 'COUNT(p.*)::integer AS played,';
 		statsJoinClause = 'LEFT OUTER JOIN stats_played AS p ON p.fk_kid = ak.pk_kid ';
 		havingClause = 'HAVING COUNT(p.*) >= 1';
 		orderClauses = 'played DESC, ';
 	}
-	if (params.sort === 'favorited') {
+	if (params.order === 'favorited') {
 		statsSelectClause = 'COUNT(uf.*)::integer AS favorited,';
 		statsJoinClause = 'LEFT OUTER JOIN users_favorites AS uf ON uf.fk_kid = ak.pk_kid ';
 		havingClause = 'HAVING COUNT(uf.*) >= 1';
 		orderClauses = 'favorited DESC, ';
 	}
-	if (params.sort === 'requested') {
+	if (params.order === 'requested') {
 		statsSelectClause = 'COUNT(r.*)::integer AS requested,';
 		statsJoinClause = 'LEFT OUTER JOIN stats_requested AS r ON r.fk_kid = ak.pk_kid ';
 		havingClause = 'HAVING COUNT(r.*) >= 1';

@@ -67,11 +67,10 @@ export default function KSController(router: Router) {
 					filter: req.body.filter,
 					from: req.body.from,
 					size: req.body.size,
-					mode: 'search',
-					modeValue: req.body.q,
+					q: req.body.q,
 					compare: req.body.compare,
 					localKaras: req.body.localKaras,
-					sort: req.body.order,
+					order: req.body.order,
 					username: req.authToken?.username,
 					favorites: req.body.favorites
 				}, req.authToken);
@@ -87,10 +86,9 @@ export default function KSController(router: Router) {
 					filter: req.query.filter,
 					from: req.query.from,
 					size: req.query.size,
-					mode: 'search',
-					modeValue: req.query.q,
+					q: req.query.q,
 					username: req.authToken?.username,
-					sort: req.query.order,
+					order: req.query.order,
 					favorites: req.query.favorites
 				}, req.authToken);
 				res.json(karas);
@@ -102,8 +100,7 @@ export default function KSController(router: Router) {
 		.get(optionalAuth, async (req: any, res) => {
 			try {
 				const kara = await getKara({
-					mode: 'kid',
-					modeValue: req.params.kid,
+					q: `k:${req.params.kid}`,
 				}, req?.authToken);
 				res.json(kara);
 			} catch(err) {
@@ -135,7 +132,7 @@ export default function KSController(router: Router) {
 					filter: req.query.filter,
 					from: req.query.from,
 					size: req.query.size,
-					mode: 'recent'
+					order: 'recent'
 				});
 				res.json(karas);
 			} catch(err) {
