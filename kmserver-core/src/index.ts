@@ -67,7 +67,7 @@ async function main() {
 		originalAppPath: appPath,
 		electron: false
 	});
-	await initConfig(argv);
+	await initConfig(argv.opts());
 	const conf = getConfig();
 	console.log('--------------------------------------------------------------------');
 	console.log(`Karaoke Mugen Server ${pjson.version}`);
