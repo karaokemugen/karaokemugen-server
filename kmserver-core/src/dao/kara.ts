@@ -18,7 +18,7 @@ export async function selectAllYears(): Promise<DBYear[]> {
 
 export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 	const filterClauses: WhereClause = params.filter ? buildClauses(params.filter) : {sql: [], params: {}, additionalFrom: []};
-	let typeClauses = params.order ? buildTypeClauses(params.q, params.order) : '';
+	let typeClauses = params.q ? buildTypeClauses(params.q, params.order) : '';
 	let orderClauses = '';
 	let limitClause = '';
 	let offsetClause = '';
