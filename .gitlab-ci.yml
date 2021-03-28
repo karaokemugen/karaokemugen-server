@@ -1,39 +1,42 @@
+# You can override the included template(s) by including variable overrides
+# See https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
+# Note that environment variables can be set in several places
+# See https://docs.gitlab.com/ee/ci/variables/#priority-of-environment-variables
 image: takkatakka/lftp
-
 stages:
-  - deploy
-
+- deploy
+- test
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
-
 before_script:
-  - mkdir ~/.ssh
-  - echo "$SSH_KEY" > ~/.ssh/id_rsa
-  - ssh-keyscan -H '$HOST'
-  - chmod -R 700 ~/.ssh
-  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-
+- mkdir ~/.ssh
+- echo "$SSH_KEY" > ~/.ssh/id_rsa
+- ssh-keyscan -H '$HOST'
+- chmod -R 700 ~/.ssh
+- '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 update_sentry:
   stage: deploy
   image: axelterizaki/karaokemugen-ci:node-12
   cache:
     key: km-server-${CI_COMMIT_REF_SLUG}
     paths:
-      - node_modules/
+    - node_modules/
   script:
-    - yarn install
-    - yarn build:core
-    - yarn ts-node -P kmserver-core/tsconfig.json util/sentryUpdateReleases.ts
+  - yarn install
+  - yarn build:core
+  - yarn ts-node -P kmserver-core/tsconfig.json util/sentryUpdateReleases.ts
   only:
-    - master
-    - dev
-
+  - master
+  - dev
 deploy_moe:
   stage: deploy
   script:
-    - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd kmserver; mirror -Rnev --parallel=10 --exclude .env --exclude .git/ --exclude app/ --exclude config.yml --exclude database.json --exclude karaokemugen-app/ --exclude logs/ --exclude node_modules/ --exclude kmexplorer/.nuxt/ "
-    - ssh -l $USERNAME $HOST 'cd kmserver ; yarn install ; yarn migrate; yarn build:all'
-    - ssh -l $USERNAME $HOST 'sudo systemctl restart karaokemugen-server'
+  - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd kmserver;
+    mirror -Rnev --parallel=10 --exclude .env --exclude .git/ --exclude app/ --exclude
+    config.yml --exclude database.json --exclude karaokemugen-app/ --exclude logs/
+    --exclude node_modules/ --exclude kmexplorer/.nuxt/ "
+  - ssh -l $USERNAME $HOST 'cd kmserver ; yarn install ; yarn migrate; yarn build:all'
+  - ssh -l $USERNAME $HOST 'sudo systemctl restart karaokemugen-server'
   variables:
     NODE_ENV: production
   environment:
@@ -41,13 +44,16 @@ deploy_moe:
     url: https://kara.moe
   only:
   - master
-
 deploy_world:
   stage: deploy
   script:
-    - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd kmserver-world; mirror -Rnev --parallel=10 --exclude .env --exclude .git/ --exclude app/ --exclude config.yml --exclude database.json --exclude karaokemugen-app/ --exclude logs/ --exclude node_modules/ --exclude kmexplorer/.nuxt/ "
-    - ssh -l $USERNAME $HOST 'cd kmserver-world ; yarn install ; yarn migrate; yarn build:all'
-    - ssh -l $USERNAME $HOST 'sudo systemctl restart karaokemugen-server-world'
+  - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd kmserver-world;
+    mirror -Rnev --parallel=10 --exclude .env --exclude .git/ --exclude app/ --exclude
+    config.yml --exclude database.json --exclude karaokemugen-app/ --exclude logs/
+    --exclude node_modules/ --exclude kmexplorer/.nuxt/ "
+  - ssh -l $USERNAME $HOST 'cd kmserver-world ; yarn install ; yarn migrate; yarn
+    build:all'
+  - ssh -l $USERNAME $HOST 'sudo systemctl restart karaokemugen-server-world'
   variables:
     NODE_ENV: production
   environment:
@@ -55,13 +61,16 @@ deploy_world:
     url: https://world.karaokes.moe
   only:
   - master
-
 deploy_dev:
   stage: deploy
   script:
-    - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd kmserver-dev; mirror -Rnev --parallel=10 --exclude .env --exclude .git/ --exclude app/ --exclude config.yml --exclude database.json --exclude karaokemugen-app/ --exclude logs/ --exclude node_modules/ --exclude kmexplorer/.nuxt/ --exclude kmapp-remote/kmfrontend/build/ "
-    - ssh -l $USERNAME $HOST 'cd kmserver-dev ; yarn install ; yarn migrate; yarn build:all'
-    - ssh -l $USERNAME $HOST 'sudo systemctl restart karaokemugen-server-dev'
+  - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd kmserver-dev;
+    mirror -Rnev --parallel=10 --exclude .env --exclude .git/ --exclude app/ --exclude
+    config.yml --exclude database.json --exclude karaokemugen-app/ --exclude logs/
+    --exclude node_modules/ --exclude kmexplorer/.nuxt/ --exclude kmapp-remote/kmfrontend/build/
+    "
+  - ssh -l $USERNAME $HOST 'cd kmserver-dev ; yarn install ; yarn migrate; yarn build:all'
+  - ssh -l $USERNAME $HOST 'sudo systemctl restart karaokemugen-server-dev'
   variables:
     NODE_ENV: production
   environment:
@@ -69,3 +78,7 @@ deploy_dev:
     url: https://dev.kara.moe
   only:
   - dev
+sast:
+  stage: test
+include:
+- template: Security/SAST.gitlab-ci.yml
