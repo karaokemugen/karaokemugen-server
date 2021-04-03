@@ -147,7 +147,7 @@
 						<button v-if="!submitted" class="button is-success" :class="{'is-loading': loading}" type="submit">
 							{{ $t('modal.suggest.submit') }}
 						</button>
-						<button v-else class="button is-success" @click="modal = false">
+						<button v-else class="button is-success" type="button" @click="modal = false">
 							{{ $t('modal.suggest.submitted.close') }}
 						</button>
 					</footer>
