@@ -152,7 +152,9 @@
 		computed: {
 			tagTypesSorted(): object {
 				const tagTypes = { ...this.tagTypes };
-				delete tagTypes.songtypes; // Don't show songtypes on full view, as it's already shown in the title
+				if (this.karaoke.songtypes.length === 1) {
+					delete tagTypes.songtypes; // Don't show songtypes on full view, as it's already shown in the title
+				}
 				delete tagTypes.years; // This is a decoy for fake years tag
 				// Remove unused tagTypes in context
 				for (const tagType in tagTypes) {
