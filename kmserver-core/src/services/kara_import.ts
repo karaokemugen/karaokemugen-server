@@ -7,7 +7,7 @@ import {basename, resolve} from 'path';
 import {getConfig, resolvedPathImport, resolvedPathTemp, resolvedPathRepos} from '../lib/utils/config';
 import {asyncReadDir} from '../lib/utils/files';
 import {duration} from '../lib/utils/date';
-import { generateKara } from '../lib/services/kara_creation';
+import { generateKara, validateNewKara } from '../lib/services/kara_creation';
 import { NewKara, Kara } from '../lib/types/kara';
 import { gitlabPostNewIssue } from '../lib/services/gitlab';
 import { asyncExists, asyncCopy, asyncUnlink, asyncMkdirp, asyncMove } from '../lib/utils/files';
@@ -15,6 +15,14 @@ import sentry from '../utils/sentry';
 
 export async function editKara(kara: Kara): Promise<string> {
 	let newKara: NewKara;
+	// Validation here, processing stuff later
+	// No sentry triggered if validation fails
+	try {
+		const validationErrors = validateNewKara(kara);
+		if (validationErrors) throw validationErrors;
+	} catch(err) {
+		throw {code: 400, msg: err};
+	}
 	try {
 		const mediaFile = resolve(resolvedPathRepos('Medias')[0], kara.mediafile);
 		const subFile = kara.subfile
@@ -109,6 +117,14 @@ export async function createKara(kara: Kara) {
 	const conf = getConfig();
 	let newKara: NewKara;
 	kara.repository = conf.System.Repositories[0].Name;
+	// Validation here, processing stuff later
+	// No sentry triggered if validation fails
+	try {
+		const validationErrors = validateNewKara(kara);
+		if (validationErrors) throw validationErrors;
+	} catch(err) {
+		throw {code: 400, msg: err};
+	}
 	try {
 		newKara = await generateKara(kara,
 			resolvedPathImport(),
