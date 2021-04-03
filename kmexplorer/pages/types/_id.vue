@@ -138,6 +138,9 @@
 		},
 
 		beforeCreate() {
+			if (this.$nuxt.context.from?.fullPath.includes('/search')) {
+				menuBarStore.setSearch('');
+			}
 			if (!['az', 'karacount'].includes(menuBarStore.sort)) {
 				// Reset sort to karacount
 				menuBarStore.setSort('karacount');
