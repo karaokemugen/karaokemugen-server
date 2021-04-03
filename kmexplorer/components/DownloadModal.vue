@@ -97,7 +97,7 @@
 					const subfile = this.karaoke.subfile.split('.');
 					return subfile[subfile.length - 1];
 				}
-				return undefined;
+				return '';
 			},
 			kmAppUrl(): string {
 				return `km://download/${process.env.API_HOST}/${this.karaoke.kid}`;
