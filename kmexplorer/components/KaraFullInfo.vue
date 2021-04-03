@@ -54,17 +54,9 @@
 				<font-awesome-icon :icon="['fas', 'closed-captioning']" :fixed-width="true" />
 				{{ lyrics ? $t('kara.lyrics.hide'):$t('kara.lyrics.show') }}
 			</button>
-			<a :href="kmAppUrl" class="button is-success">
+			<a class="button is-success" @click.prevent="modal.download = true">
 				<font-awesome-icon :icon="['fas', 'cloud-download-alt']" :fixed-width="true" />
-				{{ $t('kara.add') }}
-			</a>
-			<a :href="bundleUrl" class="button" :download="`${serieSinger.name} - ${karaoke.title}.karabundle.json`">
-				<font-awesome-icon :icon="['fas', 'file-export']" :fixed-width="true" />
-				{{ $t('kara.download.karabundle') }}
-			</a>
-			<a :href="mediaUrl" class="button" download>
-				<font-awesome-icon :icon="['fas', 'file-video']" :fixed-width="true" />
-				{{ $t('kara.download.media') }}
+				{{ $t('kara.download') }}
 			</a>
 		</div>
 		<div v-show="lyrics" class="box is-clear">
@@ -74,6 +66,7 @@
 				</li>
 			</ul>
 		</div>
+		<DownloadModal :karaoke="karaoke" :active="modal.download" @close="modal.download=false" />
 	</div>
 </template>
 
@@ -89,12 +82,16 @@
 	import { DBKara } from '%/lib/types/database/kara';
 	import { ShortTag } from '~/types/tags';
 	import duration from '~/assets/date';
+	import DownloadModal from '~/components/DownloadModal.vue';
 
 	interface VState {
 		tagTypes: typeof tagTypes,
 		favorite: boolean,
 		lyrics: boolean,
-		loading: boolean
+		loading: boolean,
+		modal: {
+			download: boolean
+		}
 	}
 
 	export default Vue.extend({
@@ -102,7 +99,8 @@
 
 		components: {
 			Tag,
-			KaraPhrase
+			KaraPhrase,
+			DownloadModal
 		},
 
 		props: {
@@ -117,7 +115,10 @@
 				tagTypes,
 				favorite: false,
 				lyrics: false,
-				loading: false
+				loading: false,
+				modal: {
+					download: false
+				}
 			};
 		},
 
@@ -183,21 +184,6 @@
 				} else { // You never know~
 					throw new TypeError('The karaoke does not have any series nor singers, wtf?');
 				}
-			},
-			songtype(): string {
-				return this.karaoke.songtypes[0].i18n[languages.alpha2ToAlpha3B(this.$i18n.locale)] || this.karaoke.songtypes[0].i18n.eng || this.karaoke.songtypes[0].name;
-			},
-			songtypeSlug(): string {
-				return slug(this.karaoke.songtypes[0].name);
-			},
-			kmAppUrl(): string {
-				return `km://download/${process.env.API_HOST}/${this.karaoke.kid}`;
-			},
-			bundleUrl(): string {
-				return `${this.$axios.defaults.baseURL}api/karas/${this.karaoke.kid}/raw`;
-			},
-			mediaUrl(): string {
-				return `${this.$axios.defaults.baseURL}downloads/medias/${this.karaoke.mediafile}`;
 			},
 			duration(): string {
 				const durationArray = duration(this.karaoke.duration);

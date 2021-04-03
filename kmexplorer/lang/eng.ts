@@ -30,11 +30,7 @@ export default {
 		duration: 'Duration ',
 		created_at: 'Created ',
 		modified_at: 'Last update ',
-		add: 'Add to application',
-		download: {
-			karabundle: 'Download karaoke data',
-			media: 'Download media'
-		},
+		download: 'Download',
 		live: 'Open in a new tab',
 		lyrics: {
 			show: 'Show lyrics',
@@ -353,6 +349,15 @@ export default {
 				here: 'here',
 				close: 'Fermer'
 			}
+		},
+		download: {
+			label: 'Download the karaoke',
+			cancel: 'Cancel',
+			add: 'Add to application',
+			add_desc: 'You must have the Karaoke Mugen application installed on your computer.',
+			karabundle: 'Download data (.json)',
+			subtitles: 'Download lyrics (.{format})',
+			media: 'Download media (.{format})'
 		}
 	},
 	titles: {

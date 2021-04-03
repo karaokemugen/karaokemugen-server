@@ -30,11 +30,7 @@ export default {
 		duration: 'Durée ',
 		created_at: 'Création ',
 		modified_at: 'Dernière modification ',
-		add: 'Télécharger dans l\'application',
-		download: {
-			karabundle: 'Télécharger les données du karaoké',
-			media: 'Télécharger le média'
-		},
+		download: 'Télécharger',
 		live: 'Ouvrir dans un nouvel onglet',
 		lyrics: {
 			show: 'Afficher les paroles',
@@ -353,6 +349,15 @@ export default {
 				here: 'ici',
 				close: 'Fermer'
 			}
+		},
+		download: {
+			label: 'Télécharger le karaoké',
+			cancel: 'Annuler',
+			add: 'Télécharger dans l\'application',
+			add_desc: 'Vous devez avoir l\'application Karaoke Mugen installée sur votre ordinateur.',
+			karabundle: 'Télécharger les données (.json)',
+			subtitles: 'Télécharger les paroles (.{format})',
+			media: 'Télécharger le média (.{format})'
 		}
 	},
 	titles: {

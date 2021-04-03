@@ -12,6 +12,7 @@
 				<slot />
 				<footer class="modal-card-foot">
 					<button
+						v-if="submitLabel"
 						class="button is-success"
 						type="submit"
 					>
