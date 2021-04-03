@@ -180,4 +180,8 @@
 	.field-label {
 		flex-grow: 2;
 	}
+
+	.select select option {
+		color: white;
+	}
 </style>
