@@ -53,6 +53,10 @@
 			KaraEdit
 		},
 
+		validate() {
+			return (process.env.KM_IMPORT as unknown as boolean);
+		},
+
 		async asyncData({ params, $axios, error, app }) {
 			if (params.id) {
 				try {
@@ -93,10 +97,6 @@
 				in_progress_songs_list: process.env.IN_PROGRESS_SONGS_LIST,
 				karaparam: {} as unknown as DBKara
 			};
-		},
-
-		validate() {
-			return (process.env.KM_IMPORT as unknown as boolean);
 		}
 	});
 </script>

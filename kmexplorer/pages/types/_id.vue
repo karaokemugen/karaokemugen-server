@@ -77,6 +77,22 @@
 			SearchTags
 		},
 
+		validate({ params }) {
+			return typeof tagTypes[params.id] === 'object';
+		},
+
+		data(): VState {
+			return {
+				tags: {
+					infos: { count: 0, from: 0, to: 0 },
+					content: []
+				},
+				page: 1,
+				loading: false,
+				total: 1
+			};
+		},
+
 		async fetch() {
 			const res = await this.$axios
 				.get<TagList>(`/api/karas/tags/${tagTypes[this.$route.params.id].type}`, {
@@ -91,18 +107,6 @@
 			} else {
 				this.$nuxt.error({ statusCode: 500, message: 'Huh?' });
 			}
-		},
-
-		data(): VState {
-			return {
-				tags: {
-					infos: { count: 0, from: 0, to: 0 },
-					content: []
-				},
-				page: 1,
-				loading: false,
-				total: 1
-			};
 		},
 
 		computed: {
@@ -156,10 +160,6 @@
 				this.tags = data;
 				this.loading = false;
 			}
-		},
-
-		validate({ params }) {
-			return typeof tagTypes[params.id] === 'object';
 		}
 	});
 </script>

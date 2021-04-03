@@ -9,13 +9,13 @@
 	export default Vue.extend({
 		name: 'KaraListTag',
 
+		validate({ params }) {
+			return tagRegex.test(params?.id);
+		},
+
 		// Dummy page to assure redirects
 		asyncData({ redirect, params }) {
 			redirect(301, '/search/', { q: `t:${params.id}` });
-		},
-
-		validate({ params }) {
-			return tagRegex.test(params?.id);
 		}
 	});
 </script>

@@ -8,13 +8,13 @@
 	export default Vue.extend({
 		name: 'YearVue',
 
+		validate({ params }) {
+			return !isNaN(parseInt(params.year));
+		},
+
 		// Dummy page to assure redirects
 		asyncData({ redirect, params }) {
 			redirect(301, '/search/', { q: `y:${params.year}` });
-		},
-
-		validate({ params }) {
-			return !isNaN(parseInt(params.year));
 		}
 	});
 </script>
