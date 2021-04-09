@@ -38,7 +38,6 @@
     "@types/lodash.merge": "^4.6.6",
     "@types/nuxtjs__auth": "^4.8.7",
     "@types/slug": "^0.9.1",
-    "css-loader": "^5.2.0",
     "eslint": "^7.23.0",
     "sass": "^1.32.8",
     "sass-loader": "^10.1.1",
