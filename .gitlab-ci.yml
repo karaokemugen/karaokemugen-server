@@ -20,6 +20,8 @@ update_sentry:
     key: km-server-${CI_COMMIT_REF_SLUG}
     paths:
       - node_modules/
+      - .yarn/
+      - kmexplorer/.nuxt
   script:
     - yarn install
     - yarn build:core
