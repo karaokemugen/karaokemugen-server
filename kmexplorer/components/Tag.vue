@@ -72,7 +72,7 @@
 				if (this.type === 'series') {
 					return getSerieLanguage(this.tag, 'jpn', this.$store.state.auth.user, this.i18n); // TODO: true value for karaLanguage
 				} else {
-					return getTagInLanguage(this.tag, languages.alpha2ToAlpha3B(this.$i18n.locale), 'eng', this.i18n);
+					return getTagInLanguage(this.tag, languages.alpha2ToAlpha3B(this.$i18n.locale) as string, 'eng', this.i18n);
 				}
 			},
 			slug(): string {

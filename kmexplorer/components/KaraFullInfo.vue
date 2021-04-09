@@ -176,7 +176,7 @@
 					};
 				} else if (this.karaoke.singers[0]) {
 					return {
-						name: getTagInLanguage(this.karaoke.singers[0], languages.alpha2ToAlpha3B(this.$i18n.locale), 'eng'),
+						name: getTagInLanguage(this.karaoke.singers[0], languages.alpha2ToAlpha3B(this.$i18n.locale) as string, 'eng'),
 						slug: slug(this.karaoke.singers[0].name),
 						type: 'singers',
 						tag: this.karaoke.singers[0]

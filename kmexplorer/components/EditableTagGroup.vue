@@ -139,7 +139,7 @@
 			},
 			localizedName(tag: DBTagMini) {
 				if (tag.i18n) {
-					return tag.i18n[languages.alpha2ToAlpha3B(this.$i18n.locale)] || tag.i18n.eng || tag.name;
+					return tag.i18n[languages.alpha2ToAlpha3B(this.$i18n.locale) as string] || tag.i18n.eng || tag.name;
 				} else {
 					return tag.name;
 				}
