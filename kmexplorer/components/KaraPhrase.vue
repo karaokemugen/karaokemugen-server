@@ -64,7 +64,7 @@
 					};
 				} else if (this.karaoke.singers[0]) {
 					return {
-						name: getTagInLanguage(this.karaoke.singers[0], languages.alpha2ToAlpha3B(this.$i18n.locale), 'eng', this.i18n),
+						name: getTagInLanguage(this.karaoke.singers[0], languages.alpha2ToAlpha3B(this.$i18n.locale) as string, 'eng', this.i18n),
 						slug: slug(this.karaoke.singers[0].name),
 						type: 'singers',
 						tag: this.karaoke.singers[0]
@@ -76,7 +76,7 @@
 			songtype(): ShortTag {
 				return {
 					slug: slug(this.karaoke.songtypes[0].name),
-					name: getTagInLanguage(this.karaoke.songtypes[0], languages.alpha2ToAlpha3B(this.$i18n.locale), 'eng', this.i18n),
+					name: getTagInLanguage(this.karaoke.songtypes[0], languages.alpha2ToAlpha3B(this.$i18n.locale) as string, 'eng', this.i18n),
 					type: 'songtypes',
 					tag: this.karaoke.songtypes[0]
 				};
@@ -85,7 +85,7 @@
 				const tab = [];
 				for (const version of this.karaoke.versions) {
 					tab.push({
-						name: getTagInLanguage(version, languages.alpha2ToAlpha3B(this.$i18n.locale), 'eng', this.i18n),
+						name: getTagInLanguage(version, languages.alpha2ToAlpha3B(this.$i18n.locale) as string, 'eng', this.i18n),
 						slug: slug(version.name),
 						type: 'versions',
 						tag: version

@@ -350,7 +350,7 @@
 			listLangs(name: string): string[] {
 				const listLangs = [];
 				for (const [_key, value] of Object.entries(
-					languages.getNames(languages.alpha3BToAlpha2(this.$i18n.locale))
+					languages.getNames(languages.alpha3BToAlpha2(this.$i18n.locale) as string)
 				)) {
 					listLangs.push(value);
 				}
@@ -361,8 +361,8 @@
 			get3BCode(language: string): string {
 				return languages.getAlpha3BCode(
 					language,
-					languages.alpha3BToAlpha2(this.$i18n.locale)
-				);
+					languages.alpha3BToAlpha2(this.$i18n.locale) as string
+				) as string;
 			},
 			getUser(): void {
 				if (this.storeUser) { this.user = { ...this.storeUser }; }

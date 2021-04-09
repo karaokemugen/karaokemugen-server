@@ -8,13 +8,14 @@ import { tagTypes } from '~/assets/constants';
 
 let navigatorLanguage:string;
 if (process.client) {
-	navigatorLanguage = languages.alpha2ToAlpha3B(navigator.languages[0].substring(0, 2));
+	navigatorLanguage = languages.alpha2ToAlpha3B(navigator.languages[0].substring(0, 2)) as string;
 }
 
 export function getTagInLanguage(tag: DBKaraTag | DBTag, mainLanguage: string, fallbackLanguage: string, i18nParam?: any) {
 	const i18n = (i18nParam && i18nParam[tag.tid]) ? i18nParam[tag.tid] : tag.i18n;
 	if (i18n) {
-		return i18n[mainLanguage] ? i18n[mainLanguage]
+		return i18n[mainLanguage]
+			? i18n[mainLanguage]
 			: (i18n[fallbackLanguage] ? i18n[fallbackLanguage] : tag.name);
 	} else {
 		return tag.name;

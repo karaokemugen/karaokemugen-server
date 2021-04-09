@@ -459,6 +459,7 @@
 <script lang="ts">
 	import Vue from 'vue';
 	import { mapState } from 'vuex';
+	import VueI18n from 'vue-i18n';
 	import SearchTags from '~/components/SearchTags.vue';
 	import SearchBar from '~/components/SearchBar.vue';
 	import LoginModal from '~/components/LoginModal.vue';
@@ -526,7 +527,7 @@
 			onKaraTagListView(): boolean {
 				return ['types-id', 'search-query', 'favorites'].includes(this.$route.name as string);
 			},
-			availableLocales() {
+			availableLocales(): VueI18n.Locale[] {
 				return this.$i18n.locales?.filter((i: any) => i.code && i.code !== this.$i18n.locale);
 			},
 			...mapState('auth', ['loggedIn', 'user'])
