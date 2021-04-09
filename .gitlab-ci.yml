@@ -23,7 +23,7 @@ update_sentry:
   script:
     - yarn install
     - yarn build:core
-    - yarn ts-node -P kmserver-core/tsconfig.json util/sentryUpdateReleases.ts
+    - yarn exec ts-node -P kmserver-core/tsconfig.json util/sentryUpdateReleases.ts
   only:
     - master
     - dev
