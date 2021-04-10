@@ -291,6 +291,7 @@ export default {
 			passwords_mismatch: 'Passwords do not match',
 			submit: 'Save',
 			delete: 'Delete account',
+			select_avatar: 'Select an avatar',
 			series_name: {
 				label: 'Series language display',
 				original_name: 'Original name',
@@ -358,6 +359,11 @@ export default {
 			karabundle: 'Download data (.json)',
 			subtitles: 'Download lyrics (.{format})',
 			media: 'Download media (.{format})'
+		},
+		crop_avatar: {
+			label: 'Crop avatar',
+			add: 'Add',
+			cancel: 'Cancel'
 		}
 	},
 	titles: {

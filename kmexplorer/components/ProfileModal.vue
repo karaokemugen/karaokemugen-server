@@ -1,6 +1,6 @@
 <template>
 	<div class="modal" :class="{'is-active': active}">
-		<form action="#" @submit.prevent="submitForm">
+		<form v-if="!modal.avatar" action="#" @submit.prevent="submitForm">
 			<div class="modal-background" @click="closeModal" />
 			<div class="modal-card">
 				<header>
@@ -19,6 +19,14 @@
 					</div>
 				</header>
 				<section v-if="mode === 'general'" class="modal-card-body">
+					<img v-if="user.avatar_file" :src="`/avatars/${user.avatar_file}`">
+					<button
+						type="button"
+						class="button"
+						@click="modal.avatar=true"
+					>
+						{{ $t('modal.profile.select_avatar') }}
+					</button>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
 							<label class="label">{{ $t('modal.profile.fields.username.label') }}</label>
@@ -265,6 +273,7 @@
 				</footer>
 			</div>
 		</form>
+		<crop-avatar-modal :user="user" :active="modal.avatar" @close="modal.avatar=false" @uploadAvatar="uploadAvatar" />
 	</div>
 </template>
 
@@ -274,6 +283,7 @@
 
 	import { DBUser } from '%/lib/types/database/user';
 	import { modalStore } from '~/store';
+	import CropAvatarModal from './CropAvatarModal.vue';
 
 	languages.registerLocale(require('@cospired/i18n-iso-languages/langs/en.json'));
 	languages.registerLocale(require('@cospired/i18n-iso-languages/langs/fr.json'));
@@ -288,11 +298,18 @@
 		main_series_lang_name: string,
 		fallback_series_lang_name: string,
 		mode: 'general' | 'series',
-		loading: boolean
+		loading: boolean,
+		modal: {
+			avatar: boolean
+		}
 	}
 
 	export default Vue.extend({
 		name: 'ProfileModal',
+
+		components: {
+			CropAvatarModal
+		},
 
 		props: {
 			active: {
@@ -319,7 +336,10 @@
 				main_series_lang_name: '',
 				fallback_series_lang_name: '',
 				mode: 'general',
-				loading: false
+				loading: false,
+				modal: {
+					avatar: false
+				}
 			};
 		},
 
@@ -381,6 +401,9 @@
 			openDeleteAccountModal() {
 				modalStore.openModal('deleteAccount');
 				this.closeModal();
+			},
+			uploadAvatar(file:string): void {
+				console.log(file);
 			}
 		}
 	});
@@ -401,5 +424,9 @@
 
 	.select select option {
 		color: white;
+	}
+
+	img {
+		height: 10em;
 	}
 </style>
