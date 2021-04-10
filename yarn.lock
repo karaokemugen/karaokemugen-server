@@ -4659,6 +4659,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"classnames@npm:^2.2.6":
+  version: 2.3.1
+  resolution: "classnames@npm:2.3.1"
+  checksum: 57d536edede609f81425d24b062d8d720a466565faf1e38d32c881e883920baa71519ac70c7b565e9cd39201fb1c1ff9bdf8aabf8e26544bac481e7924867c83
+  languageName: node
+  linkType: hard
+
 "clean-css@npm:^4.2.1, clean-css@npm:^4.2.3":
   version: 4.2.3
   resolution: "clean-css@npm:4.2.3"
@@ -5518,6 +5525,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"debounce@npm:^1.2.0":
+  version: 1.2.1
+  resolution: "debounce@npm:1.2.1"
+  checksum: 04a00c6c45173ac6fb03ad3a7cf742fa4a86f6bf86b22f5b867085f739d0010ad98cbb92e80d60293faf6efb5452c637941092bd8d783cfeabe55c2000b1b07f
+  languageName: node
+  linkType: hard
+
 "debug@npm:2.6.9, debug@npm:^2.2.0, debug@npm:^2.3.3, debug@npm:^2.6.0, debug@npm:^2.6.9":
   version: 2.6.9
   resolution: "debug@npm:2.6.9"
@@ -5889,6 +5903,13 @@ __metadata:
     readable-stream: ^2.0.0
     stream-shift: ^1.0.0
   checksum: 9581cdb8f6304fdaacb8bbe2b8b393a8da3ece3086dd24070601b70f08ca417305b4f3a94699b984c4981dceb6eebb4c132abfe0445baacfd04f2b66a0524cda
+  languageName: node
+  linkType: hard
+
+"easy-bem@npm:^1.0.2":
+  version: 1.1.1
+  resolution: "easy-bem@npm:1.1.1"
+  checksum: 264c2d61b6a36f98359e0f861f921e3908b737eafcc644ef19a808e9d19ae799fa959b0c67fe964eda2e082dbfeed275d0175c45fe0b4d958a982432974d5d08
   languageName: node
   linkType: hard
 
@@ -8892,6 +8913,7 @@ fsevents@~2.3.1:
     slug: ^4.0.3
     ts-loader: ^8.1.0
     v-lazy-image: ^1.4.0
+    vue-advanced-cropper: ^1.3.4
     vuex-module-decorators: ^1.0.1
   languageName: unknown
   linkType: soft
@@ -14590,6 +14612,19 @@ fsevents@~2.3.1:
   version: 1.1.2
   resolution: "vm-browserify@npm:1.1.2"
   checksum: fc571a62d2cf797ae8773ebb3cb0d2bea50ed02059e128dd9087975929fce4c80a6485ce1aaf7d44ef69db99dfdcde50b6be5d5eb73b296660d761c32fb544fe
+  languageName: node
+  linkType: hard
+
+"vue-advanced-cropper@npm:^1.3.4":
+  version: 1.4.1
+  resolution: "vue-advanced-cropper@npm:1.4.1"
+  dependencies:
+    classnames: ^2.2.6
+    debounce: ^1.2.0
+    easy-bem: ^1.0.2
+  peerDependencies:
+    vue: ^2.6.6
+  checksum: a51688e50bc5f7246d6241759c9d0d0b1b9bafc250640288900356db08c55e74853e5b5f92dc574d5e5d33a8de423053553eb421c515121ee8ccfc6ecbe4909b
   languageName: node
   linkType: hard
 

@@ -291,6 +291,7 @@ export default {
 			passwords_mismatch: 'Les mots de passe ne correspondent pas',
 			submit: 'Sauvegarder',
 			delete: 'Suppression du compte',
+			select_avatar: 'Sélectionner un avatar',
 			series_name: {
 				label: 'Affichage des noms de série',
 				original_name: 'Nom original',
@@ -358,6 +359,12 @@ export default {
 			karabundle: 'Télécharger les données (.json)',
 			subtitles: 'Télécharger les paroles (.{format})',
 			media: 'Télécharger le média (.{format})'
+		},
+		crop_avatar: {
+			label: 'Rogner votre avatar',
+			online: 'En ligne',
+			add: 'Ajouter',
+			cancel: 'Annuler'
 		}
 	},
 	titles: {
