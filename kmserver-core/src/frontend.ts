@@ -57,7 +57,7 @@ export function initFrontend(listenPort: number) {
 				connectSrc: ['\'self\'', 'https:', 'wss:'],
 				imgSrc: ['\'self\'', 'https:', 'data:', 'blob:'],
 				frameSrc: ['\'self\'', getConfig().KaraExplorer.LiveURL],
-				workerSrc: ['\'self\'', 'https://cdn.jsdelivr.net']
+				workerSrc: ['\'self\'', 'blob:', 'https://cdn.jsdelivr.net']
 			}
 		}
 	}));

@@ -6837,6 +6837,49 @@ __metadata:
   languageName: node
   linkType: hard
 
+"filepond-plugin-file-validate-type@npm:^1.2.6":
+  version: 1.2.6
+  resolution: "filepond-plugin-file-validate-type@npm:1.2.6"
+  peerDependencies:
+    filepond: ">=1.x <5.x"
+  checksum: eb8ead85cad62693d10e04620cac929727e757c09b4f72442995ebe8d8be5f4c217d159f611f19e4935fe24bfcbe4c115b963f86452ecb1b1980e79553e732f7
+  languageName: node
+  linkType: hard
+
+"filepond-plugin-image-crop@npm:^2.0.4":
+  version: 2.0.4
+  resolution: "filepond-plugin-image-crop@npm:2.0.4"
+  peerDependencies:
+    filepond: ">=3.x <5.x"
+  checksum: 4e1bd25d137a0063966d1a06be343cf2139dc46a8217b874a2f29679619b34c7976afcb06fb8e3553d66857447fc20672228ee014d79e8c0be457d718d4bc3fd
+  languageName: node
+  linkType: hard
+
+"filepond-plugin-image-preview@npm:^4.6.6":
+  version: 4.6.6
+  resolution: "filepond-plugin-image-preview@npm:4.6.6"
+  peerDependencies:
+    filepond: ">=4.x <5.x"
+  checksum: 2a17a1c7a864aaf1e0d73573ee9bc0a942aec28e64c55b4901f80b6b33e0120269fb2bf3da3313a9f9b6389bbbff2d005122272804323bc36ee33d8d7ccbd498
+  languageName: node
+  linkType: hard
+
+"filepond-plugin-image-transform@npm:^3.7.6":
+  version: 3.7.6
+  resolution: "filepond-plugin-image-transform@npm:3.7.6"
+  peerDependencies:
+    filepond: ">=3.6.0 <5.x"
+  checksum: f74433950adda78640a342b09ef1e0a2834ac6f4fb41301678f5625ae6821d3ac97c9c720db6abfcad551fe1380155505f968b71bcc8aa9c8197a16004dcee80
+  languageName: node
+  linkType: hard
+
+"filepond@npm:^4.27.0":
+  version: 4.27.0
+  resolution: "filepond@npm:4.27.0"
+  checksum: 4ec886551bb630855fa698eaf5f1b8df6f40c8be400c2541d3ead08f133c6ef25a97e77c40202d250e669e008fb989278dd117e5c7f978db84501e6284ff4c85
+  languageName: node
+  linkType: hard
+
 "fill-range@npm:^4.0.0":
   version: 4.0.0
   resolution: "fill-range@npm:4.0.0"
@@ -8880,6 +8923,11 @@ fsevents@~2.3.1:
     bulma: ^0.9.2
     bulmaswatch: ^0.8.1
     eslint: ^7.23.0
+    filepond: ^4.27.0
+    filepond-plugin-file-validate-type: ^1.2.6
+    filepond-plugin-image-crop: ^2.0.4
+    filepond-plugin-image-preview: ^4.6.6
+    filepond-plugin-image-transform: ^3.7.6
     lodash.clonedeep: ^4.5.0
     lodash.debounce: ^4.0.8
     lodash.merge: ^4.6.2
@@ -8892,6 +8940,7 @@ fsevents@~2.3.1:
     slug: ^4.0.3
     ts-loader: ^8.1.0
     v-lazy-image: ^1.4.0
+    vue-filepond: ^6.0.3
     vuex-module-decorators: ^1.0.1
   languageName: unknown
   linkType: soft
@@ -14613,6 +14662,16 @@ fsevents@~2.3.1:
   peerDependencies:
     eslint: ">=5.0.0"
   checksum: 27d6bc4acaafe897af8eee41512d0cd2812b533883d7ecbfda30c263533ebf486fdd76cb65f546f3c3737df383fb4bc33ecb358d7397b8b731c161c89db72bcd
+  languageName: node
+  linkType: hard
+
+"vue-filepond@npm:^6.0.3":
+  version: 6.0.3
+  resolution: "vue-filepond@npm:6.0.3"
+  peerDependencies:
+    filepond: ">=4.7.4 < 5.x"
+    vue: ">=2.6.0 < 3.x"
+  checksum: 2e0d5b7f89dd3fc9f7281090348cf45ef40e908195c5e3241607a84ca50bc6f559b59c9112a4f029554c0db88cf1c5e80a3e3337935bd6528a1889545e946dd7
   languageName: node
   linkType: hard
 
