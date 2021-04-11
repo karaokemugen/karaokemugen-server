@@ -19,14 +19,14 @@
 					</div>
 				</header>
 				<section v-if="mode === 'general'" class="modal-card-body">
-					<img v-if="user.avatar_file" :src="`/avatars/${user.avatar_file}`">
-					<button
-						type="button"
+					<img v-if="user.avatar_file" :src="user.avatarfile ? user.avatarfile : `/avatars/${user.avatar_file}`">
+					<label
+						htmlFor="avatar"
 						class="button"
-						@click="modal.avatar=true"
 					>
+						<input id="avatar" type="file" accept="image/*" @change="openCropAvatarModal">
 						{{ $t('modal.profile.select_avatar') }}
-					</button>
+					</label>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
 							<label class="label">{{ $t('modal.profile.fields.username.label') }}</label>
@@ -273,7 +273,7 @@
 				</footer>
 			</div>
 		</form>
-		<crop-avatar-modal :user="user" :active="modal.avatar" @close="modal.avatar=false" @uploadAvatar="uploadAvatar" />
+		<crop-avatar-modal :avatar="avatar" :active="modal.avatar" @close="modal.avatar=false" @uploadAvatar="uploadAvatar" />
 	</div>
 </template>
 
@@ -290,6 +290,7 @@
 
 	interface DBUserEdit extends DBUser {
 		password_confirmation?: string
+		avatarfile: string
 	}
 
 	interface VState {
@@ -301,7 +302,8 @@
 		loading: boolean,
 		modal: {
 			avatar: boolean
-		}
+		},
+		avatar: string
 	}
 
 	export default Vue.extend({
@@ -331,7 +333,8 @@
 					main_series_lang: '',
 					fallback_series_lang: '',
 					url: '',
-					avatar_file: ''
+					avatar_file: '',
+					avatarfile: ''
 				},
 				main_series_lang_name: '',
 				fallback_series_lang_name: '',
@@ -339,7 +342,8 @@
 				loading: false,
 				modal: {
 					avatar: false
-				}
+				},
+				avatar: ''
 			};
 		},
 
@@ -402,8 +406,18 @@
 				modalStore.openModal('deleteAccount');
 				this.closeModal();
 			},
-			uploadAvatar(file:string): void {
-				console.log(file);
+			openCropAvatarModal(e:any) {
+				if (e.target.files?.length > 0) {
+					const reader = new FileReader();
+					reader.onload = (e) => {
+						this.avatar = e.target?.result as string;
+						this.modal.avatar = true;
+					};
+					reader.readAsDataURL(e.target.files[0]);
+				}
+			},
+			uploadAvatar(avatar:string): void {
+				this.user.avatarfile = avatar;
 			}
 		}
 	});
@@ -428,5 +442,9 @@
 
 	img {
 		height: 10em;
+	}
+
+	#avatar {
+		display: none
 	}
 </style>

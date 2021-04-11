@@ -3,15 +3,19 @@
 		:active="active"
 		:modal-title="$t('modal.crop_avatar.label')"
 		:close="closeModal"
+		:submit-action="uploadAvatar"
 		:submit-label="$t('modal.crop_avatar.add')"
 		:cancel-label="$t('modal.crop_avatar.cancel')"
 	>
 		<section class="modal-card-body">
 			<client-only>
 				<cropper
+					ref="cropper"
 					class="cropper"
-					:src="`/avatars/${user.avatar_file}`"
-					@change="uploadAvatar"
+					:src="avatar"
+					:stencil-props="{
+						aspectRatio: 1
+					}"
 				/>
 			</client-only>
 		</section>
@@ -19,9 +23,9 @@
 </template>
 
 <script lang="ts">
-	import Vue, { PropOptions } from 'vue';
+	import Vue from 'vue';
 	import { Cropper } from 'vue-advanced-cropper';
-	import { DBUser } from '%/lib/types/database/user';
+	import 'vue-advanced-cropper/dist/style.css';
 	import Modal from '~/components/Modal.vue';
 
 	export default Vue.extend({
@@ -33,10 +37,10 @@
 		},
 
 		props: {
-			user: {
-				type: Object,
+			avatar: {
+				type: String,
 				required: true
-			} as PropOptions<DBUser>,
+			},
 			active: {
 				type: Boolean,
 				required: true
@@ -47,8 +51,9 @@
 			closeModal(): void {
 				this.$emit('close');
 			},
-			uploadAvatar({ coordinates, canvas }:any): void {
-				// this.$emit('uploadAvatar', canvas.toDataURL());
+			uploadAvatar(): void {
+				const result = (this.$refs.cropper as any).getResult();
+				this.$emit('uploadAvatar', result.canvas.toDataURL());
 			}
 		}
 	});
@@ -56,7 +61,6 @@
 
 <style lang="scss" scoped>
 	.cropper {
-		height: 600px;
-		background: #DDD;
+		height: 40em;
 	}
 </style>
