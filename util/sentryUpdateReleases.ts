@@ -5,7 +5,7 @@ import {version} from '../kmserver-core/src/version';
 execa.commandSync(`yarn sentry-cli --auth-token ${process.env.SENTRYTOKEN} releases --org karaoke-mugen -p km-server new ${version.number}`,
 	{stdout: 'inherit', stderr: 'inherit'});
 
-execa.command(`yarn sentry-cli --auth-token ${process.env.SENTRYTOKEN} releases --org karaoke-mugen -p km-server files ${version.number} upload-sourcemaps --no-rewrite kmserver-core/dist/`,
+execa.command(`yarn sentry-cli --auth-token ${process.env.SENTRYTOKEN} releases --org karaoke-mugen -p km-server files ${version.number} upload-sourcemaps --no-rewrite dist/`,
 	{stdout: 'inherit', stderr: 'inherit'});
 
 execa.command(`yarn sentry-cli --auth-token ${process.env.SENTRYTOKEN} releases --org karaoke-mugen -p km-server set-commits --commit Karaoke\\ Mugen\\ /\\ Karaoke\\ Mugen\\ Server@${process.env.CI_COMMIT_SHA} ${version.number}`,

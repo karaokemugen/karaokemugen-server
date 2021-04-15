@@ -17,8 +17,8 @@
    "scripts": {
       "migrate": "cd kmserver-core && ts-node ../util/runMigrations.ts",
       "build:core": "yarn workspace kmserver-core build",
-      "build:kmexplorer": "yarn workspace kmserver-core buildKMExplorer",
-      "build:all": "yarn workspace kmserver-core build && yarn workspace kmserver-core buildKMExplorer",
+      "build:kmexplorer": "yarn workspace kmserver-core build:kmexplorer",
+      "build:all": "yarn workspace kmserver-core build && yarn workspace kmserver-core build:kmexplorer",
       "start": "yarn workspace kmserver-core start",
       "start:quick": "yarn workspace kmserver-core qstart",
       "start:dev": "yarn workspace kmserver-core watch",
