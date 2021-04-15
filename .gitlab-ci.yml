@@ -25,7 +25,7 @@ update_sentry:
   script:
     - yarn install
     - yarn build:core
-    - yarn sentry:sourcemaps
+    - yarn workspace kmserver-core sentry:sourcemaps
   only:
     - master
     - dev
