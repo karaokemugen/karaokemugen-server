@@ -23,7 +23,8 @@
       "start:quick": "yarn workspace kmserver-core qstart",
       "start:dev": "yarn workspace kmserver-core watch",
       "generate": "yarn workspace kmserver-core generate",
-      "pull": "git pull && git submodule sync --recursive && git submodule update --init --recursive"
+      "pull": "git pull && git submodule sync --recursive && git submodule update --init --recursive",
+      "sentry:sourcemaps": "ts-node -P kmserver-core/tsconfig.json util/sentryUpdateReleases.ts"
    },
    "bugs": {
       "url": "https://lab.shelter.moe/karaokemugen/karaokemugen-server/issues",
