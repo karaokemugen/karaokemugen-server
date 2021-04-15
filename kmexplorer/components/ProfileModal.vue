@@ -19,31 +19,19 @@
 					</div>
 				</header>
 				<section v-if="mode === 'general'" class="modal-card-body">
-					<img v-if="user.avatar_file" :src="user.avatarfile ? user.avatar_file : `/avatars/${user.avatar_file}`">
-					<label
-						htmlFor="avatar"
-						class="button"
-					>
-						<input id="avatar" type="file" accept="image/*" @change="openCropAvatarModal">
-						{{ $t('modal.profile.select_avatar') }}
-					</label>
-					<div class="field is-horizontal">
-						<div class="field-label is-normal">
-							<label class="label">{{ $t('modal.profile.fields.username.label') }}</label>
-						</div>
-						<div class="field-body">
-							<div class="field has-addons">
-								<div class="control">
-									<div class="button is-static">
-										{{ user.login }}
-									</div>
-								</div>
-								<div class="control">
-									<div class="button is-static">
-										{{ `@${apiHost}` }}
-									</div>
-								</div>
-							</div>
+					<div class="profile-pic-box">
+						<img v-if="user.avatar_file" class="img" :src="user.avatarfile ? user.avatar_file : `/avatars/${user.avatar_file}`">
+						<div class="data">
+							<span class="login">{{ `${user.login}@${apiHost}` }}</span>
+							<br>
+							<label
+								for="avatar"
+								class="button"
+							>
+								<input id="avatar" type="file" accept="image/*" @change="openCropAvatarModal">
+								<font-awesome-icon :icon="['fas', 'portrait']" :fixed-width="true" />
+								{{ $t('modal.profile.select_avatar') }}
+							</label>
 						</div>
 					</div>
 					<div class="field is-horizontal">
@@ -467,5 +455,24 @@
 
 	#avatar {
 		display: none
+	}
+
+	.profile-pic-box {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 1em;
+		.img {
+			max-height: 6rem;
+			width: auto;
+			border-radius: 8px;
+			margin-right: 1em;
+		}
+		.data {
+			.login {
+				font-size: 2rem;
+				color: white;
+			}
+		}
 	}
 </style>

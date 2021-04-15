@@ -47,7 +47,8 @@ import {
 	faClock,
 	faTachometerAlt,
 	faSearch,
-	faDice
+	faDice,
+	faPortrait
 } from '@fortawesome/free-solid-svg-icons';
 
 // This is important, we are going to let Nuxt.js worry about the CSS
@@ -99,7 +100,8 @@ library.add(
 	faClock,
 	faTachometerAlt,
 	faSearch,
-	faDice);
+	faDice,
+	faPortrait);
 
 // Register the component globally
 Vue.component('font-awesome-icon', FontAwesomeIcon);
