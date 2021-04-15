@@ -19,7 +19,7 @@
 					</div>
 				</header>
 				<section v-if="mode === 'general'" class="modal-card-body">
-					<img v-if="user.avatar_file" :src="user.avatarfile ? user.avatarfile : `/avatars/${user.avatar_file}`">
+					<img v-if="user.avatar_file" :src="user.avatarfile ? user.avatar_file : `/avatars/${user.avatar_file}`">
 					<label
 						htmlFor="avatar"
 						class="button"
@@ -290,7 +290,7 @@
 
 	interface DBUserEdit extends DBUser {
 		password_confirmation?: string
-		avatarfile: string
+		avatarfile?: Blob
 	}
 
 	interface VState {
@@ -333,8 +333,7 @@
 					main_series_lang: '',
 					fallback_series_lang: '',
 					url: '',
-					avatar_file: '',
-					avatarfile: ''
+					avatar_file: ''
 				},
 				main_series_lang_name: '',
 				fallback_series_lang_name: '',
@@ -393,7 +392,25 @@
 			},
 			async submitForm(): Promise<void> {
 				this.loading = true;
-				const response = await this.$axios.put('/api/myaccount', this.user);
+				// Create formData
+				const formData = new FormData();
+				for (const obj of Object.entries(this.user)) {
+					// skip avatar_file and type
+					if (obj[0] === 'avatar_file' || obj[0] === 'type') {
+						continue;
+					}
+					// cast null values to an empty string
+					if (obj[1] === null) {
+						formData.set(obj[0], '');
+					} else {
+						formData.set(obj[0], obj[1] as (string|Blob));
+					}
+				}
+				const response = await this.$axios.put('/api/myaccount', formData, {
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					}
+				});
 				// Refresh auth
 				await this.$auth.setUserToken(response.data.data.token);
 				this.loading = false;
@@ -416,8 +433,12 @@
 					reader.readAsDataURL(e.target.files[0]);
 				}
 			},
-			uploadAvatar(avatar:string): void {
-				this.user.avatarfile = avatar;
+			async uploadAvatar(avatar:string): Promise<void> {
+				this.user.avatarfile = new File(
+					[await (await fetch(avatar)).blob()],
+					`avatar.${(/data:([a-z]+)\/([a-z]+)(?:,|;)/.exec(avatar) as RegExpMatchArray)[2]}`
+				);
+				this.user.avatar_file = avatar;
 			}
 		}
 	});
