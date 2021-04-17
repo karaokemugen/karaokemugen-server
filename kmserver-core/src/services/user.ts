@@ -134,6 +134,14 @@ export async function findUserByName(username: string, opts: UserOptions = {}) {
 		if (!user) return false;
 		user.password_last_modified_at = new Date(user.password_last_modified_at);
 		if (opts.public) {
+			// This is not the user requesting his own data, but the public, we check if his flag_public is set.
+			if (!user.flag_public) return {
+				login: user.login,
+				avatar_file: user.avatar_file,
+				type: user.type,
+				nickname: user.nickname
+			};
+			// If the user has a public profile, but it's not his own profile, we remove the email bit.
 			delete user.email;
 		}
 		if (opts.public || !opts.password) {
@@ -166,6 +174,7 @@ export async function getAllUsers(opts: any = {}) {
 	try {
 		const users = await selectAllUsers();
 		if (!opts.public) return users;
+		users = users.filter(u => u.flag_public);
 		for (const index in users) {
 			delete users[index].password;
 			delete users[index].email;
