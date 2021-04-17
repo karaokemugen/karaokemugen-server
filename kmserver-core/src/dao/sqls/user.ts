@@ -13,8 +13,15 @@ INSERT INTO users(
 	location,
 	flag_sendstats,
 	password_last_modified_at,
+<<<<<<< HEAD
 	last_login_at
 ) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW(), NOW())
+=======
+	last_login_at,
+	flag_public,
+	flag_displayfavorites
+) VALUES($1, $2, $3, $4, $5, $6, $7, $8, NOW(), NOW(), true, false)
+>>>>>>> 6bcec3f (Added new profile options to backend)
 `;
 
 export const selectUser = `
@@ -33,7 +40,11 @@ SELECT
 	main_series_lang,
 	fallback_series_lang,
 	password_last_modified_at,
-	last_login_at
+	last_login_at,
+	social_networks,
+	flag_public,
+	flag_displayfavorites,
+	banner
 FROM users
 `;
 
@@ -62,6 +73,10 @@ UPDATE users SET
 	main_series_lang = $8,
 	fallback_series_lang = $9,
 	location = $10,
-	flag_sendstats = $11
-WHERE pk_login = $12
+	flag_sendstats = $11,
+	flag_public = $12,
+	flag_displayfavorites = $13,
+	social_networks = $14,
+	banner = $15
+WHERE pk_login = $16;
 `;

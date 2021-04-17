@@ -60,6 +60,10 @@ export async function updateUser(user: User) {
 		user.fallback_series_lang,
 		user.location,
 		user.flag_sendstats,
+		user.flag_public,
+		user.flag_displayfavorites,
+		user.social_networks,
+		user.banner,
 		user.login
 	]);
 }
