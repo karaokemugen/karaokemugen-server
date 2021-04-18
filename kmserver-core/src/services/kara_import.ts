@@ -50,14 +50,18 @@ export async function editKara(kara: Kara): Promise<string> {
 
 		// Move files to their own dir
 		const importDir = resolve(resolvedPathImport(), basename(newKara.file, '.kara.json'));
-		await asyncMkdirp(importDir);
-		await asyncMove(newKara.file, resolve(importDir, basename(newKara.file)));
-		await asyncMove(resolve(resolvedPathImport(), newKara.data.mediafile), resolve(importDir, newKara.data.mediafile));
-		if (newKara.data.subfile) await asyncMove(resolve(resolvedPathImport(), newKara.data.subfile), resolve(importDir, newKara.data.subfile));
+		try {
+			await asyncMkdirp(importDir);
+		} catch(err) {
+			// Folder might already exist. If it crashes, let it burn later.
+		}
+		await asyncMove(newKara.file, resolve(importDir, basename(newKara.file)), {overwrite: true});
+		await asyncMove(resolve(resolvedPathImport(), newKara.data.mediafile), resolve(importDir, newKara.data.mediafile), {overwrite: true});
+		if (newKara.data.subfile) await asyncMove(resolve(resolvedPathImport(), newKara.data.subfile), resolve(importDir, newKara.data.subfile), {overwrite: true});
 		let tags = await asyncReadDir(resolvedPathImport());
 		tags = tags.filter((f: string) => f.endsWith('.tag.json'));
 		for (const tag of tags) {
-			await asyncMove(resolve(resolvedPathImport(), tag), resolve(importDir, tag));
+			await asyncMove(resolve(resolvedPathImport(), tag), resolve(importDir, tag), {overwrite: true});
 		}
 		// Remove files if they're not new
 		if (kara.noNewSub && newKara.data.subfile) asyncUnlink(resolve(resolvedPathImport(), importDir, newKara.data.subfile));
@@ -133,14 +137,18 @@ export async function createKara(kara: Kara) {
 		);
 		// Move files to their own directory
 		const importDir = resolve(resolvedPathImport(), basename(newKara.file, '.kara.json'));
-		await asyncMkdirp(importDir);
-		await asyncMove(newKara.file, resolve(importDir, basename(newKara.file)));
-		await asyncMove(resolve(resolvedPathImport(), newKara.data.mediafile), resolve(importDir, newKara.data.mediafile));
-		if (newKara.data.subfile) await asyncMove(resolve(resolvedPathImport(), newKara.data.subfile), resolve(importDir, newKara.data.subfile));
+		try {
+			await asyncMkdirp(importDir);
+		} catch(err) {
+			// Folder might exist already
+		}
+		await asyncMove(newKara.file, resolve(importDir, basename(newKara.file)), {overwrite: true});
+		await asyncMove(resolve(resolvedPathImport(), newKara.data.mediafile), resolve(importDir, newKara.data.mediafile), {overwrite: true});
+		if (newKara.data.subfile) await asyncMove(resolve(resolvedPathImport(), newKara.data.subfile), resolve(importDir, newKara.data.subfile), {overwrite: true});
 		let tags = await asyncReadDir(resolvedPathImport());
 		tags = tags.filter((f: string) => f.endsWith('.tag.json'));
 		for (const tag of tags) {
-			await asyncMove(resolve(resolvedPathImport(), tag), resolve(importDir, tag));
+			await asyncMove(resolve(resolvedPathImport(), tag), resolve(importDir, tag), {overwrite: true});
 		}
 	} catch(err) {
 		logger.error('Error importing kara', {service: 'KaraGen', obj: err});
