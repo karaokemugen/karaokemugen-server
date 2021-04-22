@@ -89,6 +89,14 @@ export async function initUsers() {
 	cleanupAvatars();
 	setInterval(cleanupAvatars, 60 * 60 * 1000);
 	setInterval(cleanupPasswordResetRequests, 60 * 1000);
+	if (!await findUserByName('admin')) {
+		await createUser({
+			login: 'admin',
+			password: randomstring.generate(8)
+		}, {
+			admin: true
+		});
+	}
 }
 
 function cleanupPasswordResetRequests() {
@@ -130,7 +138,7 @@ export async function findUserByName(username: string, opts: UserOptions = {}) {
 		if (!username) throw('No user provided');
 		username = username.toLowerCase();
 		const user = await selectUser('pk_login', username);
-		if (!user) return false;
+		if (!user) return null;
 		user.password_last_modified_at = new Date(user.password_last_modified_at);
 		if (opts.public) {
 			delete user.email;

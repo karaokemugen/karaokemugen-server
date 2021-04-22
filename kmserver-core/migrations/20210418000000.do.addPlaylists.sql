@@ -31,8 +31,10 @@ CREATE TABLE playlists_contributors (
 	  ON UPDATE CASCADE
 );
 
+CREATE UNIQUE INDEX idx_playlists_contributors ON playlists_contributors (fk_plaid, fk_login);
+
 CREATE TABLE playlists_content(
-	pk_plc_id SERIAL PRIMARY KEY,
+	pk_plcid SERIAL PRIMARY KEY,
 	fk_plaid UUID NOT NULL,
 	fk_kid UUID NOT NULL,
 	created_at TIMESTAMPTZ NOT NULL,

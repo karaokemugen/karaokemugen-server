@@ -4,6 +4,7 @@ import {resolve, join} from 'path';
 import bodyParser from 'body-parser';
 import adminController from './controllers/http/admin';
 import authController from './controllers/http/auth';
+import PLController from './controllers/http/playlist';
 import KServerController from './controllers/http/karaserv';
 import KImportController from './controllers/http/karaimport';
 import statsController from './controllers/http/stats';
@@ -155,6 +156,7 @@ function api() {
 	adminController(apiRouter);
 	// Adding KaraServ routes
 	KServerController(apiRouter);
+	PLController(apiRouter);
 	if (conf.KaraExplorer.Import) KImportController(apiRouter);
 	// Shortener/kara.moe route
 	if (conf.Shortener.Enabled) shortenerController(apiRouter);
