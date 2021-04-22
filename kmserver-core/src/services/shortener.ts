@@ -4,10 +4,11 @@ import {getConfig} from '../lib/utils/config';
 import { InstanceData } from '../types/shortener';
 import {isIPv6} from 'net';
 import sentry from '../utils/sentry';
+import { uuidRegexp } from '../lib/utils/constants';
 
 export async function publishInstance(ip: string, data: InstanceData) {
 	try {
-		if (!data.IID) {
+		if (!data.IID || !new RegExp(uuidRegexp).test(data.IID)) {
 			// WTF. Ignoring for now, data didn't have any instance ID
 			logger.debug(`Ignoring ${ip} because of invalid IID`, {service: 'Shortener', obj: data});
 			return false;
