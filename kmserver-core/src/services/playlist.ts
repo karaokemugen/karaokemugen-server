@@ -366,7 +366,7 @@ export async function emptyPlaylist(plaid: string) {
 }
 
 /** Import playlist from JSON */
-export async function importPlaylist(playlist: PlaylistExport, token: Token) {
+export async function importPlaylist(playlist: PlaylistExport, replace = false, token: Token) {
 	// If all tests pass, then add playlist, then add karas
 	// Playlist can end up empty if no karaokes are found in database
 	try {
@@ -402,11 +402,12 @@ export async function importPlaylist(playlist: PlaylistExport, token: Token) {
 		}
 		// Validations done. First creating playlist.
 		let pl = (await getPlaylists({plaid: playlist.PlaylistInformation.plaid}))[0];
-		if (!pl) {
-			pl = await createPlaylist(playlist.PlaylistInformation, token.username);
+		if (pl && replace) {
+			playlist.PlaylistInformation.plaid = uuidV4();
 		} else {
-			await emptyPlaylist(pl.plaid);
+			throw {code: 409, msg: 'Playlist already exists'};
 		}
+		pl = await createPlaylist(playlist.PlaylistInformation, token.username);
 		for (const i in playlist.PlaylistContents) {
 			playlist.PlaylistContents[i].plaid = pl.plaid;
 		}

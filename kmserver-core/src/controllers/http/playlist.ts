@@ -55,7 +55,7 @@ export default function PLController(router: Router) {
 	router.route('/playlist/import')
 		.post(requireAuth, requireValidUser, getLang, async (req: any, res) => {
 			try {
-				const ret = await importPlaylist(req.body.pl, req.authToken);
+				const ret = await importPlaylist(req.body.pl, req.body.replace, req.authToken);
 				res.json(ret);
 			} catch(err) {
 				res.status(err.code || 500).json(err);
