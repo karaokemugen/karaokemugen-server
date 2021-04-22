@@ -47,9 +47,13 @@
 		},
 
 		methods: {
-			submitForm(): void {
-				this.submitAction();
-				this.closeModal();
+			async submitForm(): Promise<void> {
+				try {
+					await this.submitAction();
+					this.closeModal();
+				} catch (e) {
+					// error
+				}
 			},
 			closeModal(): void {
 				this.close();

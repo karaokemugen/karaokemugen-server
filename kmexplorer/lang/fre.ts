@@ -174,6 +174,7 @@ export default {
 		languages: 'Langues',
 		years: 'Années',
 		community: 'Communauté',
+		join_kara: 'Rejoindre le karaoké',
 		kara_import: 'Envoyer un kara',
 		account: 'Compte',
 		favorites: 'Favoris',
@@ -357,6 +358,13 @@ export default {
 			online: 'En ligne',
 			add: 'Ajouter',
 			cancel: 'Annuler'
+		},
+		join_kara: {
+			label: 'Rejoindre le karaoké',
+			desc: 'Entrez un code pour rejoindre un karaoké existant',
+			add: 'Rejoindre',
+			cancel: 'Annuler',
+			error: 'L\'adresse n\'est pas joignable'
 		}
 	},
 	titles: {
