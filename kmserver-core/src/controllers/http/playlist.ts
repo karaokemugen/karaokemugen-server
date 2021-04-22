@@ -52,11 +52,11 @@ export default function PLController(router: Router) {
 				res.status(err.code || 500).json(err);
 			}
 		});
-	router.route('/playlist/:plaid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/import')
-		.get(optionalAuth, getLang, async (req: any, res) => {
+	router.route('/playlist/import')
+		.post(requireAuth, requireValidUser, getLang, async (req: any, res) => {
 			try {
-				const ret = await importPlaylist(req.body, req.authToken);
-				res.json(ret.plaid);
+				const ret = await importPlaylist(req.body.pl, req.authToken);
+				res.json(ret);
 			} catch(err) {
 				res.status(err.code || 500).json(err);
 			}

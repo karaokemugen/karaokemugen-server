@@ -120,7 +120,7 @@ WHERE pk_plcid = ANY ($1)
 `;
 
 export const sqltruncatePL = `
-DELETE FROM playlists_contents
+DELETE FROM playlists_content
 WHERE fk_plaid = $1
 `;
 export const sqlupdatePLC = `
