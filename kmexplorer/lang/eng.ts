@@ -146,14 +146,6 @@ export default {
 		last_generation: 'Last update',
 		media_size: 'Media Size'
 	},
-	home: {
-		noInstance: {
-			title: 'No Karaoke Mugen instance runs on your local network.',
-			1: 'Double check you\'re logged in to the same WiFi network as the server. ',
-			2: 'Make sure the Karaoke Mugen application is running. Please check that the kara.moe setting is enabled in Options -> Karaoke -> Short URL (kara.moe).',
-			3: 'If you just want to explore the base, you can safely ignore this message.'
-		}
-	},
 	duration: {
 		days: 'days',
 		hours: 'hours',

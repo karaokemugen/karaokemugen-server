@@ -20,19 +20,6 @@
 		<div class="mobile-search-bar is-hidden-desktop">
 			<search-bar :filter="false" :results="false" icon />
 		</div>
-		<article v-if="noInstance" class="message is-warning middle-size">
-			<div class="message-header">
-				<p>
-					{{ $t('home.noInstance.title') }}
-				</p>
-				<button class="delete" aria-label="delete" @click="noInstance = false" />
-			</div>
-			<div class="message-body">
-				{{ $t('home.noInstance.1') }}
-				<br>{{ $t('home.noInstance.2') }}
-				<br>{{ $t('home.noInstance.3') }}
-			</div>
-		</article>
 		<ul class="km-home--stats">
 			<li>
 				<nuxt-link to="/search" class="km-home--stats--link">
@@ -120,8 +107,7 @@
 					karas: 0,
 					duration: 0,
 					mediasize: 0
-				},
-				noInstance: false
+				}
 			};
 		},
 
@@ -149,11 +135,6 @@
 			return {
 				title: this.$t('titles.home') as string
 			};
-		},
-		mounted() {
-			if (this.$route.query.noinstance) {
-				this.noInstance = true;
-			}
 		},
 		methods: {
 			openAddRepoModal() {
