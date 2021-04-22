@@ -15,7 +15,7 @@ export default function ShortenerController(router: Router) {
 						res.redirect(`http://${ret.local_ip4}:${ret.local_port}`);
 					}
 				} else {
-					res.redirect('/base/?noinstance=true');
+					res.redirect('/base');
 				}
 			} catch(err) {
 				res.status(500).json(err);

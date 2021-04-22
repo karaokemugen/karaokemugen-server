@@ -146,14 +146,6 @@ export default {
 		last_generation: 'Dernière mise à jour',
 		media_size: 'Taille des médias'
 	},
-	home: {
-		noInstance: {
-			title: 'Aucune instance de Karaoke Mugen ne fonctionne sur votre réseau local.',
-			1: 'Vérifiez que vous êtes bien sur le même réseau Wi-Fi que sur le serveur.',
-			2: 'Assurez-vous que l\'application Karaoke Mugen fonctionne. Merci de vérifier que le paramètre kara.moe est actif dans Options -> Karaoké -> URL d\'accès courte.',
-			3: 'Si vous souhaitez juste consulter la base, vous pouvez ignorer cet avertissement.'
-		}
-	},
 	duration: {
 		days: 'jours',
 		hours: 'heures',
