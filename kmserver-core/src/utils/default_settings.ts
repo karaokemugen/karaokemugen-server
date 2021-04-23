@@ -31,6 +31,7 @@ export const defaults: Config = {
 				Name: 'Local',
 				Enabled: true,
 				Online: false,
+				Git: null,
 				Path: {
 					Karas: ['data/karaokes'],
 					Lyrics: ['data/lyrics'],
