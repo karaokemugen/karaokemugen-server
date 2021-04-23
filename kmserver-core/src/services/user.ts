@@ -1,9 +1,10 @@
 import {createHash} from 'crypto';
 import {hash, compare} from 'bcryptjs';
+import { promises as fs } from 'fs';
 import {updateUser, updateUserPassword, insertUser, selectUser, selectAllUsers, deleteUser, updateLastLogin} from '../dao/user';
 import logger from '../lib/utils/logger';
 import {getConfig, resolvedPathAvatars} from '../lib/utils/config';
-import {asyncReadDir, asyncExists, asyncUnlink, asyncMove, detectFileType} from '../lib/utils/files';
+import {asyncExists, asyncMove, detectFileType} from '../lib/utils/files';
 import { v4 as uuidV4 } from 'uuid';
 import {resolve} from 'path';
 import {has as hasLang} from 'langs';
@@ -108,9 +109,9 @@ async function cleanupAvatars() {
 		}
 		const conf = getConfig();
 		const avatarPath = resolve(getState().dataPath, conf.System.Path.Avatars);
-		const avatarFiles = await asyncReadDir(avatarPath);
+		const avatarFiles = await fs.readdir(avatarPath);
 		for (const file of avatarFiles) {
-			if (!avatars.includes(file) && file !== 'blank.png') asyncUnlink(resolve(avatarPath, file));
+			if (!avatars.includes(file) && file !== 'blank.png') fs.unlink(resolve(avatarPath, file));
 		}
 	} catch(err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
@@ -249,7 +250,7 @@ async function replaceAvatar(oldImageFile: string, avatar: Express.Multer.File) 
 		const newAvatarPath = resolve(avatarPath, newAvatarFile);
 		const oldAvatarPath = resolve(avatarPath, oldImageFile);
 		if (await asyncExists(oldAvatarPath) &&
-			oldImageFile !== 'blank.png') await asyncUnlink(oldAvatarPath);
+			oldImageFile !== 'blank.png') await fs.unlink(oldAvatarPath);
 		await asyncMove(avatar.path, newAvatarPath);
 		return newAvatarFile;
 	} catch (err) {

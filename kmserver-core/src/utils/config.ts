@@ -56,6 +56,10 @@ function binMissing(binariesPath: any, err: string) {
 	console.log('You can download ffmpeg for your OS from http://ffmpeg.org');
 }
 
+export function resolvedPathRemoteRoot() {
+	return resolve(getState().dataPath, getConfig().Remote.FrontendRoot);
+}
+
 /** Initializing configuration */
 export async function initConfig(argv: any) {
 	const dataPath = getState().dataPath;

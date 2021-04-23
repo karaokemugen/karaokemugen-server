@@ -1,3 +1,6 @@
+import { resolve, basename } from 'path';
+import { promises as fs } from 'fs';
+
 import {selectAllKaras, selectAllYears, selectBaseStats, selectAllMedias} from '../dao/kara';
 import { KaraList, KaraParams } from '../lib/types/kara';
 import { consolidateData } from '../lib/services/kara';
@@ -9,8 +12,6 @@ import { createImagePreviews } from '../lib/utils/previews';
 import logger from '../lib/utils/logger';
 import { getConfig, resolvedPathRepos } from '../lib/utils/config';
 import { gitlabPostNewIssue } from '../lib/services/gitlab';
-import { asyncReadFile } from '../lib/utils/files';
-import { resolve, basename } from 'path';
 import { DownloadBundle, KaraMetaFile, MetaFile, ShinDownloadBundle, TagMetaFile } from '../lib/types/downloads';
 import sentry from '../utils/sentry';
 import { Token } from '../lib/types/user';
@@ -155,12 +156,12 @@ export async function aggregateKaras(kids: string[]): Promise<ShinDownloadBundle
 			if (!allTagFiles.has(tagFile)) {
 				allTagFiles.add(tagFile);
 				const tagPath = resolve(resolvedPathRepos('Tags')[0], tagFile);
-				const tagData: TagFile = JSON.parse(await asyncReadFile(tagPath, 'utf-8'));
+				const tagData: TagFile = JSON.parse(await fs.readFile(tagPath, 'utf-8'));
 				tags.push({file: tagFile, data: tagData});
 			}
 		}
 		if (kara.subfile) {
-			const lyricsData = await asyncReadFile(resolve(resolvedPathRepos('Lyrics')[0], kara.subfile), 'utf-8');
+			const lyricsData = await fs.readFile(resolve(resolvedPathRepos('Lyrics')[0], kara.subfile), 'utf-8');
 			lyrics.push({
 				file: kara.subfile,
 				data: lyricsData
@@ -168,7 +169,7 @@ export async function aggregateKaras(kids: string[]): Promise<ShinDownloadBundle
 		}
 		karas.push({
 			file: kara.karafile,
-			data: JSON.parse(await asyncReadFile(resolve(resolvedPathRepos('Karas')[0], kara.karafile), 'utf-8'))
+			data: JSON.parse(await fs.readFile(resolve(resolvedPathRepos('Karas')[0], kara.karafile), 'utf-8'))
 		});
 	}
 	return {
@@ -196,9 +197,9 @@ export async function getRawKara(kid: string): Promise<DownloadBundle> {
 			lyrics: kara.subfile ? resolve(resolvedPathRepos('Lyrics')[0], kara.subfile) : null
 		};
 		let lyricsData = null;
-		if (kara.subfile) lyricsData = await asyncReadFile(files.lyrics, 'utf-8');
+		if (kara.subfile) lyricsData = await fs.readFile(files.lyrics, 'utf-8');
 		const data = {
-			kara: {file: kara.karafile, data: JSON.parse(await asyncReadFile(files.kara, 'utf-8'))},
+			kara: {file: kara.karafile, data: JSON.parse(await fs.readFile(files.kara, 'utf-8'))},
 			lyrics: {file: kara.subfile || null, data: lyricsData},
 			series: [],
 			tags: [],
@@ -206,7 +207,7 @@ export async function getRawKara(kid: string): Promise<DownloadBundle> {
 		for (const tagFile of files.tags) {
 			if (tagFile) data.tags.push({
 				file: basename(tagFile),
-				data: JSON.parse(await asyncReadFile(tagFile, 'utf-8'))
+				data: JSON.parse(await fs.readFile(tagFile, 'utf-8'))
 			});
 		}
 		return {

@@ -4,13 +4,14 @@
 
 import logger from 'winston';
 import {basename, resolve} from 'path';
+import { promises as fs } from 'fs';
+import { copy, mkdirp } from 'fs-extra';
 import {getConfig, resolvedPathImport, resolvedPathTemp, resolvedPathRepos} from '../lib/utils/config';
-import {asyncReadDir} from '../lib/utils/files';
 import {duration} from '../lib/utils/date';
 import { generateKara, validateNewKara } from '../lib/services/kara_creation';
 import { NewKara, Kara } from '../lib/types/kara';
 import { gitlabPostNewIssue } from '../lib/services/gitlab';
-import { asyncExists, asyncCopy, asyncUnlink, asyncMkdirp, asyncMove } from '../lib/utils/files';
+import { asyncExists, asyncMove } from '../lib/utils/files';
 import sentry from '../utils/sentry';
 
 export async function editKara(kara: Kara): Promise<string> {
@@ -35,14 +36,14 @@ export async function editKara(kara: Kara): Promise<string> {
 			kara.noNewVideo = true;
 			kara.mediafile_orig = kara.mediafile;
 			if (!await asyncExists(mediaFile)) throw `Mediafile ${mediaFile} does not exist! Check your base files or upload a new media`;
-			await asyncCopy(mediaFile, resolve(resolvedPathTemp(), kara.mediafile), {overwrite: true});
+			await copy(mediaFile, resolve(resolvedPathTemp(), kara.mediafile), {overwrite: true});
 		}
 		if (!kara.subfile_orig) {
 			kara.noNewSub = true;
 			kara.subfile_orig = kara.subfile;
 			if (kara.subfile) {
 				if (!await asyncExists(subFile)) throw `Subfile ${subFile} does not exist! Check your base files or upload a new subfile`;
-				await asyncCopy(subFile, resolve(resolvedPathTemp(), kara.subfile), {overwrite: true});
+				await copy(subFile, resolve(resolvedPathTemp(), kara.subfile), {overwrite: true});
 			}
 		}
 		// Treat files
@@ -51,22 +52,22 @@ export async function editKara(kara: Kara): Promise<string> {
 		// Move files to their own dir
 		const importDir = resolve(resolvedPathImport(), basename(newKara.file, '.kara.json'));
 		try {
-			await asyncMkdirp(importDir);
+			await mkdirp(importDir);
 		} catch(err) {
 			// Folder might already exist. If it crashes, let it burn later.
 		}
 		await asyncMove(newKara.file, resolve(importDir, basename(newKara.file)), {overwrite: true});
 		await asyncMove(resolve(resolvedPathImport(), newKara.data.mediafile), resolve(importDir, newKara.data.mediafile), {overwrite: true});
 		if (newKara.data.subfile) await asyncMove(resolve(resolvedPathImport(), newKara.data.subfile), resolve(importDir, newKara.data.subfile), {overwrite: true});
-		let tags = await asyncReadDir(resolvedPathImport());
+		let tags = await fs.readdir(resolvedPathImport());
 		tags = tags.filter((f: string) => f.endsWith('.tag.json'));
 		for (const tag of tags) {
 			await asyncMove(resolve(resolvedPathImport(), tag), resolve(importDir, tag), {overwrite: true});
 		}
 		// Remove files if they're not new
-		if (kara.noNewSub && newKara.data.subfile) asyncUnlink(resolve(resolvedPathImport(), importDir, newKara.data.subfile));
+		if (kara.noNewSub && newKara.data.subfile) fs.unlink(resolve(resolvedPathImport(), importDir, newKara.data.subfile));
 		if (kara.noNewVideo) {
-			asyncUnlink(resolve(resolvedPathImport(), importDir, newKara.data.mediafile));
+			fs.unlink(resolve(resolvedPathImport(), importDir, newKara.data.mediafile));
 			newKara.data.duration = 0;
 		}
 
@@ -138,14 +139,14 @@ export async function createKara(kara: Kara) {
 		// Move files to their own directory
 		const importDir = resolve(resolvedPathImport(), basename(newKara.file, '.kara.json'));
 		try {
-			await asyncMkdirp(importDir);
+			await mkdirp(importDir);
 		} catch(err) {
 			// Folder might exist already
 		}
 		await asyncMove(newKara.file, resolve(importDir, basename(newKara.file)), {overwrite: true});
 		await asyncMove(resolve(resolvedPathImport(), newKara.data.mediafile), resolve(importDir, newKara.data.mediafile), {overwrite: true});
 		if (newKara.data.subfile) await asyncMove(resolve(resolvedPathImport(), newKara.data.subfile), resolve(importDir, newKara.data.subfile), {overwrite: true});
-		let tags = await asyncReadDir(resolvedPathImport());
+		let tags = await fs.readdir(resolvedPathImport());
 		tags = tags.filter((f: string) => f.endsWith('.tag.json'));
 		for (const tag of tags) {
 			await asyncMove(resolve(resolvedPathImport(), tag), resolve(importDir, tag), {overwrite: true});
