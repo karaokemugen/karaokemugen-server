@@ -210,7 +210,7 @@ export default function KSController(router: Router) {
 	router.route('/karas/repository')
 		.get(async (_req, res) => {
 			res.status(200).json({
-				git: getConfig().System.Repositories[0].Git
+				Git: getConfig().System.Repositories[0].Git
 			});
 		});
 }
