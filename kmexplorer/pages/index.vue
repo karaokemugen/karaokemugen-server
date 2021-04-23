@@ -1,6 +1,6 @@
 <template>
 	<div class="km-home">
-		<a href="http://karaokes.moe/">
+		<a href="https://karaokes.moe/">
 			<picture class="km-home--logo">
 				<source type="image/webp" :srcset="require('~/assets/km-logo.webp')">
 				<source type="image/png" :srcset="require('~/assets/km-logo.png')">
@@ -18,6 +18,9 @@
 			{{ explorerTagline }}
 		</h2>
 		<div class="mobile-search-bar is-hidden-desktop">
+			<button class="button is-success" @click.prevent="openJoinKaraModal">
+				<font-awesome-icon :icon="['fas', 'person-booth']" :fixed-width="true" /> {{ $t('menu.join_kara') }}
+			</button>
 			<search-bar :filter="false" :results="false" icon />
 		</div>
 		<ul class="km-home--stats">
@@ -139,6 +142,9 @@
 		methods: {
 			openAddRepoModal() {
 				modalStore.openModal('addRepo');
+			},
+			openJoinKaraModal() {
+				modalStore.openModal('joinKara');
 			}
 		}
 	});
@@ -204,5 +210,10 @@
 	.mobile-search-bar {
 		width: 80%;
 		margin: 1em 0;
+		display: flex;
+		flex-direction: column;
+		> button {
+			margin-bottom: .5em;
+		}
 	}
 </style>

@@ -37,6 +37,10 @@
 			</div>
 
 			<div v-if="communityMenu" class="navbar-dropdown">
+				<a :aria-label="$t('menu.join_kara')" class="navbar-item" @click.prevent="modal.joinKara = true">
+					<font-awesome-icon :icon="['fas', 'person-booth']" :fixed-width="true" />
+					{{ $t('menu.join_kara') }}
+				</a>
 				<nuxt-link v-if="import_enabled" class="navbar-item" to="/import">
 					<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true" />
 					{{ $t('menu.kara_import') }}
@@ -376,6 +380,10 @@
 				</p>
 				<ul class="menu-list">
 					<li>
+						<a aria-label="Join a karaoke party" @click.prevent="modal.joinKara = true">
+							<font-awesome-icon :icon="['fas', 'person-booth']" :fixed-width="true" />
+							{{ $t('menu.join_kara') }}
+						</a>
 						<nuxt-link v-if="import_enabled" to="/import" active-class="is-active">
 							<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true" />
 							{{ $t('menu.kara_import') }}
@@ -453,6 +461,7 @@
 		<ProfileModal :active="modal.profile" @close="modal.profile=false" @logout="logout" />
 		<AddRepoModal :active="modal.addRepo" @close="modal.addRepo=false" />
 		<DeleteAccountModal :active="modal.deleteAccount" @close="modal.deleteAccount=false" @logout="logout" />
+		<JoinKaraModal :active="modal.joinKara" @close="modal.joinKara=false" />
 	</div>
 </template>
 
@@ -466,9 +475,9 @@
 	import ProfileModal from '~/components/ProfileModal.vue';
 	import AddRepoModal from '~/components/AddRepoModal.vue';
 	import DeleteAccountModal from '~/components/DeleteAccountModal.vue';
+	import JoinKaraModal from '~/components/JoinKaraModal.vue';
 	import { menuBarStore, modalStore } from '~/store';
 	import { generateNavigation } from '~/utils/tools';
-
 	import { ModalType } from '~/store/modal';
 
 	interface VState {
@@ -485,7 +494,8 @@
 			auth: boolean,
 			profile: boolean,
 			addRepo: boolean,
-			deleteAccount: boolean
+			deleteAccount: boolean,
+			joinKara: boolean
 		}
 	}
 
@@ -497,7 +507,8 @@
 			LoginModal,
 			ProfileModal,
 			AddRepoModal,
-			DeleteAccountModal
+			DeleteAccountModal,
+			JoinKaraModal
 		},
 
 		data(): VState {
@@ -515,9 +526,17 @@
 					auth: false,
 					profile: false,
 					addRepo: false,
-					deleteAccount: false
+					deleteAccount: false,
+					joinKara: false
 				}
 			};
+		},
+
+		head() {
+			const seo = this.$nuxtI18nSeo();
+			if (!Array.isArray(seo.meta)) { seo.meta = []; }
+			seo.meta.push({ hid: 'og:url', property: 'og:url', content: `${process.env.BASE_URL}${this.$route.fullPath}` });
+			return seo;
 		},
 
 		computed: {
@@ -594,13 +613,6 @@
 					this.$router.push(generateNavigation(menuBarStore));
 				}
 			}
-		},
-
-		head() {
-			const seo = this.$nuxtI18nSeo();
-			if (!Array.isArray(seo.meta)) { seo.meta = []; }
-			seo.meta.push({ hid: 'og:url', property: 'og:url', content: `${process.env.BASE_URL}${this.$route.fullPath}` });
-			return seo;
 		}
 	});
 </script>

@@ -174,6 +174,7 @@ export default {
 		languages: 'Languages',
 		years: 'Years',
 		community: 'Community',
+		join_kara: 'Join a karaoke party',
 		kara_import: 'Submit a kara',
 		account: 'Account',
 		favorites: 'Favorites',
@@ -356,6 +357,14 @@ export default {
 			label: 'Crop avatar',
 			add: 'Add',
 			cancel: 'Cancel'
+		},
+		join_kara: {
+			label: 'Join a karaoke party',
+			desc: 'Enter a code to join a existing karaoke party',
+			add: 'Join',
+			cancel: 'Cancel',
+			help: 'Enter the session code (generally it\'s 4 letters) or the karaoke URL.',
+			error: 'The code is invalid, please check what you typed.'
 		}
 	},
 	titles: {
