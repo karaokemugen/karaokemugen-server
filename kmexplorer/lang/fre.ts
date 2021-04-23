@@ -364,7 +364,8 @@ export default {
 			desc: 'Entrez un code pour rejoindre un karaoké existant',
 			add: 'Rejoindre',
 			cancel: 'Annuler',
-			error: 'L\'adresse n\'est pas joignable'
+			help: 'Entrez le code (généralement à 4 lettres) de la session ou bien l\'adresse du karaoké.',
+			error: 'Le code est invalide, merci de vérifier votre saisie.'
 		}
 	},
 	titles: {

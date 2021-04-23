@@ -8,7 +8,7 @@
 		:cancel-label="$t('modal.join_kara.cancel')"
 	>
 		<section class="modal-card-body">
-			<label class="label">
+			<label class="label" for="token">
 				{{ $t('modal.join_kara.desc') }}
 			</label>
 			<input
@@ -18,6 +18,9 @@
 				name="token"
 				class="input"
 			>
+			<p class="help">
+				{{ $t('modal.join_kara.help') }}
+			</p>
 			<p v-if="error" class="help is-danger">
 				{{ $t('modal.join_kara.error') }}
 			</p>
@@ -61,7 +64,12 @@
 				if (this.token) {
 					this.error = false;
 					try {
-						const url = `${this.remoteProtocol}://${this.token}.${this.explorerHost}`;
+						let url: string;
+						if (/^https?:\/\//.test(this.token)) {
+							url = this.token;
+						} else {
+							url = `${this.remoteProtocol}://${this.token}.${this.explorerHost}`;
+						}
 						await this.$axios.get(url);
 						window.open(url, '_self');
 					} catch (e) {

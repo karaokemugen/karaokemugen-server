@@ -363,7 +363,8 @@ export default {
 			desc: 'Enter a code to join a existing karaoke party',
 			add: 'Join',
 			cancel: 'Cancel',
-			error: 'Cannot access url'
+			help: 'Enter the session code (generally it\'s 4 letters) or the karaoke URL.',
+			error: 'The code is invalid, please check what you typed.'
 		}
 	},
 	titles: {
