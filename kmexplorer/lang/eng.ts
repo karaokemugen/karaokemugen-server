@@ -279,6 +279,10 @@ export default {
 				bio: {
 					label: 'Biography',
 					placeholder: 'It\' s my life'
+				},
+				location: {
+					label: 'Location',
+					placeholder: 'Location'
 				}
 			},
 			passwords_mismatch: 'Passwords do not match',

@@ -8568,6 +8568,13 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
+"iso-countries-languages@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "iso-countries-languages@npm:0.3.0"
+  checksum: 9a75efbe986ea7fbc451302e9395e8ecf3ac08e9a136191482cacc1021dd752be983c9fa5678d09aa29d9a711962fcdfc58d12d3e75fd45e180712cca7690914
+  languageName: node
+  linkType: hard
+
 "isobject@npm:^2.0.0":
   version: 2.1.0
   resolution: "isobject@npm:2.1.0"
@@ -8901,6 +8908,7 @@ fsevents@~2.3.1:
     bulma: ^0.9.2
     bulmaswatch: ^0.8.1
     eslint: ^7.23.0
+    iso-countries-languages: ^0.3.0
     lodash.clonedeep: ^4.5.0
     lodash.debounce: ^4.0.8
     lodash.merge: ^4.6.2

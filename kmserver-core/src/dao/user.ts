@@ -32,7 +32,8 @@ export async function insertUser(user: User) {
 		user.avatar_file,
 		user.bio,
 		user.url,
-		user.email
+		user.email,
+		user.location
 	]);
 }
 
@@ -56,6 +57,7 @@ export async function updateUser(user: User) {
 		user.series_lang_mode,
 		user.main_series_lang,
 		user.fallback_series_lang,
+		user.location,
 		user.login
 	]);
 }

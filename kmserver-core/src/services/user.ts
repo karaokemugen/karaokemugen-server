@@ -206,6 +206,7 @@ export async function createUser(user: User, opts: any = {}) {
 		user.bio = user.bio || null;
 		user.url = user.url || null;
 		user.email = user.email || null;
+		user.location = user.location || null;
 		opts.admin ? user.type = 2 : user.type = 1;
 		if (!user.password) throw { code: 'USER_EMPTY_PASSWORD'};
 		if (!user.login) throw { code: 'USER_EMPTY_LOGIN'};
@@ -282,6 +283,7 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		if (!user.bio) user.bio = null;
 		if (!user.url) user.url = null;
 		if (!user.email) user.email = null;
+		if (!user.location) user.location = null;
 		if (token.username.toLowerCase() !== currentUser.login.toLowerCase() && token.role !== 'admin') throw 'Only admins can edit another user';
 		if (user.type !== currentUser.type && token.role !== 'admin') throw 'Only admins can change a user\'s type';
 		// Check if login already exists.
