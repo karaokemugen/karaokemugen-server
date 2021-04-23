@@ -132,7 +132,7 @@ export default {
 		remove_tags: 'Avez-vous essayé de retirer les tags qui ne vous servent plus ?',
 		end_favorites: 'C\'est la fin de vos favoris.',
 		explore: 'Allez en ajouter !',
-		results: '{count} résulat | {count} résultats',
+		results: '{count} résultat | {count} résultats',
 		slogan: 'Ce son est disponible sur la base Karaoke Mugen !'
 	},
 	footer: {
