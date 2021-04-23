@@ -146,14 +146,6 @@ export default {
 		last_generation: 'Last update',
 		media_size: 'Media Size'
 	},
-	home: {
-		noInstance: {
-			title: 'No Karaoke Mugen instance runs on your local network.',
-			1: 'Double check you\'re logged in to the same WiFi network as the server. ',
-			2: 'Make sure the Karaoke Mugen application is running. Please check that the kara.moe setting is enabled in Options -> Karaoke -> Short URL (kara.moe).',
-			3: 'If you just want to explore the base, you can safely ignore this message.'
-		}
-	},
 	duration: {
 		days: 'days',
 		hours: 'hours',
@@ -182,6 +174,7 @@ export default {
 		languages: 'Languages',
 		years: 'Years',
 		community: 'Community',
+		join_kara: 'Join a karaoke party',
 		kara_import: 'Submit a kara',
 		account: 'Account',
 		favorites: 'Favorites',
@@ -364,6 +357,14 @@ export default {
 			label: 'Crop avatar',
 			add: 'Add',
 			cancel: 'Cancel'
+		},
+		join_kara: {
+			label: 'Join a karaoke party',
+			desc: 'Enter a code to join a existing karaoke party',
+			add: 'Join',
+			cancel: 'Cancel',
+			help: 'Enter the session code (generally it\'s 4 letters) or the karaoke URL.',
+			error: 'The code is invalid, please check what you typed.'
 		}
 	},
 	titles: {

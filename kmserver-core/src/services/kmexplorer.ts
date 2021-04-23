@@ -19,6 +19,7 @@ function generateConfig(production: boolean = false) {
 			SUPPORTED_LYRICS: supportedFiles.lyrics,
 			SUPPORTED_MEDIAS: [].concat(supportedFiles.video, supportedFiles.audio),
 			API_HOST: conf.API.Host,
+			REMOTE_PROTOCOL: `http${conf.KaraExplorer.Secure?'s':''}`,
 			EXPLORER_HOST: conf.KaraExplorer.Host,
 			EXPLORER_TAGLINE: conf.KaraExplorer.Tagline,
 			BASE_URL: `http${conf.KaraExplorer.Secure?'s':''}://${conf.KaraExplorer.Host}${

@@ -146,14 +146,6 @@ export default {
 		last_generation: 'Dernière mise à jour',
 		media_size: 'Taille des médias'
 	},
-	home: {
-		noInstance: {
-			title: 'Aucune instance de Karaoke Mugen ne fonctionne sur votre réseau local.',
-			1: 'Vérifiez que vous êtes bien sur le même réseau Wi-Fi que sur le serveur.',
-			2: 'Assurez-vous que l\'application Karaoke Mugen fonctionne. Merci de vérifier que le paramètre kara.moe est actif dans Options -> Karaoké -> URL d\'accès courte.',
-			3: 'Si vous souhaitez juste consulter la base, vous pouvez ignorer cet avertissement.'
-		}
-	},
 	duration: {
 		days: 'jours',
 		hours: 'heures',
@@ -182,6 +174,7 @@ export default {
 		languages: 'Langues',
 		years: 'Années',
 		community: 'Communauté',
+		join_kara: 'Rejoindre le karaoké',
 		kara_import: 'Envoyer un kara',
 		account: 'Compte',
 		favorites: 'Favoris',
@@ -365,6 +358,14 @@ export default {
 			online: 'En ligne',
 			add: 'Ajouter',
 			cancel: 'Annuler'
+		},
+		join_kara: {
+			label: 'Rejoindre le karaoké',
+			desc: 'Entrez un code pour rejoindre un karaoké existant',
+			add: 'Rejoindre',
+			cancel: 'Annuler',
+			help: 'Entrez le code (généralement à 4 lettres) de la session ou bien l\'adresse du karaoké.',
+			error: 'Le code est invalide, merci de vérifier votre saisie.'
 		}
 	},
 	titles: {
