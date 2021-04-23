@@ -37,6 +37,10 @@
 			</div>
 
 			<div v-if="communityMenu" class="navbar-dropdown">
+				<a :aria-label="$t('menu.join_kara')" class="navbar-item" @click.prevent="modal.joinKara = true">
+					<font-awesome-icon :icon="['fas', 'person-booth']" :fixed-width="true" />
+					{{ $t('menu.join_kara') }}
+				</a>
 				<nuxt-link v-if="import_enabled" class="navbar-item" to="/import">
 					<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true" />
 					{{ $t('menu.kara_import') }}
