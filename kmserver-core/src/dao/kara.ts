@@ -4,7 +4,7 @@ import { KaraParams } from '../lib/types/kara';
 import { DBKara, DBYear, DBMedia } from '../lib/types/database/kara';
 import { DBStats } from '../types/database/kara';
 import { WhereClause } from '../lib/types/database';
-const sql = require('./sqls/kara');
+import sql = require('./sqls/kara');
 
 export async function selectAllMedias(): Promise<DBMedia[]> {
 	const res = await db().query(sql.selectAllMedias);

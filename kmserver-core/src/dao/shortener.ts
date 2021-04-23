@@ -1,7 +1,7 @@
 import {db} from '../lib/dao/database';
 import { ShortURLData } from '../types/shortener';
 import { DBInstance } from '../types/database/shortener';
-const sql = require('./sqls/shortener');
+import sql = require('./sqls/shortener');
 
 export async function selectInstance(ip: string): Promise<DBInstance[]> {
 	const res = await db().query(sql.getInstance,[ip]);
