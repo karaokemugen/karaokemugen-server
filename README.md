@@ -50,7 +50,15 @@ CREATE EXTENSION unaccent;
 
 Karaoke Mugen Server will create tables and such on first run.
 
-Edit the `app/config.yml` file and fill in the blanks (Karas, Lyrics, Medias, Series and host of your choosing.). Use the command above to generate the database :
+Edit the `app/config.yml` file and fill in the blanks (Karas, Lyrics, Medias, Series and host of your choosing.). 
+
+Run database migrations :
+
+```sh
+yarn migrate
+```
+
+Use the command above to generate the database :
 
 ```sh
 yarn start --generate
