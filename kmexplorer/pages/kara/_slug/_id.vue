@@ -33,7 +33,7 @@
 	import Vue from 'vue';
 	import LivePlayer from '~/components/LivePlayer.vue';
 	import KaraFullInfo from '~/components/KaraFullInfo.vue';
-	import KaraReport from '~/components/KaraReport.vue';
+	import KaraReport from '~/components/modals/KaraReport.vue';
 	import { DBKara } from '%/lib/types/database/kara';
 	import { tagTypes } from '~/assets/constants';
 	import { sortTypesKara } from '~/utils/tools';

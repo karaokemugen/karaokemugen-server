@@ -11,7 +11,7 @@
 
 <script lang="ts">
 	import Vue from 'vue';
-	import Modal from '~/components/Modal.vue';
+	import Modal from './Modal.vue';
 
 	interface VState {
 		explorerHost?: string

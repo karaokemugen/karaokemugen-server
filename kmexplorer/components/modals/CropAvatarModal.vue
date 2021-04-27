@@ -26,7 +26,7 @@
 	import Vue from 'vue';
 	import { Cropper } from 'vue-advanced-cropper';
 	import 'vue-advanced-cropper/dist/style.css';
-	import Modal from '~/components/Modal.vue';
+	import Modal from './Modal.vue';
 
 	export default Vue.extend({
 		name: 'CropAvatarModal',

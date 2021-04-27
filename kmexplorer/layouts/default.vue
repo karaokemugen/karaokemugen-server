@@ -471,11 +471,11 @@
 	import VueI18n from 'vue-i18n';
 	import SearchTags from '~/components/SearchTags.vue';
 	import SearchBar from '~/components/SearchBar.vue';
-	import LoginModal from '~/components/LoginModal.vue';
-	import ProfileModal from '~/components/ProfileModal.vue';
-	import AddRepoModal from '~/components/AddRepoModal.vue';
-	import DeleteAccountModal from '~/components/DeleteAccountModal.vue';
-	import JoinKaraModal from '~/components/JoinKaraModal.vue';
+	import LoginModal from '~/components/modals/LoginModal.vue';
+	import ProfileModal from '~/components/modals/ProfileModal.vue';
+	import AddRepoModal from '~/components/modals/AddRepoModal.vue';
+	import DeleteAccountModal from '~/components/modals/DeleteAccountModal.vue';
+	import JoinKaraModal from '~/components/modals/JoinKaraModal.vue';
 	import { menuBarStore, modalStore } from '~/store';
 	import { generateNavigation } from '~/utils/tools';
 	import { ModalType } from '~/store/modal';

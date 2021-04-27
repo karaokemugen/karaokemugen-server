@@ -79,7 +79,7 @@
 	import { DBKara } from '%/lib/types/database/kara';
 	import { ShortTag } from '~/types/tags';
 	import duration from '~/assets/date';
-	import DownloadModal from '~/components/DownloadModal.vue';
+	import DownloadModal from '~/components/modals/DownloadModal.vue';
 
 	interface VState {
 		tagTypes: typeof tagTypes,
