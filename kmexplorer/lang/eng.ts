@@ -282,6 +282,9 @@ export default {
 				},
 				location: {
 					label: 'Location'
+				},
+				flag_sendstats: {
+					label: 'Use my favorites and karaokes requests for stats'
 				}
 			},
 			passwords_mismatch: 'Passwords do not match',

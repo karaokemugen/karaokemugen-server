@@ -132,6 +132,17 @@
 							</div>
 						</div>
 					</div>
+					<div class="field is-horizontal">
+						<label class="checkbox">
+							<div class="control">
+								<input
+									v-model="user.flag_sendstats"
+									type="checkbox"
+								>
+								{{ $t('modal.profile.fields.flag_sendstats.label') }}
+							</div>
+						</label>
+					</div>
 					<h2 class="subtitle">
 						{{ $t('modal.profile.fields.password.header') }}
 					</h2>
@@ -343,7 +354,8 @@
 					main_series_lang: '',
 					fallback_series_lang: '',
 					url: '',
-					avatar_file: ''
+					avatar_file: '',
+					flag_sendstats: undefined
 				},
 				location: '',
 				main_series_lang_name: '',
@@ -497,6 +509,7 @@
 
 	h2.subtitle {
 		font-weight: bold;
+		margin-top: 2rem;
 	}
 
 	.select select option {
@@ -528,5 +541,16 @@
 				color: white;
 			}
 		}
+	}
+
+	.field > .checkbox {
+		color: white;
+		.control {
+			font-size: 1.15em;
+		}
+	}
+
+	.modal-card-foot {
+		justify-content: space-between;
 	}
 </style>

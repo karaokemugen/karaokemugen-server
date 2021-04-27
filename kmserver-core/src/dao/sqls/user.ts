@@ -11,9 +11,10 @@ INSERT INTO users(
 	url,
 	email,
 	location,
+	flag_sendstats,
 	password_last_modified_at,
 	last_login_at
-) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, NOW(), NOW())
+) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW(), NOW())
 `;
 
 export const selectUser = `
@@ -27,6 +28,7 @@ SELECT
 	url,
 	email,
 	location,
+	flag_sendstats,
 	series_lang_mode,
 	main_series_lang,
 	fallback_series_lang,
@@ -59,6 +61,7 @@ UPDATE users SET
 	series_lang_mode = $7,
 	main_series_lang = $8,
 	fallback_series_lang = $9,
-	location = $10
-WHERE pk_login = $11
+	location = $10,
+	flag_sendstats = $11
+WHERE pk_login = $12
 `;

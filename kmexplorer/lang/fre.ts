@@ -282,6 +282,9 @@ export default {
 				},
 				location: {
 					label: 'Localisation'
+				},
+				flag_sendstats: {
+					label: 'Utiliser mes favoris et demandes de karas pour des stats'
 				}
 			},
 			passwords_mismatch: 'Les mots de passe ne correspondent pas',
