@@ -109,7 +109,7 @@ export default {
 			songwriters_tooltip: 'Songwriters compose lyrics AND music.',
 			creators_tooltip: 'Entity that created the series. Can be animation studio, movie studio, or game studio',
 			authors_tooltip: 'You should add yourself here ;)',
-			authors_required: 'Author of the kara is mandatory',
+			authors_required: 'Author of the karaoke is mandatory',
 			groups_tooltip: 'Download groups for this song. The song will be included in these download packs',
 			created_at: 'Creation date',
 			modified_at: 'Last updated date',
@@ -142,7 +142,7 @@ export default {
 	},
 	stats: {
 		karaokes: 'Karaoké | Karaokés',
-		all_duration: 'Duration of all karas',
+		all_duration: 'Duration of all karaokes',
 		last_generation: 'Last update',
 		media_size: 'Media Size'
 	},
@@ -189,7 +189,7 @@ export default {
 		placeholder: 'Series, singers, names...',
 		sort: {
 			a_z: 'De A à Z',
-			kara_count: 'Kara count',
+			kara_count: 'Karaoke count',
 			recent: 'By date added',
 			most_played: 'Most played',
 			most_favorites: 'Plus favoris',
@@ -273,7 +273,7 @@ export default {
 				},
 
 				url: {
-					label: 'Url',
+					label: 'Website',
 					placeholder: 'https://karaokes.moe'
 				},
 				bio: {
@@ -281,8 +281,7 @@ export default {
 					placeholder: 'It\' s my life'
 				},
 				location: {
-					label: 'Location',
-					placeholder: 'Location'
+					label: 'Location'
 				}
 			},
 			passwords_mismatch: 'Passwords do not match',

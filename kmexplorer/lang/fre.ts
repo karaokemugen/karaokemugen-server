@@ -142,7 +142,7 @@ export default {
 	},
 	stats: {
 		karaokes: 'Karaoké | Karaokés',
-		all_duration: 'Durée de tous les karas',
+		all_duration: 'Durée de tous les chansons',
 		last_generation: 'Dernière mise à jour',
 		media_size: 'Taille des médias'
 	},
@@ -273,7 +273,7 @@ export default {
 				},
 
 				url: {
-					label: 'Url',
+					label: 'Site web',
 					placeholder: 'https://karaokes.moe'
 				},
 				bio: {
@@ -281,8 +281,7 @@ export default {
 					placeholder: 'C\'est la vie'
 				},
 				location: {
-					label: 'Localisation',
-					placeholder: 'Localisation'
+					label: 'Localisation'
 				}
 			},
 			passwords_mismatch: 'Les mots de passe ne correspondent pas',
