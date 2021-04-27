@@ -371,6 +371,12 @@ export default {
 			cancel: 'Cancel',
 			help: 'Enter the session code (generally it\'s 4 letters) or the karaoke URL.',
 			error: 'The code is invalid, please check what you typed.'
+		},
+		stats: {
+			label: 'Use my favorites and karaokes requests for stats',
+			desc: 'blablastats',
+			add: 'Save',
+			cancel: 'Cancel'
 		}
 	},
 	titles: {

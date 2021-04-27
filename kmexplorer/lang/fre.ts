@@ -372,6 +372,12 @@ export default {
 			cancel: 'Annuler',
 			help: 'Entrez le code (généralement à 4 lettres) de la session ou bien l\'adresse du karaoké.',
 			error: 'Le code est invalide, merci de vérifier votre saisie.'
+		},
+		stats: {
+			label: 'Utiliser mes favoris et demandes de karas pour des stats',
+			desc: 'blablastats',
+			add: 'Sauvegarder',
+			cancel: 'Annuler'
 		}
 	},
 	titles: {
