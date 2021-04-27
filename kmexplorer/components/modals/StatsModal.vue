@@ -57,10 +57,3 @@
 		}
 	});
 </script>
-
-<style lang="scss" scoped>
-	.checkbox {
-		margin-top: 1em;
-		margin-left: 1em;
-	}
-</style>
