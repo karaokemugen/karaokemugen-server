@@ -46,9 +46,6 @@
 				</tr>
 			</tbody>
 		</table>
-		<!-- <div class="content">
-			{{ $t('kara.duration') }}:&nbsp;{{ duration }}&nbsp;/&nbsp;{{ $t('kara.created_at') }}:&nbsp;{{ new Date(karaoke.created_at).toLocaleString() }}&nbsp;/&nbsp;{{ $t('kara.modified_at') }}:&nbsp;{{ new Date(karaoke.modified_at).toLocaleString() }}
-		</div> -->
 		<div class="buttons">
 			<button class="button is-info" @click="toggleLyrics">
 				<font-awesome-icon :icon="['fas', 'closed-captioning']" :fixed-width="true" />
