@@ -23,8 +23,8 @@
 
 <script lang="ts">
 	import Vue from 'vue';
+	import Modal from './Modal.vue';
 	import { DBUser } from '~/../kmserver-core/src/lib/types/database/user';
-	import Modal from '~/components/Modal.vue';
 
 	interface VState {
 		flag_sendstats: boolean
