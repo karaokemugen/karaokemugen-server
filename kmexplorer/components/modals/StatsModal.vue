@@ -8,6 +8,15 @@
 		:cancel-label="$t('modal.stats.cancel')"
 	>
 		<section class="modal-card-body">
+			<label class="label">
+				{{ $t('modal.stats.desc') }}
+			</label>
+			<label class="label">
+				{{ $t('modal.stats.refuse_desc') }}
+			</label>
+			<label class="label">
+				{{ $t('modal.stats.change') }}
+			</label>
 			<label class="checkbox">
 				<div class="control">
 					<input
@@ -61,3 +70,10 @@
 		}
 	});
 </script>
+
+<style lang="scss" scoped>
+	.checkbox {
+		margin-top: 1em;
+		margin-left: 1em;
+	}
+</style>
