@@ -378,8 +378,8 @@ export default {
 			desc: 'Nous utilisons vos favoris ainsi que les karaokés que vous avez demandé lors d\'une session pour faire des statistiques d\'utilisation (par exemple, permettre de connaître les karaokés les plus demandés).',
 			refuse_desc: 'Si vous ne voulez pas participer, même si c\'est anonyme, à ces statistiques d\'utilisation, merci de nous le dire. Si vous refusez, vos données seront ignorées lors de la remontée d\'information à Karaoke Mugen Server.',
 			change: 'Vous pouvez changer ceci à tout moment dans votre profil.',
-			add: 'Sauvegarder',
-			cancel: 'Annuler'
+			yes: 'Oui',
+			no: 'Non'
 		}
 	},
 	titles: {

@@ -21,7 +21,7 @@
 					<button
 						type="button"
 						class="button"
-						@click="closeModal"
+						@click="cancelModal"
 					>
 						{{ cancelLabel }}
 					</button>
@@ -41,6 +41,7 @@
 			active: Boolean,
 			modalTitle: String,
 			submitAction: Function,
+			cancelAction: Function,
 			close: Function,
 			submitLabel: String,
 			cancelLabel: String
@@ -57,6 +58,12 @@
 			},
 			closeModal(): void {
 				this.close();
+			},
+			async cancelModal(): Promise<void> {
+				if (this.cancelAction) {
+					await this.cancelAction();
+				}
+				this.closeModal();
 			}
 		}
 	});

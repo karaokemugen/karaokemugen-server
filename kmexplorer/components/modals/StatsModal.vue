@@ -2,10 +2,11 @@
 	<modal
 		:active="active"
 		:modal-title="$t('modal.stats.label')"
-		:submit-action="submitForm"
+		:submit-action="authorizeStats"
+		:cancel-action="refuseStats"
 		:close="closeModal"
-		:submit-label="$t('modal.stats.add')"
-		:cancel-label="$t('modal.stats.cancel')"
+		:submit-label="$t('modal.stats.yes')"
+		:cancel-label="$t('modal.stats.no')"
 	>
 		<section class="modal-card-body">
 			<label class="label">
@@ -17,15 +18,6 @@
 			<label class="label">
 				{{ $t('modal.stats.change') }}
 			</label>
-			<label class="checkbox">
-				<div class="control">
-					<input
-						v-model="flag_sendstats"
-						type="checkbox"
-					>
-					{{ $t('modal.profile.fields.flag_sendstats.label') }}
-				</div>
-			</label>
 		</section>
 	</modal>
 </template>
@@ -34,10 +26,6 @@
 	import Vue from 'vue';
 	import Modal from './Modal.vue';
 	import { DBUser } from '~/../kmserver-core/src/lib/types/database/user';
-
-	interface VState {
-		flag_sendstats: boolean
-	}
 
 	export default Vue.extend({
 		name: 'StatsModal',
@@ -50,19 +38,18 @@
 			active: Boolean
 		},
 
-		data(): VState {
-			return {
-				flag_sendstats: true
-			};
-		},
-
 		methods: {
-			async submitForm(): Promise<void> {
+			async authorizeStats(): Promise<void> {
+				await this.saveUser(true);
+			},
+			async refuseStats(): Promise<void> {
+				await this.saveUser(false);
+			},
+			async saveUser(flag_sendstats: boolean): Promise<void> {
 				const user:DBUser = { ...this.$store.state.auth.user };
-				user.flag_sendstats = this.flag_sendstats;
+				user.flag_sendstats = flag_sendstats;
 				const response = await this.$axios.put('/api/myaccount', user);
 				await this.$auth.setUserToken(response.data.data.token);
-				this.closeModal();
 			},
 			closeModal(): void {
 				this.$emit('close');
