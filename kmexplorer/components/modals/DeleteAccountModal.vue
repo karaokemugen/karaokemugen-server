@@ -2,10 +2,10 @@
 	<modal
 		:active="active"
 		:modal-title="$t('modal.delete_account.label')"
-		:submit-action="submitForm"
-		:close="closeModal"
 		:submit-label="$t('modal.delete_account.add')"
 		:cancel-label="$t('modal.delete_account.cancel')"
+		@submit="submitForm"
+		@close="closeModal"
 	/>
 </template>
 

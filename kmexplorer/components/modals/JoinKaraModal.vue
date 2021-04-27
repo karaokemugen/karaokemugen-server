@@ -2,10 +2,10 @@
 	<modal
 		:active="active"
 		:modal-title="$t('modal.join_kara.label')"
-		:submit-action="submitForm"
-		:close="closeModal"
 		:submit-label="$t('modal.join_kara.add')"
 		:cancel-label="$t('modal.join_kara.cancel')"
+		@submit="submitForm"
+		@close="closeModal"
 	>
 		<section class="modal-card-body">
 			<label class="label" for="token">

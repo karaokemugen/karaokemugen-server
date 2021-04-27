@@ -2,11 +2,11 @@
 	<modal
 		:active="active"
 		:modal-title="$t('modal.stats.label')"
-		:submit-action="authorizeStats"
-		:cancel-action="refuseStats"
-		:close="closeModal"
-		:submit-label="$t('modal.stats.yes')"
 		:cancel-label="$t('modal.stats.no')"
+		:submit-label="$t('modal.stats.yes')"
+		@submit="authorizeStats"
+		@cancel="refuseStats"
+		@close="closeModal"
 	>
 		<section class="modal-card-body">
 			<label class="label">
@@ -50,6 +50,7 @@
 				user.flag_sendstats = flag_sendstats;
 				const response = await this.$axios.put('/api/myaccount', user);
 				await this.$auth.setUserToken(response.data.data.token);
+				this.$emit('close');
 			},
 			closeModal(): void {
 				this.$emit('close');

@@ -493,6 +493,7 @@
 					`avatar.${(/data:([a-z]+)\/([a-z]+)(?:,|;)/.exec(avatar) as RegExpMatchArray)[2]}`
 				);
 				this.user.avatar_file = avatar;
+				this.modal.avatar = false;
 			}
 		}
 	});

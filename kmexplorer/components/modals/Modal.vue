@@ -40,30 +40,20 @@
 		props: {
 			active: Boolean,
 			modalTitle: String,
-			submitAction: Function,
-			cancelAction: Function,
-			close: Function,
 			submitLabel: String,
 			cancelLabel: String
 		},
 
 		methods: {
-			async submitForm(): Promise<void> {
-				try {
-					await this.submitAction();
-					this.closeModal();
-				} catch (e) {
-					// error
-				}
+			submitForm(): void {
+				this.$emit('submit');
 			},
 			closeModal(): void {
-				this.close();
+				this.$emit('close');
 			},
-			async cancelModal(): Promise<void> {
-				if (this.cancelAction) {
-					await this.cancelAction();
-				}
-				this.closeModal();
+			cancelModal(): void {
+				this.$emit('cancel');
+				this.$emit('close');
 			}
 		}
 	});
