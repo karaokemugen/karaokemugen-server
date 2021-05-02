@@ -2,10 +2,10 @@
 	<modal
 		:active="active"
 		:modal-title="$t('modal.add_repository.label')"
-		:submit-action="submitForm"
-		:close="closeModal"
 		:submit-label="$t('modal.add_repository.add')"
 		:cancel-label="$t('modal.add_repository.cancel')"
+		@submit="submitForm"
+		@close="closeModal"
 	>
 		<section class="modal-card-body">
 			<label class="label">
@@ -16,10 +16,10 @@
 			</label>
 			<label class="label">
 				<i18n path="modal.add_repository.manual" tag="label">
-					<template v-slot:repository>
+					<template #repository>
 						<span class="boldLabel">{{ explorerHost }}</span>
 					</template>
-					<template v-slot:online>
+					<template #online>
 						<span class="boldLabel">{{ $t('modal.add_repository.online') }}</span>
 					</template>
 				</i18n>

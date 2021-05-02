@@ -457,11 +457,12 @@
 				</p>
 			</div>
 		</footer>
-		<LoginModal :active="modal.auth" @close="modal.auth=false" />
+		<LoginModal :active="modal.auth" @close="modal.auth=false" @login="login" />
 		<ProfileModal :active="modal.profile" @close="modal.profile=false" @logout="logout" />
 		<AddRepoModal :active="modal.addRepo" @close="modal.addRepo=false" />
 		<DeleteAccountModal :active="modal.deleteAccount" @close="modal.deleteAccount=false" @logout="logout" />
 		<JoinKaraModal :active="modal.joinKara" @close="modal.joinKara=false" />
+		<StatsModal :active="modal.stats" @close="modal.stats=false" />
 	</div>
 </template>
 
@@ -476,9 +477,11 @@
 	import AddRepoModal from '~/components/modals/AddRepoModal.vue';
 	import DeleteAccountModal from '~/components/modals/DeleteAccountModal.vue';
 	import JoinKaraModal from '~/components/modals/JoinKaraModal.vue';
+	import StatsModal from '~/components/modals/StatsModal.vue';
 	import { menuBarStore, modalStore } from '~/store';
 	import { generateNavigation } from '~/utils/tools';
 	import { ModalType } from '~/store/modal';
+	import { DBUser } from '~/../kmserver-core/src/lib/types/database/user';
 
 	interface VState {
 		import_enabled?: string,
@@ -495,7 +498,8 @@
 			profile: boolean,
 			addRepo: boolean,
 			deleteAccount: boolean,
-			joinKara: boolean
+			joinKara: boolean,
+			stats: boolean
 		}
 	}
 
@@ -508,7 +512,8 @@
 			ProfileModal,
 			AddRepoModal,
 			DeleteAccountModal,
-			JoinKaraModal
+			JoinKaraModal,
+			StatsModal
 		},
 
 		data(): VState {
@@ -527,7 +532,8 @@
 					profile: false,
 					addRepo: false,
 					deleteAccount: false,
-					joinKara: false
+					joinKara: false,
+					stats: false
 				}
 			};
 		},
@@ -579,6 +585,11 @@
 		},
 
 		methods: {
+			login() {
+				if ((this.$store.state.auth.user as unknown as DBUser).flag_sendstats === null) {
+					this.modal.stats = true;
+				}
+			},
 			logout() {
 				this.$auth.logout();
 			},

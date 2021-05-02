@@ -33,7 +33,8 @@ export async function insertUser(user: User) {
 		user.bio,
 		user.url,
 		user.email,
-		user.location
+		user.location,
+		user.flag_sendstats
 	]);
 }
 
@@ -58,6 +59,7 @@ export async function updateUser(user: User) {
 		user.main_series_lang,
 		user.fallback_series_lang,
 		user.location,
+		user.flag_sendstats,
 		user.login
 	]);
 }
