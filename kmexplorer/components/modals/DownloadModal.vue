@@ -2,8 +2,8 @@
 	<modal
 		:active="active"
 		:modal-title="$t('modal.download.label')"
-		:close="closeModal"
 		:cancel-label="$t('modal.download.cancel')"
+		@close="closeModal"
 	>
 		<section class="modal-card-body">
 			<div class="columns">
