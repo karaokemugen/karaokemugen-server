@@ -1,25 +1,24 @@
-import { watch } from 'fs';
-import { asyncReadDir } from '../lib/utils/files';
+import { watch, promises as fs } from 'fs';
 import { resolve } from 'path';
-import { getConfig } from '../lib/utils/config';
+import { resolvedPathRemoteRoot } from '../utils/config';
 import logger from '../lib/utils/logger';
 
 let availableRemotes: string[] = [];
 
 export async function listAvailableRemotes(): Promise<string[]> {
-	availableRemotes = await asyncReadDir(getConfig().Remote.FrontendRoot);
+	availableRemotes = await fs.readdir(resolvedPathRemoteRoot());
 	logger.debug('Computed remote frontends', { service: 'Remote', obj: availableRemotes });
 	return availableRemotes;
 }
 
 export function watchRemotes(): void {
 	listAvailableRemotes();
-	watch(getConfig().Remote.FrontendRoot, { persistent: false }, listAvailableRemotes);
+	watch(resolvedPathRemoteRoot(), { persistent: false }, listAvailableRemotes);
 }
 
 export function getVersion(version: string): string | false {
 	if (availableRemotes.includes(version)) {
-		return resolve(getConfig().Remote.FrontendRoot, version);
+		return resolve(resolvedPathRemoteRoot(), version);
 	} else {
 		return false;
 	}

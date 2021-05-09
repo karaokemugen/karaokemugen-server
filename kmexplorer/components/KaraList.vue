@@ -31,7 +31,7 @@
 	import Vue, { PropOptions } from 'vue';
 	import LoadingNanami from './LoadingNanami.vue';
 	import KaraCard from './KaraCard.vue';
-	import KaraSuggest from './KaraSuggest.vue';
+	import KaraSuggest from './modals/KaraSuggest.vue';
 	import { KaraList } from '%/lib/types/kara';
 
 	export default Vue.extend({

@@ -160,7 +160,7 @@
 <script lang="ts">
 	import Vue from 'vue';
 	import { mapState } from 'vuex';
-	import SearchTags from './SearchTags.vue';
+	import SearchTags from '../SearchTags.vue';
 	import { TagList } from '%/lib/types/tag';
 
 	interface VState {

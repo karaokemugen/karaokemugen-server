@@ -2,10 +2,10 @@
 	<modal
 		:active="active"
 		:modal-title="$t('modal.crop_avatar.label')"
-		:close="closeModal"
-		:submit-action="uploadAvatar"
 		:submit-label="$t('modal.crop_avatar.add')"
 		:cancel-label="$t('modal.crop_avatar.cancel')"
+		@submit="uploadAvatar"
+		@close="closeModal"
 	>
 		<section class="modal-card-body">
 			<client-only>
@@ -26,7 +26,7 @@
 	import Vue from 'vue';
 	import { Cropper } from 'vue-advanced-cropper';
 	import 'vue-advanced-cropper/dist/style.css';
-	import Modal from '~/components/Modal.vue';
+	import Modal from './Modal.vue';
 
 	export default Vue.extend({
 		name: 'CropAvatarModal',

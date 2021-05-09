@@ -2,8 +2,8 @@
 	<modal
 		:active="active"
 		:modal-title="$t('modal.download.label')"
-		:close="closeModal"
 		:cancel-label="$t('modal.download.cancel')"
+		@close="closeModal"
 	>
 		<section class="modal-card-body">
 			<div class="columns">
@@ -39,8 +39,8 @@
 	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
 	import languages from '@cospired/i18n-iso-languages';
+	import Modal from './Modal.vue';
 	import { getSerieLanguage, getTagInLanguage } from '~/utils/tools';
-	import Modal from '~/components/Modal.vue';
 	import { DBKara } from '%/lib/types/database/kara';
 	import { ShortTag } from '~/types/tags';
 

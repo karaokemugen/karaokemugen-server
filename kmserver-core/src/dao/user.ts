@@ -1,7 +1,7 @@
 import {db} from '../lib/dao/database';
 import { User } from '../lib/types/user';
 import { DBUser } from '../lib/types/database/user';
-const sql = require('./sqls/user');
+import sql = require('./sqls/user');
 
 export async function updateLastLogin(username: string): Promise<String> {
 	const res = await db().query(sql.updateLastLogin, [username]);
@@ -32,7 +32,9 @@ export async function insertUser(user: User) {
 		user.avatar_file,
 		user.bio,
 		user.url,
-		user.email
+		user.email,
+		user.location,
+		user.flag_sendstats
 	]);
 }
 
@@ -56,6 +58,8 @@ export async function updateUser(user: User) {
 		user.series_lang_mode,
 		user.main_series_lang,
 		user.fallback_series_lang,
+		user.location,
+		user.flag_sendstats,
 		user.login
 	]);
 }

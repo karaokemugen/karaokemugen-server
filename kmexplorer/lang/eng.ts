@@ -109,7 +109,7 @@ export default {
 			songwriters_tooltip: 'Songwriters compose lyrics AND music.',
 			creators_tooltip: 'Entity that created the series. Can be animation studio, movie studio, or game studio',
 			authors_tooltip: 'You should add yourself here ;)',
-			authors_required: 'Author of the kara is mandatory',
+			authors_required: 'Author of the karaoke is mandatory',
 			groups_tooltip: 'Download groups for this song. The song will be included in these download packs',
 			created_at: 'Creation date',
 			modified_at: 'Last updated date',
@@ -142,17 +142,9 @@ export default {
 	},
 	stats: {
 		karaokes: 'Karaoké | Karaokés',
-		all_duration: 'Duration of all karas',
+		all_duration: 'Duration of all karaokes',
 		last_generation: 'Last update',
 		media_size: 'Media Size'
-	},
-	home: {
-		noInstance: {
-			title: 'No Karaoke Mugen instance runs on your local network.',
-			1: 'Double check you\'re logged in to the same WiFi network as the server. ',
-			2: 'Make sure the Karaoke Mugen application is running. Please check that the kara.moe setting is enabled in Options -> Karaoke -> Short URL (kara.moe).',
-			3: 'If you just want to explore the base, you can safely ignore this message.'
-		}
 	},
 	duration: {
 		days: 'days',
@@ -182,6 +174,7 @@ export default {
 		languages: 'Languages',
 		years: 'Years',
 		community: 'Community',
+		join_kara: 'Join a karaoke party',
 		kara_import: 'Submit a kara',
 		account: 'Account',
 		favorites: 'Favorites',
@@ -196,7 +189,7 @@ export default {
 		placeholder: 'Series, singers, names...',
 		sort: {
 			a_z: 'De A à Z',
-			kara_count: 'Kara count',
+			kara_count: 'Karaoke count',
 			recent: 'By date added',
 			most_played: 'Most played',
 			most_favorites: 'Plus favoris',
@@ -280,12 +273,18 @@ export default {
 				},
 
 				url: {
-					label: 'Url',
+					label: 'Website',
 					placeholder: 'https://karaokes.moe'
 				},
 				bio: {
 					label: 'Biography',
 					placeholder: 'It\' s my life'
+				},
+				location: {
+					label: 'Location'
+				},
+				flag_sendstats: {
+					label: 'Use my favorites and karaokes requests for stats'
 				}
 			},
 			passwords_mismatch: 'Passwords do not match',
@@ -364,6 +363,22 @@ export default {
 			label: 'Crop avatar',
 			add: 'Add',
 			cancel: 'Cancel'
+		},
+		join_kara: {
+			label: 'Join a karaoke party',
+			desc: 'Enter a code to join a existing karaoke party',
+			add: 'Join',
+			cancel: 'Cancel',
+			help: 'Enter the session code (generally it\'s 4 letters) or the karaoke URL.',
+			error: 'The code is invalid, please check what you typed.'
+		},
+		stats: {
+			label: 'Use my favorites and karaokes requests for stats',
+			desc: 'We use your favorites as well as the karaokes that you have requested during a session to make usage statistics (for example, to find out the most requested karaokes).',
+			refuse_desc: 'If you do not want to participate, even if it is anonymous, in these usage statistics, please let us know. If you refuse, your data will be ignored when the information is sent to Karaoke Mugen Server.',
+			change: 'You can change this at any time in your profile.',
+			yes: 'Yes',
+			no: 'No'
 		}
 	},
 	titles: {
