@@ -44,7 +44,7 @@ export default {
 			title: 'An issue with {title}?',
 			btn: {
 				report: 'Report an issue',
-				edit: 'Purpose an edit'
+				edit: 'Suggest an edit'
 			},
 			form: {
 				title: 'Report an issue',
