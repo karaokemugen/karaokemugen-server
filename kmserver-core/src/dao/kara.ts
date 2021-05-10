@@ -53,7 +53,7 @@ export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 		statsJoinClause = 'LEFT OUTER JOIN users_favorites AS uf ON uf.fk_kid = ak.pk_kid LEFT OUTER JOIN users AS u ON uf.fk_login = u.pk_login ';
 		havingClause = 'HAVING COUNT(uf.*) >= 1';
 		orderClauses = 'favorited DESC, ';
-		whereClauses = 'AND u.flag_sendstats <> FALSE';
+		whereClauses = 'AND (u.flag_sendstats IS NULL or u.flag_sendstats = TRUE)';
 	}
 	if (params.order === 'requested') {
 		statsSelectClause = 'COUNT(r.*)::integer AS requested,';
