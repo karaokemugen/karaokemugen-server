@@ -275,7 +275,7 @@
 			border-radius: 0.25rem;
 		}
 
-		img:last-child {
+		img:nth-child(2) {
 			position: absolute;
 			left: 0;
 			top: 0;
@@ -283,7 +283,7 @@
 			transition: opacity 0.25s linear;
 		}
 
-		img:last-child.activate {
+		img:nth-child(2).activate {
 			opacity: 1;
 		}
 	}
