@@ -571,6 +571,9 @@
 					this.modal[mutation.payload as ModalType] = false;
 				}
 			});
+			if (this.$auth.loggedIn && (this.$store.state.auth.user as unknown as DBUser).flag_sendstats === null) {
+				this.modal.stats = true;
+			}
 		},
 
 		mounted() {
