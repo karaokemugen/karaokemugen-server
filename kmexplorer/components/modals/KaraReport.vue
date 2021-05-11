@@ -24,7 +24,7 @@
 					</header>
 					<section v-if="submitted" class="modal-card-body">
 						<i18n path="kara.problem.form.thanks.text" tag="h5" class="title is-5">
-							<template v-slot:url>
+							<template #url>
 								<a :href="gitlabUrl" target="_blank">
 									{{ gitlabUrl }}
 								</a>
@@ -179,6 +179,10 @@
 <style scoped lang="scss">
 	.field-label {
 		flex-grow: 2;
+	}
+
+	.button {
+		margin: 4px;
 	}
 
 	.select select option {
