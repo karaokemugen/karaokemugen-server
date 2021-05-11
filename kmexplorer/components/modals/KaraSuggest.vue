@@ -8,7 +8,7 @@
 						<source type="image/png" :srcset="require('~/assets/nanami-surpris.png')">
 						<img :src="require('~/assets/nanami-surpris.png')" alt="Surprised Nanami">
 					</picture>
-					{{ $t(empty ? 'layout.empty':'layout.suggest') }}&nbsp;
+					<span>{{ $t(empty ? 'layout.empty':'layout.suggest') }}&nbsp;</span>
 					<a @click.prevent="modal = true">{{ $t('layout.suggest_open') }}</a>
 				</h4>
 				<h4 v-if="tags.length > 0" class="title is-4 centered">
@@ -257,6 +257,10 @@
 		align-items: center;
 		justify-content: center;
 		margin-bottom: .5em;
+		text-align: center;
+		@media screen and (max-width: 1024px) {
+			flex-direction: column;
+		}
 		&.with-img {
 			img {
 				height: 2.5em;
