@@ -92,6 +92,7 @@ export default {
 			media_file_tooltip: 'Formats de fichier acceptés : {formats}',
 			lyrics_file: 'Fichier de sous-titres',
 			lyrics_file_tooltip: 'Format de fichier accepté : {formats}',
+			lyrics_file_missing: 'Le fichier de sous-titres est manquant, cela est approprié que si vous envoyez un mkv ou que votre karaoké n\'a pas de paroles (?).',
 			title: 'Titre',
 			title_required: 'Le titre est obligatoire',
 			title_tooltip: 'Si vous ne le connaissez pas, mettez le nom de la série. Dans le cas d\'une version alternative, nommez votre titre ainsi : \'Mon titre ~ Disco vers.\' par exemple',

@@ -326,6 +326,7 @@
 				>
 					{{ $t('kara.import.submit') }}
 				</button>
+				<span v-if="!subfile && !subfile_error" class="help is-warning">{{ $t('kara.import.lyrics_file_missing') }}</span>
 			</div>
 		</div>
 		<div class="modal" :class="{'is-active': gitlabUrl}">

@@ -92,6 +92,7 @@ export default {
 			media_file_tooltip: 'Supported file formats: {formats}',
 			lyrics_file: 'Lyrics file',
 			lyrics_file_tooltip: 'Supported file formats: {formats}',
+			lyrics_file_missing: 'The lyrics file is missing, this is appropriate only if you are sending an MKV file or a karaoke without lyrics (?).',
 			title: 'Title',
 			title_required: 'Please enter a song title',
 			title_tooltip: 'If you don\'t know, put the name of the series here as well. In the case of an alternative version, name your title as: \'My title ~ Disco vers.\' for example',
