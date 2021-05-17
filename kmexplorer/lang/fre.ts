@@ -375,10 +375,10 @@ export default {
 			error: 'Le code est invalide, merci de vérifier votre saisie.'
 		},
 		stats: {
-			label: 'Utiliser mes favoris et demandes de chansons pour des stats',
+			label: 'Utiliser mes favoris et demandes de chansons pour des statistiques',
 			desc: 'Nous utilisons vos favoris ainsi que les karaokés que vous avez demandé lors d\'une session pour faire des statistiques d\'utilisation (par exemple, permettre de connaître les karaokés les plus demandés).',
-			refuse_desc: 'Si vous ne voulez pas participer, même si c\'est anonyme, à ces statistiques d\'utilisation, merci de nous le dire. Si vous refusez, vos données seront ignorées lors de la remontée d\'information à Karaoke Mugen Server.',
-			change: 'Vous pouvez changer ceci à tout moment dans votre profil.',
+			refuse_desc: 'Si vous ne voulez pas participer, même si c\'est anonyme, à ces statistiques d\'utilisation, merci de nous le dire. Si vous refusez, le serveur ignorera vos échantillons de statistiques et les applications Karaoke Mugen n\'enverront pas vos données.',
+			change: 'Vous pouvez changer ceci à tout moment dans votre profil. Acceptez-vous cet usage des statistiques ?',
 			yes: 'Oui',
 			no: 'Non'
 		}
