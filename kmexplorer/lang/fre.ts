@@ -285,7 +285,7 @@ export default {
 					label: 'Localisation'
 				},
 				flag_sendstats: {
-					label: 'Utiliser mes favoris et demandes de chansons pour des stats'
+					label: 'Utiliser mes favoris et demandes de chansons pour des statistiques'
 				}
 			},
 			passwords_mismatch: 'Les mots de passe ne correspondent pas',
