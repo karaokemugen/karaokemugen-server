@@ -57,6 +57,7 @@ export default function userController(router: Router) {
 				if (req.body.email) req.body.email = unescape(req.body.email.trim());
 				if (req.body.url) req.body.url = unescape(req.body.url.trim());
 				if (req.body.nickname) req.body.nickname = unescape(req.body.nickname.trim());
+				if (req.body.flag_sendstats) req.body.flag_sendstats = req.body.flag_sendstats === 'true';
 				if (req.body.type) req.body.type = +req.body.type;
 				//Now we add user
 				let avatar: any;
