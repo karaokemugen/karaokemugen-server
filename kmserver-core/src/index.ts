@@ -20,6 +20,7 @@ import sentry from './utils/sentry';
 import {buildKMExplorer} from './services/kmexplorer';
 import pjson from '../../package.json';
 import { promoteToken } from './dao/remote';
+import { initGitRepos } from './services/git';
 
 const appPath = join(__dirname,'../../');
 const dataPath = resolve(appPath, 'app/');
@@ -148,6 +149,7 @@ async function main() {
 
 	inits.push(initShortener());
 	inits.push(initFrontend(port));
+	initGitRepos();
 	if (conf.Mail.Enabled) initMailer();
 	await Promise.all(inits);
 	logger.info('Karaoke Mugen Server is READY', {service: 'Launcher'});

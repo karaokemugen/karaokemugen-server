@@ -27,7 +27,7 @@ export const defaults: Config = {
 			},
 			git: {
 				Linux: '/usr/bin/git',
-				Windows: 'C:/Program Files/Git/bin/git.exe',
+				Windows: 'C:/Program Files/Git/cmd/git.exe',
 				OSX: 'git'
 			}
 		},
