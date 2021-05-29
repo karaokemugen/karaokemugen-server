@@ -2,17 +2,17 @@ import execa from 'execa';
 import {version} from '../package.json';
 
 // Create the release if it doesn't exists
-execa.commandSync(`yarn sentry-cli --auth-token ${process.env.SENTRYTOKEN} releases --org karaoke-mugen -p km-server new ${version.number}`,
+execa.commandSync(`yarn sentry-cli --auth-token ${process.env.SENTRYTOKEN} releases --org karaoke-mugen -p km-server new ${version}`,
 	{stdout: 'inherit', stderr: 'inherit'});
 
-execa.command(`yarn sentry-cli --auth-token ${process.env.SENTRYTOKEN} releases --org karaoke-mugen -p km-server files ${version.number} upload-sourcemaps --no-rewrite dist/`,
+execa.command(`yarn sentry-cli --auth-token ${process.env.SENTRYTOKEN} releases --org karaoke-mugen -p km-server files ${version} upload-sourcemaps --no-rewrite dist/`,
 	{stdout: 'inherit', stderr: 'inherit'});
 
-execa.command(`yarn sentry-cli --auth-token ${process.env.SENTRYTOKEN} releases --org karaoke-mugen -p km-server set-commits --commit Karaoke\\ Mugen\\ /\\ Karaoke\\ Mugen\\ Server@${process.env.CI_COMMIT_SHA} ${version.number}`,
+execa.command(`yarn sentry-cli --auth-token ${process.env.SENTRYTOKEN} releases --org karaoke-mugen -p km-server set-commits --commit Karaoke\\ Mugen\\ /\\ Karaoke\\ Mugen\\ Server@${process.env.CI_COMMIT_SHA} ${version}`,
 	{stdout: 'inherit', stderr: 'inherit'});
 
 // If tagged, deploy release
 if (process.env.CI_COMMIT_TAG) {
-	execa.command(`yarn sentry-cli --auth-token ${process.env.SENTRYTOKEN} releases --org karaoke-mugen -p km-server deploys ${version.number} new -e release`,
+	execa.command(`yarn sentry-cli --auth-token ${process.env.SENTRYTOKEN} releases --org karaoke-mugen -p km-server deploys ${version} new -e release`,
 		{stdout: 'inherit', stderr: 'inherit'});
 }
