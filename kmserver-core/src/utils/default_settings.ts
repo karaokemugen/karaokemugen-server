@@ -32,11 +32,9 @@ export const defaults: Config = {
 				Enabled: true,
 				Online: false,
 				Git: null,
+				BaseDir: 'data/',
 				Path: {
-					Karas: ['data/karaokes'],
-					Lyrics: ['data/lyrics'],
 					Medias: ['data/medias'],
-					Tags: ['data/tags']
 				}
 			}
 		],

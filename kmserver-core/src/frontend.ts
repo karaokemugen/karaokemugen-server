@@ -88,7 +88,7 @@ export function initFrontend(listenPort: number) {
 	//KMServer
 	// If static serve is enabled, we're serving all files from KMServer instead of Apache/nginx
 	if (state.opt.staticServe) {
-		KMServer.use('/downloads/karaokes', express.static(resolvedPathRepos('Karas')[0]));
+		KMServer.use('/downloads/karaokes', express.static(resolvedPathRepos('Karaokes')[0]));
 		KMServer.use('/downloads/lyrics', express.static(resolvedPathRepos('Lyrics')[0]));
 		KMServer.use('/downloads/medias', express.static(resolvedPathRepos('Medias')[0]));
 		KMServer.use('/downloads/tags', express.static(resolvedPathRepos('Tags')[0]));

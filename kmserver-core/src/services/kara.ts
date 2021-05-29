@@ -12,7 +12,7 @@ import { createImagePreviews } from '../lib/utils/previews';
 import logger from '../lib/utils/logger';
 import { getConfig, resolvedPathRepos } from '../lib/utils/config';
 import { gitlabPostNewIssue } from '../lib/services/gitlab';
-import { DownloadBundle, KaraMetaFile, MetaFile, ShinDownloadBundle, TagMetaFile } from '../lib/types/downloads';
+import { DownloadBundleServer, KaraMetaFile, MetaFile, ShinDownloadBundle, TagMetaFile } from '../lib/types/downloads';
 import sentry from '../utils/sentry';
 import { Token } from '../lib/types/user';
 import { TagFile } from '../lib/types/tag';
@@ -169,7 +169,7 @@ export async function aggregateKaras(kids: string[]): Promise<ShinDownloadBundle
 		}
 		karas.push({
 			file: kara.karafile,
-			data: JSON.parse(await fs.readFile(resolve(resolvedPathRepos('Karas')[0], kara.karafile), 'utf-8'))
+			data: JSON.parse(await fs.readFile(resolve(resolvedPathRepos('Karaokes')[0], kara.karafile), 'utf-8'))
 		});
 	}
 	return {
@@ -179,7 +179,7 @@ export async function aggregateKaras(kids: string[]): Promise<ShinDownloadBundle
 	};
 }
 
-export async function getRawKara(kid: string): Promise<DownloadBundle> {
+export async function getRawKara(kid: string): Promise<DownloadBundleServer> {
 	try {
 		const kara = (await selectAllKaras({
 			q: `k:${kid}`
@@ -188,7 +188,7 @@ export async function getRawKara(kid: string): Promise<DownloadBundle> {
 		// Create a set of tagfiles to get only unique tagfiles.
 		const tagfiles = new Set(kara.tagfiles);
 		const files = {
-			kara: resolve(resolvedPathRepos('Karas')[0], kara.karafile),
+			kara: resolve(resolvedPathRepos('Karaokes')[0], kara.karafile),
 			tags: Array.from(tagfiles).map(f => {
 				return f
 					? resolve(resolvedPathRepos('Tags')[0], f)
@@ -201,7 +201,6 @@ export async function getRawKara(kid: string): Promise<DownloadBundle> {
 		const data = {
 			kara: {file: kara.karafile, data: JSON.parse(await fs.readFile(files.kara, 'utf-8'))},
 			lyrics: {file: kara.subfile || null, data: lyricsData},
-			series: [],
 			tags: [],
 		};
 		for (const tagFile of files.tags) {

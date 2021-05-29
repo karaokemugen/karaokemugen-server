@@ -93,7 +93,8 @@ export interface Config {
 			Intros?: string[],
 			Outros?: string[],
 			Encores?: string[],
-			Sponsors?: string[]
+			Sponsors?: string[],
+			StreamFiles?: string,
 		}
 	},
 	Mail: {
