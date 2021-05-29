@@ -1,5 +1,5 @@
 import execa from 'execa';
-import {version} from '../kmserver-core/src/version';
+import {version} from '../package.json';
 
 // Create the release if it doesn't exists
 execa.commandSync(`yarn sentry-cli --auth-token ${process.env.SENTRYTOKEN} releases --org karaoke-mugen -p km-server new ${version.number}`,
