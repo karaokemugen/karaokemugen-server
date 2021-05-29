@@ -75,6 +75,11 @@ export interface Config {
 				OSX: string,
 				Linux: string,
 				Windows: string
+			},
+			git: {
+				OSX: string,
+				Linux: string,
+				Windows: string
 			}
 		},
 		Repositories: Repository[]
@@ -115,6 +120,7 @@ export interface Config {
 
 export interface BinariesConfig {
 	ffmpeg: string
+	git: string
 }
 
 interface GitlabTemplate {

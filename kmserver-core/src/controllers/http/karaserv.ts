@@ -7,6 +7,7 @@ import {getConfig} from '../../lib/utils/config';
 import { postSuggestionToKaraBase } from '../../lib/services/gitlab';
 import { optionalAuth } from '../middlewares/auth';
 import { selectAllKaras } from '../../dao/kara';
+import { getGitDiff, getLatestGitCommit } from '../../services/git';
 
 export default function KSController(router: Router) {
 	router.route('/karas/lastUpdate')
@@ -149,7 +150,7 @@ export default function KSController(router: Router) {
 			}
 		});
 	router.route('/karas/tags/:tid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})')
-		.get(async (req, res) => {
+		.get(async (req: any, res) => {
 			try {
 				const tag = await getTag(req.params.tid, false);
 				res.json(tag);
@@ -210,7 +211,13 @@ export default function KSController(router: Router) {
 	router.route('/karas/repository')
 		.get(async (_req, res) => {
 			res.status(200).json({
-				Git: getConfig().System.Repositories[0].Git
+				Git: getConfig().System.Repositories[0].Git,
+				FullArchiveURL: getConfig().System.Repositories[0].FullArchiveURL,
+				latestCommit: await getLatestGitCommit()
 			});
+		});
+	router.route('/karas/repository/diff')
+		.get(async (req: any, res) => {
+			res.status(200).send(await getGitDiff(req.query.commit));
 		});
 }

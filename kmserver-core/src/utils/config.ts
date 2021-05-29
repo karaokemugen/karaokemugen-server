@@ -16,6 +16,7 @@ async function checkBinaries(config: Config): Promise<BinariesConfig> {
 	const binariesPath = configuredBinariesForSystem(config);
 	let requiredBinariesChecks = [];
 	requiredBinariesChecks.push(asyncRequired(binariesPath.ffmpeg));
+	requiredBinariesChecks.push(asyncRequired(binariesPath.git));
 
 	try {
 		await Promise.all(requiredBinariesChecks);
@@ -32,14 +33,17 @@ function configuredBinariesForSystem(config: Config): BinariesConfig {
 	case 'win32':
 		return {
 			ffmpeg: resolve(getState().appPath, config.System.Binaries.ffmpeg.Windows),
+			git: resolve(getState().appPath, config.System.Binaries.git.Windows)
 		};
 	case 'darwin':
 		return {
 			ffmpeg: resolve(getState().appPath, config.System.Binaries.ffmpeg.OSX),
+			git: resolve(getState().appPath, config.System.Binaries.git.OSX),
 		};
 	default:
 		return {
-			ffmpeg: resolve(getState().appPath, config.System.Binaries.ffmpeg.Linux)
+			ffmpeg: resolve(getState().appPath, config.System.Binaries.ffmpeg.Linux),
+			git: resolve(getState().appPath, config.System.Binaries.git.Linux)
 		};
 	}
 }

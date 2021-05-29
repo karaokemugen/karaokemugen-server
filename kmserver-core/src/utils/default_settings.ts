@@ -24,20 +24,14 @@ export const defaults: Config = {
 				Linux: '/usr/bin/ffmpeg',
 				Windows: 'ffmpeg.exe',
 				OSX: 'ffmpeg'
+			},
+			git: {
+				Linux: '/usr/bin/git',
+				Windows: 'C:/Program Files/Git/bin/git.exe',
+				OSX: 'git'
 			}
 		},
-		Repositories: [
-			{
-				Name: 'Local',
-				Enabled: true,
-				Online: false,
-				Git: null,
-				BaseDir: 'data/',
-				Path: {
-					Medias: ['data/medias'],
-				}
-			}
-		],
+		Repositories: [],
 		Path: {
 			Temp: 'temp',
 			Import: 'inbox',

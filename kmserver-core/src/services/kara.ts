@@ -16,6 +16,7 @@ import { DownloadBundleServer, KaraMetaFile, MetaFile, ShinDownloadBundle, TagMe
 import sentry from '../utils/sentry';
 import { Token } from '../lib/types/user';
 import { TagFile } from '../lib/types/tag';
+import { updateGit } from './git';
 
 export async function getBaseStats() {
 	try {
@@ -46,6 +47,11 @@ export async function getAllYears() {
 		sentry.error(err);
 		throw err;
 	}
+}
+
+export async function updateRepo() {
+	await updateGit();
+	await generate();
 }
 
 export async function generate() {
