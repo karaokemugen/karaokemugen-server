@@ -2512,7 +2512,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=10.0.0, @types/node@npm:^15.6.1":
+"@types/node@npm:*, @types/node@npm:>=10.0.0":
   version: 15.6.1
   resolution: "@types/node@npm:15.6.1"
   checksum: 8ed16d4f7404203d3aade0b73e58c969fab4a721cfe637eff9b739f6b25a35e33dfe9e0961b9ac5994d629302faa977f8ee8931d09187a136875f966332cc552
@@ -2523,6 +2523,13 @@ __metadata:
   version: 12.20.12
   resolution: "@types/node@npm:12.20.12"
   checksum: 9e4ef12f52bbf6c1df7534e750c28edd7b49ac0793e2a8cf0ddfe02fcdc68740ebc349a727b8c584e60006ec63e6c9fa5123210ab52898e69b91835f1ac38afd
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^14":
+  version: 14.17.1
+  resolution: "@types/node@npm:14.17.1"
+  checksum: 81cc34ecd6e21ed723f00e55f042ccc1e1bde306122fa73aab9437584339fe1dd0c10e00ee691c99f0b9ca1ebcc9d6f0d35ca78356f7d0d580eaf3e93bd48718
   languageName: node
   linkType: hard
 
@@ -8745,7 +8752,7 @@ fsevents@~2.3.1:
     "@types/lodash.merge": ^4.6.6
     "@types/lodash.transform": ^4.6.6
     "@types/multer": ^1.4.5
-    "@types/node": ^15.6.1
+    "@types/node": ^14
     "@types/nodemailer": ^6.4.2
     "@types/pg": ^8.6.0
     "@types/pg-copy-streams": ^1.2.1
