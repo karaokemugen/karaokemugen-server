@@ -16,9 +16,7 @@ export async function updateGit() {
 }
 
 export async function getGitDiff(commit: string): Promise<string> {
-	const latestCommit = await getLatestGitCommit();
-	const diff = await gitDiff(commit, latestCommit, resolve(getState().dataPath, getConfig().System.Repositories[0].BaseDir));
-	return diff;
+	return gitDiff(commit, 'HEAD', resolve(getState().dataPath, getConfig().System.Repositories[0].BaseDir));
 }
 
 export async function initGitRepos() {
