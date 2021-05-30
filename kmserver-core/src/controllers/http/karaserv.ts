@@ -8,6 +8,7 @@ import { postSuggestionToKaraBase } from '../../lib/services/gitlab';
 import { optionalAuth } from '../middlewares/auth';
 import { selectAllKaras } from '../../dao/kara';
 import { getGitDiff, getLatestGitCommit } from '../../services/git';
+import { RepositoryManifest } from '../../lib/types/repo';
 
 export default function KSController(router: Router) {
 	router.route('/karas/lastUpdate')
@@ -213,8 +214,8 @@ export default function KSController(router: Router) {
 			res.status(200).json({
 				Git: getConfig().System.Repositories[0].Git,
 				FullArchiveURL: getConfig().System.Repositories[0].FullArchiveURL,
-				latestCommit: await getLatestGitCommit()
-			});
+				LatestCommit: await getLatestGitCommit()
+			} as RepositoryManifest);
 		});
 	router.route('/karas/repository/diff')
 		.get(async (req: any, res) => {
