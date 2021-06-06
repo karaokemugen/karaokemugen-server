@@ -25,7 +25,7 @@
 						<font-awesome-icon :icon="['fas', 'closed-captioning']" :fixed-width="true" />
 						{{ $t('modal.download.subtitles', {format: subtitlesExtension}) }}
 					</a>
-					<a :href="mediaUrl" class="button" download @click="closeModal">
+					<a v-if="liveURL" :href="mediaUrl" class="button" download @click="closeModal">
 						<font-awesome-icon :icon="['fas', 'file-video']" :fixed-width="true" />
 						{{ $t('modal.download.media', {format: mediaExtension}) }}
 					</a>
@@ -45,7 +45,8 @@
 	import { ShortTag } from '~/types/tags';
 
 	interface VState {
-		explorerHost?: string
+		explorerHost?: string,
+		liveURL?: string
 	}
 
 	export default Vue.extend({
@@ -65,7 +66,8 @@
 
 		data(): VState {
 			return {
-				explorerHost: process.env.EXPLORER_HOST
+				explorerHost: process.env.EXPLORER_HOST,
+				liveURL: process.env.LIVE_URL
 			};
 		},
 		computed: {
