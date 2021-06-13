@@ -256,10 +256,6 @@
 				object-fit: cover;
 				border-radius: 0.25rem;
 			}
-
-			img:last-child {
-				display: none;
-			}
 		}
 	}
 
