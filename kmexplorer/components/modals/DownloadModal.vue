@@ -25,7 +25,7 @@
 						<font-awesome-icon :icon="['fas', 'closed-captioning']" :fixed-width="true" />
 						{{ $t('modal.download.subtitles', {format: subtitlesExtension}) }}
 					</a>
-					<a v-if="liveURL" :href="mediaUrl" class="button" download @click="closeModal">
+					<a v-if="liveURL && live" :href="mediaUrl" class="button" download @click="closeModal">
 						<font-awesome-icon :icon="['fas', 'file-video']" :fixed-width="true" />
 						{{ $t('modal.download.media', {format: mediaExtension}) }}
 					</a>
@@ -43,6 +43,7 @@
 	import { getSerieLanguage, getTagInLanguage } from '~/utils/tools';
 	import { DBKara } from '%/lib/types/database/kara';
 	import { ShortTag } from '~/types/tags';
+	import { tagTypes } from '~/assets/constants';
 
 	interface VState {
 		explorerHost?: string,
@@ -112,6 +113,20 @@
 			},
 			subtitlesUrl(): string {
 				return `${this.$axios.defaults.baseURL}downloads/lyrics/${this.karaoke.subfile}`;
+			},
+			live(): boolean {
+				// Loop all tags to find a tag with noLiveDownload
+				let noLiveDownload = false;
+				for (const tagType in tagTypes) {
+					if (tagType === 'years') { continue; }
+					// @ts-ignore: il est 23h27 <- ceci n'est pas une raison
+					for (const tag of this.karaoke[tagType]) {
+						if (tag.nolivedownload) {
+							noLiveDownload = true;
+						}
+					}
+				}
+				return !noLiveDownload;
 			}
 		},
 
