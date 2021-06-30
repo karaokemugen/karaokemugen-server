@@ -32,6 +32,7 @@ export default {
 		modified_at: 'Last update ',
 		download: 'Download',
 		live: 'Open in a new tab',
+		live_unavailable: 'You cannot play this karaoke in your browser. Either the video is in an unsupported format in browsers, or it has been disabled for legal reasons.',
 		lyrics: {
 			show: 'Show lyrics',
 			hide: 'Hide lyrics'

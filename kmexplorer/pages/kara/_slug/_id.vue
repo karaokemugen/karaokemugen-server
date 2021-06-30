@@ -11,6 +11,11 @@
 				<div v-else class="tile is-child">
 					<div class="box">
 						<img :src="`/previews/${karaoke.kid}.${karaoke.mediasize}.25.jpg`" alt="">
+						<div class="message is-info">
+							<div class="message-body">
+								{{ $t('kara.live_unavailable') }}
+							</div>
+						</div>
 					</div>
 				</div>
 				<div v-show="!liveOpened" v-if="!mp3" class="tile is-child">

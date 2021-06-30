@@ -32,6 +32,7 @@ export default {
 		modified_at: 'Dernière modification ',
 		download: 'Télécharger',
 		live: 'Ouvrir dans un nouvel onglet',
+		live_unavailable: 'Vous ne pouvez pas lire ce karaoké sur votre navigateur. La vidéo est soit dans un format non supporté par les navigateurs ou indisponible pour des raisons légales.',
 		lyrics: {
 			show: 'Afficher les paroles',
 			hide: 'Masquer les paroles'
