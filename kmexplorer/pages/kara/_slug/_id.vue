@@ -175,4 +175,13 @@
 			padding: 1em 0;
 		}
 	}
+
+	.message.is-info {
+		background-color: #3771dc;
+		.message-body {
+			border-color: #375a7f;
+			color: #fff;
+		}
+	}
+
 </style>
