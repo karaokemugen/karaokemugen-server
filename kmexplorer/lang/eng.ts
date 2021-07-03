@@ -310,7 +310,7 @@ export default {
 			label: 'Add this repository to your Karaoke Mugen app!',
 			desc: 'You can add this repository to your Karaoke Mugen app by clicking on the button below. If Karaoke Mugen is not installed on your computer, this button will have no effect.',
 			download: 'The application can be downloaded here.',
-			manual: 'To manually add this repository, open your Karaoke Mugen application, add the {repository} repository to it, checking "{online}" then go to the downloads manager',
+			manual: 'To manually add this repository, open your Karaoke Mugen application, add the {repository} repository to it, checking "{online}".',
 			online: 'Online',
 			add: 'Add',
 			cancel: 'Cancel'

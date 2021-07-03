@@ -310,7 +310,7 @@ export default {
 			label: 'Ajouter ce dépôt à votre application Karaoke Mugen !',
 			desc: 'Vous pouvez ajouter ce dépôt à votre application Karaoke Mugen en cliquant sur le bouton ci-dessous. Si Karaoke Mugen n\'est pas installé sur votre ordinateur, ce bouton n\'aura aucun effet.',
 			download: 'L\'application est téléchargeable ici.',
-			manual: 'Pour ajouter manuellement ce dépôt, ouvrez votre application Karaoke Mugen, ajoutez-y le dépôt {repository}, cochant la case "{online}" puis rendez-vous dans le gestionnaire de téléchargements.',
+			manual: 'Pour ajouter manuellement ce dépôt, ouvrez votre application Karaoke Mugen, ajoutez-y le dépôt {repository}, cochant la case "{online}".',
 			online: 'En ligne',
 			add: 'Ajouter',
 			cancel: 'Annuler'
