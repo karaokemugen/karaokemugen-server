@@ -13,15 +13,10 @@ INSERT INTO users(
 	location,
 	flag_sendstats,
 	password_last_modified_at,
-<<<<<<< HEAD
-	last_login_at
-) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW(), NOW())
-=======
 	last_login_at,
 	flag_public,
 	flag_displayfavorites
 ) VALUES($1, $2, $3, $4, $5, $6, $7, $8, NOW(), NOW(), true, false)
->>>>>>> 6bcec3f (Added new profile options to backend)
 `;
 
 export const selectUser = `
