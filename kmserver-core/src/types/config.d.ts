@@ -39,7 +39,6 @@ export interface Config {
 		Enabled: boolean
 		Host: string
 		Tagline: string
-		Path: string
 		LiveURL: string
 		MediaLinks: boolean
 		Import: boolean
