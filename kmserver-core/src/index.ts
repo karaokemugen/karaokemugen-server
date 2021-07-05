@@ -6,7 +6,6 @@ import {initFrontend} from './frontend';
 import cli from 'commander';
 import detect from 'detect-port';
 import {initDB} from './dao/database';
-import {initShortener} from './services/shortener';
 import {createUser, changePassword, initUsers} from './services/user';
 import sudoBlock from 'sudo-block';
 import {asyncCheckOrMkdir} from './lib/utils/files';
@@ -59,7 +58,7 @@ main().catch(err => {
 });
 
 async function main() {
-	if (!process.env.ROOT_OVERRIDE) sudoBlock('You should not run Karaoke Mugen Server with root permissions, it\'s dangerous.');
+	if (!process.env.ROOT_OVERRIDE && process.platform !== 'win32') sudoBlock('You should not run Karaoke Mugen Server with root permissions, it\'s dangerous.');
 	const argv = parseArgs();
 	setState({
 		appPath: appPath,
@@ -147,7 +146,6 @@ async function main() {
 	// Clean temp periodically of files older than two hours
 	setInterval(findRemoveSync.bind(this, resolve(dataPath, conf.System.Path.Temp), {age: {seconds: 7200}}), 2 * 60 * 60 * 1000);
 
-	inits.push(initShortener());
 	inits.push(initFrontend(port));
 	initGitRepos();
 	if (conf.Mail.Enabled) initMailer();
