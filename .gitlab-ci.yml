@@ -24,6 +24,7 @@ update_sentry:
       - kmexplorer/.nuxt
   script:
     - yarn install
+    - yarn workspace kmserver-core add --dev @sentry/cli
     - yarn build:core
     - yarn workspace kmserver-core sentry:sourcemaps
   only:
