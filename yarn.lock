@@ -8423,7 +8423,7 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"is-docker@npm:^2.2.1":
+"is-docker@npm:^2.0.0, is-docker@npm:^2.2.1":
   version: 2.2.1
   resolution: "is-docker@npm:2.2.1"
   bin:
@@ -8594,10 +8594,10 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"is-root@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "is-root@npm:3.0.0"
-  checksum: 4b9f39193951a701ce3b2957b83ce00a80455971b09d6e99ca829c7b9504bf2e0f26b4a1586dd066cb519a92dfefce5f447f3ecc61cf69e7c861826c48682317
+"is-root@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "is-root@npm:2.1.0"
+  checksum: 37eea0822a2a9123feb58a9d101558ba276771a6d830f87005683349a9acff15958a9ca590a44e778c6b335660b83e85c744789080d734f6081a935a4880aee2
   languageName: node
   linkType: hard
 
@@ -9089,7 +9089,7 @@ fsevents@~2.3.1:
     nodemailer: ^6.6.2
     nuxt: ^2.15.6
     os-locale: ^5.0.0
-    p-cancelable: ^3.0.0
+    p-cancelable: ^2
     pg: ^8.6.0
     pg-copy-streams: ^5.1.1
     postgrator: ^4.1.1
@@ -9098,7 +9098,7 @@ fsevents@~2.3.1:
     sanitize-filename: ^1.6.3
     slugify: ^1.5.3
     socket.io: ^4.1.2
-    sudo-block: 4.0.0
+    sudo-block: ^3
     systeminformation: ^5.7.7
     toyunda2ass: ^1.0.12
     ts-loader: ^9
@@ -10602,17 +10602,10 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"p-cancelable@npm:^2.0.0":
+"p-cancelable@npm:^2, p-cancelable@npm:^2.0.0":
   version: 2.1.1
   resolution: "p-cancelable@npm:2.1.1"
   checksum: 3dba12b4fb4a1e3e34524535c7858fc82381bbbd0f247cc32dedc4018592a3950ce66b106d0880b4ec4c2d8d6576f98ca885dc1d7d0f274d1370be20e9523ddf
-  languageName: node
-  linkType: hard
-
-"p-cancelable@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "p-cancelable@npm:3.0.0"
-  checksum: 2b5ae34218f9c2cf7a7c18e5d9a726ef9b165ef07e6c959f6738371509e747334b5f78f3bcdeb03d8a12dcb978faf641fd87eb21486ed7d36fb823b8ddef3219
   languageName: node
   linkType: hard
 
@@ -13748,14 +13741,14 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"sudo-block@npm:4.0.0":
-  version: 4.0.0
-  resolution: "sudo-block@npm:4.0.0"
+"sudo-block@npm:^3":
+  version: 3.0.0
+  resolution: "sudo-block@npm:3.0.0"
   dependencies:
-    chalk: ^4.1.1
-    is-docker: ^2.2.1
-    is-root: ^3.0.0
-  checksum: bfef2e3d6ffc1c40ced656a46560449a07ce1b09b516ee2d699383e2b0726a298eefa09ad1f14c642b1fbe1fbb79c9323e63e405a1f65f178189d4da03e33eee
+    chalk: ^2.4.2
+    is-docker: ^2.0.0
+    is-root: ^2.1.0
+  checksum: 1a6902fcb0cbd8aaf53466fbab200fcdf9c6aeced2b5158940e267b074da6c0d88a578a9122da1d08cc42092b7da30804a52359a2ef059cf9996ef78f70b6c24
   languageName: node
   linkType: hard
 
