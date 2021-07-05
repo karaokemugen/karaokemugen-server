@@ -95,8 +95,8 @@ export function initFrontend(listenPort: number) {
 	API.use('/api', api());
 	if (conf.Users.Enabled) API.use('/avatars', express.static(resolvedPathAvatars()));
 	// Redirect old base route to root
-	app.get('/base/*', (req, res) => {		
-		res.redirect(301, req.url.replace(/base\//g, ''));
+	app.get('/base*', (req, res) => {
+		res.redirect(301, req.url.replace(/^\/base\/?/, '/'));
 	});
 	// KMExplorer
 	if (conf.KaraExplorer.Enabled) {
@@ -108,7 +108,7 @@ export function initFrontend(listenPort: number) {
 			KMExplorer.use(nuxt.render);
 		});
 	}
-	
+
 	// Load static assets from static folder (mostly error pages)
 	app.use('/static', express.static(resolve(state.appPath, 'kmserver-core/static')));
 
