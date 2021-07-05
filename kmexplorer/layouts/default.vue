@@ -396,10 +396,10 @@
 					</p>
 					<ul class="menu-list">
 						<li>
-							<a v-if="loggedIn && user" aria-label="Profile" @click.prevent="$toast.success($t('toast.FUTURE_PROFILES'))">
+							<nuxt-link v-if="loggedIn && user" :to="`/users/${user.login}`" aria-label="Profile">
 								<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
 								{{ user.nickname }}
-							</a>
+							</nuxt-link>
 							<a v-if="loggedIn" aria-label="Edit profile" @click.prevent="modal.profile = true">
 								<font-awesome-icon :icon="['fas', 'edit']" :fixed-width="true" />
 								{{ $t('menu.profile') }}
