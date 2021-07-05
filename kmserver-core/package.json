@@ -17,7 +17,7 @@
 		"sentry:sourcemaps": "ts-node -P tsconfig.json ../util/sentryUpdateReleases.ts"
 	},
 	"devDependencies": {
-		"@nuxt/types": "^2.15.6",
+		"@nuxt/types": "^2.15.7",
 		"@types/compression": "^1.7.0",
 		"@types/detect-port": "^1.3.0",
 		"@types/fs-extra": "^9.0.11",
@@ -29,7 +29,7 @@
 		"@types/lodash.merge": "^4.6.6",
 		"@types/lodash.transform": "^4.6.6",
 		"@types/multer": "^1.4.6",
-		"@types/node": "^14",
+		"@types/node": "^14.17.4",
 		"@types/nodemailer": "^6.4.2",
 		"@types/pg": "^8.6.0",
 		"@types/pg-copy-streams": "^1.2.1",
@@ -42,7 +42,7 @@
 		"cross-env": "^7.0.3",
 		"eslint": "^7.30.0",
 		"rimraf": "^3.0.2",
-		"ts-loader": "^8",
+		"ts-loader": "^8.3.0",
 		"ts-node": "^10.0.0",
 		"typescript": "^4.3.5"
 	},
@@ -83,9 +83,9 @@
 		"lodash.transform": "^4.6.0",
 		"multer": "^1.4.2",
 		"nodemailer": "^6.6.2",
-		"nuxt": "^2.15.6",
+		"nuxt": "^2.15.7",
 		"os-locale": "^5.0.0",
-		"p-cancelable": "^2",
+		"p-cancelable": "^2.1.1",
 		"pg": "^8.6.0",
 		"pg-copy-streams": "^5.1.1",
 		"postgrator": "^4.1.1",
