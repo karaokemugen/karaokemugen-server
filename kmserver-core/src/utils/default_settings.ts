@@ -71,7 +71,6 @@ export const defaults: Config = {
 		Enabled: true,
 		Host: 'localhost',
 		Tagline: 'Explore! Find! Sing!',
-		Path: '/base/',
 		LiveURL: 'https://live.karaokes.moe',
 		MediaLinks: true,
 		Import: true,
@@ -344,11 +343,7 @@ export let NuxtConfig: NuxtConfigType = {
 	toast: {
 		position: 'top-center',
 		duration: '2500'
-	},
-
-	router: {
-		base: '/base/'
-	},
+	},	
 
 	css: [
 		'~/assets/main.scss',
@@ -370,7 +365,7 @@ export let NuxtConfig: NuxtConfigType = {
 				file: 'fre.ts'
 			}
 		],
-		baseUrl: 'http://localhost:1350/base',
+		baseUrl: 'http://localhost:1350/',
 		seo: false,
 		lazy: true,
 		defaultLocale: 'en',

@@ -46,6 +46,7 @@ Switch to the newly created database and enable the `unaccent` extension.
 ```SQL
 \c karaokemugen_server
 CREATE EXTENSION unaccent;
+CREATE EXTENSION pgcrypto;
 ```
 
 Karaoke Mugen Server will create tables and such on first run.
@@ -76,8 +77,7 @@ API:
   Host: localhost
 KaraExplorer:
   Port: 1351
-  Host: localhost
-  Path: /base
+  Host: localhost  
 ```
 
 Explanations :
