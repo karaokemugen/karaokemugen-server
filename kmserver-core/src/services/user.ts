@@ -172,9 +172,8 @@ export async function removeUser(username: string) {
 
 export async function getAllUsers(opts: any = {}) {
 	try {
-		const users = await selectAllUsers();
+		const users = (await selectAllUsers()).filter(u => u.flag_public && opts.public);
 		if (!opts.public) return users;
-		users = users.filter(u => u.flag_public);
 		for (const index in users) {
 			delete users[index].password;
 			delete users[index].email;
