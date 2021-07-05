@@ -24,10 +24,7 @@ function generateConfig(production: boolean = false) {
 			EXPLORER_TAGLINE: conf.KaraExplorer.Tagline,
 			BASE_URL: `http${conf.KaraExplorer.Secure?'s':''}://${conf.KaraExplorer.Host}${
 				(production || conf.API.Port === 443 || conf.API.Port === 80)?'':`:${conf.Frontend.Port}`}/`
-		},
-		router: {
-			base: '/'
-		},
+		},		
 		axios: {
 			baseURL: `http${conf.API.Secure?'s':''}://${conf.API.Host}${
 				(production || conf.API.Port === 443 || conf.API.Port === 80)?'':`:${conf.API.Port}`}/`,

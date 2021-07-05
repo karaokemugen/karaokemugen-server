@@ -343,11 +343,7 @@ export let NuxtConfig: NuxtConfigType = {
 	toast: {
 		position: 'top-center',
 		duration: '2500'
-	},
-
-	router: {
-		base: '/'
-	},
+	},	
 
 	css: [
 		'~/assets/main.scss',
