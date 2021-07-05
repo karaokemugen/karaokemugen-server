@@ -1,7 +1,28 @@
 <template>
 	<div class="tile is-ancestor">
 		<div v-if="user" class="tile is-parent is-12">
-			{{ user.nickname }}
+			<div class="box">
+				<h2>{{ user.nickname }}</h2>
+				<p>{{ user.bio }}</p>
+				<ul>
+					<li v-if="user.social_networks.twitter">
+						<font-awesome-icon :icon="['fab', 'twitter']" :fixed-width="true" />
+						{{ user.social_networks.twitter }}
+					</li>
+					<li v-if="user.social_networks.instagram">
+						<font-awesome-icon :icon="['fab', 'instagram']" :fixed-width="true" />
+						{{ user.social_networks.instagram }}
+					</li>
+					<li v-if="user.social_networks.discord">
+						<font-awesome-icon :icon="['fab', 'discord']" :fixed-width="true" />
+						{{ user.social_networks.discord }}
+					</li>
+					<li v-if="user.social_networks.twitch">
+						<font-awesome-icon :icon="['fab', 'twitch']" :fixed-width="true" />
+						 {{ user.social_networks.twitter }}
+					</li>
+				</ul>
+			</div>
 		</div>
 
 		<loading-nanami v-if="$fetchState.pending" class="tile is-parent is-12" />
@@ -25,7 +46,9 @@
 		},
 
 		data(): VState {
-			return {};
+			return {
+				user: {}
+			};
 		},
 
 		async fetch() {
