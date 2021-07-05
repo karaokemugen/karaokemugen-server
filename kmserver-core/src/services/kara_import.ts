@@ -8,7 +8,7 @@ import { promises as fs } from 'fs';
 import { copy, mkdirp } from 'fs-extra';
 import {getConfig, resolvedPathImport, resolvedPathTemp, resolvedPathRepos} from '../lib/utils/config';
 import {duration} from '../lib/utils/date';
-import { generateKara, validateNewKara } from '../lib/services/kara_creation';
+import { generateKara, validateNewKara } from '../lib/services/karaCreation';
 import { NewKara, Kara } from '../lib/types/kara';
 import { gitlabPostNewIssue } from '../lib/services/gitlab';
 import { asyncExists, asyncMove } from '../lib/utils/files';
