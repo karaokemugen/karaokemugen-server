@@ -355,8 +355,6 @@ export default {
 		download: {
 			label: 'Télécharger le karaoké',
 			cancel: 'Annuler',
-			add: 'Télécharger dans l\'application',
-			add_desc: 'Vous devez avoir l\'application Karaoke Mugen installée sur votre ordinateur.',
 			karabundle: 'Télécharger les données (.json)',
 			subtitles: 'Télécharger les paroles (.{format})',
 			media: 'Télécharger le média (.{format})'

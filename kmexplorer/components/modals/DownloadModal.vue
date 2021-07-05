@@ -8,15 +8,6 @@
 		<section class="modal-card-body">
 			<div class="columns">
 				<div class="column">
-					<a :href="kmAppUrl" class="button is-success">
-						<font-awesome-icon :icon="['fas', 'cloud-download-alt']" :fixed-width="true" />
-						{{ $t('modal.download.add') }}
-					</a>
-					<label class="label">
-						{{ $t('modal.download.add_desc') }}
-					</label>
-				</div>
-				<div class="column">
 					<a :href="bundleUrl" class="button" :download="`${serieSinger.name} - ${karaoke.title}.karabundle.json`" @click="closeModal">
 						<font-awesome-icon :icon="['fas', 'file-export']" :fixed-width="true" />
 						{{ $t('modal.download.karabundle') }}
@@ -148,8 +139,12 @@
 		font-weight: bold;
 	}
 
-	.column a {
-		margin: 0.25em;
+	.column {
+		flex-direction: column;
+		display: flex;
+		a {
+			margin: 0.25em;
+		}
 	}
 
 </style>

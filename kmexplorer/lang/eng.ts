@@ -355,8 +355,6 @@ export default {
 		download: {
 			label: 'Download the karaoke',
 			cancel: 'Cancel',
-			add: 'Add to application',
-			add_desc: 'You must have the Karaoke Mugen application installed on your computer.',
 			karabundle: 'Download data (.json)',
 			subtitles: 'Download lyrics (.{format})',
 			media: 'Download media (.{format})'
