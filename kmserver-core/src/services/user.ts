@@ -131,7 +131,7 @@ export async function findUserByName(username: string, opts: UserOptions = {}) {
 		if (!username) throw('No user provided');
 		username = username.toLowerCase();
 		const user = await selectUser('pk_login', username);
-		if (!user) return false;
+		if (!user) return user;
 		user.password_last_modified_at = new Date(user.password_last_modified_at);
 		if (opts.public) {
 			// This is not the user requesting his own data, but the public, we check if his flag_public is set.
