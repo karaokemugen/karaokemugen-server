@@ -62,7 +62,7 @@ export async function updateUser(user: User) {
 		user.flag_sendstats,
 		user.flag_public,
 		user.flag_displayfavorites,
-		user.social_networks,
+		JSON.stringify(user.social_networks),
 		user.banner,
 		user.login
 	]);

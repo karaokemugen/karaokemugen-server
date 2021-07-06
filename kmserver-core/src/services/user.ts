@@ -280,18 +280,23 @@ export async function changePassword(username: string, password: string) {
 	}
 }
 
-export async function editUser(username: string, user: User, avatar: Express.Multer.File, token: Token) {
+export async function editUser(username: string, user: User, avatar: Express.Multer.File, token: Token, patch = false) {
 	try {
 		if (!username) throw('No user provided');
 		username = username.toLowerCase();
 		const currentUser = await findUserByName(username, {password: true});
 		if (!currentUser) throw 'User unknown';
+		// Patch allows clients to send partial payloads
+		if (patch) user = {...currentUser, ...user};
 		user.login = username;
 		if (!user.type) user.type = currentUser.type;
 		if (!user.bio) user.bio = null;
 		if (!user.url) user.url = null;
 		if (!user.email) user.email = null;
 		if (!user.location) user.location = null;
+		if (typeof user.flag_public !== 'boolean') user.flag_public = true;
+		if (typeof user.flag_displayfavorites !== 'boolean') user.flag_displayfavorites = false;
+		if (!user.social_networks) user.social_networks = {discord: '', twitter: '', instagram: '', twitch: ''};
 		if (typeof user.flag_sendstats !== 'boolean') user.flag_sendstats = currentUser.flag_sendstats;
 		if (token.username.toLowerCase() !== currentUser.login.toLowerCase() && token.role !== 'admin') throw 'Only admins can edit another user';
 		if (user.type !== currentUser.type && token.role !== 'admin') throw 'Only admins can change a user\'s type';
