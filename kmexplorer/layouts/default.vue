@@ -396,7 +396,7 @@
 					</p>
 					<ul class="menu-list">
 						<li>
-							<nuxt-link v-if="loggedIn && user" :to="`/users/${user.login}`" aria-label="Profile">
+							<nuxt-link v-if="loggedIn && user" :to="`/users/${user.login}`" active-class="is-active" aria-label="Profile">
 								<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
 								{{ user.nickname }}
 							</nuxt-link>

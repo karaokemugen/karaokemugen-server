@@ -20,7 +20,12 @@
 				</header>
 				<section v-if="mode === 'general'" class="modal-card-body">
 					<div class="profile-pic-box">
-						<img v-if="user.avatar_file" class="img" :src="user.avatarfile ? user.avatar_file : `/avatars/${user.avatar_file}`">
+						<img
+							v-if="user.avatar_file"
+							alt="Profile Picture"
+							class="img"
+							:src="user.avatar_file.startsWith('data:') ? user.avatar_file : `/avatars/${user.avatar_file}`"
+						>
 						<div class="data">
 							<span class="login">{{ `${user.login}@${apiHost}` }}</span>
 							<br>
@@ -310,7 +315,6 @@
 
 	interface DBUserEdit extends DBUser {
 		password_confirmation?: string
-		avatarfile?: Blob
 	}
 
 	interface VState {
@@ -446,29 +450,15 @@
 			},
 			async submitForm(): Promise<void> {
 				this.loading = true;
-				// Create formData
-				const formData = new FormData();
-				for (const obj of Object.entries(this.user)) {
-					// skip avatar_file and type
-					if (obj[0] === 'avatar_file' || obj[0] === 'type') {
-						continue;
-					}
-					// cast null values to an empty string
-					if (obj[1] === null) {
-						formData.set(obj[0], '');
-					} else {
-						formData.set(obj[0], obj[1] as (string|Blob));
-					}
-				}
-				const response = await this.$axios.put('/api/myaccount', formData, {
-					headers: {
-						'Content-Type': 'multipart/form-data'
-					}
+				await this.$axios.patch('/api/myaccount', {
+					...this.user, avatar_file: undefined, type: undefined
+				}).then(async (response) => {
+					// Refresh auth
+					await this.$auth.setUserToken(response.data.data.token);
+					this.closeModal();
+				}).finally(() => {
+					this.loading = false;
 				});
-				// Refresh auth
-				await this.$auth.setUserToken(response.data.data.token);
-				this.loading = false;
-				this.closeModal();
 			},
 			closeModal(): void {
 				this.$emit('close');
@@ -488,12 +478,25 @@
 				}
 			},
 			async uploadAvatar(avatar:string): Promise<void> {
-				this.user.avatarfile = new File(
+				const file = new File(
 					[await (await fetch(avatar)).blob()],
-					`avatar.${(/data:([a-z]+)\/([a-z]+)(?:,|;)/.exec(avatar) as RegExpMatchArray)[2]}`
+					`avatar.${(/data:([a-z]+)\/([a-z]+)[,;]/.exec(avatar) as RegExpMatchArray)[2]}`
 				);
 				this.user.avatar_file = avatar;
 				this.modal.avatar = false;
+				const form = new FormData();
+				form.set('avatarfile', file);
+				this.loading = true;
+				await this.$axios.patch('/api/myaccount', form, {
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					}
+				}).then(async (response) => {
+					// Refresh auth
+					await this.$auth.setUserToken(response.data.data.token);
+				}).finally(() => {
+					this.loading = false;
+				});
 			}
 		}
 	});
