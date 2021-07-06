@@ -43,11 +43,11 @@ export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 		favoritedJoinClause = 'LEFT OUTER JOIN users_favorites AS f ON f.fk_login = :username AND f.fk_kid = ak.pk_kid';
 		favoritedGroupClause = 'f.fk_kid, ';
 		filterClauses.params.username = params.username;
-		if (params.favorites) {
-			favoritedJoinClause += ' LEFT JOIN users_favorites AS fv ON fv.fk_kid = ak.pk_kid';
-			filterClauses.params.username_favs = params.favorites;
-			whereClauses = 'AND fv.fk_login = :username_favs';
-		}
+	}
+	if (params.favorites) {
+		favoritedJoinClause += ' LEFT JOIN users_favorites AS fv ON fv.fk_kid = ak.pk_kid';
+		filterClauses.params.username_favs = params.favorites;
+		whereClauses = 'AND fv.fk_login = :username_favs';
 	}
 	if (params.order === 'recent') orderClauses = 'created_at DESC, ';
 	if (params.order === 'played') {
