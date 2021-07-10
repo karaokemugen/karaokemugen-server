@@ -19,15 +19,11 @@ System:
   Repositories:
     - Name: kara.moe
       Online: false
+      Enabled: true
+      BaseDir: 'app/data/git'
       Path:
-        Karas:
-          - app/data/karaokes
-        Lyrics:
-          - app/data/lyrics
         Medias:
           - app/data/medias
-        Tags:
-          - app/data/tags
 Frontend:
   Port: 1350
 API:
