@@ -15,7 +15,7 @@
       ]
    },
    "scripts": {
-      "migrate": "cd kmserver-core && ts-node ../util/runMigrations.ts",
+      "migrate": "cd kmserver-core && yarn prestart",
       "build:core": "yarn workspace kmserver-core build",
       "build:kmexplorer": "yarn workspace kmserver-core build:kmexplorer",
       "build:all": "yarn workspace kmserver-core build && yarn workspace kmserver-core build:kmexplorer",
