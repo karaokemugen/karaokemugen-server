@@ -1,6 +1,5 @@
 import logger from './lib/utils/logger';
 import express from 'express';
-import {resolve} from 'path';
 import adminController from './controllers/http/admin';
 import authController from './controllers/http/auth';
 import KServerController from './controllers/http/karaserv';
@@ -76,11 +75,6 @@ export function initFrontend(listenPort: number) {
 			: next();
 	});
 
-	KMExplorer.get('/favicon.ico', (_, res) => {
-		res.redirect('/static/favicon.ico');
-		return;
-	});
-
 	//KMServer
 	// If static serve is enabled, we're serving all files from KMServer instead of Apache/nginx
 	if (state.opt.staticServe) {
@@ -109,9 +103,6 @@ export function initFrontend(listenPort: number) {
 		});
 	}
 
-	// Load static assets from static folder (mostly error pages)
-	app.use('/static', express.static(resolve(state.appPath, 'kmserver-core/static')));
-
 	const port = listenPort;
 	const server = createServer(app);
 
@@ -121,10 +112,6 @@ export function initFrontend(listenPort: number) {
 		app.use(vhost(`*.${conf.Remote.BaseHost}`, initRemote()));
 	}
 	userSubSocketController(ws);
-
-	// The "catchall" handler: for any request that doesn't
-	// match one above, send a 404 page.
-	app.get('*', (_, res) => res.status(404).sendFile(resolve(state.appPath, 'kmserver-core/static/404.html')));
 
 	server.listen(port, () => logger.info(`App listening on ${port}`, {service: 'App'}));
 }
