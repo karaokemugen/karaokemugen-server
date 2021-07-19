@@ -107,7 +107,7 @@
 						<font-awesome-icon :icon="['fas', 'dice']" :fixed-width="true" />
 						{{ $t('menu.random') }}
 					</a>
-					<a href="search" class="navbar-item" @click.prevent="pushSearch">
+					<a href="/search" class="navbar-item" @click.prevent="pushSearch">
 						<font-awesome-icon :icon="['fas', 'music']" :fixed-width="true" />
 						{{ $t('menu.karas') }}
 					</a>
@@ -211,7 +211,7 @@
 				</p>
 				<ul class="menu-list">
 					<li>
-						<a href="search" :class="{'is-active': $route.name === 'search-query'}" @click.prevent="pushSearch">
+						<a href="/search" :class="{'is-active': $route.name === 'search-query'}" @click.prevent="pushSearch">
 							<font-awesome-icon :icon="['fas', 'music']" :fixed-width="true" />
 							{{ $t('menu.karas') }}
 						</a>

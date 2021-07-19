@@ -81,12 +81,12 @@ export const defaults: Config = {
 		IssueTemplate: {
 			Import: {
 				Title: '[Inbox] $kara',
-				Labels: ['to integrate'],
+				Labels: ['To Add'],
 				Description: `
 A new karaoke has been sent to the Karaoke Mugen team inbox. Please integrate it as soon as possible if it meets the required quality criteria.
 
 
-The files (.kara, video, .ass and serial if necessary) are present in the following location of your FTP account: kmpublic / inbox
+The files (.kara, video, .ass and serial if necessary) are present in the following location of your FTP account: kmpublic/inbox
 
 
 # Karaoke data
@@ -156,7 +156,7 @@ The files (.kara, video, .ass and serial if necessary) are present in the follow
 			},
 			Edit: {
 				Title: '[Correction] $kara',
-				Labels: ['to integrate'],
+				Labels: ['To Add'],
 				Description: `
 A proposal to modify a karaoke has been sent. You will find all the new files in the inbox.
 
@@ -214,7 +214,7 @@ A proposal to modify a karaoke has been sent. You will find all the new files in
 			KaraProblem: {
 				Quality: {
 					Title: '[Media issue] $kara',
-					Labels: ['video quality'],
+					Labels: ['media','incident'],
 					Description: `
 # Media issue
 
@@ -225,8 +225,8 @@ A proposal to modify a karaoke has been sent. You will find all the new files in
 **Comment** : $comment`
 				},
 				Time: {
-					Title: '[Time] $kara',
-					Labels: ['time'],
+					Title: '[Lyrics issue] $kara',
+					Labels: ['lyrics','incident'],
 					Description: `
 # Poorly timed / defective karaoke
 
