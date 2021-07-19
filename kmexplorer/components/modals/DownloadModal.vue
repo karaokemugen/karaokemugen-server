@@ -100,10 +100,10 @@
 				return `${this.$axios.defaults.baseURL}api/karas/${this.karaoke.kid}/raw`;
 			},
 			mediaUrl(): string {
-				return `${this.$axios.defaults.baseURL}downloads/medias/${encodeURIComponent(this.karaoke.mediafile)}`;
+				return `${this.$axios.defaults.baseURL}downloads/medias/${this.karaoke.mediafile}`;
 			},
 			subtitlesUrl(): string {
-				return `${this.$axios.defaults.baseURL}downloads/lyrics/${encodeURIComponent(this.karaoke.subfile)}`;
+				return `${this.$axios.defaults.baseURL}downloads/lyrics/${this.karaoke.subfile}`;
 			},
 			live(): boolean {
 				// Loop all tags to find a tag with noLiveDownload
