@@ -4,7 +4,6 @@ import { promises as fs } from 'fs';
 import {selectAllKaras, selectAllYears, selectBaseStats, selectAllMedias} from '../dao/kara';
 import { KaraList, KaraParams } from '../lib/types/kara';
 import { consolidateData } from '../lib/services/kara';
-import { DBKara } from '../lib/types/database/kara';
 import { ASSToLyrics } from '../lib/utils/ass';
 import { getASS } from '../lib/dao/karafile';
 import { generateDatabase } from '../lib/services/generation';
@@ -96,10 +95,6 @@ export async function getAllKaras(params: KaraParams, token?: Token): Promise<Ka
 		if (token) token.username = token.username.toLowerCase();
 		let trueFrom = params.from;
 		let trueSize = params.size;
-		if (params.compare) {
-			trueFrom = null;
-			trueSize = null;
-		}
 		let pl = await selectAllKaras({
 			filter: params.filter,
 			from: +trueFrom,
@@ -110,37 +105,7 @@ export async function getAllKaras(params: KaraParams, token?: Token): Promise<Ka
 			favorites: params.favorites,
 			random: params.random
 		});
-		// Let's build a map of KM App's KIDs if it's provided, and then filter the results depending on if we want updated songs or missing songs.
-		// Missing songs are those not present in localKaras, updated songs are present but have a lower modification date
-		const localKaras = new Map();
-		if (params.localKaras && Object.keys(params.localKaras).length > 0){
-			Object.keys(params.localKaras).forEach(kid => localKaras.set(kid, params.localKaras[kid]));
-		}
-		if (params.compare === 'updated') {
-			pl = pl.filter((k: DBKara) => new Date(localKaras.get(k.kid)) < k.modified_at);
-			for (const i in pl) {
-				pl[i].count = pl.length;
-			}
-		}
-		if (params.compare === 'missing') {
-			pl = pl.filter((k: DBKara) => !localKaras.has(k.kid));
-			for (const i in pl) {
-				pl[i].count = pl.length;
-			}
-		}
-		// We're getting song count from the first element in our results. Each element returns the count field from database.
-		let count = 0;
-		if (pl[0]) count = pl[0].count;
-		// If compare is provided, we slice our list according to the real from/size asked by KM App's so we return the correct set of results.
-		if (params.compare) {
-			count = pl.length;
-			if (params.from > 0) {
-				pl = pl.slice(+params.from, +params.from + +params.size || (pl.length - +params.from));
-			} else {
-				pl = pl.slice(0, +params.size || pl.length);
-			}
-		}
-		return formatKaraList(pl, +params.from, count);
+		return formatKaraList(pl, +params.from, pl[0]?.count || 0);
 	} catch(err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);

@@ -70,8 +70,6 @@ export default function KSController(router: Router) {
 					from: req.body.from,
 					size: req.body.size,
 					q: req.body.q,
-					compare: req.body.compare,
-					localKaras: req.body.localKaras,
 					order: req.body.order,
 					username: req.authToken?.username,
 					favorites: req.body.favorites
