@@ -10,8 +10,6 @@ export const getAllKaras = (filterClauses: string[], typeClauses: string, orderC
   ak.pk_kid AS kid,
   ak.title AS title,
   ak.songorder AS songorder,
-  ak.series->0->>'name' AS serie,
-  ak.series AS series,
   ak.subfile AS subfile,
   jsonb_path_query_array( tags, '$[*] ? (@.type_in_kara == 2)') AS singers,
   jsonb_path_query_array( tags, '$[*] ? (@.type_in_kara == 3)') AS songtypes,
