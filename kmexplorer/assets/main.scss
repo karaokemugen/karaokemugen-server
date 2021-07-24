@@ -39,7 +39,7 @@ body.has-navbar-fixed-top, html.has-navbar-fixed-top {
 	padding-top: 5rem;
 }
 
-.input::placeholder, .taginput .taginput-container.is-focusable::placeholder, .textarea::placeholder, .select select::placeholder {
+.input::placeholder, .taginput .taginput-container.is-focusable::placeholder, .select select::placeholder {
 	color: lighten($grey, 15);
 }
 

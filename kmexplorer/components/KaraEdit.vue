@@ -313,7 +313,11 @@
 			</label>
 			<div class="control">
 				<label v-if="karaoke.kid" class="label">{{ $t('kara.import.comment_edit') }}</label>
-				<textarea v-model="karaoke.comment" class="textarea" />
+				<input
+					v-model="karaoke.comment"
+					class="input"
+					type="text"
+				>
 			</div>
 		</div>
 		<div class="field">
@@ -339,7 +343,7 @@
 					<a class="delete" aria-label="close" @click.prevent="reset" />
 				</header>
 				<i18n path="kara.import.add_success_description" tag="section" class="modal-card-body">
-					<template v-slot:url>
+					<template #url>
 						<a :href="gitlabUrl" target="_blank">
 							{{ gitlabUrl }}
 						</a>
