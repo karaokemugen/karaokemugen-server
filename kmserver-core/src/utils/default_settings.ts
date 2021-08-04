@@ -384,7 +384,7 @@ export let NuxtConfig: NuxtConfigType = {
 		disabled: false,
 		publishRelease: false,
 		config: {
-			ignoreErrors: ['document.querySelector(\'video\').webkitPresentationMode']
+			ignoreErrors: ['Network Error', 'document.querySelector(\'video\').webkitPresentationMode']
 		}
 	},
 
