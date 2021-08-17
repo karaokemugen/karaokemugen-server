@@ -170,6 +170,8 @@ export async function getAllUsers(opts: any = {}) {
 			delete users[index].password;
 			delete users[index].email;
 			delete users[index].password_last_modified_at;
+			delete users[index].language;
+			delete users[index].location;
 		}
 		return users;
 	} catch(err) {
@@ -207,6 +209,7 @@ export async function createUser(user: User, opts: any = {}) {
 		user.url = user.url || null;
 		user.email = user.email || null;
 		user.location = user.location || null;
+		user.language = user.language || null;
 		opts.admin ? user.type = 2 : user.type = 1;
 		if (!user.password) throw { code: 'USER_EMPTY_PASSWORD'};
 		if (!user.login) throw { code: 'USER_EMPTY_LOGIN'};
@@ -284,6 +287,7 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		if (!user.url) user.url = null;
 		if (!user.email) user.email = null;
 		if (!user.location) user.location = null;
+		if (!user.language) user.language = null;
 		if (typeof user.flag_sendstats !== 'boolean') user.flag_sendstats = currentUser.flag_sendstats;
 		if (token.username.toLowerCase() !== currentUser.login.toLowerCase() && token.role !== 'admin') throw 'Only admins can edit another user';
 		if (user.type !== currentUser.type && token.role !== 'admin') throw 'Only admins can change a user\'s type';

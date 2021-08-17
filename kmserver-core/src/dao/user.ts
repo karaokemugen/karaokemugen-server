@@ -34,7 +34,8 @@ export async function insertUser(user: User) {
 		user.url,
 		user.email,
 		user.location,
-		user.flag_sendstats
+		user.flag_sendstats,
+		user.language
 	]);
 }
 
@@ -60,6 +61,7 @@ export async function updateUser(user: User) {
 		user.fallback_series_lang,
 		user.location,
 		user.flag_sendstats,
+		user.language,
 		user.login
 	]);
 }
