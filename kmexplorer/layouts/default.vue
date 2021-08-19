@@ -92,6 +92,7 @@
 							href="#"
 							@click.prevent.stop="
 								$i18n.setLocale(locale.code);
+								editUser(locale.code);
 								languageMenu = !languageMenu;
 								accountMenu = !accountMenu;"
 						>
@@ -424,7 +425,10 @@
 								<li v-for="locale in availableLocales" :key="locale.code">
 									<a
 										href="#"
-										@click.prevent.stop="$i18n.setLocale(locale.code)"
+										@click.prevent.stop="
+											$i18n.setLocale(locale.code);
+											editUser(locale.code);
+										"
 									>{{ locale.name }}</a>
 								</li>
 							</ul>
@@ -625,6 +629,14 @@
 			pushSearch() {
 				if (this.$route.name !== 'search-query') {
 					this.$router.push(generateNavigation(menuBarStore));
+				}
+			},
+			editUser(language: string) {
+				const storeUser = this.$store.state.auth.user as unknown as DBUser;
+				if (storeUser) {
+					const user = { ...storeUser };
+					user.language = language;
+					this.$axios.put('/api/myaccount', user);
 				}
 			}
 		}
