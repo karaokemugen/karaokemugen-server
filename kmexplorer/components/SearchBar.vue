@@ -2,11 +2,12 @@
 	<div class="field is-expanded has-addons">
 		<div class="control is-expanded" :class="{'has-icons-left': icon}">
 			<input
-				v-model="search"
 				class="input is-fullwidth"
 				type="text"
 				:placeholder="$t('search.placeholder')"
+				:value="search"
 				@keydown.enter="triggerSearch"
+				@input="keyDown"
 			>
 			<span v-if="icon" class="icon is-small is-left">
 				<font-awesome-icon :icon="['fas', 'search']" />
@@ -108,6 +109,9 @@
 		methods: {
 			triggerSearch() {
 				menuBarStore.setSearch(this.search);
+			},
+			keyDown(e: KeyboardEvent) {
+				this.search = (e.target as HTMLInputElement).value;
 			}
 		}
 	});

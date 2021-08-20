@@ -46,11 +46,20 @@ Switch to the newly created database and enable the `unaccent` extension.
 ```SQL
 \c karaokemugen_server
 CREATE EXTENSION unaccent;
+CREATE EXTENSION pgcrypto;
 ```
 
 Karaoke Mugen Server will create tables and such on first run.
 
-Edit the `app/config.yml` file and fill in the blanks (Karas, Lyrics, Medias, Series and host of your choosing.). Use the command above to generate the database :
+Edit the `app/config.yml` file and fill in the blanks (Karas, Lyrics, Medias, Series and host of your choosing.). 
+
+Run database migrations :
+
+```sh
+yarn migrate
+```
+
+Use the command above to generate the database :
 
 ```sh
 yarn start --generate
@@ -65,21 +74,31 @@ Frontend:
   Port: 1350
 API:
   Secure: false
-  Host: localhost
 KaraExplorer:
-  Port: 1351
-  Host: localhost
-  Path: /base
+  Secure: false
 ```
 
-Explanations :
+For production use :
 
 - API.Host : Put your server's domain name. It's used by the API to know which domain to listen to and serve requests.
-- API.Secure : Wether you're API is going to be on HTTPS or HTTP front server. Enabled by default, disable it for local tests without being behind a webserver
+- API.Secure : Wether your API is going to be on HTTPS or HTTP front server. Enabled by default, disable it for local tests without being behind a webserver
 - Frontend.Port : Port you should access your KM Server at. Usually on nginx or Apache you'll proxy/reverse proxy requests coming from port 80 to this port
 - KaraExplorer.Host : Host KMExplorer should be listening to
-- KaraExplorer.Port : Port on which KMExplorer listens on. This is a separate port than Frontend.Port and should not be proxified at directly. KM Server will take care of routing stuff to and from KM Explorer
-- KaraExplorer.Path : Path to the karaoke base. Use `/base` if it's the same host as your API.Host value so the shortener and your KMExplorer won't overlap.
+
+## Prepare a karaoke base
+
+KM Server uses git to keep a karaoke base up to date. Stup one in any directory, like `app/karaokebase` via `git clone` then point the config to this directory, like this :
+
+```yaml
+System:
+  Repositories:
+    - Name: kara.moe
+      Enabled: true
+      BaseDir: app/karaokebase,
+      Path: 
+        Medias: 
+          - app/medias
+```
 
 ## Launch
 

@@ -2,20 +2,11 @@
 	<modal
 		:active="active"
 		:modal-title="$t('modal.download.label')"
-		:close="closeModal"
 		:cancel-label="$t('modal.download.cancel')"
+		@close="closeModal"
 	>
 		<section class="modal-card-body">
 			<div class="columns">
-				<div class="column">
-					<a :href="kmAppUrl" class="button is-success">
-						<font-awesome-icon :icon="['fas', 'cloud-download-alt']" :fixed-width="true" />
-						{{ $t('modal.download.add') }}
-					</a>
-					<label class="label">
-						{{ $t('modal.download.add_desc') }}
-					</label>
-				</div>
 				<div class="column">
 					<a :href="bundleUrl" class="button" :download="`${serieSinger.name} - ${karaoke.title}.karabundle.json`" @click="closeModal">
 						<font-awesome-icon :icon="['fas', 'file-export']" :fixed-width="true" />
@@ -25,7 +16,7 @@
 						<font-awesome-icon :icon="['fas', 'closed-captioning']" :fixed-width="true" />
 						{{ $t('modal.download.subtitles', {format: subtitlesExtension}) }}
 					</a>
-					<a :href="mediaUrl" class="button" download @click="closeModal">
+					<a v-if="liveURL && live" :href="mediaUrl" class="button" download @click="closeModal">
 						<font-awesome-icon :icon="['fas', 'file-video']" :fixed-width="true" />
 						{{ $t('modal.download.media', {format: mediaExtension}) }}
 					</a>
@@ -39,13 +30,15 @@
 	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
 	import languages from '@cospired/i18n-iso-languages';
+	import Modal from './Modal.vue';
 	import { getSerieLanguage, getTagInLanguage } from '~/utils/tools';
-	import Modal from '~/components/Modal.vue';
 	import { DBKara } from '%/lib/types/database/kara';
 	import { ShortTag } from '~/types/tags';
+	import { tagTypes } from '~/assets/constants';
 
 	interface VState {
-		explorerHost?: string
+		explorerHost?: string,
+		liveURL?: string
 	}
 
 	export default Vue.extend({
@@ -65,7 +58,8 @@
 
 		data(): VState {
 			return {
-				explorerHost: process.env.EXPLORER_HOST
+				explorerHost: process.env.EXPLORER_HOST,
+				liveURL: process.env.LIVE_URL
 			};
 		},
 		computed: {
@@ -106,10 +100,24 @@
 				return `${this.$axios.defaults.baseURL}api/karas/${this.karaoke.kid}/raw`;
 			},
 			mediaUrl(): string {
-				return `${this.$axios.defaults.baseURL}downloads/medias/${this.karaoke.mediafile}`;
+				return `${this.$axios.defaults.baseURL}downloads/medias/${encodeURIComponent(this.karaoke.mediafile)}`;
 			},
 			subtitlesUrl(): string {
-				return `${this.$axios.defaults.baseURL}downloads/lyrics/${this.karaoke.subfile}`;
+				return `${this.$axios.defaults.baseURL}downloads/lyrics/${encodeURIComponent(this.karaoke.subfile)}`;
+			},
+			live(): boolean {
+				// Loop all tags to find a tag with noLiveDownload
+				let noLiveDownload = false;
+				for (const tagType in tagTypes) {
+					if (tagType === 'years') { continue; }
+					// @ts-ignore: il est 23h27 <- ceci n'est pas une raison
+					for (const tag of this.karaoke[tagType]) {
+						if (tag.nolivedownload) {
+							noLiveDownload = true;
+						}
+					}
+				}
+				return !noLiveDownload;
 			}
 		},
 
@@ -131,8 +139,12 @@
 		font-weight: bold;
 	}
 
-	.column a {
-		margin: 0.25em;
+	.column {
+		flex-direction: column;
+		display: flex;
+		a {
+			margin: 0.25em;
+		}
 	}
 
 </style>

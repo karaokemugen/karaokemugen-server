@@ -1,17 +1,13 @@
 import logger from './lib/utils/logger';
 import express from 'express';
-import {resolve, join} from 'path';
-import bodyParser from 'body-parser';
 import adminController from './controllers/http/admin';
 import authController from './controllers/http/auth';
 import PLController from './controllers/http/playlist';
 import KServerController from './controllers/http/karaserv';
 import KImportController from './controllers/http/karaimport';
 import statsController from './controllers/http/stats';
-import shortenerController from './controllers/http/shortener';
 import userController from './controllers/http/user';
 import favoritesController from './controllers/http/favorites';
-import shortenerSocketController from './controllers/ws/shortener';
 import remoteSocketController from './controllers/ws/remote';
 import userSubSocketController from './controllers/ws/user';
 import {getConfig, resolvedPathAvatars, resolvedPathPreviews, resolvedPathRepos} from './lib/utils/config';
@@ -36,7 +32,6 @@ export function initFrontend(listenPort: number) {
 	const app = express();
 	const API = express();
 	const KMExplorer = express();
-	const Shortener = express();
 	const KMServer = express();
 
 	app.set('trust proxy', (ip: string) => {
@@ -64,8 +59,8 @@ export function initFrontend(listenPort: number) {
 		}
 	}));
 	app.use(compression());
-	app.use(bodyParser.json({limit: '1000mb'})); // support json encoded bodies
-	app.use(bodyParser.urlencoded({
+	app.use(express.json({limit: '1000mb'})); // support json encoded bodies
+	app.use(express.urlencoded({
 		limit: '1000mb',
 		extended: true
 	})); // support encoded bodies
@@ -81,15 +76,10 @@ export function initFrontend(listenPort: number) {
 			: next();
 	});
 
-	KMExplorer.get('/favicon.ico', (_, res) => {
-		res.redirect('/static/favicon.ico');
-		return;
-	});
-
 	//KMServer
 	// If static serve is enabled, we're serving all files from KMServer instead of Apache/nginx
 	if (state.opt.staticServe) {
-		KMServer.use('/downloads/karaokes', express.static(resolvedPathRepos('Karas')[0]));
+		KMServer.use('/downloads/karaokes', express.static(resolvedPathRepos('Karaokes')[0]));
 		KMServer.use('/downloads/lyrics', express.static(resolvedPathRepos('Lyrics')[0]));
 		KMServer.use('/downloads/medias', express.static(resolvedPathRepos('Medias')[0]));
 		KMServer.use('/downloads/tags', express.static(resolvedPathRepos('Tags')[0]));
@@ -99,16 +89,9 @@ export function initFrontend(listenPort: number) {
 	app.use(vhost(`${conf.API.Host}`, API));
 	API.use('/api', api());
 	if (conf.Users.Enabled) API.use('/avatars', express.static(resolvedPathAvatars()));
-	if (conf.Shortener.Enabled) {
-		app.use(vhost(`${conf.API.Host}`, Shortener));
-		Shortener.get('/', (_, res) => {
-			res.redirect('/api/shortener');
-			return;
-		});
-	}
-	// Old import route
-	app.get('/import', (_req, res) => {
-		res.redirect(join(conf.KaraExplorer.Path, 'import'));
+	// Redirect old base route to root
+	app.get('/base*', (req, res) => {
+		res.redirect(301, req.url.replace(/^\/base\/?/, '/'));
 	});
 	// KMExplorer
 	if (conf.KaraExplorer.Enabled) {
@@ -120,31 +103,16 @@ export function initFrontend(listenPort: number) {
 			KMExplorer.use(nuxt.render);
 		});
 	}
-	if (conf.API.Host !== conf.KaraExplorer.Host && conf.KaraExplorer.Path && conf.KaraExplorer.Path !== '/') {
-		KMExplorer.get('/', (_, res) => {
-			res.redirect(conf.KaraExplorer.Path);
-		});
-	}
-
-	// Load static assets from static folder (mostly error pages)
-	app.use('/static', express.static(resolve(state.appPath, 'kmserver-core/static')));
 
 	const port = listenPort;
 	const server = createServer(app);
 
 	const ws = initWS(server);
-	if (conf.Shortener.Enabled) {
-		shortenerSocketController(ws);
-	}
 	if (conf.Remote.Enabled) {
 		remoteSocketController(ws);
 		app.use(vhost(`*.${conf.Remote.BaseHost}`, initRemote()));
 	}
 	userSubSocketController(ws);
-
-	// The "catchall" handler: for any request that doesn't
-	// match one above, send a 404 page.
-	app.get('*', (_, res) => res.status(404).sendFile(resolve(state.appPath, 'kmserver-core/static/404.html')));
 
 	server.listen(port, () => logger.info(`App listening on ${port}`, {service: 'App'}));
 }
@@ -158,8 +126,6 @@ function api() {
 	KServerController(apiRouter);
 	PLController(apiRouter);
 	if (conf.KaraExplorer.Import) KImportController(apiRouter);
-	// Shortener/kara.moe route
-	if (conf.Shortener.Enabled) shortenerController(apiRouter);
 	// Stats
 	if (conf.Stats.Enabled) statsController(apiRouter);
 	// Online Mode for KM App

@@ -1,4 +1,5 @@
 import express, { Express } from 'express';
+import { promises as fs } from 'fs';
 import { resolve } from 'path';
 import { v4 as uuidV4 } from 'uuid';
 import logger from '../lib/utils/logger';
@@ -6,9 +7,10 @@ import { Socket } from 'socket.io';
 import { generate } from 'randomstring';
 import { getWS } from '../lib/utils/ws';
 import { APIDataProxied } from '../lib/types/api';
-import { asyncCheckOrMkdir, asyncReadFile } from '../lib/utils/files';
+import { asyncCheckOrMkdir } from '../lib/utils/files';
 import { RemoteResponse, RemoteSettings } from '../lib/types/remote';
-import { getConfig } from '../lib/utils/config';
+import {getConfig} from '../lib/utils/config';
+import {resolvedPathRemoteRoot} from '../utils/config';
 import { getState } from '../utils/state';
 import {
 	deleteOldRemoteTokens,
@@ -152,7 +154,7 @@ export function initRemote() {
 		if (remotes.has(req.vhost[0])) {
 			const frontend = getVersion(remotesVersions.get(req.vhost[0]));
 			if (frontend) {
-				let kmfrontend = await asyncReadFile(resolve(frontend, 'index.html'));
+				let kmfrontend = await fs.readFile(resolve(frontend, 'index.html'), 'utf-8');
 				kmfrontend = kmfrontend.toString().replace('NO-REMOTE', req.vhost[0]);
 				res.send(kmfrontend);
 			} else {
@@ -162,7 +164,7 @@ export function initRemote() {
 			next();
 		}
 	});
-	asyncCheckOrMkdir(getConfig().Remote.FrontendRoot);
+	asyncCheckOrMkdir(resolvedPathRemoteRoot());
 	watchRemotes();
 	deleteOldRemote();
 	setTimeout(deleteOldRemote, 60 * 60 * 1000 * 24);

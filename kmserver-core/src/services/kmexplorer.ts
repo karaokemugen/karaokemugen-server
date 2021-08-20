@@ -19,14 +19,12 @@ function generateConfig(production: boolean = false) {
 			SUPPORTED_LYRICS: supportedFiles.lyrics,
 			SUPPORTED_MEDIAS: [].concat(supportedFiles.video, supportedFiles.audio),
 			API_HOST: conf.API.Host,
+			REMOTE_PROTOCOL: `http${conf.KaraExplorer.Secure?'s':''}`,
 			EXPLORER_HOST: conf.KaraExplorer.Host,
 			EXPLORER_TAGLINE: conf.KaraExplorer.Tagline,
 			BASE_URL: `http${conf.KaraExplorer.Secure?'s':''}://${conf.KaraExplorer.Host}${
-				(production || conf.API.Port === 443 || conf.API.Port === 80)?'':`:${conf.Frontend.Port}`}${conf.KaraExplorer.Path}`
-		},
-		router: {
-			base: conf.KaraExplorer.Path
-		},
+				(production || conf.API.Port === 443 || conf.API.Port === 80)?'':`:${conf.Frontend.Port}`}/`
+		},		
 		axios: {
 			baseURL: `http${conf.API.Secure?'s':''}://${conf.API.Host}${
 				(production || conf.API.Port === 443 || conf.API.Port === 80)?'':`:${conf.API.Port}`}/`,
@@ -34,7 +32,7 @@ function generateConfig(production: boolean = false) {
 		},
 		i18n: {
 			baseUrl: `http${conf.KaraExplorer.Secure?'s':''}://${conf.KaraExplorer.Host}${
-				(production || conf.API.Port === 443 || conf.API.Port === 80)?'':`:${conf.Frontend.Port}`}${conf.KaraExplorer.Path}`
+				(production || conf.API.Port === 443 || conf.API.Port === 80)?'':`:${conf.Frontend.Port}`}/`
 		},
 		sentry: {
 			disabled: Boolean(process.env.SENTRY_TEST),
@@ -61,7 +59,7 @@ function generateConfig(production: boolean = false) {
 				{ hid: 'author', name: 'author', content: 'Karaoke Mugen contributors' }
 			],
 			link: [
-				{ rel: 'author', href: `/${conf.KaraExplorer.Path}/humans.txt` }
+				{ rel: 'author', href: '/humans.txt' }
 			]
 		}
 	};

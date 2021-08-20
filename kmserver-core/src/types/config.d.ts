@@ -1,4 +1,6 @@
-import { Repository } from '../lib/types/repo';
+import { Repository, RepositoryManifest } from '../lib/types/repo';
+
+type RepositoryWithManifest = Repository & RepositoryManifest;
 
 export interface Config {
 	App: {
@@ -37,7 +39,6 @@ export interface Config {
 		Enabled: boolean
 		Host: string
 		Tagline: string
-		Path: string
 		LiveURL: string
 		MediaLinks: boolean
 		Import: boolean
@@ -75,9 +76,14 @@ export interface Config {
 				OSX: string,
 				Linux: string,
 				Windows: string
+			},
+			git: {
+				OSX: string,
+				Linux: string,
+				Windows: string
 			}
 		},
-		Repositories: Repository[]
+		Repositories: RepositoryWithManifest[]
 		Path: {
 			Karas?: string,
 			Tags?: string,
@@ -93,7 +99,8 @@ export interface Config {
 			Intros?: string[],
 			Outros?: string[],
 			Encores?: string[],
-			Sponsors?: string[]
+			Sponsors?: string[],
+			StreamFiles?: string,
 		}
 	},
 	Mail: {
@@ -114,6 +121,7 @@ export interface Config {
 
 export interface BinariesConfig {
 	ffmpeg: string
+	git: string
 }
 
 interface GitlabTemplate {

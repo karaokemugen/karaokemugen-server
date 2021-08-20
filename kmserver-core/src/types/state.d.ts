@@ -16,6 +16,7 @@ export interface State {
 	},
 	binPath?: {
 		ffmpeg?: string,
+		git?: string
 	},
 	opt?: {
 		generateDB?: boolean,

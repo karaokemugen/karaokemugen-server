@@ -32,6 +32,7 @@ export default {
 		modified_at: 'Last update ',
 		download: 'Download',
 		live: 'Open in a new tab',
+		live_unavailable: 'You cannot play this karaoke in your browser. Either the video is in an unsupported format in browsers, or it has been disabled for legal reasons.',
 		lyrics: {
 			show: 'Show lyrics',
 			hide: 'Hide lyrics'
@@ -44,7 +45,7 @@ export default {
 			title: 'An issue with {title}?',
 			btn: {
 				report: 'Report an issue',
-				edit: 'Purpose an edit'
+				edit: 'Suggest an edit'
 			},
 			form: {
 				title: 'Report an issue',
@@ -92,6 +93,7 @@ export default {
 			media_file_tooltip: 'Supported file formats: {formats}',
 			lyrics_file: 'Lyrics file',
 			lyrics_file_tooltip: 'Supported file formats: {formats}',
+			lyrics_file_missing: 'The lyrics file is missing, this is appropriate only if you are sending an MKV file or a karaoke without lyrics (?).',
 			title: 'Title',
 			title_required: 'Please enter a song title',
 			title_tooltip: 'If you don\'t know, put the name of the series here as well. In the case of an alternative version, name your title as: \'My title ~ Disco vers.\' for example',
@@ -109,7 +111,7 @@ export default {
 			songwriters_tooltip: 'Songwriters compose lyrics AND music.',
 			creators_tooltip: 'Entity that created the series. Can be animation studio, movie studio, or game studio',
 			authors_tooltip: 'You should add yourself here ;)',
-			authors_required: 'Author of the kara is mandatory',
+			authors_required: 'Author of the karaoke is mandatory',
 			groups_tooltip: 'Download groups for this song. The song will be included in these download packs',
 			created_at: 'Creation date',
 			modified_at: 'Last updated date',
@@ -142,17 +144,9 @@ export default {
 	},
 	stats: {
 		karaokes: 'Karaoké | Karaokés',
-		all_duration: 'Duration of all karas',
+		all_duration: 'Duration of all karaokes',
 		last_generation: 'Last update',
 		media_size: 'Media Size'
-	},
-	home: {
-		noInstance: {
-			title: 'No Karaoke Mugen instance runs on your local network.',
-			1: 'Double check you\'re logged in to the same WiFi network as the server. ',
-			2: 'Make sure the Karaoke Mugen application is running. Please check that the kara.moe setting is enabled in Options -> Karaoke -> Short URL (kara.moe).',
-			3: 'If you just want to explore the base, you can safely ignore this message.'
-		}
 	},
 	duration: {
 		days: 'days',
@@ -182,6 +176,7 @@ export default {
 		languages: 'Languages',
 		years: 'Years',
 		community: 'Community',
+		join_kara: 'Join a karaoke party',
 		kara_import: 'Submit a kara',
 		account: 'Account',
 		favorites: 'Favorites',
@@ -196,7 +191,7 @@ export default {
 		placeholder: 'Series, singers, names...',
 		sort: {
 			a_z: 'De A à Z',
-			kara_count: 'Kara count',
+			kara_count: 'Karaoke count',
 			recent: 'By date added',
 			most_played: 'Most played',
 			most_favorites: 'Plus favoris',
@@ -280,12 +275,18 @@ export default {
 				},
 
 				url: {
-					label: 'Url',
+					label: 'Website',
 					placeholder: 'https://karaokes.moe'
 				},
 				bio: {
 					label: 'Biography',
 					placeholder: 'It\' s my life'
+				},
+				location: {
+					label: 'Location'
+				},
+				flag_sendstats: {
+					label: 'Use my favorites and karaokes requests for stats'
 				}
 			},
 			passwords_mismatch: 'Passwords do not match',
@@ -309,7 +310,7 @@ export default {
 			label: 'Add this repository to your Karaoke Mugen app!',
 			desc: 'You can add this repository to your Karaoke Mugen app by clicking on the button below. If Karaoke Mugen is not installed on your computer, this button will have no effect.',
 			download: 'The application can be downloaded here.',
-			manual: 'To manually add this repository, open your Karaoke Mugen application, add the {repository} repository to it, checking "{online}" then go to the downloads manager',
+			manual: 'To manually add this repository, open your Karaoke Mugen application, add the {repository} repository to it, checking "{online}".',
 			online: 'Online',
 			add: 'Add',
 			cancel: 'Cancel'
@@ -354,8 +355,6 @@ export default {
 		download: {
 			label: 'Download the karaoke',
 			cancel: 'Cancel',
-			add: 'Add to application',
-			add_desc: 'You must have the Karaoke Mugen application installed on your computer.',
 			karabundle: 'Download data (.json)',
 			subtitles: 'Download lyrics (.{format})',
 			media: 'Download media (.{format})'
@@ -364,6 +363,22 @@ export default {
 			label: 'Crop avatar',
 			add: 'Add',
 			cancel: 'Cancel'
+		},
+		join_kara: {
+			label: 'Join a karaoke party',
+			desc: 'Enter a code to join a existing karaoke party',
+			add: 'Join',
+			cancel: 'Cancel',
+			help: 'Enter the session code (generally it\'s 4 letters) or the karaoke URL.',
+			error: 'The code is invalid, please check what you typed.'
+		},
+		stats: {
+			label: 'Use my favorites and karaokes requests for stats',
+			desc: 'We use your favorites as well as the karaokes that you have requested during a session to make usage statistics (for example, to find out the most requested karaokes).',
+			refuse_desc: 'If you do not want to participate, even if it\'s anonymous, in these usage statistics, please let us know. If you refuse, your data will be ignored by the server and not sent by the Karaoke Mugen Application.',
+			change: 'You can change this at any time in your profile. Do you accept the usage of your stats?',
+			yes: 'Yes',
+			no: 'No'
 		}
 	},
 	titles: {
@@ -371,6 +386,7 @@ export default {
 	},
 	toast: {
 		LOG_ERROR: 'Incorrect credentials.',
+		USER_ASCII_CHARACTERS_ONLY: 'Only alphanumeric characters in your username please (you can change your nickname later to whatever you wish.)',
 		USER_CREATED: 'User successfully created',
 		GENERATED_KARA: 'Karaoke sent successfully.',
 		EDITED_KARA: 'Modification sent successfully.',

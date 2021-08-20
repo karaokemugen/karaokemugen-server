@@ -1,6 +1,6 @@
 import {db} from '../lib/dao/database';
 import { Favorite } from '../types/stats';
-const sql = require('./sqls/favorites');
+import sql = require('./sqls/favorites');
 
 export async function selectFavorites(username: string): Promise<Favorite[]> {
 	const res = await db().query(sql.selectFavorites, [username]);

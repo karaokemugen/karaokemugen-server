@@ -112,6 +112,37 @@
 							</div>
 						</div>
 					</div>
+					<div class="field is-horizontal">
+						<div class="field-label is-normal">
+							<label class="label">{{ $t('modal.profile.fields.location.label') }}</label>
+						</div>
+						<div class="field-body">
+							<div class="field">
+								<div class="control">
+									<div class="select">
+										<b-autocomplete
+											v-model="location"
+											keep-first
+											open-on-focus
+											:data="getListCountries"
+											@select="option => user.location = getCountryCode(option)"
+										/>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="field is-horizontal">
+						<label class="checkbox">
+							<div class="control">
+								<input
+									v-model="user.flag_sendstats"
+									type="checkbox"
+								>
+								{{ $t('modal.profile.fields.flag_sendstats.label') }}
+							</div>
+						</label>
+					</div>
 					<h2 class="subtitle">
 						{{ $t('modal.profile.fields.password.header') }}
 					</h2>
@@ -268,10 +299,11 @@
 <script lang="ts">
 	import Vue from 'vue';
 	import languages from '@cospired/i18n-iso-languages';
+	import isoCountriesLanguages from 'iso-countries-languages';
 
+	import CropAvatarModal from './CropAvatarModal.vue';
 	import { DBUser } from '%/lib/types/database/user';
 	import { modalStore } from '~/store';
-	import CropAvatarModal from './CropAvatarModal.vue';
 
 	languages.registerLocale(require('@cospired/i18n-iso-languages/langs/en.json'));
 	languages.registerLocale(require('@cospired/i18n-iso-languages/langs/fr.json'));
@@ -284,6 +316,7 @@
 	interface VState {
 		apiHost?: string,
 		user: DBUserEdit,
+		location: string
 		main_series_lang_name: string,
 		fallback_series_lang_name: string,
 		mode: 'general' | 'series',
@@ -321,8 +354,10 @@
 					main_series_lang: '',
 					fallback_series_lang: '',
 					url: '',
-					avatar_file: ''
+					avatar_file: '',
+					flag_sendstats: undefined
 				},
+				location: '',
 				main_series_lang_name: '',
 				fallback_series_lang_name: '',
 				mode: 'general',
@@ -346,6 +381,9 @@
 			},
 			passwordNotEquals(): boolean {
 				return this.user.password !== this.user?.password_confirmation;
+			},
+			getListCountries(): string[] {
+				return this.listCountries(this.location);
 			}
 		},
 
@@ -358,10 +396,34 @@
 		},
 
 		methods: {
+			listCountries(name: string): string[] {
+				const listCountries: string[] = [];
+				for (const [_key, value] of Object.entries(isoCountriesLanguages.getCountries(this.$i18n.locale))) {
+					listCountries.push(value as string);
+				}
+				return listCountries.filter(value =>
+					value.toLowerCase().includes(name.toLowerCase()));
+			},
+			getCountryCode(name:string): string | undefined {
+				for (const [key, value] of Object.entries(isoCountriesLanguages.getCountries(this.$i18n.locale))) {
+					if (value === name) {
+						return key;
+					}
+				}
+				return undefined;
+			},
+			getCountryName(code:string): string | undefined {
+				for (const [key, value] of Object.entries(isoCountriesLanguages.getCountries(this.$i18n.locale))) {
+					if (key === code) {
+						return value as string;
+					}
+				}
+				return undefined;
+			},
 			listLangs(name: string): string[] {
 				const listLangs = [];
 				for (const [_key, value] of Object.entries(
-					languages.getNames(languages.alpha3BToAlpha2(this.$i18n.locale) as string)
+					languages.getNames(this.$i18n.locale)
 				)) {
 					listLangs.push(value);
 				}
@@ -371,12 +433,16 @@
 			},
 			get3BCode(language: string): string {
 				return languages.getAlpha3BCode(
-					language,
-					languages.alpha3BToAlpha2(this.$i18n.locale) as string
+					language, this.$i18n.locale
 				) as string;
 			},
 			getUser(): void {
-				if (this.storeUser) { this.user = { ...this.storeUser }; }
+				if (this.storeUser) {
+					this.user = { ...this.storeUser };
+					if (this.storeUser.location) {
+						this.location = this.getCountryName(this.storeUser.location) as string;
+					}
+				}
 			},
 			async submitForm(): Promise<void> {
 				this.loading = true;
@@ -427,6 +493,7 @@
 					`avatar.${(/data:([a-z]+)\/([a-z]+)(?:,|;)/.exec(avatar) as RegExpMatchArray)[2]}`
 				);
 				this.user.avatar_file = avatar;
+				this.modal.avatar = false;
 			}
 		}
 	});
@@ -443,6 +510,7 @@
 
 	h2.subtitle {
 		font-weight: bold;
+		margin-top: 2rem;
 	}
 
 	.select select option {
@@ -474,5 +542,16 @@
 				color: white;
 			}
 		}
+	}
+
+	.field > .checkbox {
+		color: white;
+		.control {
+			font-size: 1.15em;
+		}
+	}
+
+	.modal-card-foot {
+		justify-content: space-between;
 	}
 </style>

@@ -32,6 +32,7 @@ export default {
 		modified_at: 'Dernière modification ',
 		download: 'Télécharger',
 		live: 'Ouvrir dans un nouvel onglet',
+		live_unavailable: 'Vous ne pouvez pas lire ce karaoké sur votre navigateur. La vidéo est soit dans un format non supporté par les navigateurs ou indisponible pour des raisons légales.',
 		lyrics: {
 			show: 'Afficher les paroles',
 			hide: 'Masquer les paroles'
@@ -92,6 +93,7 @@ export default {
 			media_file_tooltip: 'Formats de fichier acceptés : {formats}',
 			lyrics_file: 'Fichier de sous-titres',
 			lyrics_file_tooltip: 'Format de fichier accepté : {formats}',
+			lyrics_file_missing: 'Le fichier de sous-titres est manquant, cela est approprié que si vous envoyez un mkv ou que votre karaoké n\'a pas de paroles (?).',
 			title: 'Titre',
 			title_required: 'Le titre est obligatoire',
 			title_tooltip: 'Si vous ne le connaissez pas, mettez le nom de la série. Dans le cas d\'une version alternative, nommez votre titre ainsi : \'Mon titre ~ Disco vers.\' par exemple',
@@ -132,7 +134,7 @@ export default {
 		remove_tags: 'Avez-vous essayé de retirer les tags qui ne vous servent plus ?',
 		end_favorites: 'C\'est la fin de vos favoris.',
 		explore: 'Allez en ajouter !',
-		results: '{count} résulat | {count} résultats',
+		results: '{count} résultat | {count} résultats',
 		slogan: 'Ce son est disponible sur la base Karaoke Mugen !'
 	},
 	footer: {
@@ -142,17 +144,9 @@ export default {
 	},
 	stats: {
 		karaokes: 'Karaoké | Karaokés',
-		all_duration: 'Durée de tous les karas',
+		all_duration: 'Durée de tous les chansons',
 		last_generation: 'Dernière mise à jour',
 		media_size: 'Taille des médias'
-	},
-	home: {
-		noInstance: {
-			title: 'Aucune instance de Karaoke Mugen ne fonctionne sur votre réseau local.',
-			1: 'Vérifiez que vous êtes bien sur le même réseau Wi-Fi que sur le serveur.',
-			2: 'Assurez-vous que l\'application Karaoke Mugen fonctionne. Merci de vérifier que le paramètre kara.moe est actif dans Options -> Karaoké -> URL d\'accès courte.',
-			3: 'Si vous souhaitez juste consulter la base, vous pouvez ignorer cet avertissement.'
-		}
 	},
 	duration: {
 		days: 'jours',
@@ -182,6 +176,7 @@ export default {
 		languages: 'Langues',
 		years: 'Années',
 		community: 'Communauté',
+		join_kara: 'Rejoindre le karaoké',
 		kara_import: 'Envoyer un kara',
 		account: 'Compte',
 		favorites: 'Favoris',
@@ -280,12 +275,18 @@ export default {
 				},
 
 				url: {
-					label: 'Url',
+					label: 'Site web',
 					placeholder: 'https://karaokes.moe'
 				},
 				bio: {
 					label: 'Biographie',
 					placeholder: 'C\'est la vie'
+				},
+				location: {
+					label: 'Localisation'
+				},
+				flag_sendstats: {
+					label: 'Utiliser mes favoris et demandes de chansons pour des statistiques'
 				}
 			},
 			passwords_mismatch: 'Les mots de passe ne correspondent pas',
@@ -309,7 +310,7 @@ export default {
 			label: 'Ajouter ce dépôt à votre application Karaoke Mugen !',
 			desc: 'Vous pouvez ajouter ce dépôt à votre application Karaoke Mugen en cliquant sur le bouton ci-dessous. Si Karaoke Mugen n\'est pas installé sur votre ordinateur, ce bouton n\'aura aucun effet.',
 			download: 'L\'application est téléchargeable ici.',
-			manual: 'Pour ajouter manuellement ce dépôt, ouvrez votre application Karaoke Mugen, ajoutez-y le dépôt {repository}, cochant la case "{online}" puis rendez-vous dans le gestionnaire de téléchargements.',
+			manual: 'Pour ajouter manuellement ce dépôt, ouvrez votre application Karaoke Mugen, ajoutez-y le dépôt {repository}, cochant la case "{online}".',
 			online: 'En ligne',
 			add: 'Ajouter',
 			cancel: 'Annuler'
@@ -354,8 +355,6 @@ export default {
 		download: {
 			label: 'Télécharger le karaoké',
 			cancel: 'Annuler',
-			add: 'Télécharger dans l\'application',
-			add_desc: 'Vous devez avoir l\'application Karaoke Mugen installée sur votre ordinateur.',
 			karabundle: 'Télécharger les données (.json)',
 			subtitles: 'Télécharger les paroles (.{format})',
 			media: 'Télécharger le média (.{format})'
@@ -365,6 +364,22 @@ export default {
 			online: 'En ligne',
 			add: 'Ajouter',
 			cancel: 'Annuler'
+		},
+		join_kara: {
+			label: 'Rejoindre le karaoké',
+			desc: 'Entrez un code pour rejoindre un karaoké existant',
+			add: 'Rejoindre',
+			cancel: 'Annuler',
+			help: 'Entrez le code (généralement à 4 lettres) de la session ou bien l\'adresse du karaoké.',
+			error: 'Le code est invalide, merci de vérifier votre saisie.'
+		},
+		stats: {
+			label: 'Utiliser mes favoris et demandes de chansons pour des statistiques',
+			desc: 'Nous utilisons vos favoris ainsi que les karaokés que vous avez demandé lors d\'une session pour faire des statistiques d\'utilisation (par exemple, permettre de connaître les karaokés les plus demandés).',
+			refuse_desc: 'Si vous ne voulez pas participer, même si c\'est anonyme, à ces statistiques d\'utilisation, merci de nous le dire. Si vous refusez, le serveur ignorera vos échantillons de statistiques et les applications Karaoke Mugen n\'enverront pas vos données.',
+			change: 'Vous pouvez changer ceci à tout moment dans votre profil. Acceptez-vous cet usage des statistiques ?',
+			yes: 'Oui',
+			no: 'Non'
 		}
 	},
 	titles: {
@@ -372,6 +387,7 @@ export default {
 	},
 	toast: {
 		LOG_ERROR: 'Identifiants incorrects.',
+		USER_ASCII_CHARACTERS_ONLY: 'Uniquement des caractères de l\'alphabet latin et des nombres dans votre nom d\'utilisateur s\'il vous plaît (vous pourrez changer votre pseudo plus tard et mettre ce que vous voudrez!)',
 		USER_CREATED: 'Utilisateur créé avec succès',
 		GENERATED_KARA: 'Karaoké envoyé avec succès.',
 		EDITED_KARA: 'Modification envoyée avec succès.',

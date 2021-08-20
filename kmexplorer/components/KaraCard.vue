@@ -3,7 +3,7 @@
 		<div class="header" @mouseenter="switchImage" @mouseleave="switchImage">
 			<nuxt-link :to="`/kara/${slug}/${karaoke.kid}`" class="images" :class="{blur: problematic}">
 				<v-lazy-image :src="images[0]" alt="" />
-				<v-lazy-image :src="images[1]" :class="{activate}" alt="" />
+				<v-lazy-image v-if="images.length > 1" :src="images[1]" :class="{activate}" alt="" />
 			</nuxt-link>
 		</div>
 		<div class="title-block">
@@ -115,11 +115,12 @@
 
 		computed: {
 			images(): string[] {
-				return [
-					`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg`,
-					`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.33.jpg`,
-					`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.50.jpg`
-				];
+				return this.karaoke.mediafile.endsWith('.mp3')
+					? [`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg`]
+					: [
+						`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg`,
+						`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.33.jpg`
+					];
 			},
 			slug(): string {
 				return slug(this.karaoke.title);
@@ -255,10 +256,6 @@
 				object-fit: cover;
 				border-radius: 0.25rem;
 			}
-
-			img:last-child {
-				display: none;
-			}
 		}
 	}
 
@@ -274,7 +271,7 @@
 			border-radius: 0.25rem;
 		}
 
-		img:last-child {
+		img:nth-child(2) {
 			position: absolute;
 			left: 0;
 			top: 0;
@@ -282,7 +279,7 @@
 			transition: opacity 0.25s linear;
 		}
 
-		img:last-child.activate {
+		img:nth-child(2).activate {
 			opacity: 1;
 		}
 	}

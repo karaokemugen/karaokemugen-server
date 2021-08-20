@@ -1,6 +1,6 @@
 import {db, transaction} from '../lib/dao/database';
 import { Session, Played, Requested, Instance } from '../types/stats';
-const sql = require('./sqls/stats');
+import sql = require('./sqls/stats');
 
 export async function upsertInstance(i: Instance) {
 	return await db().query(sql.upsertInstance, [

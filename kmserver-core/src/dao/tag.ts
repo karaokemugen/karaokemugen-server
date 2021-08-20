@@ -3,7 +3,7 @@ import {pg as yesql} from 'yesql';
 import { Tag, TagParams } from '../lib/types/tag';
 import { WhereClause } from '../lib/types/database';
 import { DBTag } from '../lib/types/database/tag';
-const sql = require('./sqls/tag');
+import sql = require('./sqls/tag');
 
 export async function selectTag(tid: string): Promise<Tag> {
 	const res = await db().query(sql.selectTag, [tid]);

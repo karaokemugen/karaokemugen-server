@@ -24,21 +24,14 @@ export const defaults: Config = {
 				Linux: '/usr/bin/ffmpeg',
 				Windows: 'ffmpeg.exe',
 				OSX: 'ffmpeg'
+			},
+			git: {
+				Linux: '/usr/bin/git',
+				Windows: 'C:/Program Files/Git/cmd/git.exe',
+				OSX: 'git'
 			}
 		},
-		Repositories: [
-			{
-				Name: 'Local',
-				Enabled: true,
-				Online: false,
-				Path: {
-					Karas: ['data/karaokes'],
-					Lyrics: ['data/lyrics'],
-					Medias: ['data/medias'],
-					Tags: ['data/tags']
-				}
-			}
-		],
+		Repositories: [],
 		Path: {
 			Temp: 'temp',
 			Import: 'inbox',
@@ -78,7 +71,6 @@ export const defaults: Config = {
 		Enabled: true,
 		Host: 'localhost',
 		Tagline: 'Explore! Find! Sing!',
-		Path: '/base/',
 		LiveURL: 'https://live.karaokes.moe',
 		MediaLinks: true,
 		Import: true,
@@ -89,12 +81,12 @@ export const defaults: Config = {
 		IssueTemplate: {
 			Import: {
 				Title: '[Inbox] $kara',
-				Labels: ['to integrate'],
+				Labels: ['To Add'],
 				Description: `
 A new karaoke has been sent to the Karaoke Mugen team inbox. Please integrate it as soon as possible if it meets the required quality criteria.
 
 
-The files (.kara, video, .ass and serial if necessary) are present in the following location of your FTP account: kmpublic / inbox
+The files (.kara, video, .ass and serial if necessary) are present in the following location of your FTP account: kmpublic/inbox
 
 
 # Karaoke data
@@ -164,7 +156,7 @@ The files (.kara, video, .ass and serial if necessary) are present in the follow
 			},
 			Edit: {
 				Title: '[Correction] $kara',
-				Labels: ['to integrate'],
+				Labels: ['To Add'],
 				Description: `
 A proposal to modify a karaoke has been sent. You will find all the new files in the inbox.
 
@@ -222,7 +214,7 @@ A proposal to modify a karaoke has been sent. You will find all the new files in
 			KaraProblem: {
 				Quality: {
 					Title: '[Media issue] $kara',
-					Labels: ['video quality'],
+					Labels: ['media','incident'],
 					Description: `
 # Media issue
 
@@ -233,8 +225,8 @@ A proposal to modify a karaoke has been sent. You will find all the new files in
 **Comment** : $comment`
 				},
 				Time: {
-					Title: '[Time] $kara',
-					Labels: ['time'],
+					Title: '[Lyrics issue] $kara',
+					Labels: ['lyrics','incident'],
 					Description: `
 # Poorly timed / defective karaoke
 
@@ -351,11 +343,7 @@ export let NuxtConfig: NuxtConfigType = {
 	toast: {
 		position: 'top-center',
 		duration: '2500'
-	},
-
-	router: {
-		base: '/base/'
-	},
+	},	
 
 	css: [
 		'~/assets/main.scss',
@@ -377,7 +365,7 @@ export let NuxtConfig: NuxtConfigType = {
 				file: 'fre.ts'
 			}
 		],
-		baseUrl: 'http://localhost:1350/base',
+		baseUrl: 'http://localhost:1350/',
 		seo: false,
 		lazy: true,
 		defaultLocale: 'en',
@@ -396,7 +384,7 @@ export let NuxtConfig: NuxtConfigType = {
 		disabled: false,
 		publishRelease: false,
 		config: {
-			ignoreErrors: ['document.querySelector(\'video\').webkitPresentationMode']
+			ignoreErrors: ['Network Error', 'document.querySelector(\'video\').webkitPresentationMode']
 		}
 	},
 

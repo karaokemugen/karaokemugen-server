@@ -37,6 +37,10 @@
 			</div>
 
 			<div v-if="communityMenu" class="navbar-dropdown">
+				<a :aria-label="$t('menu.join_kara')" class="navbar-item" @click.prevent="modal.joinKara = true">
+					<font-awesome-icon :icon="['fas', 'person-booth']" :fixed-width="true" />
+					{{ $t('menu.join_kara') }}
+				</a>
 				<nuxt-link v-if="import_enabled" class="navbar-item" to="/import">
 					<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true" />
 					{{ $t('menu.kara_import') }}
@@ -88,6 +92,7 @@
 							href="#"
 							@click.prevent.stop="
 								$i18n.setLocale(locale.code);
+								editUser(locale.code);
 								languageMenu = !languageMenu;
 								accountMenu = !accountMenu;"
 						>
@@ -103,7 +108,7 @@
 						<font-awesome-icon :icon="['fas', 'dice']" :fixed-width="true" />
 						{{ $t('menu.random') }}
 					</a>
-					<a href="search" class="navbar-item" @click.prevent="pushSearch">
+					<a href="/search" class="navbar-item" @click.prevent="pushSearch">
 						<font-awesome-icon :icon="['fas', 'music']" :fixed-width="true" />
 						{{ $t('menu.karas') }}
 					</a>
@@ -207,7 +212,7 @@
 				</p>
 				<ul class="menu-list">
 					<li>
-						<a href="search" :class="{'is-active': $route.name === 'search-query'}" @click.prevent="pushSearch">
+						<a href="/search" :class="{'is-active': $route.name === 'search-query'}" @click.prevent="pushSearch">
 							<font-awesome-icon :icon="['fas', 'music']" :fixed-width="true" />
 							{{ $t('menu.karas') }}
 						</a>
@@ -376,6 +381,10 @@
 				</p>
 				<ul class="menu-list">
 					<li>
+						<a aria-label="Join a karaoke party" @click.prevent="modal.joinKara = true">
+							<font-awesome-icon :icon="['fas', 'person-booth']" :fixed-width="true" />
+							{{ $t('menu.join_kara') }}
+						</a>
 						<nuxt-link v-if="import_enabled" to="/import" active-class="is-active">
 							<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true" />
 							{{ $t('menu.kara_import') }}
@@ -416,7 +425,10 @@
 								<li v-for="locale in availableLocales" :key="locale.code">
 									<a
 										href="#"
-										@click.prevent.stop="$i18n.setLocale(locale.code)"
+										@click.prevent.stop="
+											$i18n.setLocale(locale.code);
+											editUser(locale.code);
+										"
 									>{{ locale.name }}</a>
 								</li>
 							</ul>
@@ -449,10 +461,12 @@
 				</p>
 			</div>
 		</footer>
-		<LoginModal :active="modal.auth" @close="modal.auth=false" />
+		<LoginModal :active="modal.auth" @close="modal.auth=false" @login="login" />
 		<ProfileModal :active="modal.profile" @close="modal.profile=false" @logout="logout" />
 		<AddRepoModal :active="modal.addRepo" @close="modal.addRepo=false" />
 		<DeleteAccountModal :active="modal.deleteAccount" @close="modal.deleteAccount=false" @logout="logout" />
+		<JoinKaraModal :active="modal.joinKara" @close="modal.joinKara=false" />
+		<StatsModal :active="modal.stats" @close="modal.stats=false" />
 	</div>
 </template>
 
@@ -462,14 +476,16 @@
 	import VueI18n from 'vue-i18n';
 	import SearchTags from '~/components/SearchTags.vue';
 	import SearchBar from '~/components/SearchBar.vue';
-	import LoginModal from '~/components/LoginModal.vue';
-	import ProfileModal from '~/components/ProfileModal.vue';
-	import AddRepoModal from '~/components/AddRepoModal.vue';
-	import DeleteAccountModal from '~/components/DeleteAccountModal.vue';
+	import LoginModal from '~/components/modals/LoginModal.vue';
+	import ProfileModal from '~/components/modals/ProfileModal.vue';
+	import AddRepoModal from '~/components/modals/AddRepoModal.vue';
+	import DeleteAccountModal from '~/components/modals/DeleteAccountModal.vue';
+	import JoinKaraModal from '~/components/modals/JoinKaraModal.vue';
+	import StatsModal from '~/components/modals/StatsModal.vue';
 	import { menuBarStore, modalStore } from '~/store';
 	import { generateNavigation } from '~/utils/tools';
-
 	import { ModalType } from '~/store/modal';
+	import { DBUser } from '~/../kmserver-core/src/lib/types/database/user';
 
 	interface VState {
 		import_enabled?: string,
@@ -485,7 +501,9 @@
 			auth: boolean,
 			profile: boolean,
 			addRepo: boolean,
-			deleteAccount: boolean
+			deleteAccount: boolean,
+			joinKara: boolean,
+			stats: boolean
 		}
 	}
 
@@ -497,7 +515,9 @@
 			LoginModal,
 			ProfileModal,
 			AddRepoModal,
-			DeleteAccountModal
+			DeleteAccountModal,
+			JoinKaraModal,
+			StatsModal
 		},
 
 		data(): VState {
@@ -515,9 +535,18 @@
 					auth: false,
 					profile: false,
 					addRepo: false,
-					deleteAccount: false
+					deleteAccount: false,
+					joinKara: false,
+					stats: false
 				}
 			};
+		},
+
+		head() {
+			const seo = this.$nuxtI18nHead({ addDirAttribute: true, addSeoAttributes: true });
+			if (!Array.isArray(seo.meta)) { seo.meta = []; }
+			seo.meta.push({ hid: 'og:url', property: 'og:url', content: `${process.env.BASE_URL}${this.$route.fullPath}` });
+			return seo;
 		},
 
 		computed: {
@@ -546,6 +575,9 @@
 					this.modal[mutation.payload as ModalType] = false;
 				}
 			});
+			if (this.$auth.loggedIn && (this.$store.state.auth.user as unknown as DBUser).flag_sendstats === null) {
+				this.modal.stats = true;
+			}
 		},
 
 		mounted() {
@@ -560,6 +592,11 @@
 		},
 
 		methods: {
+			login() {
+				if ((this.$store.state.auth.user as unknown as DBUser).flag_sendstats === null) {
+					this.modal.stats = true;
+				}
+			},
 			logout() {
 				this.$auth.logout();
 			},
@@ -593,14 +630,15 @@
 				if (this.$route.name !== 'search-query') {
 					this.$router.push(generateNavigation(menuBarStore));
 				}
+			},
+			editUser(language: string) {
+				const storeUser = this.$store.state.auth.user as unknown as DBUser;
+				if (storeUser) {
+					const user = { ...storeUser };
+					user.language = language;
+					this.$axios.put('/api/myaccount', user);
+				}
 			}
-		},
-
-		head() {
-			const seo = this.$nuxtI18nSeo();
-			if (!Array.isArray(seo.meta)) { seo.meta = []; }
-			seo.meta.push({ hid: 'og:url', property: 'og:url', content: `${process.env.BASE_URL}${this.$route.fullPath}` });
-			return seo;
 		}
 	});
 </script>

@@ -2,16 +2,16 @@
 	<modal
 		:active="active"
 		:modal-title="$t('modal.delete_account.label')"
-		:submit-action="submitForm"
-		:close="closeModal"
 		:submit-label="$t('modal.delete_account.add')"
 		:cancel-label="$t('modal.delete_account.cancel')"
+		@submit="submitForm"
+		@close="closeModal"
 	/>
 </template>
 
 <script lang="ts">
 	import Vue from 'vue';
-	import Modal from '~/components/Modal.vue';
+	import Modal from './Modal.vue';
 
 	interface VState {
 		explorerHost?: string

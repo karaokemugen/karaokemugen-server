@@ -1,9 +1,10 @@
 import {createHash} from 'crypto';
 import {hash, compare} from 'bcryptjs';
+import { promises as fs } from 'fs';
 import {updateUser, updateUserPassword, insertUser, selectUser, selectAllUsers, deleteUser, updateLastLogin} from '../dao/user';
 import logger from '../lib/utils/logger';
 import {getConfig, resolvedPathAvatars} from '../lib/utils/config';
-import {asyncReadDir, asyncExists, asyncUnlink, asyncMove, detectFileType} from '../lib/utils/files';
+import {asyncExists, asyncMove, detectFileType} from '../lib/utils/files';
 import { v4 as uuidV4 } from 'uuid';
 import {resolve} from 'path';
 import {has as hasLang} from 'langs';
@@ -15,6 +16,7 @@ import sentry from '../utils/sentry';
 import {getRole, createJwtToken } from '../controllers/http/auth';
 import {UserOptions} from '../types/user';
 import { delPubUser, pubUser } from './user_pubsub';
+import { asciiRegexp } from '../lib/utils/constants';
 
 const passwordResetRequests = new Map();
 
@@ -116,9 +118,9 @@ async function cleanupAvatars() {
 		}
 		const conf = getConfig();
 		const avatarPath = resolve(getState().dataPath, conf.System.Path.Avatars);
-		const avatarFiles = await asyncReadDir(avatarPath);
+		const avatarFiles = await fs.readdir(avatarPath);
 		for (const file of avatarFiles) {
-			if (!avatars.includes(file) && file !== 'blank.png') asyncUnlink(resolve(avatarPath, file));
+			if (!avatars.includes(file) && file !== 'blank.png') fs.unlink(resolve(avatarPath, file));
 		}
 	} catch(err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
@@ -177,6 +179,8 @@ export async function getAllUsers(opts: any = {}) {
 			delete users[index].password;
 			delete users[index].email;
 			delete users[index].password_last_modified_at;
+			delete users[index].language;
+			delete users[index].location;
 		}
 		return users;
 	} catch(err) {
@@ -213,7 +217,10 @@ export async function createUser(user: User, opts: any = {}) {
 		user.bio = user.bio || null;
 		user.url = user.url || null;
 		user.email = user.email || null;
+		user.location = user.location || null;
+		user.language = user.language || null;
 		opts.admin ? user.type = 2 : user.type = 1;
+		if (!asciiRegexp.test(user.login)) throw { code: 'USER_ASCII_CHARACTERS_ONLY'};
 		if (!user.password) throw { code: 'USER_EMPTY_PASSWORD'};
 		if (!user.login) throw { code: 'USER_EMPTY_LOGIN'};
 		user.login = user.login.toLowerCase();
@@ -257,7 +264,7 @@ async function replaceAvatar(oldImageFile: string, avatar: Express.Multer.File) 
 		const newAvatarPath = resolve(avatarPath, newAvatarFile);
 		const oldAvatarPath = resolve(avatarPath, oldImageFile);
 		if (await asyncExists(oldAvatarPath) &&
-			oldImageFile !== 'blank.png') await asyncUnlink(oldAvatarPath);
+			oldImageFile !== 'blank.png') await fs.unlink(oldAvatarPath);
 		await asyncMove(avatar.path, newAvatarPath);
 		return newAvatarFile;
 	} catch (err) {
@@ -289,6 +296,9 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		if (!user.bio) user.bio = null;
 		if (!user.url) user.url = null;
 		if (!user.email) user.email = null;
+		if (!user.location) user.location = null;
+		if (!user.language) user.language = null;
+		if (typeof user.flag_sendstats !== 'boolean') user.flag_sendstats = currentUser.flag_sendstats;
 		if (token.username.toLowerCase() !== currentUser.login.toLowerCase() && token.role !== 'admin') throw 'Only admins can edit another user';
 		if (user.type !== currentUser.type && token.role !== 'admin') throw 'Only admins can change a user\'s type';
 		// Check if login already exists.

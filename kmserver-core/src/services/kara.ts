@@ -1,7 +1,9 @@
+import { resolve, basename } from 'path';
+import { promises as fs } from 'fs';
+
 import {selectAllKaras, selectAllYears, selectBaseStats, selectAllMedias} from '../dao/kara';
 import { KaraList, KaraParams } from '../lib/types/kara';
 import { consolidateData } from '../lib/services/kara';
-import { DBKara } from '../lib/types/database/kara';
 import { ASSToLyrics } from '../lib/utils/ass';
 import { getASS } from '../lib/dao/karafile';
 import { generateDatabase } from '../lib/services/generation';
@@ -9,12 +11,11 @@ import { createImagePreviews } from '../lib/utils/previews';
 import logger from '../lib/utils/logger';
 import { getConfig, resolvedPathRepos } from '../lib/utils/config';
 import { gitlabPostNewIssue } from '../lib/services/gitlab';
-import { asyncReadFile } from '../lib/utils/files';
-import { resolve, basename } from 'path';
-import { DownloadBundle, KaraMetaFile, MetaFile, ShinDownloadBundle, TagMetaFile } from '../lib/types/downloads';
+import { DownloadBundleServer, KaraMetaFile, MetaFile, ShinDownloadBundle, TagMetaFile } from '../lib/types/downloads';
 import sentry from '../utils/sentry';
 import { Token } from '../lib/types/user';
 import { TagFile } from '../lib/types/tag';
+import { updateGit } from './git';
 
 export async function getBaseStats() {
 	try {
@@ -45,6 +46,11 @@ export async function getAllYears() {
 		sentry.error(err);
 		throw err;
 	}
+}
+
+export async function updateRepo() {
+	await updateGit();
+	await generate();
 }
 
 export async function generate() {
@@ -89,10 +95,6 @@ export async function getAllKaras(params: KaraParams, token?: Token): Promise<Ka
 		if (token) token.username = token.username.toLowerCase();
 		let trueFrom = params.from;
 		let trueSize = params.size;
-		if (params.compare) {
-			trueFrom = null;
-			trueSize = null;
-		}
 		let pl = await selectAllKaras({
 			filter: params.filter,
 			from: +trueFrom,
@@ -103,37 +105,7 @@ export async function getAllKaras(params: KaraParams, token?: Token): Promise<Ka
 			favorites: params.favorites,
 			random: params.random
 		});
-		// Let's build a map of KM App's KIDs if it's provided, and then filter the results depending on if we want updated songs or missing songs.
-		// Missing songs are those not present in localKaras, updated songs are present but have a lower modification date
-		const localKaras = new Map();
-		if (params.localKaras && Object.keys(params.localKaras).length > 0){
-			Object.keys(params.localKaras).forEach(kid => localKaras.set(kid, params.localKaras[kid]));
-		}
-		if (params.compare === 'updated') {
-			pl = pl.filter((k: DBKara) => new Date(localKaras.get(k.kid)) < k.modified_at);
-			for (const i in pl) {
-				pl[i].count = pl.length;
-			}
-		}
-		if (params.compare === 'missing') {
-			pl = pl.filter((k: DBKara) => !localKaras.has(k.kid));
-			for (const i in pl) {
-				pl[i].count = pl.length;
-			}
-		}
-		// We're getting song count from the first element in our results. Each element returns the count field from database.
-		let count = 0;
-		if (pl[0]) count = pl[0].count;
-		// If compare is provided, we slice our list according to the real from/size asked by KM App's so we return the correct set of results.
-		if (params.compare) {
-			count = pl.length;
-			if (params.from > 0) {
-				pl = pl.slice(+params.from, +params.from + +params.size || (pl.length - +params.from));
-			} else {
-				pl = pl.slice(0, +params.size || pl.length);
-			}
-		}
-		return formatKaraList(pl, +params.from, count);
+		return formatKaraList(pl, +params.from, pl[0]?.count || 0);
 	} catch(err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
@@ -155,12 +127,12 @@ export async function aggregateKaras(kids: string[]): Promise<ShinDownloadBundle
 			if (!allTagFiles.has(tagFile)) {
 				allTagFiles.add(tagFile);
 				const tagPath = resolve(resolvedPathRepos('Tags')[0], tagFile);
-				const tagData: TagFile = JSON.parse(await asyncReadFile(tagPath, 'utf-8'));
+				const tagData: TagFile = JSON.parse(await fs.readFile(tagPath, 'utf-8'));
 				tags.push({file: tagFile, data: tagData});
 			}
 		}
 		if (kara.subfile) {
-			const lyricsData = await asyncReadFile(resolve(resolvedPathRepos('Lyrics')[0], kara.subfile), 'utf-8');
+			const lyricsData = await fs.readFile(resolve(resolvedPathRepos('Lyrics')[0], kara.subfile), 'utf-8');
 			lyrics.push({
 				file: kara.subfile,
 				data: lyricsData
@@ -168,7 +140,7 @@ export async function aggregateKaras(kids: string[]): Promise<ShinDownloadBundle
 		}
 		karas.push({
 			file: kara.karafile,
-			data: JSON.parse(await asyncReadFile(resolve(resolvedPathRepos('Karas')[0], kara.karafile), 'utf-8'))
+			data: JSON.parse(await fs.readFile(resolve(resolvedPathRepos('Karaokes')[0], kara.karafile), 'utf-8'))
 		});
 	}
 	return {
@@ -178,7 +150,7 @@ export async function aggregateKaras(kids: string[]): Promise<ShinDownloadBundle
 	};
 }
 
-export async function getRawKara(kid: string): Promise<DownloadBundle> {
+export async function getRawKara(kid: string): Promise<DownloadBundleServer> {
 	try {
 		const kara = (await selectAllKaras({
 			q: `k:${kid}`
@@ -187,7 +159,7 @@ export async function getRawKara(kid: string): Promise<DownloadBundle> {
 		// Create a set of tagfiles to get only unique tagfiles.
 		const tagfiles = new Set(kara.tagfiles);
 		const files = {
-			kara: resolve(resolvedPathRepos('Karas')[0], kara.karafile),
+			kara: resolve(resolvedPathRepos('Karaokes')[0], kara.karafile),
 			tags: Array.from(tagfiles).map(f => {
 				return f
 					? resolve(resolvedPathRepos('Tags')[0], f)
@@ -196,17 +168,16 @@ export async function getRawKara(kid: string): Promise<DownloadBundle> {
 			lyrics: kara.subfile ? resolve(resolvedPathRepos('Lyrics')[0], kara.subfile) : null
 		};
 		let lyricsData = null;
-		if (kara.subfile) lyricsData = await asyncReadFile(files.lyrics, 'utf-8');
+		if (kara.subfile) lyricsData = await fs.readFile(files.lyrics, 'utf-8');
 		const data = {
-			kara: {file: kara.karafile, data: JSON.parse(await asyncReadFile(files.kara, 'utf-8'))},
+			kara: {file: kara.karafile, data: JSON.parse(await fs.readFile(files.kara, 'utf-8'))},
 			lyrics: {file: kara.subfile || null, data: lyricsData},
-			series: [],
 			tags: [],
 		};
 		for (const tagFile of files.tags) {
 			if (tagFile) data.tags.push({
 				file: basename(tagFile),
-				data: JSON.parse(await asyncReadFile(tagFile, 'utf-8'))
+				data: JSON.parse(await fs.readFile(tagFile, 'utf-8'))
 			});
 		}
 		return {

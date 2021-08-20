@@ -1,6 +1,6 @@
 <template>
 	<div class="km-home">
-		<a href="http://karaokes.moe/">
+		<a href="https://karaokes.moe/">
 			<picture class="km-home--logo">
 				<source type="image/webp" :srcset="require('~/assets/km-logo.webp')">
 				<source type="image/png" :srcset="require('~/assets/km-logo.png')">
@@ -18,21 +18,11 @@
 			{{ explorerTagline }}
 		</h2>
 		<div class="mobile-search-bar is-hidden-desktop">
+			<button class="button is-success" @click.prevent="openJoinKaraModal">
+				<font-awesome-icon :icon="['fas', 'person-booth']" :fixed-width="true" /> {{ $t('menu.join_kara') }}
+			</button>
 			<search-bar :filter="false" :results="false" icon />
 		</div>
-		<article v-if="noInstance" class="message is-warning middle-size">
-			<div class="message-header">
-				<p>
-					{{ $t('home.noInstance.title') }}
-				</p>
-				<button class="delete" aria-label="delete" @click="noInstance = false" />
-			</div>
-			<div class="message-body">
-				{{ $t('home.noInstance.1') }}
-				<br>{{ $t('home.noInstance.2') }}
-				<br>{{ $t('home.noInstance.3') }}
-			</div>
-		</article>
 		<ul class="km-home--stats">
 			<li>
 				<nuxt-link to="/search" class="km-home--stats--link">
@@ -120,8 +110,7 @@
 					karas: 0,
 					duration: 0,
 					mediasize: 0
-				},
-				noInstance: false
+				}
 			};
 		},
 
@@ -150,14 +139,12 @@
 				title: this.$t('titles.home') as string
 			};
 		},
-		mounted() {
-			if (this.$route.query.noinstance) {
-				this.noInstance = true;
-			}
-		},
 		methods: {
 			openAddRepoModal() {
 				modalStore.openModal('addRepo');
+			},
+			openJoinKaraModal() {
+				modalStore.openModal('joinKara');
 			}
 		}
 	});
@@ -223,5 +210,10 @@
 	.mobile-search-bar {
 		width: 80%;
 		margin: 1em 0;
+		display: flex;
+		flex-direction: column;
+		> button {
+			margin-bottom: .5em;
+		}
 	}
 </style>

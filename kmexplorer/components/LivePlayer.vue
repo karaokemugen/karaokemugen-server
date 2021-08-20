@@ -89,7 +89,7 @@
 				}
 			},
 			hover(now) {
-				if (now && this.show) {
+				if (now && this.show && !window.matchMedia('(hover: none)').matches) {
 					// Lock the vertical scroll to let user set volume in Live
 					this.scrollY = window.scrollY;
 					window.addEventListener('scroll', this.blockScroll, { passive: true });

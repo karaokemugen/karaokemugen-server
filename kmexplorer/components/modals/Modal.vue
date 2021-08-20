@@ -21,7 +21,7 @@
 					<button
 						type="button"
 						class="button"
-						@click="closeModal"
+						@click="cancelModal"
 					>
 						{{ cancelLabel }}
 					</button>
@@ -40,19 +40,20 @@
 		props: {
 			active: Boolean,
 			modalTitle: String,
-			submitAction: Function,
-			close: Function,
 			submitLabel: String,
 			cancelLabel: String
 		},
 
 		methods: {
 			submitForm(): void {
-				this.submitAction();
-				this.closeModal();
+				this.$emit('submit');
 			},
 			closeModal(): void {
-				this.close();
+				this.$emit('close');
+			},
+			cancelModal(): void {
+				this.$emit('cancel');
+				this.$emit('close');
 			}
 		}
 	});

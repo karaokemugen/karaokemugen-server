@@ -1,5 +1,5 @@
 import {db} from '../lib/dao/database';
-const sql = require('./sqls/settings');
+import sql = require('./sqls/settings');
 
 export async function selectSettings() {
 	const res = await db().query(sql.selectSettings);

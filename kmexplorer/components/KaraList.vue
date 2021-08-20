@@ -16,7 +16,7 @@
 				<div class="box">
 					<h4 class="title is-4 with-img">
 						<img :src="require('~/assets/nanami-surpris.png')" alt="Nanamin surprised">
-						{{ $t('layout.end_favorites') }}&nbsp;
+						<span>{{ $t('layout.end_favorites') }}&nbsp;</span>
 						<nuxt-link to="/search/">
 							{{ $t('layout.explore') }}
 						</nuxt-link>
@@ -31,7 +31,7 @@
 	import Vue, { PropOptions } from 'vue';
 	import LoadingNanami from './LoadingNanami.vue';
 	import KaraCard from './KaraCard.vue';
-	import KaraSuggest from './KaraSuggest.vue';
+	import KaraSuggest from './modals/KaraSuggest.vue';
 	import { KaraList } from '%/lib/types/kara';
 
 	export default Vue.extend({
@@ -85,6 +85,10 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		text-align: center;
+		@media screen and (max-width: 1024px) {
+			flex-direction: column;
+		}
 		img {
 			height: 2.5em;
 		}
