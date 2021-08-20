@@ -241,6 +241,13 @@
 					this.submitted = true;
 					this.loading = false;
 					this.gitlabUrl = res.data;
+					this.formData = {
+						title: '',
+						serie: '',
+						type: 'OP',
+						link: '',
+						username: ''
+					};
 				});
 			}
 		}

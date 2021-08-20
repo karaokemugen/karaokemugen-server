@@ -34,7 +34,8 @@ export async function insertUser(user: User) {
 		user.url,
 		user.email,
 		user.location,
-		user.flag_sendstats
+		user.flag_sendstats,
+		user.language
 	]);
 }
 
@@ -64,6 +65,7 @@ export async function updateUser(user: User) {
 		user.flag_displayfavorites,
 		JSON.stringify(user.social_networks),
 		user.banner,
+		user.language,
 		user.login
 	]);
 }

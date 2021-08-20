@@ -112,7 +112,7 @@ export async function getAllKaras(params: KaraParams, token?: Token): Promise<Ka
 			favorites: params.favorites,
 			random: params.random
 		});
-		return formatKaraList(pl, +params.from, pl.length);
+		return formatKaraList(pl, +params.from, pl[0]?.count || 0);
 	} catch(err) {
 		// Skip Sentry if the error has a code.
 		if (err?.code) throw err;

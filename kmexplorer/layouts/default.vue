@@ -92,6 +92,7 @@
 							href="#"
 							@click.prevent.stop="
 								$i18n.setLocale(locale.code);
+								editUser(locale.code);
 								languageMenu = !languageMenu;
 								accountMenu = !accountMenu;"
 						>
@@ -107,7 +108,7 @@
 						<font-awesome-icon :icon="['fas', 'dice']" :fixed-width="true" />
 						{{ $t('menu.random') }}
 					</a>
-					<a href="search" class="navbar-item" @click.prevent="pushSearch">
+					<a href="/search" class="navbar-item" @click.prevent="pushSearch">
 						<font-awesome-icon :icon="['fas', 'music']" :fixed-width="true" />
 						{{ $t('menu.karas') }}
 					</a>
@@ -211,7 +212,7 @@
 				</p>
 				<ul class="menu-list">
 					<li>
-						<a href="search" :class="{'is-active': $route.name === 'search-query'}" @click.prevent="pushSearch">
+						<a href="/search" :class="{'is-active': $route.name === 'search-query'}" @click.prevent="pushSearch">
 							<font-awesome-icon :icon="['fas', 'music']" :fixed-width="true" />
 							{{ $t('menu.karas') }}
 						</a>
@@ -424,7 +425,10 @@
 								<li v-for="locale in availableLocales" :key="locale.code">
 									<a
 										href="#"
-										@click.prevent.stop="$i18n.setLocale(locale.code)"
+										@click.prevent.stop="
+											$i18n.setLocale(locale.code);
+											editUser(locale.code);
+										"
 									>{{ locale.name }}</a>
 								</li>
 							</ul>
@@ -625,6 +629,14 @@
 			pushSearch() {
 				if (this.$route.name !== 'search-query') {
 					this.$router.push(generateNavigation(menuBarStore));
+				}
+			},
+			editUser(language: string) {
+				const storeUser = this.$store.state.auth.user as unknown as DBUser;
+				if (storeUser) {
+					const user = { ...storeUser };
+					user.language = language;
+					this.$axios.put('/api/myaccount', user);
 				}
 			}
 		}

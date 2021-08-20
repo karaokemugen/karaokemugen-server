@@ -15,8 +15,9 @@ INSERT INTO users(
 	password_last_modified_at,
 	last_login_at,
 	flag_public,
-	flag_displayfavorites
-) VALUES($1, $2, $3, $4, $5, $6, $7, $8, NOW(), NOW(), true, false)
+	flag_displayfavorites,
+	language
+) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW(), NOW(), true, false, $11)
 `;
 
 export const selectUser = `
@@ -40,6 +41,7 @@ SELECT
 	flag_public,
 	flag_displayfavorites,
 	banner
+	language
 FROM users
 `;
 
@@ -72,6 +74,7 @@ UPDATE users SET
 	flag_public = $12,
 	flag_displayfavorites = $13,
 	social_networks = $14,
-	banner = $15
-WHERE pk_login = $16;
+	banner = $15,
+	language = $16,
+WHERE pk_login = $17;
 `;
