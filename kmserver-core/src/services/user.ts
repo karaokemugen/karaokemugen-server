@@ -16,6 +16,7 @@ import sentry from '../utils/sentry';
 import {getRole, createJwtToken } from '../controllers/http/auth';
 import {UserOptions} from '../types/user';
 import { delPubUser, pubUser } from './user_pubsub';
+import { asciiRegexp } from '../lib/utils/constants';
 
 const passwordResetRequests = new Map();
 
@@ -211,6 +212,7 @@ export async function createUser(user: User, opts: any = {}) {
 		user.location = user.location || null;
 		user.language = user.language || null;
 		opts.admin ? user.type = 2 : user.type = 1;
+		if (!asciiRegexp.test(user.login)) throw { code: 'USER_ASCII_CHARACTERS_ONLY'};
 		if (!user.password) throw { code: 'USER_EMPTY_PASSWORD'};
 		if (!user.login) throw { code: 'USER_EMPTY_LOGIN'};
 		user.login = user.login.toLowerCase();

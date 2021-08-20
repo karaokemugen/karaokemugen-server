@@ -387,6 +387,7 @@ export default {
 	},
 	toast: {
 		LOG_ERROR: 'Identifiants incorrects.',
+		USER_ASCII_CHARACTERS_ONLY: 'Uniquement des caractères de l\'alphabet latin et des nombres dans votre nom d\'utilisateur s\'il vous plaît (vous pourrez changer votre pseudo plus tard et mettre ce que vous voudrez!)',
 		USER_CREATED: 'Utilisateur créé avec succès',
 		GENERATED_KARA: 'Karaoké envoyé avec succès.',
 		EDITED_KARA: 'Modification envoyée avec succès.',

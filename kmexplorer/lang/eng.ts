@@ -386,6 +386,7 @@ export default {
 	},
 	toast: {
 		LOG_ERROR: 'Incorrect credentials.',
+		USER_ASCII_CHARACTERS_ONLY: 'Only alphanumeric characters in your username please (you can change your nickname later to whatever you wish.)',
 		USER_CREATED: 'User successfully created',
 		GENERATED_KARA: 'Karaoke sent successfully.',
 		EDITED_KARA: 'Modification sent successfully.',
