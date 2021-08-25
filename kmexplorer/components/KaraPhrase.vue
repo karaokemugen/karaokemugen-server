@@ -29,9 +29,8 @@
 <script lang="ts">
 	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
-	import languages from '@cospired/i18n-iso-languages';
 	import { ShortTag } from '~/types/tags';
-	import { generateNavigation, getSerieLanguage, getTagInLanguage } from '~/utils/tools';
+	import { generateNavigation, getTagInLocale } from '~/utils/tools';
 	import { DBKara } from '%/lib/types/database/kara';
 	import { menuBarStore } from '~/store';
 
@@ -57,14 +56,14 @@
 			serieSinger(): ShortTag {
 				if (this.karaoke.series[0]) {
 					return {
-						name: getSerieLanguage(this.karaoke.series[0], this.karaoke.langs[0].name, this.$store.state.auth.user, this.i18n),
+						name: getTagInLocale(this.karaoke.series[0], this.$store.state.auth.user, this.i18n),
 						slug: slug(this.karaoke.series[0].name),
 						type: 'series',
 						tag: this.karaoke.series[0]
 					};
 				} else if (this.karaoke.singers[0]) {
 					return {
-						name: getTagInLanguage(this.karaoke.singers[0], languages.alpha2ToAlpha3B(this.$i18n.locale) as string, 'eng', this.i18n),
+						name: getTagInLocale(this.karaoke.singers[0], this.$store.state.auth.user, this.i18n),
 						slug: slug(this.karaoke.singers[0].name),
 						type: 'singers',
 						tag: this.karaoke.singers[0]
@@ -76,7 +75,7 @@
 			songtype(): ShortTag {
 				return {
 					slug: slug(this.karaoke.songtypes[0].name),
-					name: getTagInLanguage(this.karaoke.songtypes[0], languages.alpha2ToAlpha3B(this.$i18n.locale) as string, 'eng', this.i18n),
+					name: getTagInLocale(this.karaoke.songtypes[0], this.$store.state.auth.user, this.i18n),
 					type: 'songtypes',
 					tag: this.karaoke.songtypes[0]
 				};
@@ -85,7 +84,7 @@
 				const tab = [];
 				for (const version of this.karaoke.versions) {
 					tab.push({
-						name: getTagInLanguage(version, languages.alpha2ToAlpha3B(this.$i18n.locale) as string, 'eng', this.i18n),
+						name: getTagInLocale(version, this.$store.state.auth.user, this.i18n),
 						slug: slug(version.name),
 						type: 'versions',
 						tag: version

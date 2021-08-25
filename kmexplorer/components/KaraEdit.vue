@@ -67,9 +67,9 @@
 				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
 			</label>
 			<div class="control">
-				<input v-model="karaoke.title" class="input" :class="{ 'is-danger': !karaoke.title }" type="text">
+				<input v-model="karaoke.titles" class="input" :class="{ 'is-danger': !karaoke.titles || Object.keys(karaoke.titles).length === 0 }" type="text">
 			</div>
-			<p v-if="!karaoke.title" class="help is-danger">
+			<p v-if="!karaoke.titles || Object.keys(karaoke.titles).length === 0" class="help is-danger">
 				{{ $t('kara.import.title_required') }}
 			</p>
 		</div>
@@ -431,7 +431,8 @@
 					!this.mediafile ||
 						this.mediafile_error.length > 0 ||
 						this.subfile_error.length > 0 ||
-						!this.karaoke.title ||
+						!this.karaoke.titles ||
+						Object.keys(this.karaoke.titles).length === 0 ||
 						(this.karaoke.series.length === 0 &&
 							this.karaoke.singers.length === 0) ||
 						this.karaoke.songtypes.length === 0 ||

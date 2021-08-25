@@ -294,15 +294,9 @@ export default {
 			delete: 'Suppression du compte',
 			select_avatar: 'Sélectionner un avatar',
 			series_name: {
-				label: 'Affichage des noms de série',
-				original_name: 'Nom original',
-				song_lang: 'Selon la langue de la chanson',
-				mode_admin: 'Selon la langue du logiciel Karaoke Mugen',
-				user_lang: 'Selon ma langue',
-				mode_no_pref: 'Pas de préférence',
-				force_lang_series: 'Forcer la langue des noms de séries',
-				force_lang_series_main: 'Langue des noms de séries',
-				force_lang_series_fallback: 'Langue de secours des noms de séries'
+				label: 'Affichage des noms de chanson',
+				main_song_name_lang: 'Préférence d\'affichage du nom des chansons',
+				fallback_song_name_lang: 'Préférence alternative d\'affichage du nom des chansons'
 			}
 		},
 		add_repository: {
