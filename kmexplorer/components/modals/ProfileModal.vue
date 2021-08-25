@@ -317,7 +317,6 @@
 					password: '',
 					bio: '',
 					email: '',
-					series_lang_mode: -1,
 					main_series_lang: '',
 					fallback_series_lang: '',
 					url: '',

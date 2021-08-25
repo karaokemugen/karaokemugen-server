@@ -116,7 +116,7 @@
 		computed: {
 			title(): string {
 				return getTitleInLocale(this.karaoke.titles, this.$store.state.auth.user)
-			}
+			},
 			images(): string[] {
 				return this.karaoke.mediafile.endsWith('.mp3')
 					? [`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg`]
