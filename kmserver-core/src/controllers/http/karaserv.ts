@@ -217,6 +217,11 @@ export default function KSController(router: Router) {
 		});
 	router.route('/karas/repository/diff')
 		.get(async (req: any, res) => {
-			res.status(200).type('text/plain').send(await getGitDiff(req.query.commit));
+			try {
+				const diff = await getGitDiff(req.query.commit);
+				res.status(200).type('text/plain').send(diff);
+			} catch(err) {
+				res.status(err.code).send(err.msg);
+			}
 		});
 }
