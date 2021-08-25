@@ -8143,13 +8143,10 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"i18next-node-fs-backend@npm:^2.1.3":
-  version: 2.1.3
-  resolution: "i18next-node-fs-backend@npm:2.1.3"
-  dependencies:
-    js-yaml: 3.13.1
-    json5: 2.0.0
-  checksum: f1201060d5fd2190f8634e5dd330a26a1cd67e8f7a4cd98b9c977c00fbab91390694c8fd48c426e450c4947df2ec39345bac21c9b1beaf5a7d95ec24fbac867b
+"i18next-fs-backend@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "i18next-fs-backend@npm:1.1.1"
+  checksum: a7516b7c2cc176453897dea1cb0f78aee0a8bf6d77ee5ecde08698b7bde42cb02b8d48667f0c6fc663680400af94d20dbff2fbb5b07d7ca66a0980a7e75c1458
   languageName: node
   linkType: hard
 
@@ -8864,18 +8861,6 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:3.13.1":
-  version: 3.13.1
-  resolution: "js-yaml@npm:3.13.1"
-  dependencies:
-    argparse: ^1.0.7
-    esprima: ^4.0.0
-  bin:
-    js-yaml: bin/js-yaml.js
-  checksum: 7511b764abb66d8aa963379f7d2a404f078457d106552d05a7b556d204f7932384e8477513c124749fa2de52eb328961834562bd09924902c6432e40daa408bc
-  languageName: node
-  linkType: hard
-
 "js-yaml@npm:^3.13.1":
   version: 3.14.1
   resolution: "js-yaml@npm:3.14.1"
@@ -8956,17 +8941,6 @@ fsevents@~2.3.1:
   version: 1.0.1
   resolution: "json-stable-stringify-without-jsonify@npm:1.0.1"
   checksum: cff44156ddce9c67c44386ad5cddf91925fe06b1d217f2da9c4910d01f358c6e3989c4d5a02683c7a5667f9727ff05831f7aa8ae66c8ff691c556f0884d49215
-  languageName: node
-  linkType: hard
-
-"json5@npm:2.0.0":
-  version: 2.0.0
-  resolution: "json5@npm:2.0.0"
-  dependencies:
-    minimist: ^1.2.0
-  bin:
-    json5: lib/cli.js
-  checksum: 10548d23c90e9931ba2c7eadcf7e87a96ca1b90c1014383318f0cb76ead006fa27ed573d721e00ea56d0b2484cfd8860e7eee318026ed75eb1ff0017ec8d641f
   languageName: node
   linkType: hard
 
@@ -9197,7 +9171,7 @@ fsevents@~2.3.1:
     got: ^11.8.2
     helmet: ^4.6.0
     i18next: ^20.3.4
-    i18next-node-fs-backend: ^2.1.3
+    i18next-fs-backend: ^1.1.1
     is-valid-json: ^1.0.2
     js-yaml: ^4.1.0
     jwt-simple: ^0.5.6

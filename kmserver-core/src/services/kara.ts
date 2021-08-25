@@ -16,6 +16,7 @@ import sentry from '../utils/sentry';
 import { Token } from '../lib/types/user';
 import { TagFile } from '../lib/types/tag';
 import { updateGit } from './git';
+import { updateKaraSearchVector } from '../lib/dao/kara';
 
 export async function getBaseStats() {
 	try {
@@ -202,7 +203,7 @@ export async function newKaraIssue(kid: string, type: 'quality' | 'time', commen
 	let singerOrSerie = kara.series.length > 0 && kara.series[0].name || (kara.singers.length > 0 && kara.singers[0].name) || '';
 	let langs = (kara.langs.length > 0 && kara.langs[0].name.toUpperCase()) || '';
 	let songtype = (kara.songtypes.length > 0 && kara.songtypes[0].name) || '';
-	const karaName = `${langs} - ${singerOrSerie} - ${songtype}${kara.songorder || ''} - ${kara.title}`;
+	const karaName = `${langs} - ${singerOrSerie} - ${songtype}${kara.songorder || ''} - ${kara.titles.eng}`;
 	const conf = getConfig();
 	const issueTemplate = type === 'quality' ? conf.Gitlab.IssueTemplate.KaraProblem.Quality : conf.Gitlab.IssueTemplate.KaraProblem.Time;
 	let title = issueTemplate.Title || '$kara';

@@ -30,7 +30,6 @@ SELECT
 	email,
 	location,
 	flag_sendstats,
-	series_lang_mode,
 	main_series_lang,
 	fallback_series_lang,
 	password_last_modified_at,
@@ -60,11 +59,10 @@ UPDATE users SET
 	email = $4,
 	avatar_file = $5,
 	type = $6,
-	series_lang_mode = $7,
-	main_series_lang = $8,
-	fallback_series_lang = $9,
-	location = $10,
-	flag_sendstats = $11,
-	language = $12
-WHERE pk_login = $13
+	main_series_lang = $7,
+	fallback_series_lang = $8,
+	location = $9,
+	flag_sendstats = $10,
+	language = $11
+WHERE pk_login = $12
 `;

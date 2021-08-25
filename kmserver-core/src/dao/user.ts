@@ -56,7 +56,6 @@ export async function updateUser(user: User) {
 		user.email,
 		user.avatar_file,
 		user.type,
-		user.series_lang_mode,
 		user.main_series_lang,
 		user.fallback_series_lang,
 		user.location,
