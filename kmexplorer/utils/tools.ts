@@ -6,7 +6,7 @@ import { Tag } from '%/lib/types/tag';
 import menubar from '~/store/menubar';
 import { tagTypes } from '~/assets/constants';
 
-let navigatorLanguage:string;
+let navigatorLanguage: string;
 if (process.client) {
 	navigatorLanguage = languages.alpha2ToAlpha3B(navigator.languages[0].substring(0, 2)) as string;
 }
@@ -14,33 +14,28 @@ if (process.client) {
 export function getTagInLanguage(tag: DBKaraTag | DBTag, mainLanguage: string, fallbackLanguage: string, i18nParam?: any) {
 	const i18n = (i18nParam && i18nParam[tag.tid]) ? i18nParam[tag.tid] : tag.i18n;
 	if (i18n) {
-		return i18n[mainLanguage]
-			? i18n[mainLanguage]
-			: (i18n[fallbackLanguage] ? i18n[fallbackLanguage] : tag.name);
+		return i18n[mainLanguage] ? i18n[mainLanguage] :
+			(i18n[fallbackLanguage] ? i18n[fallbackLanguage] : (i18n.eng ? i18n.eng : tag.name));
 	} else {
 		return tag.name;
 	}
 }
 
-export function getSerieLanguage(tag: DBKaraTag | DBTag, karaLanguage: string, user:User, i18nParam?: any) {
-	let mode: number | undefined = user && user.series_lang_mode;
-	if (!user || user.series_lang_mode === -1) {
-		mode = 3;
-	}
-
-	if (mode === 0) {
-		return tag.name;
-	} else if (mode === 1) {
-		return getTagInLanguage(tag, karaLanguage, 'eng', i18nParam);
-	} else if (mode === 2 || mode === 3) {
+export function getTagInLocale(tag: DBKaraTag | DBTag, user: User, i18nParam?: any) {
+	if (user && user.main_series_lang && user.fallback_series_lang) {
+		return getTagInLanguage(tag, user.main_series_lang, user.fallback_series_lang, i18nParam);
+	} else {
 		return getTagInLanguage(tag, navigatorLanguage, 'eng', i18nParam);
-	} else if (mode === 4) {
-		if (user && user.main_series_lang && user.fallback_series_lang) {
-			return getTagInLanguage(tag, user.main_series_lang, user.fallback_series_lang, i18nParam);
-		} else {
-			return getTagInLanguage(tag, navigatorLanguage, 'eng', i18nParam);
-		}
-	} else { return tag.name; }
+	}
+}
+
+export function getTitleInLocale(titles: any, user: User) {
+	if (user && user.main_series_lang && user.fallback_series_lang) {
+		return titles[user.main_series_lang] ? titles[user.main_series_lang] :
+			(titles[user.fallback_series_lang] ? titles[user.fallback_series_lang] : titles['eng']);
+	} else {
+		return titles[navigatorLanguage] ? titles[navigatorLanguage] : titles['eng'];
+	}
 }
 
 // Generate a fake tag with tid
@@ -71,11 +66,11 @@ export function sortTypesKara(karaoke: DBKara): DBKara {
 			'7be1b15c-cff8-4b37-a649-5c90f3d569a9',
 			'5e5250d9-351a-4a82-98eb-55db50ad8962'].includes(songtype.tid)) {
 			high_prio.push(songtype);
-		// Audio, Other
+			// Audio, Other
 		} else if (['97769615-a2e5-4f36-8c23-b2ce2ce3c460',
 			'42a262ae-acba-4ab5-a446-c5789c96c821'].includes(songtype.tid)) {
 			low_prio.push(songtype);
-		// All others
+			// All others
 		} else {
 			std_prio.push(songtype);
 		}

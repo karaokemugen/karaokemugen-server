@@ -294,15 +294,9 @@ export default {
 			delete: 'Delete account',
 			select_avatar: 'Select an avatar',
 			series_name: {
-				label: 'Series language display',
-				original_name: 'Original name',
-				song_lang: 'Song language',
-				mode_admin: 'Karaoke Mugen software language',
-				user_lang: 'User language',
-				mode_no_pref: 'No preference',
-				force_lang_series: 'Force your own language',
-				force_lang_series_main: 'Series name language',
-				force_lang_series_fallback: 'Fallback series name language'
+				label: 'Song language display',
+				main_song_name_lang: 'Song name display preference',
+				force_lang_series_fallback: 'Fallback song name display preference'
 			}
 		},
 		add_repository: {

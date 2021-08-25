@@ -1,7 +1,7 @@
 <template>
 	<div class="box">
 		<h1 class="title is-1">
-			{{ karaoke.title }}
+			{{ title }}
 		</h1>
 		<kara-phrase tag="h4" class="subtitle is-4" :karaoke="karaoke" />
 		<h6 class="subtitle is-6 no-top-margin">
@@ -70,8 +70,7 @@
 <script lang="ts">
 	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
-	import languages from '@cospired/i18n-iso-languages';
-	import { fakeYearTag, generateNavigation, getSerieLanguage, getTagInLanguage } from '~/utils/tools';
+	import { fakeYearTag, generateNavigation, getTagInLocale, getTitleInLocale } from '~/utils/tools';
 	import { tagTypes } from '~/assets/constants';
 	import Tag from '~/components/Tag.vue';
 	import KaraPhrase from '~/components/KaraPhrase.vue';
@@ -126,21 +125,21 @@
 						hid: 'twitter:title',
 						name: 'twitter:title',
 						content: this.$t('kara.meta', { // @ts-ignore: mais²
-							songtitle: this.karaoke.title, serieSinger: this.serieSinger.name
+							songtitle: this.karaoke.titles.eng, serieSinger: this.serieSinger.name
 						}) as string
 					},
 					{
 						hid: 'description',
 						name: 'description',
 						content: this.$t('kara.meta', { // @ts-ignore: mais²
-							songtitle: this.karaoke.title, serieSinger: this.serieSinger.name
+							songtitle: this.karaoke.titles.eng, serieSinger: this.serieSinger.name
 						}) as string
 					},
 					{
 						hid: 'og:title',
 						property: 'og:title',
 						content: this.$t('kara.meta', { // @ts-ignore: mais²
-							songtitle: this.karaoke.title, serieSinger: this.serieSinger.name
+							songtitle: this.karaoke.titles.eng, serieSinger: this.serieSinger.name
 						}) as string
 					}
 				]
@@ -148,6 +147,9 @@
 		},
 
 		computed: {
+			title(): string {
+				return getTitleInLocale(this.karaoke.titles, this.$store.state.auth.user)
+			},
 			tagTypesSorted(): object {
 				const tagTypes = { ...this.tagTypes };
 				if (this.karaoke.songtypes.length === 1) {
@@ -166,14 +168,14 @@
 			serieSinger(): ShortTag {
 				if (this.karaoke.series[0]) {
 					return {
-						name: getSerieLanguage(this.karaoke.series[0], this.karaoke.langs[0].name, this.$store.state.auth.user),
+						name: getTagInLocale(this.karaoke.series[0], this.$store.state.auth.user),
 						slug: slug(this.karaoke.series[0].name),
 						type: 'series',
 						tag: this.karaoke.series[0]
 					};
 				} else if (this.karaoke.singers[0]) {
 					return {
-						name: getTagInLanguage(this.karaoke.singers[0], languages.alpha2ToAlpha3B(this.$i18n.locale) as string, 'eng'),
+						name: getTagInLocale(this.karaoke.singers[0], this.$store.state.auth.user),
 						slug: slug(this.karaoke.singers[0].name),
 						type: 'singers',
 						tag: this.karaoke.singers[0]

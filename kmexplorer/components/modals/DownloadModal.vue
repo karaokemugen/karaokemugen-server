@@ -8,7 +8,7 @@
 		<section class="modal-card-body">
 			<div class="columns">
 				<div class="column">
-					<a :href="bundleUrl" class="button" :download="`${serieSinger.name} - ${karaoke.title}.karabundle.json`" @click="closeModal">
+					<a :href="bundleUrl" class="button" :download="`${serieSinger.name} - ${karaoke.titles.eng}.karabundle.json`" @click="closeModal">
 						<font-awesome-icon :icon="['fas', 'file-export']" :fixed-width="true" />
 						{{ $t('modal.download.karabundle') }}
 					</a>
@@ -29,9 +29,8 @@
 <script lang="ts">
 	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
-	import languages from '@cospired/i18n-iso-languages';
 	import Modal from './Modal.vue';
-	import { getSerieLanguage, getTagInLanguage } from '~/utils/tools';
+	import { getTagInLocale } from '~/utils/tools';
 	import { DBKara } from '%/lib/types/database/kara';
 	import { ShortTag } from '~/types/tags';
 	import { tagTypes } from '~/assets/constants';
@@ -66,14 +65,14 @@
 			serieSinger(): ShortTag {
 				if (this.karaoke.series[0]) {
 					return {
-						name: getSerieLanguage(this.karaoke.series[0], this.karaoke.langs[0].name, this.$store.state.auth.user),
+						name: getTagInLocale(this.karaoke.series[0], this.$store.state.auth.user),
 						slug: slug(this.karaoke.series[0].name),
 						type: 'series',
 						tag: this.karaoke.series[0]
 					};
 				} else if (this.karaoke.singers[0]) {
 					return {
-						name: getTagInLanguage(this.karaoke.singers[0], languages.alpha2ToAlpha3B(this.$i18n.locale) as string, 'eng'),
+						name: getTagInLocale(this.karaoke.singers[0], this.$store.state.auth.user),
 						slug: slug(this.karaoke.singers[0].name),
 						type: 'singers',
 						tag: this.karaoke.singers[0]

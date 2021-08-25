@@ -1,7 +1,7 @@
 <template>
 	<div class="box">
 		<h4 class="title is-4">
-			{{ $t('kara.problem.title', {title: karaoke.title}) }}
+			{{ $t('kara.problem.title', {title: title}) }}
 		</h4>
 		<button class="button is-warning" :disabled="submitted" @click="toggleModal">
 			<font-awesome-icon :icon="['fas', 'meh']" />
@@ -123,6 +123,7 @@
 <script lang="ts">
 	import Vue, { PropOptions } from 'vue';
 	import { DBKara } from '%/lib/types/database/kara';
+	import { getTitleInLocale } from '~/utils/tools';
 
 	interface VState {
 		modal: boolean,
@@ -158,6 +159,12 @@
 				},
 				gitlabUrl: ''
 			};
+		},
+
+		computed: {
+			title(): string {
+				return getTitleInLocale(this.karaoke.titles, this.$store.state.auth.user)
+			}
 		},
 
 		methods: {
