@@ -96,6 +96,7 @@ export default {
 			lyrics_file_missing: 'Le fichier de sous-titres est manquant, cela est approprié que si vous envoyez un mkv ou que votre karaoké n\'a pas de paroles (?).',
 			title: 'Titre',
 			title_required: 'Le titre est obligatoire',
+			title_eng_required: 'Le titre anglais est obligatoire',
 			title_tooltip: 'Si vous ne le connaissez pas, mettez le nom de la série. Dans le cas d\'une version alternative, nommez votre titre ainsi : \'Mon titre ~ Disco vers.\' par exemple',
 			series_tooltip: 'Série TV, nom de film, de jeu vidéo, etc.',
 			series_singers_required: 'Les champs Séries et Chanté par ne peuvent être vide en même temps.',

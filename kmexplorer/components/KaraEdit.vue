@@ -73,6 +73,9 @@
 			<p v-if="!karaoke.titles || Object.keys(karaoke.titles).length === 0" class="help is-danger">
 				{{ $t('kara.import.title_required') }}
 			</p>
+			<p v-if="!karaoke.titles.eng" class="help is-danger">
+				{{ $t('kara.import.title_eng_required') }}
+			</p>
 		</div>
 		<div class="field">
 			<label class="label" :title="$t('kara.import.series_tooltip')">
@@ -435,6 +438,7 @@
 						this.subfile_error.length > 0 ||
 						!this.karaoke.titles ||
 						Object.keys(this.karaoke.titles).length === 0 ||
+						!this.karaoke.titles.eng ||
 						(this.karaoke.series.length === 0 &&
 							this.karaoke.singers.length === 0) ||
 						this.karaoke.songtypes.length === 0 ||
