@@ -69,16 +69,13 @@
 			};
 		},
 
-		computed: {
+		methods: {
 			getListLanguages() {
 				return getListLanguagesInLocale().filter(option => option.label.toString()
 					.toLowerCase().includes(this.langSearch.toLowerCase()) ||
 					option.value.toString()
 						.toLowerCase().includes(this.langSearch.toLowerCase()));
-			}
-		},
-
-		methods: {
+			},
 			addLang(lang:{label:string, value: string}) {
 				this.i18n[lang.value] = '';
 				this.selectVisible = false;
