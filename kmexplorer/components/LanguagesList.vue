@@ -20,7 +20,7 @@
 			<div class="control">
 				<b-autocomplete
 					v-if="selectVisible"
-					v-model="langSearch"
+					v-model="langFilter"
 					open-on-focus
 					clear-on-select
 					:data="getListLanguages"
@@ -44,10 +44,10 @@
 	import { getLanguagesInLocaleFromCode, getListLanguagesInLocale } from '../utils/isoLanguages';
 
 	interface VState {
+		langFilter: string,
 		i18n: Record<string, string>,
 		inputToFocus: string,
 		selectVisible: boolean,
-		langSearch: string
 	}
 
 	export default Vue.extend({
@@ -62,19 +62,25 @@
 
 		data(): VState {
 			return {
+				langFilter: '',
 				i18n: this.value,
 				inputToFocus: '',
-				selectVisible: false,
-				langSearch: ''
+				selectVisible: false
 			};
 		},
 
+		computed: {
+			getListLanguages(): Array<{ value: string, label: string }> {
+				return this.listLanguages(this.langFilter);
+			}
+		},
+
 		methods: {
-			getListLanguages() {
+			listLanguages(lang: string): Array<{ value: string, label: string }> {
 				return getListLanguagesInLocale().filter(option => option.label.toString()
-					.toLowerCase().includes(this.langSearch.toLowerCase()) ||
+					.toLowerCase().includes(lang.toLowerCase()) ||
 					option.value.toString()
-						.toLowerCase().includes(this.langSearch.toLowerCase()));
+						.toLowerCase().includes(lang.toLowerCase()));
 			},
 			addLang(lang:{label:string, value: string}) {
 				this.i18n[lang.value] = '';
