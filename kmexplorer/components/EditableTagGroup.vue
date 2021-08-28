@@ -46,7 +46,7 @@
 	import Vue, { PropOptions } from 'vue';
 	import debounce from 'lodash.debounce';
 	import clonedeep from 'lodash.clonedeep';
-	import languages from '@cospired/i18n-iso-languages';
+	import languages from '@karaokemugen/i18n-iso-languages';
 	import { DBTagMini } from '%/lib/types/database/tag';
 	import { KaraTag } from '%/lib/types/kara';
 

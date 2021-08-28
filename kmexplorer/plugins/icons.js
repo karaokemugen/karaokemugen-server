@@ -49,7 +49,8 @@ import {
 	faSearch,
 	faDice,
 	faPortrait,
-	faPersonBooth
+	faPersonBooth,
+	faMinus
 } from '@fortawesome/free-solid-svg-icons';
 
 // This is important, we are going to let Nuxt.js worry about the CSS
@@ -95,6 +96,7 @@ library.add(
 	faFolderPlus,
 	faEraser,
 	faPlus,
+	faMinus,
 	faClosedCaptioning,
 	faExternalLinkAlt,
 	faFileVideo,

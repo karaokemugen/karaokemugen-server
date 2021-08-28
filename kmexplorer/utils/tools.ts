@@ -1,4 +1,4 @@
-import languages from '@cospired/i18n-iso-languages';
+import { getNavigatorLanguageIn3B } from './isoLanguages';
 import { User } from '~/../kmserver-core/src/lib/types/user';
 import { DBTag } from '%/lib/types/database/tag';
 import { DBKara, DBKaraTag } from '%/lib/types/database/kara';
@@ -6,16 +6,15 @@ import { Tag } from '%/lib/types/tag';
 import menubar from '~/store/menubar';
 import { tagTypes } from '~/assets/constants';
 
-let navigatorLanguage: string;
-if (process.client) {
-	navigatorLanguage = languages.alpha2ToAlpha3B(navigator.languages[0].substring(0, 2)) as string;
-}
-
 export function getTagInLanguage(tag: DBKaraTag | DBTag, mainLanguage: string, fallbackLanguage: string, i18nParam?: any) {
 	const i18n = (i18nParam && i18nParam[tag.tid]) ? i18nParam[tag.tid] : tag.i18n;
 	if (i18n) {
-		return i18n[mainLanguage] ? i18n[mainLanguage] :
-			(i18n[fallbackLanguage] ? i18n[fallbackLanguage] : (i18n.eng ? i18n.eng : tag.name));
+		return i18n[mainLanguage]
+			? i18n[mainLanguage]
+			: (i18n[fallbackLanguage]
+				? i18n[fallbackLanguage]
+				: (i18n.eng ? i18n.eng : tag.name)
+			);
 	} else {
 		return tag.name;
 	}
@@ -25,16 +24,20 @@ export function getTagInLocale(tag: DBKaraTag | DBTag, user: User, i18nParam?: a
 	if (user && user.main_series_lang && user.fallback_series_lang) {
 		return getTagInLanguage(tag, user.main_series_lang, user.fallback_series_lang, i18nParam);
 	} else {
-		return getTagInLanguage(tag, navigatorLanguage, 'eng', i18nParam);
+		return getTagInLanguage(tag, getNavigatorLanguageIn3B(), 'eng', i18nParam);
 	}
 }
 
 export function getTitleInLocale(titles: any, user: User) {
 	if (user && user.main_series_lang && user.fallback_series_lang) {
-		return titles[user.main_series_lang] ? titles[user.main_series_lang] :
-			(titles[user.fallback_series_lang] ? titles[user.fallback_series_lang] : titles['eng']);
+		return titles[user.main_series_lang]
+			? titles[user.main_series_lang]
+			: (titles[user.fallback_series_lang]
+				? titles[user.fallback_series_lang]
+				: titles.eng
+			);
 	} else {
-		return titles[navigatorLanguage] ? titles[navigatorLanguage] : titles['eng'];
+		return titles[getNavigatorLanguageIn3B()] ? titles[getNavigatorLanguageIn3B()] : titles.eng;
 	}
 }
 

@@ -1402,13 +1402,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cospired/i18n-iso-languages@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@cospired/i18n-iso-languages@npm:3.0.0"
-  checksum: ffb1c9cfbcaf7d036be367d27d46d92049db89bad418cd8cd00ba78bef0a842d2e1adc2d5789a96a2aa246c1982e8072f9d27627de1687a978cf213c164aabe3
-  languageName: node
-  linkType: hard
-
 "@cspotcode/source-map-consumer@npm:0.8.0":
   version: 0.8.0
   resolution: "@cspotcode/source-map-consumer@npm:0.8.0"
@@ -1563,6 +1556,13 @@ __metadata:
     js-yaml: ^3.13.1
     json5: ^2.1.1
   checksum: 6b7e16b4d18f45ecf51ff49032b67d2667bbe6146a6daa15e3a57845b58f642d78208130a6f68d61489ee1bf4573f67a2a0112a46a9f4c0f76d5932ab5dac4ac
+  languageName: node
+  linkType: hard
+
+"@karaokemugen/i18n-iso-languages@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "@karaokemugen/i18n-iso-languages@npm:3.1.0"
+  checksum: 5bd2322bd8a86997460409328e8c46e5b617f46540528d4d960c5abebb8d0a4b39fb2583e4b453bbb21c93630868c4e36624af2d7abebe5372256892f7085adb
   languageName: node
   linkType: hard
 
@@ -9011,10 +9011,10 @@ fsevents@^1.2.7:
   version: 0.0.0-use.local
   resolution: "kmexplorer@workspace:kmexplorer"
   dependencies:
-    "@cospired/i18n-iso-languages": ^3.0.0
     "@fortawesome/fontawesome-svg-core": ^1.2.36
     "@fortawesome/free-solid-svg-icons": ^5.15.4
     "@fortawesome/vue-fontawesome": ^2.0.2
+    "@karaokemugen/i18n-iso-languages": ^3.1.0
     "@nuxt/types": ^2.15.7
     "@nuxt/typescript-build": ^2.1.0
     "@nuxtjs/auth": ^4.9.1

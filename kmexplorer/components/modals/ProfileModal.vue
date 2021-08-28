@@ -265,15 +265,15 @@
 
 <script lang="ts">
 	import Vue from 'vue';
-	import languages from '@cospired/i18n-iso-languages';
+	import languages from '@karaokemugen/i18n-iso-languages';
 	import isoCountriesLanguages from 'iso-countries-languages';
 
 	import CropAvatarModal from './CropAvatarModal.vue';
 	import { DBUser } from '%/lib/types/database/user';
 	import { modalStore } from '~/store';
 
-	languages.registerLocale(require('@cospired/i18n-iso-languages/langs/en.json'));
-	languages.registerLocale(require('@cospired/i18n-iso-languages/langs/fr.json'));
+	languages.registerLocale(require('@karaokemugen/i18n-iso-languages/langs/en.json'));
+	languages.registerLocale(require('@karaokemugen/i18n-iso-languages/langs/fr.json'));
 
 	interface DBUserEdit extends DBUser {
 		password_confirmation?: string

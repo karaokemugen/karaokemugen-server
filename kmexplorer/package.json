@@ -8,10 +8,10 @@
     "start": "echo \"Go back, you are not in the right folder :)\""
   },
   "dependencies": {
-    "@cospired/i18n-iso-languages": "^3.0.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/vue-fontawesome": "^2.0.2",
+    "@karaokemugen/i18n-iso-languages": "^3.1.0",
     "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/pwa": "^3.3.5",

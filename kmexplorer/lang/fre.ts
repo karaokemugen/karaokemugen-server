@@ -118,7 +118,9 @@ export default {
 			add_success: 'Votre karaoké est envoyé !',
 			add_success_description: 'Un ticket a été crée sur notre outil de suivi. Vous pouvez consulter l\'avancement de l\'intégration de votre karaoké : {url}',
 			add_error: 'Une erreur a eu lieue, le karaoké n\'a pas pu être envoyé',
-			restart: 'Soumettre un nouveau karaoké'
+			restart: 'Soumettre un nouveau karaoké',
+			i18n_select: 'Ajouter une langue',
+			i18n_delete: 'Supprimer la langue'
 		},
 		stats: {
 			favorited: 'Ajouté aux favoris par {number} utilisateurs',
