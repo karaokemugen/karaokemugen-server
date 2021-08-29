@@ -13,6 +13,7 @@ SELECT pk_tid AS tid,
 	count(pk_tid) OVER()::integer AS count,
 	problematic,
 	noLiveDownload,
+	karafile_tag,
 	repository,
 	modified_at
 FROM all_tags
@@ -49,6 +50,7 @@ SELECT pk_tid AS tid,
 	repository,
 	problematic,
 	noLiveDownload,
+	karafile_tag,
 	modified_at
 FROM all_tags
 WHERE pk_tid = $1
