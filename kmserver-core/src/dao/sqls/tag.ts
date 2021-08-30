@@ -58,4 +58,5 @@ SELECT t.pk_tid AS tid,
 	count(t.pk_tid) OVER()::integer AS count
 FROM tag t
 LEFT JOIN all_tags at ON at.pk_tid = t.pk_tid
+WHERE t.pk_tid = $1
 `;
