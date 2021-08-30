@@ -280,7 +280,9 @@ export let NuxtConfig: NuxtConfigType = {
     ** Nuxt.js dev-modules
     */
 	buildModules: [
-		'@nuxt/typescript-build'
+		'@nuxt/typescript-build',
+		// Doc: https://pwa.nuxtjs.org/
+		'@nuxtjs/pwa'
 	],
 
 	modules: [
@@ -295,9 +297,7 @@ export let NuxtConfig: NuxtConfigType = {
 		// Doc: https://github.com/nuxt-community/modules/tree/master/packages/toast
 		'@nuxtjs/toast',
 		// Doc: https://github.com/nuxt-community/sentry-module
-		'@nuxtjs/sentry',
-		// Doc: https://pwa.nuxtjs.org/
-		'@nuxtjs/pwa'
+		'@nuxtjs/sentry'
 	],
 
 	plugins: [
