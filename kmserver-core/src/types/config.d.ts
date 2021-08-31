@@ -92,6 +92,7 @@ export interface Config {
 			Temp?: string,
 			Previews?: string,
 			Avatars?: string,
+			Banners?: string,
 			Import?: string,
 			SessionExports?: string,
 			Jingles?: string[],

@@ -3,7 +3,7 @@ import {hash, compare} from 'bcryptjs';
 import { promises as fs } from 'fs';
 import {updateUser, updateUserPassword, insertUser, selectUser, selectAllUsers, deleteUser, updateLastLogin} from '../dao/user';
 import logger from '../lib/utils/logger';
-import {getConfig, resolvedPathAvatars} from '../lib/utils/config';
+import {getConfig, resolvedPathAvatars, resolvedPathBanners, resolvedPathPreviews} from '../lib/utils/config';
 import {asyncExists, asyncMove, detectFileType} from '../lib/utils/files';
 import { v4 as uuidV4 } from 'uuid';
 import {resolve} from 'path';
@@ -16,6 +16,7 @@ import {getRole, createJwtToken } from '../controllers/http/auth';
 import {UserOptions} from '../types/user';
 import { delPubUser, pubUser } from './user_pubsub';
 import { asciiRegexp } from '../lib/utils/constants';
+import {copy} from 'fs-extra';
 
 const passwordResetRequests = new Map();
 
@@ -52,7 +53,7 @@ export async function resetPasswordRequest(username: string) {
 		}
 		throw err;
 	}
-};
+}
 
 export async function resetPassword(username: string, requestCode: string) {
 	try {
@@ -274,6 +275,19 @@ async function replaceAvatar(oldImageFile: string, avatar: Express.Multer.File) 
 	}
 }
 
+async function replaceBanner(preview: string) {
+	const file = resolve(resolvedPathPreviews(), preview);
+	if (!await asyncExists(file)) {
+		throw new Error('The requested preview is not available nor generated.');
+	} else {
+		const target = resolve(resolvedPathBanners(), preview);
+		// The banner is already in place (use by somebody else), no need to copy again.
+		if (await asyncExists(target)) return preview;
+		else await copy(file, target);
+		return preview;
+	}
+}
+
 export async function changePassword(username: string, password: string) {
 	try {
 		password = await hashPasswordbcrypt(password);
@@ -291,7 +305,7 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		const currentUser = await findUserByName(username, {password: true});
 		if (!currentUser) throw 'User unknown';
 		// Patch allows clients to send partial payloads
-		if (patch) user = {...currentUser, ...user};
+		if (patch) user = {...currentUser, password: undefined, banner: undefined, ...user};
 		user.login = username;
 		if (!user.type) user.type = currentUser.type;
 		if (!user.bio) user.bio = null;
@@ -311,6 +325,11 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 			if (user.password.length < 8) throw {code: 'PASSWORD_TOO_SHORT', data: user.password.length};
 			user.password = await hashPasswordbcrypt(user.password);
 			user.password_last_modified_at = await updateUserPassword(user.login, user.password);
+		}
+		if (user.banner) {
+			user.banner = await replaceBanner(user.banner);
+		} else {
+			user.banner = currentUser.banner;
 		}
 		if (avatar) {
 			// If a new avatar was sent, it is contained in the avatar object

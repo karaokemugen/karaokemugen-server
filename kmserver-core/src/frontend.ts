@@ -9,7 +9,13 @@ import userController from './controllers/http/user';
 import favoritesController from './controllers/http/favorites';
 import remoteSocketController from './controllers/ws/remote';
 import userSubSocketController from './controllers/ws/user';
-import {getConfig, resolvedPathAvatars, resolvedPathPreviews, resolvedPathRepos} from './lib/utils/config';
+import {
+	getConfig,
+	resolvedPathAvatars,
+	resolvedPathBanners,
+	resolvedPathPreviews,
+	resolvedPathRepos
+} from './lib/utils/config';
 import range from 'express-range';
 import vhost from 'vhost';
 import {createServer} from 'http';
@@ -83,7 +89,10 @@ export function initFrontend(listenPort: number) {
 
 	// API router
 	app.use('/api', api());
-	if (conf.Users.Enabled) app.use('/avatars', express.static(resolvedPathAvatars()));
+	if (conf.Users.Enabled) {
+		app.use('/avatars', express.static(resolvedPathAvatars()));
+		app.use('/banners', express.static(resolvedPathBanners()));
+	}
 	// Redirect old base route to root
 	app.get('/base*', (req, res) => {
 		res.redirect(301, req.url.replace(/^\/base\/?/, '/'));

@@ -39,7 +39,7 @@ SELECT
 	social_networks,
 	flag_public,
 	flag_displayfavorites,
-	banner
+	banner,
 	language
 FROM users
 `;
@@ -73,6 +73,6 @@ UPDATE users SET
 	flag_displayfavorites = $12,
 	social_networks = $13,
 	banner = $14,
-	language = $15,
+	language = $15
 WHERE pk_login = $16;
 `;
