@@ -204,40 +204,7 @@
 				<section v-if="mode === 'series'" class="modal-card-body">
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
-							<label for="series_lang_mode" class="label">{{ $t('modal.profile.series_name.label') }}</label>
-						</div>
-						<div class="field-body">
-							<div class="field">
-								<div class="control">
-									<div class="select">
-										<select id="series_lang_mode" v-model="user.series_lang_mode">
-											<option :value="-1">
-												{{ $t('modal.profile.series_name.mode_no_pref') }}
-											</option>
-											<option :value="0">
-												{{ $t('modal.profile.series_name.original_name') }}
-											</option>
-											<option :value="1">
-												{{ $t('modal.profile.series_name.song_lang') }}
-											</option>
-											<option :value="2">
-												{{ $t('modal.profile.series_name.mode_admin') }}
-											</option>
-											<option :value="3">
-												{{ $t('modal.profile.series_name.user_lang') }}
-											</option>
-											<option :value="4">
-												{{ $t('modal.profile.series_name.force_lang_series') }}
-											</option>
-										</select>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div v-if="user.series_lang_mode === 4" class="field is-horizontal">
-						<div class="field-label is-normal">
-							<label class="label">{{ $t('modal.profile.series_name.force_lang_series_main') }}</label>
+							<label class="label">{{ $t('modal.profile.series_name.main_song_name_lang') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
@@ -255,11 +222,11 @@
 							</div>
 						</div>
 					</div>
-					<div v-if="user.series_lang_mode === 4" class="field is-horizontal">
+					<div class="field is-horizontal">
 						<div class="field-label is-normal">
 							<label
 								class="label"
-							>{{ $t('modal.profile.series_name.force_lang_series_fallback') }}</label>
+							>{{ $t('modal.profile.series_name.fallback_song_name_lang') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
@@ -303,15 +270,15 @@
 
 <script lang="ts">
 	import Vue from 'vue';
-	import languages from '@cospired/i18n-iso-languages';
+	import languages from '@karaokemugen/i18n-iso-languages';
 	import isoCountriesLanguages from 'iso-countries-languages';
 
 	import CropAvatarModal from './CropAvatarModal.vue';
 	import { DBUser } from '%/lib/types/database/user';
 	import { modalStore } from '~/store';
 
-	languages.registerLocale(require('@cospired/i18n-iso-languages/langs/en.json'));
-	languages.registerLocale(require('@cospired/i18n-iso-languages/langs/fr.json'));
+	languages.registerLocale(require('@karaokemugen/i18n-iso-languages/langs/en.json'));
+	languages.registerLocale(require('@karaokemugen/i18n-iso-languages/langs/fr.json'));
 
 	interface DBUserEdit extends DBUser {
 		password_confirmation?: string
@@ -354,7 +321,6 @@
 					password: '',
 					bio: '',
 					email: '',
-					series_lang_mode: -1,
 					main_series_lang: '',
 					fallback_series_lang: '',
 					url: '',

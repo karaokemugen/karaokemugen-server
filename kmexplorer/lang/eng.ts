@@ -95,7 +95,8 @@ export default {
 			lyrics_file_tooltip: 'Supported file formats: {formats}',
 			lyrics_file_missing: 'The lyrics file is missing, this is appropriate only if you are sending an MKV file or a karaoke without lyrics (?).',
 			title: 'Title',
-			title_required: 'Please enter a song title',
+			title_required: 'Please enter a english song title',
+			title_eng_required: 'Le titre anglais est obligatoire',
 			title_tooltip: 'If you don\'t know, put the name of the series here as well. In the case of an alternative version, name your title as: \'My title ~ Disco vers.\' for example',
 			series_tooltip: 'TV series, movie title, video game title, etc.',
 			series_singers_required: 'Series or Sung by cannot be empty in the same time.',
@@ -118,7 +119,9 @@ export default {
 			add_success: 'Your karaoke has been successfully sent!',
 			add_success_description: 'An issue has been created on our tracker. You can check its progression at {url}',
 			add_error: 'An error has occurred, karaoke has not been sent properly',
-			restart: 'Submit new karaoke'
+			restart: 'Submit new karaoke',
+			i18n_select: 'Add a language',
+			i18n_delete: 'Remove language'
 		},
 		stats: {
 			favorited: 'Added to favorites by {number} users',
@@ -294,15 +297,9 @@ export default {
 			delete: 'Delete account',
 			select_avatar: 'Select an avatar',
 			series_name: {
-				label: 'Series language display',
-				original_name: 'Original name',
-				song_lang: 'Song language',
-				mode_admin: 'Karaoke Mugen software language',
-				user_lang: 'User language',
-				mode_no_pref: 'No preference',
-				force_lang_series: 'Force your own language',
-				force_lang_series_main: 'Series name language',
-				force_lang_series_fallback: 'Fallback series name language'
+				label: 'Song language display',
+				main_song_name_lang: 'Song name display preference',
+				force_lang_series_fallback: 'Fallback song name display preference'
 			}
 		},
 		add_repository: {

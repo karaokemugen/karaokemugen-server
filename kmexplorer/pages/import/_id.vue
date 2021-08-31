@@ -69,6 +69,7 @@
 			} else {
 				return {
 					karaparam: {
+						titles: { eng: '' },
 						series: [],
 						versions: [],
 						singers: [],

@@ -2,20 +2,23 @@
 
 
 export const getAllTags = (filterClauses: string[], typeClauses: string, limitClause: string, offsetClause: string, joinClauses: string, orderClauses: string, stripClause: string, additionalFrom: string[]) => `
-SELECT pk_tid AS tid,
-	types,
-	name,
-	short,
-	aliases,
-	i18n,
-	karacount,
-	tagfile,
-	count(pk_tid) OVER()::integer AS count,
-	problematic,
-	noLiveDownload,
-	repository,
-	modified_at
-FROM all_tags
+SELECT t.pk_tid AS tid,
+	t.types,
+	t.name,
+	t.short,
+	t.aliases,
+	t.i18n,
+	at.karacount AS karacount,
+	t.tagfile,
+	t.modified_at,
+	t.repository,
+	t.problematic,
+	t.nolivedownload AS "noLiveDownload",
+	t.priority,
+	t.karafile_tag,
+	count(t.pk_tid) OVER()::integer AS count
+FROM tag t
+LEFT JOIN all_tags at ON at.pk_tid = t.pk_tid
 ${joinClauses}
 ${additionalFrom.join('')}
 WHERE 1 = 1
@@ -38,18 +41,22 @@ WHERE name = $1
 `;
 
 export const selectTag = `
-SELECT pk_tid AS tid,
-	types,
-	name,
-	short,
-	aliases,
-	i18n,
-	karacount,
-	tagfile,
-	repository,
-	problematic,
-	noLiveDownload,
-	modified_at
-FROM all_tags
-WHERE pk_tid = $1
+SELECT t.pk_tid AS tid,
+	t.types,
+	t.name,
+	t.short,
+	t.aliases,
+	t.i18n,
+	at.karacount AS karacount,
+	t.tagfile,
+	t.modified_at,
+	t.repository,
+	t.problematic,
+	t.nolivedownload AS "noLiveDownload",
+	t.priority,
+	t.karafile_tag,
+	count(t.pk_tid) OVER()::integer AS count
+FROM tag t
+LEFT JOIN all_tags at ON at.pk_tid = t.pk_tid
+WHERE t.pk_tid = $1
 `;

@@ -3,7 +3,7 @@ export interface State {
 	dataPath?: string,
 	resourcePath?: string,
 	originalAppPath?: string,
-	EngineDefaultLocale?: string,
+	defaultLocale?: string,
 	electron?: any,
 	os?: string,
 	osHost?: string,

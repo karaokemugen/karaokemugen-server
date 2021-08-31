@@ -16,6 +16,7 @@ export async function updateGit() {
 }
 
 export async function getGitDiff(commit: string): Promise<string> {
+	if (!commit.match(/[0-9a-f]{40}/)) throw {code: 400, msg: 'Not a git commit'};
 	return gitDiff(commit, 'HEAD', resolve(getState().dataPath, getConfig().System.Repositories[0].BaseDir));
 }
 

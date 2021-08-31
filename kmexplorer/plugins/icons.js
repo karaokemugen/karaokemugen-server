@@ -49,7 +49,8 @@ import {
 	faSearch,
 	faDice,
 	faPortrait,
-	faPersonBooth
+	faPersonBooth,
+	faMinus
 } from '@fortawesome/free-solid-svg-icons';
 import {
 	faTwitter,
@@ -101,6 +102,7 @@ library.add(
 	faFolderPlus,
 	faEraser,
 	faPlus,
+	faMinus,
 	faClosedCaptioning,
 	faExternalLinkAlt,
 	faFileVideo,

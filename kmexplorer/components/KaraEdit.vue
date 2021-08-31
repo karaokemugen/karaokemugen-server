@@ -66,11 +66,15 @@
 				{{ $t('kara.import.title') }}
 				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
 			</label>
-			<div class="control">
-				<input v-model="karaoke.title" class="input" :class="{ 'is-danger': !karaoke.title }" type="text">
-			</div>
-			<p v-if="!karaoke.title" class="help is-danger">
+			<languages-list
+				:value="karaoke.titles"
+				@change="(titles) => karaoke.titles = titles"
+			/>
+			<p v-if="!karaoke.titles || Object.keys(karaoke.titles).length === 0" class="help is-danger">
 				{{ $t('kara.import.title_required') }}
+			</p>
+			<p v-if="!karaoke.titles.eng" class="help is-danger">
+				{{ $t('kara.import.title_eng_required') }}
 			</p>
 		</div>
 		<div class="field">
@@ -363,8 +367,9 @@
 	import Vue, { PropOptions } from 'vue';
 	import cloneDeep from 'lodash.clonedeep';
 
+	import EditableTagGroup from './EditableTagGroup.vue';
+	import LanguagesList from './LanguagesList.vue';
 	import { tagTypes } from '~/assets/constants';
-	import EditableTagGroup from '~/components/EditableTagGroup.vue';
 	import { APIMessageType } from '%/lib/types/frontend';
 	import { DBKara } from '%/lib/types/database/kara';
 
@@ -394,7 +399,7 @@
 
 		name: 'KaraEdit',
 
-		components: { EditableTagGroup },
+		components: { EditableTagGroup, LanguagesList },
 		props: {
 			karaparam: {
 				type: Object,
@@ -431,7 +436,9 @@
 					!this.mediafile ||
 						this.mediafile_error.length > 0 ||
 						this.subfile_error.length > 0 ||
-						!this.karaoke.title ||
+						!this.karaoke.titles ||
+						Object.keys(this.karaoke.titles).length === 0 ||
+						!this.karaoke.titles.eng ||
 						(this.karaoke.series.length === 0 &&
 							this.karaoke.singers.length === 0) ||
 						this.karaoke.songtypes.length === 0 ||

@@ -18,7 +18,7 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 	let filterClauses = params.filter
 		? buildTagClauses(params.filter)
 		: {sql: [], params: {}, additionalFrom: []};
-	let typeClauses = params.type ? ` AND types @> ARRAY[${params.type}]` : '';
+	let typeClauses = params.type ? ` AND t.types @> ARRAY[${params.type}]` : '';
 	let stripClause = '';
 	let limitClause = '';
 	let offsetClause = '';
@@ -27,7 +27,7 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 	if (params.type) {
 		joinClauses = `LEFT   JOIN LATERAL (
 	   	SELECT elem->>'count' AS karacounttype
-	   	FROM   jsonb_array_elements(all_tags.karacount::jsonb) a(elem)
+	   	FROM   jsonb_array_elements(at.karacount::jsonb) a(elem)
 	   	WHERE  elem->>'type' = '${params.type}'
 	   	) a ON true
 		`;
@@ -52,11 +52,11 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 }
 
 function buildTagClauses(words: string): WhereClause {
-	const sql = ['tag_search_vector @@ query'];
+	const sql = ['t.tag_search_vector @@ query'];
 	return {
 		sql: sql,
 		params: {tsquery: paramWords(words).join(' & ')},
-		additionalFrom: [', to_tsquery(\'public.unaccent_conf\', :tsquery) as query, ts_rank_cd(tag_search_vector, query) as relevance']
+		additionalFrom: [', to_tsquery(\'public.unaccent_conf\', :tsquery) as query, ts_rank_cd(t.tag_search_vector, query) as relevance']
 	};
 }
 

@@ -96,6 +96,7 @@ export default {
 			lyrics_file_missing: 'Le fichier de sous-titres est manquant, cela est approprié que si vous envoyez un mkv ou que votre karaoké n\'a pas de paroles (?).',
 			title: 'Titre',
 			title_required: 'Le titre est obligatoire',
+			title_eng_required: 'Le titre anglais est obligatoire',
 			title_tooltip: 'Si vous ne le connaissez pas, mettez le nom de la série. Dans le cas d\'une version alternative, nommez votre titre ainsi : \'Mon titre ~ Disco vers.\' par exemple',
 			series_tooltip: 'Série TV, nom de film, de jeu vidéo, etc.',
 			series_singers_required: 'Les champs Séries et Chanté par ne peuvent être vide en même temps.',
@@ -118,7 +119,9 @@ export default {
 			add_success: 'Votre karaoké est envoyé !',
 			add_success_description: 'Un ticket a été crée sur notre outil de suivi. Vous pouvez consulter l\'avancement de l\'intégration de votre karaoké : {url}',
 			add_error: 'Une erreur a eu lieue, le karaoké n\'a pas pu être envoyé',
-			restart: 'Soumettre un nouveau karaoké'
+			restart: 'Soumettre un nouveau karaoké',
+			i18n_select: 'Ajouter une langue',
+			i18n_delete: 'Supprimer la langue'
 		},
 		stats: {
 			favorited: 'Ajouté aux favoris par {number} utilisateurs',
@@ -294,15 +297,9 @@ export default {
 			delete: 'Suppression du compte',
 			select_avatar: 'Sélectionner un avatar',
 			series_name: {
-				label: 'Affichage des noms de série',
-				original_name: 'Nom original',
-				song_lang: 'Selon la langue de la chanson',
-				mode_admin: 'Selon la langue du logiciel Karaoke Mugen',
-				user_lang: 'Selon ma langue',
-				mode_no_pref: 'Pas de préférence',
-				force_lang_series: 'Forcer la langue des noms de séries',
-				force_lang_series_main: 'Langue des noms de séries',
-				force_lang_series_fallback: 'Langue de secours des noms de séries'
+				label: 'Affichage des noms de chanson',
+				main_song_name_lang: 'Préférence d\'affichage du nom des chansons',
+				fallback_song_name_lang: 'Préférence alternative d\'affichage du nom des chansons'
 			}
 		},
 		add_repository: {
