@@ -4,7 +4,7 @@
 			<div class="box">
 				<h2>{{ user.nickname }}</h2>
 				<p>{{ user.bio }}</p>
-				<ul>
+				<ul v-if="user.social_networks">
 					<li v-if="user.social_networks.twitter">
 						<font-awesome-icon :icon="['fab', 'twitter']" :fixed-width="true" />
 						{{ user.social_networks.twitter }}
@@ -19,7 +19,7 @@
 					</li>
 					<li v-if="user.social_networks.twitch">
 						<font-awesome-icon :icon="['fab', 'twitch']" :fixed-width="true" />
-						 {{ user.social_networks.twitter }}
+						{{ user.social_networks.twitch }}
 					</li>
 				</ul>
 			</div>

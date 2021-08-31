@@ -276,7 +276,6 @@ export default {
 					label: 'Email',
 					placeholder: 'test@shelter.moe'
 				},
-
 				url: {
 					label: 'Site web',
 					placeholder: 'https://karaokes.moe'
@@ -287,6 +286,22 @@ export default {
 				},
 				location: {
 					label: 'Localisation'
+				},
+				discord: {
+					label: 'Discord',
+					placeholder: 'Karak#1423'
+				},
+				twitter: {
+					label: 'Twitter',
+					placeholder: 'KaraokeMugen'
+				},
+				instagram: {
+					label: 'Instagram',
+					placeholder: 'KaraMugen'
+				},
+				twitch: {
+					label: 'Twitch',
+					placeholder: 'KaraokeLive'
 				},
 				flag_sendstats: {
 					label: 'Utiliser mes favoris et demandes de chansons pour des statistiques'

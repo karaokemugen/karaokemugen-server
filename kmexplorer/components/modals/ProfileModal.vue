@@ -138,6 +138,82 @@
 						</div>
 					</div>
 					<div class="field is-horizontal">
+						<div class="field-label is-normal">
+							<label for="discord" class="label">{{ $t('modal.profile.fields.discord.label') }}</label>
+						</div>
+						<div class="field-body">
+							<div class="field">
+								<div class="control">
+									<input
+										id="discord"
+										v-model="user.social_networks.discord"
+										type="text"
+										name="discord"
+										class="input"
+										:placeholder="$t('modal.profile.fields.discord.placeholder')"
+									>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="field is-horizontal">
+						<div class="field-label is-normal">
+							<label for="twitter" class="label">{{ $t('modal.profile.fields.twitter.label') }}</label>
+						</div>
+						<div class="field-body">
+							<div class="field">
+								<div class="control">
+									<input
+										id="twitter"
+										v-model="user.social_networks.twitter"
+										type="text"
+										name="twitter"
+										class="input"
+										:placeholder="$t('modal.profile.fields.twitter.placeholder')"
+									>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="field is-horizontal">
+						<div class="field-label is-normal">
+							<label for="instagram" class="label">{{ $t('modal.profile.fields.instagram.label') }}</label>
+						</div>
+						<div class="field-body">
+							<div class="field">
+								<div class="control">
+									<input
+										id="instagram"
+										v-model="user.social_networks.instagram"
+										type="text"
+										name="instagram"
+										class="input"
+										:placeholder="$t('modal.profile.fields.instagram.placeholder')"
+									>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="field is-horizontal">
+						<div class="field-label is-normal">
+							<label for="twitch" class="label">{{ $t('modal.profile.fields.twitch.label') }}</label>
+						</div>
+						<div class="field-body">
+							<div class="field">
+								<div class="control">
+									<input
+										id="twitch"
+										v-model="user.social_networks.twitch"
+										type="text"
+										name="twitch"
+										class="input"
+										:placeholder="$t('modal.profile.fields.twitch.placeholder')"
+									>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="field is-horizontal">
 						<label class="checkbox">
 							<div class="control">
 								<input
@@ -247,19 +323,19 @@
 				</section>
 				<footer class="modal-card-foot">
 					<button
+						type="button"
+						class="button is-danger"
+						@click.prevent="openDeleteAccountModal"
+					>
+						{{ $t('modal.profile.delete') }}
+					</button>
+					<button
 						class="button is-success"
 						:class="{'is-loading': loading}"
 						:disabled="passwordNotEquals"
 						type="submit"
 					>
 						{{ $t('modal.profile.submit') }}
-					</button>
-					<button
-						type="button"
-						class="button is-danger"
-						@click.prevent="openDeleteAccountModal"
-					>
-						{{ $t('modal.profile.delete') }}
 					</button>
 				</footer>
 			</div>
@@ -270,6 +346,7 @@
 
 <script lang="ts">
 	import Vue from 'vue';
+	import clonedeep from 'lodash.clonedeep';
 	import languages from '@karaokemugen/i18n-iso-languages';
 	import isoCountriesLanguages from 'iso-countries-languages';
 
@@ -325,7 +402,13 @@
 					fallback_series_lang: '',
 					url: '',
 					avatar_file: '',
-					flag_sendstats: undefined
+					flag_sendstats: undefined,
+					social_networks: {
+						twitch: '',
+						discord: '',
+						twitter: '',
+						instagram: ''
+					}
 				},
 				location: '',
 				main_series_lang_name: '',
@@ -408,7 +491,7 @@
 			},
 			getUser(): void {
 				if (this.storeUser) {
-					this.user = { ...this.storeUser };
+					this.user = clonedeep(this.storeUser);
 					if (this.storeUser.location) {
 						this.location = this.getCountryName(this.storeUser.location) as string;
 					}
