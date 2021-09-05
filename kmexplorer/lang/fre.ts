@@ -41,6 +41,10 @@ export default {
 			add: 'Ajouter aux favoris',
 			remove: 'Retirer des favoris'
 		},
+		set_banner: {
+			btn: 'Utiliser comme bannière de profil',
+			forbidden_label: 'Vous ne pouvez pas utiliser ce karaoké pour définir votre bannière.'
+		},
 		problem: {
 			title: 'Un problème avec {title} ?',
 			btn: {
@@ -392,6 +396,15 @@ export default {
 			change: 'Vous pouvez changer ceci à tout moment dans votre profil. Acceptez-vous cet usage des statistiques ?',
 			yes: 'Oui',
 			no: 'Non'
+		},
+		set_banner: {
+			label: 'Choisir une bannière',
+			catch: 'Personnalisez votre profil avec une super bannière ! Défilez entre les bannières et confirmez votre choix.',
+			cancel: 'Annuler',
+			set: 'Utiliser cette image',
+			next: 'Image suivante',
+			previous: 'Image précédente',
+			one: 'Il n\'y a qu\'une bannière disponible pour les karaokés Audio uniquement.'
 		}
 	},
 	titles: {

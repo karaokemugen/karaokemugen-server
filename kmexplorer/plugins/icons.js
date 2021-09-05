@@ -50,7 +50,10 @@ import {
 	faDice,
 	faPortrait,
 	faPersonBooth,
-	faMinus
+	faMinus,
+	faImage,
+	faChevronUp,
+	faChevronDown
 } from '@fortawesome/free-solid-svg-icons';
 import {
 	faTwitter,
@@ -112,6 +115,9 @@ library.add(
 	faDice,
 	faPortrait,
 	faPersonBooth,
+	faImage,
+	faChevronUp,
+	faChevronDown,
 	faTwitter,
 	faInstagram,
 	faDiscord,

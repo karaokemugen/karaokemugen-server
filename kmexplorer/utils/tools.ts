@@ -101,3 +101,18 @@ export function generateNavigation(menuBarStore: menubar) {
 	}
 	return navigation;
 }
+
+export function isProblematic(karaoke: DBKara): boolean {
+	let problematic = false;
+	for (const tagType in tagTypes) {
+		if (tagType === 'years') { continue; }
+		// @ts-ignore: il est 23h27 <- ceci n'est pas une raison
+		for (const tag of karaoke[tagType]) {
+			if (tag?.problematic) {
+				problematic = true;
+				break;
+			}
+		}
+	}
+	return problematic;
+}

@@ -67,7 +67,7 @@
 	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
 	import VLazyImage from 'v-lazy-image';
-	import { fakeYearTag, getTitleInLocale } from '~/utils/tools';
+	import { fakeYearTag, getTitleInLocale, isProblematic } from '~/utils/tools';
 	import { tagTypes } from '~/assets/constants';
 	import Tag from '~/components/Tag.vue';
 	import KaraPhrase from '~/components/KaraPhrase.vue';
@@ -142,18 +142,7 @@
 				return tagTypes;
 			},
 			problematic(): boolean {
-				// Loop all tags to find a tag with problematic
-				let problematic = false;
-				for (const tagType in tagTypes) {
-					if (tagType === 'years') { continue; }
-					// @ts-ignore: il est 23h27 <- ceci n'est pas une raison
-					for (const tag of this.karaoke[tagType]) {
-						if (tag?.problematic) {
-							problematic = true;
-						}
-					}
-				}
-				return problematic;
+				return isProblematic(this.karaoke);
 			},
 			tags(): TagExtend[] {
 				const tags: TagExtend[] = [];

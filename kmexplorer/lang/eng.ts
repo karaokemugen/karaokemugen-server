@@ -41,6 +41,10 @@ export default {
 			add: 'Add to favorites',
 			remove: 'Remove from favorites'
 		},
+		set_banner: {
+			btn: 'Use as profile banner',
+			forbidden_label: 'You cannot use this karaoke as your profile banner.'
+		},
 		problem: {
 			title: 'An issue with {title}?',
 			btn: {
@@ -391,6 +395,15 @@ export default {
 			change: 'You can change this at any time in your profile. Do you accept the usage of your stats?',
 			yes: 'Yes',
 			no: 'No'
+		},
+		set_banner: {
+			label: 'Choose a banner',
+			catch: 'Customize your profile with a wonderful banner! Scroll through the banners and confirm your choice.',
+			cancel: 'Cancel',
+			set: 'Use this image',
+			next: 'Next image',
+			previous: 'Previous image',
+			one: 'There is only one banner for audio only karaokes.'
 		}
 	},
 	titles: {
