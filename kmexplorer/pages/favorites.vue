@@ -11,7 +11,7 @@
 		// Dummy page to assure redirects
 		asyncData({ redirect, $auth }) {
 			if ($auth.loggedIn) {
-				redirect(301, `/users/${$auth.user.login}`);
+				redirect(301, `/user/${$auth.user.login}`);
 			} else {
 				redirect(302, '/');
 			}

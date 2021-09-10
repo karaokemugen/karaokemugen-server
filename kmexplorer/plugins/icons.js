@@ -54,7 +54,10 @@ import {
 	faImage,
 	faChevronUp,
 	faChevronDown,
-	faHistory
+	faHistory,
+	faUserLock,
+	faKey,
+	faLink
 } from '@fortawesome/free-solid-svg-icons';
 import {
 	faTwitter,
@@ -120,6 +123,9 @@ library.add(
 	faChevronUp,
 	faChevronDown,
 	faHistory,
+	faUserLock,
+	faKey,
+	faLink,
 	faTwitter,
 	faInstagram,
 	faDiscord,

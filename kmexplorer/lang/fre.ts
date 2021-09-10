@@ -194,7 +194,9 @@ export default {
 		switch_language: 'Changer la langue'
 	},
 	profile: {
-		favorites: 'Favoris'
+		favorites: 'Favoris',
+		you: ' (c\'est vous !)',
+		edit: 'Éditer le profil'
 	},
 	search: {
 		placeholder: 'Séries, chanteurs, noms...',
@@ -260,7 +262,13 @@ export default {
 			submit: 'S\'inscrire'
 		},
 		profile: {
-			title: 'Editer son profil',
+			title: 'Éditer son profil',
+			headers: {
+				profile: 'Informations',
+				privacy: 'Confidentialité',
+				lang: 'Préférences linguistiques',
+				password: 'Changer son mot de passe'
+			},
 			fields: {
 				username: {
 					label: 'Nom d\'utilisateur'
@@ -270,7 +278,6 @@ export default {
 					placeholder: 'LoveLiveFan93'
 				},
 				password: {
-					header: 'Changer le mot de passe',
 					label: 'Mot de passe',
 					placeholder: 'EnVraiJePréfèreIdolM@ster'
 				},
@@ -314,19 +321,29 @@ export default {
 					remove: 'Restaurer la bannière par défaut',
 					change: 'Pour changer votre bannière, rendez-vous sur la page du karaoké de votre choix et cliquez sur le bouton “Utiliser cette chanson comme bannière”'
 				},
+				flag_public: {
+					label: 'Profil public',
+					checkbox: 'Rendre mon profil public',
+					desc: 'Par défaut, votre compte est visible publiquement via la recherche des utilisateurs et affiche les informations définies ci-dessus hormis l\'adresse e-mail. Si vous décochez cette case, votre compte ne sera plus disponible dans les résultats de rechreche (vous serez le seul à pouvoir le voir, une fois connecté).'
+				},
+				flag_displayfavorites: {
+					label: 'Favoris',
+					checkbox: 'Afficher mes favoris',
+					desc: 'En plus de montrer votre profil public, vous pouvez exposer vos favoris (et ainsi vos goûts) aux yeux de tous. Cette option est désactivée par défaut, à vous de la cocher si vous voulez. Pour afficher vos favoris, votre profil doit être public au préalable.'
+				},
 				flag_sendstats: {
-					label: 'Utiliser mes favoris et demandes de chansons pour des statistiques'
+					label: 'Statistiques',
+					checkbox: 'Utiliser mes favoris et demandes de chansons pour des statistiques'
+				},
+				lang_prefs: {
+					main_song_name_lang: 'Préférence d\'affichage du nom des chansons',
+					fallback_song_name_lang: 'Préférence alternative d\'affichage du nom des chansons'
 				}
 			},
 			passwords_mismatch: 'Les mots de passe ne correspondent pas',
 			submit: 'Sauvegarder',
 			delete: 'Suppression du compte',
-			select_avatar: 'Sélectionner un avatar',
-			series_name: {
-				label: 'Affichage des noms de chanson',
-				main_song_name_lang: 'Préférence d\'affichage du nom des chansons',
-				fallback_song_name_lang: 'Préférence alternative d\'affichage du nom des chansons'
-			}
+			select_avatar: 'Sélectionner un avatar'
 		},
 		add_repository: {
 			button: 'Dépôt :',

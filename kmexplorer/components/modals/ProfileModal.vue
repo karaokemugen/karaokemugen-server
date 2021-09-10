@@ -5,16 +5,9 @@
 			<div class="modal-card">
 				<header>
 					<div class="modal-card-head">
-						<a
-							class="modal-card-title"
-							:class="{'is-active' : mode === 'general' }"
-							@click="mode='general'"
-						>{{ $t('modal.profile.title') }}</a>
-						<a
-							class="modal-card-title"
-							:class="{'is-active' : mode === 'series' }"
-							@click="mode='series'"
-						>{{ $t('modal.profile.series_name.label') }}</a>
+						<h1 class="modal-card-title">
+							{{ $t('modal.profile.title') }}
+						</h1>
 						<a class="delete" aria-label="close" @click="closeModal" />
 					</div>
 				</header>
@@ -39,6 +32,9 @@
 							</label>
 						</div>
 					</div>
+					<h2 class="subtitle">
+						<font-awesome-icon :icon="['fas', 'user']" fixed-width /> {{ $t('modal.profile.headers.profile') }}
+					</h2>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
 							<label for="nickname" class="label">{{ $t('modal.profile.fields.nickname.label') }}</label>
@@ -240,19 +236,113 @@
 							</div>
 						</div>
 					</div>
+					<h2 class="subtitle">
+						<font-awesome-icon :icon="['fas', 'user-lock']" fixed-width /> {{ $t('modal.profile.headers.privacy') }}
+					</h2>
 					<div class="field is-horizontal">
-						<label class="checkbox">
-							<div class="control">
+						<div class="field-label is-normal">
+							<label class="label">{{ $t('modal.profile.fields.flag_public.label') }}</label>
+						</div>
+						<div class="field-body flex-column">
+							<div class="has-text-white">
+								{{ $t('modal.profile.fields.flag_public.desc') }}
+							</div>
+							<label for="public" class="field">
 								<input
-									v-model="user.flag_sendstats"
+									v-model="user.flag_public"
+									id="public"
 									type="checkbox"
 								>
-								{{ $t('modal.profile.fields.flag_sendstats.label') }}
+								{{ $t('modal.profile.fields.flag_public.checkbox') }}
+							</label>
+						</div>
+					</div>
+					<div class="field is-horizontal">
+						<div class="field-label is-normal">
+							<label class="label">{{ $t('modal.profile.fields.flag_displayfavorites.label') }}</label>
+						</div>
+						<div class="field-body flex-column">
+							<div class="has-text-white">
+								{{ $t('modal.profile.fields.flag_displayfavorites.desc') }}
 							</div>
-						</label>
+							<label for="favorites" class="field">
+								<input
+									v-model="user.flag_displayfavorites"
+									id="favorites"
+									type="checkbox"
+								>
+								{{ $t('modal.profile.fields.flag_displayfavorites.checkbox') }}
+							</label>
+						</div>
+					</div>
+					<div class="field is-horizontal">
+						<div class="field-label is-normal">
+							<label class="label">{{ $t('modal.profile.fields.flag_sendstats.label') }}</label>
+						</div>
+						<div class="field-body flex-column">
+							<div class="has-text-white">
+								{{ $t('modal.stats.desc') }}
+							</div>
+							<div class="has-text-white">
+								{{ $t('modal.stats.refuse_desc') }}
+							</div>
+							<label for="sendstats" class="field">
+								<input
+									v-model="user.flag_sendstats"
+									id="sendstats"
+									type="checkbox"
+								>
+								{{ $t('modal.profile.fields.flag_sendstats.checkbox') }}
+							</label>
+						</div>
 					</div>
 					<h2 class="subtitle">
-						{{ $t('modal.profile.fields.password.header') }}
+						<font-awesome-icon :icon="['fas', 'globe']" fixed-width /> {{ $t('modal.profile.headers.lang') }}
+					</h2>
+					<div class="field is-horizontal">
+						<div class="field-label is-normal long">
+							<label class="label">{{ $t('modal.profile.fields.lang_prefs.main_song_name_lang') }}</label>
+						</div>
+						<div class="field-body">
+							<div class="field">
+								<div class="control">
+									<div class="select">
+										<b-autocomplete
+											v-model="main_series_lang_name"
+											keep-first
+											open-on-focus
+											:data="getListLangsMain"
+											@select="option => user.main_series_lang = get3BCode(option)"
+										/>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="field is-horizontal">
+						<div class="field-label is-normal long">
+							<label
+								class="label"
+							>{{ $t('modal.profile.fields.lang_prefs.fallback_song_name_lang') }}</label>
+						</div>
+						<div class="field-body">
+							<div class="field">
+								<div class="control">
+									<div class="select">
+										<b-autocomplete
+											v-model="fallback_series_lang_name"
+											keep-first
+											open-on-focus
+											:data="getListLangsFallback"
+											@select="option => user.fallback_series_lang = get3BCode(option)"
+										/>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<h2 class="subtitle">
+						<font-awesome-icon :icon="['fas', 'key']" fixed-width /> {{ $t('modal.profile.headers.password') }}
 					</h2>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
@@ -299,50 +389,6 @@
 									>
 										{{ $t('modal.profile.passwords_mismatch') }}
 									</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</section>
-				<section v-if="mode === 'series'" class="modal-card-body">
-					<div class="field is-horizontal">
-						<div class="field-label is-normal">
-							<label class="label">{{ $t('modal.profile.series_name.main_song_name_lang') }}</label>
-						</div>
-						<div class="field-body">
-							<div class="field">
-								<div class="control">
-									<div class="select">
-										<b-autocomplete
-											v-model="main_series_lang_name"
-											keep-first
-											open-on-focus
-											:data="getListLangsMain"
-											@select="option => user.main_series_lang = get3BCode(option)"
-										/>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="field is-horizontal">
-						<div class="field-label is-normal">
-							<label
-								class="label"
-							>{{ $t('modal.profile.series_name.fallback_song_name_lang') }}</label>
-						</div>
-						<div class="field-body">
-							<div class="field">
-								<div class="control">
-									<div class="select">
-										<b-autocomplete
-											v-model="fallback_series_lang_name"
-											keep-first
-											open-on-focus
-											:data="getListLangsFallback"
-											@select="option => user.fallback_series_lang = get3BCode(option)"
-										/>
-									</div>
 								</div>
 							</div>
 						</div>
@@ -430,6 +476,9 @@
 					url: '',
 					avatar_file: '',
 					flag_sendstats: undefined,
+					flag_public: undefined,
+					flag_displayfavorites: undefined,
+					banner: 'default.jpg',
 					social_networks: {
 						twitch: '',
 						discord: '',
@@ -473,6 +522,10 @@
 					this.getUser();
 				}
 			}
+		},
+
+		mounted() {
+			this.getUser();
 		},
 
 		methods: {
@@ -582,13 +635,12 @@
 				}).then(async (response) => {
 					// Refresh auth
 					await this.$auth.setUserToken(response.data.token);
+					this.user.banner = 'default.jpg';
 				}).finally(() => {
 					this.loading = false;
 				});
 			}
-		},
-
-		transition: 'fade'
+		}
 	});
 </script>
 
@@ -640,11 +692,9 @@
 		}
 	}
 
-	.field > .checkbox {
+	.field[for="sendstats"], .field[for="public"], .field[for="favorites"] {
 		color: white;
-		.control {
-			font-size: 1.15em;
-		}
+		user-select: none;
 	}
 
 	.banner {
@@ -653,5 +703,9 @@
 
 	.modal-card-foot {
 		justify-content: space-between;
+	}
+
+	.field-label.long {
+		flex-basis: 45%;
 	}
 </style>

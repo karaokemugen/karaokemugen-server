@@ -50,7 +50,7 @@
 			<div v-if="accountMenu" class="navbar-dropdown">
 				<nuxt-link
 					v-if="loggedIn && user"
-					:to="`/users/${user.login}`"
+					:to="`/user/${user.login}`"
 					class="navbar-item"
 					active-class="is-active"
 					aria-label="Profile"
@@ -394,7 +394,7 @@
 					</p>
 					<ul class="menu-list">
 						<li>
-							<nuxt-link v-if="loggedIn && user" :to="`/users/${user.login}`" active-class="is-active" aria-label="Profile">
+							<nuxt-link v-if="loggedIn && user" :to="`/user/${user.login}`" active-class="is-active" aria-label="Profile">
 								<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
 								{{ user.nickname }}
 							</nuxt-link>
@@ -547,7 +547,7 @@
 				return this.$route.params?.id?.substring(36);
 			},
 			onKaraTagListView(): boolean {
-				return ['types-id', 'search-query', 'users-login'].includes(this.$route.name as string);
+				return ['types-id', 'search-query', 'user-login'].includes(this.$route.name as string);
 			},
 			availableLocales(): VueI18n.Locale[] {
 				return this.$i18n.locales?.filter((i: any) => i.code && i.code !== this.$i18n.locale);

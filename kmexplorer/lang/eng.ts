@@ -261,6 +261,12 @@ export default {
 		},
 		profile: {
 			title: 'Edit profile',
+			headers: {
+				profile: 'About',
+				privacy: 'Privacy',
+				lang: 'Language preferences',
+				password: 'Change password'
+			},
 			fields: {
 				username: {
 					label: 'Username'
@@ -270,7 +276,6 @@ export default {
 					placeholder: 'LoveLiveFan93'
 				},
 				password: {
-					header: 'Change password',
 					label: 'Password',
 					placeholder: 'EnVraiJePréfèreIdolM@ster'
 				},
@@ -314,19 +319,29 @@ export default {
 					remove: 'Reset to the default banner',
 					change: 'To change your banner, go to the page of a karaoke and click the "Use as profile banner" button.'
 				},
+				flag_public: {
+					label: 'Public profile',
+					checkbox: 'Make my profile public',
+					desc: 'By default, your account is visible via the user search and shows all the above informations with the exception of the e-mail address. If you uncheck this box, your account will not be available anymore in the search results (you will be the only one to be able to see it, once you\'ve logged in).'
+				},
+				flag_displayfavorites: {
+					label: 'Favorites',
+					checkbox: 'Show my favorites',
+					desc: 'Along with showing your public profile, you can showcase your favorites (therefore your taste) to everyone eyes. This option is disabled by default, you can check it if you want. To show your favorites, your profile must be public in the first place.'
+				},
 				flag_sendstats: {
-					label: 'Use my favorites and karaokes requests for stats'
+					label: 'Stats',
+					checkbox: 'Use my favorites and karaokes requests for stats'
+				},
+				lang_prefs: {
+					main_song_name_lang: 'Song name display preference',
+					force_lang_series_fallback: 'Fallback song name display preference'
 				}
 			},
 			passwords_mismatch: 'Passwords do not match',
 			submit: 'Save',
 			delete: 'Delete account',
-			select_avatar: 'Select an avatar',
-			series_name: {
-				label: 'Song language display',
-				main_song_name_lang: 'Song name display preference',
-				force_lang_series_fallback: 'Fallback song name display preference'
-			}
+			select_avatar: 'Select an avatar'
 		},
 		add_repository: {
 			button: 'Repository :',
