@@ -88,8 +88,6 @@ export async function resetPassword(username: string, requestCode: string) {
 }
 
 export async function initUsers() {
-	cleanupAvatars();
-	setInterval(cleanupAvatars, 60 * 60 * 1000);
 	setInterval(cleanupPasswordResetRequests, 60 * 1000);
 }
 
@@ -276,6 +274,7 @@ async function replaceAvatar(oldImageFile: string, avatar: Express.Multer.File) 
 }
 
 async function replaceBanner(preview: string) {
+	if (preview === 'default.jpg') return preview;
 	const file = resolve(resolvedPathPreviews(), preview);
 	if (!await asyncExists(file)) {
 		throw new Error('The requested preview is not available nor generated.');
