@@ -7,7 +7,6 @@ import {getConfig, resolvedPathAvatars, resolvedPathBanners, resolvedPathPreview
 import {asyncExists, asyncMove, detectFileType} from '../lib/utils/files';
 import { v4 as uuidV4 } from 'uuid';
 import {resolve} from 'path';
-import { getState } from '../utils/state';
 import { User, Token } from '../lib/types/user';
 import { sendMail } from '../utils/mailer';
 import randomstring from 'randomstring';
@@ -96,27 +95,6 @@ function cleanupPasswordResetRequests() {
 	passwordResetRequests.forEach((user: string, request: any) => {
 		if ((request.date + (60 * 60 * 2)) < now ) passwordResetRequests.delete(user);
 	});
-}
-
-async function cleanupAvatars() {
-	// This is done because updating avatars generate a new name for the file. So unused avatar files are now cleaned up.
-	try {
-		const users = await getAllUsers();
-		const avatars = [];
-		for (const user of users) {
-			if (!avatars.includes(user.avatar_file)) avatars.push(user.avatar_file);
-		}
-		const conf = getConfig();
-		const avatarPath = resolve(getState().dataPath, conf.System.Path.Avatars);
-		const avatarFiles = await fs.readdir(avatarPath);
-		for (const file of avatarFiles) {
-			if (!avatars.includes(file) && file !== 'blank.png') fs.unlink(resolve(avatarPath, file));
-		}
-	} catch(err) {
-		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
-		sentry.error(err);
-		throw err;
-	}
 }
 
 export function hashPassword(password: string) {
