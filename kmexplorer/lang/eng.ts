@@ -186,13 +186,15 @@ export default {
 		join_kara: 'Join a karaoke party',
 		kara_import: 'Submit a kara',
 		account: 'Account',
-		favorites: 'Favorites',
 		login: 'Login',
 		logout: 'Logout',
 		register: 'Register',
 		connection: 'Login',
 		profile: 'Profile',
 		switch_language: 'Switch language'
+	},
+	profile: {
+		favorites: 'Favorites'
 	},
 	search: {
 		placeholder: 'Series, singers, names...',
@@ -306,6 +308,11 @@ export default {
 				twitch: {
 					label: 'Twitch',
 					placeholder: 'KaraokeLive'
+				},
+				banner: {
+					label: 'Banner',
+					remove: 'Reset to the default banner',
+					change: 'To change your banner, go to the page of a karaoke and click the "Use as profile banner" button.'
 				},
 				flag_sendstats: {
 					label: 'Use my favorites and karaokes requests for stats'

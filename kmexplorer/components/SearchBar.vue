@@ -13,7 +13,7 @@
 				<font-awesome-icon :icon="['fas', 'search']" />
 			</span>
 		</div>
-		<div v-if="results && resultsCount > 0 && ['search-query', 'types-id', 'types-years', 'favorites'].includes($route.name)" class="control">
+		<div v-if="results && resultsCount > 0 && ['search-query', 'types-id', 'types-years', 'users-login'].includes($route.name)" class="control">
 			<button class="button is-static">
 				{{ $tc('layout.results', resultsCount, {count: resultsCount}) }}
 			</button>
@@ -76,7 +76,7 @@
 
 		computed: {
 			canSort(): boolean {
-				return ['types-id', 'search-query', 'favorites'].includes(this.$route.name as string);
+				return ['types-id', 'search-query', 'users-login'].includes(this.$route.name as string);
 			},
 			...mapState('menubar', ['resultsCount'])
 		},

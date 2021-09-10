@@ -90,7 +90,7 @@
 					if (['kara-slug-id', 'types-id'].includes(this.$route.name as string)) {
 						menuBarStore.setSearch('');
 					}
-					if (!['search-query', 'favorites'].includes(this.$route.name as string)) {
+					if (!['search-query', 'users-login'].includes(this.$route.name as string)) {
 						this.$router.push(generateNavigation(menuBarStore));
 					}
 				}

@@ -150,6 +150,7 @@
 										type="text"
 										name="discord"
 										class="input"
+										pattern="[^@#:`]{2,32}#[0-9]{4}"
 										:placeholder="$t('modal.profile.fields.discord.placeholder')"
 									>
 								</div>
@@ -169,6 +170,7 @@
 										type="text"
 										name="twitter"
 										class="input"
+										pattern="[A-Za-z0-9_]{1,15}"
 										:placeholder="$t('modal.profile.fields.twitter.placeholder')"
 									>
 								</div>
@@ -188,6 +190,7 @@
 										type="text"
 										name="instagram"
 										class="input"
+										pattern="[A-Za-z0-9_.]{1,30}"
 										:placeholder="$t('modal.profile.fields.instagram.placeholder')"
 									>
 								</div>
@@ -207,9 +210,33 @@
 										type="text"
 										name="twitch"
 										class="input"
+										pattern="[A-Za-z0-9]{4,25}"
 										:placeholder="$t('modal.profile.fields.twitch.placeholder')"
 									>
 								</div>
+							</div>
+						</div>
+					</div>
+					<div class="field is-horizontal">
+						<div class="field-label is-normal">
+							<span class="label">Bannière</span>
+						</div>
+						<div class="field-body flex-column">
+							<img
+								:src="'/banners/' + user.banner"
+								alt="User banner"
+								class="banner"
+							>
+							<button
+								class="button is-info"
+								:class="{'is-loading': loading}"
+								:disabled="loading || user.banner === 'default.jpg'"
+								@click.prevent="restoreDefaultBanner"
+							>
+								<font-awesome-icon :icon="['fas', 'history']" fixed-width /> {{ $t('modal.profile.fields.banner.remove') }}
+							</button>
+							<div class="has-text-white">
+								<font-awesome-icon :icon="['fas', 'search']" fixed-width /> {{ $t('modal.profile.fields.banner.change') }}
 							</div>
 						</div>
 					</div>
@@ -546,8 +573,22 @@
 				}).finally(() => {
 					this.loading = false;
 				});
+			},
+			restoreDefaultBanner() {
+				if (this.loading) { return; }
+				this.loading = true;
+				this.$axios.$patch('/api/myaccount', {
+					banner: 'default.jpg'
+				}).then(async (response) => {
+					// Refresh auth
+					await this.$auth.setUserToken(response.data.token);
+				}).finally(() => {
+					this.loading = false;
+				});
 			}
-		}
+		},
+
+		transition: 'fade'
 	});
 </script>
 
@@ -569,12 +610,15 @@
 		color: white;
 	}
 
-	img {
-		height: 10em;
-	}
-
 	#avatar {
 		display: none
+	}
+
+	.field-body.flex-column {
+		flex-direction: column;
+		> * {
+			margin-bottom: 8px;
+		}
 	}
 
 	.profile-pic-box {
@@ -601,6 +645,10 @@
 		.control {
 			font-size: 1.15em;
 		}
+	}
+
+	.banner {
+		border-radius: 8px;
 	}
 
 	.modal-card-foot {

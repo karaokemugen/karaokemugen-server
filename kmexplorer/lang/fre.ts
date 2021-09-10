@@ -186,13 +186,15 @@ export default {
 		join_kara: 'Rejoindre le karaoké',
 		kara_import: 'Envoyer un kara',
 		account: 'Compte',
-		favorites: 'Favoris',
 		login: 'Se connecter',
 		logout: 'Se déconnecter',
 		register: 'S\'inscrire',
 		connection: 'Connexion',
 		profile: 'Profil',
 		switch_language: 'Changer la langue'
+	},
+	profile: {
+		favorites: 'Favoris'
 	},
 	search: {
 		placeholder: 'Séries, chanteurs, noms...',
@@ -306,6 +308,11 @@ export default {
 				twitch: {
 					label: 'Twitch',
 					placeholder: 'KaraokeLive'
+				},
+				banner: {
+					label: 'Bannière',
+					remove: 'Restaurer la bannière par défaut',
+					change: 'Pour changer votre bannière, rendez-vous sur la page du karaoké de votre choix et cliquez sur le bouton “Utiliser cette chanson comme bannière”'
 				},
 				flag_sendstats: {
 					label: 'Utiliser mes favoris et demandes de chansons pour des statistiques'

@@ -53,7 +53,8 @@ import {
 	faMinus,
 	faImage,
 	faChevronUp,
-	faChevronDown
+	faChevronDown,
+	faHistory
 } from '@fortawesome/free-solid-svg-icons';
 import {
 	faTwitter,
@@ -118,6 +119,7 @@ library.add(
 	faImage,
 	faChevronUp,
 	faChevronDown,
+	faHistory,
 	faTwitter,
 	faInstagram,
 	faDiscord,

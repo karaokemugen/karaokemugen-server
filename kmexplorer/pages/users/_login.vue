@@ -1,9 +1,10 @@
 <template>
-	<div class="tile is-ancestor">
-		<div v-if="user" class="tile is-parent is-12">
+	<loading-nanami v-if="$fetchState.pending" class="tile is-parent is-12" />
+	<div v-else>
+		<div v-if="user">
 			<div class="box user-box">
 				<div class="header">
-					<img :src="`/previews/${user.banner}`" alt="User banner" class="banner">
+					<img :src="`/banners/${user.banner}`" alt="User banner" class="banner">
 					<div class="title-bar">
 						<img :src="`/avatars/${user.avatar_file}`" alt="" class="profile">
 						<span>{{ user.nickname }}</span>
@@ -14,11 +15,15 @@
 						<ul v-if="user.social_networks">
 							<li v-if="user.social_networks.twitter">
 								<font-awesome-icon :icon="['fab', 'twitter']" :fixed-width="true" />
-								{{ user.social_networks.twitter }}
+								<a :href="`https://twitter.com/${user.social_networks.twitter}/`" target="_blank">
+									{{ user.social_networks.twitter }}
+								</a>
 							</li>
 							<li v-if="user.social_networks.instagram">
 								<font-awesome-icon :icon="['fab', 'instagram']" :fixed-width="true" />
-								{{ user.social_networks.instagram }}
+								<a :href="`https://instagram.com/${user.social_networks.instagram}/`" target="_blank">
+									{{ user.social_networks.instagram }}
+								</a>
 							</li>
 							<li v-if="user.social_networks.discord">
 								<font-awesome-icon :icon="['fab', 'discord']" :fixed-width="true" />
@@ -26,7 +31,9 @@
 							</li>
 							<li v-if="user.social_networks.twitch">
 								<font-awesome-icon :icon="['fab', 'twitch']" :fixed-width="true" />
-								{{ user.social_networks.twitch }}
+								<a :href="`https://twitch.tv/${user.social_networks.twitch}/`" target="_blank">
+									{{ user.social_networks.twitch }}
+								</a>
 							</li>
 							<li v-if="user.location">
 								<font-awesome-icon :icon="['fas', 'globe']" :fixed-width="true" />
@@ -40,8 +47,11 @@
 				</div>
 			</div>
 		</div>
-
-		<loading-nanami v-if="$fetchState.pending" class="tile is-parent is-12" />
+		<h1 class="title with-button">
+			<font-awesome-icon :icon="['fas', 'star']" fixed-width />
+			{{ $t('profile.favorites') }}
+		</h1>
+		<kara-query :favorites="user.login" />
 	</div>
 </template>
 
@@ -51,6 +61,7 @@
 
 	import { DBUser } from '%/lib/types/database/user';
 	import LoadingNanami from '~/components/LoadingNanami.vue';
+	import KaraQuery from '~/components/KaraQuery.vue';
 
 	interface VState {
 		user?: DBUser
@@ -60,7 +71,8 @@
 		name: 'UserView',
 
 		components: {
-			LoadingNanami
+			LoadingNanami,
+			KaraQuery
 		},
 
 		data(): VState {
@@ -151,5 +163,9 @@
 				}
 			}
 		}
+	}
+	.title.with-button {
+		padding: 1rem .5rem;
+		margin-bottom: .5rem;
 	}
 </style>

@@ -48,15 +48,16 @@
 			</div>
 
 			<div v-if="accountMenu" class="navbar-dropdown">
-				<a
+				<nuxt-link
 					v-if="loggedIn && user"
-					aria-label="Profile"
+					:to="`/users/${user.login}`"
 					class="navbar-item"
-					@click.prevent="$toast.success($t('toast.FUTURE_PROFILES'))"
+					active-class="is-active"
+					aria-label="Profile"
 				>
 					<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
 					{{ user.nickname }}
-				</a>
+				</nuxt-link>
 				<a
 					v-if="loggedIn"
 					class="navbar-item"
@@ -66,10 +67,6 @@
 					<font-awesome-icon :icon="['fas', 'edit']" :fixed-width="true" />
 					{{ $t('menu.profile') }}
 				</a>
-				<nuxt-link v-if="loggedIn" to="/favorites" class="navbar-item" active-class="is-active">
-					<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
-					{{ $t('menu.favorites') }}
-				</nuxt-link>
 				<a v-else class="navbar-item" aria-label="Login" @click.prevent="modal.auth = true">
 					<font-awesome-icon :icon="['fas', 'sign-in-alt']" :fixed-width="true" />
 					{{ $t('menu.connection') }}
@@ -405,10 +402,6 @@
 								<font-awesome-icon :icon="['fas', 'edit']" :fixed-width="true" />
 								{{ $t('menu.profile') }}
 							</a>
-							<nuxt-link v-if="loggedIn" to="/favorites" active-class="is-active">
-								<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
-								{{ $t('menu.favorites') }}
-							</nuxt-link>
 							<a v-if="loggedIn" aria-label="Logout" @click.prevent="logout">
 								<font-awesome-icon :icon="['fas', 'sign-out-alt']" :fixed-width="true" />
 								{{ $t('menu.logout') }}
@@ -437,7 +430,7 @@
 				</client-only>
 			</aside>
 			<section class="container column is-fluid main">
-				<nuxt keep-alive :keep-alive-props="{ max: 1, include: ['KaraSearch', 'KaraFavorites'] }" />
+				<nuxt keep-alive :keep-alive-props="{ max: 1, include: ['KaraSearch', 'UserView'] }" />
 			</section>
 		</div>
 		<footer class="footer">
@@ -554,7 +547,7 @@
 				return this.$route.params?.id?.substring(36);
 			},
 			onKaraTagListView(): boolean {
-				return ['types-id', 'search-query', 'favorites'].includes(this.$route.name as string);
+				return ['types-id', 'search-query', 'users-login'].includes(this.$route.name as string);
 			},
 			availableLocales(): VueI18n.Locale[] {
 				return this.$i18n.locales?.filter((i: any) => i.code && i.code !== this.$i18n.locale);
