@@ -1,4 +1,4 @@
-import {db} from '../lib/dao/database';
+import {db, paramWords} from '../lib/dao/database';
 import { User } from '../lib/types/user';
 import { DBUser } from '../lib/types/database/user';
 import sql = require('./sqls/user');
@@ -9,13 +9,13 @@ export async function updateLastLogin(username: string): Promise<String> {
 }
 
 export async function selectUser(searchType: string, value: any): Promise<DBUser> {
-	const query = `${sql.selectUser} WHERE ${searchType} = $1`;
+	const query = sql.selectUser(false, `WHERE ${searchType} = $1`);
 	const res = await db().query(query, [value]);
 	return res.rows[0];
 }
 
-export async function selectAllUsers(): Promise<DBUser[]> {
-	const res = await db().query(sql.selectUser);
+export async function selectAllUsers(filter?: string, from?: number, size?: number): Promise<DBUser[]> {
+	const res = await db().query(sql.selectUser(!!filter, '', (size) ? `LIMIT ${size} OFFSET ${from || 0}`:''), filter ? [paramWords(filter).join(' & ')]:[]);
 	return res.rows;
 }
 

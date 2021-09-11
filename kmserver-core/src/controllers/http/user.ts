@@ -13,9 +13,14 @@ export default function userController(router: Router) {
 	let upload = multer({ dest: resolve(getState().dataPath,conf.System.Path.Temp)});
 
 	router.route('/users')
-		.get(async (_, res) => {
+		.get(async (req, res) => {
 			try {
-				const info = await getAllUsers({public: true});
+				const info = await getAllUsers({
+					public: true,
+					filter: req.query.filter as string,
+					from: +req.query.from,
+					size: +req.query.size
+				});
 				res.status(200).json(info);
 			} catch(err) {
 				res.status(500).json(err);

@@ -12,10 +12,11 @@ import { sendMail } from '../utils/mailer';
 import randomstring from 'randomstring';
 import sentry from '../utils/sentry';
 import {getRole, createJwtToken } from '../controllers/http/auth';
-import {UserOptions} from '../types/user';
+import {UserList, UserOptions, UserParams} from '../types/user';
 import { delPubUser, pubUser } from './user_pubsub';
 import { asciiRegexp } from '../lib/utils/constants';
 import {copy} from 'fs-extra';
+import {DBUser} from '../lib/types/database/user';
 
 const passwordResetRequests = new Map();
 
@@ -147,18 +148,30 @@ export async function removeUser(username: string) {
 	}
 }
 
-export async function getAllUsers(opts: any = {}) {
+export function formatUserList(users: DBUser[], from: number): UserList {
+	return {
+		infos: {
+			count: users[0]?.count || 0,
+			from,
+			to: from + users.length
+		},
+		content: users
+	};
+}
+
+export async function getAllUsers(opts: UserParams = {public: false}) {
 	try {
-		const users = (await selectAllUsers()).filter(u => u.flag_public && opts.public);
-		if (!opts.public) return users;
-		for (const index in users) {
-			delete users[index].password;
-			delete users[index].email;
-			delete users[index].password_last_modified_at;
-			delete users[index].language;
-			delete users[index].location;
+		const users = (await selectAllUsers(opts.filter, opts.from, opts.size)).filter(u => u.flag_public && opts.public);
+		if (opts.public) {
+			for (const index in users) {
+				delete users[index].password;
+				delete users[index].email;
+				delete users[index].password_last_modified_at;
+				delete users[index].language;
+				delete users[index].location;
+			}
 		}
-		return users;
+		return formatUserList(users, opts.from);
 	} catch(err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
