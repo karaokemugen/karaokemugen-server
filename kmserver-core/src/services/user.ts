@@ -3,19 +3,20 @@ import {hash, compare} from 'bcryptjs';
 import { promises as fs } from 'fs';
 import {updateUser, updateUserPassword, insertUser, selectUser, selectAllUsers, deleteUser, updateLastLogin} from '../dao/user';
 import logger from '../lib/utils/logger';
-import {getConfig, resolvedPathAvatars} from '../lib/utils/config';
+import {getConfig, resolvedPathAvatars, resolvedPathBanners, resolvedPathPreviews} from '../lib/utils/config';
 import {asyncExists, asyncMove, detectFileType} from '../lib/utils/files';
 import { v4 as uuidV4 } from 'uuid';
 import {resolve} from 'path';
-import { getState } from '../utils/state';
 import { User, Token } from '../lib/types/user';
 import { sendMail } from '../utils/mailer';
 import randomstring from 'randomstring';
 import sentry from '../utils/sentry';
 import {getRole, createJwtToken } from '../controllers/http/auth';
-import {UserOptions} from '../types/user';
+import {UserList, UserOptions, UserParams} from '../types/user';
 import { delPubUser, pubUser } from './user_pubsub';
 import { asciiRegexp } from '../lib/utils/constants';
+import {copy} from 'fs-extra';
+import {DBUser} from '../lib/types/database/user';
 
 const passwordResetRequests = new Map();
 
@@ -52,7 +53,7 @@ export async function resetPasswordRequest(username: string) {
 		}
 		throw err;
 	}
-};
+}
 
 export async function resetPassword(username: string, requestCode: string) {
 	try {
@@ -87,8 +88,6 @@ export async function resetPassword(username: string, requestCode: string) {
 }
 
 export async function initUsers() {
-	cleanupAvatars();
-	setInterval(cleanupAvatars, 60 * 60 * 1000);
 	setInterval(cleanupPasswordResetRequests, 60 * 1000);
 }
 
@@ -97,27 +96,6 @@ function cleanupPasswordResetRequests() {
 	passwordResetRequests.forEach((user: string, request: any) => {
 		if ((request.date + (60 * 60 * 2)) < now ) passwordResetRequests.delete(user);
 	});
-}
-
-async function cleanupAvatars() {
-	// This is done because updating avatars generate a new name for the file. So unused avatar files are now cleaned up.
-	try {
-		const users = await getAllUsers();
-		const avatars = [];
-		for (const user of users) {
-			if (!avatars.includes(user.avatar_file)) avatars.push(user.avatar_file);
-		}
-		const conf = getConfig();
-		const avatarPath = resolve(getState().dataPath, conf.System.Path.Avatars);
-		const avatarFiles = await fs.readdir(avatarPath);
-		for (const file of avatarFiles) {
-			if (!avatars.includes(file) && file !== 'blank.png') fs.unlink(resolve(avatarPath, file));
-		}
-	} catch(err) {
-		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
-		sentry.error(err);
-		throw err;
-	}
 }
 
 export function hashPassword(password: string) {
@@ -131,9 +109,17 @@ export async function findUserByName(username: string, opts: UserOptions = {}) {
 		if (!username) throw('No user provided');
 		username = username.toLowerCase();
 		const user = await selectUser('pk_login', username);
-		if (!user) return false;
+		if (!user) return user;
 		user.password_last_modified_at = new Date(user.password_last_modified_at);
 		if (opts.public) {
+			// This is not the user requesting his own data, but the public, we check if his flag_public is set.
+			if (!user.flag_public) return {
+				login: user.login,
+				avatar_file: user.avatar_file,
+				type: user.type,
+				nickname: user.nickname
+			};
+			// If the user has a public profile, but it's not his own profile, we remove the email bit.
 			delete user.email;
 		}
 		if (opts.public || !opts.password) {
@@ -162,18 +148,30 @@ export async function removeUser(username: string) {
 	}
 }
 
-export async function getAllUsers(opts: any = {}) {
+export function formatUserList(users: DBUser[], from: number): UserList {
+	return {
+		infos: {
+			count: users[0]?.count || 0,
+			from,
+			to: from + users.length
+		},
+		content: users
+	};
+}
+
+export async function getAllUsers(opts: UserParams = {public: false}) {
 	try {
-		const users = await selectAllUsers();
-		if (!opts.public) return users;
-		for (const index in users) {
-			delete users[index].password;
-			delete users[index].email;
-			delete users[index].password_last_modified_at;
-			delete users[index].language;
-			delete users[index].location;
+		const users = (await selectAllUsers(opts.filter, opts.from, opts.size, true)).filter(u => u.flag_public && opts.public);
+		if (opts.public) {
+			for (const index in users) {
+				delete users[index].password;
+				delete users[index].email;
+				delete users[index].password_last_modified_at;
+				delete users[index].language;
+				delete users[index].location;
+			}
 		}
-		return users;
+		return formatUserList(users, opts.from);
 	} catch(err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
@@ -266,6 +264,20 @@ async function replaceAvatar(oldImageFile: string, avatar: Express.Multer.File) 
 	}
 }
 
+async function replaceBanner(preview: string) {
+	if (preview === 'default.jpg') return preview;
+	const file = resolve(resolvedPathPreviews(), preview);
+	if (!await asyncExists(file)) {
+		throw new Error('The requested preview is not available nor generated.');
+	} else {
+		const target = resolve(resolvedPathBanners(), preview);
+		// The banner is already in place (use by somebody else), no need to copy again.
+		if (await asyncExists(target)) return preview;
+		else await copy(file, target);
+		return preview;
+	}
+}
+
 export async function changePassword(username: string, password: string) {
 	try {
 		password = await hashPasswordbcrypt(password);
@@ -276,18 +288,23 @@ export async function changePassword(username: string, password: string) {
 	}
 }
 
-export async function editUser(username: string, user: User, avatar: Express.Multer.File, token: Token) {
+export async function editUser(username: string, user: User, avatar: Express.Multer.File, token: Token, patch = false) {
 	try {
 		if (!username) throw('No user provided');
 		username = username.toLowerCase();
 		const currentUser = await findUserByName(username, {password: true});
 		if (!currentUser) throw 'User unknown';
+		// Patch allows clients to send partial payloads
+		if (patch) user = {...currentUser, password: undefined, banner: undefined, ...user};
 		user.login = username;
 		if (!user.type) user.type = currentUser.type;
 		if (!user.bio) user.bio = null;
 		if (!user.url) user.url = null;
 		if (!user.email) user.email = null;
 		if (!user.location) user.location = null;
+		if (typeof user.flag_public !== 'boolean') user.flag_public = true;
+		if (typeof user.flag_displayfavorites !== 'boolean') user.flag_displayfavorites = false;
+		if (!user.social_networks) user.social_networks = {discord: '', twitter: '', instagram: '', twitch: ''};
 		if (!user.language) user.language = null;
 		if (typeof user.flag_sendstats !== 'boolean') user.flag_sendstats = currentUser.flag_sendstats;
 		if (token.username.toLowerCase() !== currentUser.login.toLowerCase() && token.role !== 'admin') throw 'Only admins can edit another user';
@@ -298,6 +315,11 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 			if (user.password.length < 8) throw {code: 'PASSWORD_TOO_SHORT', data: user.password.length};
 			user.password = await hashPasswordbcrypt(user.password);
 			user.password_last_modified_at = await updateUserPassword(user.login, user.password);
+		}
+		if (user.banner) {
+			user.banner = await replaceBanner(user.banner);
+		} else {
+			user.banner = currentUser.banner;
 		}
 		if (avatar) {
 			// If a new avatar was sent, it is contained in the avatar object

@@ -103,7 +103,7 @@ async function main() {
 
 	if (argv.opts().createPreviews) {
 		const karas = await getAllKaras({});
-		await createImagePreviews(karas);
+		await createImagePreviews(karas, 'full', 1280);
 		exit(0);
 	}
 

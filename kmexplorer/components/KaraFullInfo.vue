@@ -9,14 +9,26 @@
 				{{ karaoke.year }}
 			</a>
 		</h6>
-		<button v-if="favorite" class="button margin is-yellow" :class="{'is-loading': loading}" @click="toggleFavorite">
-			<font-awesome-icon :icon="['fas', 'eraser']" :fixed-width="true" />
-			{{ $t('kara.favorites.remove') }}
-		</button>
-		<button v-else class="button margin is-yellow" :class="{'is-loading': loading}" @click="toggleFavorite">
-			<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
-			{{ $t('kara.favorites.add') }}
-		</button>
+		<div class="buttons margin">
+			<button v-if="favorite" class="button is-yellow" :class="{'is-loading': loading}" @click="toggleFavorite">
+				<font-awesome-icon :icon="['fas', 'eraser']" :fixed-width="true" />
+				{{ $t('kara.favorites.remove') }}
+			</button>
+			<button v-else class="button is-yellow" :class="{'is-loading': loading}" @click="toggleFavorite">
+				<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
+				{{ $t('kara.favorites.add') }}
+			</button>
+			<button
+				v-if="loggedIn"
+				class="button is-purple is-long"
+				:disabled="problematic"
+				:title="problematic ? $t('kara.set_banner.forbidden_label'):null"
+				@click.prevent="modal.banner=true"
+			>
+				<font-awesome-icon :icon="['fas', 'image']" :fixed-width="true" />
+				{{ $t('kara.set_banner.btn') }}
+			</button>
+		</div>
 		<table class="table tagList">
 			<tbody>
 				<tr class="tr-line">
@@ -64,13 +76,15 @@
 			</ul>
 		</div>
 		<DownloadModal :karaoke="karaoke" :active="modal.download" @close="modal.download=false" />
+		<BannerChangeModal :karaoke="karaoke" :active="modal.banner" @close="modal.banner=false" />
 	</div>
 </template>
 
 <script lang="ts">
 	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
-	import { fakeYearTag, generateNavigation, getTagInLocale, getTitleInLocale } from '~/utils/tools';
+	import { mapState } from 'vuex';
+	import { fakeYearTag, generateNavigation, getTagInLocale, getTitleInLocale, isProblematic } from '~/utils/tools';
 	import { tagTypes } from '~/assets/constants';
 	import Tag from '~/components/Tag.vue';
 	import KaraPhrase from '~/components/KaraPhrase.vue';
@@ -79,6 +93,7 @@
 	import { ShortTag } from '~/types/tags';
 	import duration from '~/assets/date';
 	import DownloadModal from '~/components/modals/DownloadModal.vue';
+	import BannerChangeModal from '~/components/modals/BannerChangeModal.vue';
 
 	interface VState {
 		tagTypes: typeof tagTypes,
@@ -86,7 +101,8 @@
 		lyrics: boolean,
 		loading: boolean,
 		modal: {
-			download: boolean
+			download: boolean,
+			banner: boolean
 		}
 	}
 
@@ -96,7 +112,8 @@
 		components: {
 			Tag,
 			KaraPhrase,
-			DownloadModal
+			DownloadModal,
+			BannerChangeModal
 		},
 
 		props: {
@@ -113,7 +130,8 @@
 				lyrics: false,
 				loading: false,
 				modal: {
-					download: false
+					download: false,
+					banner: false
 				}
 			};
 		},
@@ -148,7 +166,7 @@
 
 		computed: {
 			title(): string {
-				return getTitleInLocale(this.karaoke.titles, this.$store.state.auth.user)
+				return getTitleInLocale(this.karaoke.titles, this.$store.state.auth.user);
 			},
 			tagTypesSorted(): object {
 				const tagTypes = { ...this.tagTypes };
@@ -184,6 +202,9 @@
 					throw new TypeError('The karaoke does not have any series nor singers, wtf?');
 				}
 			},
+			problematic(): boolean {
+				return isProblematic(this.karaoke);
+			},
 			duration(): string {
 				const durationArray = duration(this.karaoke.duration);
 				const returnString = [];
@@ -192,7 +213,8 @@
 				if (durationArray[2] !== 0) { returnString.push(`${durationArray[2]} ${this.$t('duration.minutes')}`); }
 				if (durationArray[3] !== 0) { returnString.push(`${durationArray[3]} ${this.$t('duration.seconds')}`); }
 				return returnString.join(' ');
-			}
+			},
+			...mapState('auth', ['loggedIn'])
 		},
 
 		created() {
@@ -245,8 +267,12 @@
 		}
 	}
 
-	.button.margin {
+	.buttons.margin {
 		margin: 1em 0;
+
+		.button.is-long {
+			white-space: normal;
+		}
 	}
 
 	.subtitle.no-top-margin {
