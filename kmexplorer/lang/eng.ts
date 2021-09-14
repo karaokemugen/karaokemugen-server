@@ -221,7 +221,7 @@ export default {
 			sort: 'Sort by'
 		},
 		types: {
-			karaokes: 'Karaokes',
+			karaokes: 'Songs',
 			users: 'Users',
 			favorites: 'User\'s favorites'
 		}
