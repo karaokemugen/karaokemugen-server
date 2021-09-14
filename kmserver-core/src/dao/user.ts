@@ -14,8 +14,10 @@ export async function selectUser(searchType: string, value: any): Promise<DBUser
 	return res.rows[0];
 }
 
-export async function selectAllUsers(filter?: string, from?: number, size?: number): Promise<DBUser[]> {
-	const res = await db().query(sql.selectUser(!!filter, '', (size) ? `LIMIT ${size} OFFSET ${from || 0}`:''), filter ? [paramWords(filter).join(' & ')]:[]);
+export async function selectAllUsers(filter?: string, from?: number, size?: number, order = false): Promise<DBUser[]> {
+	const res = await db().query(
+		sql.selectUser(!!filter, '', (size) ? `LIMIT ${size} OFFSET ${from || 0}`:'', order),
+		filter ? [paramWords(filter).join(' & ')]:[]);
 	return res.rows;
 }
 

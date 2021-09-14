@@ -161,7 +161,7 @@ export function formatUserList(users: DBUser[], from: number): UserList {
 
 export async function getAllUsers(opts: UserParams = {public: false}) {
 	try {
-		const users = (await selectAllUsers(opts.filter, opts.from, opts.size)).filter(u => u.flag_public && opts.public);
+		const users = (await selectAllUsers(opts.filter, opts.from, opts.size, true)).filter(u => u.flag_public && opts.public);
 		if (opts.public) {
 			for (const index in users) {
 				delete users[index].password;
