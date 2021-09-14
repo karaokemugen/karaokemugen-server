@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div v-for="langKey in Object.keys(i18n)" :key="langKey" class="field is-horizontal has-addons is-grouped is-grouped-centered">
-			<label class="field-label is-normal">
+			<label class="label">
 				{{ getLanguagesFromCode(langKey) }}
 			</label>
 			<div class="control">
@@ -14,7 +14,7 @@
 			</div>
 		</div>
 		<div class="field is-horizontal is-grouped is-grouped-centered">
-			<label class="field-label">
+			<label class="label">
 				{{ $t('kara.import.i18n_select') }}
 			</label>
 			<div class="control">
@@ -103,5 +103,10 @@
 <style scoped lang="scss">
 	.select select option {
 		color: white;
+	}
+
+	.label {
+		padding-top: 0.375em;
+		margin-right: 1.5rem;
 	}
 </style>
