@@ -142,7 +142,8 @@ export default {
 		end_favorites: 'This is the end of your favorites.',
 		explore: 'Go add some!',
 		results: '{count} result | {count} results',
-		slogan: 'This song is available on the Karaoke Mugen songbase!'
+		slogan: 'This song is available on the Karaoke Mugen songbase!',
+		end_users: 'You\'ve reached the end of the user list (congratulations!).'
 	},
 	footer: {
 		home: 'Project home',
@@ -184,6 +185,7 @@ export default {
 		years: 'Years',
 		community: 'Community',
 		join_kara: 'Join a karaoke party',
+		search_users: 'Search users',
 		kara_import: 'Submit a kara',
 		account: 'Account',
 		login: 'Login',

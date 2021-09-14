@@ -41,6 +41,10 @@
 					<font-awesome-icon :icon="['fas', 'person-booth']" :fixed-width="true" />
 					{{ $t('menu.join_kara') }}
 				</a>
+				<nuxt-link class="navbar-item" to="/users">
+					<font-awesome-icon :icon="['fas', 'users']" :fixed-width="true" />
+					{{ $t('menu.search_users') }}
+				</nuxt-link>
 				<nuxt-link v-if="import_enabled" class="navbar-item" to="/import">
 					<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true" />
 					{{ $t('menu.kara_import') }}
@@ -382,6 +386,10 @@
 							<font-awesome-icon :icon="['fas', 'person-booth']" :fixed-width="true" />
 							{{ $t('menu.join_kara') }}
 						</a>
+						<nuxt-link to="/users" active-class="is-active">
+							<font-awesome-icon :icon="['fas', 'users']" :fixed-width="true" />
+							{{ $t('menu.search_users') }}
+						</nuxt-link>
 						<nuxt-link v-if="import_enabled" to="/import" active-class="is-active">
 							<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true" />
 							{{ $t('menu.kara_import') }}
@@ -430,7 +438,7 @@
 				</client-only>
 			</aside>
 			<section class="container column is-fluid main">
-				<nuxt keep-alive :keep-alive-props="{ max: 1, include: ['KaraSearch', 'UserView'] }" />
+				<nuxt keep-alive :keep-alive-props="{ max: 1, include: ['KaraSearch', 'UserView', 'UserSearch'] }" />
 			</section>
 		</div>
 		<footer class="footer">
@@ -546,8 +554,8 @@
 			tagType() {
 				return this.$route.params?.id?.substring(36);
 			},
-			onKaraTagListView(): boolean {
-				return ['types-id', 'search-query', 'user-login'].includes(this.$route.name as string);
+			onKaraTagUserListView(): boolean {
+				return ['types-id', 'search-query', 'user-login', 'users'].includes(this.$route.name as string);
 			},
 			availableLocales(): VueI18n.Locale[] {
 				return this.$i18n.locales?.filter((i: any) => i.code && i.code !== this.$i18n.locale);
@@ -558,10 +566,10 @@
 		created() {
 			this.$store.subscribe((mutation: Record<string, any>, _state: any) => {
 				if (mutation.type === 'menubar/setSearch') {
-					if (!this.onKaraTagListView) {
+					if (!this.onKaraTagUserListView) {
 						this.$router.push(generateNavigation(menuBarStore));
 					} // Each KaraList view handles a search change itself, either by swapping the route
-					// or by reset the KaraList with new filter
+					// or by reset the List with new filter
 				} else if (mutation.type === 'modal/openModal') {
 					this.modal[mutation.payload as ModalType] = true;
 				} else if (mutation.type === 'modal/closeModal') {

@@ -3,12 +3,17 @@
 		<img :src="`/banners/${user.banner}`" alt="User banner" class="banner">
 		<div class="title-bar">
 			<img :src="`/avatars/${user.avatar_file}`" alt="" class="profile">
-			<nuxt-link :to="`/user/${user.login}`">
-				{{
-					user.nickname +
-						(viewingSelf ? $t('profile.you'):'')
-				}}
-			</nuxt-link>
+			<div class="name-stats">
+				<nuxt-link :to="`/user/${user.login}`">
+					{{
+						user.nickname +
+							(viewingSelf ? $t('profile.you'):'')
+					}}
+				</nuxt-link>
+				<div>
+					{{ $tc('profile.favorites_count', user.favorites_count, { x: user.favorites_count }) }}
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -29,6 +34,7 @@
 
 		computed: {
 			viewingSelf() {
+				// @ts-ignore: just send help.
 				return this.$auth.loggedIn && (this.user.login === this.$auth.user.login);
 			}
 		}
@@ -51,33 +57,40 @@
 
 .user-box {
 	position: relative;
-	transform: translate(-1.25rem, -1.25rem);
-	width: calc(100% + 2.5rem);
+	padding: .5em;
+	box-sizing: content-box;
 	@include height-hack;
+	border-radius: 8px;
 	> img.banner {
 		@include height-hack;
 		width: 100%;
 		object-fit: cover;
 		border-radius: 8px;
+		border: 1px solid #7f828b;
 	}
 	.title-bar {
 		position: absolute;
 		display: flex;
 		align-items: center;
 		bottom: 0;
-		width: 100%;
-		background-color: #000000bb;
+		width: calc(100% - 1em);
+		background-color: #000000bf;
 		border-bottom-left-radius: 8px;
 		border-bottom-right-radius: 8px;
+		border: 1px solid #7f828b;
+		border-top-color: #7f828bbb;
 		> img.profile {
-			@include height-hack(0.25);
+			@include height-hack(0.33);
 			width: auto;
+			border-bottom-left-radius: 8px;
 		}
-		> a {
-			padding: .25em;
-			line-height: 1em;
-			font-size: 1.75em;
-			font-weight: bold;
+		> .name-stats {
+			padding-left: .5em;
+			> a {
+				line-height: 1em;
+				font-size: 1.75em;
+				font-weight: bold;
+			}
 		}
 	}
 }

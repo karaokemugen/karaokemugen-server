@@ -57,7 +57,8 @@ import {
 	faHistory,
 	faUserLock,
 	faKey,
-	faLink
+	faLink,
+	faUsers
 } from '@fortawesome/free-solid-svg-icons';
 import {
 	faTwitter,
@@ -126,6 +127,7 @@ library.add(
 	faUserLock,
 	faKey,
 	faLink,
+	faUsers,
 	faTwitter,
 	faInstagram,
 	faDiscord,

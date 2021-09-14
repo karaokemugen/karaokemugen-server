@@ -142,7 +142,8 @@ export default {
 		end_favorites: 'C\'est la fin de vos favoris.',
 		explore: 'Allez en ajouter !',
 		results: '{count} résultat | {count} résultats',
-		slogan: 'Ce son est disponible sur la base Karaoke Mugen !'
+		slogan: 'Ce son est disponible sur la base Karaoke Mugen !',
+		end_users: 'Vous avez atteint la fin des utilisateurs (bravo !).'
 	},
 	footer: {
 		home: 'Accueil du projet',
@@ -184,6 +185,7 @@ export default {
 		years: 'Années',
 		community: 'Communauté',
 		join_kara: 'Rejoindre le karaoké',
+		search_users: 'Utilisateurs',
 		kara_import: 'Envoyer un kara',
 		account: 'Compte',
 		login: 'Se connecter',
@@ -196,7 +198,8 @@ export default {
 	profile: {
 		favorites: 'Favoris',
 		you: ' (c\'est vous !)',
-		edit: 'Éditer le profil'
+		edit: 'Éditer le profil',
+		favorites_count: '{x} favori | {x} favoris'
 	},
 	search: {
 		placeholder: 'Séries, chanteurs, noms...',
