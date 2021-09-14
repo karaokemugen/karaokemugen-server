@@ -23,7 +23,7 @@ export async function pubUser(username: string) {
 		findUserByName(username, { public: true, password: false }),
 		getFavorites({ username, role: 'user' })
 	]);
-	if (user === false) {
+	if (!user) {
 		// wtf?
 		logger.warn('A unknown user was pubbed, not normal', { service: 'UserPubsub', obj: username });
 		return;

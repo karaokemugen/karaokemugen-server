@@ -16,6 +16,7 @@ import sentry from '../utils/sentry';
 import { Token } from '../lib/types/user';
 import { TagFile } from '../lib/types/tag';
 import { updateGit } from './git';
+import { findUserByName } from './user';
 
 export async function getBaseStats() {
 	try {
@@ -57,7 +58,7 @@ export async function generate() {
 	try {
 		await generateDatabase({validateOnly: false});
 		const karas = await getAllKaras({});
-		await createImagePreviews(karas);
+		await createImagePreviews(karas, 'full', 1280);
 	} catch(err) {
 		logger.error('', {service: 'Gen', obj: err});
 		sentry.error(err, 'Fatal');
@@ -91,8 +92,16 @@ export async function getKara(params: KaraParams, token?: Token) {
 
 export async function getAllKaras(params: KaraParams, token?: Token): Promise<KaraList> {
 	try {
-		// When compare is used because we're queried from KM App in order to tell which karaoke is missing or updated, we redefine from/size so we get absolutely all songs from database.
 		if (token) token.username = token.username.toLowerCase();
+		// User seeking favorites from someone, check if that's okay or not.
+		if (params.favorites) {
+			const user = await findUserByName(params.favorites);
+			if (user) {
+				if (!user.flag_displayfavorites && user.login !== token?.username) throw {code: 403};
+			} else {
+				throw {code: 404};
+			}
+		}
 		let pl = await selectAllKaras({
 			filter: params.filter,
 			from: +params.from,
@@ -105,6 +114,8 @@ export async function getAllKaras(params: KaraParams, token?: Token): Promise<Ka
 		});
 		return formatKaraList(pl, +params.from, pl[0]?.count || 0);
 	} catch(err) {
+		// Skip Sentry if the error has a code.
+		if (err?.code) throw err;
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
 		logger.error('', {service: 'GetAllKaras', obj: err});

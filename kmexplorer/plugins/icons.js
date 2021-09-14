@@ -50,8 +50,22 @@ import {
 	faDice,
 	faPortrait,
 	faPersonBooth,
-	faMinus
+	faMinus,
+	faImage,
+	faChevronUp,
+	faChevronDown,
+	faHistory,
+	faUserLock,
+	faKey,
+	faLink,
+	faUsers
 } from '@fortawesome/free-solid-svg-icons';
+import {
+	faTwitter,
+	faInstagram,
+	faDiscord,
+	faTwitch
+} from '@fortawesome/free-brands-svg-icons';
 
 // This is important, we are going to let Nuxt.js worry about the CSS
 config.autoAddCss = false;
@@ -105,7 +119,19 @@ library.add(
 	faSearch,
 	faDice,
 	faPortrait,
-	faPersonBooth);
+	faPersonBooth,
+	faImage,
+	faChevronUp,
+	faChevronDown,
+	faHistory,
+	faUserLock,
+	faKey,
+	faLink,
+	faUsers,
+	faTwitter,
+	faInstagram,
+	faDiscord,
+	faTwitch);
 
 // Register the component globally
 Vue.component('FontAwesomeIcon', FontAwesomeIcon);

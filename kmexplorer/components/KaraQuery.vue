@@ -33,7 +33,7 @@
 		order?: string,
 		filter?: string,
 		q?: string,
-		favorites?: boolean
+		favorites?: string
 	}
 
 	interface VState {
@@ -57,8 +57,7 @@
 
 		props: {
 			favorites: {
-				type: Boolean,
-				default: false
+				type: String
 			}
 		},
 
@@ -163,16 +162,17 @@
 			this.resetListDebounced = debounce(this.actualResetList, 75);
 		},
 
+		mounted() {
+			if (this.favorites) {
+				// There is a weird bug: if you go from a KaraList to a UserView, the "activated" event
+				// down below will not trigger, so we use the mounted one to workaround it.
+				// It's really weird however because the deactivated will fire correctly in that setup.
+				this.activate();
+			}
+		},
+
 		activated() {
-			this.activated = true;
-			if (menuBarStore.sort === 'karacount') {
-				menuBarStore.setSort('recent');
-			}
-			window.addEventListener('scroll', this.scrollEvent, { passive: true });
-			if (this.resetNeeded) {
-				this.resetNeeded = false;
-				this.resetList(true);
-			}
+			this.activate();
 		},
 
 		deactivated() {
@@ -203,6 +203,17 @@
 
 				if (bottomOfWindow) {
 					this.loadNextPage();
+				}
+			},
+			activate() {
+				this.activated = true;
+				if (menuBarStore.sort === 'karacount') {
+					menuBarStore.setSort('recent');
+				}
+				window.addEventListener('scroll', this.scrollEvent, { passive: true });
+				if (this.resetNeeded) {
+					this.resetNeeded = false;
+					this.resetList(true);
 				}
 			},
 			actualResetList(navigation = false) {

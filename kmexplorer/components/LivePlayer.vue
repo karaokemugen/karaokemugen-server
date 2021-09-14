@@ -21,7 +21,7 @@
 			@click="showPlayer"
 			@keydown="showPlayer"
 		>
-			<img :src="`/previews/${karaoke.kid}.${karaoke.mediasize}.25.jpg`" alt="Thumbnail">
+			<img :src="`/previews/${karaoke.kid}.${karaoke.mediasize}.25.hd.jpg`" alt="Thumbnail">
 			<font-awesome-layers>
 				<font-awesome-icon :icon="['fas', 'circle']" size="4x" />
 				<font-awesome-icon :icon="['fas', 'play']" color="black" size="2x" />

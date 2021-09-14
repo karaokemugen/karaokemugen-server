@@ -62,24 +62,6 @@ export default function KSController(router: Router) {
 			}
 		});
 	router.route('/karas/search')
-		// Route used by KMApp to get Kara lists with comparison
-		.post(optionalAuth, async (req: any, res) => {
-			try {
-				const karas = await getAllKaras({
-					filter: req.body.filter,
-					from: req.body.from,
-					size: req.body.size,
-					q: req.body.q,
-					order: req.body.order,
-					username: req.authToken?.username,
-					favorites: req.body.favorites
-				}, req.authToken);
-				res.json(karas);
-			} catch(err) {
-				res.status(500).json(err);
-			}
-		})
-		// Route used by KMExplorer
 		.get(optionalAuth, async (req: any, res) => {
 			try {
 				const karas = await getAllKaras({

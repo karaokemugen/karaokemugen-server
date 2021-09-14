@@ -22,6 +22,7 @@ kmexplorer.old/build
 app/
 logs/
 !app/avatars/blank.png
+!app/banners/default.jpg
 
 kmexplorer/.nuxt
 sw.*

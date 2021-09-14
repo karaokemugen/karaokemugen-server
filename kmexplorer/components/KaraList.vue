@@ -11,15 +11,25 @@
 		</div>
 		<loading-nanami v-if="loading" class="tile is-parent is-12" />
 		<kara-suggest v-if="fullyLoaded && !loading && !favorites" class="tile is-parent is-12" :empty="karaokes.content.length === 0" />
+		<div v-else-if="fullyLoaded && !loading && myFavorites" class="tile is-parent">
+			<div class="tile is-child">
+				<div class="box">
+					<h4 class="title is-4 with-img">
+						<img :src="require('~/assets/nanami-surpris.png')" alt="Nanamin surprised">
+						<span>{{ $t('layout.end_my_favorites') }}&nbsp;</span>
+						<nuxt-link to="/search/">
+							{{ $t('layout.explore') }}
+						</nuxt-link>
+					</h4>
+				</div>
+			</div>
+		</div>
 		<div v-else-if="fullyLoaded && !loading && favorites" class="tile is-parent">
 			<div class="tile is-child">
 				<div class="box">
 					<h4 class="title is-4 with-img">
 						<img :src="require('~/assets/nanami-surpris.png')" alt="Nanamin surprised">
 						<span>{{ $t('layout.end_favorites') }}&nbsp;</span>
-						<nuxt-link to="/search/">
-							{{ $t('layout.explore') }}
-						</nuxt-link>
 					</h4>
 				</div>
 			</div>
@@ -53,14 +63,17 @@
 				required: true
 			},
 			favorites: {
-				type: Boolean,
-				default: false
+				type: String,
+				default: ''
 			}
 		},
 
 		computed: {
 			fullyLoaded(): boolean {
 				return this.karaokes.infos.to === this.karaokes.infos.count;
+			},
+			myFavorites(): boolean {
+				return this.$auth.user?.login === this.favorites;
 			}
 		}
 	});
