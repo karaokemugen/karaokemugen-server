@@ -139,7 +139,8 @@ export default {
 		suggest: 'Can\'t find what you\'re looking for?',
 		suggest_open: 'Suggest us!',
 		remove_tags: 'Did you try removing some of the filter tags from the search?',
-		end_favorites: 'This is the end of your favorites.',
+		end_favorites: 'This is the end of favorites.',
+		end_my_favorites: 'This is the end of your favorites.',
 		explore: 'Go add some!',
 		results: '{count} result | {count} results',
 		slogan: 'This song is available on the Karaoke Mugen songbase!',
@@ -199,7 +200,11 @@ export default {
 		favorites: 'Favorites'
 	},
 	search: {
-		placeholder: 'Series, singers, names...',
+		placeholder: {
+			kara: 'Series, singers, names...',
+			user: 'Username...',
+			tag: 'Tag name...'
+		},
 		sort: {
 			a_z: 'De A à Z',
 			kara_count: 'Karaoke count',
@@ -214,6 +219,11 @@ export default {
 			goto: 'Go to page {0}',
 			page: 'Page {0}',
 			sort: 'Sort by'
+		},
+		types: {
+			karaokes: 'Karaokes',
+			users: 'Users',
+			favorites: 'User\'s favorites'
 		}
 	},
 	modal: {

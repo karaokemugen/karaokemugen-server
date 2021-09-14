@@ -139,7 +139,8 @@ export default {
 		suggest: 'Vous ne trouvez pas ?',
 		suggest_open: 'Suggérez-le nous !',
 		remove_tags: 'Avez-vous essayé de retirer les tags qui ne vous servent plus ?',
-		end_favorites: 'C\'est la fin de vos favoris.',
+		end_favorites: 'C\'est la fin des favoris.',
+		end_my_favorites: 'C\'est la fin de vos favoris.',
 		explore: 'Allez en ajouter !',
 		results: '{count} résultat | {count} résultats',
 		slogan: 'Ce son est disponible sur la base Karaoke Mugen !',
@@ -202,7 +203,11 @@ export default {
 		favorites_count: '{x} favori | {x} favoris'
 	},
 	search: {
-		placeholder: 'Séries, chanteurs, noms...',
+		placeholder: {
+			kara: 'Séries, chanteurs, noms...',
+			user: 'Nom d\'utilisateur...',
+			tag: 'Nom du tag...'
+		},
 		sort: {
 			a_z: 'De A à Z',
 			kara_count: 'Nombre de chansons',
@@ -217,6 +222,11 @@ export default {
 			goto: 'Aller à la page {0}',
 			page: 'Page {0}',
 			sort: 'Trier par'
+		},
+		types: {
+			karaokes: 'Karaokés',
+			users: 'Utilisateurs',
+			favorites: 'Favoris de l\'utilisateur'
 		}
 	},
 	modal: {
