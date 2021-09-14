@@ -1,8 +1,8 @@
 <template>
 	<div>
-		<div v-for="n in Math.ceil(users.content.length)" :key="n" class="tile is-parent is-12">
-			<div v-for="n2 in 3" :key="`${n}_${n2}`" class="tile is-child is-4">
-				<user-card v-if="users.content[(n-1)*3+n2-1]" :user="users.content[(n-1)*3+n2-1]" />
+		<div v-for="n in Math.ceil(users.content.length / 2)" :key="n" class="tile is-parent is-12">
+			<div v-for="n2 in 2" :key="`${n}_${n2}`" class="tile is-child is-6">
+				<user-card v-if="users.content[(n-1)*2+n2-1]" :user="users.content[(n-1)*2+n2-1]" />
 			</div>
 		</div>
 		<loading-nanami v-if="loading" class="tile is-parent is-12" />
@@ -88,7 +88,6 @@
 
 		watch: {
 			search() {
-				console.log('search');
 				this.resetList();
 			}
 		},

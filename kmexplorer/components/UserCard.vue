@@ -1,20 +1,23 @@
 <template>
 	<div class="user-box">
-		<img :src="`/banners/${user.banner}`" alt="User banner" class="banner">
-		<div class="title-bar">
-			<img :src="`/avatars/${user.avatar_file}`" alt="" class="profile">
-			<div class="name-stats">
-				<nuxt-link :to="`/user/${user.login}`">
-					{{
-						user.nickname +
-							(viewingSelf ? $t('profile.you'):'')
-					}}
-				</nuxt-link>
-				<div>
-					{{ $tc('profile.favorites_count', user.favorites_count, { x: user.favorites_count }) }}
+		<div class="user-header">
+			<img :src="`/banners/${user.banner}`" alt="User banner" class="banner">
+			<div class="title-bar">
+				<img :src="`/avatars/${user.avatar_file}`" alt="" class="profile">
+				<div class="name-stats">
+					<nuxt-link :to="`/user/${user.login}`">
+						{{
+							user.nickname +
+								(viewingSelf ? $t('profile.you'):'')
+						}}
+					</nuxt-link>
+					<div>
+						{{ $tc('profile.favorites_count', user.favorites_count, { x: user.favorites_count }) }}
+					</div>
 				</div>
 			</div>
 		</div>
+		<p>{{ user.bio }}</p>
 	</div>
 </template>
 
@@ -42,56 +45,70 @@
 </script>
 
 <style scoped lang="scss">
-@mixin height-hack($factor: 1) {
-	height: 15rem * $factor;
+@mixin height-hack($factor: 1, $property: 'height') {
+	#{$property}: 15rem * $factor;
 	@media screen and (max-width: 1600px) {
-		height: 10rem * $factor;
+		#{$property}: 12.5rem * $factor;
 	}
 	@media screen and (max-width: 1200px) {
-		height: 7.5rem * $factor;
+		#{$property}: 10rem * $factor;
 	}
 	@media screen and (max-width: 680px) {
-		height: 5rem * $factor;
+		#{$property}: 7.5rem * $factor;
 	}
 }
 
 .user-box {
-	position: relative;
-	padding: .5em;
-	box-sizing: content-box;
-	@include height-hack;
-	border-radius: 8px;
-	> img.banner {
-		@include height-hack;
-		width: 100%;
-		object-fit: cover;
-		border-radius: 8px;
-		border: 1px solid #7f828b;
+	margin: 0 .5em;
+	@media screen and (max-width: 769px) {
+		margin: .5em 0;
 	}
-	.title-bar {
-		position: absolute;
-		display: flex;
-		align-items: center;
-		bottom: 0;
-		width: calc(100% - 1em);
-		background-color: #000000bf;
-		border-bottom-left-radius: 8px;
-		border-bottom-right-radius: 8px;
-		border: 1px solid #7f828b;
-		border-top-color: #7f828bbb;
-		> img.profile {
-			@include height-hack(0.33);
-			width: auto;
-			border-bottom-left-radius: 8px;
+	border: 1px solid #373f40;
+	border-radius: 8px;
+	.user-header {
+		position: relative;
+		box-sizing: border-box;
+		@include height-hack;
+		border-radius: 8px;
+		> img.banner {
+			@include height-hack;
+			width: 100%;
+			object-fit: cover;
+			border-top-right-radius: 8px;
+			border-top-left-radius: 8px;
+			filter: saturate(0.8) brightness(0.8);
 		}
-		> .name-stats {
-			padding-left: .5em;
-			> a {
-				line-height: 1em;
-				font-size: 1.75em;
-				font-weight: bold;
+		> img.banner[src="/banners/default.jpg"] {
+			filter: saturate(0.75) brightness(0.7);
+		}
+		.title-bar {
+			position: absolute;
+			display: flex;
+			align-items: center;
+			bottom: 0;
+			width: 100%;
+			background-color: #000000bb;
+			border-bottom: 1px solid #7f828bbb;
+			text-shadow: 1px 1px 1px black;
+			> img.profile {
+				@include height-hack(0.33);
+				width: auto;
+			}
+			> .name-stats {
+				padding-left: .5em;
+				> a {
+					line-height: 1em;
+					@include height-hack(0.15, 'font-size');
+					font-weight: bold;
+				}
 			}
 		}
+	}
+	p {
+		background-color: #373f40;
+		padding: .5em;
+		border-bottom-right-radius: 8px;
+		border-bottom-left-radius: 8px;
 	}
 }
 </style>
