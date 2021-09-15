@@ -282,7 +282,7 @@ export default function userController(router: Router) {
 				const avatar: Express.Multer.File = req.file || null;
 				//Get username
 				try {
-					const response = await editUser(req.authToken.username, req.body, avatar , req.authToken);
+					const response = await editUser(req.authToken.username, req.body, avatar, req.authToken, true);
 					res.status(200).json({code: 'USER_EDITED', data:{ token: response.token }});
 				} catch(err) {
 					res.status(500).json(err);
