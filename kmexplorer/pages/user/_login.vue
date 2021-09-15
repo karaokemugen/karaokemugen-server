@@ -95,7 +95,8 @@
 
 		data(): VState {
 			return {
-				user: {}
+				user: {},
+				VuexUnsubscribe: () => {}
 			};
 		},
 
@@ -111,23 +112,16 @@
 			}
 		},
 
-		head() {
-			return {
-				// @ts-ignore: no?
-				title: this.user?.nickname
-			};
-		},
-
 		computed: {
 			viewingSelf(): boolean {
 				return this.$auth.loggedIn && (this.$route.params.login === this.$auth.user.login);
 			},
 			metadata(): boolean {
 				return !!(
-					this.user?.social_networks.discord ||
-					this.user?.social_networks.instagram ||
-					this.user?.social_networks.twitter ||
-					this.user?.social_networks.twitch ||
+					this.user?.social_networks?.discord ||
+					this.user?.social_networks?.instagram ||
+					this.user?.social_networks?.twitter ||
+					this.user?.social_networks?.twitch ||
 					this.user?.url ||
 					this.user?.location
 				);
