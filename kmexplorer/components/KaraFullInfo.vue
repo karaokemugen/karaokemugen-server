@@ -21,8 +21,8 @@
 			<button
 				v-if="loggedIn"
 				class="button is-purple is-long"
-				:disabled="problematic"
-				:title="problematic ? $t('kara.set_banner.forbidden_label'):null"
+				:disabled="bannerBan"
+				:title="bannerBan ? $t('kara.set_banner.forbidden_label'):null"
 				@click.prevent="modal.banner=true"
 			>
 				<font-awesome-icon :icon="['fas', 'image']" :fixed-width="true" />
@@ -84,7 +84,7 @@
 	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
 	import { mapState } from 'vuex';
-	import { fakeYearTag, generateNavigation, getTagInLocale, getTitleInLocale, isProblematic } from '~/utils/tools';
+	import { fakeYearTag, generateNavigation, getTagInLocale, getTitleInLocale } from '~/utils/tools';
 	import { tagTypes } from '~/assets/constants';
 	import Tag from '~/components/Tag.vue';
 	import KaraPhrase from '~/components/KaraPhrase.vue';
@@ -202,8 +202,21 @@
 					throw new TypeError('The karaoke does not have any series nor singers, wtf?');
 				}
 			},
-			problematic(): boolean {
-				return isProblematic(this.karaoke);
+			bannerBan(): boolean {
+				let bannerBan = false;
+				for (const tagType in tagTypes) {
+					if (tagType === 'years') { continue; }
+					// @ts-ignore: il est 23h27 <- ceci n'est pas une raison
+					for (const tag of this.karaoke[tagType]) {
+						if (
+							(process.env.BANNER_BAN as unknown as string[]).includes(tag.tid)
+						) {
+							bannerBan = true;
+							break;
+						}
+					}
+				}
+				return bannerBan;
 			},
 			duration(): string {
 				const durationArray = duration(this.karaoke.duration);

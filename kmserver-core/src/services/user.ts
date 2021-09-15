@@ -14,9 +14,10 @@ import sentry from '../utils/sentry';
 import {getRole, createJwtToken } from '../controllers/http/auth';
 import {UserList, UserOptions, UserParams} from '../types/user';
 import { delPubUser, pubUser } from './user_pubsub';
-import { asciiRegexp } from '../lib/utils/constants';
+import {asciiRegexp, tagTypes} from '../lib/utils/constants';
 import {copy} from 'fs-extra';
 import {DBUser} from '../lib/types/database/user';
+import {getKara} from './kara';
 
 const passwordResetRequests = new Map();
 
@@ -273,8 +274,22 @@ async function replaceBanner(preview: string) {
 		const target = resolve(resolvedPathBanners(), preview);
 		// The banner is already in place (use by somebody else), no need to copy again.
 		if (await asyncExists(target)) return preview;
-		else await copy(file, target);
-		return preview;
+		else {
+			await copy(file, target);
+			const kid = preview.split('.')[0];
+			const bans = getConfig().Users.BannerBan;
+			const kara = await getKara({
+				q: `k:${kid}`,
+			});
+			for (const key of Object.keys(tagTypes)) {
+				for (const tag of kara[key]) {
+					if (bans.includes(tag.tid)) {
+						throw {code: 'BANNER_BANNED', data: 'This banner cannot be used'};
+					}
+				}
+			}
+			return preview;
+		}
 	}
 }
 

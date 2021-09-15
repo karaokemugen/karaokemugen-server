@@ -58,7 +58,8 @@ export const defaults: Config = {
 		SeriesLanguageMode: 3
 	},
 	Users: {
-		Enabled: true
+		Enabled: true,
+		BannerBan: []
 	},
 	Stats: {
 		Enabled: true
