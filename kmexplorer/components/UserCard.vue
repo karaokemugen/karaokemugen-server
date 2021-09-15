@@ -100,6 +100,9 @@
 					line-height: 1em;
 					@include height-hack(0.15, 'font-size');
 					font-weight: bold;
+					height: 1em;
+					display: inline-block;
+					overflow: hidden;
 				}
 			}
 		}

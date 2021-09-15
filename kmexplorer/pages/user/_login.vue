@@ -1,64 +1,63 @@
 <template>
 	<loading-nanami v-if="$fetchState.pending" class="tile is-parent is-12" />
 	<div v-else>
-		<div class="box user-box">
+		<div class="user-box">
 			<div class="header">
 				<img :src="`/banners/${user.banner}`" alt="User banner" class="banner">
-				<div class="title-bar">
-					<img :src="`/avatars/${user.avatar_file}`" alt="" class="profile">
-					<span>
-						{{
-							user.nickname +
-								(viewingSelf ? $t('profile.you'):'')
-						}}
-					</span>
-				</div>
-			</div>
-			<div class="presentation">
-				<div class="metadata">
-					<ul v-if="user.social_networks">
-						<li v-if="user.social_networks.twitter">
-							<font-awesome-icon :icon="['fab', 'twitter']" :fixed-width="true" />
-							<a :href="`https://twitter.com/${user.social_networks.twitter}/`" target="_blank">
-								{{ user.social_networks.twitter }}
-							</a>
-						</li>
-						<li v-if="user.social_networks.instagram">
-							<font-awesome-icon :icon="['fab', 'instagram']" :fixed-width="true" />
-							<a :href="`https://instagram.com/${user.social_networks.instagram}/`" target="_blank">
-								{{ user.social_networks.instagram }}
-							</a>
-						</li>
-						<li v-if="user.social_networks.discord">
-							<font-awesome-icon :icon="['fab', 'discord']" :fixed-width="true" />
-							{{ user.social_networks.discord }}
-						</li>
-						<li v-if="user.social_networks.twitch">
-							<font-awesome-icon :icon="['fab', 'twitch']" :fixed-width="true" />
-							<a :href="`https://twitch.tv/${user.social_networks.twitch}/`" target="_blank">
-								{{ user.social_networks.twitch }}
-							</a>
-						</li>
-						<li v-if="user.url">
-							<font-awesome-icon :icon="['fas', 'link']" :fixed-width="true" />
-							<a :href="user.url" target="_blank">
-								{{ user.url }}
-							</a>
-						</li>
-						<li v-if="user.location">
-							<font-awesome-icon :icon="['fas', 'globe']" :fixed-width="true" />
-							{{ getLocalizedCountry(user.location) }}
-						</li>
-					</ul>
-				</div>
-				<div class="bio">
-					<p>{{ user.bio }}</p>
-					<client-only>
-						<button v-if="viewingSelf" class="button is-info" @click.prevent="openEdit">
-							<font-awesome-icon :icon="['fas', 'edit']" fixed-width />
-							{{ $t('profile.edit') }}
-						</button>
-					</client-only>
+				<div class="down">
+					<div class="title-bar">
+						<img :src="`/avatars/${user.avatar_file}`" alt="" class="profile">
+						<span>
+							{{ user.nickname }}
+						</span>
+						<client-only>
+							<button v-if="viewingSelf" class="button is-info" @click.prevent="openEdit">
+								<font-awesome-icon :icon="['fas', 'edit']" fixed-width />
+								<span class="is-hidden-mobile">{{ $t('profile.edit') }}</span>
+							</button>
+						</client-only>
+					</div>
+					<div v-if="bio || metadata" class="presentation">
+						<div v-if="metadata" class="metadata">
+							<ul v-if="user.social_networks">
+								<li v-if="user.social_networks.twitter">
+									<font-awesome-icon :icon="['fab', 'twitter']" :fixed-width="true" />
+									<a :href="`https://twitter.com/${user.social_networks.twitter}/`" target="_blank">
+										{{ user.social_networks.twitter }}
+									</a>
+								</li>
+								<li v-if="user.social_networks.instagram">
+									<font-awesome-icon :icon="['fab', 'instagram']" :fixed-width="true" />
+									<a :href="`https://instagram.com/${user.social_networks.instagram}/`" target="_blank">
+										{{ user.social_networks.instagram }}
+									</a>
+								</li>
+								<li v-if="user.social_networks.discord">
+									<font-awesome-icon :icon="['fab', 'discord']" :fixed-width="true" />
+									{{ user.social_networks.discord }}
+								</li>
+								<li v-if="user.social_networks.twitch">
+									<font-awesome-icon :icon="['fab', 'twitch']" :fixed-width="true" />
+									<a :href="`https://twitch.tv/${user.social_networks.twitch}/`" target="_blank">
+										{{ user.social_networks.twitch }}
+									</a>
+								</li>
+								<li v-if="user.url">
+									<font-awesome-icon :icon="['fas', 'link']" :fixed-width="true" />
+									<a :href="user.url" target="_blank">
+										{{ user.url }}
+									</a>
+								</li>
+								<li v-if="user.location">
+									<font-awesome-icon :icon="['fas', 'globe']" :fixed-width="true" />
+									{{ getLocalizedCountry(user.location) }}
+								</li>
+							</ul>
+						</div>
+						<div v-if="bio" class="bio">
+							<p>{{ user.bio }}</p>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -112,9 +111,29 @@
 			}
 		},
 
+		head() {
+			return {
+				// @ts-ignore: no?
+				title: this.user?.nickname
+			};
+		},
+
 		computed: {
 			viewingSelf(): boolean {
 				return this.$auth.loggedIn && (this.$route.params.login === this.$auth.user.login);
+			},
+			metadata(): boolean {
+				return !!(
+					this.user?.social_networks.discord ||
+					this.user?.social_networks.instagram ||
+					this.user?.social_networks.twitter ||
+					this.user?.social_networks.twitch ||
+					this.user?.url ||
+					this.user?.location
+				);
+			},
+			bio(): boolean {
+				return !!this.user?.bio;
 			}
 		},
 
@@ -147,64 +166,84 @@
 </script>
 
 <style scoped lang="scss">
-	@mixin height-hack($factor: 1) {
-		height: 25rem * $factor;
-		@media screen and (max-width: 1600px) {
-			height: 20rem * $factor;
-		}
-		@media screen and (max-width: 1200px) {
-			height: 15rem * $factor;
-		}
-		@media screen and (max-width: 680px) {
-			height: 10rem * $factor;
-		}
-	}
 
-	.box.user-box {
+	$user-box-radius: 8px;
+
+	.user-box {
 		flex-grow: 1;
-		margin-right: 0.75rem;
+		// margin-right: 0.75rem;
+		display: flex;
+		justify-content: center;
+		border-radius: $user-box-radius;
 		.header {
 			position: relative;
-			transform: translate(-1.25rem, -1.25rem);
-			width: calc(100% + 2.5rem);
-			@include height-hack;
+			height: 70vh;
+			@media screen and (max-width: 1600px) {
+				height: unset;
+				margin-right: 0.25em;
+			}
+			aspect-ratio: 16/9;
 			> img.banner {
-				@include height-hack;
+				height: 100%;
 				width: 100%;
 				object-fit: cover;
-				border-top-left-radius: 8px;
-				border-top-right-radius: 8px;
+				border-radius: $user-box-radius;
 			}
-			.title-bar {
+			.down {
 				position: absolute;
-				display: flex;
-				align-items: center;
 				bottom: 0;
 				width: 100%;
-				background-color: #000000bb;
+				border-top-right-radius: $user-box-radius;
+				border-top-left-radius: $user-box-radius;
+				background-color: #000000bd;
+			}
+			.title-bar {
+				display: flex;
+				align-items: center;
+				@media screen and (max-width: 1600px) {
+					flex-wrap: wrap;
+				}
 				> img.profile {
-					@include height-hack(0.25);
+					height: 6em;
+					@media screen and (max-width: 1600px) {
+						height: 3em;
+					}
 					width: auto;
+					margin: .5rem;
+					border-radius: $user-box-radius * 2;
 				}
 				> span {
-					padding: .25em;
+					padding: .1em;
 					line-height: 1em;
 					font-size: 1.75em;
 					font-weight: bold;
+					max-height: 2em;
+					// Dans ta gueule le mec avec son psuedo de 2 mètres !
+					overflow-wrap: anywhere;
+					overflow: hidden;
+				}
+				> button {
+					margin-left: .5em;
 				}
 			}
-		}
-		.presentation {
-			padding: .25em;
-			@media screen and (min-width: 769px) {
-				display: flex;
-				.metadata {
-					padding-right: 1em;
-				}
-				.bio {
-					border-left: gray 1px solid;
-					padding-left: 1em;
-					flex-grow: 1;
+			.presentation {
+				padding: 1em;
+				border-top: solid 1px gray;
+				@media screen and (min-width: 769px) {
+					display: flex;
+					align-items: stretch;
+					.metadata {
+						padding: 1em 1em 1em 0;
+						// padding-right: 1em;
+						border-right: gray 1px solid;
+					}
+					.bio {
+						padding-left: 1em;
+						flex-grow: 1;
+						&:first-child {
+							padding-left: 0;
+						}
+					}
 				}
 			}
 		}
