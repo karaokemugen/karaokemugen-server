@@ -61,7 +61,7 @@
 				</div>
 			</div>
 		</div>
-		<template v-if="user.flag_displayfavorites || viewingSelf">
+		<template v-if="(user.flag_displayfavorites && user.favorites_count > 0) || viewingSelf">
 			<h1 class="title with-button">
 				<font-awesome-icon :icon="['fas', 'star']" fixed-width />
 				{{ $t('profile.favorites') }}
@@ -101,7 +101,10 @@
 		},
 
 		async fetch() {
-			const res: DBUser | false = await this.$axios.$get(`/api/users/${this.$route.params.login}`).catch(() => {
+			const url = this.viewingSelf
+				? '/api/myaccount'
+				: `/api/users/${this.$route.params.login}`;
+			const res: DBUser | false = await this.$axios.$get(url).catch(() => {
 				this.$nuxt.error({ statusCode: 500 });
 				return false;
 			});
@@ -180,8 +183,7 @@
 			}
 			@supports (aspect-ratio: 16/9) {
 				aspect-ratio: 16/9;
-				height: 60vh;
-				max-height: 800px;
+				height: clamp(400px, 60vh, 800px);
 				@media screen and (max-width: 1600px) {
 					height: unset;
 				}
