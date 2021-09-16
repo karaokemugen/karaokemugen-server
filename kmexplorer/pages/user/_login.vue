@@ -113,7 +113,7 @@
 			});
 			if (res) {
 				if (!this.viewingSelf && !res.flag_public) {
-					this.$nuxt.error({ statusCode: 403 });
+					this.$nuxt.error({ statusCode: 403, message: this.$t('error.private_profile') as string });
 				}
 				this.user = res;
 			} else {

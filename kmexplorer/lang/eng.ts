@@ -1,6 +1,7 @@
 export default {
 	error: {
 		generic: 'Error',
+		private_profile: 'The profile is private.',
 		home: 'Go home'
 	},
 	kara: {
