@@ -29,6 +29,7 @@
 					<div class="dots">
 						<span
 							v-for="(_img, index) in previews"
+							:key="index"
 							class="dot"
 							:class="{active: index === img}"
 						>
@@ -156,6 +157,7 @@
 		}
 		.pending-banner {
 			border-radius: 8px;
+			min-width: 0;
 			width: 100%;
 			height: auto;
 		}
