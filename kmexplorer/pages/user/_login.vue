@@ -175,17 +175,38 @@
 		border-radius: $user-box-radius;
 		.header {
 			position: relative;
-			height: 70vh;
 			@media screen and (max-width: 1600px) {
-				height: unset;
 				margin-right: 0.25em;
 			}
-			aspect-ratio: 16/9;
-			> img.banner {
-				height: 100%;
-				width: 100%;
-				object-fit: cover;
-				border-radius: $user-box-radius;
+			@supports (aspect-ratio: 16/9) {
+				aspect-ratio: 16/9;
+				height: 60vh;
+				max-height: 800px;
+				@media screen and (max-width: 1600px) {
+					height: unset;
+				}
+				> img.banner {
+					position: absolute;
+					height: 100%;
+					width: 100%;
+					top: 0;
+					object-fit: cover;
+					border-radius: $user-box-radius;
+				}
+			}
+			@supports not (aspect-ratio: 16/9) {
+				width: 66%;
+				padding-top: 56.25% * 0.66; // 56.25 is for 100% width, here we have 66M
+				@media screen and (max-width: 1600px) {
+					width: 100%;
+					padding-top: 56.25%;
+				}
+				> img.banner {
+					position: absolute;
+					top: 0;
+					object-fit: cover;
+					border-radius: $user-box-radius;
+				}
 			}
 			.down {
 				position: absolute;
