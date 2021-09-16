@@ -1,5 +1,10 @@
 <template>
 	<div>
+		<div class="tile is-parent is-12 is-hidden-desktop">
+			<search-tags />
+			<search-bar :filter="false" :results="false" />
+			<search-edit />
+		</div>
 		<div v-for="n in Math.ceil(users.content.length / 2)" :key="n" class="tile is-parent is-12">
 			<div v-for="n2 in 2" :key="`${n}_${n2}`" class="tile is-child is-6">
 				<user-card v-if="users.content[(n-1)*2+n2-1]" :user="users.content[(n-1)*2+n2-1]" />
@@ -26,6 +31,9 @@
 	import { UserList } from '%/types/user';
 	import { menuBarStore } from '~/utils/store-accessor';
 	import LoadingNanami from '~/components/LoadingNanami.vue';
+	import SearchEdit from '~/components/SearchEdit.vue';
+	import SearchBar from '~/components/SearchBar.vue';
+	import SearchTags from '~/components/SearchTags.vue';
 
 	interface VState {
 		users: UserList,
@@ -47,7 +55,10 @@
 
 		components: {
 			UserCard,
-			LoadingNanami
+			LoadingNanami,
+			SearchTags,
+			SearchBar,
+			SearchEdit
 		},
 
 		data(): VState {
