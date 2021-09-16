@@ -262,6 +262,7 @@
 						padding: 1em 1em 1em 0;
 						// padding-right: 1em;
 						border-right: gray 1px solid;
+						flex-shrink: 0;
 					}
 					.bio {
 						padding-left: 1em;
