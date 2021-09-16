@@ -270,6 +270,7 @@
 									v-model="user.flag_displayfavorites"
 									id="favorites"
 									type="checkbox"
+									:disabled="!user.flag_public"
 								>
 								{{ $t('modal.profile.fields.flag_displayfavorites.checkbox') }}
 							</label>
