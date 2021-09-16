@@ -95,6 +95,10 @@
 			}
 		},
 
+		beforeCreate() {
+			menuBarStore.setSearch('');
+		},
+
 		created() {
 			this.resetListDebounced = debounce(this.actualResetList, 75);
 		},

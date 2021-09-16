@@ -78,7 +78,7 @@
 	import { DBUser } from '%/lib/types/database/user';
 	import LoadingNanami from '~/components/LoadingNanami.vue';
 	import KaraQuery from '~/components/KaraQuery.vue';
-	import { modalStore } from '~/store';
+	import { menuBarStore, modalStore } from '~/store';
 
 	interface VState {
 		user?: DBUser,
@@ -142,6 +142,10 @@
 				// Remove protocol if http(s) and trailing slash
 				return this.user?.url?.replace(/^https?:\/\//i, '').replace(/\/$/, '') || '';
 			}
+		},
+
+		beforeCreate() {
+			menuBarStore.setSearch('');
 		},
 
 		mounted() {
