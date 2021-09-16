@@ -42,10 +42,10 @@
 										{{ user.social_networks.twitch }}
 									</a>
 								</li>
-								<li v-if="user.url">
+								<li v-if="url">
 									<font-awesome-icon :icon="['fas', 'link']" :fixed-width="true" />
 									<a :href="user.url" target="_blank">
-										{{ user.url }}
+										{{ url }}
 									</a>
 								</li>
 								<li v-if="user.location">
@@ -128,6 +128,10 @@
 			},
 			bio(): boolean {
 				return !!this.user?.bio;
+			},
+			url(): string {
+				// Remove protocol if http(s) and trailing slash
+				return this.user?.url?.replace(/^https?:\/\//i, '').replace(/\/$/, '') || '';
 			}
 		},
 
