@@ -101,6 +101,9 @@
 		},
 
 		async fetch() {
+			if (!process.env.USERS as unknown as boolean) {
+				this.$nuxt.error({ statusCode: 404 });
+			}
 			const url = this.viewingSelf
 				? '/api/myaccount'
 				: `/api/users/${this.$route.params.login}`;

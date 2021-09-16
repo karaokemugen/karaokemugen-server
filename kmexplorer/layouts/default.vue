@@ -41,7 +41,7 @@
 					<font-awesome-icon :icon="['fas', 'person-booth']" :fixed-width="true" />
 					{{ $t('menu.join_kara') }}
 				</a>
-				<nuxt-link class="navbar-item" to="/users">
+				<nuxt-link v-if="usersEnabled" class="navbar-item" to="/users">
 					<font-awesome-icon :icon="['fas', 'users']" :fixed-width="true" />
 					{{ $t('menu.search_users') }}
 				</nuxt-link>
@@ -71,7 +71,7 @@
 					<font-awesome-icon :icon="['fas', 'edit']" :fixed-width="true" />
 					{{ $t('menu.profile') }}
 				</a>
-				<a v-else class="navbar-item" aria-label="Login" @click.prevent="modal.auth = true">
+				<a v-else-if="usersEnabled" class="navbar-item" aria-label="Login" @click.prevent="modal.auth = true">
 					<font-awesome-icon :icon="['fas', 'sign-in-alt']" :fixed-width="true" />
 					{{ $t('menu.connection') }}
 				</a>
@@ -493,6 +493,7 @@
 		base_license_name?: string,
 		base_license_link?: string,
 		explorerHost?: string,
+		usersEnabled?: boolean,
 		tagsMenu: boolean,
 		databaseMenu: boolean,
 		communityMenu: boolean,
@@ -527,6 +528,7 @@
 				base_license_name: process.env.BASE_LICENSE_NAME,
 				base_license_link: process.env.BASE_LICENSE_LINK,
 				explorerHost: process.env.EXPLORER_HOST,
+				usersEnabled: process.env.USERS as unknown as boolean,
 				tagsMenu: false,
 				databaseMenu: false,
 				communityMenu: false,

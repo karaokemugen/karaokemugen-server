@@ -68,6 +68,9 @@
 		},
 
 		async fetch() {
+			if (!process.env.USERS as unknown as boolean) {
+				this.$nuxt.error({ statusCode: 404 });
+			}
 			// Load the first page
 			await this.loadNextPage(true);
 		},
