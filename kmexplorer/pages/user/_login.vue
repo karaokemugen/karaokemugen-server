@@ -11,53 +11,51 @@
 							{{ user.nickname }}
 						</span>
 						<client-only>
-							<button v-if="viewingSelf" class="button is-info" @click.prevent="openEdit">
+							<button v-if="viewingSelf" class="button" @click.prevent="openEdit">
 								<font-awesome-icon :icon="['fas', 'edit']" fixed-width />
 								<span class="is-hidden-mobile">{{ $t('profile.edit') }}</span>
 							</button>
 						</client-only>
 					</div>
-					<div v-if="bio || metadata" class="presentation">
+					<template v-if="bio || metadata">
 						<div v-if="metadata" class="metadata">
-							<ul v-if="user.social_networks">
-								<li v-if="user.social_networks.twitter">
-									<font-awesome-icon :icon="['fab', 'twitter']" :fixed-width="true" />
-									<a :href="`https://twitter.com/${user.social_networks.twitter}/`" target="_blank">
-										{{ user.social_networks.twitter }}
-									</a>
-								</li>
-								<li v-if="user.social_networks.instagram">
-									<font-awesome-icon :icon="['fab', 'instagram']" :fixed-width="true" />
-									<a :href="`https://instagram.com/${user.social_networks.instagram}/`" target="_blank">
-										{{ user.social_networks.instagram }}
-									</a>
-								</li>
-								<li v-if="user.social_networks.discord">
-									<font-awesome-icon :icon="['fab', 'discord']" :fixed-width="true" />
-									{{ user.social_networks.discord }}
-								</li>
-								<li v-if="user.social_networks.twitch">
-									<font-awesome-icon :icon="['fab', 'twitch']" :fixed-width="true" />
-									<a :href="`https://twitch.tv/${user.social_networks.twitch}/`" target="_blank">
-										{{ user.social_networks.twitch }}
-									</a>
-								</li>
-								<li v-if="url">
-									<font-awesome-icon :icon="['fas', 'link']" :fixed-width="true" />
-									<a :href="user.url" target="_blank">
-										{{ url }}
-									</a>
-								</li>
-								<li v-if="user.location">
-									<font-awesome-icon :icon="['fas', 'globe']" :fixed-width="true" />
-									{{ getLocalizedCountry(user.location) }}
-								</li>
-							</ul>
+							<div v-if="user.social_networks.twitter">
+								<font-awesome-icon :icon="['fab', 'twitter']" :fixed-width="true" />
+								<a :href="`https://twitter.com/${user.social_networks.twitter}/`" target="_blank">
+									{{ user.social_networks.twitter }}
+								</a>
+							</div>
+							<div v-if="user.social_networks.instagram">
+								<font-awesome-icon :icon="['fab', 'instagram']" :fixed-width="true" />
+								<a :href="`https://instagram.com/${user.social_networks.instagram}/`" target="_blank">
+									{{ user.social_networks.instagram }}
+								</a>
+							</div>
+							<div v-if="user.social_networks.discord">
+								<font-awesome-icon :icon="['fab', 'discord']" :fixed-width="true" />
+								{{ user.social_networks.discord }}
+							</div>
+							<div v-if="user.social_networks.twitch">
+								<font-awesome-icon :icon="['fab', 'twitch']" :fixed-width="true" />
+								<a :href="`https://twitch.tv/${user.social_networks.twitch}/`" target="_blank">
+									{{ user.social_networks.twitch }}
+								</a>
+							</div>
+							<div v-if="url">
+								<font-awesome-icon :icon="['fas', 'link']" :fixed-width="true" />
+								<a :href="user.url" target="_blank">
+									{{ url }}
+								</a>
+							</div>
+							<div v-if="user.location">
+								<font-awesome-icon :icon="['fas', 'globe']" :fixed-width="true" />
+								{{ getLocalizedCountry(user.location) }}
+							</div>
 						</div>
 						<div v-if="bio" class="bio">
 							<p>{{ user.bio }}</p>
 						</div>
-					</div>
+					</template>
 				</div>
 			</div>
 		</div>
@@ -188,12 +186,14 @@
 		border-radius: $user-box-radius;
 		.header {
 			position: relative;
+			display: flex;
+			flex-direction: column;
 			@media screen and (max-width: 900px) {
 				margin-right: 0.25em;
 			}
 			@supports (aspect-ratio: 16/9) {
 				aspect-ratio: 16/9;
-				height: clamp(400px, 60vh, 800px);
+				height: clamp(450px, 60vh, 800px);
 				@media screen and (max-width: 900px) {
 					height: unset;
 					width: 100%;
@@ -254,29 +254,27 @@
 					overflow: hidden;
 				}
 				> button {
-					margin-left: .5em;
+					margin-right: .5em;
+					margin-left: auto;
+					opacity: 0.75;
+					&:hover {
+						opacity: 1;
+					}
 				}
 			}
-			.presentation {
+			.metadata {
+				display: flex;
+				justify-content: space-around;
+				flex-wrap: wrap;
+				padding: 1em 0;
+				border-top: 1px solid gray;
+				> div {
+					padding: 0 1em;
+				}
+			}
+			.bio {
 				padding: 1em;
 				border-top: solid 1px gray;
-				@media screen and (min-width: 769px) {
-					display: flex;
-					align-items: stretch;
-					.metadata {
-						padding: 1em 1em 1em 0;
-						// padding-right: 1em;
-						border-right: gray 1px solid;
-						flex-shrink: 0;
-					}
-					.bio {
-						padding-left: 1em;
-						flex-grow: 1;
-						&:first-child {
-							padding-left: 0;
-						}
-					}
-				}
 			}
 		}
 	}

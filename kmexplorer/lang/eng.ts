@@ -194,7 +194,7 @@ export default {
 		logout: 'Logout',
 		register: 'Register',
 		connection: 'Login',
-		profile: 'Profile',
+		profile: 'Edit your profile',
 		switch_language: 'Switch language'
 	},
 	profile: {
