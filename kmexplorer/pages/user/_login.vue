@@ -188,14 +188,15 @@
 		border-radius: $user-box-radius;
 		.header {
 			position: relative;
-			@media screen and (max-width: 1600px) {
+			@media screen and (max-width: 900px) {
 				margin-right: 0.25em;
 			}
 			@supports (aspect-ratio: 16/9) {
 				aspect-ratio: 16/9;
 				height: clamp(400px, 60vh, 800px);
-				@media screen and (max-width: 1600px) {
+				@media screen and (max-width: 900px) {
 					height: unset;
+					width: 100%;
 				}
 				> img.banner {
 					position: absolute;
@@ -209,7 +210,7 @@
 			@supports not (aspect-ratio: 16/9) {
 				width: 66%;
 				padding-top: 56.25% * 0.66; // 56.25 is for 100% width, here we have 66M
-				@media screen and (max-width: 1600px) {
+				@media screen and (max-width: 900px) {
 					width: 100%;
 					padding-top: 56.25%;
 				}
