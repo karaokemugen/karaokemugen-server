@@ -1,6 +1,6 @@
 <template>
 	<div class="field is-expanded has-addons">
-		<div v-if="results && resultsCount > 0 && ['search-query', 'tags-slug-id', 'types-id'].includes($route.name)" class="control is-expanded">
+		<div v-if="results && resultsCount > 0 && ['search-query', 'types-id', 'types-years', 'user-login', 'users'].includes($route.name)" class="control is-expanded">
 			<button class="button is-static">
 				{{ $tc('layout.results', resultsCount, {count: resultsCount}) }}
 			</button>
