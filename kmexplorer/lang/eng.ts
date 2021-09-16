@@ -197,7 +197,10 @@ export default {
 		switch_language: 'Switch language'
 	},
 	profile: {
-		favorites: 'Favorites'
+		favorites: 'Favorites',
+		you: ' (that\'s you!)',
+		edit: 'Edit profile',
+		favorites_count: '{x} favorite | {x} favorites'
 	},
 	search: {
 		placeholder: {
