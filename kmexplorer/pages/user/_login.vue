@@ -109,6 +109,9 @@
 				return false;
 			});
 			if (res) {
+				if (!this.viewingSelf && !res.flag_public) {
+					this.$nuxt.error({ statusCode: 403 });
+				}
 				this.user = res;
 			} else {
 				this.$nuxt.error({ statusCode: 404 });
