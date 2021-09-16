@@ -62,7 +62,7 @@
 		<template v-if="(user.flag_displayfavorites && user.favorites_count > 0) || viewingSelf">
 			<h1 class="title with-button">
 				<font-awesome-icon :icon="['fas', 'star']" fixed-width />
-				{{ $t('profile.favorites') }}
+				{{ $tc('profile.favorites_count', user.favorites_count, { x: user.favorites_count }) }}
 			</h1>
 			<kara-query :favorites="user.login" />
 		</template>

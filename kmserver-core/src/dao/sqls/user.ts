@@ -41,7 +41,7 @@ SELECT
 	flag_displayfavorites,
 	banner,
 	language,
-	(case when flag_displayfavorites then (select count(fk_kid) from users_favorites where fk_login = pk_login) else 0 end)::integer as favorites_count,
+	(select count(fk_kid) from users_favorites where fk_login = pk_login)::integer as favorites_count,
 	count(pk_login) OVER()::integer AS count
 FROM users
     ${where || ''}
