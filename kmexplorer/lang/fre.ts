@@ -323,7 +323,7 @@ export default {
 				},
 				instagram: {
 					label: 'Instagram',
-					placeholder: 'KaraMugen'
+					placeholder: 'karaokemugen'
 				},
 				twitch: {
 					label: 'Twitch',
