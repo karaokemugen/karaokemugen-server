@@ -206,7 +206,7 @@
 										type="text"
 										name="twitch"
 										class="input"
-										pattern="[A-Za-z0-9]{4,25}"
+										pattern="[A-Za-z0-9_]{4,25}"
 										:placeholder="$t('modal.profile.fields.twitch.placeholder')"
 									>
 								</div>
