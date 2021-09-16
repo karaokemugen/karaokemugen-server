@@ -300,17 +300,6 @@
 			</div>
 		</div>
 		<div class="field">
-			<label class="label">{{ $t('kara.import.modified_at') }}</label>
-			<div class="control">
-				<input
-					class="input is-static"
-					type="text"
-					readonly
-					:value="karaoke.modified_at ? new Date(karaoke.modified_at).toLocaleString() : null"
-				>
-			</div>
-		</div>
-		<div class="field">
 			<label class="label" :title="$t('kara.import.comment_tooltip')">
 				{{ $t('kara.import.comment') }}
 				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />

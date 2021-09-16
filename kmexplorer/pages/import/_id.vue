@@ -84,7 +84,6 @@
 						genres: [],
 						platforms: [],
 						origins: [],
-						modified_at: new Date(),
 						created_at: new Date()
 					}
 				};

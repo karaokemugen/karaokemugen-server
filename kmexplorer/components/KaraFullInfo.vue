@@ -36,8 +36,8 @@
 						<font-awesome-icon :icon="['fas', 'clock']" :fixed-width="true" />
 						{{ duration }}
 					</td>
-					<td :title="`${$t('kara.created_at')}: ${new Date(karaoke.created_at).toLocaleString()}`">
-						{{ $t('kara.modified_at') }}:&nbsp;{{ new Date(karaoke.modified_at).toLocaleString() }}
+					<td>
+						{{ $t('kara.created_at') }}:&nbsp;{{ new Date(karaoke.created_at).toLocaleString() }}
 					</td>
 				</tr>
 				<tr v-for="type in Object.keys(tagTypesSorted)" :key="type">
