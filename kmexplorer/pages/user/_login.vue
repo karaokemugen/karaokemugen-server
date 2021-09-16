@@ -187,8 +187,7 @@
 				position: absolute;
 				bottom: 0;
 				width: 100%;
-				border-top-right-radius: $user-box-radius;
-				border-top-left-radius: $user-box-radius;
+				border-radius: $user-box-radius;
 				background-color: #000000bd;
 			}
 			.title-bar {
