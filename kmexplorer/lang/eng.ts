@@ -349,7 +349,7 @@ export default {
 				},
 				lang_prefs: {
 					main_song_name_lang: 'Song name display preference',
-					force_lang_series_fallback: 'Fallback song name display preference'
+					fallback_song_name_lang: 'Fallback song name display preference'
 				}
 			},
 			passwords_mismatch: 'Passwords do not match',
