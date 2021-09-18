@@ -181,7 +181,7 @@ export default {
 		songwriters: 'Songwriters',
 		creators: 'Creators',
 		authors: 'Authors',
-		languages: 'Languages',
+		langs: 'Languages',
 		years: 'Years',
 		community: 'Community',
 		join_kara: 'Join a karaoke party',

@@ -182,7 +182,7 @@
 					</nuxt-link>
 					<nuxt-link class="navbar-item" to="/types/langs">
 						<font-awesome-icon :icon="['fas', 'language']" :fixed-width="true" />
-						{{ $t('menu.languages') }}
+						{{ $t('menu.langs') }}
 					</nuxt-link>
 					<nuxt-link class="navbar-item" to="/types/years">
 						<font-awesome-icon :icon="['fas', 'calendar-alt']" :fixed-width="true" />
@@ -363,7 +363,7 @@
 							:class="{'is-active': tagType === '~5'}"
 						>
 							<font-awesome-icon :icon="['fas', 'language']" :fixed-width="true" />
-							{{ $t('menu.languages') }}
+							{{ $t('menu.langs') }}
 						</nuxt-link>
 					</li>
 					<li>

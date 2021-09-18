@@ -181,7 +181,7 @@ export default {
 		songwriters: 'Compositeurs',
 		creators: 'Créateurs',
 		authors: 'Auteurs',
-		languages: 'Langues',
+		langs: 'Langues',
 		years: 'Années',
 		community: 'Communauté',
 		join_kara: 'Rejoindre le karaoké',
