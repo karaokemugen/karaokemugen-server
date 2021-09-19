@@ -10,7 +10,13 @@ import userController from './controllers/http/user';
 import favoritesController from './controllers/http/favorites';
 import remoteSocketController from './controllers/ws/remote';
 import userSubSocketController from './controllers/ws/user';
-import {getConfig, resolvedPathAvatars, resolvedPathPreviews, resolvedPathRepos} from './lib/utils/config';
+import {
+	getConfig,
+	resolvedPathAvatars,
+	resolvedPathBanners,
+	resolvedPathPreviews,
+	resolvedPathRepos
+} from './lib/utils/config';
 import range from 'express-range';
 import vhost from 'vhost';
 import {createServer} from 'http';
@@ -30,9 +36,6 @@ export function initFrontend(listenPort: number) {
 	const conf = getConfig();
 	const state = getState();
 	const app = express();
-	const API = express();
-	const KMExplorer = express();
-	const KMServer = express();
 
 	app.set('trust proxy', (ip: string) => {
 		return ip === '127.0.0.1' ||
@@ -79,28 +82,28 @@ export function initFrontend(listenPort: number) {
 	//KMServer
 	// If static serve is enabled, we're serving all files from KMServer instead of Apache/nginx
 	if (state.opt.staticServe) {
-		KMServer.use('/downloads/karaokes', express.static(resolvedPathRepos('Karaokes')[0]));
-		KMServer.use('/downloads/lyrics', express.static(resolvedPathRepos('Lyrics')[0]));
-		KMServer.use('/downloads/medias', express.static(resolvedPathRepos('Medias')[0]));
-		KMServer.use('/downloads/tags', express.static(resolvedPathRepos('Tags')[0]));
+		app.use('/downloads/karaokes', express.static(resolvedPathRepos('Karaokes')[0]));
+		app.use('/downloads/lyrics', express.static(resolvedPathRepos('Lyrics')[0]));
+		app.use('/downloads/medias', express.static(resolvedPathRepos('Medias')[0]));
+		app.use('/downloads/tags', express.static(resolvedPathRepos('Tags')[0]));
 	}
 
 	// API router
-	app.use(vhost(`${conf.API.Host}`, API));
-	API.use('/api', api());
-	if (conf.Users.Enabled) API.use('/avatars', express.static(resolvedPathAvatars()));
+	app.use('/api', api());
+	if (conf.Users.Enabled) {
+		app.use('/avatars', express.static(resolvedPathAvatars()));
+		app.use('/banners', express.static(resolvedPathBanners()));
+	}
 	// Redirect old base route to root
 	app.get('/base*', (req, res) => {
 		res.redirect(301, req.url.replace(/^\/base\/?/, '/'));
 	});
 	// KMExplorer
 	if (conf.KaraExplorer.Enabled) {
-		app.use(vhost(`${conf.KaraExplorer.Host}`, KMExplorer));
-
-		KMExplorer.use('/previews', express.static(resolvedPathPreviews()));
+		app.use('/previews', express.static(resolvedPathPreviews()));
 
 		startKMExplorer().then(nuxt => {
-			KMExplorer.use(nuxt.render);
+			app.use(nuxt.render);
 		});
 	}
 

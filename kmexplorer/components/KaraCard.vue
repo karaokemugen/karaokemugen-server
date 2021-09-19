@@ -27,7 +27,7 @@
 			</button>
 			<div>
 				<nuxt-link :to="`/kara/${slug}/${karaoke.kid}`" class="title is-3 is-spaced">
-					{{ karaoke.title }}
+					{{ title }}
 				</nuxt-link>
 				<kara-phrase :karaoke="karaoke" :i18n="i18n" tag="h5" class="subtitle is-56" />
 			</div>
@@ -67,7 +67,7 @@
 	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
 	import VLazyImage from 'v-lazy-image';
-	import { fakeYearTag } from '~/utils/tools';
+	import { fakeYearTag, getTitleInLocale, isProblematic } from '~/utils/tools';
 	import { tagTypes } from '~/assets/constants';
 	import Tag from '~/components/Tag.vue';
 	import KaraPhrase from '~/components/KaraPhrase.vue';
@@ -114,16 +114,19 @@
 		},
 
 		computed: {
+			title(): string {
+				return getTitleInLocale(this.karaoke.titles, this.$store.state.auth.user);
+			},
 			images(): string[] {
 				return this.karaoke.mediafile.endsWith('.mp3')
-					? [`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg`]
+					? [`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.hd.jpg`]
 					: [
-						`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg`,
-						`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.33.jpg`
+						`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.hd.jpg`,
+						`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.33.hd.jpg`
 					];
 			},
 			slug(): string {
-				return slug(this.karaoke.title);
+				return slug(this.karaoke.titles.eng);
 			},
 			tagTypesSorted(): object {
 				const tagTypes = { ...this.tagTypes };
@@ -139,18 +142,7 @@
 				return tagTypes;
 			},
 			problematic(): boolean {
-				// Loop all tags to find a tag with problematic
-				let problematic = false;
-				for (const tagType in tagTypes) {
-					if (tagType === 'years') { continue; }
-					// @ts-ignore: il est 23h27 <- ceci n'est pas une raison
-					for (const tag of this.karaoke[tagType]) {
-						if (tag?.problematic) {
-							problematic = true;
-						}
-					}
-				}
-				return problematic;
+				return isProblematic(this.karaoke);
 			},
 			tags(): TagExtend[] {
 				const tags: TagExtend[] = [];

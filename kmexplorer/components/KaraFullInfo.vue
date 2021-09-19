@@ -1,7 +1,7 @@
 <template>
 	<div class="box">
 		<h1 class="title is-1">
-			{{ karaoke.title }}
+			{{ title }}
 		</h1>
 		<kara-phrase tag="h4" class="subtitle is-4" :karaoke="karaoke" />
 		<h6 class="subtitle is-6 no-top-margin">
@@ -9,14 +9,26 @@
 				{{ karaoke.year }}
 			</a>
 		</h6>
-		<button v-if="favorite" class="button margin is-yellow" :class="{'is-loading': loading}" @click="toggleFavorite">
-			<font-awesome-icon :icon="['fas', 'eraser']" :fixed-width="true" />
-			{{ $t('kara.favorites.remove') }}
-		</button>
-		<button v-else class="button margin is-yellow" :class="{'is-loading': loading}" @click="toggleFavorite">
-			<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
-			{{ $t('kara.favorites.add') }}
-		</button>
+		<div class="buttons margin">
+			<button v-if="favorite" class="button is-yellow" :class="{'is-loading': loading}" @click="toggleFavorite">
+				<font-awesome-icon :icon="['fas', 'eraser']" :fixed-width="true" />
+				{{ $t('kara.favorites.remove') }}
+			</button>
+			<button v-else class="button is-yellow" :class="{'is-loading': loading}" @click="toggleFavorite">
+				<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
+				{{ $t('kara.favorites.add') }}
+			</button>
+			<button
+				v-if="loggedIn"
+				class="button is-purple is-long"
+				:disabled="bannerBan"
+				:title="bannerBan ? $t('kara.set_banner.forbidden_label'):null"
+				@click.prevent="modal.banner=true"
+			>
+				<font-awesome-icon :icon="['fas', 'image']" :fixed-width="true" />
+				{{ $t('kara.set_banner.btn') }}
+			</button>
+		</div>
 		<table class="table tagList">
 			<tbody>
 				<tr class="tr-line">
@@ -24,8 +36,8 @@
 						<font-awesome-icon :icon="['fas', 'clock']" :fixed-width="true" />
 						{{ duration }}
 					</td>
-					<td :title="`${$t('kara.created_at')}: ${new Date(karaoke.created_at).toLocaleString()}`">
-						{{ $t('kara.modified_at') }}:&nbsp;{{ new Date(karaoke.modified_at).toLocaleString() }}
+					<td>
+						{{ $t('kara.created_at') }}:&nbsp;{{ new Date(karaoke.created_at).toLocaleString() }}
 					</td>
 				</tr>
 				<tr v-for="type in Object.keys(tagTypesSorted)" :key="type">
@@ -64,14 +76,15 @@
 			</ul>
 		</div>
 		<DownloadModal :karaoke="karaoke" :active="modal.download" @close="modal.download=false" />
+		<BannerChangeModal :karaoke="karaoke" :active="modal.banner" @close="modal.banner=false" />
 	</div>
 </template>
 
 <script lang="ts">
 	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
-	import languages from '@cospired/i18n-iso-languages';
-	import { fakeYearTag, generateNavigation, getSerieLanguage, getTagInLanguage } from '~/utils/tools';
+	import { mapState } from 'vuex';
+	import { fakeYearTag, generateNavigation, getTagInLocale, getTitleInLocale } from '~/utils/tools';
 	import { tagTypes } from '~/assets/constants';
 	import Tag from '~/components/Tag.vue';
 	import KaraPhrase from '~/components/KaraPhrase.vue';
@@ -80,6 +93,7 @@
 	import { ShortTag } from '~/types/tags';
 	import duration from '~/assets/date';
 	import DownloadModal from '~/components/modals/DownloadModal.vue';
+	import BannerChangeModal from '~/components/modals/BannerChangeModal.vue';
 
 	interface VState {
 		tagTypes: typeof tagTypes,
@@ -87,7 +101,8 @@
 		lyrics: boolean,
 		loading: boolean,
 		modal: {
-			download: boolean
+			download: boolean,
+			banner: boolean
 		}
 	}
 
@@ -97,7 +112,8 @@
 		components: {
 			Tag,
 			KaraPhrase,
-			DownloadModal
+			DownloadModal,
+			BannerChangeModal
 		},
 
 		props: {
@@ -114,7 +130,8 @@
 				lyrics: false,
 				loading: false,
 				modal: {
-					download: false
+					download: false,
+					banner: false
 				}
 			};
 		},
@@ -126,21 +143,21 @@
 						hid: 'twitter:title',
 						name: 'twitter:title',
 						content: this.$t('kara.meta', { // @ts-ignore: mais²
-							songtitle: this.karaoke.title, serieSinger: this.serieSinger.name
+							songtitle: this.karaoke.titles.eng, serieSinger: this.serieSinger.name
 						}) as string
 					},
 					{
 						hid: 'description',
 						name: 'description',
 						content: this.$t('kara.meta', { // @ts-ignore: mais²
-							songtitle: this.karaoke.title, serieSinger: this.serieSinger.name
+							songtitle: this.karaoke.titles.eng, serieSinger: this.serieSinger.name
 						}) as string
 					},
 					{
 						hid: 'og:title',
 						property: 'og:title',
 						content: this.$t('kara.meta', { // @ts-ignore: mais²
-							songtitle: this.karaoke.title, serieSinger: this.serieSinger.name
+							songtitle: this.karaoke.titles.eng, serieSinger: this.serieSinger.name
 						}) as string
 					}
 				]
@@ -148,6 +165,9 @@
 		},
 
 		computed: {
+			title(): string {
+				return getTitleInLocale(this.karaoke.titles, this.$store.state.auth.user);
+			},
 			tagTypesSorted(): object {
 				const tagTypes = { ...this.tagTypes };
 				if (this.karaoke.songtypes.length === 1) {
@@ -166,14 +186,14 @@
 			serieSinger(): ShortTag {
 				if (this.karaoke.series[0]) {
 					return {
-						name: getSerieLanguage(this.karaoke.series[0], this.karaoke.langs[0].name, this.$store.state.auth.user),
+						name: getTagInLocale(this.karaoke.series[0], this.$store.state.auth.user),
 						slug: slug(this.karaoke.series[0].name),
 						type: 'series',
 						tag: this.karaoke.series[0]
 					};
 				} else if (this.karaoke.singers[0]) {
 					return {
-						name: getTagInLanguage(this.karaoke.singers[0], languages.alpha2ToAlpha3B(this.$i18n.locale) as string, 'eng'),
+						name: getTagInLocale(this.karaoke.singers[0], this.$store.state.auth.user),
 						slug: slug(this.karaoke.singers[0].name),
 						type: 'singers',
 						tag: this.karaoke.singers[0]
@@ -181,6 +201,22 @@
 				} else { // You never know~
 					throw new TypeError('The karaoke does not have any series nor singers, wtf?');
 				}
+			},
+			bannerBan(): boolean {
+				let bannerBan = false;
+				for (const tagType in tagTypes) {
+					if (tagType === 'years') { continue; }
+					// @ts-ignore: il est 23h27 <- ceci n'est pas une raison
+					for (const tag of this.karaoke[tagType]) {
+						if (
+							(process.env.BANNER_BAN as unknown as string[]).includes(tag.tid)
+						) {
+							bannerBan = true;
+							break;
+						}
+					}
+				}
+				return bannerBan;
 			},
 			duration(): string {
 				const durationArray = duration(this.karaoke.duration);
@@ -190,7 +226,8 @@
 				if (durationArray[2] !== 0) { returnString.push(`${durationArray[2]} ${this.$t('duration.minutes')}`); }
 				if (durationArray[3] !== 0) { returnString.push(`${durationArray[3]} ${this.$t('duration.seconds')}`); }
 				return returnString.join(' ');
-			}
+			},
+			...mapState('auth', ['loggedIn'])
 		},
 
 		created() {
@@ -243,8 +280,12 @@
 		}
 	}
 
-	.button.margin {
+	.buttons.margin {
 		margin: 1em 0;
+
+		.button.is-long {
+			white-space: normal;
+		}
 	}
 
 	.subtitle.no-top-margin {

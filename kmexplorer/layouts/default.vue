@@ -41,6 +41,10 @@
 					<font-awesome-icon :icon="['fas', 'person-booth']" :fixed-width="true" />
 					{{ $t('menu.join_kara') }}
 				</a>
+				<nuxt-link v-if="usersEnabled" class="navbar-item" to="/users">
+					<font-awesome-icon :icon="['fas', 'users']" :fixed-width="true" />
+					{{ $t('menu.search_users') }}
+				</nuxt-link>
 				<nuxt-link v-if="import_enabled" class="navbar-item" to="/import">
 					<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true" />
 					{{ $t('menu.kara_import') }}
@@ -48,15 +52,16 @@
 			</div>
 
 			<div v-if="accountMenu" class="navbar-dropdown">
-				<a
+				<nuxt-link
 					v-if="loggedIn && user"
-					aria-label="Profile"
+					:to="`/user/${user.login}`"
 					class="navbar-item"
-					@click.prevent="$toast.success($t('toast.FUTURE_PROFILES'))"
+					active-class="is-active"
+					aria-label="Profile"
 				>
 					<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
 					{{ user.nickname }}
-				</a>
+				</nuxt-link>
 				<a
 					v-if="loggedIn"
 					class="navbar-item"
@@ -66,11 +71,7 @@
 					<font-awesome-icon :icon="['fas', 'edit']" :fixed-width="true" />
 					{{ $t('menu.profile') }}
 				</a>
-				<nuxt-link v-if="loggedIn" to="/favorites" class="navbar-item" active-class="is-active">
-					<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
-					{{ $t('menu.favorites') }}
-				</nuxt-link>
-				<a v-else class="navbar-item" aria-label="Login" @click.prevent="modal.auth = true">
+				<a v-else-if="usersEnabled" class="navbar-item" aria-label="Login" @click.prevent="modal.auth = true">
 					<font-awesome-icon :icon="['fas', 'sign-in-alt']" :fixed-width="true" />
 					{{ $t('menu.connection') }}
 				</a>
@@ -181,7 +182,7 @@
 					</nuxt-link>
 					<nuxt-link class="navbar-item" to="/types/langs">
 						<font-awesome-icon :icon="['fas', 'language']" :fixed-width="true" />
-						{{ $t('menu.languages') }}
+						{{ $t('menu.langs') }}
 					</nuxt-link>
 					<nuxt-link class="navbar-item" to="/types/years">
 						<font-awesome-icon :icon="['fas', 'calendar-alt']" :fixed-width="true" />
@@ -362,7 +363,7 @@
 							:class="{'is-active': tagType === '~5'}"
 						>
 							<font-awesome-icon :icon="['fas', 'language']" :fixed-width="true" />
-							{{ $t('menu.languages') }}
+							{{ $t('menu.langs') }}
 						</nuxt-link>
 					</li>
 					<li>
@@ -385,6 +386,10 @@
 							<font-awesome-icon :icon="['fas', 'person-booth']" :fixed-width="true" />
 							{{ $t('menu.join_kara') }}
 						</a>
+						<nuxt-link to="/users" active-class="is-active">
+							<font-awesome-icon :icon="['fas', 'users']" :fixed-width="true" />
+							{{ $t('menu.search_users') }}
+						</nuxt-link>
 						<nuxt-link v-if="import_enabled" to="/import" active-class="is-active">
 							<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true" />
 							{{ $t('menu.kara_import') }}
@@ -397,18 +402,14 @@
 					</p>
 					<ul class="menu-list">
 						<li>
-							<a v-if="loggedIn && user" aria-label="Profile" @click.prevent="$toast.success($t('toast.FUTURE_PROFILES'))">
+							<nuxt-link v-if="loggedIn && user" :to="`/user/${user.login}`" active-class="is-active" aria-label="Profile">
 								<font-awesome-icon :icon="['fas', 'user']" :fixed-width="true" />
 								{{ user.nickname }}
-							</a>
+							</nuxt-link>
 							<a v-if="loggedIn" aria-label="Edit profile" @click.prevent="modal.profile = true">
 								<font-awesome-icon :icon="['fas', 'edit']" :fixed-width="true" />
 								{{ $t('menu.profile') }}
 							</a>
-							<nuxt-link v-if="loggedIn" to="/favorites" active-class="is-active">
-								<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
-								{{ $t('menu.favorites') }}
-							</nuxt-link>
 							<a v-if="loggedIn" aria-label="Logout" @click.prevent="logout">
 								<font-awesome-icon :icon="['fas', 'sign-out-alt']" :fixed-width="true" />
 								{{ $t('menu.logout') }}
@@ -437,7 +438,7 @@
 				</client-only>
 			</aside>
 			<section class="container column is-fluid main">
-				<nuxt keep-alive :keep-alive-props="{ max: 1, include: ['KaraSearch', 'KaraFavorites'] }" />
+				<nuxt keep-alive :keep-alive-props="{ max: 1, include: ['KaraSearch', 'UserView', 'UserSearch'] }" />
 			</section>
 		</div>
 		<footer class="footer">
@@ -492,6 +493,7 @@
 		base_license_name?: string,
 		base_license_link?: string,
 		explorerHost?: string,
+		usersEnabled?: boolean,
 		tagsMenu: boolean,
 		databaseMenu: boolean,
 		communityMenu: boolean,
@@ -526,6 +528,7 @@
 				base_license_name: process.env.BASE_LICENSE_NAME,
 				base_license_link: process.env.BASE_LICENSE_LINK,
 				explorerHost: process.env.EXPLORER_HOST,
+				usersEnabled: process.env.USERS as unknown as boolean,
 				tagsMenu: false,
 				databaseMenu: false,
 				communityMenu: false,
@@ -553,8 +556,8 @@
 			tagType() {
 				return this.$route.params?.id?.substring(36);
 			},
-			onKaraTagListView(): boolean {
-				return ['types-id', 'search-query', 'favorites'].includes(this.$route.name as string);
+			onKaraTagUserListView(): boolean {
+				return ['types-id', 'search-query', 'user-login', 'users'].includes(this.$route.name as string);
 			},
 			availableLocales(): VueI18n.Locale[] {
 				return this.$i18n.locales?.filter((i: any) => i.code && i.code !== this.$i18n.locale);
@@ -565,10 +568,10 @@
 		created() {
 			this.$store.subscribe((mutation: Record<string, any>, _state: any) => {
 				if (mutation.type === 'menubar/setSearch') {
-					if (!this.onKaraTagListView) {
+					if (!this.onKaraTagUserListView) {
 						this.$router.push(generateNavigation(menuBarStore));
 					} // Each KaraList view handles a search change itself, either by swapping the route
-					// or by reset the KaraList with new filter
+					// or by reset the List with new filter
 				} else if (mutation.type === 'modal/openModal') {
 					this.modal[mutation.payload as ModalType] = true;
 				} else if (mutation.type === 'modal/closeModal') {

@@ -1,10 +1,15 @@
 <template>
 	<div class="field is-expanded has-addons">
+		<div v-if="results" class="control">
+			<button class="button is-static with-icon">
+				{{ searchLabel }}
+			</button>
+		</div>
 		<div class="control is-expanded" :class="{'has-icons-left': icon}">
 			<input
 				class="input is-fullwidth"
 				type="text"
-				:placeholder="$t('search.placeholder')"
+				:placeholder="placeholder"
 				:value="search"
 				@keydown.enter="triggerSearch"
 				@input="keyDown"
@@ -13,7 +18,7 @@
 				<font-awesome-icon :icon="['fas', 'search']" />
 			</span>
 		</div>
-		<div v-if="results && resultsCount > 0 && ['search-query', 'types-id', 'types-years', 'favorites'].includes($route.name)" class="control">
+		<div v-if="results && resultsCount > 0 && ['search-query', 'types-id', 'types-years', 'user-login', 'users'].includes($route.name)" class="control">
 			<button class="button is-static">
 				{{ $tc('layout.results', resultsCount, {count: resultsCount}) }}
 			</button>
@@ -76,7 +81,27 @@
 
 		computed: {
 			canSort(): boolean {
-				return ['types-id', 'search-query', 'favorites'].includes(this.$route.name as string);
+				return ['types-id', 'search-query', 'user-login'].includes(this.$route.name as string);
+			},
+			searchLabel(): string {
+				if (this.$route.name === 'users') {
+					return this.$t('search.types.users') as string;
+				} else if (this.$route.name === 'user-login') {
+					return this.$t('search.types.favorites') as string;
+				} else if (['types-id', 'types-years'].includes(this.$route.name as string)) {
+					return this.$t(`menu.${this.$route.name === 'types-years' ? 'years' : this.$route.params.id}`) as string;
+				} else {
+					return this.$t('search.types.karaokes') as string;
+				}
+			},
+			placeholder(): string {
+				if (this.$route.name === 'users') {
+					return this.$t('search.placeholder.user') as string;
+				} else if (['types-id', 'types-years'].includes(this.$route.name as string)) {
+					return this.$t('search.placeholder.tag') as string;
+				} else {
+					return this.$t('search.placeholder.kara') as string;
+				}
 			},
 			...mapState('menubar', ['resultsCount'])
 		},

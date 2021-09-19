@@ -1,6 +1,7 @@
 export default {
 	error: {
 		generic: 'Erreur',
+		private_profile: 'Le profil est privé.',
 		home: 'Aller à l\'accueil'
 	},
 	kara: {
@@ -29,7 +30,6 @@ export default {
 		authors_by: 'Karaoké créé par',
 		duration: 'Durée ',
 		created_at: 'Création ',
-		modified_at: 'Dernière modification ',
 		download: 'Télécharger',
 		live: 'Ouvrir dans un nouvel onglet',
 		live_unavailable: 'Vous ne pouvez pas lire ce karaoké sur votre navigateur. La vidéo est soit dans un format non supporté par les navigateurs ou indisponible pour des raisons légales.',
@@ -40,6 +40,10 @@ export default {
 		favorites: {
 			add: 'Ajouter aux favoris',
 			remove: 'Retirer des favoris'
+		},
+		set_banner: {
+			btn: 'Utiliser comme bannière de profil',
+			forbidden_label: 'Vous ne pouvez pas utiliser ce karaoké pour définir votre bannière.'
 		},
 		problem: {
 			title: 'Un problème avec {title} ?',
@@ -96,6 +100,7 @@ export default {
 			lyrics_file_missing: 'Le fichier de sous-titres est manquant, cela est approprié que si vous envoyez un mkv ou que votre karaoké n\'a pas de paroles (?).',
 			title: 'Titre',
 			title_required: 'Le titre est obligatoire',
+			title_eng_required: 'Le titre anglais est obligatoire',
 			title_tooltip: 'Si vous ne le connaissez pas, mettez le nom de la série. Dans le cas d\'une version alternative, nommez votre titre ainsi : \'Mon titre ~ Disco vers.\' par exemple',
 			series_tooltip: 'Série TV, nom de film, de jeu vidéo, etc.',
 			series_singers_required: 'Les champs Séries et Chanté par ne peuvent être vide en même temps.',
@@ -114,11 +119,12 @@ export default {
 			authors_required: 'L\'auteur du karaoké est obligatoire',
 			groups_tooltip: 'Groupes de téléchargement pour ce morceau. Le morceau sera ajouté dans ces paquets pour le téléchargement',
 			created_at: 'Date de création',
-			modified_at: 'Date de dernière mise à jour',
 			add_success: 'Votre karaoké est envoyé !',
 			add_success_description: 'Un ticket a été crée sur notre outil de suivi. Vous pouvez consulter l\'avancement de l\'intégration de votre karaoké : {url}',
 			add_error: 'Une erreur a eu lieue, le karaoké n\'a pas pu être envoyé',
-			restart: 'Soumettre un nouveau karaoké'
+			restart: 'Soumettre un nouveau karaoké',
+			i18n_select: 'Ajouter une langue',
+			i18n_delete: 'Supprimer la langue'
 		},
 		stats: {
 			favorited: 'Ajouté aux favoris par {number} utilisateurs',
@@ -132,10 +138,12 @@ export default {
 		suggest: 'Vous ne trouvez pas ?',
 		suggest_open: 'Suggérez-le nous !',
 		remove_tags: 'Avez-vous essayé de retirer les tags qui ne vous servent plus ?',
-		end_favorites: 'C\'est la fin de vos favoris.',
+		end_favorites: 'C\'est la fin des favoris.',
+		end_my_favorites: 'C\'est la fin de vos favoris.',
 		explore: 'Allez en ajouter !',
 		results: '{count} résultat | {count} résultats',
-		slogan: 'Ce son est disponible sur la base Karaoke Mugen !'
+		slogan: 'Ce son est disponible sur la base Karaoke Mugen !',
+		end_users: 'Vous avez atteint la fin des utilisateurs (bravo !).'
 	},
 	footer: {
 		home: 'Accueil du projet',
@@ -173,22 +181,32 @@ export default {
 		songwriters: 'Compositeurs',
 		creators: 'Créateurs',
 		authors: 'Auteurs',
-		languages: 'Langues',
+		langs: 'Langues',
 		years: 'Années',
 		community: 'Communauté',
 		join_kara: 'Rejoindre le karaoké',
+		search_users: 'Utilisateurs',
 		kara_import: 'Envoyer un kara',
 		account: 'Compte',
-		favorites: 'Favoris',
 		login: 'Se connecter',
 		logout: 'Se déconnecter',
 		register: 'S\'inscrire',
 		connection: 'Connexion',
-		profile: 'Profil',
+		profile: 'Éditer son profil',
 		switch_language: 'Changer la langue'
 	},
+	profile: {
+		favorites: 'Favoris',
+		you: ' (c\'est vous !)',
+		edit: 'Éditer le profil',
+		favorites_count: '{x} favori | {x} favoris'
+	},
 	search: {
-		placeholder: 'Séries, chanteurs, noms...',
+		placeholder: {
+			kara: 'Séries, chanteurs, noms...',
+			user: 'Nom d\'utilisateur...',
+			tag: 'Nom du tag...'
+		},
 		sort: {
 			a_z: 'De A à Z',
 			kara_count: 'Nombre de chansons',
@@ -203,6 +221,11 @@ export default {
 			goto: 'Aller à la page {0}',
 			page: 'Page {0}',
 			sort: 'Trier par'
+		},
+		types: {
+			karaokes: 'Chansons',
+			users: 'Utilisateurs',
+			favorites: 'Favoris de l\'utilisateur'
 		}
 	},
 	modal: {
@@ -251,7 +274,13 @@ export default {
 			submit: 'S\'inscrire'
 		},
 		profile: {
-			title: 'Editer son profil',
+			title: 'Éditer son profil',
+			headers: {
+				profile: 'Informations',
+				privacy: 'Confidentialité',
+				lang: 'Préférences linguistiques',
+				password: 'Changer son mot de passe'
+			},
 			fields: {
 				username: {
 					label: 'Nom d\'utilisateur'
@@ -261,7 +290,6 @@ export default {
 					placeholder: 'LoveLiveFan93'
 				},
 				password: {
-					header: 'Changer le mot de passe',
 					label: 'Mot de passe',
 					placeholder: 'EnVraiJePréfèreIdolM@ster'
 				},
@@ -273,7 +301,6 @@ export default {
 					label: 'Email',
 					placeholder: 'test@shelter.moe'
 				},
-
 				url: {
 					label: 'Site web',
 					placeholder: 'https://karaokes.moe'
@@ -285,25 +312,50 @@ export default {
 				location: {
 					label: 'Localisation'
 				},
+				discord: {
+					label: 'Discord',
+					placeholder: 'Karak#1423'
+				},
+				twitter: {
+					label: 'Twitter',
+					placeholder: 'KaraokeMugen'
+				},
+				instagram: {
+					label: 'Instagram',
+					placeholder: 'karaokemugen'
+				},
+				twitch: {
+					label: 'Twitch',
+					placeholder: 'KaraokeLive'
+				},
+				banner: {
+					label: 'Bannière',
+					remove: 'Restaurer la bannière par défaut',
+					change: 'Pour changer votre bannière, rendez-vous sur la page du karaoké de votre choix et cliquez sur le bouton “Utiliser cette chanson comme bannière”'
+				},
+				flag_public: {
+					label: 'Profil public',
+					checkbox: 'Rendre mon profil public',
+					desc: 'Par défaut, votre compte est visible publiquement via la recherche des utilisateurs et affiche les informations définies ci-dessus hormis l\'adresse e-mail. Si vous décochez cette case, votre compte ne sera plus disponible dans les résultats de rechreche (vous serez le seul à pouvoir le voir, une fois connecté).'
+				},
+				flag_displayfavorites: {
+					label: 'Favoris',
+					checkbox: 'Afficher mes favoris',
+					desc: 'En plus de montrer votre profil public, vous pouvez exposer vos favoris (et ainsi vos goûts) aux yeux de tous. Cette option est désactivée par défaut, à vous de la cocher si vous voulez. Pour afficher vos favoris, votre profil doit être public au préalable.'
+				},
 				flag_sendstats: {
-					label: 'Utiliser mes favoris et demandes de chansons pour des statistiques'
+					label: 'Statistiques',
+					checkbox: 'Utiliser mes favoris et demandes de chansons pour des statistiques'
+				},
+				lang_prefs: {
+					main_song_name_lang: 'Préférence d\'affichage du nom des chansons',
+					fallback_song_name_lang: 'Préférence alternative d\'affichage du nom des chansons'
 				}
 			},
 			passwords_mismatch: 'Les mots de passe ne correspondent pas',
 			submit: 'Sauvegarder',
 			delete: 'Suppression du compte',
-			select_avatar: 'Sélectionner un avatar',
-			series_name: {
-				label: 'Affichage des noms de série',
-				original_name: 'Nom original',
-				song_lang: 'Selon la langue de la chanson',
-				mode_admin: 'Selon la langue du logiciel Karaoke Mugen',
-				user_lang: 'Selon ma langue',
-				mode_no_pref: 'Pas de préférence',
-				force_lang_series: 'Forcer la langue des noms de séries',
-				force_lang_series_main: 'Langue des noms de séries',
-				force_lang_series_fallback: 'Langue de secours des noms de séries'
-			}
+			select_avatar: 'Sélectionner un avatar'
 		},
 		add_repository: {
 			button: 'Dépôt :',
@@ -380,6 +432,15 @@ export default {
 			change: 'Vous pouvez changer ceci à tout moment dans votre profil. Acceptez-vous cet usage des statistiques ?',
 			yes: 'Oui',
 			no: 'Non'
+		},
+		set_banner: {
+			label: 'Choisir une bannière',
+			catch: 'Personnalisez votre profil avec une super bannière ! Défilez entre les bannières et confirmez votre choix.',
+			cancel: 'Annuler',
+			set: 'Utiliser cette image',
+			next: 'Image suivante',
+			previous: 'Image précédente',
+			one: 'Il n\'y a qu\'une bannière disponible pour les karaokés Audio uniquement.'
 		}
 	},
 	titles: {

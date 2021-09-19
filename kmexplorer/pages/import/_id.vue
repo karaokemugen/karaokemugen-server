@@ -69,6 +69,7 @@
 			} else {
 				return {
 					karaparam: {
+						titles: { eng: '' },
 						series: [],
 						versions: [],
 						singers: [],
@@ -83,7 +84,6 @@
 						genres: [],
 						platforms: [],
 						origins: [],
-						modified_at: new Date(),
 						created_at: new Date()
 					}
 				};

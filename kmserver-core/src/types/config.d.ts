@@ -26,7 +26,8 @@ export interface Config {
 		Port: number
 	},
   	Users: {
-		Enabled: boolean
+		Enabled: boolean,
+		BannerBan: string[]
 	},
 	Stats: {
 		Enabled: boolean,
@@ -92,6 +93,7 @@ export interface Config {
 			Temp?: string,
 			Previews?: string,
 			Avatars?: string,
+			Banners?: string,
 			Import?: string,
 			SessionExports?: string,
 			Jingles?: string[],

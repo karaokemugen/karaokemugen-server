@@ -36,7 +36,8 @@ export const defaults: Config = {
 			Temp: 'temp',
 			Import: 'inbox',
 			Avatars: 'avatars',
-			Previews: 'previews',
+			Banners: 'banners',
+			Previews: 'previews'
 		}
 	},
 	Shortener: {
@@ -57,7 +58,8 @@ export const defaults: Config = {
 		SeriesLanguageMode: 3
 	},
 	Users: {
-		Enabled: true
+		Enabled: true,
+		BannerBan: []
 	},
 	Stats: {
 		Enabled: true
@@ -343,7 +345,7 @@ export let NuxtConfig: NuxtConfigType = {
 	toast: {
 		position: 'top-center',
 		duration: '2500'
-	},	
+	},
 
 	css: [
 		'~/assets/main.scss',
@@ -384,7 +386,7 @@ export let NuxtConfig: NuxtConfigType = {
 		disabled: false,
 		publishRelease: false,
 		config: {
-			ignoreErrors: ['Network Error', 'document.querySelector(\'video\').webkitPresentationMode']
+			ignoreErrors: ['Request aborted','Network Error', 'document.querySelector(\'video\').webkitPresentationMode']
 		}
 	},
 

@@ -1,6 +1,7 @@
 export default {
 	error: {
 		generic: 'Error',
+		private_profile: 'The profile is private.',
 		home: 'Go home'
 	},
 	kara: {
@@ -29,7 +30,6 @@ export default {
 		authors_by: 'Karaoke created by',
 		duration: 'Duration ',
 		created_at: 'Created ',
-		modified_at: 'Last update ',
 		download: 'Download',
 		live: 'Open in a new tab',
 		live_unavailable: 'You cannot play this karaoke in your browser. Either the video is in an unsupported format in browsers, or it has been disabled for legal reasons.',
@@ -40,6 +40,10 @@ export default {
 		favorites: {
 			add: 'Add to favorites',
 			remove: 'Remove from favorites'
+		},
+		set_banner: {
+			btn: 'Use as profile banner',
+			forbidden_label: 'You cannot use this karaoke as your profile banner.'
 		},
 		problem: {
 			title: 'An issue with {title}?',
@@ -95,7 +99,8 @@ export default {
 			lyrics_file_tooltip: 'Supported file formats: {formats}',
 			lyrics_file_missing: 'The lyrics file is missing, this is appropriate only if you are sending an MKV file or a karaoke without lyrics (?).',
 			title: 'Title',
-			title_required: 'Please enter a song title',
+			title_required: 'Please enter a english song title',
+			title_eng_required: 'Le titre anglais est obligatoire',
 			title_tooltip: 'If you don\'t know, put the name of the series here as well. In the case of an alternative version, name your title as: \'My title ~ Disco vers.\' for example',
 			series_tooltip: 'TV series, movie title, video game title, etc.',
 			series_singers_required: 'Series or Sung by cannot be empty in the same time.',
@@ -114,11 +119,12 @@ export default {
 			authors_required: 'Author of the karaoke is mandatory',
 			groups_tooltip: 'Download groups for this song. The song will be included in these download packs',
 			created_at: 'Creation date',
-			modified_at: 'Last updated date',
 			add_success: 'Your karaoke has been successfully sent!',
 			add_success_description: 'An issue has been created on our tracker. You can check its progression at {url}',
 			add_error: 'An error has occurred, karaoke has not been sent properly',
-			restart: 'Submit new karaoke'
+			restart: 'Submit new karaoke',
+			i18n_select: 'Add a language',
+			i18n_delete: 'Remove language'
 		},
 		stats: {
 			favorited: 'Added to favorites by {number} users',
@@ -132,10 +138,12 @@ export default {
 		suggest: 'Can\'t find what you\'re looking for?',
 		suggest_open: 'Suggest us!',
 		remove_tags: 'Did you try removing some of the filter tags from the search?',
-		end_favorites: 'This is the end of your favorites.',
+		end_favorites: 'This is the end of favorites.',
+		end_my_favorites: 'This is the end of your favorites.',
 		explore: 'Go add some!',
 		results: '{count} result | {count} results',
-		slogan: 'This song is available on the Karaoke Mugen songbase!'
+		slogan: 'This song is available on the Karaoke Mugen songbase!',
+		end_users: 'You\'ve reached the end of the user list (congratulations!).'
 	},
 	footer: {
 		home: 'Project home',
@@ -173,22 +181,32 @@ export default {
 		songwriters: 'Songwriters',
 		creators: 'Creators',
 		authors: 'Authors',
-		languages: 'Languages',
+		langs: 'Languages',
 		years: 'Years',
 		community: 'Community',
 		join_kara: 'Join a karaoke party',
+		search_users: 'Search users',
 		kara_import: 'Submit a kara',
 		account: 'Account',
-		favorites: 'Favorites',
 		login: 'Login',
 		logout: 'Logout',
 		register: 'Register',
 		connection: 'Login',
-		profile: 'Profile',
+		profile: 'Edit your profile',
 		switch_language: 'Switch language'
 	},
+	profile: {
+		favorites: 'Favorites',
+		you: ' (that\'s you!)',
+		edit: 'Edit profile',
+		favorites_count: '{x} favorite | {x} favorites'
+	},
 	search: {
-		placeholder: 'Series, singers, names...',
+		placeholder: {
+			kara: 'Series, singers, names...',
+			user: 'Username...',
+			tag: 'Tag name...'
+		},
 		sort: {
 			a_z: 'De A à Z',
 			kara_count: 'Karaoke count',
@@ -203,6 +221,11 @@ export default {
 			goto: 'Go to page {0}',
 			page: 'Page {0}',
 			sort: 'Sort by'
+		},
+		types: {
+			karaokes: 'Songs',
+			users: 'Users',
+			favorites: 'User\'s favorites'
 		}
 	},
 	modal: {
@@ -252,6 +275,12 @@ export default {
 		},
 		profile: {
 			title: 'Edit profile',
+			headers: {
+				profile: 'About',
+				privacy: 'Privacy',
+				lang: 'Language preferences',
+				password: 'Change password'
+			},
 			fields: {
 				username: {
 					label: 'Username'
@@ -261,7 +290,6 @@ export default {
 					placeholder: 'LoveLiveFan93'
 				},
 				password: {
-					header: 'Change password',
 					label: 'Password',
 					placeholder: 'EnVraiJePréfèreIdolM@ster'
 				},
@@ -273,7 +301,6 @@ export default {
 					label: 'Email',
 					placeholder: 'test@shelter.moe'
 				},
-
 				url: {
 					label: 'Website',
 					placeholder: 'https://karaokes.moe'
@@ -285,25 +312,50 @@ export default {
 				location: {
 					label: 'Location'
 				},
+				discord: {
+					label: 'Discord',
+					placeholder: 'Karak#1423'
+				},
+				twitter: {
+					label: 'Twitter',
+					placeholder: 'KaraokeMugen'
+				},
+				instagram: {
+					label: 'Instagram',
+					placeholder: 'karaokemugen'
+				},
+				twitch: {
+					label: 'Twitch',
+					placeholder: 'KaraokeLive'
+				},
+				banner: {
+					label: 'Banner',
+					remove: 'Reset to the default banner',
+					change: 'To change your banner, go to the page of a karaoke and click the "Use as profile banner" button.'
+				},
+				flag_public: {
+					label: 'Public profile',
+					checkbox: 'Make my profile public',
+					desc: 'By default, your account is visible via the user search and shows all the above informations with the exception of the e-mail address. If you uncheck this box, your account will not be available anymore in the search results (you will be the only one to be able to see it, once you\'ve logged in).'
+				},
+				flag_displayfavorites: {
+					label: 'Favorites',
+					checkbox: 'Show my favorites',
+					desc: 'Along with showing your public profile, you can showcase your favorites (therefore your taste) to everyone eyes. This option is disabled by default, you can check it if you want. To show your favorites, your profile must be public in the first place.'
+				},
 				flag_sendstats: {
-					label: 'Use my favorites and karaokes requests for stats'
+					label: 'Stats',
+					checkbox: 'Use my favorites and karaokes requests for stats'
+				},
+				lang_prefs: {
+					main_song_name_lang: 'Song name display preference',
+					fallback_song_name_lang: 'Fallback song name display preference'
 				}
 			},
 			passwords_mismatch: 'Passwords do not match',
 			submit: 'Save',
 			delete: 'Delete account',
-			select_avatar: 'Select an avatar',
-			series_name: {
-				label: 'Series language display',
-				original_name: 'Original name',
-				song_lang: 'Song language',
-				mode_admin: 'Karaoke Mugen software language',
-				user_lang: 'User language',
-				mode_no_pref: 'No preference',
-				force_lang_series: 'Force your own language',
-				force_lang_series_main: 'Series name language',
-				force_lang_series_fallback: 'Fallback series name language'
-			}
+			select_avatar: 'Select an avatar'
 		},
 		add_repository: {
 			button: 'Repository :',
@@ -379,6 +431,15 @@ export default {
 			change: 'You can change this at any time in your profile. Do you accept the usage of your stats?',
 			yes: 'Yes',
 			no: 'No'
+		},
+		set_banner: {
+			label: 'Choose a banner',
+			catch: 'Customize your profile with a wonderful banner! Scroll through the banners and confirm your choice.',
+			cancel: 'Cancel',
+			set: 'Use this image',
+			next: 'Next image',
+			previous: 'Previous image',
+			one: 'There is only one banner for audio only karaokes.'
 		}
 	},
 	titles: {
