@@ -2,7 +2,7 @@
 	<i18n path="kara.phrase" :tag="tag">
 		<template #songtype>
 			<a
-				:href="`./tags/${songtype.slug}/${songtype.tag.tid}~3`"
+				:href="`/tags/${songtype.slug}/${songtype.tag.tid}~3`"
 				@click.prevent="handleLink(songtype)"
 			>
 				{{ songtype.name }}<template v-if="karaoke.songorder">&nbsp;{{ karaoke.songorder }}</template>
@@ -10,14 +10,14 @@
 			<span v-if="versions.length > 0">
 				(<template v-for="(version, index) in versions"><a
 					:key="version.tag.tid"
-					:href="`./tags/${version.slug}/${version.tag.tid}~14`"
+					:href="`/tags/${version.slug}/${version.tag.tid}~14`"
 					@click.prevent="handleLink(version)"
 				>{{ version.name }}</a><template v-if="index+1 < versions.length">, </template></template>)
 			</span>
 		</template>
 		<template #series>
 			<a
-				:href="`./tags/${serieSinger.slug}/${serieSinger.tag.tid}~${serieSinger.type === 'series' ? '1':'2'}`"
+				:href="`/tags/${serieSinger.slug}/${serieSinger.tag.tid}~${serieSinger.type === 'series' ? '1':'2'}`"
 				@click.prevent="handleLink(serieSinger)"
 			>
 				{{ serieSinger.name }}
