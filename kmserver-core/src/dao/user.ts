@@ -50,8 +50,8 @@ export async function updateUserPassword(username: string, password: string): Pr
 }
 
 
-export async function updateUser(user: User) {
-	return await db().query(sql.updateUser, [
+export async function updateUser(user: User): Promise<DBUser> {
+	return (await db().query(sql.updateUser, [
 		user.nickname,
 		user.bio,
 		user.url,
@@ -68,5 +68,5 @@ export async function updateUser(user: User) {
 		user.banner,
 		user.language,
 		user.login
-	]);
+	])).rows[0];
 }

@@ -1,5 +1,5 @@
 import {removeUser, editUser, createUser, findUserByName, getAllUsers, resetPasswordRequest, resetPassword} from '../../services/user';
-import {check, unescape} from '../../lib/utils/validators';
+import {unescape} from '../../lib/utils/validators';
 import multer from 'multer';
 import {getConfig} from '../../lib/utils/config';
 import {resolve} from 'path';
@@ -64,37 +64,27 @@ export default function userController(router: Router) {
 			let avatar: any;
 			if (req.file) avatar = req.file;
 			try {
-				const response = await editUser(req.params.user,req.body,avatar,req.authToken,true);
+				const response = await editUser(req.params.user,req.body,avatar,req.authToken);
 				res.json(response);
 			} catch(err) {
 				res.status(500).json(err);
 			}
 		})
 		.put(upload.single('avatarfile'), requireAuth, requireValidUser, updateLoginTime, async (req: any, res) => {
-			const validationErrors = check(req.body, {
-				nickname: {presence: true}
-			});
-			if (!validationErrors) {
-				// No errors detected
-				if (req.body.bio) req.body.bio = unescape(req.body.bio.trim());
-				if (req.body.email) req.body.email = unescape(req.body.email.trim());
-				if (req.body.url) req.body.url = unescape(req.body.url.trim());
-				if (req.body.nickname) req.body.nickname = unescape(req.body.nickname.trim());
-				if (req.body.flag_sendstats) req.body.flag_sendstats = req.body.flag_sendstats === 'true';
-				if (req.body.type) req.body.type = +req.body.type;
-				//Now we add user
-				let avatar: any;
-				if (req.file) avatar = req.file;
-				try {
-					const response = await editUser(req.params.user,req.body,avatar,req.authToken);
-					res.json(response);
-				} catch(err) {
-					res.status(500).json(err);
-				}
-			} else {
-				// Errors detected
-				// Sending BAD REQUEST HTTP code and error object.
-				res.status(400).json(validationErrors);
+			if (req.body.bio) req.body.bio = unescape(req.body.bio.trim());
+			if (req.body.email) req.body.email = unescape(req.body.email.trim());
+			if (req.body.url) req.body.url = unescape(req.body.url.trim());
+			if (req.body.nickname) req.body.nickname = unescape(req.body.nickname.trim());
+			if (req.body.flag_sendstats) req.body.flag_sendstats = req.body.flag_sendstats === 'true';
+			if (req.body.type) req.body.type = +req.body.type;
+			//Now we add user
+			let avatar: any;
+			if (req.file) avatar = req.file;
+			try {
+				const response = await editUser(req.params.user,req.body,avatar,req.authToken);
+				res.json(response);
+			} catch(err) {
+				res.status(500).json(err);
 			}
 		});
 	router.route('/users/:user/resetpassword')
@@ -237,7 +227,7 @@ export default function userController(router: Router) {
 			const avatar: Express.Multer.File = req.file || null;
 			//Get username
 			try {
-				const response = await editUser(req.authToken.username, req.body, avatar , req.authToken, true);
+				const response = await editUser(req.authToken.username, req.body, avatar , req.authToken);
 				res.status(200).json({code: 'USER_EDITED', data:{ token: response.token }});
 			} catch(err) {
 				res.status(500).json(err);
@@ -269,28 +259,18 @@ export default function userController(router: Router) {
  * HTTP/1.1 403 Forbidden
  */
 		.put(upload.single('avatarfile'), requireAuth, requireValidUser, updateLoginTime, async (req: any, res: any) => {
-			const validationErrors = check(req.body, {
-				nickname: {presence: true}
-			});
-			if (!validationErrors) {
-				// No errors detected
-				if (req.body.bio) req.body.bio = unescape(req.body.bio.trim());
-				if (req.body.email) req.body.email = unescape(req.body.email.trim());
-				if (req.body.url) req.body.url = unescape(req.body.url.trim());
-				if (req.body.nickname) req.body.nickname = unescape(req.body.nickname.trim());
-				//Now we edit user
-				const avatar: Express.Multer.File = req.file || null;
-				//Get username
-				try {
-					const response = await editUser(req.authToken.username, req.body, avatar, req.authToken, true);
-					res.status(200).json({code: 'USER_EDITED', data:{ token: response.token }});
-				} catch(err) {
-					res.status(500).json(err);
-				}
-			} else {
-				// Errors detected
-				// Sending BAD REQUEST HTTP code and error object.
-				res.status(400).json(validationErrors);
+			if (req.body.bio) req.body.bio = unescape(req.body.bio.trim());
+			if (req.body.email) req.body.email = unescape(req.body.email.trim());
+			if (req.body.url) req.body.url = unescape(req.body.url.trim());
+			if (req.body.nickname) req.body.nickname = unescape(req.body.nickname.trim());
+			//Now we edit user
+			const avatar: Express.Multer.File = req.file || null;
+			//Get username
+			try {
+				const response = await editUser(req.authToken.username, req.body, avatar, req.authToken);
+				res.status(200).json({code: 'USER_EDITED', data:{ token: response.token }});
+			} catch(err) {
+				res.status(500).json(err);
 			}
 		});
 }

@@ -1,6 +1,7 @@
 import {createHash} from 'crypto';
 import {hash, compare} from 'bcryptjs';
 import { promises as fs } from 'fs';
+import merge from 'lodash.merge';
 import {updateUser, updateUserPassword, insertUser, selectUser, selectAllUsers, deleteUser, updateLastLogin} from '../dao/user';
 import logger from '../lib/utils/logger';
 import {getConfig, resolvedPathAvatars, resolvedPathBanners, resolvedPathPreviews} from '../lib/utils/config';
@@ -303,54 +304,43 @@ export async function changePassword(username: string, password: string) {
 	}
 }
 
-export async function editUser(username: string, user: User, avatar: Express.Multer.File, token: Token, patch = false) {
+export async function editUser(username: string, user: User, avatar: Express.Multer.File, token: Token) {
 	try {
-		if (!username) throw('No user provided');
+		if (!username) throw 'No user provided';
 		username = username.toLowerCase();
+		if (token.username.toLowerCase() !== username && token.role !== 'admin') throw 'Only admins can edit another user';
 		const currentUser = await findUserByName(username, {password: true});
 		if (!currentUser) throw 'User unknown';
-		// Patch allows clients to send partial payloads
-		if (patch) user = {...currentUser, password: undefined, banner: undefined, ...user};
-		user.login = username;
-		if (!user.type) user.type = currentUser.type;
-		if (!user.bio) user.bio = null;
-		if (!user.url) user.url = null;
-		if (!user.email) user.email = null;
-		if (!user.location) user.location = null;
-		if (typeof user.flag_public !== 'boolean') user.flag_public = true;
-		if (typeof user.flag_displayfavorites !== 'boolean') user.flag_displayfavorites = false;
-		if (!user.social_networks) user.social_networks = {discord: '', twitter: '', instagram: '', twitch: ''};
-		if (!user.language) user.language = null;
-		if (typeof user.flag_sendstats !== 'boolean') user.flag_sendstats = currentUser.flag_sendstats;
-		if (token.username.toLowerCase() !== currentUser.login.toLowerCase() && token.role !== 'admin') throw 'Only admins can edit another user';
-		if (user.type !== currentUser.type && token.role !== 'admin') throw 'Only admins can change a user\'s type';
+		const mergedUser = merge(currentUser, user);
+		delete mergedUser.password;
+		if (user.type && user.type !== currentUser.type && token.role !== 'admin') throw 'Only admins can change a user\'s type';
 		// Check if login already exists.
-		if (currentUser.nickname !== user.nickname && await selectUser('nickname', user.nickname)) throw 'Nickname already exists';
+		if (user.nickname && currentUser.nickname !== user.nickname && await selectUser('nickname', user.nickname)) throw 'Nickname already exists';
 		if (user.password) {
 			if (user.password.length < 8) throw {code: 'PASSWORD_TOO_SHORT', data: user.password.length};
-			user.password = await hashPasswordbcrypt(user.password);
-			user.password_last_modified_at = await updateUserPassword(user.login, user.password);
+			const password = await hashPasswordbcrypt(user.password);
+			await updateUserPassword(username, password);
 		}
 		if (user.banner) {
-			user.banner = await replaceBanner(user.banner);
+			mergedUser.banner = await replaceBanner(user.banner);
 		} else {
-			user.banner = currentUser.banner;
+			mergedUser.banner = currentUser.banner;
 		}
 		if (avatar) {
 			// If a new avatar was sent, it is contained in the avatar object
 			// Let's move it to the avatar user directory and update avatar info in
 			// database
-			user.avatar_file = await replaceAvatar(currentUser.avatar_file, avatar);
+			mergedUser.avatar_file = await replaceAvatar(currentUser.avatar_file, avatar);
 		} else {
-			user.avatar_file = currentUser.avatar_file;
+			mergedUser.avatar_file = currentUser.avatar_file;
 		}
-		await updateUser(user);
+		const updatedUser = await updateUser(mergedUser);
+		delete updatedUser.password;
 		logger.debug(`${username} (${user.nickname}) profile updated`, {service: 'User'});
-		delete currentUser.password;
-		pubUser(user.login);
+		pubUser(username);
 		return {
-			user,
-			token: createJwtToken(user.login, getRole(user), new Date(user.password_last_modified_at instanceof Date ? user.password_last_modified_at:currentUser.password_last_modified_at))
+			user: updatedUser,
+			token: createJwtToken(updatedUser.login, getRole(updatedUser), new Date(updatedUser.password_last_modified_at))
 		};
 	} catch (err) {
 		logger.error(`Failed to update ${username}'s profile`, {service: 'User', obj: err});

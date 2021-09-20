@@ -81,5 +81,5 @@ UPDATE users SET
 	social_networks = $13,
 	banner = $14,
 	language = $15
-WHERE pk_login = $16;
+WHERE pk_login = $16 RETURNING pk_login as login, *;
 `;
