@@ -160,6 +160,7 @@
 				data.content = data.content.filter(
 					(tag: DBTag) => tag.karacount && Object.keys(tag.karacount).length > 0
 				);
+				this.total = data.content.length > 0 ? Math.ceil(data.content[0].count / 100) : 0;
 				this.tags = data;
 				this.loading = false;
 			}
