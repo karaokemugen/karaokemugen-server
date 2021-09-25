@@ -56,7 +56,7 @@
 							<div class="field">
 								<div class="control">
 									<input
-										id="password"
+										id="password_login"
 										v-model="login.password"
 										type="password"
 										name="password"
