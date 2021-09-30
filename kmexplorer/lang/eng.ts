@@ -151,7 +151,7 @@ export default {
 		base_under_licence: 'Karaoke base under license'
 	},
 	stats: {
-		karaokes: 'Karaoké | Karaokés',
+		karaokes: 'Karaoke | Karaokes',
 		all_duration: 'Duration of all karaokes',
 		last_generation: 'Last update',
 		media_size: 'Media Size'
