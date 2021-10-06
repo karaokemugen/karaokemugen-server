@@ -576,6 +576,14 @@
 					if (this.storeUser.location) {
 						this.location = this.getCountryName(this.storeUser.location) as string;
 					}
+					if (!this.user.social_networks) {
+						this.user.social_networks = {
+							twitch: '',
+							discord: '',
+							twitter: '',
+							instagram: ''
+						};
+					}
 				}
 			},
 			async submitForm(): Promise<void> {
