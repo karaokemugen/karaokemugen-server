@@ -358,13 +358,13 @@ export let NuxtConfig: NuxtConfigType = {
 				code: 'en',
 				name: 'English',
 				iso: 'en',
-				file: 'eng.ts'
+				file: 'en.json'
 			},
 			{
 				code: 'fr',
 				name: 'Français',
 				iso: 'fr',
-				file: 'fre.ts'
+				file: 'fr.json'
 			}
 		],
 		baseUrl: 'http://localhost:1350/',
