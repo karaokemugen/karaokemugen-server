@@ -413,7 +413,6 @@
         },
         "crop_avatar": {
             "label": "Rogner votre avatar",
-            "online": "En ligne",
             "add": "Ajouter",
             "cancel": "Annuler"
         },
