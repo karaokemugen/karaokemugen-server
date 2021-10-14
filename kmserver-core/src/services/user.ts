@@ -2,6 +2,7 @@ import {createHash} from 'crypto';
 import {hash, compare} from 'bcryptjs';
 import { promises as fs } from 'fs';
 import merge from 'lodash.merge';
+import {decode} from 'jwt-simple';
 import {updateUser, updateUserPassword, insertUser, selectUser, selectAllUsers, deleteUser, updateLastLogin} from '../dao/user';
 import logger from '../lib/utils/logger';
 import {getConfig, resolvedPathAvatars, resolvedPathBanners, resolvedPathPreviews} from '../lib/utils/config';
@@ -359,6 +360,15 @@ export async function updateUserLastLogin(username: string) {
 	try {
 		await updateLastLogin(username);
 	} catch(err) {
-		logger.error(`[Users] Unable to update login time for ${username} : ${err}`);
+		logger.error(`Unable to update login time for ${username}`, {service: 'User', obj: err});
+	}
+}
+
+export function decodeJwtToken(token: string): Record<string, any> | false {
+	try {
+		const conf = getConfig();
+		return decode(token, conf.App.JwtSecret);
+	} catch (err) {
+		return false;
 	}
 }

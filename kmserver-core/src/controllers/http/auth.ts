@@ -1,8 +1,8 @@
-import {encode, decode} from 'jwt-simple';
+import {encode} from 'jwt-simple';
 import { Router } from 'express';
 
 import {getConfig} from '../../lib/utils/config';
-import {findUserByName, checkPassword, updateUserLastLogin} from '../../services/user';
+import {findUserByName, checkPassword, updateUserLastLogin, decodeJwtToken} from '../../services/user';
 import { Token, Role, User } from '../../lib/types/user';
 import { requireAuth, requireValidUser } from '../middlewares/auth';
 import sentry from '../../utils/sentry';
@@ -20,7 +20,7 @@ const loginNoUser = {
 	data: undefined
 };
 
-async function checkLogin(username: string, password: string): Promise<Token> {
+async function checkLogin(username: string, password: string): Promise<Partial<Token>> {
 	const user = await findUserByName(username, {password: true});
 	if (!user) throw false;
 	if (!await checkPassword(user, password)) throw false;
@@ -65,11 +65,6 @@ export function createJwtToken(username: string, role: Role, passwordLastModifie
 		{ username, iat: timestamp, role, passwordLastModifiedAt },
 		conf.App.JwtSecret
 	);
-}
-
-function decodeJwtToken(token: string) {
-	const conf = getConfig();
-	return decode(token, conf.App.JwtSecret);
 }
 
 export function getRole(user: User) {
