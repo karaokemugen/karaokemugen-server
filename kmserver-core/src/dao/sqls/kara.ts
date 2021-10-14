@@ -3,7 +3,7 @@
 export const selectAllMedias = `
 	SELECT mediafile,
 	mediasize,
-	kid
+	pk_kid AS kid
 	FROM kara
 `;
 
