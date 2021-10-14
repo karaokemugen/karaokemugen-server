@@ -16,8 +16,9 @@ INSERT INTO users(
 	last_login_at,
 	flag_public,
 	flag_displayfavorites,
+    social_networks,
 	language
-) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW(), NOW(), true, false, $11)
+) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW(), NOW(), true, false, '{"twitter": null, "instagram": null, "twitch": null, "discord": null}'::json, $11)
 `;
 
 export const selectUser = (filter: boolean = false, where?: string, offset_limit?: string, order = false) => `
