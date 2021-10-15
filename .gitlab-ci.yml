@@ -15,7 +15,7 @@ before_script:
 
 update_sentry:
   stage: deploy
-  image: node:14
+  image: axelterizaki/karaokemugen-ci:node-12
   cache:
     key: km-server-${CI_COMMIT_REF_SLUG}
     paths:
