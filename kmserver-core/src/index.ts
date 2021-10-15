@@ -3,7 +3,7 @@ import {initConfig} from './utils/config';
 import logger from 'winston';
 import {resolve, join} from 'path';
 import {initFrontend} from './frontend';
-import cli from 'commander';
+import { Command } from 'commander';
 import detect from 'detect-port';
 import {initDB} from './dao/database';
 import {createUser, changePassword, initUsers} from './services/user';
@@ -159,6 +159,7 @@ function parseArgs() {
 	function login(val: string) {
 		return val.split(',');
 	}
+	const cli = new Command();
 	return cli
 		.command('kmserver.sh')
 		.description('Starts Karaoke Mugen Server')
