@@ -37,9 +37,9 @@ export const getAllKaras = (filterClauses: string[], typeClauses: string, orderC
   ak.mediasize AS mediasize,
   ak.repository AS repository,
   ${statsSelectClause}
-  ${favoritedSelectClause},
+  ${favoritedSelectClause}
   array_remove(array_agg(krc.fk_kid_parent), null) AS parents,
-  array_remove(array_agg(krp.fk_kid_child), null) AS children
+  array_remove(array_agg(krp.fk_kid_child), null) AS children,
   count(ak.pk_kid) OVER()::integer AS count
 FROM all_karas AS ak
 LEFT OUTER JOIN kara_relation krp ON krp.fk_kid_parent = ak.pk_kid
