@@ -26,6 +26,7 @@ export async function getGitDiff(commit: string, fullFiles = false): Promise<str
 		const path = resolve(getState().dataPath, getConfig().System.Repositories[0].BaseDir, changes[i].path);
 		if (changes[i].type === 'new') changes[i].contents = await fs.readFile(path, 'utf-8');
 	}
+	return changes;
 }
 
 export async function initGitRepos() {
