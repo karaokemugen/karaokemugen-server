@@ -67,6 +67,7 @@ export async function updateUser(user: User): Promise<DBUser> {
 		JSON.stringify(user.social_networks),
 		user.banner,
 		user.language,
+		user.flag_parentsonly,
 		user.login
 	])).rows[0];
 }

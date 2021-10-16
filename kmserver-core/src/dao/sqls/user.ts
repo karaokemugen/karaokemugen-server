@@ -43,6 +43,7 @@ SELECT
 	banner,
 	language,
 	(select count(fk_kid) from users_favorites where fk_login = pk_login)::integer as favorites_count,
+	flag_parentsonly,
 	count(pk_login) OVER()::integer AS count
 FROM users
     ${where || ''}
@@ -81,6 +82,7 @@ UPDATE users SET
 	flag_displayfavorites = $12,
 	social_networks = $13,
 	banner = $14,
-	language = $15
-WHERE pk_login = $16 RETURNING pk_login as login, *;
+	language = $15,
+	flag_parentsonly = $16
+WHERE pk_login = $17 RETURNING pk_login as login, *;
 `;
