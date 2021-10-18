@@ -10,7 +10,7 @@ import { generateDatabase } from '../lib/services/generation';
 import { createImagePreviews } from '../lib/utils/previews';
 import logger from '../lib/utils/logger';
 import { getConfig, resolvedPathRepos } from '../lib/utils/config';
-import { gitlabPostNewIssue } from '../lib/services/gitlab';
+import { gitlabPostNewIssue } from './gitlab';
 import { DownloadBundleServer, KaraMetaFile, MetaFile, ShinDownloadBundle, TagMetaFile } from '../lib/types/downloads';
 import sentry from '../utils/sentry';
 import { Token } from '../lib/types/user';

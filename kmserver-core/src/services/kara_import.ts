@@ -10,7 +10,7 @@ import {getConfig, resolvedPathImport, resolvedPathTemp, resolvedPathRepos} from
 import {duration} from '../lib/utils/date';
 import { generateKara, validateNewKara } from '../lib/services/karaCreation';
 import { NewKara, Kara } from '../lib/types/kara';
-import { gitlabPostNewIssue } from '../lib/services/gitlab';
+import { gitlabPostNewIssue } from './gitlab';
 import { asyncExists, asyncMove } from '../lib/utils/files';
 import sentry from '../utils/sentry';
 

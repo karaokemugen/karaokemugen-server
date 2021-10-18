@@ -4,7 +4,7 @@ import {getAllSeries} from '../../services/series';
 import {getSettings} from '../../lib/dao/database';
 import { Router } from 'express';
 import {getConfig} from '../../lib/utils/config';
-import { postSuggestionToKaraBase } from '../../lib/services/gitlab';
+import { postSuggestionToKaraBase } from '../../services/gitlab';
 import { optionalAuth } from '../middlewares/auth';
 import { selectAllKaras } from '../../dao/kara';
 import { getGitDiff, getLatestGitCommit } from '../../services/git';
