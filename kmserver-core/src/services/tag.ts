@@ -30,13 +30,13 @@ export async function getTags(params: TagParams) {
 	}
 }
 
-export async function getTag(tid: string, findInImportedFiles: boolean = true) {
+export async function getTag(tid: string, findInImportedFiles = true, similarTag?: Tag) {
 	try {
 		let tag = await selectTag(tid);
 		if (tag) return tag;
-		if (findInImportedFiles) {
+		if (findInImportedFiles && similarTag) {
 			// If no tag is found, check in import folder if we have a tag by the same name and type
-			tag = await findTagInImportedFiles(tag.name, tag.types);
+			tag = await findTagInImportedFiles(similarTag.name, similarTag.types);
 			if (tag) return tag;
 		}
 		return null;
