@@ -7,6 +7,7 @@ import { Token, Role, User } from '../../lib/types/user';
 import { requireAuth, requireValidUser } from '../middlewares/auth';
 import sentry from '../../utils/sentry';
 import logger from '../../lib/utils/logger';
+import { getUserTypeName } from '../../lib/utils/constants';
 
 const loginErr = {
 	code: 'LOG_ERROR',
@@ -68,6 +69,6 @@ export function createJwtToken(username: string, role: Role, passwordLastModifie
 }
 
 export function getRole(user: User) {
-	if (user.type === 2) return 'admin';
-	return 'user';
+	const role = getUserTypeName(user.type);
+	return role || 'user';	
 }

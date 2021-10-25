@@ -53,6 +53,16 @@ export const requireAdmin = (req, res, next) => {
 
 };
 
+export const requireMaintainer = (req, res, next) => {
+	const token = decodeJwtToken(req.get('authorization'));
+	if (token && (token.role === 'admin' || token.role === 'maintainer')) {
+		next();
+	} else {
+		res.status(403).send('Only admins or maintainers can use this function');
+	}
+
+};
+
 export async function updateLoginTime(req, _res, next) {
 	updateUserLastLogin(req.authToken.username.toLowerCase());
 	next();
