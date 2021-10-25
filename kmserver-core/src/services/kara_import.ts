@@ -111,7 +111,7 @@ export async function editKara(kara: Kara): Promise<string> {
 			sentry.error(err, 'Warning');
 		}
 		const issueArr = issueURL.split('/');
-		addKaraInInbox(karaName, +issueArr[issueArr.length-1]);
+		addKaraInInbox(karaName, +issueArr[issueArr.length-1], true);
 		return issueURL;
 	} catch(err) {
 		logger.error('Error while editing kara', {service: 'KaraGen', obj: err});
@@ -167,7 +167,7 @@ export async function createKara(kara: Kara) {
 	}
 	const karaName = basename(newKara.file, '.kara.json');
 	let issueURL = '';
-	;logger.debug('Kara', {service: 'GitLab', obj: newKara.data});
+	logger.debug('Kara', {service: 'GitLab', obj: newKara.data});
 	let title = conf.Gitlab.IssueTemplate.Import.Title || 'New kara: $kara';
 	title = title.replace('$kara', karaName);
 	let desc = conf.Gitlab.IssueTemplate.Import.Description || '';
