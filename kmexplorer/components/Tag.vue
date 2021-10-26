@@ -1,7 +1,7 @@
 <template>
 	<a
 		:href="nolink ? `./#`:(type === 'years' ? `/years/${tag.name}`:`/tags/${slug}/${tag.tid}~${tagTypes[type].type}`)"
-		:class="[tagTypes[type].class, staticheight ? '':'no-static-height', tag.problematic ? 'problematic':'']"
+		:class="[tagTypes[type].class, staticheight ? '':'no-static-height', (tag && tag.problematic) ? 'problematic':'']"
 		class="tag is-medium"
 		@click.prevent="handleLink"
 	>
