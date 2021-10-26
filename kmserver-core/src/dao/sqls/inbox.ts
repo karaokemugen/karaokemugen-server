@@ -5,10 +5,12 @@ export const selectInbox = (uniqueKara: string) => `
 		fk_login_downloaded AS username_downloaded,
 		downloaded_at,
 		created_at,
-		kara,
-		extra_tags,
-		lyrics,
-		mediafile,
+		${uniqueKara ? `
+			kara,
+			extra_tags,
+			lyrics,
+			mediafile,
+		` : ''}
 		gitlab_issue,
 		fix
 	FROM inbox
