@@ -13,6 +13,7 @@ import { NewKara, Kara } from '../lib/types/kara';
 import { gitlabPostNewIssue } from './gitlab';
 import { asyncExists, asyncMove } from '../lib/utils/files';
 import sentry from '../utils/sentry';
+import { addKaraInInbox } from './inbox';
 
 export async function editKara(kara: Kara): Promise<string> {
 	let newKara: NewKara;
@@ -75,6 +76,7 @@ export async function editKara(kara: Kara): Promise<string> {
 		logger.debug('Kara:', {service: 'GitLab', obj: newKara.data});
 		const conf = getConfig();
 		const karaName = basename(newKara.file, '.kara.json');
+		let issueURL = '';
 		let title = conf.Gitlab.IssueTemplate.Edit.Title || 'Edited kara: $kara';
 		title = title.replace('$kara', karaName);
 		let desc = conf.Gitlab.IssueTemplate.Edit.Description || '';
@@ -101,12 +103,16 @@ export async function editKara(kara: Kara): Promise<string> {
 			.replace('$versions', newKara.data.versions.map(t => t.name).join(', '))
 			.replace('$duration', duration(newKara.data.duration));
 		try {
-			if (conf.Gitlab.Enabled) return gitlabPostNewIssue(title, desc, conf.Gitlab.IssueTemplate.Edit.Labels);
+			if (conf.Gitlab.Enabled) {
+				issueURL = await gitlabPostNewIssue(title, desc, conf.Gitlab.IssueTemplate.Edit.Labels);	
+			} 
 		} catch(err) {
 			logger.error('Call to Gitlab API failed', {service: 'GitLab', obj: err});
 			sentry.error(err, 'Warning');
 		}
-
+		const issueArr = issueURL.split('/');
+		addKaraInInbox(karaName, +issueArr[issueArr.length-1], true);
+		return issueURL;
 	} catch(err) {
 		logger.error('Error while editing kara', {service: 'KaraGen', obj: err});
 		if (!err.msg) {
@@ -160,7 +166,8 @@ export async function createKara(kara: Kara) {
 		throw err;
 	}
 	const karaName = basename(newKara.file, '.kara.json');
-	;logger.debug('Kara', {service: 'GitLab', obj: newKara.data});
+	let issueURL = '';
+	logger.debug('Kara', {service: 'GitLab', obj: newKara.data});
 	let title = conf.Gitlab.IssueTemplate.Import.Title || 'New kara: $kara';
 	title = title.replace('$kara', karaName);
 	let desc = conf.Gitlab.IssueTemplate.Import.Description || '';
@@ -185,7 +192,12 @@ export async function createKara(kara: Kara) {
 		.replace('$versions', newKara.data.versions.map(t => t.name).join(', '))
 		.replace('$duration', duration(newKara.data.duration));
 	try {
-		if (conf.Gitlab.Enabled) return gitlabPostNewIssue(title, desc, conf.Gitlab.IssueTemplate.Import.Labels);
+		if (conf.Gitlab.Enabled) {
+			issueURL = await gitlabPostNewIssue(title, desc, conf.Gitlab.IssueTemplate.Import.Labels);			
+		}
+		const issueArr = issueURL.split('/');
+		addKaraInInbox(karaName, +issueArr[issueArr.length-1]);
+		return issueURL;
 	} catch(err) {
 		logger.error('Call to Gitlab API failed', {service: 'KaraImport', obj: err});
 		sentry.error(err, 'Warning');

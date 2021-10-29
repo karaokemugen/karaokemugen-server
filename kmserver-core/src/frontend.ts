@@ -25,6 +25,7 @@ import { getState } from './utils/state';
 import { initWS } from './lib/utils/ws';
 import { startKMExplorer } from './services/kmexplorer';
 import { initRemote } from './services/remote';
+import inboxController from './controllers/http/inbox';
 
 /**
  * Starting express which will serve our app.
@@ -126,6 +127,7 @@ function api() {
 	adminController(apiRouter);
 	// Adding KaraServ routes
 	KServerController(apiRouter);
+	inboxController(apiRouter);
 	if (conf.KaraExplorer.Import) KImportController(apiRouter);
 	// Stats
 	if (conf.Stats.Enabled) statsController(apiRouter);
