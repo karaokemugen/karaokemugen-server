@@ -11,6 +11,6 @@ CREATE TABLE inbox (
 	gitlab_issue INTEGER,
 	fix BOOLEAN,
 	CONSTRAINT inbox_kid_pkey PRIMARY KEY (pk_kid)
-)
+);
 
 ALTER TABLE inbox ADD CONSTRAINT inbox_fk_login_downloaded_fkey FOREIGN KEY (fk_login_downloaded) REFERENCES users(pk_login) ON DELETE CASCADE;
