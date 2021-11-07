@@ -52,7 +52,7 @@ export async function processStatsPayload(payload: any) {
 		]);
 		logger.info(`Received payload from instance ${payload.instance.instance_id}`, {service: 'Shortener'});
 	} catch(err) {
-		logger.error(`Error with payload from ${payload.instance.instance_id}`, {service: 'Shortener', obj: err});
+		logger.error(`Error with payload from ${payload?.instance?.instance_id}`, {service: 'Shortener', obj: err});
 		logger.debug('Payload in error', {service: 'Stats', obj: payload});
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
