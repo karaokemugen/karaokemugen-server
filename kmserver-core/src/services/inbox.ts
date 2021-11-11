@@ -22,7 +22,7 @@ export async function markKaraInboxAsDownloaded(kid: string, username: string) {
 	return updateInboxDownloaded(username, kid);
 }
 
-export async function addKaraInInbox(karaName: string, issue?: number, fix = false) {
+export async function addKaraInInbox(karaName: string, issue?: string, fix = false) {
 	try {
 		const karaDir = resolve(resolvedPathImport(), karaName);
 		const dir = await fs.readdir(karaDir);
