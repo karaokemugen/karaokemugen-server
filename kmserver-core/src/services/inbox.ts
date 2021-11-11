@@ -53,7 +53,10 @@ export async function addKaraInInbox(karaName: string, issue?: string, fix = fal
 		}
 
 		const kid = karaData.data.kid;
-		const mediafile = karaData.medias[0].filename;
+		let mediafile: string;
+		if (await asyncExists(resolve(karaDir, karaData.medias[0].filename))) {
+			mediafile = karaData.medias[0].filename;
+		}
 		await insertInbox({
 			kid: kid,
 			name: karaName,
