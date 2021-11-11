@@ -5,6 +5,7 @@ import { insertInbox, selectInbox, updateInboxDownloaded } from '../dao/inbox';
 import { KaraMetaFile, MetaFile, TagMetaFile } from '../lib/types/downloads';
 import { KaraFileV4 } from '../lib/types/kara';
 import { resolvedPathImport } from '../lib/utils/config';
+import { asyncExists } from '../lib/utils/files';
 import logger from '../lib/utils/logger';
 
 export async function getKaraInbox(kid: string) {
@@ -43,10 +44,14 @@ export async function addKaraInInbox(karaName: string, issue?: string, fix = fal
 			});
 		}
 		const lyricsFile = karaData.medias[0].lyrics[0].filename;
-		const lyrics: MetaFile = {
-			file: lyricsFile,
-			data: await fs.readFile(resolve(karaDir, lyricsFile), 'utf-8')
-		};
+		let lyrics: MetaFile;
+		if (await asyncExists(resolve(karaDir, lyricsFile))) {
+			lyrics = {
+				file: lyricsFile,
+				data: await fs.readFile(resolve(karaDir, lyricsFile), 'utf-8')
+			};
+		}
+
 		const kid = karaData.data.kid;
 		const mediafile = karaData.medias[0].filename;
 		await insertInbox({
