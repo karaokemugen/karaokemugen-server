@@ -1,0 +1,1 @@
+ALTER TABLE inbox ALTER COLUMN gitlab_issue TYPE TEXT;
