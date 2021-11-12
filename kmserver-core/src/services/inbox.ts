@@ -1,6 +1,7 @@
 import { promises as fs} from 'fs';
 import { remove } from 'fs-extra';
 import { basename, resolve } from 'path';
+import { v4 as uuidV4 } from 'uuid';
 import { insertInbox, selectInbox, updateInboxDownloaded } from '../dao/inbox';
 import { KaraMetaFile, MetaFile, TagMetaFile } from '../lib/types/downloads';
 import { KaraFileV4 } from '../lib/types/kara';
@@ -8,8 +9,8 @@ import { resolvedPathImport } from '../lib/utils/config';
 import { asyncExists } from '../lib/utils/files';
 import logger from '../lib/utils/logger';
 
-export async function getKaraInbox(kid: string) {
-	const karas = await selectInbox(kid);
+export async function getKaraInbox(inid: string) {
+	const karas = await selectInbox(inid);
 	return karas[0];
 }
 
@@ -17,10 +18,10 @@ export function getInbox() {
 	return selectInbox();
 }
 
-export async function markKaraInboxAsDownloaded(kid: string, username: string) {
-	const inbox = await getKaraInbox(kid);
+export async function markKaraInboxAsDownloaded(inid: string, username: string) {
+	const inbox = await getKaraInbox(inid);
 	if (!inbox) throw {code: 404};
-	return updateInboxDownloaded(username, kid);
+	return updateInboxDownloaded(username, inid);
 }
 
 export async function addKaraInInbox(karaName: string, issue?: string, fix = false) {
@@ -52,13 +53,12 @@ export async function addKaraInInbox(karaName: string, issue?: string, fix = fal
 			};
 		}
 
-		const kid = karaData.data.kid;
 		let mediafile: string;
 		if (await asyncExists(resolve(karaDir, karaData.medias[0].filename))) {
 			mediafile = karaData.medias[0].filename;
 		}
 		await insertInbox({
-			kid: kid,
+			inid: uuidV4(),
 			name: karaName,
 			created_at: new Date(),
 			kara: kara,
@@ -74,8 +74,8 @@ export async function addKaraInInbox(karaName: string, issue?: string, fix = fal
 	}
 }
 
-export async function removeKaraFromInbox(kid: string) {
-	const inbox = await getKaraInbox(kid);
+export async function removeKaraFromInbox(inid: string) {
+	const inbox = await getKaraInbox(inid);
 	if (!inbox) throw {code: 404};
 	const karaDir = basename(inbox.kara.file, '.kara.json');
 	// You never know.

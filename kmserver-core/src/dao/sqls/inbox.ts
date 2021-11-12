@@ -1,6 +1,6 @@
 export const selectInbox = (uniqueKara: string) => `
-	SELECT 
-		pk_kid AS kid,
+	SELECT
+		pk_inid AS inid,
 		name,
 		fk_login_downloaded AS username_downloaded,
 		downloaded_at,
@@ -14,12 +14,12 @@ export const selectInbox = (uniqueKara: string) => `
 		gitlab_issue,
 		fix
 	FROM inbox
-	${uniqueKara ? ' WHERE pk_kid = $1 ' : ''}
+	${uniqueKara ? ' WHERE pk_inid = $1 ' : ''}
 `;
 
 export const insertInbox = `
 	INSERT INTO inbox(
-		pk_kid,
+		pk_inid,
 		name,
 		created_at,
 		kara,
@@ -29,7 +29,7 @@ export const insertInbox = `
 		gitlab_issue,
 		fix
 	) VALUES(
-		:kid,
+		:inid,
 		:name,
 		:created_at,
 		:kara,
@@ -43,9 +43,9 @@ export const insertInbox = `
 
 export const updateInboxDownloaded = `
 	UPDATE inbox SET fk_login_downloaded = $1, downloaded_at = $2
-	WHERE pk_kid = $3
+	WHERE pk_inid = $3
 `;
 
 export const deleteInbox = `
-	DELETE FROM inbox WHERE pk_kid = $1
+	DELETE FROM inbox WHERE pk_inid = $1
 `;
