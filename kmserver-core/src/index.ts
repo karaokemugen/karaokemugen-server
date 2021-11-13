@@ -114,8 +114,9 @@ async function main() {
 
 	if (argv.opts().promoteToMaintainer) {
 		await editUser(argv.opts().promoteToMaintainer[0], {type: 0.5}, null, {role: 'admin', username: 'admin'});
+		exit(0);
 	}
-	
+
 	if (argv.opts().createAdmin) {
 		await createUser({
 			login: argv.opts().createAdmin[0],
