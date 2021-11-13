@@ -2,7 +2,7 @@ import { promises as fs} from 'fs';
 import { remove } from 'fs-extra';
 import { basename, resolve } from 'path';
 import { v4 as uuidV4 } from 'uuid';
-import { insertInbox, selectInbox, updateInboxDownloaded } from '../dao/inbox';
+import { deleteInbox, insertInbox, selectInbox, updateInboxDownloaded } from '../dao/inbox';
 import { KaraMetaFile, MetaFile, TagMetaFile } from '../lib/types/downloads';
 import { KaraFileV4 } from '../lib/types/kara';
 import { resolvedPathImport } from '../lib/utils/config';
@@ -82,4 +82,5 @@ export async function removeKaraFromInbox(inid: string) {
 	if (!karaDir) throw {code: 500};
 
 	await remove(resolve(resolvedPathImport(), karaDir));
+	await deleteInbox(inid);
 }
