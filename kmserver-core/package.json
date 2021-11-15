@@ -74,7 +74,7 @@
 		"js-yaml": "^4.1.0",
 		"jwt-simple": "^0.5.6",
 		"kar-to-ass": "^1.0.8",
-		"kfn-to-ass": "^1.0.13",
+		"kfn-to-ass": "^1.1.0",
 		"langs": "^2.0.0",
 		"lodash.clonedeep": "^4.5.0",
 		"lodash.deburr": "^4.1.0",
