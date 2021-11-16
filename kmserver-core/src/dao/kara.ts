@@ -26,48 +26,47 @@ export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 	let orderClauses = '';
 	let limitClause = '';
 	let offsetClause = '';
-	let havingClause = '';
-	let statsSelectClause = '';
-	let statsJoinClause = '';
-	let favoritedSelectClause = '';
-	let favoritedJoinClause = '';
-	let favoritedGroupClause = '';
+	let selectClause = '';
+	let joinClause = '';
+	let groupClause = '';
 	let whereClauses = '';
 	if (params.username) {
-		favoritedSelectClause = `
+		selectClause = `
 			(CASE WHEN f.fk_kid IS NULL
 				THEN FALSE
 				ELSE TRUE
 			END) as flag_favorites,
 			`;
-		favoritedJoinClause = 'LEFT OUTER JOIN users_favorites AS f ON f.fk_login = :username AND f.fk_kid = ak.pk_kid';
-		favoritedGroupClause = 'f.fk_kid, ';
+		joinClause = 'LEFT OUTER JOIN users_favorites AS f ON f.fk_login = :username AND f.fk_kid = ak.pk_kid';
+		groupClause = 'f.fk_kid, ';
 		filterClauses.params.username = params.username;
 	}
 	if (params.favorites) {
-		favoritedJoinClause += ' LEFT JOIN users_favorites AS fv ON fv.fk_kid = ak.pk_kid';
+		joinClause += ' LEFT JOIN users_favorites AS fv ON fv.fk_kid = ak.pk_kid';
 		filterClauses.params.username_favs = params.favorites;
 		whereClauses = 'AND fv.fk_login = :username_favs';
 	}
 	if (params.order === 'recent') orderClauses = 'created_at DESC, ';
 	if (params.order === 'played') {
-		statsSelectClause = 'COUNT(p.*)::integer AS played,';
-		statsJoinClause = 'LEFT OUTER JOIN stats_played AS p ON p.fk_kid = ak.pk_kid ';
-		havingClause = 'HAVING COUNT(p.*) >= 1';
-		orderClauses = 'played DESC, ';
+		whereClauses += ' AND ks.played > 1';
+		orderClauses = 'ks.played DESC, ';
+		selectClause += 'ks.played,';
+		groupClause += 'ks.played, ';
+		joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.kid = ak.pk_kid ';
 	}
-	if (params.order === 'favorited') {
-		statsSelectClause = 'COUNT(uf.*)::integer AS favorited,';
-		statsJoinClause = 'LEFT OUTER JOIN users_favorites AS uf ON uf.fk_kid = ak.pk_kid LEFT OUTER JOIN users AS u ON uf.fk_login = u.pk_login ';
-		havingClause = 'HAVING COUNT(uf.*) >= 1';
-		orderClauses = 'favorited DESC, ';
-		whereClauses = 'AND (u.flag_sendstats IS NULL or u.flag_sendstats = TRUE)';
+	if (params.order === 'favorited') {		
+		whereClauses += ' AND ks.favorited > 1';
+		orderClauses = 'ks.favorited DESC, ';		
+		selectClause += 'ks.favorited,';
+		groupClause += 'ks.favorited, ';
+		joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.kid = ak.pk_kid ';
 	}
 	if (params.order === 'requested') {
-		statsSelectClause = 'COUNT(r.*)::integer AS requested,';
-		statsJoinClause = 'LEFT OUTER JOIN stats_requested AS r ON r.fk_kid = ak.pk_kid ';
-		havingClause = 'HAVING COUNT(r.*) >= 1';
-		orderClauses = 'requested DESC, ';
+		whereClauses += ' AND ks.requested > 1';
+		orderClauses = 'ks.requested DESC, ';
+		selectClause += 'ks.requested,';
+		groupClause += 'ks.requested, ';
+		joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.kid = ak.pk_kid ';
 	}
 	if (params.from > 0) offsetClause = `OFFSET ${params.from} `;
 	if (params.size > 0) limitClause = `LIMIT ${params.size} `;
@@ -77,8 +76,7 @@ export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 		limitClause = `LIMIT ${params.random}`;
 	}
 	const query = sql.getAllKaras(
-		filterClauses.sql, typeClauses, orderClauses, havingClause, limitClause, offsetClause, statsSelectClause,
-		statsJoinClause, favoritedSelectClause, favoritedJoinClause, favoritedGroupClause, whereClauses, filterClauses.additionalFrom);
+		filterClauses.sql, typeClauses, orderClauses,  limitClause, offsetClause, selectClause, joinClause, groupClause, whereClauses, filterClauses.additionalFrom);
 	const res = await db().query(yesql(query)(filterClauses.params));
 	return res.rows;
 }
@@ -86,4 +84,8 @@ export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 export async function selectBaseStats(): Promise<DBStats> {
 	const res = await db().query(sql.selectBaseStats);
 	return res.rows[0];
+}
+
+export async function refreshKaraStats() {
+	return db().query(sql.refreshKaraStats);
 }

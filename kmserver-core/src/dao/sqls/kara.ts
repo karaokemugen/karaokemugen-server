@@ -7,7 +7,14 @@ export const selectAllMedias = `
 	FROM kara
 `;
 
-export const getAllKaras = (filterClauses: string[], typeClauses: string, orderClauses: string, havingClause: string, limitClause: string, offsetClause: string, statsSelectClause: string, statsJoinClause: string, favoritedSelectClause: string, favoritedJoinClause: string, favoritedGroupClause: string, whereClauses: string, additionalFrom: string[]) => `SELECT
+export const updateKaraStats = `
+UPDATE all_karas SET 
+  favorited = (SELECT COUNT(uf.*)::integer FROM users_favorited uf LEFT JOIN users u ON u.pK_login = uf.fk_login WHERE uf.fk_kid = all_karas.pk_kid AND (u.flag_sendstats IS NULL or u.flag_sendstats = TRUE)),
+  requested = (SELECT COUNT(*) FROM stats_requested WHERE fk_kid = all_karas.pk_kid),
+  played = (SELECT COUNT(*) FROM stats_played WHERE fk_kid = all_karas.pk_kid)
+`;
+
+export const getAllKaras = (filterClauses: string[], typeClauses: string, orderClauses: string, limitClause: string, offsetClause: string, selectClause: string, joinClause: string, groupClause: string, whereClauses: string, additionalFrom: string[],) => `SELECT
   ak.pk_kid AS kid,
   ak.titles AS titles,
   ak.songorder AS songorder,
@@ -36,23 +43,20 @@ export const getAllKaras = (filterClauses: string[], typeClauses: string, orderC
   ak.modified_at AS modified_at,
   ak.mediasize AS mediasize,
   ak.repository AS repository,
-  ${statsSelectClause}
-  ${favoritedSelectClause}
+  ${selectClause}
   array_remove(array_agg(krc.fk_kid_parent), null) AS parents,
   array_remove(array_agg(DISTINCT krp.fk_kid_child), null) AS children,
   count(ak.pk_kid) OVER()::integer AS count
 FROM all_karas AS ak
 LEFT OUTER JOIN kara_relation krp ON krp.fk_kid_parent = ak.pk_kid
 LEFT OUTER JOIN kara_relation krc ON krc.fk_kid_child = ak.pk_kid
-${statsJoinClause}
-${favoritedJoinClause}
+${joinClause}
 ${additionalFrom.join('')}
 WHERE 1 = 1
   ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
   ${whereClauses}
   ${typeClauses}
-GROUP BY ${favoritedGroupClause} ak.pk_kid, ak.titles, ak.songorder, ak.tags, ak.serie_singer_sortable, ak.subfile, ak.year, ak.mediafile, ak.karafile, ak.duration, ak.gain, ak.loudnorm, ak.created_at, ak.modified_at, ak.mediasize, ak.repository, ak.songtypes_sortable, ak.titles_sortable
-${havingClause}
+GROUP BY ${groupClause} ak.pk_kid, ak.titles, ak.songorder, ak.tags, ak.serie_singer_sortable, ak.subfile, ak.year, ak.mediafile, ak.karafile, ak.duration, ak.gain, ak.loudnorm, ak.created_at, ak.modified_at, ak.mediasize, ak.repository, ak.songtypes_sortable, ak.titles_sortable
 ORDER BY ${orderClauses} ak.serie_singer_sortable, ak.songtypes_sortable DESC, ak.songorder, ak.titles_sortable
 ${limitClause}
 ${offsetClause}
@@ -71,3 +75,5 @@ export const selectBaseStats = `SELECT
 (SELECT SUM(mediasize) FROM kara)::bigint AS mediasize,
 (SELECT SUM(duration) FROM kara)::integer AS duration;
 `;
+
+export const refreshKaraStats = 'REFRESH MATERIALIZED VIEW kara_stats;';
