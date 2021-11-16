@@ -2,11 +2,12 @@
 
 This is the online server component of Karaoke Mugen.
 
-Check its main instance at https://kara.moe/base
+Check its main instance at https://kara.moe
 
 Features :
 
-- Publish instance IP addresses to a domain name KM Server listens to (ex. kara.moe) so people who go to kara.moe are redirected to their local network's KM App instance.
+- Allow people to browse through a karaoke database
+- Expose karaoke sessions to the public via a room code based on subdomain (like abcd.kara.moe)
 - Offer access to the karaoke database online through an API similar to KM App. Also serves associated files.
 - Centralize stats uploaded by Karaoke Mugen instances
 - More news at 11.
@@ -15,9 +16,9 @@ Features :
 
 Make sure node and yarn are up to date
 
-- node 10.13.0 or later
-- yarn 1 or later
-- PostgreSQL 10.6 or later
+- node 14 or later
+- yarn 3 or later
+- PostgreSQL 12 or later
 
 Clone this repository and install dependencies
 
@@ -29,7 +30,7 @@ yarn build:all
 
 ## Setup database
 
-Use the supplied `config.sample.yml` file and copy it to `app/config.yml`. Edit it and fill in the blanks (username, password, port, host and database name of your choosing.).
+Use the supplied `config.sample.yml` file and copy it to `app/config.yml`. Edit it and fill in the blanks (username, password, port, host and database name of your choosing.)
 
 As a superuser on PostgreSQL, you need to create the database properly. Use the `psql` command-line tool to connect to your PostgreSQL database.
 
@@ -108,4 +109,4 @@ Run
 yarn start
 ```
 
-This link should works now : http://localhost:1350/base
+This link should work now : http://localhost:1350/base
