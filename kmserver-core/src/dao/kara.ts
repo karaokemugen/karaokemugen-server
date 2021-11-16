@@ -27,7 +27,7 @@ export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 	let limitClause = '';
 	let offsetClause = '';
 	let selectClause = '';
-	let favoritedJoinClause = '';
+	let joinClause = '';
 	let groupClause = '';
 	let whereClauses = '';
 	if (params.username) {
@@ -37,12 +37,12 @@ export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 				ELSE TRUE
 			END) as flag_favorites,
 			`;
-		favoritedJoinClause = 'LEFT OUTER JOIN users_favorites AS f ON f.fk_login = :username AND f.fk_kid = ak.pk_kid';
+		joinClause = 'LEFT OUTER JOIN users_favorites AS f ON f.fk_login = :username AND f.fk_kid = ak.pk_kid';
 		groupClause = 'f.fk_kid, ';
 		filterClauses.params.username = params.username;
 	}
 	if (params.favorites) {
-		favoritedJoinClause += ' LEFT JOIN users_favorites AS fv ON fv.fk_kid = ak.pk_kid';
+		joinClause += ' LEFT JOIN users_favorites AS fv ON fv.fk_kid = ak.pk_kid';
 		filterClauses.params.username_favs = params.favorites;
 		whereClauses = 'AND fv.fk_login = :username_favs';
 	}
@@ -52,18 +52,21 @@ export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 		orderClauses = 'ks.played DESC, ';
 		selectClause += 'ks.played,';
 		groupClause += 'ks.played, ';
+		joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.kid = ak.pk_kid ';
 	}
 	if (params.order === 'favorited') {		
 		whereClauses += ' AND ks.favorited > 1';
 		orderClauses = 'ks.favorited DESC, ';		
 		selectClause += 'ks.favorited,';
 		groupClause += 'ks.favorited, ';
+		joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.kid = ak.pk_kid ';
 	}
 	if (params.order === 'requested') {
 		whereClauses += ' AND ks.requested > 1';
 		orderClauses = 'ks.requested DESC, ';
 		selectClause += 'ks.requested,';
 		groupClause += 'ks.requested, ';
+		joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.kid = ak.pk_kid ';
 	}
 	if (params.from > 0) offsetClause = `OFFSET ${params.from} `;
 	if (params.size > 0) limitClause = `LIMIT ${params.size} `;
@@ -73,7 +76,7 @@ export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 		limitClause = `LIMIT ${params.random}`;
 	}
 	const query = sql.getAllKaras(
-		filterClauses.sql, typeClauses, orderClauses,  limitClause, offsetClause, selectClause, favoritedJoinClause, groupClause, whereClauses, filterClauses.additionalFrom);
+		filterClauses.sql, typeClauses, orderClauses,  limitClause, offsetClause, selectClause, joinClause, groupClause, whereClauses, filterClauses.additionalFrom);
 	const res = await db().query(yesql(query)(filterClauses.params));
 	return res.rows;
 }

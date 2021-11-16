@@ -14,7 +14,7 @@ UPDATE all_karas SET
   played = (SELECT COUNT(*) FROM stats_played WHERE fk_kid = all_karas.pk_kid)
 `;
 
-export const getAllKaras = (filterClauses: string[], typeClauses: string, orderClauses: string, limitClause: string, offsetClause: string, selectClause: string, favoritedJoinClause: string, groupClause: string, whereClauses: string, additionalFrom: string[],) => `SELECT
+export const getAllKaras = (filterClauses: string[], typeClauses: string, orderClauses: string, limitClause: string, offsetClause: string, selectClause: string, joinClause: string, groupClause: string, whereClauses: string, additionalFrom: string[],) => `SELECT
   ak.pk_kid AS kid,
   ak.titles AS titles,
   ak.songorder AS songorder,
@@ -48,10 +48,9 @@ export const getAllKaras = (filterClauses: string[], typeClauses: string, orderC
   array_remove(array_agg(krp.fk_kid_child), null) AS children,  
   count(ak.pk_kid) OVER()::integer AS count  
 FROM all_karas AS ak
-LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid
 LEFT OUTER JOIN kara_relation krp ON krp.fk_kid_parent = ak.pk_kid
 LEFT OUTER JOIN kara_relation krc ON krc.fk_kid_child = ak.pk_kid
-${favoritedJoinClause}
+${joinClause}
 ${additionalFrom.join('')}
 WHERE 1 = 1
   ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
