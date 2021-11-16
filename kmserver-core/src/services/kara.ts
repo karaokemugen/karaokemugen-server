@@ -1,7 +1,7 @@
 import { resolve, basename } from 'path';
 import { promises as fs } from 'fs';
 
-import {selectAllKaras, selectAllYears, selectBaseStats, selectAllMedias} from '../dao/kara';
+import {selectAllKaras, selectAllYears, selectBaseStats, selectAllMedias, refreshKaraStats} from '../dao/kara';
 import { KaraList, KaraParams } from '../lib/types/kara';
 import { consolidateData } from '../lib/services/kara';
 import { ASSToLyrics } from '../lib/utils/ass';
@@ -56,9 +56,10 @@ export async function updateRepo() {
 
 export async function generate() {
 	try {
-		await generateDatabase({validateOnly: false});
+		await generateDatabase({validateOnly: false});		
 		const karas = await getAllKaras({});
 		await createImagePreviews(karas, 'full', 1280);
+		refreshKaraStats();
 	} catch(err) {
 		logger.error('', {service: 'Gen', obj: err});
 		sentry.error(err, 'Fatal');

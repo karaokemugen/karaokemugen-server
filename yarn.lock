@@ -2791,6 +2791,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node-schedule@npm:^1.3.2":
+  version: 1.3.2
+  resolution: "@types/node-schedule@npm:1.3.2"
+  dependencies:
+    "@types/node": "*"
+  checksum: 6fbe54106d55236a0fd39a7bb1b59dea6efff2f4430f78ac18cd9bd3ed2ce9c8249ccf3c353089d1469abd9cca9bb1a348b960527509755b00f80626bee70096
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:*, @types/node@npm:>=10.0.0":
   version: 15.6.1
   resolution: "@types/node@npm:15.6.1"
@@ -5458,6 +5467,16 @@ __metadata:
   version: 1.1.1
   resolution: "create-require@npm:1.1.1"
   checksum: a9a1503d4390d8b59ad86f4607de7870b39cad43d929813599a23714831e81c520bddf61bcdd1f8e30f05fd3a2b71ae8538e946eb2786dc65c2bbc520f692eff
+  languageName: node
+  linkType: hard
+
+"cron-parser@npm:^3.1.0":
+  version: 3.5.0
+  resolution: "cron-parser@npm:3.5.0"
+  dependencies:
+    is-nan: ^1.3.2
+    luxon: ^1.26.0
+  checksum: 80096ac1c30fa4017648ad2fa062ae002e6c0d7775b96a00dbadf1e2d7f9e01b3db0324eef2a33fe6136363be3ffb0d6065cf1b91e6a13fd5ed4d3c168abbc69
   languageName: node
   linkType: hard
 
@@ -8681,6 +8700,16 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
+"is-nan@npm:^1.3.2":
+  version: 1.3.2
+  resolution: "is-nan@npm:1.3.2"
+  dependencies:
+    call-bind: ^1.0.0
+    define-properties: ^1.1.3
+  checksum: 5dfadcef6ad12d3029d43643d9800adbba21cf3ce2ec849f734b0e14ee8da4070d82b15fdb35138716d02587c6578225b9a22779cab34888a139cc43e4e3610a
+  languageName: node
+  linkType: hard
+
 "is-negative-zero@npm:^2.0.1":
   version: 2.0.1
   resolution: "is-negative-zero@npm:2.0.1"
@@ -9203,6 +9232,7 @@ fsevents@~2.3.1:
     "@types/lodash.transform": ^4.6.6
     "@types/multer": ^1.4.7
     "@types/node": ^14
+    "@types/node-schedule": ^1.3.2
     "@types/nodemailer": ^6.4.4
     "@types/pg": ^8.6.1
     "@types/pg-copy-streams": ^1.2.1
@@ -9247,6 +9277,7 @@ fsevents@~2.3.1:
     lodash.merge: ^4.6.2
     lodash.transform: ^4.6.0
     multer: ^1.4.3
+    node-schedule: ^2.0.0
     nodemailer: ^6.7.1
     nuxt: ^2.15.7
     os-locale: 5
@@ -9895,6 +9926,13 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
+"long-timeout@npm:0.1.1":
+  version: 0.1.1
+  resolution: "long-timeout@npm:0.1.1"
+  checksum: 48668e5362cb74c4b77a6b833d59f149b9bb9e99c5a5097609807e2597cd0920613b2a42b89bd0870848298be3691064d95599a04ae010023d07dba39932afa7
+  languageName: node
+  linkType: hard
+
 "lower-case@npm:^1.1.1":
   version: 1.1.4
   resolution: "lower-case@npm:1.1.4"
@@ -9950,6 +9988,13 @@ fsevents@~2.3.1:
   version: 0.3.3
   resolution: "lru_map@npm:0.3.3"
   checksum: ca9dd43c65ed7a4f117c548028101c5b6855e10923ea9d1f635af53ad20c5868ff428c364d454a7b57fe391b89c704982275410c3c5099cca5aeee00d76e169a
+  languageName: node
+  linkType: hard
+
+"luxon@npm:^1.26.0":
+  version: 1.28.0
+  resolution: "luxon@npm:1.28.0"
+  checksum: 5250cb9f138b6048eeb0b3a9044a4ac994d0058f680c72a0da4b6aeaec8612460385639cba2b1052ef6d5564879e9ed144d686f26d9d97b38ab920d82e18281c
   languageName: node
   linkType: hard
 
@@ -10686,6 +10731,17 @@ fsevents@~2.3.1:
     on-finished: ^2.3.0
     vary: ^1.1.2
   checksum: 5ecc9a3cd8f52ca8f9844768cf9393384812f8a35d5e3c0bab63e02b7cc822ad7b001b6c5758dc4ee0c38e4d118ccd006cc803daee1c56b66c593fb36d295eb6
+  languageName: node
+  linkType: hard
+
+"node-schedule@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "node-schedule@npm:2.0.0"
+  dependencies:
+    cron-parser: ^3.1.0
+    long-timeout: 0.1.1
+    sorted-array-functions: ^1.3.0
+  checksum: a93b042a3fbef6b4970c4e1b587212df38a81e8e9c2c3eada611864ddc3be1e99e372037680daae4d4933733154dcd77ff024b4024a67eaeed7058fdb5716e72
   languageName: node
   linkType: hard
 
@@ -13797,6 +13853,13 @@ fsevents@~2.3.1:
   dependencies:
     is-plain-obj: ^1.0.0
   checksum: f0fd827fa9f8f866e98588d2a38c35209afbf1e9a05bb0e4ceeeb8bbf31d923c8902b0a7e0f561590ddb65e58eba6a74f74b991c85360bcc52e83a3f0d1cffd7
+  languageName: node
+  linkType: hard
+
+"sorted-array-functions@npm:^1.3.0":
+  version: 1.3.0
+  resolution: "sorted-array-functions@npm:1.3.0"
+  checksum: 673fd39ca3b6c92644d4483eac1700bb7d7555713a536822a7522a35af559bef3e72f10d89356b75042dc394cd7c2e2ab6f40024385218ec3c85bb7335032857
   languageName: node
   linkType: hard
 
