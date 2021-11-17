@@ -56,10 +56,10 @@ export async function updateRepo() {
 
 export async function generate() {
 	try {
-		await generateDatabase({validateOnly: false});		
+		await generateDatabase({validateOnly: false});
 		const karas = await getAllKaras({});
-		await createImagePreviews(karas, 'full', 1280);
 		refreshKaraStats();
+		await createImagePreviews(karas, 'full', 1280);
 	} catch(err) {
 		logger.error('', {service: 'Gen', obj: err});
 		sentry.error(err, 'Fatal');

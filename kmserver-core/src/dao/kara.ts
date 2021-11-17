@@ -5,6 +5,7 @@ import { DBKara, DBYear, DBMedia } from '../lib/types/database/kara';
 import { DBStats } from '../types/database/kara';
 import { WhereClause } from '../lib/types/database';
 import sql = require('./sqls/kara');
+import logger from '../lib/utils/logger';
 
 export async function selectAllMedias(): Promise<DBMedia[]> {
 	const res = await db().query(sql.selectAllMedias);
@@ -52,21 +53,21 @@ export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 		orderClauses = 'ks.played DESC, ';
 		selectClause += 'ks.played,';
 		groupClause += 'ks.played, ';
-		joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.kid = ak.pk_kid ';
+		joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
 	}
-	if (params.order === 'favorited') {		
+	if (params.order === 'favorited') {
 		whereClauses += ' AND ks.favorited > 1';
-		orderClauses = 'ks.favorited DESC, ';		
+		orderClauses = 'ks.favorited DESC, ';
 		selectClause += 'ks.favorited,';
 		groupClause += 'ks.favorited, ';
-		joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.kid = ak.pk_kid ';
+		joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
 	}
 	if (params.order === 'requested') {
 		whereClauses += ' AND ks.requested > 1';
 		orderClauses = 'ks.requested DESC, ';
 		selectClause += 'ks.requested,';
 		groupClause += 'ks.requested, ';
-		joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.kid = ak.pk_kid ';
+		joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
 	}
 	if (params.from > 0) offsetClause = `OFFSET ${params.from} `;
 	if (params.size > 0) limitClause = `LIMIT ${params.size} `;
@@ -87,5 +88,6 @@ export async function selectBaseStats(): Promise<DBStats> {
 }
 
 export async function refreshKaraStats() {
+	logger.info('Refreshing kara stats', {service: 'DB'});
 	return db().query(sql.refreshKaraStats);
 }

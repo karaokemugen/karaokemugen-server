@@ -7,13 +7,6 @@ export const selectAllMedias = `
 	FROM kara
 `;
 
-export const updateKaraStats = `
-UPDATE all_karas SET 
-  favorited = (SELECT COUNT(uf.*)::integer FROM users_favorited uf LEFT JOIN users u ON u.pK_login = uf.fk_login WHERE uf.fk_kid = all_karas.pk_kid AND (u.flag_sendstats IS NULL or u.flag_sendstats = TRUE)),
-  requested = (SELECT COUNT(*) FROM stats_requested WHERE fk_kid = all_karas.pk_kid),
-  played = (SELECT COUNT(*) FROM stats_played WHERE fk_kid = all_karas.pk_kid)
-`;
-
 export const getAllKaras = (filterClauses: string[], typeClauses: string, orderClauses: string, limitClause: string, offsetClause: string, selectClause: string, joinClause: string, groupClause: string, whereClauses: string, additionalFrom: string[],) => `SELECT
   ak.pk_kid AS kid,
   ak.titles AS titles,
@@ -76,4 +69,11 @@ export const selectBaseStats = `SELECT
 (SELECT SUM(duration) FROM kara)::integer AS duration;
 `;
 
-export const refreshKaraStats = 'REFRESH MATERIALIZED VIEW kara_stats;';
+export const refreshKaraStats = `
+INSERT INTO kara_stats
+SELECT ak.pk_kid AS fk_kid,
+ (SELECT COUNT(fk_kid) FROM stats_played WHERE ak.pk_kid = stats_played.fk_kid) AS played,
+ (SELECT COUNT(fk_kid) FROM stats_requested WHERE ak.pk_kid = stats_requested.fk_kid) AS requested,
+ (SELECT COUNT(uf.fk_kid) FROM users_favorites uf LEFT JOIN users u ON u.pk_login = uf.fk_login WHERE ak.pk_kid = uf.fk_kid AND (u.flag_sendstats IS NULL or u.flag_sendstats = TRUE)) AS favorited
+FROM all_karas ak;
+`;
