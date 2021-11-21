@@ -126,7 +126,7 @@
 						<div v-if="tagsMenu" class="navbar-dropdown">
 							<nuxt-link class="navbar-item" to="/types/misc">
 								<font-awesome-icon :icon="['fas', 'tags']" :fixed-width="true" />
-								{{ $t('menu.miscs') }}
+								{{ $t('menu.misc') }}
 							</nuxt-link>
 
 							<nuxt-link class="navbar-item" to="/types/groups">
@@ -251,7 +251,7 @@
 									:class="{'is-active': tagType === '~7'}"
 								>
 									<font-awesome-icon :icon="['fas', 'tags']" :fixed-width="true" />
-									{{ $t('menu.miscs') }}
+									{{ $t('menu.misc') }}
 								</nuxt-link>
 							</li>
 							<li>
