@@ -13,13 +13,14 @@ import { User, Token } from '../lib/types/user';
 import { sendMail } from '../utils/mailer';
 import randomstring from 'randomstring';
 import sentry from '../utils/sentry';
-import {getRole, createJwtToken } from '../controllers/http/auth';
+import { createJwtToken } from '../controllers/http/auth';
 import {UserList, UserOptions, UserParams} from '../types/user';
 import { delPubUser, pubUser } from './user_pubsub';
 import {asciiRegexp, tagTypes} from '../lib/utils/constants';
 import {copy} from 'fs-extra';
 import {DBUser} from '../lib/types/database/user';
 import {getKara} from './kara';
+import { isLooselyEqual } from '../lib/utils/objectHelpers';
 
 const passwordResetRequests = new Map();
 
@@ -119,7 +120,7 @@ export async function findUserByName(username: string, opts: UserOptions = {}) {
 			if (!user.flag_public) return {
 				login: user.login,
 				avatar_file: user.avatar_file,
-				type: user.type,
+				roles: user.roles,
 				nickname: user.nickname
 			};
 			// If the user has a public profile, but it's not his own profile, we remove the email bit.
@@ -211,7 +212,10 @@ export async function createUser(user: User, opts: any = {}) {
 		user.email = user.email || null;
 		user.location = user.location || null;
 		user.language = user.language || null;
-		opts.admin ? user.type = 2 : user.type = 1;
+		user.roles = {
+			user: true,
+			admin: opts.admin
+		};
 		if (!asciiRegexp.test(user.login)) throw { code: 'USER_ASCII_CHARACTERS_ONLY'};
 		if (!user.password) throw { code: 'USER_EMPTY_PASSWORD'};
 		if (!user.login) throw { code: 'USER_EMPTY_LOGIN'};
@@ -305,16 +309,28 @@ export async function changePassword(username: string, password: string) {
 	}
 }
 
+export async function addRoleToUser(username: string, role: string) {
+	const user = await selectUser('pk_login', username);
+	user.roles[role] = true;
+	await editUser(username, user, null, {roles: {admin: true}, username: 'admin'});
+}
+
+export async function removeRoleFromUser(username: string, role: string) {
+	const user = await selectUser('pk_login', username);
+	user.roles[role] = false;
+	await editUser(username, user, null, {roles: {admin: true}, username: 'admin'});
+}
+
 export async function editUser(username: string, user: User, avatar: Express.Multer.File, token: Token) {
 	try {
 		if (!username) throw 'No user provided';
 		username = username.toLowerCase();
-		if (token.username.toLowerCase() !== username && token.role !== 'admin') throw 'Only admins can edit another user';
+		if (token.username.toLowerCase() !== username && !token.roles.admin) throw 'Only admins can edit another user';
 		const currentUser = await findUserByName(username, {password: true});
 		if (!currentUser) throw 'User unknown';
 		const mergedUser = merge(currentUser, user);
 		delete mergedUser.password;
-		if (user.type && user.type !== currentUser.type && token.role !== 'admin') throw 'Only admins can change a user\'s type';
+		if (!isLooselyEqual(user.roles, currentUser.roles) && !token.roles.admin) throw 'Only admins can change a user\'s roles';
 		// Check if login already exists.
 		if (user.nickname && currentUser.nickname !== user.nickname && await selectUser('nickname', user.nickname)) throw 'Nickname already exists';
 		if (user.password) {
@@ -341,7 +357,7 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		pubUser(username);
 		return {
 			user: updatedUser,
-			token: createJwtToken(updatedUser.login, getRole(updatedUser), new Date(updatedUser.password_last_modified_at))
+			token: createJwtToken(updatedUser.login, updatedUser.roles, new Date(updatedUser.password_last_modified_at))
 		};
 	} catch (err) {
 		logger.error(`Failed to update ${username}'s profile`, {service: 'User', obj: err});

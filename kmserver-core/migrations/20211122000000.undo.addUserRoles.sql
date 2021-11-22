@@ -1,0 +1,3 @@
+ALTER TABLE users ADD COLUMN type INTEGER;
+
+ALTER TABLE users DROP COLUMN roles;
