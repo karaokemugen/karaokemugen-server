@@ -54,7 +54,9 @@
 
 		methods: {
 			toggleRole(name: string) {
-				this.$emit('toggle', name);
+				if (this.edit) {
+					this.$emit('toggle', name);
+				}
 			}
 		}
 	});
