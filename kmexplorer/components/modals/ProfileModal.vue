@@ -533,7 +533,7 @@
 		},
 
 		watch: {
-			active(now, _old) {
+			active(now) {
 				if (now) {
 					this.getUser();
 				}

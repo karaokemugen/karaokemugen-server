@@ -1,9 +1,18 @@
 <template>
 	<div class="badges">
-		<div v-for="role in effectiveRoles" :key="role.name" class="tag" :class="[role.class]">
-			<font-awesome-icon :icon="['fas', role.icon]" fixed-width />
-			{{ $t(`roles.${role.name}`) }}
-		</div>
+		<template v-for="role in effectiveRoles">
+			<div
+				v-if="role.active || edit"
+				:key="role.name"
+				class="tag"
+				:class="[role.class, edit ? 'edit':undefined]"
+				@click.prevent="toggleRole(role.name)"
+			>
+				<input v-if="edit" type="checkbox" :checked="role.active" @change.prevent="toggleRole(role.name)">
+				<font-awesome-icon :icon="['fas', role.icon]" fixed-width />
+				{{ $t(`roles.${role.name}`) }}
+			</div>
+		</template>
 	</div>
 </template>
 
@@ -12,7 +21,7 @@
 	import { RoleDetail, roles } from '~/assets/constants';
 	import { Roles } from '%/lib/types/user';
 
-	type Role = RoleDetail & { name: string };
+	type Role = RoleDetail & { name: string, active: boolean };
 	type RoleKey = keyof Roles;
 
 	export default Vue.extend({
@@ -22,19 +31,30 @@
 			roles: {
 				type: Object,
 				required: true
-			} as PropOptions<Roles>
+			} as PropOptions<Roles>,
+			edit: {
+				type: Boolean,
+				default: false
+			}
 		},
 
 		computed: {
 			effectiveRoles(): Role[] {
-				// Only truthy values and values that exists in roles table
-				const realRoles = (Object.keys(this.roles) as RoleKey[]).filter(r => !!this.roles[r] && !!roles[r]);
+				// Only values that exists in roles table
+				const realRoles = Object.keys(roles) as RoleKey[];
 				return realRoles.map((r) => {
 					return {
 						...roles[r],
-						name: r
+						name: r,
+						active: !!this.roles[r]
 					} as Role;
 				});
+			}
+		},
+
+		methods: {
+			toggleRole(name: string) {
+				this.$emit('toggle', name);
 			}
 		}
 	});
@@ -45,6 +65,16 @@
 	.badges {
 		display: flex;
 		> .tag {
+			input[type="checkbox"] {
+				margin-right: .5em;
+				background-color: #373f40;
+				border-color: whitesmoke;
+				cursor: pointer;
+			}
+			&.edit {
+				cursor: pointer;
+				user-select: none;
+			}
 			&:not(:last-child) {
 				margin-right: .25em;
 			}
