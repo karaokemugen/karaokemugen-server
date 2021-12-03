@@ -7,9 +7,12 @@
 				<div class="down">
 					<div class="title-bar">
 						<img :src="`/avatars/${user.avatar_file}`" alt="" class="profile">
-						<span>
-							{{ user.nickname }}
-						</span>
+						<div class="name-badges">
+							<div class="name">
+								{{ user.nickname }}
+							</div>
+							<user-badges :roles="user.roles" />
+						</div>
 						<client-only>
 							<button v-if="viewingSelf" class="button" @click.prevent="openEdit">
 								<font-awesome-icon :icon="['fas', 'edit']" fixed-width />
@@ -77,6 +80,7 @@
 	import LoadingNanami from '~/components/LoadingNanami.vue';
 	import KaraQuery from '~/components/KaraQuery.vue';
 	import { menuBarStore, modalStore } from '~/store';
+	import UserBadges from '~/components/UserBadges.vue';
 
 	interface VState {
 		user?: DBUser,
@@ -87,6 +91,7 @@
 		name: 'UserView',
 
 		components: {
+			UserBadges,
 			LoadingNanami,
 			KaraQuery
 		},
@@ -243,15 +248,20 @@
 					margin: .5rem;
 					border-radius: $user-box-radius * 2;
 				}
-				> span {
-					padding: .1em;
-					line-height: 1em;
-					font-size: 1.75em;
-					font-weight: bold;
-					max-height: 2em;
-					// Dans ta gueule le mec avec son psuedo de 2 mètres !
-					overflow-wrap: anywhere;
-					overflow: hidden;
+				> div.name-badges {
+					> div.name {
+						padding: .1em;
+						line-height: 1em;
+						font-size: 1.75em;
+						font-weight: bold;
+						max-height: 2em;
+						// Dans ta gueule le mec avec son psuedo de 2 mètres !
+						overflow-wrap: anywhere;
+						overflow: hidden;
+					}
+					> div.badges {
+
+					}
 				}
 				> button {
 					margin-right: .5em;

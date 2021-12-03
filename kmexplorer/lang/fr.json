@@ -331,7 +331,9 @@
                 "banner": {
                     "label": "Bannière",
                     "remove": "Restaurer la bannière par défaut",
-                    "change": "Pour changer votre bannière, rendez-vous sur la page du karaoké de votre choix et cliquez sur le bouton “Utiliser cette chanson comme bannière”."
+					"upload": "Uploader une bannière personnalisée",
+                    "change": "Pour changer votre bannière, rendez-vous sur la page du karaoké de votre choix et cliquez sur le bouton “Utiliser cette chanson comme bannière”. Les bannières personnalisables sont réservées aux donateurs.",
+					"donator": "Merci pour votre don, vous êtes incroyable ! Vous pouvez utiliser une bannière personnalisée ou celle du karaoké de votre choix."
                 },
                 "flag_public": {
                     "label": "Profil public",
@@ -411,8 +413,8 @@
             "subtitles": "Télécharger les paroles (.{format})",
             "media": "Télécharger le média (.{format})"
         },
-        "crop_avatar": {
-            "label": "Rogner votre avatar",
+        "crop": {
+            "label": "Rogner",
             "add": "Ajouter",
             "cancel": "Annuler"
         },
@@ -457,5 +459,11 @@
         "FILE_UPLOADED": "Fichier mis en ligne.",
         "USER_EDITED": "Utilisateur édité avec succès",
         "FUTURE_PROFILES": "Ce bouton servira à afficher votre profil pour partager vos favoris avec tous, mais c'est pour une prochaine fois !"
-    }
+    },
+	"roles": {
+		"donator": "Donateur",
+		"contributor": "Contributeur",
+		"maintainer": "Mainteneur",
+		"admin": "Administrateur"
+	}
 }

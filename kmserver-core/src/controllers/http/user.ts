@@ -6,11 +6,41 @@ import {resolve} from 'path';
 import { Router } from 'express';
 import { getState } from '../../utils/state';
 import {requireAuth, requireValidUser, updateLoginTime} from '../middlewares/auth';
+import {RequestHandler} from 'express-serve-static-core';
+
+function editHandler(userFromToken: boolean): RequestHandler {
+	return async (req: any, res) => {
+		// No errors detected
+		if (req.body.bio) req.body.bio = unescape(req.body.bio.trim());
+		if (req.body.email) req.body.email = unescape(req.body.email.trim());
+		if (req.body.url) req.body.url = unescape(req.body.url.trim());
+		if (req.body.nickname) req.body.nickname = unescape(req.body.nickname.trim());
+		// if (req.body.flag_sendstats) req.body.flag_sendstats = req.body.flag_sendstats === 'true';
+		//Now we add user
+		let avatar: Express.Multer.File;
+		if (req.files?.avatarfile) avatar = req.files.avatarfile[0];
+		let banner: Express.Multer.File;
+		if (req.files?.bannerfile) banner = req.files.bannerfile[0];
+		try {
+			const response = await editUser(
+				userFromToken ? req.authToken.username:req.params.user,
+				req.body,
+				avatar,
+				req.authToken,
+				banner
+			);
+			res.status(200).json(userFromToken ? {code: 'USER_EDITED', data: { token: response.token }}:response);
+		} catch(err) {
+			res.status(500).json(err);
+		}
+	};
+}
 
 export default function userController(router: Router) {
 	const conf = getConfig();
 	// Middleware for playlist and files import
 	let upload = multer({ dest: resolve(getState().dataPath,conf.System.Path.Temp)});
+	const uploadMiddleware = upload.fields([{name: 'avatarfile', maxCount: 1}, {name: 'bannerfile', maxCount: 1}]);
 
 	router.route('/users')
 		.get(async (req, res) => {
@@ -52,39 +82,8 @@ export default function userController(router: Router) {
 				res.status(500).json(err);
 			}
 		})
-		.patch(upload.single('avatarfile'), requireAuth, requireValidUser, updateLoginTime, async (req: any, res) => {
-			// No errors detected
-			if (req.body.bio) req.body.bio = unescape(req.body.bio.trim());
-			if (req.body.email) req.body.email = unescape(req.body.email.trim());
-			if (req.body.url) req.body.url = unescape(req.body.url.trim());
-			if (req.body.nickname) req.body.nickname = unescape(req.body.nickname.trim());
-			if (req.body.flag_sendstats) req.body.flag_sendstats = req.body.flag_sendstats === 'true';
-			//Now we add user
-			let avatar: any;
-			if (req.file) avatar = req.file;
-			try {
-				const response = await editUser(req.params.user,req.body,avatar,req.authToken);
-				res.json(response);
-			} catch(err) {
-				res.status(500).json(err);
-			}
-		})
-		.put(upload.single('avatarfile'), requireAuth, requireValidUser, updateLoginTime, async (req: any, res) => {
-			if (req.body.bio) req.body.bio = unescape(req.body.bio.trim());
-			if (req.body.email) req.body.email = unescape(req.body.email.trim());
-			if (req.body.url) req.body.url = unescape(req.body.url.trim());
-			if (req.body.nickname) req.body.nickname = unescape(req.body.nickname.trim());
-			if (req.body.flag_sendstats) req.body.flag_sendstats = req.body.flag_sendstats === 'true';
-			//Now we add user
-			let avatar: any;
-			if (req.file) avatar = req.file;
-			try {
-				const response = await editUser(req.params.user,req.body,avatar,req.authToken);
-				res.json(response);
-			} catch(err) {
-				res.status(500).json(err);
-			}
-		});
+		.patch(uploadMiddleware, requireAuth, requireValidUser, updateLoginTime, editHandler(false))
+		.put(uploadMiddleware, requireAuth, requireValidUser, updateLoginTime, editHandler(false));
 	router.route('/users/:user/resetpassword')
 		.post(async (req, res) => {
 			try {
@@ -215,22 +214,7 @@ export default function userController(router: Router) {
 		 * HTTP/1.1 403 Forbidden
 	 */
 
-		.patch(upload.single('avatarfile'), requireAuth, requireValidUser, updateLoginTime, async (req: any, res: any) => {
-			// No errors detected
-			if (req.body.bio) req.body.bio = unescape(req.body.bio.trim());
-			if (req.body.email) req.body.email = unescape(req.body.email.trim());
-			if (req.body.url) req.body.url = unescape(req.body.url.trim());
-			if (req.body.nickname) req.body.nickname = unescape(req.body.nickname.trim());
-			//Now we edit user
-			const avatar: Express.Multer.File = req.file || null;
-			//Get username
-			try {
-				const response = await editUser(req.authToken.username, req.body, avatar , req.authToken);
-				res.status(200).json({code: 'USER_EDITED', data:{ token: response.token }});
-			} catch(err) {
-				res.status(500).json(err);
-			}
-		})
+		.patch(uploadMiddleware, requireAuth, requireValidUser, updateLoginTime, editHandler(true))
 
 	/**
  * @api {put} /myaccount Edit your own account
@@ -256,19 +240,5 @@ export default function userController(router: Router) {
  * @apiErrorExample Error-Response:
  * HTTP/1.1 403 Forbidden
  */
-		.put(upload.single('avatarfile'), requireAuth, requireValidUser, updateLoginTime, async (req: any, res: any) => {
-			if (req.body.bio) req.body.bio = unescape(req.body.bio.trim());
-			if (req.body.email) req.body.email = unescape(req.body.email.trim());
-			if (req.body.url) req.body.url = unescape(req.body.url.trim());
-			if (req.body.nickname) req.body.nickname = unescape(req.body.nickname.trim());
-			//Now we edit user
-			const avatar: Express.Multer.File = req.file || null;
-			//Get username
-			try {
-				const response = await editUser(req.authToken.username, req.body, avatar, req.authToken);
-				res.status(200).json({code: 'USER_EDITED', data:{ token: response.token }});
-			} catch(err) {
-				res.status(500).json(err);
-			}
-		});
+		.put(uploadMiddleware, requireAuth, requireValidUser, updateLoginTime, editHandler(true));
 }

@@ -8,7 +8,7 @@ import logger from '../lib/utils/logger';
 import {getConfig, resolvedPathAvatars, resolvedPathBanners, resolvedPathPreviews} from '../lib/utils/config';
 import {asyncExists, asyncMove, detectFileType} from '../lib/utils/files';
 import { v4 as uuidV4 } from 'uuid';
-import {resolve} from 'path';
+import {resolve, isAbsolute} from 'path';
 import { User, Token } from '../lib/types/user';
 import { sendMail } from '../utils/mailer';
 import randomstring from 'randomstring';
@@ -273,28 +273,40 @@ async function replaceAvatar(oldImageFile: string, avatar: Express.Multer.File) 
 
 async function replaceBanner(preview: string) {
 	if (preview === 'default.jpg') return preview;
-	const file = resolve(resolvedPathPreviews(), preview);
+	const customBanner = isAbsolute(preview);
+	const file = customBanner ? preview:resolve(resolvedPathPreviews(), preview);
+	let fileType: any;
+	if (customBanner) {
+		fileType = await detectFileType(file);
+		if (fileType !== 'jpg' &&
+			fileType !== 'png') {
+			throw {code: 'INVALID_FILE', data: 'Please input valid banners (jpg, png)'};
+		}
+	}
 	if (!await asyncExists(file)) {
 		throw new Error('The requested preview is not available nor generated.');
 	} else {
-		const target = resolve(resolvedPathBanners(), preview);
+		const name = customBanner ? `${uuidV4()}.${fileType}`:preview;
+		const target = resolve(resolvedPathBanners(), name);
 		// The banner is already in place (use by somebody else), no need to copy again.
 		if (await asyncExists(target)) return preview;
 		else {
-			await copy(file, target);
-			const kid = preview.split('.')[0];
-			const bans = getConfig().Users.BannerBan;
-			const kara = await getKara({
-				q: `k:${kid}`,
-			});
-			for (const key of Object.keys(tagTypes)) {
-				for (const tag of kara[key]) {
-					if (bans.includes(tag.tid)) {
-						throw {code: 'BANNER_BANNED', data: 'This banner cannot be used'};
+			if (!customBanner) {
+				const kid = preview.split('.')[0];
+				const bans = getConfig().Users.BannerBan;
+				const kara = await getKara({
+					q: `k:${kid}`,
+				});
+				for (const key of Object.keys(tagTypes)) {
+					for (const tag of kara[key]) {
+						if (bans.includes(tag.tid)) {
+							throw {code: 'BANNER_BANNED', data: 'This banner cannot be used'};
+						}
 					}
 				}
 			}
-			return preview;
+			await copy(file, target);
+			return name;
 		}
 	}
 }
@@ -321,7 +333,7 @@ export async function removeRoleFromUser(username: string, role: string) {
 	await editUser(username, user, null, {roles: {admin: true}, username: 'admin'});
 }
 
-export async function editUser(username: string, user: User, avatar: Express.Multer.File, token: Token) {
+export async function editUser(username: string, user: User, avatar: Express.Multer.File, token: Token, banner?: Express.Multer.File,) {
 	try {
 		if (!username) throw 'No user provided';
 		username = username.toLowerCase();
@@ -330,7 +342,7 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		if (!currentUser) throw 'User unknown';
 		const mergedUser = merge(currentUser, user);
 		delete mergedUser.password;
-		if (!isLooselyEqual(user.roles, currentUser.roles) && !token.roles.admin) throw 'Only admins can change a user\'s roles';
+		if (user.roles && !isLooselyEqual(user.roles, currentUser.roles) && !token.roles.admin) throw 'Only admins can change a user\'s roles';
 		// Check if login already exists.
 		if (user.nickname && currentUser.nickname !== user.nickname && await selectUser('nickname', user.nickname)) throw 'Nickname already exists';
 		if (user.password) {
@@ -338,7 +350,13 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 			const password = await hashPasswordbcrypt(user.password);
 			await updateUserPassword(username, password);
 		}
-		if (user.banner) {
+		if (banner) {
+			if (mergedUser.roles.donator || mergedUser.roles.admin) {
+				mergedUser.banner = await replaceBanner(banner.path);
+			} else {
+				throw {code: 'BANNER_BANNED', data: 'This function is reserved to donators'};
+			}
+		} else if (user.banner) {
 			mergedUser.banner = await replaceBanner(user.banner);
 		} else {
 			mergedUser.banner = currentUser.banner;

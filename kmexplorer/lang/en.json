@@ -331,7 +331,9 @@
                 "banner": {
                     "label": "Banner",
                     "remove": "Reset to the default banner",
-                    "change": "To change your banner, go to the page of a karaoke and click the \"Use as profile banner\" button."
+					"upload": "Upload a banner",
+                    "change": "To change your banner, go to the page of a karaoke and click the \"Use as profile banner\" button. Fully customizable banners is a donator feature.",
+					"donator": "Thanks for your support, you're awesome! You can upload a custom banner or use one from a karaoke of your choice."
                 },
                 "flag_public": {
                     "label": "Public profile",
@@ -411,7 +413,7 @@
             "subtitles": "Download lyrics (.{format})",
             "media": "Download media (.{format})"
         },
-        "crop_avatar": {
+        "crop": {
             "label": "Crop avatar",
             "add": "Add",
             "cancel": "Cancel"
@@ -457,5 +459,11 @@
         "FILE_UPLOADED": "File uploaded.",
         "USER_EDITED": "User successfully edited",
         "FUTURE_PROFILES": "This button will be used to share your profile to everyone else, but that's for another moment!"
-    }
+    },
+	"roles": {
+		"donator": "Donator",
+		"contributor": "Contributor",
+		"maintainer": "Maintainer",
+		"admin": "Administrator"
+	}
 }
