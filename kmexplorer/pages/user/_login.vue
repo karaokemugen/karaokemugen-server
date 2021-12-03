@@ -1,5 +1,5 @@
 <template>
-	<loading-nanami v-if="$fetchState.pending" class="tile is-parent is-12" />
+	<loading-nanami v-if="$fetchState.pending || !user.login" class="tile is-parent is-12" />
 	<div v-else>
 		<div class="user-box">
 			<div class="header">
@@ -131,7 +131,7 @@
 				}
 				this.user = res;
 			} else {
-				this.$nuxt.error({ statusCode: 404 });
+				this.$nuxt.error({ statusCode: 404, message: this.$t('error.not_found_profile') as string });
 			}
 		},
 
@@ -140,7 +140,7 @@
 				return this.$auth.loggedIn && (this.$route.params.login === this.$auth.user.login);
 			},
 			canEdit(): boolean {
-				return !!this.$auth.user.roles.admin || this.viewingSelf;
+				return (this.$auth.loggedIn && !!this.$auth.user.roles.admin) || this.viewingSelf;
 			},
 			metadata(): boolean {
 				return !!(

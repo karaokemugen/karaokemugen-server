@@ -77,7 +77,8 @@ export default function userController(router: Router) {
 		.get(async (req, res) => {
 			try {
 				const info = await findUserByName(req.params.user, {public: true});
-				res.status(200).json(info);
+				if (!info) res.status(404).end();
+				else res.status(200).json(info);
 			} catch(err) {
 				res.status(500).json(err);
 			}

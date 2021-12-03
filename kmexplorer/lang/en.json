@@ -2,6 +2,7 @@
     "error": {
         "generic": "Error",
         "private_profile": "The profile is private.",
+		"not_found_profile": "Cannot find this user",
         "home": "Go home"
     },
     "kara": {
