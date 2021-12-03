@@ -241,6 +241,14 @@
 			};
 		},
 
+		watch: {
+			active(now) {
+				if (now) {
+					this.resetForm();
+				}
+			}
+		},
+
 		methods: {
 			passwordNotEquals() {
 				return (
@@ -260,9 +268,8 @@
 				}
 				this.$auth.loginWith('local', { data: this.login }).then((_res) => {
 					this.$emit('login');
-					this.loading = false;
 					this.closeModal();
-				}).catch(() => {
+				}).finally(() => {
 					this.loading = false;
 				});
 			},
@@ -278,6 +285,13 @@
 			},
 			closeModal() {
 				this.$emit('close');
+			},
+			resetForm() {
+				this.login = {
+					username: '',
+					password: ''
+				};
+				this.mode = 'login';
 			}
 		}
 	});

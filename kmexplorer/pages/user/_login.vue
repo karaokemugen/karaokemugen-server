@@ -1,5 +1,5 @@
 <template>
-	<loading-nanami v-if="$fetchState.pending" class="tile is-parent is-12" />
+	<loading-nanami v-if="$fetchState.pending || !user.login" class="tile is-parent is-12" />
 	<div v-else>
 		<div class="user-box">
 			<div class="header">
@@ -7,11 +7,18 @@
 				<div class="down">
 					<div class="title-bar">
 						<img :src="`/avatars/${user.avatar_file}`" alt="" class="profile">
-						<span>
-							{{ user.nickname }}
-						</span>
+						<div class="name-badges">
+							<div ref="name" class="name" :class="{edit}" :contenteditable="edit">
+								{{ user.nickname }}
+							</div>
+							<user-badges :roles="user.roles" :edit="edit" @toggle="toggleRole" />
+						</div>
 						<client-only>
-							<button v-if="viewingSelf" class="button" @click.prevent="openEdit">
+							<button v-if="edit" class="button is-success" :class="{'is-loading': loading}" @click.prevent="submitEdit">
+								<font-awesome-icon :icon="['fas', 'sign-in-alt']" fixed-width />
+								<span class="is-hidden-mobile">{{ $t('modal.profile.submit') }}</span>
+							</button>
+							<button v-else-if="canEdit" class="button" @click.prevent="openEdit">
 								<font-awesome-icon :icon="['fas', 'edit']" fixed-width />
 								<span class="is-hidden-mobile">{{ $t('profile.edit') }}</span>
 							</button>
@@ -77,16 +84,23 @@
 	import LoadingNanami from '~/components/LoadingNanami.vue';
 	import KaraQuery from '~/components/KaraQuery.vue';
 	import { menuBarStore, modalStore } from '~/store';
+	import UserBadges from '~/components/UserBadges.vue';
+	import { Roles } from '%/lib/types/user';
+
+	type RoleKey = keyof Roles;
 
 	interface VState {
 		user?: DBUser,
-		VuexUnsubscribe?: Function
+		VuexUnsubscribe?: Function,
+		edit: boolean,
+		loading: boolean
 	}
 
 	export default Vue.extend({
 		name: 'UserView',
 
 		components: {
+			UserBadges,
 			LoadingNanami,
 			KaraQuery
 		},
@@ -94,6 +108,8 @@
 		data(): VState {
 			return {
 				user: {},
+				edit: false,
+				loading: false,
 				VuexUnsubscribe: () => {}
 			};
 		},
@@ -115,13 +131,16 @@
 				}
 				this.user = res;
 			} else {
-				this.$nuxt.error({ statusCode: 404 });
+				this.$nuxt.error({ statusCode: 404, message: this.$t('error.not_found_profile') as string });
 			}
 		},
 
 		computed: {
 			viewingSelf(): boolean {
 				return this.$auth.loggedIn && (this.$route.params.login === this.$auth.user.login);
+			},
+			canEdit(): boolean {
+				return (this.$auth.loggedIn && !!this.$auth.user.roles.admin) || this.viewingSelf;
 			},
 			metadata(): boolean {
 				return !!(
@@ -168,7 +187,32 @@
 				return isoCountriesLanguages.getCountry(this.$i18n.locale, country);
 			},
 			openEdit() {
-				modalStore.openModal('profile');
+				if (this.viewingSelf) {
+					modalStore.openModal('profile');
+				} else {
+					this.edit = true;
+				}
+			},
+			toggleRole(name: RoleKey) {
+				if (!this.user) {
+					throw new Error('User is not loaded');
+				}
+				if (!this.user.roles) {
+					this.user.roles = {};
+				}
+				this.$set(this.user.roles, name, !this.user.roles[name]);
+			},
+			submitEdit() {
+				this.loading = true;
+				this.$axios.$patch(`/api/users/${this.$route.params.login}`, {
+					nickname: (this.$refs.name as HTMLDivElement).innerText || this.user?.nickname,
+					roles: this.user?.roles
+				}).then(() => {
+					this.$fetch();
+				}).finally(() => {
+					this.edit = false;
+					this.loading = false;
+				});
 			}
 		}
 	});
@@ -243,15 +287,25 @@
 					margin: .5rem;
 					border-radius: $user-box-radius * 2;
 				}
-				> span {
-					padding: .1em;
-					line-height: 1em;
-					font-size: 1.75em;
-					font-weight: bold;
-					max-height: 2em;
-					// Dans ta gueule le mec avec son psuedo de 2 mètres !
-					overflow-wrap: anywhere;
-					overflow: hidden;
+				> div.name-badges {
+					> div.name {
+						padding: .1em;
+						line-height: 1em;
+						font-size: 1.75em;
+						font-weight: bold;
+						max-height: 2em;
+						// Dans ta gueule le mec avec son psuedo de 2 mètres !
+						overflow-wrap: anywhere;
+						overflow: hidden;
+
+						transition: padding 150ms ease, margin 150ms ease;
+						&.edit {
+							padding: .5em;
+							margin: .25em;
+							background-color: #343b3d;
+							border-bottom: whitesmoke 1px solid;
+						}
+					}
 				}
 				> button {
 					margin-right: .5em;

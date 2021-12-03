@@ -8,6 +8,7 @@ import { KaraFileV4 } from '../lib/types/kara';
 import { resolvedPathImport } from '../lib/utils/config';
 import { asyncExists } from '../lib/utils/files';
 import logger from '../lib/utils/logger';
+import { closeIssue } from './gitlab';
 
 export async function getKaraInbox(inid: string) {
 	const karas = await selectInbox(inid);
@@ -83,4 +84,6 @@ export async function removeKaraFromInbox(inid: string) {
 
 	await remove(resolve(resolvedPathImport(), karaDir));
 	await deleteInbox(inid);
+	const issueArr = inbox.gitlab_issue.split('/');
+	closeIssue(+issueArr[issueArr.length-1]);
 }

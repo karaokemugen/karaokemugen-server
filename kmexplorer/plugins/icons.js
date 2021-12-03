@@ -58,7 +58,10 @@ import {
 	faUserLock,
 	faKey,
 	faLink,
-	faUsers
+	faUsers,
+	faUserShield,
+	faUserCog,
+	faHeart
 } from '@fortawesome/free-solid-svg-icons';
 import {
 	faTwitter,
@@ -131,7 +134,10 @@ library.add(
 	faTwitter,
 	faInstagram,
 	faDiscord,
-	faTwitch);
+	faTwitch,
+	faHeart,
+	faUserShield,
+	faUserCog);
 
 // Register the component globally
 Vue.component('FontAwesomeIcon', FontAwesomeIcon);

@@ -1,10 +1,10 @@
 <template>
 	<modal
 		:active="active"
-		:modal-title="$t('modal.crop_avatar.label')"
-		:submit-label="$t('modal.crop_avatar.add')"
-		:cancel-label="$t('modal.crop_avatar.cancel')"
-		@submit="uploadAvatar"
+		:modal-title="$t('modal.crop.label')"
+		:submit-label="$t('modal.crop.add')"
+		:cancel-label="$t('modal.crop.cancel')"
+		@submit="upload"
 		@close="closeModal"
 	>
 		<section class="modal-card-body">
@@ -12,9 +12,9 @@
 				<cropper
 					ref="cropper"
 					class="cropper"
-					:src="avatar"
+					:src="image"
 					:stencil-props="{
-						aspectRatio: 1
+						aspectRatio: ratio
 					}"
 				/>
 			</client-only>
@@ -37,13 +37,21 @@
 		},
 
 		props: {
-			avatar: {
+			image: {
 				type: String,
 				required: true
 			},
 			active: {
 				type: Boolean,
 				required: true
+			},
+			type: {
+				type: String,
+				default: 'avatar'
+			},
+			ratio: {
+				type: Number,
+				default: 1
 			}
 		},
 
@@ -51,9 +59,9 @@
 			closeModal(): void {
 				this.$emit('close');
 			},
-			uploadAvatar(): void {
+			upload(): void {
 				const result = (this.$refs.cropper as any).getResult();
-				this.$emit('uploadAvatar', result.canvas.toDataURL());
+				this.$emit('upload', result.canvas.toDataURL());
 			}
 		}
 	});

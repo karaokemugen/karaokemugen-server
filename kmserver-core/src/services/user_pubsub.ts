@@ -21,7 +21,7 @@ export function unsubUser(socket: Socket, username: string) {
 export async function pubUser(username: string) {
 	const [user, favorites] = await Promise.all([
 		findUserByName(username, { public: true, password: false }),
-		getFavorites({ username, role: 'user' })
+		getFavorites({ username, roles: {user: true} })
 	]);
 	if (!user) {
 		// wtf?

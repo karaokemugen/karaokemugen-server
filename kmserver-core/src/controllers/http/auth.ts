@@ -3,11 +3,10 @@ import { Router } from 'express';
 
 import {getConfig} from '../../lib/utils/config';
 import {findUserByName, checkPassword, updateUserLastLogin, decodeJwtToken} from '../../services/user';
-import { Token, Role, User } from '../../lib/types/user';
+import { Roles, Token } from '../../lib/types/user';
 import { requireAuth, requireValidUser } from '../middlewares/auth';
 import sentry from '../../utils/sentry';
 import logger from '../../lib/utils/logger';
-import { getUserTypeName } from '../../lib/utils/constants';
 
 const loginErr = {
 	code: 'LOG_ERROR',
@@ -24,12 +23,11 @@ const loginNoUser = {
 async function checkLogin(username: string, password: string): Promise<Partial<Token>> {
 	const user = await findUserByName(username, {password: true});
 	if (!user) throw false;
-	if (!await checkPassword(user, password)) throw false;
-	const role = getRole(user);
+	if (!await checkPassword(user, password)) throw false;	
 	return {
-		token: createJwtToken(username, role, user.password_last_modified_at),
+		token: createJwtToken(username, user.roles, user.password_last_modified_at),
 		username: username,
-		role: role
+		roles: user.roles
 	};
 }
 
@@ -59,16 +57,11 @@ export default function authController(router: Router) {
 	});
 }
 
-export function createJwtToken(username: string, role: Role, passwordLastModifiedAt: Date) {
+export function createJwtToken(username: string, roles: Roles, passwordLastModifiedAt: Date) {
 	const conf = getConfig();
 	const timestamp = new Date().getTime();
 	return encode(
-		{ username, iat: timestamp, role, passwordLastModifiedAt },
+		{ username, iat: timestamp, roles, passwordLastModifiedAt },
 		conf.App.JwtSecret
 	);
-}
-
-export function getRole(user: User) {
-	const role = getUserTypeName(user.type);
-	return role || 'user';	
 }

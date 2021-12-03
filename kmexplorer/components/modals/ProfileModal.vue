@@ -1,6 +1,6 @@
 <template>
 	<div class="modal" :class="{'is-active': active}">
-		<form v-if="!modal.avatar" action="#" @submit.prevent="submitForm">
+		<form v-if="!modal.image" action="#" @submit.prevent="submitForm">
 			<div class="modal-background" @click="closeModal" />
 			<div class="modal-card">
 				<header>
@@ -11,7 +11,7 @@
 						<a class="delete" aria-label="close" @click="closeModal" />
 					</div>
 				</header>
-				<section v-if="mode === 'general'" class="modal-card-body">
+				<section class="modal-card-body">
 					<div class="profile-pic-box">
 						<img
 							v-if="user.avatar_file"
@@ -21,12 +21,12 @@
 						>
 						<div class="data">
 							<span class="login">{{ `${user.login}@${apiHost}` }}</span>
-							<br>
+							<user-badges :roles="user.roles" />
 							<label
 								for="avatar"
 								class="button"
 							>
-								<input id="avatar" type="file" accept="image/*" @change="openCropAvatarModal">
+								<input id="avatar" type="file" accept="image/jpg, image/png, image/gif" @change="openCropModal">
 								<font-awesome-icon :icon="['fas', 'portrait']" :fixed-width="true" />
 								{{ $t('modal.profile.select_avatar') }}
 							</label>
@@ -219,7 +219,7 @@
 						</div>
 						<div class="field-body flex-column">
 							<img
-								:src="'/banners/' + user.banner"
+								:src="user.banner.startsWith('data:') ? user.banner:'/banners/' + user.banner"
 								alt="User banner"
 								class="banner"
 							>
@@ -231,7 +231,19 @@
 							>
 								<font-awesome-icon :icon="['fas', 'history']" fixed-width /> {{ $t('modal.profile.fields.banner.remove') }}
 							</button>
-							<div class="has-text-white">
+							<label
+								for="banner"
+								class="button is-yellow"
+								:class="{'is-disabled': !user.roles.donator && !user.roles.admin}"
+							>
+								<input id="banner" :disabled="!user.roles.donator && !user.roles.admin" type="file" accept="image/jpg, image/png" @change="openCropModal">
+								<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true" />
+								{{ $t('modal.profile.fields.banner.upload') }}
+							</label>
+							<div v-if="user.roles.donator" class="has-text-white">
+								<font-awesome-icon :icon="['fas', 'heart']" fixed-width /> {{ $t('modal.profile.fields.banner.donator') }}
+							</div>
+							<div v-else class="has-text-white">
 								<font-awesome-icon :icon="['fas', 'search']" fixed-width /> {{ $t('modal.profile.fields.banner.change') }}
 							</div>
 						</div>
@@ -249,8 +261,8 @@
 							</div>
 							<label for="public" class="field">
 								<input
-									v-model="user.flag_public"
 									id="public"
+									v-model="user.flag_public"
 									type="checkbox"
 								>
 								{{ $t('modal.profile.fields.flag_public.checkbox') }}
@@ -267,8 +279,8 @@
 							</div>
 							<label for="favorites" class="field">
 								<input
-									v-model="user.flag_displayfavorites"
 									id="favorites"
+									v-model="user.flag_displayfavorites"
 									type="checkbox"
 									:disabled="!user.flag_public"
 								>
@@ -289,8 +301,8 @@
 							</div>
 							<label for="sendstats" class="field">
 								<input
-									v-model="user.flag_sendstats"
 									id="sendstats"
+									v-model="user.flag_sendstats"
 									type="checkbox"
 								>
 								{{ $t('modal.profile.fields.flag_sendstats.checkbox') }}
@@ -414,7 +426,7 @@
 				</footer>
 			</div>
 		</form>
-		<crop-avatar-modal :avatar="avatar" :active="modal.avatar" @close="modal.avatar=false" @uploadAvatar="uploadAvatar" />
+		<crop-modal :image="image" :active="!!modal.crop" :ratio="modal.crop === 'banner' ? 16/9:1" @close="modal.crop=false" @upload="uploadImage" />
 	</div>
 </template>
 
@@ -424,7 +436,8 @@
 	import languages from '@karaokemugen/i18n-iso-languages';
 	import isoCountriesLanguages from 'iso-countries-languages';
 
-	import CropAvatarModal from './CropAvatarModal.vue';
+	import CropModal from './CropModal.vue';
+	import UserBadges from '~/components/UserBadges.vue';
 	import { DBUser } from '%/lib/types/database/user';
 	import { modalStore } from '~/store';
 
@@ -441,19 +454,19 @@
 		location: string
 		main_series_lang_name: string,
 		fallback_series_lang_name: string,
-		mode: 'general' | 'series',
 		loading: boolean,
 		modal: {
-			avatar: boolean
+			crop: false | 'avatar' | 'banner'
 		},
-		avatar: string
+		image: string
 	}
 
 	export default Vue.extend({
 		name: 'ProfileModal',
 
 		components: {
-			CropAvatarModal
+			CropModal,
+			UserBadges
 		},
 
 		props: {
@@ -485,17 +498,19 @@
 						discord: '',
 						twitter: '',
 						instagram: ''
+					},
+					roles: {
+						user: true
 					}
 				},
 				location: '',
 				main_series_lang_name: '',
 				fallback_series_lang_name: '',
-				mode: 'general',
 				loading: false,
 				modal: {
-					avatar: false
+					crop: false
 				},
-				avatar: ''
+				image: ''
 			};
 		},
 
@@ -518,7 +533,7 @@
 		},
 
 		watch: {
-			active(now, _old) {
+			active(now) {
 				if (now) {
 					this.getUser();
 				}
@@ -589,7 +604,7 @@
 			async submitForm(): Promise<void> {
 				this.loading = true;
 				await this.$axios.patch('/api/myaccount', {
-					...this.user, avatar_file: undefined, type: undefined
+					...this.user, avatar_file: undefined, roles: undefined, banner: undefined
 				}).then(async (response) => {
 					// Refresh auth
 					await this.$auth.setUserToken(response.data.data.token);
@@ -605,25 +620,30 @@
 				modalStore.openModal('deleteAccount');
 				this.closeModal();
 			},
-			openCropAvatarModal(e:any) {
+			openCropModal(e:any) {
 				if (e.target.files?.length > 0) {
 					const reader = new FileReader();
-					reader.onload = (e) => {
-						this.avatar = e.target?.result as string;
-						this.modal.avatar = true;
+					reader.onload = (re) => {
+						this.image = re.target?.result as string;
+						this.modal.crop = e.target.id;
 					};
 					reader.readAsDataURL(e.target.files[0]);
 				}
 			},
-			async uploadAvatar(avatar:string): Promise<void> {
+			async uploadImage(blob:string): Promise<void> {
+				const type = this.modal.crop;
 				const file = new File(
-					[await (await fetch(avatar)).blob()],
-					`avatar.${(/data:([a-z]+)\/([a-z]+)[,;]/.exec(avatar) as RegExpMatchArray)[2]}`
+					[await (await fetch(blob)).blob()],
+					`${type}${Math.floor(Math.random() * 10000)}.${(/data:([a-z]+)\/([a-z]+)[,;]/.exec(blob) as RegExpMatchArray)[2]}`
 				);
-				this.user.avatar_file = avatar;
-				this.modal.avatar = false;
+				if (type === 'avatar') {
+					this.user.avatar_file = blob;
+				} else if (type === 'banner') {
+					this.user.banner = blob;
+				}
+				this.modal.crop = false;
 				const form = new FormData();
-				form.set('avatarfile', file);
+				form.set(`${type}file`, file);
 				this.loading = true;
 				await this.$axios.patch('/api/myaccount', form, {
 					headers: {
@@ -671,7 +691,7 @@
 		color: white;
 	}
 
-	#avatar {
+	#avatar, #banner {
 		display: none
 	}
 
@@ -694,6 +714,9 @@
 			margin-right: 1em;
 		}
 		.data {
+			.badges {
+				padding-bottom: .5em;
+			}
 			.login {
 				font-size: 2rem;
 				color: white;

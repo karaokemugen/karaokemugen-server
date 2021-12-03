@@ -6,7 +6,7 @@ import {initFrontend} from './frontend';
 import cli from 'commander';
 import detect from 'detect-port';
 import {initDB} from './dao/database';
-import {createUser, changePassword, initUsers, editUser} from './services/user';
+import {createUser, changePassword, initUsers, addRoleToUser, removeRoleFromUser} from './services/user';
 import sudoBlock from 'sudo-block';
 import {asyncCheckOrMkdir} from './lib/utils/files';
 import findRemoveSync from 'find-remove';
@@ -112,8 +112,13 @@ async function main() {
 		exit(0);
 	}
 
-	if (argv.opts().promoteToMaintainer) {
-		await editUser(argv.opts().promoteToMaintainer[0], {type: 0.5}, null, {role: 'admin', username: 'admin'});
+	if (argv.opts().addUserRole) {
+		await addRoleToUser(argv.opts().addUserRole[0], argv.opts().addUserRole[1]);
+		exit(0);
+	}
+
+	if (argv.opts().removeUserRole) {
+		await removeRoleFromUser(argv.opts().removeUserRole[0], argv.opts().removeUserRole[1]);
 		exit(0);
 	}
 
@@ -176,7 +181,8 @@ function parseArgs() {
 		.option('--createPreviews', 'generate image previews')
 		.option('--createAdmin [user],[password]', 'Create a new admin user', login)
 		.option('--changePassword [user],[password]', 'Change a user password', login)
-		.option('--promoteToMaintainer [user]', 'Make user a maintainer', login)
+		.option('--addUserRole [user],[role]', 'Add role to user', login)
+		.option('--removeUserRole [user],[role]', 'Remove role from user', login)
 		.option('--promoteToken [token],[newcode]', 'Promote a remote token to a permanent one', login)
 		.option('--build', 'Build KMExplorer (required in production environments)')
 		.parse(argv);

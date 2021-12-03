@@ -1,3 +1,5 @@
+import { Roles } from '%/lib/types/user';
+
 export interface tagType {
 	icon: string,
 	class: string,
@@ -160,5 +162,33 @@ export const tagTypes: { [key: string]: tagType } = {
 		icon: 'tachometer-alt',
 		class: 'is-white',
 		type: 14
+	}
+};
+
+export interface RoleDetail {
+	class: string
+	icon: string
+}
+
+type RoleDetails = {
+	[role in keyof Roles]: RoleDetail
+}
+
+export const roles: RoleDetails = {
+	donator: {
+		icon: 'heart',
+		class: 'is-purple'
+	},
+	admin: {
+		icon: 'user-shield',
+		class: 'is-danger'
+	},
+	contributor: {
+		icon: 'user-secret',
+		class: 'is-warning'
+	},
+	maintainer: {
+		icon: 'user-cog',
+		class: 'is-success'
 	}
 };

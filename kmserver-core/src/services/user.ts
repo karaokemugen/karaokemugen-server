@@ -8,18 +8,19 @@ import logger from '../lib/utils/logger';
 import {getConfig, resolvedPathAvatars, resolvedPathBanners, resolvedPathPreviews} from '../lib/utils/config';
 import {asyncExists, asyncMove, detectFileType} from '../lib/utils/files';
 import { v4 as uuidV4 } from 'uuid';
-import {resolve} from 'path';
+import {resolve, isAbsolute} from 'path';
 import { User, Token } from '../lib/types/user';
 import { sendMail } from '../utils/mailer';
 import randomstring from 'randomstring';
 import sentry from '../utils/sentry';
-import {getRole, createJwtToken } from '../controllers/http/auth';
+import { createJwtToken } from '../controllers/http/auth';
 import {UserList, UserOptions, UserParams} from '../types/user';
 import { delPubUser, pubUser } from './user_pubsub';
 import {asciiRegexp, tagTypes} from '../lib/utils/constants';
 import {copy} from 'fs-extra';
 import {DBUser} from '../lib/types/database/user';
 import {getKara} from './kara';
+import { isLooselyEqual } from '../lib/utils/objectHelpers';
 
 const passwordResetRequests = new Map();
 
@@ -119,7 +120,7 @@ export async function findUserByName(username: string, opts: UserOptions = {}) {
 			if (!user.flag_public) return {
 				login: user.login,
 				avatar_file: user.avatar_file,
-				type: user.type,
+				roles: user.roles,
 				nickname: user.nickname
 			};
 			// If the user has a public profile, but it's not his own profile, we remove the email bit.
@@ -211,7 +212,10 @@ export async function createUser(user: User, opts: any = {}) {
 		user.email = user.email || null;
 		user.location = user.location || null;
 		user.language = user.language || null;
-		opts.admin ? user.type = 2 : user.type = 1;
+		user.roles = {
+			user: true,
+			admin: opts.admin
+		};
 		if (!asciiRegexp.test(user.login)) throw { code: 'USER_ASCII_CHARACTERS_ONLY'};
 		if (!user.password) throw { code: 'USER_EMPTY_PASSWORD'};
 		if (!user.login) throw { code: 'USER_EMPTY_LOGIN'};
@@ -269,28 +273,40 @@ async function replaceAvatar(oldImageFile: string, avatar: Express.Multer.File) 
 
 async function replaceBanner(preview: string) {
 	if (preview === 'default.jpg') return preview;
-	const file = resolve(resolvedPathPreviews(), preview);
+	const customBanner = isAbsolute(preview);
+	const file = customBanner ? preview:resolve(resolvedPathPreviews(), preview);
+	let fileType: any;
+	if (customBanner) {
+		fileType = await detectFileType(file);
+		if (fileType !== 'jpg' &&
+			fileType !== 'png') {
+			throw {code: 'INVALID_FILE', data: 'Please input valid banners (jpg, png)'};
+		}
+	}
 	if (!await asyncExists(file)) {
 		throw new Error('The requested preview is not available nor generated.');
 	} else {
-		const target = resolve(resolvedPathBanners(), preview);
+		const name = customBanner ? `${uuidV4()}.${fileType}`:preview;
+		const target = resolve(resolvedPathBanners(), name);
 		// The banner is already in place (use by somebody else), no need to copy again.
 		if (await asyncExists(target)) return preview;
 		else {
-			await copy(file, target);
-			const kid = preview.split('.')[0];
-			const bans = getConfig().Users.BannerBan;
-			const kara = await getKara({
-				q: `k:${kid}`,
-			});
-			for (const key of Object.keys(tagTypes)) {
-				for (const tag of kara[key]) {
-					if (bans.includes(tag.tid)) {
-						throw {code: 'BANNER_BANNED', data: 'This banner cannot be used'};
+			if (!customBanner) {
+				const kid = preview.split('.')[0];
+				const bans = getConfig().Users.BannerBan;
+				const kara = await getKara({
+					q: `k:${kid}`,
+				});
+				for (const key of Object.keys(tagTypes)) {
+					for (const tag of kara[key]) {
+						if (bans.includes(tag.tid)) {
+							throw {code: 'BANNER_BANNED', data: 'This banner cannot be used'};
+						}
 					}
 				}
 			}
-			return preview;
+			await copy(file, target);
+			return name;
 		}
 	}
 }
@@ -305,16 +321,28 @@ export async function changePassword(username: string, password: string) {
 	}
 }
 
-export async function editUser(username: string, user: User, avatar: Express.Multer.File, token: Token) {
+export async function addRoleToUser(username: string, role: string) {
+	const user = await selectUser('pk_login', username);
+	user.roles[role] = true;
+	await editUser(username, user, null, {roles: {admin: true}, username: 'admin'});
+}
+
+export async function removeRoleFromUser(username: string, role: string) {
+	const user = await selectUser('pk_login', username);
+	user.roles[role] = false;
+	await editUser(username, user, null, {roles: {admin: true}, username: 'admin'});
+}
+
+export async function editUser(username: string, user: User, avatar: Express.Multer.File, token: Token, banner?: Express.Multer.File,) {
 	try {
 		if (!username) throw 'No user provided';
 		username = username.toLowerCase();
-		if (token.username.toLowerCase() !== username && token.role !== 'admin') throw 'Only admins can edit another user';
+		if (token.username.toLowerCase() !== username && !token.roles.admin) throw 'Only admins can edit another user';
 		const currentUser = await findUserByName(username, {password: true});
 		if (!currentUser) throw 'User unknown';
 		const mergedUser = merge(currentUser, user);
 		delete mergedUser.password;
-		if (user.type && user.type !== currentUser.type && token.role !== 'admin') throw 'Only admins can change a user\'s type';
+		if (user.roles && !isLooselyEqual(user.roles, currentUser.roles) && !token.roles.admin) throw 'Only admins can change a user\'s roles';
 		// Check if login already exists.
 		if (user.nickname && currentUser.nickname !== user.nickname && await selectUser('nickname', user.nickname)) throw 'Nickname already exists';
 		if (user.password) {
@@ -322,7 +350,13 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 			const password = await hashPasswordbcrypt(user.password);
 			await updateUserPassword(username, password);
 		}
-		if (user.banner) {
+		if (banner) {
+			if (mergedUser.roles.donator || mergedUser.roles.admin) {
+				mergedUser.banner = await replaceBanner(banner.path);
+			} else {
+				throw {code: 'BANNER_BANNED', data: 'This function is reserved to donators'};
+			}
+		} else if (user.banner) {
 			mergedUser.banner = await replaceBanner(user.banner);
 		} else {
 			mergedUser.banner = currentUser.banner;
@@ -341,7 +375,7 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		pubUser(username);
 		return {
 			user: updatedUser,
-			token: createJwtToken(updatedUser.login, getRole(updatedUser), new Date(updatedUser.password_last_modified_at))
+			token: createJwtToken(updatedUser.login, updatedUser.roles, new Date(updatedUser.password_last_modified_at))
 		};
 	} catch (err) {
 		logger.error(`Failed to update ${username}'s profile`, {service: 'User', obj: err});

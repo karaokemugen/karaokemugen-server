@@ -5,7 +5,7 @@ INSERT INTO users(
 	pk_login,
 	nickname,
 	password,
-	type,
+	roles,
 	avatar_file,
 	bio,
 	url,
@@ -26,7 +26,7 @@ SELECT
 	pk_login AS login,
 	nickname,
 	password,
-	type,
+	roles,
 	avatar_file,
 	bio,
 	url,
@@ -48,7 +48,7 @@ SELECT
 FROM users
     ${where || ''}
 	${filter ? 'WHERE to_tsvector(\'public.unaccent_conf\', concat(pk_login, \' \', nickname)) @@ to_tsquery(\'public.unaccent_conf\', $1)':''}
-GROUP BY pk_login, nickname, password, type, avatar_file, bio, url, email, location, flag_sendstats, main_series_lang, fallback_series_lang, password_last_modified_at, last_login_at, social_networks, flag_public, flag_displayfavorites, banner, language
+GROUP BY pk_login, nickname, password, roles, avatar_file, bio, url, email, location, flag_sendstats, main_series_lang, fallback_series_lang, password_last_modified_at, last_login_at, social_networks, flag_public, flag_displayfavorites, banner, language
 ${order ? 'ORDER BY pk_login asc':''}
 ${offset_limit || ''}
 `;
@@ -73,7 +73,7 @@ UPDATE users SET
 	url = $3,
 	email = $4,
 	avatar_file = $5,
-	type = $6,
+	roles = $6::jsonb,
 	main_series_lang = $7,
 	fallback_series_lang = $8,
 	location = $9,
