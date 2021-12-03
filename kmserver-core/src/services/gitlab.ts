@@ -23,6 +23,20 @@ export async function gitlabPostNewIssue(title: string, desc: string, labels: st
 	return JSON.parse(res.body).web_url;
 }
 
+/** Close an issue */
+export async function closeIssue(issue: number) {
+	const conf = getConfig();
+	const params = new URLSearchParams([
+		['state_event', 'close']
+	]);
+	await HTTP.put(`${conf.Gitlab.Host}/api/v4/projects/${conf.Gitlab.ProjectID}/issues/${issue}?${params.toString()}`, {
+		headers: {
+			'PRIVATE-TOKEN': conf.Gitlab.Token
+		},
+		timeout: 25000
+	});
+}
+
 export async function postSuggestionToKaraBase(title: string, serie:string, type:string, link:string, username: string): Promise<string> {
 	const conf = getConfig().Gitlab.IssueTemplate;
 	let titleIssue = conf?.Suggestion?.Title
