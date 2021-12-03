@@ -462,9 +462,9 @@
         "FUTURE_PROFILES": "Ce bouton servira à afficher votre profil pour partager vos favoris avec tous, mais c'est pour une prochaine fois !"
     },
 	"roles": {
-		"donator": "Donateur",
-		"contributor": "Contributeur",
-		"maintainer": "Mainteneur",
-		"admin": "Administrateur"
+		"donator": "Donateur(-ice)",
+		"contributor": "Contributeur(-ice)",
+		"maintainer": "Mainteneur(-se)",
+		"admin": "Administrateur(-ice)"
 	}
 }
