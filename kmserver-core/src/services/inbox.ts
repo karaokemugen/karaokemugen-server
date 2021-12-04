@@ -82,7 +82,9 @@ export async function removeKaraFromInbox(inid: string) {
 	// You never know.
 	if (!karaDir) throw {code: 500};
 
-	await remove(resolve(resolvedPathImport(), karaDir));
+	await remove(resolve(resolvedPathImport(), karaDir)).catch(() => {
+		logger.warn(`Folder for ${karaDir} already deleted`, {service: 'Inbox'});
+	});
 	await deleteInbox(inid);
 	const issueArr = inbox.gitlab_issue.split('/');
 	closeIssue(+issueArr[issueArr.length-1]);
