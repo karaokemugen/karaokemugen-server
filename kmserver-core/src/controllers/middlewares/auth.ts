@@ -45,7 +45,7 @@ export const optionalAuth = (req, res, next) => {
 
 export const requireAdmin = (req, res, next) => {
 	const token = decodeJwtToken(req.get('authorization'));
-	if (token && token.role === 'admin') {
+	if (token && token.roles.admin) {
 		next();
 	} else {
 		res.status(403).send('Only admins can use this function');
@@ -55,7 +55,7 @@ export const requireAdmin = (req, res, next) => {
 
 export const requireMaintainer = (req, res, next) => {
 	const token = decodeJwtToken(req.get('authorization'));
-	if (token && (token.role === 'admin' || token.role === 'maintainer')) {
+	if (token && (token.roles.admin || token.roles.maintainer)) {
 		next();
 	} else {
 		res.status(403).send('Only admins or maintainers can use this function');
