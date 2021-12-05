@@ -26,7 +26,7 @@
 								for="avatar"
 								class="button"
 							>
-								<input id="avatar" type="file" accept="image/jpg, image/png, image/gif" @change="openCropModal">
+								<input id="avatar" type="file" accept="image/jpg, image/jpeg, image/png, image/gif" @change="openCropModal">
 								<font-awesome-icon :icon="['fas', 'portrait']" :fixed-width="true" />
 								{{ $t('modal.profile.select_avatar') }}
 							</label>
@@ -234,9 +234,9 @@
 							<label
 								for="banner"
 								class="button is-yellow"
-								:class="{'is-disabled': !user.roles.donator && !user.roles.admin}"
+								:disabled="!user.roles.donator && !user.roles.admin"
 							>
-								<input id="banner" :disabled="!user.roles.donator && !user.roles.admin" type="file" accept="image/jpg, image/png" @change="openCropModal">
+								<input id="banner" :disabled="!user.roles.donator && !user.roles.admin" type="file" accept="image/jpg, image/jpeg, image/png" @change="openCropModal">
 								<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true" />
 								{{ $t('modal.profile.fields.banner.upload') }}
 							</label>
