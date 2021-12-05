@@ -200,7 +200,10 @@
         "favorites": "Favorites",
         "you": " (that's you!)",
         "edit": "Edit profile",
-        "favorites_count": "{x} favorite | {x} favorites"
+		"private": "Your profile is private, only you can see it.",
+        "favorites_count": "{x} favorite | {x} favorites",
+		"public_favorites": "Your favorites are public. Click to hide them.",
+		"private_favorites": "Your favorites are private. Click to show them."
     },
     "search": {
         "placeholder": {

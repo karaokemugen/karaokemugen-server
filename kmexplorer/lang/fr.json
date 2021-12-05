@@ -200,7 +200,10 @@
         "favorites": "Favoris",
         "you": " (c'est vous !)",
         "edit": "Éditer le profil",
-        "favorites_count": "{x} favori | {x} favoris"
+		"private": "Votre profil est privé, vous êtes le seul à pouvoir le voir.",
+        "favorites_count": "{x} favori | {x} favoris",
+		"public_favorites": "Vos favoris sont publics. Cliquez pour cacher vos favoris.",
+		"private_favorites": "Vos favoris sont privés. Cliquez pour partager vos favoris."
     },
     "search": {
         "placeholder": {
@@ -344,7 +347,7 @@
                 "flag_displayfavorites": {
                     "label": "Favoris",
                     "checkbox": "Afficher mes favoris",
-                    "desc": "En plus de montrer votre profil public, vous pouvez exposer vos favoris (et ainsi vos goûts) aux yeux de tous. Cette option est désactivée par défaut, à vous de la cocher si vous voulez. Pour afficher vos favoris, votre profil doit être public au préalable."
+                    "desc": "En plus de montrer votre profil public, vous pouvez exposer vos favoris (et ainsi vos goûts) aux yeux de tous. Cette option est désactivée par défaut, à vous de l'activer si vous voulez. Pour afficher vos favoris, votre profil doit être public au préalable."
                 },
                 "flag_sendstats": {
                     "label": "Statistiques",
@@ -458,8 +461,7 @@
         "SUBFILE_FORMAT_UNKOWN": "Format du fichier de sous-titres inconnus",
         "CANNOT_EDIT_KARA": "Impossible d'envoyer la modification.",
         "FILE_UPLOADED": "Fichier mis en ligne.",
-        "USER_EDITED": "Utilisateur édité avec succès",
-        "FUTURE_PROFILES": "Ce bouton servira à afficher votre profil pour partager vos favoris avec tous, mais c'est pour une prochaine fois !"
+        "USER_EDITED": "Utilisateur édité avec succès"
     },
 	"roles": {
 		"donator": "Donateur(-ice)",

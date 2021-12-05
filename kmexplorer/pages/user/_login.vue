@@ -10,6 +10,7 @@
 						<div class="name-badges">
 							<div ref="name" class="name" :class="{edit}" :contenteditable="edit">
 								{{ user.nickname }}
+								<font-awesome-icon v-if="!edit && !user.flag_public" :icon="['fas', 'lock']" fixed-width :title="$t('profile.private')" />
 							</div>
 							<user-badges :roles="user.roles" :edit="edit" @toggle="toggleRole" />
 						</div>
@@ -67,10 +68,23 @@
 			</div>
 		</div>
 		<template v-if="(user.flag_displayfavorites && user.favorites_count > 0) || viewingSelf">
-			<h1 class="title with-button">
-				<font-awesome-icon :icon="['fas', 'star']" fixed-width />
-				{{ $tc('profile.favorites_count', user.favorites_count, { x: user.favorites_count }) }}
-			</h1>
+			<div class="title-box">
+				<h1 class="title with-button">
+					<font-awesome-icon :icon="['fas', 'star']" fixed-width />
+					{{ $tc('profile.favorites_count', user.favorites_count, { x: user.favorites_count }) }}
+				</h1>
+				<div v-if="viewingSelf" class="title is-4 with-button">
+					<button
+						class="button"
+						:class="{'is-loading': loading}"
+						:disabled="!user.flag_public"
+						:title="$t('modal.profile.fields.flag_displayfavorites.desc')"
+						@click="toggleFavorite">
+						<font-awesome-icon :icon="['fas', user.flag_displayfavorites ? 'eye':'eye-slash']" fixed-width />
+						{{ $t(user.flag_displayfavorites ? 'profile.public_favorites': 'profile.private_favorites') }}
+					</button>
+				</div>
+			</div>
 			<kara-query :favorites="user.login" />
 		</template>
 	</div>
@@ -213,6 +227,18 @@
 					this.edit = false;
 					this.loading = false;
 				});
+			},
+			toggleFavorite() {
+				this.loading = true;
+				this.$axios.$patch('/api/myaccount', {
+					flag_displayfavorites: !this.user?.flag_displayfavorites
+				}).then(() => {
+					if (this.user) {
+						this.user.flag_displayfavorites = !this.user?.flag_displayfavorites;
+					}
+				}).finally(() => {
+					this.loading = false;
+				});
 			}
 		}
 	});
@@ -330,6 +356,15 @@
 				padding: 1em;
 				border-top: solid 1px gray;
 			}
+		}
+	}
+	.title-box {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		@media screen and (max-width: 769px) {
+			flex-direction: column;
+			align-items: flex-start;
 		}
 	}
 	.title.with-button {
