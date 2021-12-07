@@ -21,7 +21,7 @@ import { findUserByName } from './user';
 export async function getBaseStats() {
 	try {
 		return await selectBaseStats();
-	} catch(err) {
+	} catch(err) {		
 		sentry.error(err);
 		throw err;
 	}
@@ -61,7 +61,7 @@ export async function generate() {
 		refreshKaraStats();
 		await createImagePreviews(karas, 'full', 1280);
 	} catch(err) {
-		logger.error('', {service: 'Gen', obj: err});
+		logger.error('Generation failed', {service: 'Gen', obj: err});
 		sentry.error(err, 'Fatal');
 	}
 }
@@ -118,8 +118,8 @@ export async function getAllKaras(params: KaraParams, token?: Token): Promise<Ka
 		// Skip Sentry if the error has a code.
 		if (err?.code) throw err;
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
-		sentry.error(err);
-		logger.error('', {service: 'GetAllKaras', obj: err});
+		logger.error('Getting karas failed', {service: 'Karas', obj: err});
+		sentry.error(err);		
 		throw err;
 	}
 }

@@ -8,11 +8,18 @@ import { KaraFileV4 } from '../lib/types/kara';
 import { resolvedPathImport } from '../lib/utils/config';
 import { asyncExists } from '../lib/utils/files';
 import logger from '../lib/utils/logger';
+import Sentry from '../utils/sentry';
 import { closeIssue } from './gitlab';
 
 export async function getKaraInbox(inid: string) {
-	const karas = await selectInbox(inid);
-	return karas[0];
+	try {
+		const karas = await selectInbox(inid);
+		return karas[0];
+	} catch(err) {		
+		logger.error(`Failed to get inbox item ${inid}`, {service: 'Inbox', obj: err});
+		Sentry.error(err);
+		throw err;
+	}
 }
 
 export function getInbox() {
@@ -20,9 +27,15 @@ export function getInbox() {
 }
 
 export async function markKaraInboxAsDownloaded(inid: string, username: string) {
-	const inbox = await getKaraInbox(inid);
-	if (!inbox) throw {code: 404};
-	return updateInboxDownloaded(username, inid);
+	try {
+		const inbox = await getKaraInbox(inid);
+		if (!inbox) throw {code: 404};
+		return updateInboxDownloaded(username, inid);
+	} catch(err) {
+		logger.error(`Failed to mark inbox item ${inid} as downloaded by ${username}`, {service: 'Inbox', obj: err});
+		Sentry.error(err);
+		throw err;
+	}
 }
 
 export async function addKaraInInbox(karaName: string, issue?: string, fix = false) {
@@ -70,22 +83,28 @@ export async function addKaraInInbox(karaName: string, issue?: string, fix = fal
 			fix: fix
 		});
 	} catch(err) {
-		// Non-fatal
 		logger.error('Unable to create kara in inbox', {service: 'Inbox', obj: err});
+		Sentry.error(err);
 	}
 }
 
 export async function removeKaraFromInbox(inid: string) {
-	const inbox = await getKaraInbox(inid);
-	if (!inbox) throw {code: 404};
-	const karaDir = basename(inbox.kara.file, '.kara.json');
-	// You never know.
-	if (!karaDir) throw {code: 500};
+	try {
+		const inbox = await getKaraInbox(inid);
+		if (!inbox) throw {code: 404};
+		const karaDir = basename(inbox.kara.file, '.kara.json');
+		// You never know.
+		if (!karaDir) throw {code: 500};
 
-	await remove(resolve(resolvedPathImport(), karaDir)).catch(() => {
-		logger.warn(`Folder for ${karaDir} already deleted`, {service: 'Inbox'});
-	});
-	await deleteInbox(inid);
-	const issueArr = inbox.gitlab_issue.split('/');
-	closeIssue(+issueArr[issueArr.length-1]);
+		await remove(resolve(resolvedPathImport(), karaDir)).catch(() => {
+			logger.warn(`Folder for ${karaDir} already deleted`, {service: 'Inbox'});
+		});
+		await deleteInbox(inid);
+		const issueArr = inbox.gitlab_issue.split('/');
+		closeIssue(+issueArr[issueArr.length-1]);
+	} catch(err) {
+		logger.error(`Failed to delete inbox item ${inid}`, {service: 'Inbox', obj: err});
+		Sentry.error(err);
+		throw err;
+	}
 }
