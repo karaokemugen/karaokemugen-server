@@ -1,10 +1,40 @@
+import execa from 'execa';
 import {promises as fs} from 'fs';
 import {resolve} from 'path';
 
 import { getConfig } from '../lib/utils/config';
-import { gitConfig, gitDiff, gitPull } from '../lib/utils/git';
 import { computeFileChanges } from '../lib/utils/patch';
 import { getState } from '../utils/state';
+
+async function gitDiff(commit1: string, commit2: string, gitDir: string): Promise<string> {
+	const res = await execa(getState().binPath.git, [
+		'diff',
+		'-p',
+		'--minimal',
+		'--no-renames',
+		'-U0',
+		`${commit1}..${commit2}`,
+	], {
+		encoding: 'utf8',
+		cwd: gitDir
+	});
+	return res.stdout;
+}
+
+async function gitPull(gitDir: string): Promise<string> {
+	const res = await execa(getState().binPath.git, ['pull'], {
+		encoding: 'utf8',
+		cwd: gitDir
+	});
+	return res.stdout;
+}
+
+async function gitConfig(gitDir: string) {
+	await execa(getState().binPath.git, ['config', 'diff.renameLimit', '20000'], {
+		encoding: 'utf8',
+		cwd: gitDir
+	});
+}
 
 export async function getLatestGitCommit(): Promise<string> {
 	const commit = await fs.readFile(resolve(getState().dataPath, getConfig().System.Repositories[0].BaseDir, '.git/refs/heads/master'), 'utf-8');
@@ -30,5 +60,6 @@ export async function getGitDiff(commit: string, fullFiles = false): Promise<str
 }
 
 export async function initGitRepos() {
+	
 	gitConfig(resolve(getState().dataPath, getConfig().System.Repositories[0].BaseDir));
 }
