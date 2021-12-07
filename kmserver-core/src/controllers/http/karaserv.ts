@@ -1,6 +1,5 @@
 import {aggregateKaras, getRawKara, getBaseStats, getKara, getAllKaras, getAllYears, newKaraIssue, getAllmedias} from '../../services/kara';
 import {getTags, getTag} from '../../services/tag';
-import {getAllSeries} from '../../services/series';
 import {getSettings} from '../../lib/dao/database';
 import { Router } from 'express';
 import {getConfig} from '../../lib/utils/config';
@@ -156,17 +155,7 @@ export default function KSController(router: Router) {
 			} catch(err) {
 				res.status(500).json(err);
 			}
-		});
-	// KM <4.0 route
-	router.route('/karas/series')
-		.get(async (req: any, res) => {
-			try {
-				const series = await getAllSeries(req.query.filter, req.query.from, req.query.size);
-				res.json(series);
-			} catch(err) {
-				res.status(500).json(err);
-			}
-		});
+		});	
 	router.route('/karas/years')
 		.get(async (_, res) => {
 			try {
