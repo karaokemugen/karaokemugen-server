@@ -150,7 +150,7 @@ export function initRemote() {
 	});
 	app.use('/guests/', express.static(resolve(getState().appPath, 'assets/guestAvatars'),
 		{ index: false, fallthrough: false }));
-	app.get('/*', async (req: any, res, next) => {
+	app.get('/*', async (req: any, res) => {
 		if (remotes.has(req.vhost[0])) {
 			const frontend = getVersion(remotesVersions.get(req.vhost[0]));
 			if (frontend) {
@@ -161,7 +161,7 @@ export function initRemote() {
 				res.status(500).send('Cannot find KMFrontend required version.');
 			}
 		} else {
-			next();
+			res.status(404).send('Is it down?');
 		}
 	});
 	asyncCheckOrMkdir(resolvedPathRemoteRoot());
