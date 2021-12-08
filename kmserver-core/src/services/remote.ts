@@ -161,7 +161,7 @@ export function initRemote() {
 				res.status(500).send('Cannot find KMFrontend required version.');
 			}
 		} else {
-			res.status(404).send('Is it down?');
+			res.status(410).send('This remote instance is not available.');
 		}
 	});
 	asyncCheckOrMkdir(resolvedPathRemoteRoot());
