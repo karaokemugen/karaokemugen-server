@@ -53,7 +53,7 @@
 
 		computed: {
 			canSort(): boolean {
-				return ['types-id', 'search-query', 'tags-slug-id'].includes(this.$route.name as string);
+				return ['types-id', 'search-query', 'user-login'].includes(this.$route.name as string);
 			},
 			...mapState('menubar', ['resultsCount'])
 		},
