@@ -20,8 +20,10 @@ import {buildKMExplorer} from './services/kmexplorer';
 import pjson from '../../package.json';
 import { promoteToken } from './dao/remote';
 import { initGitRepos } from './services/git';
+import { register } from 'ts-node';
+import findWorkspaceRoot from 'find-yarn-workspace-root';
 
-const appPath = join(__dirname,'../../');
+const appPath = findWorkspaceRoot();
 const dataPath = resolve(appPath, 'app/');
 const resourcePath = appPath;
 
@@ -50,6 +52,14 @@ process.once('SIGINT', () => {
 
 export function exit(rc: number) {
 	process.exit(rc || 0);
+}
+
+if (process.env.NODE_ENV === 'production') {
+	// Workaround for Nuxt store to work in production environments
+	register({
+		transpileOnly: true,
+		project: join(appPath, 'kmexplorer/tsconfig.json')
+	});
 }
 
 main().catch(err => {

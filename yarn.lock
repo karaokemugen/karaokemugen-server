@@ -7309,6 +7309,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"find-yarn-workspace-root@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "find-yarn-workspace-root@npm:2.0.0"
+  dependencies:
+    micromatch: ^4.0.2
+  checksum: fa5ca8f9d08fe7a54ce7c0a5931ff9b7e36f9ee7b9475fb13752bcea80ec6b5f180fa5102d60b376d5526ce924ea3fc6b19301262efa0a5d248dd710f3644242
+  languageName: node
+  linkType: hard
+
 "flat-cache@npm:^3.0.4":
   version: 3.0.4
   resolution: "flat-cache@npm:3.0.4"
@@ -9273,6 +9282,7 @@ fsevents@~2.3.1:
     express-range: ^2.0.1
     file-type: ^16.5.3
     find-remove: ^4.0.3
+    find-yarn-workspace-root: ^2.0.0
     fs-extra: ^10.0.0
     got: ^11.8.3
     helmet: ^4.6.0
