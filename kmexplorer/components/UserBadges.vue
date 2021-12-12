@@ -66,6 +66,7 @@
 <style scoped lang="scss">
 	.badges {
 		display: flex;
+		flex-wrap: wrap;
 		> .tag {
 			input[type="checkbox"] {
 				margin-right: .5em;
