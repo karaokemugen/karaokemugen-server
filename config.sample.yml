@@ -3,7 +3,7 @@ App:
   JwtSecret: Change me
 BaseLicense:
   Name: ODbL/CC BY-NC-SA 4.0
-  Link: https://lab.shelter.moe/karaokemugen/bases/karaokebase/-/blob/master/LICENSE.md
+  Link: https://gitlab.com/karaokemugen/bases/karaokebase/-/blob/master/LICENSE.md
 System:
   Database:
     username: karaokemugen_server
@@ -40,11 +40,11 @@ KaraExplorer:
   LiveURL: https://live.karaokes.moe
   MediaLinks: true
   Import: true
-  InProgressSongsList: https://lab.shelter.moe/karaokemugen/bases/karaokebase/issues?label_name%5B%5D=en+cours
+  InProgressSongsList: https://gitlab.com/karaokemugen/bases/karaokebase/-/issues?scope=all&state=opened&label_name[]=Doing
 Gitlab:
   Enabled: true
   Token: xxx
-  Host: https://lab.shelter.moe
+  Host: https://gitlab.com
   ProjectID: 1
   IssueTemplate:
     Import:

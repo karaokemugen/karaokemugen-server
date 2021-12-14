@@ -11,7 +11,7 @@ Twitter: @leonekmi
 /* THANKS */
 Thanks to all karaoke bases contributors! Without the base, this whole project wouldn't make much sense.
 <3 Kmeuh, Rinchama, meuhlake, Dysp, Angor de Redjak, Nock, and so on!
-See <https://lab.shelter.moe/karaokemugen/bases/karaokebase/-/graphs/master> for more.
+See <https://gitlab.com/karaokemugen/karaokemugen-server/-/graphs/master> for more.
 
 Thanks to our users helping us find bugs and improve our software! You're all awesome <3.
 

@@ -446,14 +446,14 @@
 				<p class="column">
 					Karaoke Mugen Server -
 					<a
-						href="https://lab.shelter.moe/karaokemugen/karaokemugen-server"
+						href="https://gitlab.com/karaokemugen/karaokemugen-server"
 					>GIT</a> -
 					<a href="http://karaokes.moe">{{ $t('footer.home') }}</a>
 				</p>
 				<p class="column">
 					{{ $t('footer.software_under_license') }}
 					<a
-						href="https://lab.shelter.moe/karaokemugen/karaokemugen-server/blob/master/LICENSE.md"
+						href="https://gitlab.com/karaokemugen/karaokemugen-server/-/blob/master/LICENSE.md"
 					>MIT</a>
 					<template v-if="base_license_name">
 						/ {{ $t('footer.base_under_licence') }}

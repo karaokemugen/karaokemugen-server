@@ -57,7 +57,7 @@ function generateConfig(production: boolean = false) {
 				{ hid: 'og:title', property: 'og:title', content: conf.KaraExplorer.Host },
 				{ hid: 'og:description', property: 'og:description', content: conf.KaraExplorer.Tagline },
 				{ hid: 'og:type', property: 'og:type', content: 'website' },
-				{ hid: 'og:image', property: 'og:image', content: 'https://lab.shelter.moe/karaokemugen/main/-/raw/master/Resources/banniere/banner-website-2021b.png' },
+				{ hid: 'og:image', property: 'og:image', content: 'https://gitlab.com/karaokemugen/main/-/raw/master/Resources/banniere/banner-website-2021b.png' },
 				{ hid: 'author', name: 'author', content: 'Karaoke Mugen contributors' }
 			],
 			link: [
