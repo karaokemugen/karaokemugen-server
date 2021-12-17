@@ -155,7 +155,7 @@ export default function KSController(router: Router) {
 			} catch(err) {
 				res.status(500).json(err);
 			}
-		});	
+		});
 	router.route('/karas/years')
 		.get(async (_, res) => {
 			try {
@@ -183,6 +183,7 @@ export default function KSController(router: Router) {
 			res.status(200).json({
 				Git: getConfig().System.Repositories[0].Git,
 				FullArchiveURL: getConfig().System.Repositories[0].FullArchiveURL,
+				SourceArchiveURL: getConfig().System.Repositories[0].SourceArchiveURL,
 				LatestCommit: await getLatestGitCommit()
 			} as RepositoryManifest);
 		});

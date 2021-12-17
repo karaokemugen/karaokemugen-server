@@ -21,7 +21,7 @@ export async function gitlabPostNewIssue(title: string, desc: string, labels: st
 			},
 			timeout: 25000
 		});
-		return JSON.parse(res.body).web_url;
+		return JSON.parse(res.data).web_url;
 	} catch(err) {
 		logger.error('Unable to post new issue', {service: 'Gitlab', obj: err});
 		throw err;
