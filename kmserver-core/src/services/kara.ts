@@ -17,11 +17,13 @@ import { Token } from '../lib/types/user';
 import { TagFile } from '../lib/types/tag';
 import { updateGit } from './git';
 import { findUserByName } from './user';
+import { getState } from '../utils/state';
+import { downloadFile } from '../lib/utils/downloader';
 
 export async function getBaseStats() {
 	try {
 		return await selectBaseStats();
-	} catch(err) {		
+	} catch(err) {
 		sentry.error(err);
 		throw err;
 	}
@@ -60,6 +62,16 @@ export async function generate() {
 		const karas = await getAllKaras({});
 		refreshKaraStats();
 		await createImagePreviews(karas, 'full', 1280);
+		// Download master.zip from gitlab to serve it ourselves
+		const repo = getConfig().System.Repositories[0];
+		const downloadURL = repo.SourceArchiveURL;
+		const destFile = resolve(getState().dataPath, repo.BaseDir, 'master.zip');
+		const downloadItem = {
+			filename: destFile,
+			url: downloadURL,
+			id: '',
+		};
+		await downloadFile(downloadItem);
 	} catch(err) {
 		logger.error('Generation failed', {service: 'Gen', obj: err});
 		sentry.error(err, 'Fatal');
@@ -119,7 +131,7 @@ export async function getAllKaras(params: KaraParams, token?: Token): Promise<Ka
 		if (err?.code) throw err;
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		logger.error('Getting karas failed', {service: 'Karas', obj: err});
-		sentry.error(err);		
+		sentry.error(err);
 		throw err;
 	}
 }
