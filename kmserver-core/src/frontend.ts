@@ -1,5 +1,6 @@
 import logger from './lib/utils/logger';
 import express from 'express';
+import {resolve} from 'path';
 import adminController from './controllers/http/admin';
 import authController from './controllers/http/auth';
 import KServerController from './controllers/http/karaserv';
@@ -82,10 +83,8 @@ export function initFrontend(listenPort: number) {
 	//KMServer
 	// If static serve is enabled, we're serving all files from KMServer instead of Apache/nginx
 	if (state.opt.staticServe) {
-		app.use('/downloads/karaokes', express.static(resolvedPathRepos('Karaokes')[0]));
-		app.use('/downloads/lyrics', express.static(resolvedPathRepos('Lyrics')[0]));
+		app.use('/downloads', express.static(resolve(getState().appPath, getConfig().System.Repositories[0].BaseDir)));
 		app.use('/downloads/medias', express.static(resolvedPathRepos('Medias')[0]));
-		app.use('/downloads/tags', express.static(resolvedPathRepos('Tags')[0]));
 	}
 
 	// API router
