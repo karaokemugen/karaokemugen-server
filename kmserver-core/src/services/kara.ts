@@ -1,5 +1,7 @@
 import { resolve, basename } from 'path';
 import { promises as fs } from 'fs';
+import parallel from 'p-map';
+import {createHash} from 'crypto';
 
 import {selectAllKaras, selectAllYears, selectBaseStats, selectAllMedias, refreshKaraStats} from '../dao/kara';
 import { KaraList, KaraParams } from '../lib/types/kara';
@@ -19,6 +21,9 @@ import { updateGit } from './git';
 import { findUserByName } from './user';
 import { getState } from '../utils/state';
 import { downloadFile } from '../lib/utils/downloader';
+import { resolveFileInDirs } from '../lib/utils/files';
+import { DBKara } from '../lib/types/database/kara';
+import { copyFromData } from '../lib/dao/database';
 
 export async function getBaseStats() {
 	try {
@@ -71,13 +76,38 @@ export async function generate() {
 			url: downloadURL,
 			id: '',
 		};
-		await downloadFile(downloadItem);
+		downloadFile(downloadItem);
+		computeSubchecksums();
 	} catch(err) {
 		logger.error('Generation failed', {service: 'Gen', obj: err});
 		sentry.error(err, 'Fatal');
 	}
 }
 
+export async function computeSubchecksums() {
+	logger.info('Starting computing checksums', {service: 'Kara'});
+	const karas = await getAllKaras({});
+	const mapper = async (lyrics: any[]) => {
+		return checksumASS(lyrics);
+	};
+	const lyricsMap: Map<string, DBKara> = new Map();
+	for (const kara of karas.content.filter(k => k.subfile)) {
+		lyricsMap.set(kara.kid, kara);
+	}
+	const checksums = await parallel([...lyricsMap], mapper, {
+		stopOnError: false,
+		concurrency: 32
+	});
+	await copyFromData('kara_subchecksum', checksums);
+	logger.info('Finished computing checksums', {service: 'Kara'});
+}
+
+async function checksumASS(lyrics: any[]): Promise<string[]> {
+	const subfile = await resolveFileInDirs(lyrics[1].subfile, resolvedPathRepos('Lyrics', lyrics[1].repository));
+	let subdata = await fs.readFile(subfile[0], 'utf-8');
+	subdata = subdata.replace(/\r/g, '');
+	return [lyrics[1].kid, createHash('md5').update(subdata, 'utf-8').digest('hex')];
+}
 export function getAllmedias() {
 	return selectAllMedias();
 }
