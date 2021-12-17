@@ -51,7 +51,7 @@ WHERE 1 = 1
   ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
   ${whereClauses}
   ${typeClauses}
-GROUP BY ${groupClause} ak.pk_kid, ak.titles, ak.songorder, ak.tags, ak.serie_singer_sortable, ak.subfile, ak.year, ak.mediafile, ak.karafile, ak.duration, ak.gain, ak.loudnorm, ak.created_at, ak.modified_at, ak.mediasize, ak.repository, ak.songtypes_sortable, ak.titles_sortable
+GROUP BY ${groupClause} ak.pk_kid, ak.titles, ak.songorder, ak.tags, ak.serie_singer_sortable, ak.subfile, ak.year, ak.mediafile, ak.karafile, ak.duration, ak.gain, ak.loudnorm, ak.created_at, ak.modified_at, ak.mediasize, ak.repository, ak.songtypes_sortable, ak.titles_sortable, ks.subchecksum
 ORDER BY ${orderClauses} ak.serie_singer_sortable, ak.songtypes_sortable DESC, ak.songorder, ak.titles_sortable
 ${limitClause}
 ${offsetClause}
