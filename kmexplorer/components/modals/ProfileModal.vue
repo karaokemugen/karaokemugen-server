@@ -433,16 +433,13 @@
 <script lang="ts">
 	import Vue from 'vue';
 	import clonedeep from 'lodash.clonedeep';
-	import languages from '@karaokemugen/i18n-iso-languages';
+	import { getNames, getAlpha3BCode } from '@karaokemugen/i18n-iso-languages';
 	import isoCountriesLanguages from 'iso-countries-languages';
 
 	import CropModal from './CropModal.vue';
 	import UserBadges from '~/components/UserBadges.vue';
 	import { DBUser } from '%/lib/types/database/user';
 	import { modalStore } from '~/store';
-
-	languages.registerLocale(require('@karaokemugen/i18n-iso-languages/langs/en.json'));
-	languages.registerLocale(require('@karaokemugen/i18n-iso-languages/langs/fr.json'));
 
 	interface DBUserEdit extends DBUser {
 		password_confirmation?: string
@@ -572,7 +569,7 @@
 			listLangs(name: string): string[] {
 				const listLangs = [];
 				for (const [_key, value] of Object.entries(
-					languages.getNames(this.$i18n.locale)
+					getNames(this.$i18n.locale)
 				)) {
 					listLangs.push(value);
 				}
@@ -581,7 +578,7 @@
 				);
 			},
 			get3BCode(language: string): string {
-				return languages.getAlpha3BCode(
+				return getAlpha3BCode(
 					language, this.$i18n.locale
 				) as string;
 			},

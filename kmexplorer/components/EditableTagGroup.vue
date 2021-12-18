@@ -46,7 +46,7 @@
 	import Vue, { PropOptions } from 'vue';
 	import debounce from 'lodash.debounce';
 	import clonedeep from 'lodash.clonedeep';
-	import languages from '@karaokemugen/i18n-iso-languages';
+	import { alpha2ToAlpha3B } from '@karaokemugen/i18n-iso-languages';
 	import { DBTagMini } from '%/lib/types/database/tag';
 	import { KaraTag } from '%/lib/types/kara';
 
@@ -139,7 +139,7 @@
 			},
 			localizedName(tag: DBTagMini) {
 				if (tag.i18n) {
-					return tag.i18n[languages.alpha2ToAlpha3B(this.$i18n.locale) as string] || tag.i18n.eng || tag.name;
+					return tag.i18n[alpha2ToAlpha3B(this.$i18n.locale) as string] || tag.i18n.eng || tag.name;
 				} else {
 					return tag.name;
 				}
