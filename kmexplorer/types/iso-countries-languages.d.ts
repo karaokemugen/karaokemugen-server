@@ -1,1 +1,1 @@
-declare module 'iso-countries-languages';
+declare module '@hotosm/iso-countries-languages';

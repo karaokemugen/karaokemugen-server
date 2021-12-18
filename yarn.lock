@@ -1521,6 +1521,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hotosm/iso-countries-languages@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "@hotosm/iso-countries-languages@npm:1.1.2"
+  dependencies:
+    prettier: ^2.0.5
+  checksum: c6c4145e5ff9dd3424a7d738bd30a6aad352f63575cd0aa1e13563c0b9d88c326749b48448f7a238784d0a04320b48011527b1d85efa82e5e3727bc8c4824737
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.9.2":
   version: 0.9.2
   resolution: "@humanwhocodes/config-array@npm:0.9.2"
@@ -9156,13 +9165,6 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"iso-countries-languages@npm:^0.3.0":
-  version: 0.3.0
-  resolution: "iso-countries-languages@npm:0.3.0"
-  checksum: b0569f597a5e18649dd2a0e51e2e9a124150cc45024326e884de857ac05e47b19cd8c2617e438f8111399e9dea630c4e26ee882ddaded42ce6b596c9f13035cc
-  languageName: node
-  linkType: hard
-
 "isobject@npm:^2.0.0":
   version: 2.1.0
   resolution: "isobject@npm:2.1.0"
@@ -9437,6 +9439,7 @@ fsevents@~2.3.1:
     "@fortawesome/free-brands-svg-icons": ^5.15.4
     "@fortawesome/free-solid-svg-icons": ^5.15.4
     "@fortawesome/vue-fontawesome": ^2.0.6
+    "@hotosm/iso-countries-languages": ^1.1.2
     "@karaokemugen/i18n-iso-languages": ^3.1.1
     "@nuxt/types": ^2.15.8
     "@nuxt/typescript-build": ^2.1.0
@@ -9454,7 +9457,6 @@ fsevents@~2.3.1:
     bulma: ^0.9.3
     bulmaswatch: ^0.8.1
     eslint: ^8.5.0
-    iso-countries-languages: ^0.3.0
     lodash.clonedeep: ^4.5.0
     lodash.debounce: ^4.0.8
     lodash.merge: ^4.6.2
@@ -12772,6 +12774,15 @@ fsevents@~2.3.1:
   bin:
     prettier: ./bin-prettier.js
   checksum: bc78219e0f8173a808f4c6c8e0a137dd8ebd4fbe013e63fe1a37a82b48612f17b8ae8e18a992adf802ee2cf7428f14f084e7c2846ca5759cf4013c6e54810e1f
+  languageName: node
+  linkType: hard
+
+"prettier@npm:^2.0.5":
+  version: 2.5.1
+  resolution: "prettier@npm:2.5.1"
+  bin:
+    prettier: bin-prettier.js
+  checksum: 21b9408476ea1c544b0e45d51ceb94a84789ff92095abb710942d780c862d0daebdb29972d47f6b4d0f7ebbfb0ffbf56cc2cfa3e3e9d1cca54864af185b15b66
   languageName: node
   linkType: hard
 

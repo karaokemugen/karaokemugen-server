@@ -434,7 +434,7 @@
 	import Vue from 'vue';
 	import clonedeep from 'lodash.clonedeep';
 	import { getNames, getAlpha3BCode } from '@karaokemugen/i18n-iso-languages';
-	import isoCountriesLanguages from 'iso-countries-languages';
+	import { getCountries } from '@hotosm/iso-countries-languages';
 
 	import CropModal from './CropModal.vue';
 	import UserBadges from '~/components/UserBadges.vue';
@@ -544,14 +544,14 @@
 		methods: {
 			listCountries(name: string): string[] {
 				const listCountries: string[] = [];
-				for (const [_key, value] of Object.entries(isoCountriesLanguages.getCountries(this.$i18n.locale))) {
+				for (const [_key, value] of Object.entries(getCountries(this.$i18n.locale))) {
 					listCountries.push(value as string);
 				}
 				return listCountries.filter(value =>
 					value.toLowerCase().includes(name.toLowerCase()));
 			},
 			getCountryCode(name:string): string | undefined {
-				for (const [key, value] of Object.entries(isoCountriesLanguages.getCountries(this.$i18n.locale))) {
+				for (const [key, value] of Object.entries(getCountries(this.$i18n.locale))) {
 					if (value === name) {
 						return key;
 					}
@@ -559,7 +559,7 @@
 				return undefined;
 			},
 			getCountryName(code:string): string | undefined {
-				for (const [key, value] of Object.entries(isoCountriesLanguages.getCountries(this.$i18n.locale))) {
+				for (const [key, value] of Object.entries(getCountries(this.$i18n.locale))) {
 					if (key === code) {
 						return value as string;
 					}

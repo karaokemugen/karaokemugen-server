@@ -79,7 +79,8 @@
 						:class="{'is-loading': loading}"
 						:disabled="!user.flag_public"
 						:title="$t('modal.profile.fields.flag_displayfavorites.desc')"
-						@click="toggleFavorite">
+						@click="toggleFavorite"
+					>
 						<font-awesome-icon :icon="['fas', user.flag_displayfavorites ? 'eye':'eye-slash']" fixed-width />
 						{{ $t(user.flag_displayfavorites ? 'profile.public_favorites': 'profile.private_favorites') }}
 					</button>
@@ -92,7 +93,7 @@
 
 <script lang="ts">
 	import Vue from 'vue';
-	import isoCountriesLanguages from 'iso-countries-languages';
+	import { getCountry } from '@hotosm/iso-countries-languages';
 
 	import { DBUser } from '%/lib/types/database/user';
 	import LoadingNanami from '~/components/LoadingNanami.vue';
@@ -198,7 +199,7 @@
 
 		methods: {
 			getLocalizedCountry(country: string): string {
-				return isoCountriesLanguages.getCountry(this.$i18n.locale, country);
+				return getCountry(this.$i18n.locale, country);
 			},
 			openEdit() {
 				if (this.viewingSelf) {
