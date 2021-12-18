@@ -36,6 +36,7 @@ export const getAllKaras = (filterClauses: string[], typeClauses: string, orderC
   ak.modified_at AS modified_at,
   ak.mediasize AS mediasize,
   ak.repository AS repository,
+  ks.subchecksum AS subchecksum,
   ${selectClause}
   array_remove(array_agg(krc.fk_kid_parent), null) AS parents,
   array_remove(array_agg(DISTINCT krp.fk_kid_child), null) AS children,
@@ -43,13 +44,14 @@ export const getAllKaras = (filterClauses: string[], typeClauses: string, orderC
 FROM all_karas AS ak
 LEFT OUTER JOIN kara_relation krp ON krp.fk_kid_parent = ak.pk_kid
 LEFT OUTER JOIN kara_relation krc ON krc.fk_kid_child = ak.pk_kid
+LEFT JOIN kara_subchecksum ks ON ks.fk_kid = ak.pk_kid
 ${joinClause}
 ${additionalFrom.join('')}
 WHERE 1 = 1
   ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
   ${whereClauses}
   ${typeClauses}
-GROUP BY ${groupClause} ak.pk_kid, ak.titles, ak.songorder, ak.tags, ak.serie_singer_sortable, ak.subfile, ak.year, ak.mediafile, ak.karafile, ak.duration, ak.gain, ak.loudnorm, ak.created_at, ak.modified_at, ak.mediasize, ak.repository, ak.songtypes_sortable, ak.titles_sortable
+GROUP BY ${groupClause} ak.pk_kid, ak.titles, ak.songorder, ak.tags, ak.serie_singer_sortable, ak.subfile, ak.year, ak.mediafile, ak.karafile, ak.duration, ak.gain, ak.loudnorm, ak.created_at, ak.modified_at, ak.mediasize, ak.repository, ak.songtypes_sortable, ak.titles_sortable, ks.subchecksum
 ORDER BY ${orderClauses} ak.serie_singer_sortable, ak.songtypes_sortable DESC, ak.songorder, ak.titles_sortable
 ${limitClause}
 ${offsetClause}
