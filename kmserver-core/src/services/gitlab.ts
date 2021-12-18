@@ -9,13 +9,14 @@ export async function gitlabPostNewIssue(title: string, desc: string, labels: st
 	try {
 		const conf = getConfig();
 		if (!labels) labels = [];
-		const params = new URLSearchParams([
-			['id', `${conf.Gitlab.ProjectID}`],
-			['title', title],
-			['description', desc],
-			['labels', labels.join(',')]
-		]);
-		const res = await HTTP.post(`${conf.Gitlab.Host}/api/v4/projects/${conf.Gitlab.ProjectID}/issues`, params, {
+		const params = {
+			id: `${conf.Gitlab.ProjectID}`,
+			title,
+			description: desc,
+			labels: labels.join(',')
+		};
+		const res = await HTTP.post(`${conf.Gitlab.Host}/api/v4/projects/${conf.Gitlab.ProjectID}/issues`, {
+			params,
 			headers: {
 				'PRIVATE-TOKEN': conf.Gitlab.Token
 			},
@@ -32,10 +33,11 @@ export async function gitlabPostNewIssue(title: string, desc: string, labels: st
 export async function closeIssue(issue: number) {
 	try {
 		const conf = getConfig();
-		const params = new URLSearchParams([
-			['state_event', 'close']
-		]);
-		await HTTP.put(`${conf.Gitlab.Host}/api/v4/projects/${conf.Gitlab.ProjectID}/issues/${issue}`, params, {
+		const params = {
+			state_event: 'close'
+		};
+		await HTTP.put(`${conf.Gitlab.Host}/api/v4/projects/${conf.Gitlab.ProjectID}/issues/${issue}`, {
+			params,
 			headers: {
 				'PRIVATE-TOKEN': conf.Gitlab.Token
 			},
