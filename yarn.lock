@@ -2936,6 +2936,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/sass@npm:^1.43.1":
+  version: 1.43.1
+  resolution: "@types/sass@npm:1.43.1"
+  dependencies:
+    "@types/node": "*"
+  checksum: 19eb71acc4b0d7db2170732a51ad18a34007021f42069652a5be8a3e3a448a470d2f970b9e85f734d1896bf3a25e48fb5132b4a989c101eb5df21cc171d426c5
+  languageName: node
+  linkType: hard
+
 "@types/serve-static@npm:*, @types/serve-static@npm:1.13.9":
   version: 1.13.9
   resolution: "@types/serve-static@npm:1.13.9"
@@ -9187,6 +9196,7 @@ fsevents@~2.3.1:
     "@types/lodash.debounce": ^4.0.6
     "@types/lodash.merge": ^4.6.6
     "@types/nuxtjs__auth": ^4.8.8
+    "@types/sass": ^1.43.1
     "@types/slug": ^5.0.3
     bulma: ^0.9.3
     bulmaswatch: ^0.8.1
