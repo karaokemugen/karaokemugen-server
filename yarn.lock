@@ -2927,6 +2927,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/sass-loader@npm:^8.0.2":
+  version: 8.0.2
+  resolution: "@types/sass-loader@npm:8.0.2"
+  dependencies:
+    "@types/node-sass": "*"
+    "@types/sass": "*"
+    "@types/webpack": ^4
+  checksum: 066705cdf42febca375779e2dc72ac558a70d9eb85f7118ebe2d7079bc968abda3fef8e11bd89170aeb25c99bee8dfc6a748f0be65a72b0ee1188cd81135509a
+  languageName: node
+  linkType: hard
+
 "@types/sass@npm:*":
   version: 1.16.0
   resolution: "@types/sass@npm:1.16.0"
@@ -9197,6 +9208,7 @@ fsevents@~2.3.1:
     "@types/lodash.merge": ^4.6.6
     "@types/nuxtjs__auth": ^4.8.8
     "@types/sass": ^1.43.1
+    "@types/sass-loader": ^8.0.2
     "@types/slug": ^5.0.3
     bulma: ^0.9.3
     bulmaswatch: ^0.8.1
