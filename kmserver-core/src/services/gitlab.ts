@@ -17,7 +17,8 @@ export async function gitlabPostNewIssue(title: string, desc: string, labels: st
 		};
 		const res = await HTTP.post(`${conf.Gitlab.Host}/api/v4/projects/${conf.Gitlab.ProjectID}/issues`, params, {
 			headers: {
-				'PRIVATE-TOKEN': conf.Gitlab.Token
+				'PRIVATE-TOKEN': conf.Gitlab.Token,
+				'Content-Type': 'application/json'
 			},
 			timeout: 25000
 		});
@@ -37,7 +38,8 @@ export async function closeIssue(issue: number) {
 		};
 		await HTTP.put(`${conf.Gitlab.Host}/api/v4/projects/${conf.Gitlab.ProjectID}/issues/${issue}`, params, {
 			headers: {
-				'PRIVATE-TOKEN': conf.Gitlab.Token
+				'PRIVATE-TOKEN': conf.Gitlab.Token,
+				'Content-Type': 'application/json'
 			},
 			timeout: 25000
 		});
