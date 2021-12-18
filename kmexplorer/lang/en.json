@@ -2,7 +2,7 @@
     "error": {
         "generic": "Error",
         "private_profile": "The profile is private.",
-		"not_found_profile": "Cannot find this user",
+        "not_found_profile": "Cannot find this user",
         "home": "Go home"
     },
     "kara": {
@@ -200,10 +200,10 @@
         "favorites": "Favorites",
         "you": " (that's you!)",
         "edit": "Edit profile",
-		"private": "Your profile is private, only you can see it.",
+        "private": "Your profile is private, only you can see it.",
         "favorites_count": "{x} favorite | {x} favorites",
-		"public_favorites": "Your favorites are public. Click to hide them.",
-		"private_favorites": "Your favorites are private. Click to show them."
+        "public_favorites": "Your favorites are public. Click to hide them.",
+        "private_favorites": "Your favorites are private. Click to show them."
     },
     "search": {
         "placeholder": {
@@ -335,9 +335,9 @@
                 "banner": {
                     "label": "Banner",
                     "remove": "Reset to the default banner",
-					"upload": "Upload a banner",
+                    "upload": "Upload a banner",
                     "change": "To change your banner, go to the page of a karaoke and click the \"Use as profile banner\" button. Fully customizable banners is a donator feature.",
-					"donator": "Thanks for your support, you're awesome! You can upload a custom banner or use one from a karaoke of your choice."
+                    "donator": "Thanks for your support, you're awesome! You can upload a custom banner or use one from a karaoke of your choice."
                 },
                 "flag_public": {
                     "label": "Public profile",
@@ -461,13 +461,12 @@
         "SUBFILE_FORMAT_UNKOWN": "Subfile format unkown",
         "CANNOT_EDIT_KARA": "Cannot send modification.",
         "FILE_UPLOADED": "File uploaded.",
-        "USER_EDITED": "User successfully edited",
-        "FUTURE_PROFILES": "This button will be used to share your profile to everyone else, but that's for another moment!"
+        "USER_EDITED": "User successfully edited"
     },
-	"roles": {
-		"donator": "Donator",
-		"contributor": "Contributor",
-		"maintainer": "Maintainer",
-		"admin": "Administrator"
-	}
+    "roles": {
+        "donator": "Donator",
+        "contributor": "Contributor",
+        "maintainer": "Maintainer",
+        "admin": "Administrator"
+    }
 }
