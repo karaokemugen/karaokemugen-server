@@ -15,8 +15,7 @@ export async function gitlabPostNewIssue(title: string, desc: string, labels: st
 			description: desc,
 			labels: labels.join(',')
 		};
-		const res = await HTTP.post(`${conf.Gitlab.Host}/api/v4/projects/${conf.Gitlab.ProjectID}/issues`, {
-			params,
+		const res = await HTTP.post(`${conf.Gitlab.Host}/api/v4/projects/${conf.Gitlab.ProjectID}/issues`, params, {
 			headers: {
 				'PRIVATE-TOKEN': conf.Gitlab.Token
 			},
@@ -36,8 +35,7 @@ export async function closeIssue(issue: number) {
 		const params = {
 			state_event: 'close'
 		};
-		await HTTP.put(`${conf.Gitlab.Host}/api/v4/projects/${conf.Gitlab.ProjectID}/issues/${issue}`, {
-			params,
+		await HTTP.put(`${conf.Gitlab.Host}/api/v4/projects/${conf.Gitlab.ProjectID}/issues/${issue}`, params, {
 			headers: {
 				'PRIVATE-TOKEN': conf.Gitlab.Token
 			},
