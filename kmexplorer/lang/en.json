@@ -49,16 +49,19 @@
         "problem": {
             "title": "An issue with {title}?",
             "btn": {
-                "report": "Report an issue",
-                "edit": "Suggest an edit"
+                "edit": "Suggest an edit",
+                "media": "Media issue",
+                "metadata": "Metadata issue",
+                "lyrics": "Lyrics issue"
             },
             "form": {
                 "title": "Report an issue",
                 "subtitle": "We do our best to have a high-quality database, but sometimes some issues are there. Thanks for help!",
                 "type": {
                     "label": "Problem type",
-                    "time": "Lyrics not synchronised",
-                    "quality": "Low quality video"
+                    "media": "Media issue",
+                    "metadata": "Metadata issue",
+                    "lyrics": "Lyrics issue"
                 },
                 "comment": {
                     "label": "Comment",

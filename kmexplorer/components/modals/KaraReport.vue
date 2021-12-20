@@ -3,9 +3,17 @@
 		<h4 class="title is-4">
 			{{ $t('kara.problem.title', {title: title}) }}
 		</h4>
-		<button class="button is-warning" :disabled="submitted" @click="toggleModal">
-			<font-awesome-icon :icon="['fas', 'meh']" />
-			{{ $t('kara.problem.btn.report') }}
+		<button class="button is-info" :disabled="submitted" @click="() => toggleModal('Media')">
+			<font-awesome-icon :icon="['fas', 'film']" />
+			{{ $t('kara.problem.btn.media') }}
+		</button>
+		<button class="button is-warning" :disabled="submitted" @click="() => toggleModal('Metadata')">
+			<font-awesome-icon :icon="['fas', 'tag']" />
+			{{ $t('kara.problem.btn.metadata') }}
+		</button>
+		<button class="button is-danger" :disabled="submitted" @click="() => toggleModal('Lyrics')">
+			<font-awesome-icon :icon="['fas', 'closed-captioning']" />
+			{{ $t('kara.problem.btn.lyrics') }}
 		</button>
 		<nuxt-link :to="`/import/${karaoke.kid}`" class="button is-success">
 			<font-awesome-icon :icon="['fas', 'pen']" />
@@ -43,11 +51,14 @@
 								<div class="control">
 									<div class="select">
 										<select id="type" v-model="formData.type" name="type" autocomplete="off">
-											<option value="time">
-												{{ $t('kara.problem.form.type.time') }}
+											<option value="Media">
+												{{ $t('kara.problem.form.type.media') }}
 											</option>
-											<option value="quality">
-												{{ $t('kara.problem.form.type.quality') }}
+											<option value="Metadata">
+												{{ $t('kara.problem.form.type.metadata') }}
+											</option>
+											<option value="Lyrics">
+												{{ $t('kara.problem.form.type.lyrics') }}
 											</option>
 										</select>
 									</div>
@@ -125,12 +136,14 @@
 	import { DBKara } from '%/lib/types/database/kara';
 	import { getTitleInLocale } from '~/utils/tools';
 
+	type ProblemsType = 'Media' | 'Metadata' | 'Lyrics';
+
 	interface VState {
 		modal: boolean,
 		loading: boolean,
 		submitted: boolean,
 		formData: {
-			type: 'time' | 'quality',
+			type: ProblemsType,
 			comment: string,
 			username: string
 		},
@@ -153,7 +166,7 @@
 				loading: false,
 				submitted: false,
 				formData: {
-					type: 'time',
+					type: 'Media',
 					comment: '',
 					username: ''
 				},
@@ -163,12 +176,15 @@
 
 		computed: {
 			title(): string {
-				return getTitleInLocale(this.karaoke.titles, this.$store.state.auth.user)
+				return getTitleInLocale(this.karaoke.titles, this.$store.state.auth.user);
 			}
 		},
 
 		methods: {
-			toggleModal() {
+			toggleModal(type?: ProblemsType) {
+				if (type) {
+					this.formData.type = type;
+				}
 				this.modal = !this.modal;
 			},
 			submitProblem() {

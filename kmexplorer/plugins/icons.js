@@ -63,7 +63,8 @@ import {
 	faUserCog,
 	faHeart,
 	faEye,
-	faEyeSlash
+	faEyeSlash,
+	faFilm
 } from '@fortawesome/free-solid-svg-icons';
 import {
 	faTwitter,
@@ -141,7 +142,8 @@ library.add(
 	faUserShield,
 	faUserCog,
 	faEye,
-	faEyeSlash);
+	faEyeSlash,
+	faFilm);
 
 // Register the component globally
 Vue.component('FontAwesomeIcon', FontAwesomeIcon);

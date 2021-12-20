@@ -110,3 +110,11 @@ yarn start
 ```
 
 This link should work now : http://localhost:1350/base
+
+For dev use :
+
+```sh
+yarn start:dev
+```
+
+This link should work now : http://localhost:1351/base

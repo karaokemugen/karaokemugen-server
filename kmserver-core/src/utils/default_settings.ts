@@ -214,7 +214,7 @@ A proposal to modify a karaoke has been sent. You will find all the new files in
 **Comment** : $comment`
 			},
 			KaraProblem: {
-				Quality: {
+				Media: {
 					Title: '[Media issue] $kara',
 					Labels: ['media','incident'],
 					Description: `
@@ -226,11 +226,23 @@ A proposal to modify a karaoke has been sent. You will find all the new files in
 
 **Comment** : $comment`
 				},
-				Time: {
+				Metadata: {
+					Title: '[Metadata issue] $kara',
+					Labels: ['metadata','incident'],
+					Description: `
+# Metadata issue
+
+
+**Issue author** : $username
+
+
+**Comment** : $comment`
+				},
+				Lyrics: {
 					Title: '[Lyrics issue] $kara',
 					Labels: ['lyrics','incident'],
 					Description: `
-# Poorly timed / defective karaoke
+# Lyrics issue
 
 
 **Issue author** : $username

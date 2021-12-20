@@ -247,7 +247,7 @@ export async function getRawKara(kid: string): Promise<DownloadBundleServer> {
 	}
 }
 
-export async function newKaraIssue(kid: string, type: 'quality' | 'time', comment: string, username: string) {
+export async function newKaraIssue(kid: string, type: 'Media' | 'Metadata' | 'Lyrics', comment: string, username: string) {
 	const karas = await selectAllKaras({
 		q: `k:${kid}`
 	});
@@ -258,12 +258,11 @@ export async function newKaraIssue(kid: string, type: 'quality' | 'time', commen
 	let songtype = (kara.songtypes.length > 0 && kara.songtypes[0].name) || '';
 	const karaName = `${langs} - ${singerOrSerie} - ${songtype}${kara.songorder || ''} - ${kara.titles.eng}`;
 	const conf = getConfig();
-	const issueTemplate = type === 'quality' ? conf.Gitlab.IssueTemplate.KaraProblem.Quality : conf.Gitlab.IssueTemplate.KaraProblem.Time;
+	const issueTemplate = conf.Gitlab.IssueTemplate.KaraProblem[type];
 	let title = issueTemplate.Title || '$kara';
 	title = title.replace('$kara', karaName);
 	let desc = issueTemplate.Description || '';
 	desc = desc.replace('$username', username)
-		.replace('$type', type)
 		.replace('$comment', comment);
 	try {
 		if (conf.Gitlab.Enabled) return await gitlabPostNewIssue(title, desc, issueTemplate.Labels);

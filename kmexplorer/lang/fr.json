@@ -49,16 +49,19 @@
         "problem": {
             "title": "Un problème avec {title} ?",
             "btn": {
-                "report": "Signaler un problème",
-                "edit": "Proposer une modification"
+                "edit": "Proposer une modification",
+                "media": "Problème avec le média",
+                "metadata": "Problème avec les données",
+                "lyrics": "Problème avec les paroles"
             },
             "form": {
                 "title": "Signaler un problème",
                 "subtitle": "Nous faisons de notre mieux pour avoir une base de karaokés sans lacunes, cependant il en reste sûrement encore à certains endroits. Merci de votre aide !",
                 "type": {
                     "label": "Type du problème",
-                    "time": "Paroles mal synchronisées",
-                    "quality": "Vidéo de mauvaise qualité"
+                    "media": "Problème avec le média",
+                    "metadata": "Problème avec les données",
+                    "lyrics": "Problème avec les paroles"    
                 },
                 "comment": {
                     "label": "Commentaire",

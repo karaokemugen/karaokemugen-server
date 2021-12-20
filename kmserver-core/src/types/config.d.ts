@@ -57,8 +57,9 @@ export interface Config {
 			Suggestion?: GitlabTemplate
 			Edit?: GitlabTemplate
 			KaraProblem?: {
-				Quality?: GitlabTemplate,
-				Time?: GitlabTemplate
+				Media?: GitlabTemplate,
+				Metadata?: GitlabTemplate,
+				Lyrics?: GitlabTemplate
 			}
 		}
 	},

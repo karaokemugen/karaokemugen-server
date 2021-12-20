@@ -180,10 +180,10 @@ Gitlab:
 
         **Link** : $link
     KaraProblem:
-      Quality:
+      Media:
         Title: '[Media issue] $kara'
         Labels:
-          - video quality
+          - media
         Description: >
           # Media issue
 
@@ -192,12 +192,24 @@ Gitlab:
 
 
           **Comment** : $comment
-      Time:
-        Title: '[Time] $kara'
+      Metadata:
+        Title: '[Metadata issue] $kara'
         Labels:
-          - time
+          - metadata
         Description: >
-          # Poorly timed / defective karaoke
+          # Metadata issue
+
+
+          **Issue author** : $username
+
+
+          **Comment** : $comment
+      Lyrics:
+        Title: '[Lyrics issue] $kara'
+        Labels:
+          - lyrics
+        Description: >
+          # Lyrics issue
 
 
           **Issue author** : $username
