@@ -15,7 +15,7 @@ import { asyncExists, asyncMove } from '../lib/utils/files';
 import sentry from '../utils/sentry';
 import { addKaraInInbox } from './inbox';
 
-export async function editKara(kara: Kara): Promise<string> {
+export async function editKara(kara: Kara, contact: string): Promise<string> {
 	let newKara: NewKara;
 	// Validation here, processing stuff later
 	// No sentry triggered if validation fails
@@ -110,7 +110,7 @@ export async function editKara(kara: Kara): Promise<string> {
 			logger.error('Call to Gitlab API failed', {service: 'GitLab', obj: err});
 			sentry.error(err, 'Warning');
 		}
-		addKaraInInbox(karaName, issueURL, true);
+		addKaraInInbox(karaName, contact, issueURL, true);
 		return issueURL;
 	} catch(err) {
 		logger.error('Error while editing kara', {service: 'KaraGen', obj: err});
@@ -123,7 +123,7 @@ export async function editKara(kara: Kara): Promise<string> {
 }
 
 
-export async function createKara(kara: Kara) {
+export async function createKara(kara: Kara, contact: string) {
 	const conf = getConfig();
 	let newKara: NewKara;
 	kara.repository = conf.System.Repositories[0].Name;
@@ -194,7 +194,7 @@ export async function createKara(kara: Kara) {
 		if (conf.Gitlab.Enabled) {
 			issueURL = await gitlabPostNewIssue(title, desc, conf.Gitlab.IssueTemplate.Import.Labels);
 		}
-		addKaraInInbox(karaName, issueURL);
+		addKaraInInbox(karaName, contact, issueURL);
 		return issueURL;
 	} catch(err) {
 		logger.error('Call to Gitlab API failed', {service: 'KaraImport', obj: err});

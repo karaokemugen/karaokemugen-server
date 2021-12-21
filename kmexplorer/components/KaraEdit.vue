@@ -305,12 +305,35 @@
 				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
 			</label>
 			<div class="control">
-				<label v-if="karaoke.kid" class="label">{{ $t('kara.import.comment_edit') }}</label>
 				<input
 					v-model="karaoke.comment"
 					class="input"
 					type="text"
 				>
+			</div>
+		</div>
+		<div v-if="loggedIn" class="field">
+			<label for="contact">
+				<input
+					id="contact"
+					v-model="sendContactInfos"
+					type="checkbox"
+				>
+				{{ $t('kara.import.send_contact_infos') }}
+			</label>
+		</div>
+		<div v-if="!loggedIn" class="field">
+			<label class="label" :title="$t('kara.import.contact_infos_tooltip')">
+				{{ $t('kara.import.contact_infos') }}
+				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+			</label>
+			<div class="control">
+				<input
+					v-model="contactInfos"
+					class="input"
+					type="text"
+				>
+				<label>{{ $t('kara.import.auto_send_contact_infos') }}</label>
 			</div>
 		</div>
 		<div class="field">
@@ -355,11 +378,11 @@
 <script lang="ts">
 	import Vue, { PropOptions } from 'vue';
 	import cloneDeep from 'lodash.clonedeep';
+	import { mapState } from 'vuex';
 
 	import EditableTagGroup from './EditableTagGroup.vue';
 	import LanguagesList from './LanguagesList.vue';
 	import { tagTypes } from '~/assets/constants';
-	import { APIMessageType } from '%/lib/types/frontend';
 	import { DBKara } from '%/lib/types/database/kara';
 
 	interface DBKaraEdit extends DBKara {
@@ -381,7 +404,9 @@
 		uploading: {
 			media: boolean | number,
 			sub: boolean | number
-		}
+		},
+		sendContactInfos: boolean,
+		contactInfos: string
 	}
 
 	export default Vue.extend({
@@ -415,7 +440,11 @@
 				uploading: {
 					media: false,
 					sub: false
-				}
+				},
+				sendContactInfos: (process as any)?.client
+					? localStorage.getItem('sendContactInfos') === 'true'
+					: false,
+				contactInfos: ''
 			};
 		},
 
@@ -440,7 +469,8 @@
 						this.uploading.media ||
 						this.uploading.sub
 				);
-			}
+			},
+			...mapState('auth', ['loggedIn'])
 		},
 
 		methods: {
@@ -528,15 +558,29 @@
 			},
 			submit() {
 				this.loading = true;
+				let contact: string = '';
+				if (this.$auth.loggedIn && this.sendContactInfos) {
+					contact = `${this.$auth.user.login}@${process.env.API_HOST}`;
+					if ((process as any).client) {
+						localStorage.setItem('sendContactInfos', 'true');
+					}
+				} else if (!this.$auth.loggedIn) {
+					contact = this.contactInfos;
+				} else if ((process as any).client) {
+					localStorage.setItem('sendContactInfos', 'false');
+				}
 				if (this.karaoke.kid) {
 					this.$axios.$put(
 						`/api/karas/${this.karaoke.kid}`,
-						this.karaoke
+						{ ...this.karaoke, contact }
 					).then((res) => {
 						this.gitlabUrl = res.data;
 					}).catch(() => { this.loading = false; });
 				} else {
-					this.$axios.$post<APIMessageType>('/api/karas/', this.karaoke).then((res) => {
+					this.$axios.$post(
+						'/api/karas/',
+						{ ...this.karaoke, contact }
+					).then((res) => {
 						this.gitlabUrl = res.data;
 					}).catch(() => { this.loading = false; });
 				}

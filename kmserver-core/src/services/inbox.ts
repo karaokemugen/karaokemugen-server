@@ -38,7 +38,7 @@ export async function markKaraInboxAsDownloaded(inid: string, username: string) 
 	}
 }
 
-export async function addKaraInInbox(karaName: string, issue?: string, fix = false) {
+export async function addKaraInInbox(karaName: string, contact: string, issue?: string, fix = false) {
 	try {
 		const karaDir = resolve(resolvedPathImport(), karaName);
 		const dir = await fs.readdir(karaDir);
@@ -80,7 +80,8 @@ export async function addKaraInInbox(karaName: string, issue?: string, fix = fal
 			lyrics: lyrics,
 			mediafile: mediafile,
 			gitlab_issue: issue,
-			fix: fix
+			fix: fix,
+			contact: contact
 		});
 	} catch(err) {
 		logger.error('Unable to create kara in inbox', {service: 'Inbox', obj: err});

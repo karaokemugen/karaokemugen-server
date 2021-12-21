@@ -1,0 +1,1 @@
+ALTER TABLE inbox ADD COLUMN contact TEXT;

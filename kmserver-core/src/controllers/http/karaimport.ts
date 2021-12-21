@@ -12,7 +12,7 @@ export default function KIController(router: Router) {
 
 	router.post('/karas', async (req, res) => {
 		try {
-			const url = await createKara(req.body);
+			const url = await createKara(req.body, req.body.contact);
 			res.status(200).json(APIMessage('GENERATED_KARA', url || ''));
 		} catch(err) {
 			const code = 'CANNOT_GENERATE_KARA';
@@ -22,7 +22,7 @@ export default function KIController(router: Router) {
 	});
 	router.put('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})',  async (req: any, res: any) => {
 		try {
-			const url = await editKara(req.body);
+			const url = await editKara(req.body, req.body.contact);
 			res.status(200).json(APIMessage('EDITED_KARA', url || ''));
 		} catch(err) {
 			const code = 'CANNOT_EDIT_KARA'; 

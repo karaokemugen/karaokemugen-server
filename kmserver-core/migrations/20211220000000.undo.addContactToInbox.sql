@@ -1,0 +1,1 @@
+ALTER TABLE inbox DROP COLUMN contact;
