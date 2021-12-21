@@ -93,7 +93,6 @@
             "add_file_lyrics_error": "{name} is not a subtitle file",
             "add_file_success": "{name} file added successfully",
             "comment": "Leave a comment?",
-            "comment_edit": "If you're submitting an edit, tell us who you are here!",
             "comment_tooltip": "If you want to add a message for the integrators or just say thanks, say it here!",
             "submit": "Send karaoke",
             "media_file": "Media file",
@@ -128,7 +127,11 @@
             "add_error": "An error has occurred, karaoke has not been sent properly",
             "restart": "Submit new karaoke",
             "i18n_select": "Add a language",
-            "i18n_delete": "Remove language"
+            "i18n_delete": "Remove language",
+            "send_contact_infos": "Share my contact information with the maintainers of the database",
+            "contact_infos": "Contact information",
+            "contact_infos_tooltip": "Enter your contact details, so we can come to you if you have any questions about the karaoke.",
+            "auto_send_contact_infos": "If you log in, you can check a box on the form to automatically share your contact information with the maintainers of the database."
         },
         "stats": {
             "favorited": "Added to favorites by {number} users",

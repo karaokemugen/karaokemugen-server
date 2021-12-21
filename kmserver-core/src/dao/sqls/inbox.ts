@@ -12,7 +12,8 @@ export const selectInbox = (uniqueKara: string) => `
 			mediafile,
 		` : ''}
 		gitlab_issue,
-		fix
+		fix,
+		contact
 	FROM inbox
 	${uniqueKara ? ' WHERE pk_inid = $1 ' : ''}
 `;
@@ -27,7 +28,8 @@ export const insertInbox = `
 		lyrics,
 		mediafile,
 		gitlab_issue,
-		fix
+		fix,
+		contact
 	) VALUES(
 		:inid,
 		:name,
@@ -37,7 +39,8 @@ export const insertInbox = `
 		:lyrics,
 		:mediafile,
 		:gitlab_issue,
-		:fix
+		:fix,
+		:contact
 	)
 `;
 

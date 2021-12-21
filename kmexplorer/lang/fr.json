@@ -94,7 +94,6 @@
             "add_file_success": "Le fichier {name} a été ajouté avec succès",
             "comment_tooltip": "Si vous voulez donner des indications aux mainteneurs de la base de karaokés ou simplement dire merci, faites-le ici !",
             "comment": "Un commentaire ?",
-            "comment_edit": "N'hésitez pas à signer votre correction pour qu'on sache qui vous êtes !",
             "submit": "Envoyer ce karaoké",
             "media_file": "Fichier vidéo",
             "media_file_required": "Le fichier média est obligatoire",
@@ -128,7 +127,11 @@
             "add_error": "Une erreur a eu lieue, le karaoké n'a pas pu être envoyé",
             "restart": "Soumettre un nouveau karaoké",
             "i18n_select": "Ajouter une langue",
-            "i18n_delete": "Supprimer la langue"
+            "i18n_delete": "Supprimer la langue",
+            "send_contact_infos": "Partager mes informations de contact avec les mainteneurs de la base",
+            "contact_infos": "Informations de contact",
+            "contact_infos_tooltip": "Indiquez vos données de contact, nous pourrons ainsi venir vers vous si vous avez des questions au sujet du karaoké.",
+            "auto_send_contact_infos": "Si vous vous connectez, vous pouvez cocher une case sur le formulaire pour partager automatiquement vos informations de contact avec les mainteneurs de la base."
         },
         "stats": {
             "favorited": "Ajouté aux favoris par {number} utilisateurs",

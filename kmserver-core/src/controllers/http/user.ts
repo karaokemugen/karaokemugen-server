@@ -5,8 +5,9 @@ import {getConfig} from '../../lib/utils/config';
 import {resolve} from 'path';
 import { Router } from 'express';
 import { getState } from '../../utils/state';
-import {requireAuth, requireValidUser, updateLoginTime} from '../middlewares/auth';
+import {optionalAuth, requireAuth, requireValidUser, updateLoginTime} from '../middlewares/auth';
 import {RequestHandler} from 'express-serve-static-core';
+import { UserOptions } from '../../types/user';
 
 function editHandler(userFromToken: boolean): RequestHandler {
 	return async (req: any, res) => {
@@ -74,9 +75,14 @@ export default function userController(router: Router) {
 			}
 		});
 	router.route('/users/:user')
-		.get(async (req, res) => {
+		.get(optionalAuth, async (req: any, res) => {
 			try {
-				const info = await findUserByName(req.params.user, {public: true});
+				const params: UserOptions = { public: true };
+				if (req.authToken && req.query.forcePublic 
+					&& (req.authToken.roles?.admin || req.authToken.roles?.maintainer)) {
+					params.public = false;
+				}
+				const info = await findUserByName(req.params.user, params);
 				if (!info) res.status(404).end();
 				else res.status(200).json(info);
 			} catch(err) {
