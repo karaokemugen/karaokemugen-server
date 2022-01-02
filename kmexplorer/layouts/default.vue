@@ -448,6 +448,7 @@
 					<a
 						href="https://gitlab.com/karaokemugen/karaokemugen-server"
 					>GIT</a> -
+					<a href="https://hosted.weblate.org/projects/karaoke-mugen/">{{ $t('footer.translation') }}</a> -
 					<a href="http://karaokes.moe">{{ $t('footer.home') }}</a>
 				</p>
 				<p class="column">
