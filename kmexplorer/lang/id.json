@@ -1,6 +1,6 @@
 {
 	"kara": {
-		"live_unavailable": "Anda tidak bisa memainkan karaoke ini di peramban Anda. Entah videonya merupakan format tak terdukung di peramban atau sudah dimatikan untuk alasan hukum.",
+		"live_unavailable": "Kamu tidak bisa memainkan karaoke ini di perambanmu. Entah videonya merupakan format tak terdukung di peramban atau sudah dinonaktifkan untuk alasan hukum.",
 		"phrase": "{songtype} dari {series}",
 		"meta": "{songtitle} dari {serieSinger}",
 		"notfound": "Karaoke tidak ditemukan",
@@ -15,7 +15,10 @@
 			"authors": "Pengarang karaoke",
 			"groups": "Kelompok",
 			"versions": "Versi",
-			"songwriters": "Penulis lagu"
+			"songwriters": "Penulis lagu",
+			"series": "Serial",
+			"misc": "Lain-lain",
+			"families": "Keluarga"
 		},
 		"singers_by": "Dinyanyikan oleh",
 		"creators_by": "Dibuat oleh",
@@ -33,7 +36,7 @@
 		},
 		"set_banner": {
 			"btn": "Gunakan sebagai spanduk profil",
-			"forbidden_label": "Anda tidak bisa menggunakan karaoke ini sebagai spanduk profil Anda."
+			"forbidden_label": "Kamu tidak bisa menggunakan karaoke ini sebagai spanduk profilmu."
 		},
 		"problem": {
 			"title": "Ada masalah dengan {title}?",
@@ -56,8 +59,8 @@
 					"placeholder": "Setelah 2 menit, lirik tidak tersinkronisasi."
 				},
 				"username": {
-					"label": "Nama Anda",
-					"placeholder": "IAmMeticulous"
+					"label": "Nama kamu",
+					"placeholder": "AkuPenggubah"
 				},
 				"submit": "Kirim",
 				"thanks": {
@@ -72,7 +75,7 @@
 			"check_in_progress": "Mohon periksa daftar karaoke yang saat ini sedang dibuat sebelum mengirimkan ke kami sebuah lagu. Ini akan menghindari pekerjaan ganda dan dunia mungkin akan menjadi tempat yang lebih baik.",
 			"documentation_link": "Dokumentasi",
 			"in_progress_link": "Karaoke di Daftar Progres",
-			"license_reminder": "Karaoke Anda akan diterbitkan dengan lisensi {name}",
+			"license_reminder": "Karaoke kamu akan diterbitkan dengan lisensi {name}",
 			"license_link": "Ketahui lebih lanjut tentang lisensi ini dengan mengklik di sini.",
 			"add": "Tambah",
 			"create": "Buat",
@@ -95,22 +98,39 @@
 			"year_required": "Tahun siaran wajib diisi",
 			"year_invalid": "Tahun siaran tidak valid",
 			"songtypes_required": "Jenis lagu wajib diisi",
-			"authors_tooltip": "Anda harus menambahkan diri Anda di sini ;)",
+			"authors_tooltip": "Tambahkan dirimu di sini ;)",
 			"authors_required": "Pengarang dari karaoke wajib diisi",
-			"groups_tooltip": "Unduh kelompok untuk lagu ini. Lagu ini akan dimasukkan ke paket unduhan tersebut",
+			"groups_tooltip": "Kelompok unduhan untuk lagu ini. Lagu ini akan dimasukkan ke paket unduhan tersebut",
 			"created_at": "Tanggal pembuatan",
-			"add_success": "Karaoke Anda telah berhasil dikirimkan!",
-			"add_success_description": "Masalah telah dibuat di pelacak kami. Anda bisa memeriksa kemajuannya di {url}",
+			"add_success": "Karaoke kamu telah berhasil dikirimkan!",
+			"add_success_description": "Masalah telah dibuat di pelacak kami. Kamu bisa memeriksa kemajuannya di {url}",
 			"add_error": "Galat telah terjadi, karaoke belum dikirim dengan benar",
-			"description": "Formulir ini memperbolehkan Anda untuk mengirimkan sebuah karaoke ke tim Karaoke Mugen. Itu tidak akan langsung diintegrasikan ke basis data karaoek karena membutuhkan validasi. Mohon bersabar. Karaoke Anda mungkin akan dimodifikasi jika itu tidak mematuhi peraturan KM.",
-			"comment_tooltip": "Jika Anda ingin menambahkan pesan untuk integrator atau hanya ingin bilang terima kasih, bilanglah di sini!",
+			"description": "Formulir ini memperbolehkan kamu untuk mengirimkan sebuah karaoke ke tim Karaoke Mugen. Jadi tidak akan langsung diintegrasikan ke basis data karaoke karena membutuhkan validasi. Mohon bersabar. Karaoke kamu mungkin akan dimodifikasi jika tidak mematuhi peraturan KM.",
+			"comment_tooltip": "Jika kamu ingin menambahkan pesan untuk integrator atau hanya ingin bilang terima kasih, bilanglah di sini!",
 			"media_file_tooltip": "Format berkas yang didukung: {formats}",
 			"title": "Judul",
 			"title_required": "Mohon masukkan judul lagu dalam bahasa Inggris",
-			"title_tooltip": "Jika Anda tidak tahu, masukkan nama serialnya di sini juga. Dalam kasus versi alternatif, beri nama judul Anda sebagai: 'My title ~ Disco vers.' sebagai contoh",
+			"title_tooltip": "Jika kamu tidak tahu, masukkan nama serialnya di sini juga. Dalam kasus versi alternatif, beri nama judulmu sebagai: 'My title ~ Disco vers.' sebagai contoh",
 			"title_eng_required": "Nama bahasa Inggris wajib diisi",
 			"lyrics_file": "Berkas lirik",
-			"lyrics_file_tooltip": "Format berkas yang didukung: {formats}"
+			"lyrics_file_tooltip": "Format berkas yang didukung: {formats}",
+			"lyrics_file_missing": "Berkas lirik menghilang, ini mungkin terjadi jika kamu mengirimkan berkas MKV atau sebuah karaoke tanpa lirik (?).",
+			"songwriters_tooltip": "Penulis lagu menggubah lirik DAN musik.",
+			"creators_tooltip": "Entitas yang membuat serial. Bisa studio animasi, studio film, atau studio permainan.",
+			"restart": "Kirim karaoke baru",
+			"i18n_select": "Tambahkan sebuah bahasa",
+			"contact_infos_tooltip": "Masukkan detail kontakmu, sehingga kami bisa berhubungan dengan kamu jika kamu memiliki pertanyaan tentang karaoke ini.",
+			"i18n_delete": "Hapus bahasa",
+			"send_contact_infos": "Bagikan informasi kontak saya dengan pengelola basis data",
+			"contact_infos": "Informasi kontak",
+			"auto_send_contact_infos": "Jika kamu masuk, kamu bisa mencentang sebuah kotak di formulir untuk secara otomatis membagikan informasi kontakmu dengan pengelola basis data."
+		},
+		"songwriters_by": "Digubah oleh",
+		"created_at": "Dibuat ",
+		"stats": {
+			"favorited": "Ditambahkan ke favorit oleh {number} pengguna",
+			"requested": "Diminta {number} kali",
+			"played": "Dimainkan {number} kali"
 		}
 	},
 	"error": {
@@ -118,5 +138,337 @@
 		"not_found_profile": "Tidak bisa menemukan pengguna ini",
 		"generic": "Galat",
 		"home": "Pergi ke beranda"
+	},
+	"layout": {
+		"suggest": "Tidak bisa menemukan apa yang kamu cari?",
+		"loading": "Memuat…",
+		"empty": "Kami mencari dimana-mana, tapi kami tidak menemukan apa pun.",
+		"suggest_open": "Sarankan kami sesuatu!",
+		"end_favorites": "Ini merupakan akhir dari favorit.",
+		"explore": "Tambahkan beberapa!",
+		"results": "{count} hasil",
+		"slogan": "Lagu ini tersedia di basis lagu Karaoke Mugen!",
+		"remove_tags": "Apakah kamu sudah mencoba menghapus beberapa tanda filter dari pencarian?",
+		"end_my_favorites": "Ini merupakan akhir dari favoritmu.",
+		"end_users": "Kamu sudah mencapai akhir dari daftar pengguna (selamat!)."
+	},
+	"footer": {
+		"home": "Beranda proyek",
+		"software_under_license": "Perangkat lunak di bawah lisensi",
+		"translation": "Berkontribusi di penerjemahan",
+		"base_under_licence": "Basis karaoke di bawah lisensi"
+	},
+	"menu": {
+		"register": "Daftar",
+		"add_repository": "Tambahkan repositori ini ke aplikasi kamu",
+		"random": "Gulir sebuah dadu",
+		"database": "Basis data",
+		"karas": "Lagu",
+		"songtypes": "Jenis",
+		"tags": "Tanda",
+		"misc": "Lain-lain",
+		"groups": "Kelompok",
+		"families": "Keluarga",
+		"platforms": "Platform",
+		"versions": "Versi",
+		"series": "Serial",
+		"authors": "Pengarang",
+		"langs": "Bahasa",
+		"years": "Tahun",
+		"community": "Komunitas",
+		"join_kara": "Gabung sebuah pesta karaoke",
+		"search_users": "Cari pengguna",
+		"profile": "Sunting profil kamu",
+		"login": "Masuk",
+		"logout": "Keluar",
+		"connection": "Masuk",
+		"switch_language": "Ubah bahasa",
+		"songwriters": "Penulis lagu",
+		"origins": "Asal",
+		"singers": "Penyanyi",
+		"genres": "Genre",
+		"creators": "Pembuat",
+		"kara_import": "Masukkan sebuah kara",
+		"account": "Akun"
+	},
+	"search": {
+		"aria": {
+			"page": "Halaman {0}",
+			"goto": "Pergi ke halaman {0}",
+			"sort": "Urut menurut"
+		},
+		"placeholder": {
+			"kara": "Serial, penyanyi, nama…",
+			"user": "Nama pengguna…",
+			"tag": "Nama tanda…"
+		},
+		"sort": {
+			"kara_count": "Jumlah karaoke",
+			"most_favorites": "Terbanyak favorit",
+			"most_requested": "Terbanyak diminta",
+			"recent": "Menurut tanggal ditambahkan",
+			"most_played": "Terbanyak dimainkan"
+		},
+		"next": "Halaman selanjutnya",
+		"previous": "Halaman sebelumnya",
+		"types": {
+			"karaokes": "Lagu",
+			"favorites": "Favorit pengguna",
+			"users": "Pengguna"
+		}
+	},
+	"modal": {
+		"signup": {
+			"fields": {
+				"username": {
+					"label": "Nama pengguna",
+					"placeholder": "SukaRocknRoll"
+				},
+				"password": {
+					"label": "Kata sandi",
+					"placeholder": "JazzJugaSuka"
+				},
+				"password_confirmation": {
+					"label": "Konfirmasi Kata Sandi",
+					"placeholder": "JazzJugaSuka"
+				},
+				"email": {
+					"label": "Surel",
+					"placeholder": "contoh@contoh.moe"
+				}
+			},
+			"title": "Daftar",
+			"passwords_mismatch": "Kata sandi tidak sama",
+			"submit": "Daftar"
+		},
+		"login": {
+			"fields": {
+				"forgot_password": {
+					"error": "Tidak bisa mengatur ulang kata sandimu: hubungi admin peladen di mana akun kamu terdaftar.",
+					"success": "Sebuah surel telah dikirim dengan tautan untuk mengatur ulang kata sandimu.",
+					"label": "Lupa kata sandi?"
+				},
+				"username": {
+					"placeholder": "PenggemarIdol1",
+					"label": "Nama pengguna"
+				},
+				"password": {
+					"label": "Kata sandi",
+					"placeholder": "TapiBandJugaBagusKok"
+				}
+			},
+			"submit": "Masuk",
+			"subtitle": "Masuk untuk melihat favoritmu dan menyunting profilmu!",
+			"title": "Masuk"
+		},
+		"profile": {
+			"fields": {
+				"twitter": {
+					"placeholder": "idwiki",
+					"label": "Twitter"
+				},
+				"flag_sendstats": {
+					"label": "Statistik",
+					"checkbox": "Gunakan permintaan favorit dan karaoke saya untuk statistik"
+				},
+				"flag_displayfavorites": {
+					"desc": "Bersamaan dengan memperlihatkan profil publik kamu, kamu bisa menampilkan favoritmu (karena itu seleramu) ke semua orang. Opsi ini dimatikan secara baku, kamu bisa mencentangnya jika kamu mau. Untuk memperlihatkan favoritmu, pertama, profilmu harus sudah publik.",
+					"label": "Favorit",
+					"checkbox": "Tampilkan favorit saya"
+				},
+				"username": {
+					"label": "Nama pengguna"
+				},
+				"nickname": {
+					"label": "Nama panggilan",
+					"placeholder": "MusikSejati99"
+				},
+				"password": {
+					"label": "Kata sandi"
+				},
+				"password_confirmation": {
+					"label": "Konfirmasi kata sandi"
+				},
+				"email": {
+					"label": "Surel",
+					"placeholder": "contoh@contoh.moe"
+				},
+				"url": {
+					"label": "Situs web",
+					"placeholder": "https://karaoke.moe"
+				},
+				"bio": {
+					"label": "Biografi",
+					"placeholder": "Inilah hidupku"
+				},
+				"location": {
+					"label": "Lokasi"
+				},
+				"discord": {
+					"label": "Discord",
+					"placeholder": "ContohNama#1234"
+				},
+				"instagram": {
+					"label": "Instagram",
+					"placeholder": "lapan_ri"
+				},
+				"twitch": {
+					"label": "Twitch",
+					"placeholder": "KaraokeLive"
+				},
+				"banner": {
+					"label": "Spanduk",
+					"remove": "Atur ulang ke spanduk baku",
+					"upload": "Unggah sebuah spanduk",
+					"donator": "Terima kasih untuk dukunganmu, kamu luar biasa! Kamu bisa mengunggah spanduk kustom atau gunakan dari karaoke pilihanmu.",
+					"change": "Untuk mengubah spandukmu, pergi ke halaman sebuah karaoke dan klik tombol \"Gunakan sebagai spanduk profil\". Spanduk yang sepenuhnya dapat disesuaikan adalah fitur untuk donatur."
+				},
+				"flag_public": {
+					"label": "Profil publik",
+					"checkbox": "Buat profil saya publik",
+					"desc": "Secara baku, akunmu terlihat lewat pencarian pengguna dan memperlihatkan semua informasi di atas dengan pengecualian alamat surel. Jika kamu menghapus centang di kotak ini, akunmu tidak akan terlacak di hasil pencarian (hanya kamu saja yang bisa melihatnya, ketika kamu telah masuk)."
+				},
+				"lang_prefs": {
+					"main_song_name_lang": "Preferensi tampilan nama lagu"
+				}
+			},
+			"passwords_mismatch": "Kata sandi tidak sama",
+			"submit": "Simpan",
+			"delete": "Hapus akun",
+			"select_avatar": "Pilih sebuah avatar",
+			"title": "Sunting profil",
+			"headers": {
+				"profile": "Tentang",
+				"privacy": "Privasi",
+				"lang": "Preferensi bahasa",
+				"password": "Ubah kata sandi"
+			}
+		},
+		"add_repository": {
+			"button": "Repositori :",
+			"label": "Tambahkan repositori ini ke aplikasi Karaoke Mugen kamu!",
+			"desc": "Kamu bisa menambahkan repositori ini ke aplikasi Karaoke Mugen kamu dengan mengklik tombol di bawah ini. Jika Karaoke Mugen tidak terpasang di komputermu, tombol ini tidak akan mempunyai efek.",
+			"download": "Aplikasinya bisa diunduh di sini.",
+			"manual": "Untuk menambahkan secara manual repositori ini, buka aplikasi Karaoke Mugen kamu, tambahkan repositori {repository} ke sana, periksa \"{online}\".",
+			"online": "Daring",
+			"add": "Tambah",
+			"cancel": "Batal"
+		},
+		"crop": {
+			"add": "Tambah",
+			"label": "Potong avatar",
+			"cancel": "Batal"
+		},
+		"delete_account": {
+			"label": "Apakah kamu benar-benar ingin menghapus akunmu?",
+			"add": "Hapus akun",
+			"cancel": "Batal"
+		},
+		"suggest": {
+			"title": "Saran",
+			"subtitle": "Kamu tidak bisa menemukan apa yang kamu cari? Kamu masih bisa mengisi sebuah saran.",
+			"fields": {
+				"title": {
+					"label": "Judul",
+					"placeholder": "Like Flames"
+				},
+				"series": {
+					"label": "Serial/Penyanyi",
+					"placeholder": "That Time I Got Reincarnated as a Slime"
+				},
+				"type": {
+					"label": "Jenis"
+				},
+				"link": {
+					"label": "Tautan",
+					"placeholder": "https://youtube.com/watch?v=q8TGietS5Q0"
+				},
+				"name": {
+					"label": "Nama kamu",
+					"placeholder": "Anonim handal"
+				}
+			},
+			"submit": "Kirim",
+			"submitted": {
+				"subtitle": "Pesan didengar dengan sangat jelas!",
+				"text": "Saran kamu sudah diterima, kamu bisa memeriksa statusnya dengan mengklik {here}.",
+				"here": "di sini",
+				"close": "Tutup"
+			}
+		},
+		"download": {
+			"label": "Unduh karaoke",
+			"cancel": "Batal",
+			"karabundle": "Unduh data (.json)",
+			"subtitles": "Unduh lirik (.{format})",
+			"media": "Unduh media (.{format})"
+		},
+		"join_kara": {
+			"label": "Gabung pesta karaoke",
+			"desc": "Masukkan sebuah kode untuk bergabung ke pesta karaoke yang sudah ada",
+			"add": "Gabung",
+			"cancel": "Batal",
+			"help": "Masukkan kode sesi (umumnya ada 4 huruf) atau URL karaoke.",
+			"error": "Kode ini tidak valid, mohon periksa apa yang kamu ketikkan."
+		},
+		"stats": {
+			"label": "Gunakan permintaan favorit dan karaoke saya untuk statistik",
+			"desc": "Kami menggunakan favorit dan juga karaoke kamu yang kamu minta ketika sebuah sesi untuk membuat statistik penggunaan (sebagai contoh, untuk mencari tahu karaoke yang paling sering diminta).",
+			"refuse_desc": "Jika kamu tidak ingin berpartisipasi, meskipun awanama di statistik penggunaan tersebut, mohon beritahu kami. Jika kamu menolak, data kamu akan diabaikan oleh peladen dan tidak akan dikirimkan oleh aplikasi Karaoke Mugen.",
+			"change": "Kamu bisa mengubah ini kapan saja di profil kamu. Apakah kamu setuju tentang penggunaan statistik kamu?",
+			"yes": "Ya",
+			"no": "Tidak"
+		},
+		"set_banner": {
+			"label": "Pilih sebuah spanduk",
+			"catch": "Sesuaikan profil kamu dengan spanduk yang luar biasa! Gulir lalui pada spanduk dan konfirmasi pilihanmu.",
+			"cancel": "Batal",
+			"set": "Gunakan gambar ini",
+			"next": "Gambar selanjutnya",
+			"previous": "Gambar sebelumnya",
+			"one": "Hanya ada satu spanduk untuk karaoke hanya suara."
+		}
+	},
+	"stats": {
+		"karaokes": "Karaoke",
+		"media_size": "Ukuran media",
+		"all_duration": "Durasi semua karaoke",
+		"last_generation": "Terakhir diperbarui"
+	},
+	"duration": {
+		"days": "hari",
+		"hours": "jam",
+		"minutes": "menit",
+		"seconds": "detik"
+	},
+	"profile": {
+		"you": " (itu kamu!)",
+		"private": "Profilmu privat, hanya kamu yang bisa melihatnya.",
+		"public_favorites": "Favoritmu publik. Klik untuk menyembunyikannya.",
+		"private_favorites": "Favoritmu privat. Klik untuk memperlihatkannya.",
+		"favorites": "Favorit",
+		"edit": "Sunting profil",
+		"favorites_count": "{x} favorit"
+	},
+	"toast": {
+		"LOG_ERROR": "Kredensial salah.",
+		"USER_ASCII_CHARACTERS_ONLY": "Mohon hanya karakter alfanumerik di nama pengguna kamu (kamu bisa mengubah nama penggunamu nati kapan pun yang kamu mau).",
+		"USER_CREATED": "Pengguna berhasil dibuat",
+		"GENERATED_KARA": "Karaoke berhasil dikirim.",
+		"EDITED_KARA": "Suntingan berhasil dikirim.",
+		"CANNOT_GENERATE_KARA": "Tidak bisa mengirim karaoke.",
+		"SUBFILE_FORMAT_UNKOWN": "Format takarir tidak diketahui",
+		"CANNOT_EDIT_KARA": "Tidak bisa mengirim suntingan.",
+		"USER_EDITED": "Pengguna berhasil disunting",
+		"FILE_UPLOADED": "Berkas diunggah."
+	},
+	"titles": {
+		"home": "Beranda"
+	},
+	"roles": {
+		"donator": "Donatur",
+		"contributor": "Kontributor",
+		"maintainer": "Pengelola",
+		"admin": "Administrator"
 	}
 }
