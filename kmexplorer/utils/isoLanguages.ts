@@ -1,9 +1,13 @@
 import { registerLocale, getNames, getAlpha3BCode, getName, alpha2ToAlpha3B } from '@karaokemugen/i18n-iso-languages';
+import en from '@karaokemugen/i18n-iso-languages/langs/en.json';
+import fr from '@karaokemugen/i18n-iso-languages/langs/fr.json';
+import id from '@karaokemugen/i18n-iso-languages/langs/id.json';
 
-registerLocale(require('@karaokemugen/i18n-iso-languages/langs/en.json'));
-registerLocale(require('@karaokemugen/i18n-iso-languages/langs/fr.json'));
+registerLocale(en);
+registerLocale(fr);
+registerLocale(id);
 
-export const languagesSupport = ['en', 'fr'];
+export const languagesSupport = ['en', 'fr', 'id'];
 let langSupport: string;
 let navigatorLanguage: string;
 if (process.client) {

@@ -365,6 +365,10 @@ export let NuxtConfig: NuxtConfigType = {
 	],
 
 	i18n: {
+		vueI18n: {
+			fallbackLocale: 'en',
+			silentFallbackWarn: true
+		},
 		locales: [
 			{
 				code: 'en',
@@ -377,6 +381,12 @@ export let NuxtConfig: NuxtConfigType = {
 				name: 'Français',
 				iso: 'fr',
 				file: 'fr.json'
+			},
+			{
+				code: 'id',
+				name: 'bahasa Indonesia',
+				iso: 'id',
+				file: 'id.json'
 			}
 		],
 		baseUrl: 'http://localhost:1350/',
