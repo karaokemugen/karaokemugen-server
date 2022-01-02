@@ -1,1 +1,122 @@
-{}
+{
+	"kara": {
+		"live_unavailable": "Anda tidak bisa memainkan karaoke ini di peramban Anda. Entah videonya merupakan format tak terdukung di peramban atau sudah dimatikan untuk alasan hukum.",
+		"phrase": "{songtype} dari {series}",
+		"meta": "{songtitle} dari {serieSinger}",
+		"notfound": "Karaoke tidak ditemukan",
+		"tagtypes": {
+			"langs": "Bahasa",
+			"songtypes": "Jenis lagu",
+			"singers": "Penyanyi",
+			"origins": "Asal",
+			"genres": "Genre",
+			"platforms": "Platform",
+			"creators": "Pembuat",
+			"authors": "Pengarang karaoke",
+			"groups": "Kelompok",
+			"versions": "Versi",
+			"songwriters": "Penulis lagu"
+		},
+		"singers_by": "Dinyanyikan oleh",
+		"creators_by": "Dibuat oleh",
+		"authors_by": "Karaoke dibuat oleh",
+		"duration": "Durasi ",
+		"download": "Unduh",
+		"live": "Buka di tab baru",
+		"lyrics": {
+			"show": "Perlihatkan lirik",
+			"hide": "Sembunyikan lirik"
+		},
+		"favorites": {
+			"add": "Tambahkan ke favorit",
+			"remove": "Hapus dari favorit"
+		},
+		"set_banner": {
+			"btn": "Gunakan sebagai spanduk profil",
+			"forbidden_label": "Anda tidak bisa menggunakan karaoke ini sebagai spanduk profil Anda."
+		},
+		"problem": {
+			"title": "Ada masalah dengan {title}?",
+			"btn": {
+				"edit": "Sarankan sebuah suntingan",
+				"metadata": "Masalah metadata",
+				"media": "Masalah media",
+				"lyrics": "Masalah lirik"
+			},
+			"form": {
+				"title": "Laporkan masalah",
+				"type": {
+					"label": "Jenis masalah",
+					"media": "Masalah media",
+					"metadata": "Masalah metadata",
+					"lyrics": "Masalah lirik"
+				},
+				"comment": {
+					"label": "Komentar",
+					"placeholder": "Setelah 2 menit, lirik tidak tersinkronisasi."
+				},
+				"username": {
+					"label": "Nama Anda",
+					"placeholder": "IAmMeticulous"
+				},
+				"submit": "Kirim",
+				"thanks": {
+					"text": "Terima kasih! Kami akan menyelesaikan masalah ini secepat mungkin: {url}",
+					"btn": "Tutup"
+				},
+				"subtitle": "Kami melakukan yang terbaik untuk memiliki basis data berkualitas tinggi, tapi kadangkala ada beberapa masalah di sana. Terima kasih atas bantuannya!"
+			}
+		},
+		"import": {
+			"attention": "PERHATIAN:",
+			"check_in_progress": "Mohon periksa daftar karaoke yang saat ini sedang dibuat sebelum mengirimkan ke kami sebuah lagu. Ini akan menghindari pekerjaan ganda dan dunia mungkin akan menjadi tempat yang lebih baik.",
+			"documentation_link": "Dokumentasi",
+			"in_progress_link": "Karaoke di Daftar Progres",
+			"license_reminder": "Karaoke Anda akan diterbitkan dengan lisensi {name}",
+			"license_link": "Ketahui lebih lanjut tentang lisensi ini dengan mengklik di sini.",
+			"add": "Tambah",
+			"create": "Buat",
+			"choose_file": "Pilih berkas",
+			"add_file_media_error": "{name} bukanlah berkas media",
+			"add_file_lyrics_error": "{name} bukanlah berkas takarir",
+			"add_file_success": "berkas {name} berhasil ditambahkan",
+			"comment": "Tinggalkan komentar?",
+			"submit": "Kirim karaoke",
+			"media_file": "Berkas media",
+			"media_file_required": "Berkas media wajib diisi",
+			"series_tooltip": "Serial TV, judul film, judul permainan video, dll.",
+			"series_singers_required": "Serial atau Dinyanyikan oleh tidak bisa kosong bersamaan.",
+			"songorder": "Urutan lagu",
+			"songorder_invalid": "Urutan lagu tidak valid",
+			"songorder_tooltip": "Nomor Pembuka/Penutup. Jika ini merupakan pembuka/penutup satu-satunya di serial, biarkan kosong.",
+			"langs_required": "Mohon pilih sebuah bahasa",
+			"year": "Tahun disiarkan",
+			"year_tooltip": "Tahun ketika serial disiarkan atau video diproduksi",
+			"year_required": "Tahun siaran wajib diisi",
+			"year_invalid": "Tahun siaran tidak valid",
+			"songtypes_required": "Jenis lagu wajib diisi",
+			"authors_tooltip": "Anda harus menambahkan diri Anda di sini ;)",
+			"authors_required": "Pengarang dari karaoke wajib diisi",
+			"groups_tooltip": "Unduh kelompok untuk lagu ini. Lagu ini akan dimasukkan ke paket unduhan tersebut",
+			"created_at": "Tanggal pembuatan",
+			"add_success": "Karaoke Anda telah berhasil dikirimkan!",
+			"add_success_description": "Masalah telah dibuat di pelacak kami. Anda bisa memeriksa kemajuannya di {url}",
+			"add_error": "Galat telah terjadi, karaoke belum dikirim dengan benar",
+			"description": "Formulir ini memperbolehkan Anda untuk mengirimkan sebuah karaoke ke tim Karaoke Mugen. Itu tidak akan langsung diintegrasikan ke basis data karaoek karena membutuhkan validasi. Mohon bersabar. Karaoke Anda mungkin akan dimodifikasi jika itu tidak mematuhi peraturan KM.",
+			"comment_tooltip": "Jika Anda ingin menambahkan pesan untuk integrator atau hanya ingin bilang terima kasih, bilanglah di sini!",
+			"media_file_tooltip": "Format berkas yang didukung: {formats}",
+			"title": "Judul",
+			"title_required": "Mohon masukkan judul lagu dalam bahasa Inggris",
+			"title_tooltip": "Jika Anda tidak tahu, masukkan nama serialnya di sini juga. Dalam kasus versi alternatif, beri nama judul Anda sebagai: 'My title ~ Disco vers.' sebagai contoh",
+			"title_eng_required": "Nama bahasa Inggris wajib diisi",
+			"lyrics_file": "Berkas lirik",
+			"lyrics_file_tooltip": "Format berkas yang didukung: {formats}"
+		}
+	},
+	"error": {
+		"private_profile": "Profil ini privat.",
+		"not_found_profile": "Tidak bisa menemukan pengguna ini",
+		"generic": "Galat",
+		"home": "Pergi ke beranda"
+	}
+}
