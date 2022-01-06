@@ -118,3 +118,7 @@ yarn start:dev
 ```
 
 This link should work now : http://localhost:1351/base
+
+## Translation
+
+[![Translation status](https://hosted.weblate.org/widgets/karaoke-mugen/-/karaoke-mugen-server/multi-auto.svg)](https://hosted.weblate.org/engage/karaoke-mugen/)
