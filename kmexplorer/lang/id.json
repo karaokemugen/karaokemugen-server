@@ -1,6 +1,6 @@
 {
 	"kara": {
-		"live_unavailable": "Kamu tidak bisa memainkan karaoke ini di perambanmu. Entah videonya merupakan format tak terdukung di peramban atau sudah dinonaktifkan untuk alasan hukum.",
+		"live_unavailable": "Kamu tidak bisa memutar karaoke ini di perambanmu. Entah videonya merupakan format tak terdukung di peramban atau sudah dinonaktifkan untuk alasan hukum.",
 		"phrase": "{songtype} dari {series}",
 		"meta": "{songtitle} dari {serieSinger}",
 		"notfound": "Karaoke tidak ditemukan",
@@ -130,7 +130,7 @@
 		"stats": {
 			"favorited": "Ditambahkan ke favorit oleh {number} pengguna",
 			"requested": "Diminta {number} kali",
-			"played": "Dimainkan {number} kali"
+			"played": "Diputar {number} kali"
 		}
 	},
 	"error": {
@@ -207,7 +207,8 @@
 			"most_favorites": "Terbanyak favorit",
 			"most_requested": "Terbanyak diminta",
 			"recent": "Menurut tanggal ditambahkan",
-			"most_played": "Terbanyak dimainkan"
+			"most_played": "Terbanyak diputar",
+			"a_z": "Dari A ke Z"
 		},
 		"next": "Halaman selanjutnya",
 		"previous": "Halaman sebelumnya",
@@ -239,7 +240,8 @@
 			},
 			"title": "Daftar",
 			"passwords_mismatch": "Kata sandi tidak sama",
-			"submit": "Daftar"
+			"submit": "Daftar",
+			"subtitle": "Daftar untuk menyimpan favorit kamu dan membuat profil kamu!"
 		},
 		"login": {
 			"fields": {
@@ -284,10 +286,12 @@
 					"placeholder": "MusikSejati99"
 				},
 				"password": {
-					"label": "Kata sandi"
+					"label": "Kata sandi",
+					"placeholder": "YaSekaliTernyataAnimeBagus"
 				},
 				"password_confirmation": {
-					"label": "Konfirmasi kata sandi"
+					"label": "Konfirmasi kata sandi",
+					"placeholder": "YaSekaliTernyataAnimeBagus"
 				},
 				"email": {
 					"label": "Surel",
@@ -329,7 +333,8 @@
 					"desc": "Secara baku, akunmu terlihat lewat pencarian pengguna dan memperlihatkan semua informasi di atas dengan pengecualian alamat surel. Jika kamu menghapus centang di kotak ini, akunmu tidak akan terlacak di hasil pencarian (hanya kamu saja yang bisa melihatnya, ketika kamu telah masuk)."
 				},
 				"lang_prefs": {
-					"main_song_name_lang": "Preferensi tampilan nama lagu"
+					"main_song_name_lang": "Preferensi tampilan nama lagu",
+					"fallback_song_name_lang": "Preferensi tampilan nama lagu alternatif"
 				}
 			},
 			"passwords_mismatch": "Kata sandi tidak sama",
