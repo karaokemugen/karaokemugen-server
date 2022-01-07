@@ -129,6 +129,11 @@
 								{{ $t('menu.misc') }}
 							</nuxt-link>
 
+							<nuxt-link class="navbar-item" to="/types/warnings">
+								<font-awesome-icon :icon="['fas', 'exclamation-triangle']" :fixed-width="true" />
+								{{ $t('menu.warnings') }}
+							</nuxt-link>
+
 							<nuxt-link class="navbar-item" to="/types/groups">
 								<font-awesome-icon :icon="['fas', 'boxes']" :fixed-width="true" />
 								{{ $t('menu.groups') }}
@@ -252,6 +257,16 @@
 								>
 									<font-awesome-icon :icon="['fas', 'tags']" :fixed-width="true" />
 									{{ $t('menu.misc') }}
+								</nuxt-link>
+							</li>
+							<li>
+								<nuxt-link
+									to="/types/warnings"
+									active-class="is-active"
+									:class="{'is-active': tagType === '~15'}"
+								>
+									<font-awesome-icon :icon="['fas', 'exclamation-triangle']" :fixed-width="true" />
+									{{ $t('menu.warnings') }}
 								</nuxt-link>
 							</li>
 							<li>

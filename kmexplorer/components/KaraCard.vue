@@ -1,7 +1,7 @@
 <template>
 	<div class="box">
 		<div class="header" @mouseenter="switchImage" @mouseleave="switchImage">
-			<nuxt-link :to="`/kara/${slug}/${karaoke.kid}`" class="images" :class="{blur: problematic}">
+			<nuxt-link :to="`/kara/${slug}/${karaoke.kid}`" class="images" :class="{blur: karaoke.warnings.length > 0}">
 				<v-lazy-image :src="images[0]" alt="" />
 				<v-lazy-image v-if="images.length > 1" :src="images[1]" :class="{activate}" alt="" />
 			</nuxt-link>
@@ -67,7 +67,7 @@
 	import Vue, { PropOptions } from 'vue';
 	import slug from 'slug';
 	import VLazyImage from 'v-lazy-image';
-	import { fakeYearTag, getTitleInLocale, isProblematic } from '~/utils/tools';
+	import { fakeYearTag, getTitleInLocale } from '~/utils/tools';
 	import { tagTypes } from '~/assets/constants';
 	import Tag from '~/components/Tag.vue';
 	import KaraPhrase from '~/components/KaraPhrase.vue';
@@ -140,9 +140,6 @@
 					}
 				}
 				return tagTypes;
-			},
-			problematic(): boolean {
-				return isProblematic(this.karaoke);
 			},
 			tags(): TagExtend[] {
 				const tags: TagExtend[] = [];

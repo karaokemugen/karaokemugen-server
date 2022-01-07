@@ -23,7 +23,8 @@
 			"authors": "Auteur de karaokés | Auteurs de karaokés",
 			"groups": "Groupe | Groupes",
 			"misc": "Divers",
-			"versions": "Version | Versions"
+			"versions": "Version | Versions",
+			"warnings": "Warning | Warnings"
 		},
 		"singers_by": "Chanté par",
 		"songwriters_by": "Composé par",
@@ -178,6 +179,7 @@
 		"songtypes": "Types",
 		"tags": "Tags",
 		"misc": "Divers",
+		"warnings": "Warnings",
 		"groups": "Groupes",
 		"families": "Familles",
 		"origins": "Origines",

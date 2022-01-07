@@ -1,7 +1,8 @@
 <template>
 	<a
+		v-if="notInTidToRemove(tag.tid)"
 		:href="nolink ? `./#`:(type === 'years' ? `/years/${tag.name}`:`/tags/${slug}/${tag.tid}~${tagTypes[type].type}`)"
-		:class="[tagTypes[type].class, staticheight ? '':'no-static-height', (tag && tag.problematic) ? 'problematic':'']"
+		:class="[tagTypes[type].class, staticheight ? '':'no-static-height']"
 		class="tag is-medium"
 		@click.prevent="handleLink"
 	>
@@ -76,6 +77,10 @@
 		},
 
 		methods: {
+			notInTidToRemove(tid: string) {
+				const tidToRemove = ['af7e0dfb-751f-463a-ac56-e8d6979c2979', 'c973ea72-8a07-4f46-aca1-74f5db76dfff', '95ca7fca-3a9e-4f24-be25-05e21261e26e'];
+				return !tidToRemove.includes(tid);
+			},
 			handleLink() {
 				if (!this.nolink) {
 					// If no tags are present, redirect the user to the KaraList view with this tag.
@@ -108,9 +113,6 @@
 		white-space: unset;
 		padding-top: .25em;
 		padding-bottom: .25em;
-	}
-	.tag.problematic {
-		color: gold;
 	}
 	.karacount {
 		font-size: 0.8em;

@@ -64,7 +64,8 @@ import {
 	faHeart,
 	faEye,
 	faEyeSlash,
-	faFilm
+	faFilm,
+	faExclamationTriangle
 } from '@fortawesome/free-solid-svg-icons';
 import {
 	faTwitter,
@@ -143,7 +144,8 @@ library.add(
 	faUserCog,
 	faEye,
 	faEyeSlash,
-	faFilm);
+	faFilm,
+	faExclamationTriangle);
 
 // Register the component globally
 Vue.component('FontAwesomeIcon', FontAwesomeIcon);

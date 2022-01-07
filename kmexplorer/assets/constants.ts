@@ -84,6 +84,11 @@ export const tagTypesMap: { [key: number]: tagType } = {
 		icon: 'tachometer-alt',
 		class: 'is-white',
 		name: 'versions'
+	},
+	15: {
+		icon: 'exclamation-triangle',
+		class: 'is-danger',
+		name: 'warnings'
 	}
 };
 
@@ -162,6 +167,11 @@ export const tagTypes: { [key: string]: tagType } = {
 		icon: 'tachometer-alt',
 		class: 'is-white',
 		type: 14
+	},
+	warnings: {
+		icon: 'exclamation-triangle',
+		class: 'is-danger',
+		type: 15
 	}
 };
 

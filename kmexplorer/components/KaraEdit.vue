@@ -275,6 +275,17 @@
 			</div>
 		</div>
 		<div class="field">
+			<label class="label">{{ $tc('kara.tagtypes.warnings', karaoke.warnings.length) }}</label>
+			<div class="control">
+				<editable-tag-group
+					:checkboxes="true"
+					:tag-type="15"
+					:params="karaoke.warnings"
+					@change="(tags) => karaoke.warnings = tags"
+				/>
+			</div>
+		</div>
+		<div class="field">
 			<label class="label" :title="$t('kara.import.groups_tooltip')">
 				{{ $tc('kara.tagtypes.groups', karaoke.groups.length) }}
 				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
