@@ -5,7 +5,7 @@ import { extname, resolve } from 'path';
 import { KaraList } from '../lib/types/kara';
 import { getConfig, resolvedPathRepos } from '../lib/utils/config';
 import { createHardsub } from '../lib/utils/ffmpeg';
-import { asyncExists, resolveFileInDirs } from '../lib/utils/files';
+import { fileExists, resolveFileInDirs } from '../lib/utils/files';
 import logger, { profile } from '../lib/utils/logger';
 import { getState } from './state';
 
@@ -18,7 +18,7 @@ export async function initHardsubGeneration() {
 async function wrappedGenerateHS(payload: [string, string, string, string]) {
 	const [mediaPath, subPath, outputFile, kid] = payload;
 	logger.info(`Creating hardsub for ${mediaPath}`, {service: 'Hardsubs'});
-	if (await asyncExists(outputFile)) return;
+	if (await fileExists(outputFile)) return;
 	const assPath = subPath ? `${kid}.ass` : null;
 	if (assPath) await fs.copyFile(payload[1], assPath);
 	try {
