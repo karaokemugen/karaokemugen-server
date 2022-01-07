@@ -102,7 +102,8 @@ export async function removeKaraFromInbox(inid: string) {
 		});
 		await deleteInbox(inid);
 		const issueArr = inbox.gitlab_issue.split('/');
-		closeIssue(+issueArr[issueArr.length-1]);
+		const issueNumber = +issueArr[issueArr.length-1];
+		if (issueNumber) closeIssue(issueNumber);
 	} catch(err) {
 		logger.error(`Failed to delete inbox item ${inid}`, {service: 'Inbox', obj: err});
 		Sentry.error(err);
