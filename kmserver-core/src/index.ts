@@ -31,8 +31,6 @@ const resourcePath = appPath;
 dotenv.config({path: join(appPath, '.env')});
 sentry.init();
 
-console.log(`EXECUTING: ${process.version}`);
-
 process.on('uncaughtException', (exception) => {
 	console.log(exception);
 	sentry.error(exception);
