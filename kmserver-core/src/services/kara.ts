@@ -67,8 +67,9 @@ export async function generate() {
 		await generateDatabase({validateOnly: false});
 		const karas = await getAllKaras({});
 		refreshKaraStats();
+		const conf = getConfig();
 		// Download master.zip from gitlab to serve it ourselves
-		const repo = getConfig().System.Repositories[0];
+		const repo = conf.System.Repositories[0];
 		const downloadURL = repo.SourceArchiveURL;
 		const destFile = resolve(getState().dataPath, repo.BaseDir, 'master.zip');
 		const downloadItem = {
@@ -78,10 +79,9 @@ export async function generate() {
 		};
 		downloadFile(downloadItem);
 		computeSubchecksums();
-		await Promise.all([
-			createImagePreviews(karas, 'full', 1280),
-			generateHardsubs(karas)
-		]);
+		const promises = [createImagePreviews(karas, 'full', 1280),];
+		if (conf.Hardsub.Enabled) promises.push(generateHardsubs(karas));
+		await Promise.all(promises);
 	} catch(err) {
 		logger.error('Generation failed', {service: 'Gen', obj: err});
 		sentry.error(err, 'Fatal');

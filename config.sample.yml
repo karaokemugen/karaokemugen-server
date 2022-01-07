@@ -29,6 +29,8 @@ Frontend:
 API:
   Secure: false
   Host: localhost
+Hardsub:
+  Enabled: true
 Users:
   Enabled: true
 Shortener:

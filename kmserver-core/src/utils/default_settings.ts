@@ -58,6 +58,9 @@ export const defaults: Config = {
 		Port: 1350,
 		SeriesLanguageMode: 3
 	},
+	Hardsub: {
+		Enabled: true
+	},
 	Users: {
 		Enabled: true,
 		BannerBan: []

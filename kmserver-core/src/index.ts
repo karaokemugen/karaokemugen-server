@@ -112,7 +112,7 @@ async function main() {
 
 	await initUsers();
 
-	initHardsubGeneration();
+	if (conf.Hardsub.Enabled) initHardsubGeneration();
 
 	if (argv.opts().createPreviews) {
 		const karas = await getAllKaras({});

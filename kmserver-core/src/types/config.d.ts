@@ -25,6 +25,9 @@ export interface Config {
 		Host: string
 		Port: number
 	},
+	Hardsub: {
+		Enabled: boolean
+	},
   	Users: {
 		Enabled: boolean,
 		BannerBan: string[]
