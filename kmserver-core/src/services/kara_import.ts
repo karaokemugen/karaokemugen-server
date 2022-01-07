@@ -6,12 +6,12 @@ import logger from 'winston';
 import {basename, resolve} from 'path';
 import { promises as fs } from 'fs';
 import { copy, mkdirp } from 'fs-extra';
-import {getConfig, resolvedPathImport, resolvedPathTemp, resolvedPathRepos} from '../lib/utils/config';
+import {getConfig, resolvedPath, resolvedPathRepos} from '../lib/utils/config';
 import {duration} from '../lib/utils/date';
 import { generateKara, validateNewKara } from '../lib/services/karaCreation';
 import { NewKara, Kara } from '../lib/types/kara';
 import { gitlabPostNewIssue } from './gitlab';
-import { asyncExists, asyncMove } from '../lib/utils/files';
+import { fileExists, smartMove } from '../lib/utils/files';
 import sentry from '../utils/sentry';
 import { addKaraInInbox } from './inbox';
 
@@ -36,39 +36,39 @@ export async function editKara(kara: Kara, contact: string): Promise<string> {
 		if (!kara.mediafile_orig) {
 			kara.noNewVideo = true;
 			kara.mediafile_orig = kara.mediafile;
-			if (!await asyncExists(mediaFile)) throw `Mediafile ${mediaFile} does not exist! Check your base files or upload a new media`;
-			await copy(mediaFile, resolve(resolvedPathTemp(), kara.mediafile), {overwrite: true});
+			if (!await fileExists(mediaFile)) throw `Mediafile ${mediaFile} does not exist! Check your base files or upload a new media`;
+			await copy(mediaFile, resolve(resolvedPath('Temp'), kara.mediafile), {overwrite: true});
 		}
 		if (!kara.subfile_orig) {
 			kara.noNewSub = true;
 			kara.subfile_orig = kara.subfile;
 			if (kara.subfile) {
-				if (!await asyncExists(subFile)) throw `Subfile ${subFile} does not exist! Check your base files or upload a new subfile`;
-				await copy(subFile, resolve(resolvedPathTemp(), kara.subfile), {overwrite: true});
+				if (!await fileExists(subFile)) throw `Subfile ${subFile} does not exist! Check your base files or upload a new subfile`;
+				await copy(subFile, resolve(resolvedPath('Temp'), kara.subfile), {overwrite: true});
 			}
 		}
 		// Treat files
-		newKara = await generateKara(kara, resolvedPathImport(), resolvedPathImport(), resolvedPathImport());
+		newKara = await generateKara(kara, resolvedPath('Import'), resolvedPath('Import'), resolvedPath('Import'));
 
 		// Move files to their own dir
-		const importDir = resolve(resolvedPathImport(), basename(newKara.file, '.kara.json'));
+		const importDir = resolve(resolvedPath('Import'), basename(newKara.file, '.kara.json'));
 		try {
 			await mkdirp(importDir);
 		} catch(err) {
 			// Folder might already exist. If it crashes, let it burn later.
 		}
-		await asyncMove(newKara.file, resolve(importDir, basename(newKara.file)), {overwrite: true});
-		await asyncMove(resolve(resolvedPathImport(), newKara.data.mediafile), resolve(importDir, newKara.data.mediafile), {overwrite: true});
-		if (newKara.data.subfile) await asyncMove(resolve(resolvedPathImport(), newKara.data.subfile), resolve(importDir, newKara.data.subfile), {overwrite: true});
-		let tags = await fs.readdir(resolvedPathImport());
+		await smartMove(newKara.file, resolve(importDir, basename(newKara.file)), {overwrite: true});
+		await smartMove(resolve(resolvedPath('Import'), newKara.data.mediafile), resolve(importDir, newKara.data.mediafile), {overwrite: true});
+		if (newKara.data.subfile) await smartMove(resolve(resolvedPath('Import'), newKara.data.subfile), resolve(importDir, newKara.data.subfile), {overwrite: true});
+		let tags = await fs.readdir(resolvedPath('Import'));
 		tags = tags.filter((f: string) => f.endsWith('.tag.json'));
 		for (const tag of tags) {
-			await asyncMove(resolve(resolvedPathImport(), tag), resolve(importDir, tag), {overwrite: true});
+			await smartMove(resolve(resolvedPath('Import'), tag), resolve(importDir, tag), {overwrite: true});
 		}
 		// Remove files if they're not new
-		if (kara.noNewSub && newKara.data.subfile) fs.unlink(resolve(resolvedPathImport(), importDir, newKara.data.subfile));
+		if (kara.noNewSub && newKara.data.subfile) fs.unlink(resolve(resolvedPath('Import'), importDir, newKara.data.subfile));
 		if (kara.noNewVideo) {
-			fs.unlink(resolve(resolvedPathImport(), importDir, newKara.data.mediafile));
+			fs.unlink(resolve(resolvedPath('Import'), importDir, newKara.data.mediafile));
 			newKara.data.duration = 0;
 		}
 
@@ -137,24 +137,24 @@ export async function createKara(kara: Kara, contact: string) {
 	}
 	try {
 		newKara = await generateKara(kara,
-			resolvedPathImport(),
-			resolvedPathImport(),
-			resolvedPathImport()
+			resolvedPath('Import'),
+			resolvedPath('Import'),
+			resolvedPath('Import')
 		);
 		// Move files to their own directory
-		const importDir = resolve(resolvedPathImport(), basename(newKara.file, '.kara.json'));
+		const importDir = resolve(resolvedPath('Import'), basename(newKara.file, '.kara.json'));
 		try {
 			await mkdirp(importDir);
 		} catch(err) {
 			// Folder might exist already
 		}
-		await asyncMove(newKara.file, resolve(importDir, basename(newKara.file)), {overwrite: true});
-		await asyncMove(resolve(resolvedPathImport(), newKara.data.mediafile), resolve(importDir, newKara.data.mediafile), {overwrite: true});
-		if (newKara.data.subfile) await asyncMove(resolve(resolvedPathImport(), newKara.data.subfile), resolve(importDir, newKara.data.subfile), {overwrite: true});
-		let tags = await fs.readdir(resolvedPathImport());
+		await smartMove(newKara.file, resolve(importDir, basename(newKara.file)), {overwrite: true});
+		await smartMove(resolve(resolvedPath('Import'), newKara.data.mediafile), resolve(importDir, newKara.data.mediafile), {overwrite: true});
+		if (newKara.data.subfile) await smartMove(resolve(resolvedPath('Import'), newKara.data.subfile), resolve(importDir, newKara.data.subfile), {overwrite: true});
+		let tags = await fs.readdir(resolvedPath('Import'));
 		tags = tags.filter((f: string) => f.endsWith('.tag.json'));
 		for (const tag of tags) {
-			await asyncMove(resolve(resolvedPathImport(), tag), resolve(importDir, tag), {overwrite: true});
+			await smartMove(resolve(resolvedPath('Import'), tag), resolve(importDir, tag), {overwrite: true});
 		}
 	} catch(err) {
 		logger.error('Error importing kara', {service: 'KaraGen', obj: err});

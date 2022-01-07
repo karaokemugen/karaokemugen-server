@@ -1,5 +1,5 @@
 import {resolve} from 'path';
-import {asyncRequired} from '../lib/utils/files';
+import {fileRequired} from '../lib/utils/files';
 import {exit} from '../';
 import logger from '../lib/utils/logger';
 import { getState, setState } from './state';
@@ -15,8 +15,8 @@ async function checkBinaries(config: Config): Promise<BinariesConfig> {
 
 	const binariesPath = configuredBinariesForSystem(config);
 	let requiredBinariesChecks = [];
-	requiredBinariesChecks.push(asyncRequired(binariesPath.ffmpeg));
-	requiredBinariesChecks.push(asyncRequired(binariesPath.git));
+	requiredBinariesChecks.push(fileRequired(binariesPath.ffmpeg));
+	requiredBinariesChecks.push(fileRequired(binariesPath.git));
 
 	try {
 		await Promise.all(requiredBinariesChecks);

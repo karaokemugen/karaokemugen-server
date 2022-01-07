@@ -5,8 +5,8 @@ import { v4 as uuidV4 } from 'uuid';
 import { deleteInbox, insertInbox, selectInbox, updateInboxDownloaded } from '../dao/inbox';
 import { KaraMetaFile, MetaFile, TagMetaFile } from '../lib/types/downloads';
 import { KaraFileV4 } from '../lib/types/kara';
-import { resolvedPathImport } from '../lib/utils/config';
-import { asyncExists } from '../lib/utils/files';
+import { resolvedPath } from '../lib/utils/config';
+import { fileExists } from '../lib/utils/files';
 import logger from '../lib/utils/logger';
 import Sentry from '../utils/sentry';
 import { closeIssue } from './gitlab';
@@ -15,7 +15,7 @@ export async function getKaraInbox(inid: string) {
 	try {
 		const karas = await selectInbox(inid);
 		return karas[0];
-	} catch(err) {		
+	} catch(err) {
 		logger.error(`Failed to get inbox item ${inid}`, {service: 'Inbox', obj: err});
 		Sentry.error(err);
 		throw err;
@@ -40,7 +40,7 @@ export async function markKaraInboxAsDownloaded(inid: string, username: string) 
 
 export async function addKaraInInbox(karaName: string, contact: string, issue?: string, fix = false) {
 	try {
-		const karaDir = resolve(resolvedPathImport(), karaName);
+		const karaDir = resolve(resolvedPath('Import'), karaName);
 		const dir = await fs.readdir(karaDir);
 		const karaFile = dir.find(f => f.endsWith('kara.json'));
 		const tagFiles = dir.filter(f => f.endsWith('tag.json'));
@@ -60,7 +60,7 @@ export async function addKaraInInbox(karaName: string, contact: string, issue?: 
 		}
 		const lyricsFile = karaData.medias[0].lyrics[0].filename;
 		let lyrics: MetaFile;
-		if (await asyncExists(resolve(karaDir, lyricsFile))) {
+		if (await fileExists(resolve(karaDir, lyricsFile))) {
 			lyrics = {
 				file: lyricsFile,
 				data: await fs.readFile(resolve(karaDir, lyricsFile), 'utf-8')
@@ -68,7 +68,7 @@ export async function addKaraInInbox(karaName: string, contact: string, issue?: 
 		}
 
 		let mediafile: string;
-		if (await asyncExists(resolve(karaDir, karaData.medias[0].filename))) {
+		if (await fileExists(resolve(karaDir, karaData.medias[0].filename))) {
 			mediafile = karaData.medias[0].filename;
 		}
 		await insertInbox({
@@ -97,7 +97,7 @@ export async function removeKaraFromInbox(inid: string) {
 		// You never know.
 		if (!karaDir) throw {code: 500};
 
-		await remove(resolve(resolvedPathImport(), karaDir)).catch(() => {
+		await remove(resolve(resolvedPath('Import'), karaDir)).catch(() => {
 			logger.warn(`Folder for ${karaDir} already deleted`, {service: 'Inbox'});
 		});
 		await deleteInbox(inid);

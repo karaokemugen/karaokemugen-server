@@ -1,7 +1,7 @@
 import {selectTags, selectTagByNameAndType, selectTag} from '../dao/tag';
 import { TagParams, TagList, Tag } from '../lib/types/tag';
 import { writeTagFile } from '../lib/dao/tagfile';
-import { resolvedPathImport } from '../lib/utils/config';
+import { resolvedPath } from '../lib/utils/config';
 import { findTagInImportedFiles } from '../dao/tagfile';
 import { IDQueryResult } from '../lib/types/kara';
 import { v4 as uuidV4 } from 'uuid';
@@ -62,7 +62,7 @@ export async function editTag(_tid: string, tag: Tag, _opts: any) {
 export async function addTag(tag: Tag, _opts: any) {
 	try {
 		tag.tid = uuidV4();
-		await writeTagFile(tag, resolvedPathImport());
+		await writeTagFile(tag, resolvedPath('Import'));
 		return tag;
 	} catch(err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
@@ -79,7 +79,7 @@ export async function getOrAddTagID(tagObj: Tag): Promise<IDQueryResult> {
 		tag = await findTagInImportedFiles(tagObj.name, tagObj.types);
 		if (tag) return {id: tag.tid, new: false};
 		tagObj.tid = uuidV4();
-		await writeTagFile(tagObj, resolvedPathImport());
+		await writeTagFile(tagObj, resolvedPath('Import'));
 		return {id: tagObj.tid, new: true};
 	} catch(err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));

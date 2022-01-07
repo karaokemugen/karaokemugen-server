@@ -3,7 +3,7 @@ import { Router } from 'express';
 
 import {getConfig} from '../../lib/utils/config';
 import {findUserByName, checkPassword, updateUserLastLogin, decodeJwtToken} from '../../services/user';
-import { Roles, Token } from '../../lib/types/user';
+import { Roles, TokenResponseWithRoles } from '../../lib/types/user';
 import { requireAuth, requireValidUser } from '../middlewares/auth';
 import sentry from '../../utils/sentry';
 import logger from '../../lib/utils/logger';
@@ -20,10 +20,10 @@ const loginNoUser = {
 	data: undefined
 };
 
-async function checkLogin(username: string, password: string): Promise<Partial<Token>> {
+async function checkLogin(username: string, password: string): Promise<TokenResponseWithRoles> {
 	const user = await findUserByName(username, {password: true});
 	if (!user) throw false;
-	if (!await checkPassword(user, password)) throw false;	
+	if (!await checkPassword(user, password)) throw false;
 	return {
 		token: createJwtToken(username, user.roles, user.password_last_modified_at),
 		username: username,

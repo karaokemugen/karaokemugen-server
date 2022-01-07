@@ -3,6 +3,7 @@ import { getWS } from '../lib/utils/ws';
 import logger from '../lib/utils/logger';
 import { findUserByName } from './user';
 import {getFavorites} from './favorites';
+import { adminToken } from '../utils/constants';
 
 export async function subUser(socket: Socket, username: string) {
 	if (await findUserByName(username)) {
@@ -21,7 +22,7 @@ export function unsubUser(socket: Socket, username: string) {
 export async function pubUser(username: string) {
 	const [user, favorites] = await Promise.all([
 		findUserByName(username, { public: true, password: false }),
-		getFavorites({ username, roles: {user: true} })
+		getFavorites({ ...adminToken, username, roles: {user: true} })
 	]);
 	if (!user) {
 		// wtf?

@@ -5,11 +5,11 @@ import merge from 'lodash.merge';
 import {decode} from 'jwt-simple';
 import {updateUser, updateUserPassword, insertUser, selectUser, selectAllUsers, deleteUser, updateLastLogin} from '../dao/user';
 import logger from '../lib/utils/logger';
-import {getConfig, resolvedPathAvatars, resolvedPathBanners, resolvedPathPreviews} from '../lib/utils/config';
-import {asyncExists, asyncMove, detectFileType} from '../lib/utils/files';
+import {getConfig, resolvedPath} from '../lib/utils/config';
+import {fileExists, smartMove, detectFileType} from '../lib/utils/files';
 import { v4 as uuidV4 } from 'uuid';
 import {resolve, isAbsolute} from 'path';
-import { User, Token } from '../lib/types/user';
+import { User, JWTTokenWithRoles } from '../lib/types/user';
 import { sendMail } from '../utils/mailer';
 import randomstring from 'randomstring';
 import sentry from '../utils/sentry';
@@ -21,6 +21,7 @@ import {copy} from 'fs-extra';
 import {DBUser} from '../lib/types/database/user';
 import {getKara} from './kara';
 import { isLooselyEqual } from '../lib/utils/objectHelpers';
+import {adminToken} from '../utils/constants';
 
 const passwordResetRequests = new Map();
 
@@ -256,12 +257,12 @@ async function replaceAvatar(oldImageFile: string, avatar: Express.Multer.File) 
 		}
 		// Construct the name of the new avatar file with its ID and filetype.
 		const newAvatarFile = `${uuidV4()}.${fileType}`;
-		const avatarPath = resolve(resolvedPathAvatars());
+		const avatarPath = resolve(resolvedPath('Avatars'));
 		const newAvatarPath = resolve(avatarPath, newAvatarFile);
 		const oldAvatarPath = resolve(avatarPath, oldImageFile);
-		if (await asyncExists(oldAvatarPath) &&
+		if (await fileExists(oldAvatarPath) &&
 			oldImageFile !== 'blank.png') await fs.unlink(oldAvatarPath);
-		await asyncMove(avatar.path, newAvatarPath);
+		await smartMove(avatar.path, newAvatarPath);
 		return newAvatarFile;
 	} catch (err) {
 		logger.error(`Unable to replace avatar ${oldImageFile} with ${avatar.path}`, {service: 'User', obj: err});
@@ -274,7 +275,7 @@ async function replaceAvatar(oldImageFile: string, avatar: Express.Multer.File) 
 async function replaceBanner(preview: string) {
 	if (preview === 'default.jpg') return preview;
 	const customBanner = isAbsolute(preview);
-	const file = customBanner ? preview:resolve(resolvedPathPreviews(), preview);
+	const file = customBanner ? preview:resolve(resolvedPath('Previews'), preview);
 	let fileType: any;
 	if (customBanner) {
 		fileType = await detectFileType(file);
@@ -283,13 +284,13 @@ async function replaceBanner(preview: string) {
 			throw {code: 'INVALID_FILE', data: 'Please input valid banners (jpg, png)'};
 		}
 	}
-	if (!await asyncExists(file)) {
+	if (!await fileExists(file)) {
 		throw new Error('The requested preview is not available nor generated.');
 	} else {
 		const name = customBanner ? `${uuidV4()}.${fileType}`:preview;
-		const target = resolve(resolvedPathBanners(), name);
+		const target = resolve(resolvedPath('Banners'), name);
 		// The banner is already in place (use by somebody else), no need to copy again.
-		if (await asyncExists(target)) return preview;
+		if (await fileExists(target)) return preview;
 		else {
 			if (!customBanner) {
 				const kid = preview.split('.')[0];
@@ -324,16 +325,16 @@ export async function changePassword(username: string, password: string) {
 export async function addRoleToUser(username: string, role: string) {
 	const user = await selectUser('pk_login', username);
 	user.roles[role] = true;
-	await editUser(username, user, null, {roles: {admin: true}, username: 'admin'});
+	await editUser(username, user, null, adminToken);
 }
 
 export async function removeRoleFromUser(username: string, role: string) {
 	const user = await selectUser('pk_login', username);
 	user.roles[role] = false;
-	await editUser(username, user, null, {roles: {admin: true}, username: 'admin'});
+	await editUser(username, user, null, adminToken);
 }
 
-export async function editUser(username: string, user: User, avatar: Express.Multer.File, token: Token, banner?: Express.Multer.File,) {
+export async function editUser(username: string, user: User, avatar: Express.Multer.File, token: JWTTokenWithRoles, banner?: Express.Multer.File) {
 	try {
 		if (!username) throw 'No user provided';
 		username = username.toLowerCase();

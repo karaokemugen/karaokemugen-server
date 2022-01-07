@@ -1,10 +1,10 @@
 import { deleteFavorite, selectFavorites, insertFavorite } from '../dao/favorites';
-import { Token } from '../lib/types/user';
+import { JWTTokenWithRoles } from '../lib/types/user';
 import logger from '../lib/utils/logger';
 import sentry from '../utils/sentry';
 import { pubUser } from './user_pubsub';
 
-export async function getFavorites(token: Token) {
+export async function getFavorites(token: JWTTokenWithRoles) {
 	try {
 		token.username = token.username.toLowerCase();
 		return await selectFavorites(token.username);
@@ -15,7 +15,7 @@ export async function getFavorites(token: Token) {
 	}
 }
 
-export async function addFavorite(token: Token, kid: string) {
+export async function addFavorite(token: JWTTokenWithRoles, kid: string) {
 	try {
 		token.username = token.username.toLowerCase();
 		await insertFavorite(token.username, kid);
@@ -28,7 +28,7 @@ export async function addFavorite(token: Token, kid: string) {
 	}
 }
 
-export async function removeFavorite(token: Token, kid: string) {
+export async function removeFavorite(token: JWTTokenWithRoles, kid: string) {
 	try {
 		token.username = token.username.toLowerCase();
 		await deleteFavorite(token.username, kid);

@@ -15,7 +15,7 @@ import { getConfig, resolvedPathRepos } from '../lib/utils/config';
 import { gitlabPostNewIssue } from './gitlab';
 import { DownloadBundleServer, KaraMetaFile, MetaFile, ShinDownloadBundle, TagMetaFile } from '../lib/types/downloads';
 import sentry from '../utils/sentry';
-import { Token } from '../lib/types/user';
+import { JWTTokenWithRoles } from '../lib/types/user';
 import { TagFile } from '../lib/types/tag';
 import { updateGit } from './git';
 import { findUserByName } from './user';
@@ -116,7 +116,7 @@ export function getAllmedias() {
 	return selectAllMedias();
 }
 
-export async function getKara(params: KaraParams, token?: Token) {
+export async function getKara(params: KaraParams, token?: JWTTokenWithRoles) {
 	try {
 		const karas = await selectAllKaras({
 			order: params.order,
@@ -137,7 +137,7 @@ export async function getKara(params: KaraParams, token?: Token) {
 	}
 }
 
-export async function getAllKaras(params: KaraParams, token?: Token): Promise<KaraList> {
+export async function getAllKaras(params: KaraParams, token?: JWTTokenWithRoles): Promise<KaraList> {
 	try {
 		if (token) token.username = token.username.toLowerCase();
 		// User seeking favorites from someone, check if that's okay or not.
