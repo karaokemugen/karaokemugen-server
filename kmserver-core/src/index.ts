@@ -112,6 +112,8 @@ async function main() {
 
 	await initUsers();
 
+	initHardsubGeneration();
+
 	if (argv.opts().createPreviews) {
 		const karas = await getAllKaras({});
 		await createImagePreviews(karas, 'full', 1280);
@@ -168,7 +170,6 @@ async function main() {
 	setInterval(findRemoveSync.bind(this, resolve(dataPath, conf.System.Path.Temp), {age: {seconds: 7200}}), 2 * 60 * 60 * 1000);
 
 	inits.push(initFrontend(port));
-	initHardsubGeneration();
 	initGitRepos();
 	if (conf.Mail.Enabled) initMailer();
 	await Promise.all(inits);
