@@ -24,6 +24,7 @@ import { downloadFile } from '../lib/utils/downloader';
 import { resolveFileInDirs } from '../lib/utils/files';
 import { DBKara } from '../lib/types/database/kara';
 import { copyFromData } from '../lib/dao/database';
+import { generateHardsubs } from '../utils/hardsubs';
 
 export async function getBaseStats() {
 	try {
@@ -66,7 +67,6 @@ export async function generate() {
 		await generateDatabase({validateOnly: false});
 		const karas = await getAllKaras({});
 		refreshKaraStats();
-		await createImagePreviews(karas, 'full', 1280);
 		// Download master.zip from gitlab to serve it ourselves
 		const repo = getConfig().System.Repositories[0];
 		const downloadURL = repo.SourceArchiveURL;
@@ -78,6 +78,10 @@ export async function generate() {
 		};
 		downloadFile(downloadItem);
 		computeSubchecksums();
+		await Promise.all([
+			createImagePreviews(karas, 'full', 1280),
+			generateHardsubs(karas)
+		]);
 	} catch(err) {
 		logger.error('Generation failed', {service: 'Gen', obj: err});
 		sentry.error(err, 'Fatal');

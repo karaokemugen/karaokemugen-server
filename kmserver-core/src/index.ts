@@ -22,6 +22,7 @@ import { promoteToken } from './dao/remote';
 import { initGitRepos } from './services/git';
 import { register } from 'ts-node';
 import findWorkspaceRoot from 'find-yarn-workspace-root';
+import { initHardsubGeneration } from './utils/hardsubs';
 
 const appPath = findWorkspaceRoot();
 const dataPath = resolve(appPath, 'app/');
@@ -167,6 +168,7 @@ async function main() {
 	setInterval(findRemoveSync.bind(this, resolve(dataPath, conf.System.Path.Temp), {age: {seconds: 7200}}), 2 * 60 * 60 * 1000);
 
 	inits.push(initFrontend(port));
+	initHardsubGeneration();
 	initGitRepos();
 	if (conf.Mail.Enabled) initMailer();
 	await Promise.all(inits);

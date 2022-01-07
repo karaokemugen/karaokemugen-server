@@ -37,7 +37,8 @@ export const defaults: Config = {
 			Import: 'inbox',
 			Avatars: 'avatars',
 			Banners: 'banners',
-			Previews: 'previews'
+			Previews: 'previews',
+			Hardsubs: 'hardsubs',
 		}
 	},
 	Shortener: {

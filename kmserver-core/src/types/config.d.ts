@@ -87,6 +87,7 @@ export interface Config {
 		},
 		Repositories: RepositoryWithManifest[]
 		Path: {
+			Hardsubs?: string,
 			Karas?: string,
 			Tags?: string,
 			Medias?: string,

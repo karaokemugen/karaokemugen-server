@@ -85,6 +85,7 @@ export function initFrontend(listenPort: number) {
 	if (state.opt.staticServe) {
 		app.use('/downloads', express.static(resolve(getState().appPath, getConfig().System.Repositories[0].BaseDir)));
 		app.use('/downloads/medias', express.static(resolvedPathRepos('Medias')[0]));
+		app.use('/hardsubs', express.static(resolve(getState().dataPath, getConfig().System.Path.Hardsubs)));
 	}
 
 	// API router
