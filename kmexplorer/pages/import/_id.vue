@@ -74,6 +74,7 @@
 						versions: [],
 						singers: [],
 						misc: [],
+						warnings: [],
 						groups: [],
 						songwriters: [],
 						creators: [],
