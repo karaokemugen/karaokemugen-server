@@ -18,7 +18,8 @@
 			"songwriters": "Penulis lagu",
 			"series": "Serial",
 			"misc": "Lain-lain",
-			"families": "Keluarga"
+			"families": "Keluarga",
+			"warnings": "Peringatan"
 		},
 		"singers_by": "Dinyanyikan oleh",
 		"creators_by": "Dibuat oleh",
@@ -161,7 +162,7 @@
 	"menu": {
 		"register": "Daftar",
 		"add_repository": "Tambahkan repositori ini ke aplikasi kamu",
-		"random": "Gulir sebuah dadu",
+		"random": "Gulir dadu",
 		"database": "Basis data",
 		"karas": "Lagu",
 		"songtypes": "Jenis",
@@ -176,7 +177,7 @@
 		"langs": "Bahasa",
 		"years": "Tahun",
 		"community": "Komunitas",
-		"join_kara": "Gabung sebuah pesta karaoke",
+		"join_kara": "Gabung pesta karaoke",
 		"search_users": "Cari pengguna",
 		"profile": "Sunting profil kamu",
 		"login": "Masuk",
@@ -188,8 +189,9 @@
 		"singers": "Penyanyi",
 		"genres": "Genre",
 		"creators": "Pembuat",
-		"kara_import": "Masukkan sebuah kara",
-		"account": "Akun"
+		"kara_import": "Kirim kara",
+		"account": "Akun",
+		"warnings": "Peringatan"
 	},
 	"search": {
 		"aria": {
@@ -457,7 +459,7 @@
 	},
 	"toast": {
 		"LOG_ERROR": "Kredensial salah.",
-		"USER_ASCII_CHARACTERS_ONLY": "Mohon hanya karakter alfanumerik di nama pengguna kamu (kamu bisa mengubah nama penggunamu nati kapan pun yang kamu mau).",
+		"USER_ASCII_CHARACTERS_ONLY": "Mohon hanya karakter alfanumerik di nama pengguna kamu (kamu bisa mengubah nama penggunamu nanti kapan pun yang kamu mau).",
 		"USER_CREATED": "Pengguna berhasil dibuat",
 		"GENERATED_KARA": "Karaoke berhasil dikirim.",
 		"EDITED_KARA": "Suntingan berhasil dikirim.",
