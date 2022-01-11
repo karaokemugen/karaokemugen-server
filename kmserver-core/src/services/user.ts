@@ -338,12 +338,12 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 	try {
 		if (!username) throw 'No user provided';
 		username = username.toLowerCase();
-		if (token.username.toLowerCase() !== username && !token.roles.admin) throw 'Only admins can edit another user';
+		if (token.username.toLowerCase() !== username && token.roles && !token.roles.admin) throw 'Only admins can edit another user';
 		const currentUser = await findUserByName(username, {password: true});
 		if (!currentUser) throw 'User unknown';
 		const mergedUser = merge(currentUser, user);
 		delete mergedUser.password;
-		if (user.roles && !isLooselyEqual(user.roles, currentUser.roles) && !token.roles.admin) throw 'Only admins can change a user\'s roles';
+		if (user.roles && !isLooselyEqual(user.roles, currentUser.roles) && token.roles && !token.roles.admin) throw 'Only admins can change a user\'s roles';
 		// Check if login already exists.
 		if (user.nickname && currentUser.nickname !== user.nickname && await selectUser('nickname', user.nickname)) throw 'Nickname already exists';
 		if (user.password) {
