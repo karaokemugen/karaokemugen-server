@@ -276,7 +276,7 @@
 					"checkbox": "Gunakan permintaan favorit dan karaoke saya untuk statistik"
 				},
 				"flag_displayfavorites": {
-					"desc": "Bersamaan dengan memperlihatkan profil publik kamu, kamu bisa menampilkan favoritmu (karena itu seleramu) ke semua orang. Opsi ini dimatikan secara baku, kamu bisa mencentangnya jika kamu mau. Untuk memperlihatkan favoritmu, pertama, profilmu harus sudah publik.",
+					"desc": "Bersamaan dengan memperlihatkan profil publik kamu, kamu bisa menampilkan favoritmu (karena itu seleramu) ke semua orang. Pilihan ini dinonaktifkan secara baku, kamu bisa mencentangnya jika kamu mau. Untuk memperlihatkan favoritmu, pertama, profilmu harus sudah publik.",
 					"label": "Favorit",
 					"checkbox": "Tampilkan favorit saya"
 				},
