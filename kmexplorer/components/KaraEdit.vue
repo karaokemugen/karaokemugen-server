@@ -478,7 +478,8 @@
 						this.karaoke.songorder > 999 ||
 						this.karaoke.authors.length === 0 ||
 						this.uploading.media ||
-						this.uploading.sub
+						this.uploading.sub ||
+						this.loading
 				);
 			},
 			...mapState('auth', ['loggedIn'])
