@@ -54,8 +54,9 @@ export async function postSuggestionToKaraBase(title: string, serie:string, type
 		const conf = getConfig().Gitlab.IssueTemplate;
 		let titleIssue = conf?.Suggestion?.Title
 			? conf.Suggestion.Title
-			: '[suggestion] $serie - $title';
+			: '[suggestion] $serie - $type - $title';
 		titleIssue = titleIssue.replace('$title', title);
+		titleIssue = titleIssue.replace('$type', type);
 		titleIssue = titleIssue.replace('$serie', serie);
 		let desc = conf?.Suggestion?.Description
 			? conf.Suggestion.Description

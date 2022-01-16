@@ -140,7 +140,7 @@ The files (.kara, video, .ass and serial if necessary) are present in the follow
 **Comment** : $comment`
 			},
 			Suggestion: {
-				Title: '[Suggestion] $serie - $title',
+				Title: '[Suggestion] $serie - $type - $title',
 				Labels: ['suggestion'],
 				Description: `
 # Karaoke suggestion
