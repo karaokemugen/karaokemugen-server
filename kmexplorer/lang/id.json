@@ -207,9 +207,9 @@
 		"sort": {
 			"kara_count": "Jumlah karaoke",
 			"most_favorites": "Terbanyak favorit",
-			"most_requested": "Terbanyak diminta",
+			"most_requested": "Paling banyak diminta",
 			"recent": "Menurut tanggal ditambahkan",
-			"most_played": "Terbanyak diputar",
+			"most_played": "Paling banyak diputar",
 			"a_z": "Dari A ke Z"
 		},
 		"next": "Halaman selanjutnya",
@@ -300,7 +300,7 @@
 					"placeholder": "contoh@contoh.moe"
 				},
 				"url": {
-					"label": "Situs web",
+					"label": "Situs Web",
 					"placeholder": "https://karaoke.moe"
 				},
 				"bio": {
