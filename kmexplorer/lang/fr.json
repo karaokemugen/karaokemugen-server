@@ -117,7 +117,7 @@
 			"year_tooltip": "Année de la diffusion de la série ou de la vidéo",
 			"year_required": "L'année de diffusion est obligatoire",
 			"year_invalid": "L'année de diffusion est invalide",
-			"songwriters_tooltip": "Compositeurs et paroliers.",
+			"songwriters_tooltip": "Compositeurs, Arrangeurs et paroliers.",
 			"creators_tooltip": "Entité qui a créé la série ou le clip. Peut être un studio d'animation, de cinéma, de jeu vidéo, etc.",
 			"authors_tooltip": "Vous devriez vous ajouter ici ;)",
 			"authors_required": "L'auteur du karaoké est obligatoire",

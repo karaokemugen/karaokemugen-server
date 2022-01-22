@@ -117,7 +117,7 @@
 			"year_tooltip": "Year when the series was broadcasted or the video was produced",
 			"year_required": "Broadcast year is mandatory",
 			"year_invalid": "Broadcast year is invalid",
-			"songwriters_tooltip": "Songwriters compose lyrics AND music.",
+			"songwriters_tooltip": "Composers, Arrangers and Lyricists.",
 			"creators_tooltip": "Entity that created the series. Can be animation studio, movie studio, or game studio.",
 			"authors_tooltip": "You should add yourself here ;)",
 			"authors_required": "Author of the karaoke is mandatory",
