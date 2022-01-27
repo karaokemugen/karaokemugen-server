@@ -1,1 +1,481 @@
-{}
+{
+	"modal": {
+		"signup": {
+			"fields": {
+				"username": {
+					"placeholder": "",
+					"label": ""
+				},
+				"password": {
+					"placeholder": "",
+					"label": ""
+				},
+				"password_confirmation": {
+					"label": "",
+					"placeholder": ""
+				},
+				"email": {
+					"label": "",
+					"placeholder": ""
+				}
+			},
+			"subtitle": "",
+			"submit": "",
+			"passwords_mismatch": "",
+			"title": ""
+		},
+		"profile": {
+			"fields": {
+				"lang_prefs": {
+					"main_song_name_lang": "",
+					"fallback_song_name_lang": ""
+				},
+				"username": {
+					"label": ""
+				},
+				"bio": {
+					"label": "",
+					"placeholder": ""
+				},
+				"password": {
+					"label": "",
+					"placeholder": ""
+				},
+				"nickname": {
+					"label": "",
+					"placeholder": ""
+				},
+				"location": {
+					"label": ""
+				},
+				"url": {
+					"label": "",
+					"placeholder": ""
+				},
+				"discord": {
+					"label": "",
+					"placeholder": ""
+				},
+				"email": {
+					"placeholder": "",
+					"label": ""
+				},
+				"password_confirmation": {
+					"label": "",
+					"placeholder": ""
+				},
+				"flag_displayfavorites": {
+					"label": "",
+					"checkbox": "",
+					"desc": ""
+				},
+				"banner": {
+					"upload": "",
+					"change": "",
+					"donator": "",
+					"label": "",
+					"remove": ""
+				},
+				"flag_public": {
+					"desc": "",
+					"label": "",
+					"checkbox": ""
+				},
+				"flag_sendstats": {
+					"label": "",
+					"checkbox": ""
+				},
+				"twitter": {
+					"label": "",
+					"placeholder": ""
+				},
+				"instagram": {
+					"label": "",
+					"placeholder": ""
+				},
+				"twitch": {
+					"label": "",
+					"placeholder": ""
+				}
+			},
+			"passwords_mismatch": "",
+			"submit": "",
+			"title": "",
+			"headers": {
+				"profile": "",
+				"password": "",
+				"privacy": "",
+				"lang": ""
+			},
+			"select_avatar": "",
+			"delete": ""
+		},
+		"stats": {
+			"refuse_desc": "",
+			"label": "",
+			"yes": "",
+			"desc": "",
+			"change": "",
+			"no": ""
+		},
+		"suggest": {
+			"submitted": {
+				"subtitle": "",
+				"here": "",
+				"text": "",
+				"close": ""
+			},
+			"fields": {
+				"name": {
+					"placeholder": "",
+					"label": ""
+				},
+				"series": {
+					"placeholder": "",
+					"label": ""
+				},
+				"title": {
+					"placeholder": "",
+					"label": ""
+				},
+				"link": {
+					"placeholder": "",
+					"label": ""
+				},
+				"type": {
+					"label": ""
+				}
+			},
+			"title": "",
+			"subtitle": "",
+			"submit": ""
+		},
+		"download": {
+			"karabundle": "",
+			"cancel": "",
+			"label": "",
+			"media": "",
+			"subtitles": ""
+		},
+		"add_repository": {
+			"manual": "",
+			"online": "",
+			"download": "",
+			"label": "",
+			"button": "",
+			"desc": "",
+			"add": "",
+			"cancel": ""
+		},
+		"join_kara": {
+			"label": "",
+			"help": "",
+			"cancel": "",
+			"error": "",
+			"desc": "",
+			"add": ""
+		},
+		"delete_account": {
+			"add": "",
+			"label": "",
+			"cancel": ""
+		},
+		"login": {
+			"subtitle": "",
+			"title": "",
+			"fields": {
+				"username": {
+					"label": "",
+					"placeholder": ""
+				},
+				"password": {
+					"label": "",
+					"placeholder": ""
+				},
+				"forgot_password": {
+					"label": "",
+					"error": "",
+					"success": ""
+				}
+			},
+			"submit": ""
+		},
+		"crop": {
+			"label": "",
+			"add": "",
+			"cancel": ""
+		},
+		"set_banner": {
+			"label": "",
+			"catch": "",
+			"cancel": "",
+			"set": "",
+			"next": "",
+			"previous": "",
+			"one": ""
+		}
+	},
+	"toast": {
+		"CANNOT_EDIT_KARA": "",
+		"GENERATED_KARA": "",
+		"FILE_UPLOADED": "",
+		"CANNOT_GENERATE_KARA": "",
+		"EDITED_KARA": "",
+		"USER_EDITED": "",
+		"SUBFILE_FORMAT_UNKOWN": "",
+		"LOG_ERROR": "",
+		"USER_CREATED": "",
+		"USER_ASCII_CHARACTERS_ONLY": ""
+	},
+	"search": {
+		"placeholder": {
+			"kara": "",
+			"user": "",
+			"tag": ""
+		},
+		"sort": {
+			"kara_count": "",
+			"recent": "",
+			"a_z": "",
+			"most_requested": "",
+			"most_favorites": "",
+			"most_played": ""
+		},
+		"aria": {
+			"goto": "",
+			"page": "",
+			"sort": ""
+		},
+		"previous": "",
+		"types": {
+			"karaokes": "",
+			"users": "",
+			"favorites": ""
+		},
+		"next": ""
+	},
+	"menu": {
+		"kara_import": "",
+		"search_users": "",
+		"warnings": "",
+		"langs": "",
+		"years": "",
+		"community": "",
+		"join_kara": "",
+		"random": "",
+		"database": "",
+		"karas": "",
+		"songtypes": "",
+		"creators": "",
+		"add_repository": "",
+		"tags": "",
+		"misc": "",
+		"groups": "",
+		"families": "",
+		"origins": "",
+		"genres": "",
+		"platforms": "",
+		"versions": "",
+		"singers": "",
+		"series": "",
+		"songwriters": "",
+		"authors": "",
+		"account": "",
+		"login": "",
+		"logout": "",
+		"register": "",
+		"connection": "",
+		"profile": "",
+		"switch_language": ""
+	},
+	"profile": {
+		"private_favorites": "",
+		"favorites_count": "",
+		"public_favorites": "",
+		"private": "",
+		"edit": "",
+		"favorites": "",
+		"you": ""
+	},
+	"kara": {
+		"import": {
+			"check_in_progress": "",
+			"created_at": "",
+			"choose_file": "",
+			"songorder_tooltip": "",
+			"songwriters_tooltip": "",
+			"contact_infos_tooltip": "",
+			"series_tooltip": "",
+			"songtypes_required": "",
+			"add_file_success": "",
+			"in_progress_link": "",
+			"add_file_media_error": "",
+			"year_required": "",
+			"add_file_lyrics_error": "",
+			"year_invalid": "",
+			"create": "",
+			"media_file_tooltip": "",
+			"series_singers_required": "",
+			"lyrics_file_tooltip": "",
+			"creators_tooltip": "",
+			"authors_tooltip": "",
+			"groups_tooltip": "",
+			"add_success": "",
+			"add_success_description": "",
+			"add_error": "",
+			"restart": "",
+			"send_contact_infos": "",
+			"auto_send_contact_infos": "",
+			"description": "",
+			"attention": "",
+			"documentation_link": "",
+			"license_reminder": "",
+			"license_link": "",
+			"add": "",
+			"comment": "",
+			"comment_tooltip": "",
+			"submit": "",
+			"media_file": "",
+			"lyrics_file_missing": "",
+			"title": "",
+			"title_required": "",
+			"title_eng_required": "",
+			"year": "",
+			"year_tooltip": "",
+			"authors_required": "",
+			"media_file_required": "",
+			"lyrics_file": "",
+			"title_tooltip": "",
+			"songorder": "",
+			"songorder_invalid": "",
+			"langs_required": "",
+			"i18n_select": "",
+			"i18n_delete": "",
+			"contact_infos": ""
+		},
+		"tagtypes": {
+			"platforms": "",
+			"groups": "",
+			"origins": "",
+			"langs": "",
+			"genres": "",
+			"warnings": "",
+			"series": "",
+			"songtypes": "",
+			"singers": "",
+			"songwriters": "",
+			"families": "",
+			"authors": "",
+			"misc": "",
+			"versions": "",
+			"creators": ""
+		},
+		"songwriters_by": "",
+		"download": "",
+		"live": "",
+		"favorites": {
+			"remove": "",
+			"add": ""
+		},
+		"set_banner": {
+			"btn": "",
+			"forbidden_label": ""
+		},
+		"problem": {
+			"btn": {
+				"media": "",
+				"metadata": "",
+				"lyrics": "",
+				"edit": ""
+			},
+			"form": {
+				"title": "",
+				"subtitle": "",
+				"type": {
+					"label": "",
+					"media": "",
+					"metadata": "",
+					"lyrics": ""
+				},
+				"username": {
+					"placeholder": "",
+					"label": ""
+				},
+				"submit": "",
+				"thanks": {
+					"text": "",
+					"btn": ""
+				},
+				"comment": {
+					"label": "",
+					"placeholder": ""
+				}
+			},
+			"title": ""
+		},
+		"stats": {
+			"favorited": "",
+			"requested": "",
+			"played": ""
+		},
+		"phrase": "",
+		"meta": "",
+		"notfound": "",
+		"singers_by": "",
+		"creators_by": "",
+		"authors_by": "",
+		"duration": "",
+		"created_at": "",
+		"live_unavailable": "",
+		"lyrics": {
+			"show": "",
+			"hide": ""
+		}
+	},
+	"layout": {
+		"results": "",
+		"loading": "",
+		"empty": "",
+		"suggest": "",
+		"suggest_open": "",
+		"remove_tags": "",
+		"end_favorites": "",
+		"end_my_favorites": "",
+		"slogan": "",
+		"end_users": "",
+		"explore": ""
+	},
+	"footer": {
+		"translation": "",
+		"home": "",
+		"software_under_license": "",
+		"base_under_licence": ""
+	},
+	"error": {
+		"private_profile": "",
+		"not_found_profile": "",
+		"home": "",
+		"generic": ""
+	},
+	"stats": {
+		"all_duration": "",
+		"last_generation": "",
+		"media_size": "",
+		"karaokes": ""
+	},
+	"duration": {
+		"days": "",
+		"hours": "",
+		"minutes": "",
+		"seconds": ""
+	},
+	"roles": {
+		"donator": "",
+		"contributor": "",
+		"maintainer": "",
+		"admin": ""
+	},
+	"titles": {
+		"home": ""
+	}
+}
