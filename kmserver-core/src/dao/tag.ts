@@ -42,7 +42,7 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 	if (params.from > 0) offsetClause = `OFFSET ${params.from} `;
 	if (params.size > 0) limitClause = `LIMIT ${params.size} `;
 	if (!params.includeStaging) {
-		filterClauses.sql.push('repository !== \'Staging\'');
+		filterClauses.sql.push('t.repository != \'Staging\'');
 	}
 	const query = sql.getAllTags(filterClauses.sql, typeClauses, limitClause, offsetClause, joinClauses, orderClause,
 		stripClause, filterClauses.additionalFrom);
