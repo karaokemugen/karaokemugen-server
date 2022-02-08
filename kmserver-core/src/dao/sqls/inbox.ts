@@ -1,21 +1,23 @@
 export const selectInbox = (uniqueKara: string) => `
 	SELECT
-		pk_inid AS inid,
-		name,
-		fk_login_downloaded AS username_downloaded,
-		downloaded_at,
-		created_at,
+		i.pk_inid AS inid,
+		i.name,
+		i.fk_login_downloaded AS username_downloaded,
+		i.downloaded_at,
+		i.created_at,
+	    i.fk_kid as kid,
 		${uniqueKara ? `
-			kara,
-			extra_tags,
-			lyrics,
-			mediafile,
+			ak.mediafile,
+			ak.subfile,
+			ak.karafile,
+			ak.tags,
 		` : ''}
-		gitlab_issue,
-		fix,
-		contact
-	FROM inbox
-	${uniqueKara ? ' WHERE pk_inid = $1 ' : ''}
+		i.gitlab_issue,
+		i.contact,
+		i.edited_kid,
+		i.edited_kid is not null as fix
+	FROM inbox i
+	${uniqueKara ? 'INNER JOIN all_karas ak ON i.fk_kid = ak.pk_kid WHERE pk_inid = $1' : ''}
 `;
 
 export const insertInbox = `
@@ -23,24 +25,18 @@ export const insertInbox = `
 		pk_inid,
 		name,
 		created_at,
-		kara,
-		extra_tags,
-		lyrics,
-		mediafile,
 		gitlab_issue,
-		fix,
-		contact
+		contact,
+		fk_kid,
+		edited_kid
 	) VALUES(
 		:inid,
 		:name,
 		:created_at,
-		:kara,
-		:extra_tags,
-		:lyrics,
-		:mediafile,
 		:gitlab_issue,
-		:fix,
-		:contact
+		:contact,
+		:kid,
+		:edited_kid
 	)
 `;
 

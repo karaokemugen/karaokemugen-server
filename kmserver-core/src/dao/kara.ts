@@ -1,6 +1,6 @@
 import {buildTypeClauses, buildClauses, db} from '../lib/dao/database';
 import {pg as yesql} from 'yesql';
-import { KaraParams } from '../lib/types/kara';
+import {Kara, KaraParams} from '../lib/types/kara';
 import { DBKara, DBYear, DBMedia } from '../lib/types/database/kara';
 import { DBStats } from '../types/database/kara';
 import { WhereClause } from '../lib/types/database';
@@ -17,13 +17,18 @@ export async function selectAllYears(): Promise<DBYear[]> {
 	return res.rows;
 }
 
-export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
+export async function selectAllKaras(params: KaraParams, includeStaging = false): Promise<DBKara[]> {
 	const filterClauses: WhereClause = params.filter
 		? buildClauses(params.filter)
 		: {sql: [], params: {}, additionalFrom: []};
 	let typeClauses = params.q
 		? buildTypeClauses(params.q, params.order)
-		: '';
+		: {sql: [], params: {}, additionalFrom: []};
+	const yesqlPayload = {
+		sql: [...filterClauses.sql, ...typeClauses.sql],
+		params: {...filterClauses.params, ...typeClauses.params},
+		additionalFrom: [...filterClauses.additionalFrom, ...typeClauses.additionalFrom]
+	};
 	let orderClauses = '';
 	let limitClause = '';
 	let offsetClause = '';
@@ -40,11 +45,11 @@ export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 			`;
 		joinClause = 'LEFT OUTER JOIN users_favorites AS f ON f.fk_login = :username AND f.fk_kid = ak.pk_kid';
 		groupClause = 'f.fk_kid, ';
-		filterClauses.params.username = params.username;
+		yesqlPayload.params.username = params.username;
 	}
 	if (params.favorites) {
 		joinClause += ' LEFT JOIN users_favorites AS fv ON fv.fk_kid = ak.pk_kid';
-		filterClauses.params.username_favs = params.favorites;
+		yesqlPayload.params.username_favs = params.favorites;
 		whereClauses = 'AND fv.fk_login = :username_favs';
 	}
 	if (params.order === 'recent') orderClauses = 'created_at DESC, ';
@@ -77,9 +82,48 @@ export async function selectAllKaras(params: KaraParams): Promise<DBKara[]> {
 		limitClause = `LIMIT ${params.random}`;
 	}
 	const query = sql.getAllKaras(
-		filterClauses.sql, typeClauses, orderClauses,  limitClause, offsetClause, selectClause, joinClause, groupClause, whereClauses, filterClauses.additionalFrom);
-	const res = await db().query(yesql(query)(filterClauses.params));
+		yesqlPayload.sql,
+		orderClauses,
+		limitClause,
+		offsetClause,
+		selectClause,
+		joinClause,
+		groupClause,
+		whereClauses,
+		yesqlPayload.additionalFrom,
+		includeStaging
+	);
+	const res = await db().query(yesql(query)(yesqlPayload.params));
 	return res.rows;
+}
+
+export async function insertKara(kara: Kara) {
+	await db().query(
+		yesql(sql.insertKara)({
+			karafile: kara.karafile,
+			mediafile: kara.mediafile,
+			subfile: kara.subfile,
+			titles: kara.titles,
+			titles_aliases: JSON.stringify(kara.titles_aliases || []),
+			year: kara.year,
+			songorder: kara.songorder || null,
+			duration: kara.duration,
+			gain: kara.gain,
+			loudnorm: kara.loudnorm,
+			modified_at: kara.modified_at,
+			created_at: kara.created_at,
+			kid: kara.kid,
+			repository: kara.repository,
+			mediasize: kara.mediasize,
+			download_status: 'DOWNLOADED',
+			comment: kara.comment,
+			ignoreHooks: kara.ignoreHooks || false,
+		})
+	);
+}
+
+export async function deleteKara(kids: string[]) {
+	await db().query(sql.deleteKara, [kids]);
 }
 
 export async function selectBaseStats(): Promise<DBStats> {

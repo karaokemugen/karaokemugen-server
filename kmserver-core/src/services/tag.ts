@@ -1,12 +1,12 @@
-import {selectTags, selectTagByNameAndType, selectTag} from '../dao/tag';
+import {selectTags, selectTag, insertTag} from '../dao/tag';
 import { TagParams, TagList, Tag } from '../lib/types/tag';
 import { writeTagFile } from '../lib/dao/tagfile';
-import { resolvedPath } from '../lib/utils/config';
-import { findTagInImportedFiles } from '../dao/tagfile';
-import { IDQueryResult } from '../lib/types/kara';
+import { resolvedPathRepos } from '../lib/utils/config';
 import { v4 as uuidV4 } from 'uuid';
 import { DBTag } from '../lib/types/database/tag';
 import sentry from '../utils/sentry';
+import { refreshTags, updateTagSearchVector } from '../lib/dao/tag';
+import { sanitizeFile } from '../lib/utils/files';
 
 export function formatTagList(tagList: DBTag[], from: number, count: number): TagList {
 	return {
@@ -30,15 +30,10 @@ export async function getTags(params: TagParams) {
 	}
 }
 
-export async function getTag(tid: string, findInImportedFiles = true, similarTag?: Tag) {
+export async function getTag(tid: string) {
 	try {
 		let tag = await selectTag(tid);
 		if (tag) return tag;
-		if (findInImportedFiles && similarTag) {
-			// If no tag is found, check in import folder if we have a tag by the same name and type
-			tag = await findTagInImportedFiles(similarTag.name, similarTag.types);
-			if (tag) return tag;
-		}
 		return null;
 	} catch(err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
@@ -48,7 +43,8 @@ export async function getTag(tid: string, findInImportedFiles = true, similarTag
 }
 
 /* "Edit" a tag. Save its new version */
-export async function editTag(_tid: string, tag: Tag, _opts: any) {
+// Unused? TODO: consider its removal
+/*export async function editTag(_tid: string, tag: Tag, _opts: any) {
 	try {
 		await addTag(tag, null);
 		return tag;
@@ -57,30 +53,22 @@ export async function editTag(_tid: string, tag: Tag, _opts: any) {
 		sentry.error(err);
 		throw err;
 	}
-}
+}*/
 
-export async function addTag(tag: Tag, _opts: any) {
+export async function addTag(tag: Tag, opts = {forceRepo: ''}) {
 	try {
 		tag.tid = uuidV4();
-		await writeTagFile(tag, resolvedPath('Import'));
+		tag.tagfile = `${sanitizeFile(tag.name)}.${tag.tid.substring(0, 8)}.tag.json`;
+		if (opts.forceRepo) {
+			tag.repository = opts.forceRepo;
+		}
+		await Promise.all([
+			insertTag(tag),
+			writeTagFile(tag, resolvedPathRepos('Tags', 'Staging')[0])
+		]);
+		await updateTagSearchVector();
+		refreshTags();
 		return tag;
-	} catch(err) {
-		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
-		sentry.error(err);
-		throw err;
-	}
-}
-
-export async function getOrAddTagID(tagObj: Tag): Promise<IDQueryResult> {
-	try {
-		let tag = await selectTagByNameAndType(tagObj.name, tagObj.types);
-		if (tag) return {id: tag.tid, new: false};
-		// If no tag is found, check in import folder if we have a tag by the same name and type
-		tag = await findTagInImportedFiles(tagObj.name, tagObj.types);
-		if (tag) return {id: tag.tid, new: false};
-		tagObj.tid = uuidV4();
-		await writeTagFile(tagObj, resolvedPath('Import'));
-		return {id: tagObj.tid, new: true};
 	} catch(err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);

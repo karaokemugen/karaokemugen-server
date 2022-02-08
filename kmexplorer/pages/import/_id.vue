@@ -8,7 +8,7 @@
 		<div class="description">
 			<ul>
 				<li>
-					<a href="http://docs.karaokes.moe">{{ $t('kara.import.documentation_link') }}</a>
+					<a href="https://docs.karaokes.moe">{{ $t('kara.import.documentation_link') }}</a>
 				</li>
 				<li v-if="in_progress_songs_list">
 					<a
@@ -35,6 +35,7 @@
 </template>
 
 <script lang="ts">
+	import { v4 as uuid } from 'uuid';
 	import Vue from 'vue';
 	import KaraEdit from '~/components/KaraEdit.vue';
 	import { DBKara } from '%/lib/types/database/kara';
@@ -67,6 +68,7 @@
 					error({ statusCode: 404, message: app.i18n.t('kara.notfound') as string });
 				}
 			} else {
+				const date = new Date();
 				return {
 					karaparam: {
 						titles: { eng: '' },
@@ -85,7 +87,10 @@
 						genres: [],
 						platforms: [],
 						origins: [],
-						created_at: new Date()
+						created_at: date,
+						modified_at: date,
+						year: date.getFullYear(),
+						kid: uuid()
 					}
 				};
 			}

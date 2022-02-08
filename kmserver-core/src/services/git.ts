@@ -51,7 +51,7 @@ export async function getLatestGitCommit(): Promise<string> {
 
 export async function updateGit() {
 	try {
-		const repo = getConfig().System.Repositories[0];
+		const repo = getConfig().System.Repositories.find(r => r.Online);
 		await gitPull(resolve(getState().dataPath, repo.BaseDir));
 	} catch(err) {
 		logger.error('Unable to pull git repo', {service: 'Git', obj: err});
@@ -79,6 +79,6 @@ export async function getGitDiff(commit: string, fullFiles = false): Promise<str
 	}
 }
 
-export async function initGitRepos() {	
+export async function initGitRepos() {
 	gitConfig(resolve(getState().dataPath, getConfig().System.Repositories[0].BaseDir));
 }

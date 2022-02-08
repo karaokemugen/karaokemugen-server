@@ -3018,7 +3018,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/uuid@npm:^8.3.4":
+"@types/uuid@npm:^8.3.2, @types/uuid@npm:^8.3.4":
   version: 8.3.4
   resolution: "@types/uuid@npm:8.3.4"
   checksum: 6f11f3ff70f30210edaa8071422d405e9c1d4e53abbe50fdce365150d3c698fe7bbff65c1e71ae080cbfb8fded860dbb5e174da96fdbbdfcaa3fb3daa474d20f
@@ -9339,6 +9339,7 @@ fsevents@~2.3.1:
     "@types/sass": ^1.43.1
     "@types/sass-loader": ^8.0.2
     "@types/slug": ^5.0.3
+    "@types/uuid": ^8.3.2
     bulma: ^0.9.3
     bulmaswatch: ^0.8.1
     eslint: ^8.5.0
@@ -9352,6 +9353,7 @@ fsevents@~2.3.1:
     sass: ^1.38.1
     sass-loader: ^10.2.0
     slug: ^5.1.1
+    uuid: ^8.3.2
     v-lazy-image: ^1.4.0
     vue-advanced-cropper: ^1.9.0
     vuex-module-decorators: ^1.2.0

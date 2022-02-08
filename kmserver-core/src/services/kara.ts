@@ -13,10 +13,9 @@ import { createImagePreviews } from '../lib/utils/previews';
 import logger from '../lib/utils/logger';
 import { getConfig, resolvedPathRepos } from '../lib/utils/config';
 import { gitlabPostNewIssue } from './gitlab';
-import { DownloadBundleServer, KaraMetaFile, MetaFile, ShinDownloadBundle, TagMetaFile } from '../lib/types/downloads';
+import { DownloadBundleServer } from '../lib/types/downloads';
 import sentry from '../utils/sentry';
 import { JWTTokenWithRoles } from '../lib/types/user';
-import { TagFile } from '../lib/types/tag';
 import { updateGit } from './git';
 import { findUserByName } from './user';
 import { getState } from '../utils/state';
@@ -65,7 +64,7 @@ export async function updateRepo() {
 export async function generate() {
 	try {
 		await generateDatabase({validateOnly: false});
-		const karas = await getAllKaras({});
+		const karas = await getAllKaras({}, undefined, true);
 		refreshKaraStats();
 		const conf = getConfig();
 		// Download master.zip from gitlab to serve it ourselves
@@ -90,7 +89,7 @@ export async function generate() {
 
 export async function computeSubchecksums() {
 	logger.info('Starting computing checksums', {service: 'Kara'});
-	const karas = await getAllKaras({});
+	const karas = await getAllKaras({}, undefined, true);
 	const mapper = async (lyrics: any[]) => {
 		return checksumASS(lyrics);
 	};
@@ -112,7 +111,7 @@ async function checksumASS(lyrics: any[]): Promise<string[]> {
 	subdata = subdata.replace(/\r/g, '');
 	return [lyrics[1].kid, createHash('md5').update(subdata, 'utf-8').digest('hex')];
 }
-export function getAllmedias() {
+export function getAllMedias() {
 	return selectAllMedias();
 }
 
@@ -122,7 +121,7 @@ export async function getKara(params: KaraParams, token?: JWTTokenWithRoles) {
 			order: params.order,
 			q: params.q,
 			username: token?.username.toLowerCase()
-		});
+		}, true);
 		if (!karas[0]) return;
 		karas[0].lyrics = null;
 		if (karas[0].subfile) {
@@ -137,7 +136,7 @@ export async function getKara(params: KaraParams, token?: JWTTokenWithRoles) {
 	}
 }
 
-export async function getAllKaras(params: KaraParams, token?: JWTTokenWithRoles): Promise<KaraList> {
+export async function getAllKaras(params: KaraParams, token?: JWTTokenWithRoles, includeStaging = false): Promise<KaraList> {
 	try {
 		if (token) token.username = token.username.toLowerCase();
 		// User seeking favorites from someone, check if that's okay or not.
@@ -158,7 +157,7 @@ export async function getAllKaras(params: KaraParams, token?: JWTTokenWithRoles)
 			username: token?.username,
 			favorites: params.favorites,
 			random: params.random
-		});
+		}, includeStaging);
 		return formatKaraList(pl, +params.from, pl[0]?.count || 0);
 	} catch(err) {
 		// Skip Sentry if the error has a code.
@@ -170,47 +169,11 @@ export async function getAllKaras(params: KaraParams, token?: JWTTokenWithRoles)
 	}
 }
 
-export async function aggregateKaras(kids: string[]): Promise<ShinDownloadBundle> {
-	const DBKaras = (await selectAllKaras({
-		q: `k:${kids.join(',')}`
-	}));
-	const allTagFiles: Set<string> = new Set();
-	const lyrics: MetaFile[] = [];
-	const karas: KaraMetaFile[] = [];
-	const tags: TagMetaFile[] = [];
-	for (const kara of DBKaras) {
-		for (const tagFile of kara.tagfiles) {
-			if (!allTagFiles.has(tagFile)) {
-				allTagFiles.add(tagFile);
-				const tagPath = resolve(resolvedPathRepos('Tags')[0], tagFile);
-				const tagData: TagFile = JSON.parse(await fs.readFile(tagPath, 'utf-8'));
-				tags.push({file: tagFile, data: tagData});
-			}
-		}
-		if (kara.subfile) {
-			const lyricsData = await fs.readFile(resolve(resolvedPathRepos('Lyrics')[0], kara.subfile), 'utf-8');
-			lyrics.push({
-				file: kara.subfile,
-				data: lyricsData
-			});
-		}
-		karas.push({
-			file: kara.karafile,
-			data: JSON.parse(await fs.readFile(resolve(resolvedPathRepos('Karaokes')[0], kara.karafile), 'utf-8'))
-		});
-	}
-	return {
-		karas,
-		lyrics,
-		tags
-	};
-}
-
 export async function getRawKara(kid: string): Promise<DownloadBundleServer> {
 	try {
 		const kara = (await selectAllKaras({
 			q: `k:${kid}`
-		}))[0];
+		}, true))[0];
 		if (!kara) throw 'Unknown song';
 		// Create a set of tagfiles to get only unique tagfiles.
 		const tagfiles = new Set(kara.tagfiles);
@@ -254,7 +217,7 @@ export async function getRawKara(kid: string): Promise<DownloadBundleServer> {
 export async function newKaraIssue(kid: string, type: 'Media' | 'Metadata' | 'Lyrics', comment: string, username: string) {
 	const karas = await selectAllKaras({
 		q: `k:${kid}`
-	});
+	}, true);
 	const kara = karas[0];
 	logger.debug('Kara:', {service: 'GitLab', obj: kara});
 	let singerOrSerie = kara.series.length > 0 && kara.series[0].name || (kara.singers.length > 0 && kara.singers[0].name) || '';

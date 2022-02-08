@@ -23,6 +23,7 @@ import { initGitRepos } from './services/git';
 import { register } from 'ts-node';
 import findWorkspaceRoot from 'find-yarn-workspace-root';
 import { initHardsubGeneration } from './utils/hardsubs';
+import {initRepos} from './services/repo';
 
 const appPath = findWorkspaceRoot();
 const dataPath = resolve(appPath, 'app/');
@@ -79,6 +80,7 @@ async function main() {
 		electron: false
 	});
 	await initConfig(argv.opts());
+	initRepos();
 	const conf = getConfig();
 	console.log('--------------------------------------------------------------------');
 	console.log(`Karaoke Mugen Server ${pjson.version}`);
@@ -115,7 +117,7 @@ async function main() {
 	if (conf.Hardsub.Enabled) initHardsubGeneration();
 
 	if (argv.opts().createPreviews) {
-		const karas = await getAllKaras({});
+		const karas = await getAllKaras({}, undefined, true);
 		await createImagePreviews(karas, 'full', 1280);
 		exit(0);
 	}

@@ -97,6 +97,7 @@
 			"comment_tooltip": "If you want to add a message for the integrators or just say thanks, say it here!",
 			"submit": "Send karaoke",
 			"media_file": "Media file",
+			"media_file_edit": "Replace media file",
 			"media_file_required": "Media file is mandatory",
 			"media_file_tooltip": "Supported file formats: {formats}",
 			"lyrics_file": "Lyrics file",

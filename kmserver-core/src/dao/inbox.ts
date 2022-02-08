@@ -1,15 +1,17 @@
 import {pg as yesql} from 'yesql';
 
 import {db} from '../lib/dao/database';
-import { Inbox } from '../lib/types/inbox';
+import {DBInbox, SingleDBInbox} from '../lib/types/inbox';
 import sql = require('./sqls/inbox');
 
-export async function selectInbox(inid?: string): Promise<Inbox[]> {
+export async function selectInbox(): Promise<DBInbox[]>;
+export async function selectInbox(inid: string): Promise<[SingleDBInbox] | []>;
+export async function selectInbox(inid?: string) {
 	const res = await db().query(sql.selectInbox(inid), inid ? [inid] : undefined);
 	return res.rows;
 }
 
-export async function insertInbox(kara: Inbox) {
+export async function insertInbox(kara: DBInbox) {
 	return await db().query(yesql(sql.insertInbox)(kara));
 }
 
