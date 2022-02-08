@@ -96,6 +96,12 @@
 		},
 
 		watch: {
+			params(now) {
+				// Process resets
+				if (now.length === 0) {
+					this.values = [];
+				}
+			},
 			inputVisible(now) {
 				if (now) {
 					this.$nextTick(() => {
