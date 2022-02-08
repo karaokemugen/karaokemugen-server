@@ -18,12 +18,19 @@ System:
       OSX: ffmpeg
   Repositories:
     - Name: kara.moe
-      Online: false
+      Online: true
       Enabled: true
       BaseDir: 'app/data/git'
       Path:
         Medias:
           - app/data/medias
+    - Name: Staging
+      Online: false
+      Enabled: true
+      BaseDir: 'app/staging/git'
+      Path:
+        Medias:
+          - app/staging/medias
 Frontend:
   Port: 1350
 API:

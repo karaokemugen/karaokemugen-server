@@ -10,6 +10,7 @@ import { configConstraints, defaults } from './default_settings';
 import { configureLogger } from '../lib/utils/logger';
 import { v4 as uuidV4 } from 'uuid';
 import cloneDeep from 'lodash.clonedeep';
+import {emit} from '../lib/utils/pubsub';
 
 async function checkBinaries(config: Config): Promise<BinariesConfig> {
 
@@ -83,6 +84,7 @@ export async function initConfig(argv: any) {
 		exit(1);
 	}
 	configureIDs();
+	emit('configReady');
 	return getConfig();
 }
 

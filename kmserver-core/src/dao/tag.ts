@@ -1,9 +1,10 @@
-import {paramWords, db} from '../lib/dao/database';
+import {paramWords, db, databaseReady} from '../lib/dao/database';
 import {pg as yesql} from 'yesql';
 import { Tag, TagParams } from '../lib/types/tag';
 import { WhereClause } from '../lib/types/database';
 import { DBTag } from '../lib/types/database/tag';
 import sql = require('./sqls/tag');
+import {refreshTags} from '../lib/dao/tag';
 
 export async function selectTag(tid: string): Promise<Tag> {
 	const res = await db().query(sql.selectTag, [tid]);
@@ -40,6 +41,9 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 	}
 	if (params.from > 0) offsetClause = `OFFSET ${params.from} `;
 	if (params.size > 0) limitClause = `LIMIT ${params.size} `;
+	if (!params.includeStaging) {
+		filterClauses.sql.push('repository !== \'Staging\'');
+	}
 	const query = sql.getAllTags(filterClauses.sql, typeClauses, limitClause, offsetClause, joinClauses, orderClause,
 		stripClause, filterClauses.additionalFrom);
 	const res = await db().query(yesql(query)(filterClauses.params));
@@ -60,10 +64,24 @@ function buildTagClauses(words: string): WhereClause {
 	};
 }
 
-export async function selectTagByNameAndType(name: string, types: number[]): Promise<Tag> {
-	const res = await db().query(sql.getTagByNameAndType, [
-		name,
-		types
+export async function insertTag(tag: Tag) {
+	await db().query(sql.insertTag, [
+		tag.tid,
+		tag.name,
+		tag.types,
+		tag.short || null,
+		tag.i18n || {},
+		JSON.stringify(tag.aliases || []),
+		tag.tagfile,
+		tag.repository,
+		tag.noLiveDownload || false,
+		tag.priority || 10,
+		tag.karafile_tag || null,
 	]);
-	return res.rows[0];
+}
+
+export async function clearUnusedStagingTags() {
+	await databaseReady();
+	await db().query(sql.clearStagingTags);
+	await refreshTags();
 }

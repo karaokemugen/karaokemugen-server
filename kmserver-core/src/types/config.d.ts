@@ -1,6 +1,6 @@
-import { Repository, RepositoryManifest } from '../lib/types/repo';
+import { RepositoryCommon, RepositoryManifest } from '../lib/types/repo';
 
-type RepositoryWithManifest = Repository & RepositoryManifest;
+type RepositoryWithManifest = RepositoryCommon & RepositoryManifest;
 
 export interface Config {
 	App: {

@@ -1,4 +1,4 @@
-import {aggregateKaras, getRawKara, getBaseStats, getKara, getAllKaras, getAllYears, newKaraIssue, getAllmedias} from '../../services/kara';
+import {getRawKara, getBaseStats, getKara, getAllKaras, getAllYears, newKaraIssue, getAllMedias} from '../../services/kara';
 import {getTags, getTag} from '../../services/tag';
 import {getSettings} from '../../lib/dao/database';
 import { Router } from 'express';
@@ -49,16 +49,6 @@ export default function KSController(router: Router) {
 				username: req.authToken?.username
 			});
 			res.json(karas.map(k => k.kid));
-		});
-	router.route('/karas/download')
-		.get(optionalAuth, async (req: any, res) => {
-			try {
-				const payload = await aggregateKaras(req.body.kids);
-				res.json(payload);
-			} catch(err) {
-				console.log(err);
-				res.status(500).json(err);
-			}
 		});
 	router.route('/karas/search')
 		.get(optionalAuth, async (req: any, res) => {
@@ -123,7 +113,15 @@ export default function KSController(router: Router) {
 	router.route('/karas/tags/:tagtype([0-9]+)')
 		.get(async (req: any, res) => {
 			try {
-				const tags = await getTags({filter: req.query.filter, type: req.params.tagtype, order: req.query.order, from: req.query.from, size: req.query.size, stripEmpty: Boolean(req.query.stripEmpty)});
+				const tags = await getTags({
+					filter: req.query.filter,
+					type: req.params.tagtype,
+					order: req.query.order,
+					from: req.query.from,
+					size: req.query.size,
+					stripEmpty: Boolean(req.query.stripEmpty),
+					includeStaging: Boolean(req.query.includeStaging)
+				});
 				res.json(tags);
 			} catch(err) {
 				res.status(500).json(err);
@@ -132,7 +130,7 @@ export default function KSController(router: Router) {
 	router.route('/karas/tags/:tid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})')
 		.get(async (req: any, res) => {
 			try {
-				const tag = await getTag(req.params.tid, false);
+				const tag = await getTag(req.params.tid);
 				res.json(tag);
 			} catch (err) {
 				res.status(500).json(err);
@@ -141,7 +139,14 @@ export default function KSController(router: Router) {
 	router.route('/karas/tags')
 		.get(async (req: any, res) => {
 			try {
-				const tags = await getTags(({filter: req.query.filter, type: null, from: req.query.from, size: req.query.size}));
+				const tags = await getTags({
+					filter: req.query.filter,
+					type: null,
+					from: req.query.from,
+					size: req.query.size,
+					stripEmpty: Boolean(req.query.stripEmpty),
+					includeStaging: Boolean(req.query.includeStaging)
+				});
 				res.json(tags);
 			} catch(err) {
 				res.status(500).json(err);
@@ -150,7 +155,7 @@ export default function KSController(router: Router) {
 	router.route('/karas/medias')
 		.get(async (_req, res) => {
 			try {
-				const medias = await getAllmedias();
+				const medias = await getAllMedias();
 				res.json(medias);
 			} catch(err) {
 				res.status(500).json(err);

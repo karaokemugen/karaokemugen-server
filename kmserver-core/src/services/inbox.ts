@@ -1,20 +1,57 @@
-import { promises as fs} from 'fs';
-import { remove } from 'fs-extra';
-import { basename, resolve } from 'path';
+import { promises as fs } from 'fs';
+import { resolve } from 'path';
 import { v4 as uuidV4 } from 'uuid';
 import { deleteInbox, insertInbox, selectInbox, updateInboxDownloaded } from '../dao/inbox';
-import { KaraMetaFile, MetaFile, TagMetaFile } from '../lib/types/downloads';
 import { KaraFileV4 } from '../lib/types/kara';
-import { resolvedPath } from '../lib/utils/config';
-import { fileExists } from '../lib/utils/files';
 import logger from '../lib/utils/logger';
 import Sentry from '../utils/sentry';
 import { closeIssue } from './gitlab';
+import {getConfig, resolvedPathRepos} from '../lib/utils/config';
+import {KaraMetaFile, MetaFile, TagMetaFile} from '../lib/types/downloads';
+import { Inbox } from '../lib/types/inbox';
+import { refreshKarasAfterDBChange } from '../lib/services/karaManagement';
+import { TagFile } from '../lib/types/tag';
+import { getTag } from './tag';
+import { getKara } from './kara';
+import { deleteKara } from '../dao/kara';
+import {clearUnusedStagingTags} from '../dao/tag';
 
-export async function getKaraInbox(inid: string) {
+export async function getKaraInbox(inid: string): Promise<Inbox> {
 	try {
-		const karas = await selectInbox(inid);
-		return karas[0];
+		const conf = getConfig();
+		const onlineRepo = conf.System.Repositories.find(r => r.Name !== 'Staging').Name;
+		const inbox = (await selectInbox(inid))[0];
+		const karaPath = resolve(resolvedPathRepos('Karaokes', 'Staging')[0], inbox.karafile);
+		const subPath = resolve(resolvedPathRepos('Lyrics', 'Staging')[0], inbox.subfile);
+		const kara: KaraMetaFile = {
+			data: JSON.parse(await fs.readFile(karaPath, 'utf-8')),
+			file: inbox.karafile
+		};
+		if (inbox.fix) {
+			kara.data.data.kid = inbox.edited_kid;
+		}
+		const lyrics: MetaFile = {
+			data: await fs.readFile(subPath, 'utf-8'),
+			file: inbox.subfile
+		};
+		const extra_tids = inbox.tags.filter(t => t.repository === 'Staging').map(t => t.tid);
+		const extra_tags: TagMetaFile[] = await Promise.all(extra_tids.map(async tid => {
+			const tag = await getTag(tid);
+			const tagPath = resolve(resolvedPathRepos('Tags', 'Staging')[0], tag.tagfile);
+			const tagData: TagFile = JSON.parse(await fs.readFile(tagPath, 'utf-8'));
+			tagData.tag.repository = onlineRepo;
+			return {
+				data: tagData,
+				file: tag.tagfile
+			};
+		}));
+		delete inbox.tags;
+		return {
+			...inbox,
+			kara,
+			lyrics,
+			extra_tags
+		};
 	} catch(err) {
 		logger.error(`Failed to get inbox item ${inid}`, {service: 'Inbox', obj: err});
 		Sentry.error(err);
@@ -28,7 +65,7 @@ export function getInbox() {
 
 export async function markKaraInboxAsDownloaded(inid: string, username: string) {
 	try {
-		const inbox = await getKaraInbox(inid);
+		const inbox = (await selectInbox(inid))[0];
 		if (!inbox) throw {code: 404};
 		return updateInboxDownloaded(username, inid);
 	} catch(err) {
@@ -38,50 +75,16 @@ export async function markKaraInboxAsDownloaded(inid: string, username: string) 
 	}
 }
 
-export async function addKaraInInbox(karaName: string, contact: string, issue?: string, fix = false) {
+export async function addKaraInInbox(kara: KaraFileV4, contact: string, issue?: string, edited_kid?: string) {
 	try {
-		const karaDir = resolve(resolvedPath('Import'), karaName);
-		const dir = await fs.readdir(karaDir);
-		const karaFile = dir.find(f => f.endsWith('kara.json'));
-		const tagFiles = dir.filter(f => f.endsWith('tag.json'));
-		const karaFileData = await fs.readFile(resolve(karaDir, karaFile), 'utf-8');
-		const karaData: KaraFileV4 = JSON.parse(karaFileData);
-		const kara: KaraMetaFile = {
-			file: karaFile,
-			data: karaData
-		};
-		const tags: TagMetaFile[] = [];
-		for (const tagFile of tagFiles) {
-			const tagData = await fs.readFile(resolve(karaDir, tagFile), 'utf-8');
-			tags.push({
-				file: tagFile,
-				data: JSON.parse(tagData)
-			});
-		}
-		const lyricsFile = karaData.medias[0].lyrics[0].filename;
-		let lyrics: MetaFile;
-		if (await fileExists(resolve(karaDir, lyricsFile))) {
-			lyrics = {
-				file: lyricsFile,
-				data: await fs.readFile(resolve(karaDir, lyricsFile), 'utf-8')
-			};
-		}
-
-		let mediafile: string;
-		if (await fileExists(resolve(karaDir, karaData.medias[0].filename))) {
-			mediafile = karaData.medias[0].filename;
-		}
 		await insertInbox({
 			inid: uuidV4(),
-			name: karaName,
+			name: kara.medias[0].lyrics[0].filename.slice(0, -4),
 			created_at: new Date(),
-			kara: kara,
-			extra_tags: tags,
-			lyrics: lyrics,
-			mediafile: mediafile,
 			gitlab_issue: issue,
-			fix: fix,
-			contact: contact
+			contact: contact,
+			kid: kara.data.kid,
+			edited_kid: edited_kid
 		});
 	} catch(err) {
 		logger.error('Unable to create kara in inbox', {service: 'Inbox', obj: err});
@@ -91,16 +94,24 @@ export async function addKaraInInbox(karaName: string, contact: string, issue?: 
 
 export async function removeKaraFromInbox(inid: string) {
 	try {
-		const inbox = await getKaraInbox(inid);
+		const inbox = (await selectInbox(inid))[0];
 		if (!inbox) throw {code: 404};
-		const karaDir = basename(inbox.kara.file, '.kara.json');
-		// You never know.
-		if (!karaDir) throw {code: 500};
-
-		await remove(resolve(resolvedPath('Import'), karaDir)).catch(() => {
-			logger.warn(`Folder for ${karaDir} already deleted`, {service: 'Inbox'});
+		const kara = await getKara({
+			q: `k:${inbox.kid}`
 		});
+		const karaPath = resolve(resolvedPathRepos('Karaokes', 'Staging')[0], inbox.karafile);
+		const subPath = resolve(resolvedPathRepos('Lyrics', 'Staging')[0], inbox.subfile);
+		const mediaPath = resolve(resolvedPathRepos('Medias', 'Staging')[0], inbox.mediafile);
+		// Delete all the thingies
 		await deleteInbox(inid);
+		await Promise.all([
+			fs.unlink(karaPath),
+			fs.unlink(subPath),
+			fs.unlink(mediaPath)
+		]);
+		await deleteKara([inbox.kid]);
+		clearUnusedStagingTags();
+		await refreshKarasAfterDBChange('DELETE', [kara]);
 		const issueArr = inbox.gitlab_issue.split('/');
 		const issueNumber = +issueArr[issueArr.length-1];
 		if (issueNumber) closeIssue(issueNumber);

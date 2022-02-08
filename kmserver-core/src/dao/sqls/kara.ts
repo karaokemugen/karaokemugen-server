@@ -7,7 +7,7 @@ export const selectAllMedias = `
 	FROM kara
 `;
 
-export const getAllKaras = (filterClauses: string[], typeClauses: string, orderClauses: string, limitClause: string, offsetClause: string, selectClause: string, joinClause: string, groupClause: string, whereClauses: string, additionalFrom: string[],) => `SELECT
+export const getAllKaras = (filterClauses: string[], orderClauses: string, limitClause: string, offsetClause: string, selectClause: string, joinClause: string, groupClause: string, whereClauses: string, additionalFrom: string[], includeStaging: boolean) => `SELECT
   ak.pk_kid AS kid,
   ak.titles AS titles,
   ak.songorder AS songorder,
@@ -49,14 +49,60 @@ LEFT OUTER JOIN kara_relation krc ON krc.fk_kid_child = ak.pk_kid
 LEFT JOIN kara_subchecksum ksub ON ksub.fk_kid = ak.pk_kid
 ${joinClause}
 ${additionalFrom.join('')}
-WHERE 1 = 1
+WHERE ${includeStaging ? '1 = 1':'repository != \'Staging\''}
   ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
   ${whereClauses}
-  ${typeClauses}
 GROUP BY ${groupClause} ak.pk_kid, ak.titles, ak.songorder, ak.tags, ak.serie_singer_sortable, ak.subfile, ak.year, ak.mediafile, ak.karafile, ak.duration, ak.gain, ak.loudnorm, ak.created_at, ak.modified_at, ak.mediasize, ak.repository, ak.songtypes_sortable, ak.titles_sortable, ksub.subchecksum
 ORDER BY ${orderClauses} ak.serie_singer_sortable, ak.songtypes_sortable DESC, ak.songorder, ak.titles_sortable
 ${limitClause}
 ${offsetClause}
+`;
+
+export const insertKara = `
+INSERT INTO kara(
+	titles,
+	titles_aliases,
+	year,
+	songorder,
+	mediafile,
+	subfile,
+	duration,
+	gain,
+	loudnorm,
+	modified_at,
+	created_at,
+	karafile,
+	pk_kid,
+	repository,
+	mediasize,
+	download_status,
+	comment,
+	ignore_hooks
+)
+VALUES(
+	:titles,
+	:titles_aliases,
+	:year,
+	:songorder,
+	:mediafile,
+	:subfile,
+	:duration,
+	:gain,
+	:loudnorm,
+	:modified_at,
+	:created_at,
+	:karafile,
+	:kid,
+	:repository,
+	:mediasize,
+	:download_status,
+	:comment,
+	:ignoreHooks
+);
+`;
+
+export const deleteKara = `
+DELETE FROM kara WHERE pk_kid = ANY ($1);
 `;
 
 export const getYears = 'SELECT year, karacount::integer FROM all_years ORDER BY year';
@@ -66,11 +112,11 @@ export const selectBaseStats = `SELECT
 (SELECT COUNT(1) FROM all_tags WHERE types @> ARRAY[8])::integer AS songwriters,
 (SELECT COUNT(1) FROM all_tags WHERE types @> ARRAY[4])::integer AS creators,
 (SELECT COUNT(1) FROM all_tags WHERE types @> ARRAY[6])::integer AS authors,
-(SELECT COUNT(1) FROM kara)::integer AS karas,
+(SELECT COUNT(1) FROM kara where repository != 'Staging')::integer AS karas,
 (SELECT COUNT(1)::integer FROM all_tags WHERE types @> ARRAY[5] AND karacount::text NOT LIKE '{"count": 0}' ) AS languages,
 (SELECT COUNT(1)::integer FROM all_tags WHERE types @> ARRAY[1] AND karacount::text NOT LIKE '{"count": 0}' ) AS series,
-(SELECT SUM(mediasize) FROM kara)::bigint AS mediasize,
-(SELECT SUM(duration) FROM kara)::integer AS duration;
+(SELECT SUM(mediasize) FROM kara where repository != 'Staging')::bigint AS mediasize,
+(SELECT SUM(duration) FROM kara where repository != 'Staging')::integer AS duration;
 `;
 
 export const refreshKaraStats = `

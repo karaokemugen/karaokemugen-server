@@ -5,6 +5,8 @@ import {resolve} from 'path';
 import { Router } from 'express';
 import { getState } from '../../utils/state';
 import { APIMessage, errMessage } from '../../lib/services/frontend';
+import { processUploadedMedia } from '../../lib/services/karaCreation';
+import { addTag } from '../../services/tag';
 
 export default function KIController(router: Router) {
 	const conf = getConfig();
@@ -12,7 +14,7 @@ export default function KIController(router: Router) {
 
 	router.post('/karas', async (req, res) => {
 		try {
-			const url = await createKara(req.body, req.body.contact);
+			const url = await createKara(req.body.kara, req.body.contact);
 			res.status(200).json(APIMessage('GENERATED_KARA', url || ''));
 		} catch(err) {
 			const code = 'CANNOT_GENERATE_KARA';
@@ -25,12 +27,46 @@ export default function KIController(router: Router) {
 			const url = await editKara(req.body, req.body.contact);
 			res.status(200).json(APIMessage('EDITED_KARA', url || ''));
 		} catch(err) {
-			const code = 'CANNOT_EDIT_KARA'; 
+			const code = 'CANNOT_EDIT_KARA';
 			errMessage(code, err);
 			res.status(err?.code || 500).json(APIMessage(err?.msg || code));
 		}
 	});
-	router.post('/karas/importfile', upload.single('file'), (req, res) => {
-		res.status(200).json(APIMessage('FILE_UPLOADED', req.file));
+	router.post('/karas/importMedia', upload.single('file'), async (req, res) => {
+		try {
+			if (req.file) {
+				const mediaInfo = await processUploadedMedia(req.file.filename, req.file.originalname);
+				res.json(mediaInfo);
+			} else {
+				res.status(400).json(APIMessage('MISSING_FILE'));
+			}
+		} catch (err) {
+			const code = 'CANNOT_UPLOAD_MEDIA';
+			errMessage(code, err);
+			res.status(err?.code || 500).json(APIMessage(err?.msg || code));
+		}
+	});
+	router.post('/karas/importSub', upload.single('file'), async (req, res) => {
+		try {
+			if (req.file) {
+				res.json(req.file.filename);
+			} else {
+				res.status(400).json(APIMessage('MISSING_FILE'));
+			}
+		} catch (err) {
+			const code = 'CANNOT_UPLOAD_SUBTITLES';
+			errMessage(code, err);
+			res.status(err?.code || 500).json(APIMessage(err?.msg || code));
+		}
+	});
+	router.post('/tags/createStaging', async (req, res) => {
+		try {
+			const tag = await addTag(req.body, {forceRepo: 'Staging'});
+			res.json({ code: 'TAG_CREATED', tag });
+		} catch (err) {
+			const code = 'CANNOT_CREATE_TAG';
+			errMessage(code, err);
+			res.status(err?.code || 500).json(APIMessage(err?.msg || code));
+		}
 	});
 }

@@ -30,11 +30,16 @@
 					@typing="debouncedGetAsyncData"
 					@select="addValue"
 				>
-					<template slot="header">
-						<a class="button" @click="newValue">
+					<template v-if="!noCreate" #header>
+						<button
+							class="button"
+							:class="{'is-loading': loading}"
+							:disabled="currentVal.length === 0"
+							@click="newValue"
+						>
 							<font-awesome-icon :icon="['fas', 'plus']" />
 							<span>{{ $t('kara.import.create') }}</span>
-						</a>
+						</button>
 					</template>
 				</b-autocomplete>
 			</div>
@@ -45,7 +50,6 @@
 <script lang="ts">
 	import Vue, { PropOptions } from 'vue';
 	import debounce from 'lodash.debounce';
-	import clonedeep from 'lodash.clonedeep';
 	import { alpha2ToAlpha3B } from '@karaokemugen/i18n-iso-languages';
 	import { DBTagMini } from '%/lib/types/database/tag';
 	import { KaraTag } from '%/lib/types/kara';
@@ -55,7 +59,8 @@
 		values: DBTagMini[],
 		inputVisible: boolean,
 		currentVal: string,
-		isFetching: boolean
+		isFetching: boolean,
+		loading: boolean,
 		debouncedGetAsyncData?: Function
 	}
 
@@ -72,29 +77,34 @@
 			},
 			params: {
 				type: Array
-			} as PropOptions<DBTagMini[]>
+			} as PropOptions<string[]>,
+			noCreate: {
+				type: Boolean,
+				default: false
+			}
 		},
 
 		data(): VState {
 			return {
 				data: [],
-				values: clonedeep(this.params),
+				values: [],
 				inputVisible: false,
 				currentVal: '',
-				isFetching: false
+				isFetching: false,
+				loading: false
 			};
 		},
 
 		watch: {
-			params(now) {
-				this.values = clonedeep(now);
-			},
 			inputVisible(now) {
 				if (now) {
 					this.$nextTick(() => {
 						(this.$refs.input as any).$refs.input.$refs.input.focus();
 					});
 				}
+			},
+			values(now) {
+				this.$emit('change', now.map((t: DBTagMini) => t.tid));
 			}
 		},
 
@@ -103,18 +113,22 @@
 			if (this.checkboxes) {
 				const result = await this.getTags(this.tagType);
 				this.data = result.content;
-				if (this.params.length > 0) {
-					const tags: DBTagMini[] = [];
-					for (const tag of this.params) {
-						const tag2 = this.data.find(val => val.tid === tag.tid);
-						if (tag2) {
-							tags.push(tag2);
-						} else {
-							throw new TypeError(`Tag ${tag.tid} unknown`);
+			}
+			if (this.params.length > 0) {
+				const tags: DBTagMini[] = [];
+				for (const tag of this.params) {
+					const tag2 = this.data.find(val => val.tid === tag);
+					if (tag2) {
+						tags.push(tag2);
+					} else {
+						const tagInfo = await this.$axios.$get(`/api/karas/tags/${tag}`);
+						if (!tagInfo) {
+							throw new TypeError(`Tag ${tag} unknown`);
 						}
+						tags.push(tagInfo);
 					}
-					this.$emit('change', tags);
 				}
+				this.values = tags;
 			}
 		},
 
@@ -123,15 +137,20 @@
 				return await this.$axios.$get(`/api/karas/tags/${type}`, {
 					params: {
 						type,
-						filter
+						filter,
+						includeStaging: true
 					}
 				});
 			},
 			getAsyncData(val: string) {
 				this.isFetching = true;
 				this.getTags(this.tagType, val)
-					.then((result) => {
-						this.data = this.sortByProp(result.content || [], 'name');
+					.then((result: {content: DBTagMini[]}) => {
+						this.data = result.content
+							? result.content.sort((a, b) =>
+								a.name.localeCompare(b.name)
+							)
+							: [];
 					})
 					.finally(() => {
 						this.isFetching = false;
@@ -144,35 +163,35 @@
 					return tag.name;
 				}
 			},
-			sortByProp(array: any[], val: string) {
-				return array.sort((a, b) => {
-					return a[val] > b[val] ? 1 : a[val] < b[val] ? -1 : 0;
-				});
-			},
 			addValue(option: DBTagMini) {
 				this.inputVisible = false;
 				this.currentVal = '';
 				if (option) {
 					const values: DBTagMini[] = this.values;
 					values.push(option);
-					this.$emit('change', values);
+					this.values = values;
 				}
 			},
-			newValue() {
+			async newValue() {
 				if (this.currentVal) {
-					// @ts-ignore: Oh ta gueule hein, c'est magique !
-					// Petit KaraTag deviendra grand DBTag une fois l'issue publiée
-					this.addValue({ name: this.currentVal });
+					this.loading = true;
+					const res: { tag: DBTagMini } = await this.$axios.$post('/api/tags/createStaging', {
+						name: this.currentVal,
+						types: [this.tagType],
+						i18n: {
+							eng: this.currentVal
+						}
+					}).finally(() => {
+						this.loading = false;
+					});
+					this.addValue(res.tag);
 				}
 			},
 			deleteValue(option: KaraTag) {
-				this.$emit('change', this.values.filter(tag => tag.name !== option.name));
+				this.values = this.values.filter(tag => tag.name !== option.name);
 			},
 			check() {
-				this.$emit(
-					'change',
-					this.data.filter(tag => this.values.some(tag2 => tag.tid === tag2.tid))
-				);
+				this.values = this.data.filter(tag => this.values.some(tag2 => tag.tid === tag2.tid));
 			}
 		}
 	});

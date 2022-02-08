@@ -28,16 +28,6 @@ ${limitClause}
 ${offsetClause}
 `;
 
-export const getTagByNameAndType = `
-SELECT
-	name,
-	pk_tid AS tid
-FROM tag
-WHERE name = $1
-  AND types @> $2
-;
-`;
-
 export const selectTag = `
 SELECT t.pk_tid AS tid,
 	t.types,
@@ -56,3 +46,45 @@ FROM tag t
 LEFT JOIN all_tags at ON at.pk_tid = t.pk_tid
 WHERE t.pk_tid = $1
 `;
+
+export const insertTag = `
+INSERT INTO tag(
+	pk_tid,
+	name,
+	types,
+	short,
+	i18n,
+	aliases,
+	tagfile,
+	repository,
+	nolivedownload,
+	priority,
+	karafile_tag
+)
+VALUES(
+	$1,
+	$2,
+	$3,
+	$4,
+	$5,
+	$6,
+	$7,
+	$8,
+	$9,
+	$10,
+	$11
+)
+ON CONFLICT (pk_tid) DO UPDATE SET
+	types = $3,
+	name = $2,
+	short = $4,
+	i18n = $5,
+	aliases = $6,
+	tagfile = $7,
+	repository = $8,
+	nolivedownload = $9,
+	priority = $10,
+	karafile_tag = $11
+`;
+
+export const clearStagingTags = 'DELETE FROM tag WHERE pk_tid = ANY (SELECT pk_tid FROM all_tags WHERE repository = \'Staging\' AND karacount IS NULL)';
