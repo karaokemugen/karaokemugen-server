@@ -51,7 +51,7 @@ export async function getLatestGitCommit(): Promise<string> {
 
 export async function updateGit() {
 	try {
-		const repo = getConfig().System.Repositories.find(r => r.Online);
+		const repo = getConfig().System.Repositories.find(r => r.Name !== 'Staging');
 		await gitPull(resolve(getState().dataPath, repo.BaseDir));
 	} catch(err) {
 		logger.error('Unable to pull git repo', {service: 'Git', obj: err});
