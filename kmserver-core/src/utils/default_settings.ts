@@ -364,8 +364,7 @@ export let NuxtConfig: NuxtConfigType = {
 	},
 
 	css: [
-		'~/assets/main.scss',
-		'@fortawesome/fontawesome-svg-core/styles.css'
+		'~/assets/main.scss'
 	],
 
 	i18n: {
