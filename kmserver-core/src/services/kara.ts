@@ -69,14 +69,16 @@ export async function generate() {
 		const conf = getConfig();
 		// Download master.zip from gitlab to serve it ourselves
 		const repo = conf.System.Repositories[0];
-		const downloadURL = repo.SourceArchiveURL;
-		const destFile = resolve(getState().dataPath, repo.BaseDir, 'master.zip');
-		const downloadItem = {
-			filename: destFile,
-			url: downloadURL,
-			id: '',
-		};
-		downloadFile(downloadItem);
+		if (repo.SourceArchiveURL) {
+			const downloadURL = repo.SourceArchiveURL;
+			const destFile = resolve(getState().dataPath, repo.BaseDir, 'master.zip');
+			const downloadItem = {
+				filename: destFile,
+				url: downloadURL,
+				id: '',
+			};
+			downloadFile(downloadItem);
+		}
 		computeSubchecksums();
 		const promises = [createImagePreviews(karas, 'full', 1280),];
 		if (conf.Hardsub.Enabled) promises.push(generateHardsubs(karas));
