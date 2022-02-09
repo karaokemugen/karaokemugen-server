@@ -3,7 +3,7 @@ import {initConfig} from './utils/config';
 import logger from 'winston';
 import {resolve, join} from 'path';
 import {initFrontend} from './frontend';
-import cli from 'commander';
+import { program } from 'commander';
 import detect from 'detect-port';
 import {initDB} from './dao/database';
 import {createUser, changePassword, initUsers, addRoleToUser, removeRoleFromUser} from './services/user';
@@ -184,7 +184,7 @@ function parseArgs() {
 	function login(val: string) {
 		return val.split(',');
 	}
-	return cli
+	return program
 		.command('kmserver.sh')
 		.description('Starts Karaoke Mugen Server')
 		.version(pjson.version)
