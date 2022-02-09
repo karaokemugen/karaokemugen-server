@@ -6,7 +6,7 @@ import { KaraFileV4 } from '../lib/types/kara';
 import logger from '../lib/utils/logger';
 import Sentry from '../utils/sentry';
 import { closeIssue } from './gitlab';
-import {getConfig, resolvedPathRepos} from '../lib/utils/config';
+import { getConfig, resolvedPathRepos } from '../lib/utils/config';
 import {KaraMetaFile, MetaFile, TagMetaFile} from '../lib/types/downloads';
 import { Inbox } from '../lib/types/inbox';
 import { refreshKarasAfterDBChange } from '../lib/services/karaManagement';
@@ -14,7 +14,7 @@ import { TagFile } from '../lib/types/tag';
 import { getTag } from './tag';
 import { getKara } from './kara';
 import { deleteKara } from '../dao/kara';
-import {clearUnusedStagingTags} from '../dao/tag';
+import { clearUnusedStagingTags } from '../dao/tag';
 
 export async function getKaraInbox(inid: string): Promise<Inbox> {
 	try {
@@ -23,13 +23,15 @@ export async function getKaraInbox(inid: string): Promise<Inbox> {
 		const inbox = (await selectInbox(inid))[0];
 		const karaPath = resolve(resolvedPathRepos('Karaokes', 'Staging')[0], inbox.karafile);
 		const subPath = resolve(resolvedPathRepos('Lyrics', 'Staging')[0], inbox.subfile);
+		const karaData: KaraFileV4 = JSON.parse(await fs.readFile(karaPath, 'utf-8'));
+		karaData.data.repository = onlineRepo;
+		if (inbox.fix) {
+			karaData.data.kid = inbox.edited_kid;
+		}
 		const kara: KaraMetaFile = {
-			data: JSON.parse(await fs.readFile(karaPath, 'utf-8')),
+			data: karaData,
 			file: inbox.karafile
 		};
-		if (inbox.fix) {
-			kara.data.data.kid = inbox.edited_kid;
-		}
 		const lyrics: MetaFile = {
 			data: await fs.readFile(subPath, 'utf-8'),
 			file: inbox.subfile
