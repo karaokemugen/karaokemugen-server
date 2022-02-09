@@ -4970,15 +4970,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cli-progress@npm:^3.10.0":
-  version: 3.10.0
-  resolution: "cli-progress@npm:3.10.0"
-  dependencies:
-    string-width: ^4.2.0
-  checksum: 8e22c6265f95598002986c6508d05004bd9f5ee17c06f239d8d59e14f5a7e5605055f5d705a3a7d69f6072ea0752b1c094f28c48a704f9fd00378d7d16f0b46d
-  languageName: node
-  linkType: hard
-
 "cli-width@npm:^3.0.0":
   version: 3.0.0
   resolution: "cli-width@npm:3.0.0"
@@ -9376,7 +9367,6 @@ fsevents@~2.3.1:
     axios: ^0.25.0
     bcryptjs: ^2.4.3
     better-queue: ^3.8.10
-    cli-progress: ^3.10.0
     commander: ^9.0.0
     compression: ^1.7.4
     cross-env: ^7.0.3
