@@ -5,6 +5,7 @@ export const selectAllMedias = `
 	mediasize,
 	pk_kid AS kid
 	FROM kara
+	WHERE repository != 'Staging'
 `;
 
 export const getAllKaras = (filterClauses: string[], orderClauses: string, limitClause: string, offsetClause: string, selectClause: string, joinClause: string, groupClause: string, whereClauses: string, additionalFrom: string[], includeStaging: boolean) => `SELECT
