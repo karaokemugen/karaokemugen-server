@@ -295,8 +295,8 @@ export let NuxtConfig: NuxtConfigType = {
 		EXPLORER_HOST: ''
 	},
 	/*
-    ** Nuxt.js dev-modules
-    */
+	 ** Nuxt.js dev-modules
+	 */
 	buildModules: [
 		'@nuxt/typescript-build'
 	],
@@ -348,7 +348,7 @@ export let NuxtConfig: NuxtConfigType = {
 					login: { url: '/api/auth/login', method: 'post', propertyName: 'token' },
 					user: { url: '/api/myaccount', method: 'get', propertyName: false },
 					logout: false
-				},
+			},
 				tokenType: false
 			}
 		},
@@ -411,7 +411,13 @@ export let NuxtConfig: NuxtConfigType = {
 		disabled: false,
 		publishRelease: false,
 		config: {
-			ignoreErrors: ['Request aborted','Network Error', 'document.querySelector(\'video\').webkitPresentationMode']
+			ignoreErrors: [
+				'Request aborted',
+				'Network Error',
+				'document.querySelector(\'video\').webkitPresentationMode',
+				'Request failed with status code 403',
+				'Request failed with status code 401',
+			]
 		}
 	},
 
