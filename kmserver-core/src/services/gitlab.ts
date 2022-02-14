@@ -7,18 +7,21 @@ import logger from '../lib/utils/logger';
 import sentry from '../utils/sentry';
 import { findUserByName } from './user';
 import { getKara } from './kara';
+import { EditElement } from '../types/kara_import';
 
 /** Use the appropriate template and post an inbox element to GitLab **/
-export async function gitlabPostNewSuggestion(kid: string, edited_kid?: string) {
+export async function gitlabPostNewSuggestion(kid: string, edit?: EditElement) {
 	const conf = getConfig();
 	const kara = await getKara({
 		q: `k:${kid}`
 	});
-	const issueTemplate = edited_kid ? conf.Gitlab.IssueTemplate.Edit:conf.Gitlab.IssueTemplate.Import;
-	const title = (issueTemplate.Title || `Inbox ${edited_kid ? 'edit':'creation'}: $kara`)
+	const issueTemplate = edit ? conf.Gitlab.IssueTemplate.Edit:conf.Gitlab.IssueTemplate.Import;
+	const title = (issueTemplate.Title || `Inbox ${edit ? 'edit':'creation'}: $kara`)
 		.replace('$kara', basename(kara.karafile, '.kara.json'));
 	const desc = (issueTemplate.Description || '')
 		.replace('$file', kara.karafile)
+		.replace('$newSub', edit ? edit.modifiedLyrics.toString():'N/A')
+		.replace('$newVideo', edit ? edit.modifiedMedia.toString():'N/A')
 		.replace('$comment', kara.comment || '')
 		.replace('$author', kara.authors.map(t => t.name).join(', '))
 		.replace('$title', JSON.stringify(kara.titles))

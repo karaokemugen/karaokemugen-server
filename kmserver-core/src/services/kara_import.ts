@@ -22,6 +22,7 @@ import {
 } from '../lib/services/karaCreation';
 import { insertKara } from '../dao/kara';
 import { refreshKarasAfterDBChange, updateTags } from '../lib/services/karaManagement';
+import { EditElement } from '../types/kara_import';
 
 
 // Preflight checks before any import operation
@@ -41,7 +42,7 @@ async function preflight(kara: KaraFileV4): Promise<KaraFileV4> {
 }
 
 // Common work between edits and creations
-async function heavyLifting(kara: KaraFileV4, contact: string, edited_kid?: string): Promise<string> {
+async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElement): Promise<string> {
 	const conf = getConfig();
 	try {
 		await applyKaraHooks(kara);
@@ -81,9 +82,9 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edited_kid?: stri
 		logger.debug('Kara', {service: 'Import', obj: karaData});
 		let issueURL: string;
 		if (conf.Gitlab.Enabled) {
-			issueURL = await gitlabPostNewSuggestion(karaData.kid, edited_kid);
+			issueURL = await gitlabPostNewSuggestion(karaData.kid, edit);
 		}
-		addKaraInInbox(kara, contact, issueURL, edited_kid);
+		addKaraInInbox(kara, contact, issueURL, edit.kid);
 		return issueURL;
 	} catch(err) {
 		logger.error('Error importing kara', {service: 'KaraGen', obj: err});
@@ -116,7 +117,11 @@ export async function editKara(edit: EditedKara, contact: string): Promise<strin
 		);
 	}
 	// And now for the fun part
-	return heavyLifting(kara, contact, edited_kid);
+	return heavyLifting(kara, contact, {
+		kid: edited_kid,
+		modifiedLyrics: edit.modifiedLyrics,
+		modifiedMedia: edit.modifiedMedia
+	});
 }
 
 export async function createKara(kara: KaraFileV4, contact: string): Promise<string> {
