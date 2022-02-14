@@ -1,8 +1,9 @@
-import {getConfig} from '../lib/utils/config';
-import { upsertInstance } from './stats';
-import { connectDB } from '../lib/dao/database';
 import { scheduleJob } from 'node-schedule';
+
+import { connectDB } from '../lib/dao/database';
+import {getConfig} from '../lib/utils/config';
 import { refreshKaraStats } from './kara';
+import { upsertInstance } from './stats';
 
 export async function initDB(log: boolean) {
 	await connectDB(() => {}, {superuser: false, db: getConfig().System.Database.database, log});
@@ -15,5 +16,3 @@ export async function initDB(log: boolean) {
 	// Execute this every day at midnight.
 	scheduleJob('0 0 0 * * *', refreshKaraStats);
 }
-
-

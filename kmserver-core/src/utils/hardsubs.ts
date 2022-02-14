@@ -2,6 +2,7 @@ import { createHash } from 'crypto';
 import { promise as fastq } from 'fastq';
 import { promises as fs } from 'fs';
 import { extname, resolve } from 'path';
+
 import { KaraList } from '../lib/types/kara';
 import { getConfig, resolvedPathRepos } from '../lib/utils/config';
 import { createHardsub } from '../lib/utils/ffmpeg';
@@ -24,7 +25,7 @@ async function wrappedGenerateHS(payload: [string, string, string, string]) {
 	try {
 		await createHardsub(mediaPath, assPath, outputFile);
 		logger.info(`${queue.length()} hardsubs left in queue`, {service: 'Hardsubs'});
-	} catch(err) {
+	} catch (err) {
 		logger.error(`Error creating hardsub for ${mediaPath} : ${err}`, {service: 'Hardsubs', obj: err});
 		throw err;
 	} finally {
@@ -58,7 +59,7 @@ export async function generateHardsubs(karas: KaraList) {
 		try {
 			const subfile = await resolveFileInDirs(media.subfile || 'no_ass.txt', resolvedPathRepos('Lyrics', media.repository));
 			media.subchecksum = await generateSubchecksum(subfile[0]);
-		} catch(err) {
+		} catch (err) {
 			media.subchecksum = 'no_ass_file';
 		}
 		const ext = extname(media.mediafile);
@@ -100,21 +101,18 @@ export async function generateHardsubs(karas: KaraList) {
 		}
 	}
 	profile('createHardsubs');
-
 }
 
 async function generateSubchecksum(path: string) {
 	let ass = await fs.readFile(path, {encoding: 'utf-8'}).catch(reason => {
 		if (reason.code === 'ENOENT') {
 			return 'no_ass_file';
-		} else {
+		} 
 			throw reason;
-		}
 	});
 	if (ass === 'no_ass_file') {
 		return ass;
-	} else {
+	} 
 		ass = ass.replace(/\r/g, '');
 		return createHash('md5').update(ass, 'utf-8').digest('hex');
-	}
 }

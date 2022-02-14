@@ -42,7 +42,7 @@ export async function getLatestGitCommit(): Promise<string> {
 	try {
 		const commit = await fs.readFile(resolve(getState().dataPath, getConfig().System.Repositories[0].BaseDir, '.git/refs/heads/master'), 'utf-8');
 		return commit.replace('\n', '');
-	} catch(err) {
+	} catch (err) {
 		logger.error('Unable to get latest commit', {service: 'Git', obj: err});
 		Sentry.error(err);
 		throw err;
@@ -53,14 +53,14 @@ export async function updateGit() {
 	try {
 		const repo = getConfig().System.Repositories.find(r => r.Name !== 'Staging');
 		await gitPull(resolve(getState().dataPath, repo.BaseDir));
-	} catch(err) {
+	} catch (err) {
 		logger.error('Unable to pull git repo', {service: 'Git', obj: err});
 		Sentry.error(err);
 		throw err;
 	}
 }
 
-export async function getGitDiff(commit: string, fullFiles = false): Promise<string|object> {
+export async function getGitDiff(commit: string, fullFiles = false): Promise<string | object> {
 	try {
 		if (!commit.match(/[0-9a-f]{40}/)) throw {code: 400, msg: 'Not a git commit'};
 		const diff = await gitDiff(commit, 'HEAD', resolve(getState().dataPath, getConfig().System.Repositories[0].BaseDir));
@@ -68,11 +68,13 @@ export async function getGitDiff(commit: string, fullFiles = false): Promise<str
 		// We've been asked for the full files. The fun begins.
 		const changes = computeFileChanges(diff);
 		for (const i in changes) {
-			const path = resolve(getState().dataPath, getConfig().System.Repositories[0].BaseDir, changes[i].path);
-			if (changes[i].type === 'new') changes[i].contents = await fs.readFile(path, 'utf-8');
+			if (Object.prototype.hasOwnProperty.call(changes, i)) {
+				const path = resolve(getState().dataPath, getConfig().System.Repositories[0].BaseDir, changes[i].path);
+				if (changes[i].type === 'new') changes[i].contents = await fs.readFile(path, 'utf-8');
+			}
 		}
 		return changes;
-	} catch(err) {
+	} catch (err) {
 		logger.error(`Unable to get git diff for commit ${commit}`, {service: 'Git', obj: err});
 		Sentry.error(err);
 		throw err;

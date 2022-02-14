@@ -1,12 +1,12 @@
-import {encode} from 'jwt-simple';
 import { Router } from 'express';
+import {encode} from 'jwt-simple';
 
-import {getConfig} from '../../lib/utils/config';
-import {findUserByName, checkPassword, updateUserLastLogin, decodeJwtToken} from '../../services/user';
 import { Roles, TokenResponseWithRoles } from '../../lib/types/user';
-import { requireAuth, requireValidUser } from '../middlewares/auth';
-import sentry from '../../utils/sentry';
+import {getConfig} from '../../lib/utils/config';
 import logger from '../../lib/utils/logger';
+import {checkPassword, decodeJwtToken, findUserByName, updateUserLastLogin} from '../../services/user';
+import sentry from '../../utils/sentry';
+import { requireAuth, requireValidUser } from '../middlewares/auth';
 
 const loginErr = {
 	code: 'LOG_ERROR',
@@ -26,21 +26,19 @@ async function checkLogin(username: string, password: string): Promise<TokenResp
 	if (!await checkPassword(user, password)) throw false;
 	return {
 		token: createJwtToken(username, user.roles, user.password_last_modified_at),
-		username: username,
+		username,
 		roles: user.roles
 	};
 }
 
-
 export default function authController(router: Router) {
-
 	router.post('/auth/login', async (req, res) => {
 		try {
 			const token = await checkLogin(req.body.username, req.body.password);
 			updateUserLastLogin(req.body.username.toLowerCase());
 			res.send(token);
-		} catch(err) {
-			if(err === 'No user provided') {
+		} catch (err) {
+			if (err === 'No user provided') {
 				res.status(400).send(loginNoUser);
 			} else if (err !== false) {
 				logger.error(`Failed to login ${req.body.username}`, {service: 'User', obj: err});

@@ -1,13 +1,14 @@
-import {getRawKara, getBaseStats, getKara, getAllKaras, getAllYears, newKaraIssue, getAllMedias} from '../../services/kara';
-import {getTags, getTag} from '../../services/tag';
-import {getSettings} from '../../lib/dao/database';
 import { Router } from 'express';
-import {getConfig} from '../../lib/utils/config';
-import { postSuggestionToKaraBase } from '../../services/gitlab';
-import { optionalAuth } from '../middlewares/auth';
+
 import { selectAllKaras } from '../../dao/kara';
-import { getGitDiff, getLatestGitCommit } from '../../services/git';
+import {getSettings} from '../../lib/dao/database';
 import { RepositoryManifest } from '../../lib/types/repo';
+import {getConfig} from '../../lib/utils/config';
+import { getGitDiff, getLatestGitCommit } from '../../services/git';
+import { postSuggestionToKaraBase } from '../../services/gitlab';
+import {getAllKaras, getAllMedias, getAllYears, getBaseStats, getKara, getRawKara, newKaraIssue} from '../../services/kara';
+import {getTag, getTags} from '../../services/tag';
+import { optionalAuth } from '../middlewares/auth';
 
 export default function KSController(router: Router) {
 	router.route('/karas/lastUpdate')
@@ -15,7 +16,7 @@ export default function KSController(router: Router) {
 			try {
 				const settings: any = await getSettings();
 				res.send(settings.lastGeneration);
-			} catch(err) {
+			} catch (err) {
 				res.status(500).json(err);
 			}
 		});
@@ -29,7 +30,7 @@ export default function KSController(router: Router) {
 					size: req.query.size
 				});
 				res.json(karas);
-			} catch(err) {
+			} catch (err) {
 				res.status(500).json(err);
 			}
 		});
@@ -37,7 +38,7 @@ export default function KSController(router: Router) {
 		.get(async (_, res) => {
 			try {
 				res.json(await getBaseStats());
-			} catch(err) {
+			} catch (err) {
 				res.status(500).json(err);
 			}
 		});
@@ -63,7 +64,7 @@ export default function KSController(router: Router) {
 					favorites: req.query.favorites
 				}, req.authToken);
 				res.json(karas);
-			} catch(err) {
+			} catch (err) {
 				res.status(500).json(err);
 			}
 		});
@@ -74,7 +75,7 @@ export default function KSController(router: Router) {
 					q: `k:${req.params.kid}`,
 				}, req?.authToken);
 				res.json(kara);
-			} catch(err) {
+			} catch (err) {
 				res.status(500).json(err);
 			}
 		});
@@ -83,7 +84,7 @@ export default function KSController(router: Router) {
 			try {
 				const kara = await getRawKara(req.params.kid);
 				res.json(kara);
-			} catch(err) {
+			} catch (err) {
 				res.status(500).json(err);
 			}
 		});
@@ -92,7 +93,7 @@ export default function KSController(router: Router) {
 			try {
 				const url = await newKaraIssue(req.params.kid, req.body.type, req.body.comment, req.body.username);
 				res.status(200).json(url);
-			} catch(err) {
+			} catch (err) {
 				res.status(500).json(err);
 			}
 		});
@@ -106,7 +107,7 @@ export default function KSController(router: Router) {
 					order: 'recent'
 				});
 				res.json(karas);
-			} catch(err) {
+			} catch (err) {
 				res.status(500).json(err);
 			}
 		});
@@ -123,7 +124,7 @@ export default function KSController(router: Router) {
 					includeStaging: Boolean(req.query.includeStaging)
 				});
 				res.json(tags);
-			} catch(err) {
+			} catch (err) {
 				res.status(500).json(err);
 			}
 		});
@@ -148,7 +149,7 @@ export default function KSController(router: Router) {
 					includeStaging: Boolean(req.query.includeStaging)
 				});
 				res.json(tags);
-			} catch(err) {
+			} catch (err) {
 				res.status(500).json(err);
 			}
 		});
@@ -157,7 +158,7 @@ export default function KSController(router: Router) {
 			try {
 				const medias = await getAllMedias();
 				res.json(medias);
-			} catch(err) {
+			} catch (err) {
 				res.status(500).json(err);
 			}
 		});
@@ -166,7 +167,7 @@ export default function KSController(router: Router) {
 			try {
 				const years = await getAllYears();
 				res.json(years);
-			} catch(err) {
+			} catch (err) {
 				res.status(500).json(err);
 			}
 		});
@@ -174,12 +175,12 @@ export default function KSController(router: Router) {
 		.post(async (req, res) => {
 			try {
 				if (getConfig().Gitlab.Enabled) {
-					const url = await postSuggestionToKaraBase(req.body.title, req.body.serie, req.body.type, req.body.link, req.body.username, );
+					const url = await postSuggestionToKaraBase(req.body.title, req.body.serie, req.body.type, req.body.link, req.body.username,);
 					res.json(url);
 				} else {
 					res.status(403).json('Gitlab is not enabled');
 				}
-			} catch(err) {
+			} catch (err) {
 				res.status(500).json(err);
 			}
 		});
@@ -197,7 +198,7 @@ export default function KSController(router: Router) {
 			try {
 				const diff = await getGitDiff(req.query.commit);
 				res.status(200).type('text/plain').send(diff);
-			} catch(err) {
+			} catch (err) {
 				res.status(err.code).send(err.msg);
 			}
 		});
@@ -206,7 +207,7 @@ export default function KSController(router: Router) {
 			try {
 				const diff = await getGitDiff(req.query.commit, true);
 				res.status(200).json(diff);
-			} catch(err) {
+			} catch (err) {
 				res.status(err.code).send(err.msg);
 			}
 		});

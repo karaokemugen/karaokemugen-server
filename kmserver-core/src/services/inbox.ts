@@ -1,20 +1,21 @@
 import { promises as fs } from 'fs';
 import { resolve } from 'path';
 import { v4 as uuidV4 } from 'uuid';
+
 import { deleteInbox, insertInbox, selectInbox, updateInboxDownloaded } from '../dao/inbox';
+import { deleteKara } from '../dao/kara';
+import { clearUnusedStagingTags } from '../dao/tag';
+import { refreshKarasAfterDBChange } from '../lib/services/karaManagement';
+import {KaraMetaFile, MetaFile, TagMetaFile} from '../lib/types/downloads';
+import { Inbox } from '../lib/types/inbox';
 import { KaraFileV4 } from '../lib/types/kara';
+import { TagFile } from '../lib/types/tag';
+import { getConfig, resolvedPathRepos } from '../lib/utils/config';
 import logger from '../lib/utils/logger';
 import Sentry from '../utils/sentry';
 import { closeIssue } from './gitlab';
-import { getConfig, resolvedPathRepos } from '../lib/utils/config';
-import {KaraMetaFile, MetaFile, TagMetaFile} from '../lib/types/downloads';
-import { Inbox } from '../lib/types/inbox';
-import { refreshKarasAfterDBChange } from '../lib/services/karaManagement';
-import { TagFile } from '../lib/types/tag';
-import { getTag } from './tag';
 import { getKara } from './kara';
-import { deleteKara } from '../dao/kara';
-import { clearUnusedStagingTags } from '../dao/tag';
+import { getTag } from './tag';
 
 export async function getKaraInbox(inid: string): Promise<Inbox> {
 	try {
@@ -54,7 +55,7 @@ export async function getKaraInbox(inid: string): Promise<Inbox> {
 			lyrics,
 			extra_tags
 		};
-	} catch(err) {
+	} catch (err) {
 		logger.error(`Failed to get inbox item ${inid}`, {service: 'Inbox', obj: err});
 		Sentry.error(err);
 		throw err;
@@ -69,8 +70,8 @@ export async function markKaraInboxAsDownloaded(inid: string, username: string) 
 	try {
 		const inbox = (await selectInbox(inid))[0];
 		if (!inbox) throw {code: 404};
-		return updateInboxDownloaded(username, inid);
-	} catch(err) {
+		return await updateInboxDownloaded(username, inid);
+	} catch (err) {
 		logger.error(`Failed to mark inbox item ${inid} as downloaded by ${username}`, {service: 'Inbox', obj: err});
 		Sentry.error(err);
 		throw err;
@@ -84,11 +85,11 @@ export async function addKaraInInbox(kara: KaraFileV4, contact: string, issue?: 
 			name: kara.medias[0].lyrics[0].filename.slice(0, -4),
 			created_at: new Date(),
 			gitlab_issue: issue,
-			contact: contact,
+			contact,
 			kid: kara.data.kid,
-			edited_kid: edited_kid
+			edited_kid
 		});
-	} catch(err) {
+	} catch (err) {
 		logger.error('Unable to create kara in inbox', {service: 'Inbox', obj: err});
 		Sentry.error(err);
 	}
@@ -115,9 +116,9 @@ export async function removeKaraFromInbox(inid: string) {
 		clearUnusedStagingTags();
 		await refreshKarasAfterDBChange('DELETE', [kara]);
 		const issueArr = inbox.gitlab_issue.split('/');
-		const issueNumber = +issueArr[issueArr.length-1];
+		const issueNumber = +issueArr[issueArr.length - 1];
 		if (issueNumber) closeIssue(issueNumber);
-	} catch(err) {
+	} catch (err) {
 		logger.error(`Failed to delete inbox item ${inid}`, {service: 'Inbox', obj: err});
 		Sentry.error(err);
 		throw err;

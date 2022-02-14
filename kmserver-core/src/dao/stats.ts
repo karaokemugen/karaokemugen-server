@@ -1,9 +1,9 @@
 import {db, transaction} from '../lib/dao/database';
-import { Session, Played, Requested, Instance } from '../types/stats';
+import { Instance, Played, Requested, Session } from '../types/stats';
 import sql = require('./sqls/stats');
 
 export async function upsertInstance(i: Instance) {
-	return await db().query(sql.upsertInstance, [
+	return db().query(sql.upsertInstance, [
 		new Date(),
 		i.instance_id,
 		i.version,
@@ -28,11 +28,11 @@ export async function upsertPlayed(viewcounts: Played[]) {
 		v.seid,
 		v.played_at
 	]);
-	if (viewcounts.length > 0) await transaction({sql: sql.insertViewcount, params: params});
+	if (viewcounts.length > 0) await transaction({sql: sql.insertViewcount, params});
 }
 
 export async function wipeInstance(instance_id: string) {
-	return await db().query(sql.wipeInstance, [instance_id]);
+	return db().query(sql.wipeInstance, [instance_id]);
 }
 
 export async function upsertSessions(instance_id: string, sessions: Session[]) {
@@ -43,7 +43,7 @@ export async function upsertSessions(instance_id: string, sessions: Session[]) {
 		s.name,
 		s.ended_at || null
 	]);
-	if (sessions.length > 0) await transaction({sql: sql.insertSession, params: params});
+	if (sessions.length > 0) await transaction({sql: sql.insertSession, params});
 }
 
 export async function upsertRequests(requests: Requested[]) {
@@ -52,6 +52,5 @@ export async function upsertRequests(requests: Requested[]) {
 		r.seid,
 		r.requested_at
 	]);
-	if (requests.length > 0) await transaction({sql: sql.insertRequested, params: params});
+	if (requests.length > 0) await transaction({sql: sql.insertRequested, params});
 }
-

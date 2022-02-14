@@ -1,29 +1,30 @@
-import {getConfig, setConfig} from './lib/utils/config';
-import {initConfig} from './utils/config';
-import logger from 'winston';
-import {resolve, join} from 'path';
-import {initFrontend} from './frontend';
 import { program } from 'commander';
 import detect from 'detect-port';
-import {initDB} from './dao/database';
-import {createUser, changePassword, initUsers, addRoleToUser, removeRoleFromUser} from './services/user';
-import sudoBlock from 'sudo-block';
-import {asyncCheckOrMkdir} from './lib/utils/files';
-import findRemoveSync from 'find-remove';
-import { setState, getState } from './utils/state';
-import { createImagePreviews } from './lib/utils/previews';
-import { getAllKaras, generate } from './services/kara';
-import { initMailer } from './utils/mailer';
 import dotenv from 'dotenv';
-import sentry from './utils/sentry';
-import {buildKMExplorer} from './services/kmexplorer';
-import pjson from '../../package.json';
-import { promoteToken } from './dao/remote';
-import { initGitRepos } from './services/git';
-import { register } from 'ts-node';
+import findRemoveSync from 'find-remove';
 import findWorkspaceRoot from 'find-yarn-workspace-root';
-import { initHardsubGeneration } from './utils/hardsubs';
+import {join, resolve} from 'path';
+import sudoBlock from 'sudo-block';
+import { register } from 'ts-node';
+import logger from 'winston';
+
+import pjson from '../../package.json';
+import {initDB} from './dao/database';
+import { promoteToken } from './dao/remote';
+import {initFrontend} from './frontend';
+import {getConfig, setConfig} from './lib/utils/config';
+import {asyncCheckOrMkdir} from './lib/utils/files';
+import { createImagePreviews } from './lib/utils/previews';
+import { initGitRepos } from './services/git';
+import { generate, getAllKaras } from './services/kara';
+import {buildKMExplorer} from './services/kmexplorer';
 import {initRepos} from './services/repo';
+import {addRoleToUser, changePassword, createUser, initUsers, removeRoleFromUser} from './services/user';
+import {initConfig} from './utils/config';
+import { initHardsubGeneration } from './utils/hardsubs';
+import { initMailer } from './utils/mailer';
+import sentry from './utils/sentry';
+import { getState, setState } from './utils/state';
 
 const appPath = findWorkspaceRoot();
 const dataPath = resolve(appPath, 'app/');
@@ -73,9 +74,9 @@ async function main() {
 	if (!process.env.ROOT_OVERRIDE && process.platform !== 'win32') sudoBlock('You should not run Karaoke Mugen Server with root permissions, it\'s dangerous.');
 	const argv = parseArgs();
 	setState({
-		appPath: appPath,
-		dataPath: dataPath,
-		resourcePath: resourcePath,
+		appPath,
+		dataPath,
+		resourcePath,
 		originalAppPath: appPath,
 		electron: false
 	});
@@ -94,8 +95,8 @@ async function main() {
 		asyncCheckOrMkdir(resolve(dataPath, paths.Avatars))
 	];
 	for (const repo of conf.System.Repositories) {
-		for (const paths of Object.keys(repo.Path)) {
-			repo.Path[paths].forEach((dir: string) => checks.push(asyncCheckOrMkdir(resolve(dataPath, dir))));
+		for (const p of Object.keys(repo.Path)) {
+			repo.Path[p].forEach((dir: string) => checks.push(asyncCheckOrMkdir(resolve(dataPath, dir))));
 		}
 	}
 
@@ -156,7 +157,6 @@ async function main() {
 		exit(0);
 	}
 
-
 	const port = await detect(+argv.opts().port || conf.Frontend.Port);
 
 	if (port !== conf.Frontend.Port) setConfig({
@@ -177,7 +177,6 @@ async function main() {
 	await Promise.all(inits);
 	logger.info('Karaoke Mugen Server is READY', {service: 'Launcher'});
 }
-
 
 function parseArgs() {
 	const argv = process.argv.filter(e => e !== '--');

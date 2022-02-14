@@ -1,8 +1,9 @@
-import {paramWords, db, databaseReady} from '../lib/dao/database';
 import {pg as yesql} from 'yesql';
-import { Tag, TagParams } from '../lib/types/tag';
+
+import {databaseReady, db, paramWords} from '../lib/dao/database';
 import { WhereClause } from '../lib/types/database';
 import { DBTag } from '../lib/types/database/tag';
+import { Tag, TagParams } from '../lib/types/tag';
 import sql = require('./sqls/tag');
 import {refreshTags} from '../lib/dao/tag';
 
@@ -16,10 +17,10 @@ export async function selectTag(tid: string): Promise<Tag> {
 }
 
 export async function selectTags(params: TagParams): Promise<DBTag[]> {
-	let filterClauses = params.filter
+	const filterClauses = params.filter
 		? buildTagClauses(params.filter)
 		: {sql: [], params: {}, additionalFrom: []};
-	let typeClauses = params.type > 0 ? ` AND t.types @> ARRAY[${params.type}]` : '';
+	const typeClauses = params.type > 0 ? ` AND t.types @> ARRAY[${params.type}]` : '';
 	let stripClause = '';
 	let limitClause = '';
 	let offsetClause = '';
@@ -44,8 +45,16 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 	if (!params.includeStaging) {
 		filterClauses.sql.push('t.repository != \'Staging\'');
 	}
-	const query = sql.getAllTags(filterClauses.sql, typeClauses, limitClause, offsetClause, joinClauses, orderClause,
-		stripClause, filterClauses.additionalFrom);
+	const query = sql.getAllTags(
+filterClauses.sql, 
+typeClauses, 
+limitClause, 
+offsetClause, 
+joinClauses, 
+orderClause,
+stripClause, 
+filterClauses.additionalFrom
+);
 	const res = await db().query(yesql(query)(filterClauses.params));
 	res.rows.forEach((e: any, i: number) => {
 		const karacounts = e.karacount;
@@ -56,9 +65,9 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 }
 
 function buildTagClauses(words: string): WhereClause {
-	const sql = ['t.tag_search_vector @@ query'];
+	const q = ['t.tag_search_vector @@ query'];
 	return {
-		sql: sql,
+		sql: q,
 		params: {tsquery: paramWords(words).join(' & ')},
 		additionalFrom: [', to_tsquery(\'public.unaccent_conf\', :tsquery) as query, ts_rank_cd(t.tag_search_vector, query) as relevance']
 	};

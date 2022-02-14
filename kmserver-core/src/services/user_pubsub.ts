@@ -1,17 +1,17 @@
 import { Socket } from 'socket.io';
-import { getWS } from '../lib/utils/ws';
+
 import logger from '../lib/utils/logger';
-import { findUserByName } from './user';
-import {getFavorites} from './favorites';
+import { getWS } from '../lib/utils/ws';
 import { adminToken } from '../utils/constants';
+import {getFavorites} from './favorites';
+import { findUserByName } from './user';
 
 export async function subUser(socket: Socket, username: string) {
 	if (await findUserByName(username)) {
 		socket.join(username);
 		return true;
-	} else {
+	} 
 		return false;
-	}
 }
 
 export function unsubUser(socket: Socket, username: string) {

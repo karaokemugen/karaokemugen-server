@@ -1,7 +1,7 @@
-import { SocketIOApp } from '../../lib/utils/ws';
-import logger from '../../lib/utils/logger';
 import { APIData } from '../../lib/types/api';
 import { RemoteResponse, RemoteSettings } from '../../lib/types/remote';
+import logger from '../../lib/utils/logger';
+import { SocketIOApp } from '../../lib/utils/ws';
 import { proxyBroadcast, startRemote, stopRemote } from '../../services/remote';
 import { getVersion } from '../../utils/remote';
 
@@ -10,9 +10,8 @@ export default function remoteSocketController(app: SocketIOApp) {
 		logger.info(`Start remote for ${req.body.InstanceID}`, {service: 'Remote'});
 		if (getVersion(req.body.version) !== false) {
 			return startRemote(socket, req.body);
-		} else {
+		} 
 			throw { code: 400, message: { code: 'OUTDATED_CLIENT' } };
-		}
 	});
 	app.route('remote stop', async (socket) => {
 		return stopRemote(socket);
@@ -23,4 +22,3 @@ export default function remoteSocketController(app: SocketIOApp) {
 	});
 	app.on('disconnect', stopRemote);
 }
-

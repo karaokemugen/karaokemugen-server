@@ -1,17 +1,10 @@
 import express, { Express } from 'express';
 import { promises as fs } from 'fs';
 import { resolve } from 'path';
-import { v4 as uuidV4 } from 'uuid';
-import logger from '../lib/utils/logger';
-import { Socket } from 'socket.io';
 import { generate } from 'randomstring';
-import { getWS } from '../lib/utils/ws';
-import { APIDataProxied } from '../lib/types/api';
-import { asyncCheckOrMkdir } from '../lib/utils/files';
-import { RemoteResponse, RemoteSettings } from '../lib/types/remote';
-import {getConfig} from '../lib/utils/config';
-import {resolvedPathRemoteRoot} from '../utils/config';
-import { getState } from '../utils/state';
+import { Socket } from 'socket.io';
+import { v4 as uuidV4 } from 'uuid';
+
 import {
 	deleteOldRemoteTokens,
 	getRemoteByToken,
@@ -19,17 +12,25 @@ import {
 	testCodeExistence,
 	updateRemoteToken
 } from '../dao/remote';
+import { APIDataProxied } from '../lib/types/api';
+import { RemoteResponse, RemoteSettings } from '../lib/types/remote';
+import {getConfig} from '../lib/utils/config';
+import { asyncCheckOrMkdir } from '../lib/utils/files';
+import logger from '../lib/utils/logger';
+import { getWS } from '../lib/utils/ws';
+import {resolvedPathRemoteRoot} from '../utils/config';
 import { getVersion, watchRemotes } from '../utils/remote';
+import { getState } from '../utils/state';
 
 let app: Express;
 
-let proxiedCodes: Set<string> = new Set();
+const proxiedCodes: Set<string> = new Set();
 // Room code -> Socket instance
-let remotes: Map<string, Socket> = new Map();
+const remotes: Map<string, Socket> = new Map();
 // Socket instance -> Room code
-let remotesReverse: WeakMap<Socket, string> = new WeakMap();
+const remotesReverse: WeakMap<Socket, string> = new WeakMap();
 // Code -> KMFrontend version to serve
-let remotesVersions: Map<string, string> = new Map();
+const remotesVersions: Map<string, string> = new Map();
 
 function nspMiddleware(client: Socket, next: () => void) {
 	client.onAny((cmd, data, ack) => proxyHandler(client, client.nsp.name.substring(1), cmd, data, ack));
@@ -139,17 +140,20 @@ export function initRemote() {
 		if (remotes.has(req.vhost[0])) {
 			const frontend = getVersion(remotesVersions.get(req.vhost[0]));
 			if (frontend) {
-				return express.static(frontend,
-					{ index: false })(req, res, next);
-			} else {
+				return express.static(
+frontend,
+					{ index: false }
+)(req, res, next);
+			} 
 				res.status(500).send('Cannot find KMFrontend required version.');
-			}
 		} else {
 			next();
 		}
 	});
-	app.use('/guests/', express.static(resolve(getState().appPath, 'assets/guestAvatars'),
-		{ index: false, fallthrough: false }));
+	app.use('/guests/', express.static(
+resolve(getState().appPath, 'assets/guestAvatars'),
+		{ index: false, fallthrough: false }
+));
 	app.get('/*', async (req: any, res) => {
 		if (remotes.has(req.vhost[0])) {
 			const frontend = getVersion(remotesVersions.get(req.vhost[0]));

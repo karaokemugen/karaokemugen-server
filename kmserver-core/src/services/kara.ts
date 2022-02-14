@@ -1,34 +1,34 @@
-import { resolve, basename } from 'path';
+import {createHash} from 'crypto';
 import { promises as fs } from 'fs';
 import parallel from 'p-map';
-import {createHash} from 'crypto';
+import { basename, resolve } from 'path';
 
-import {selectAllKaras, selectAllYears, selectBaseStats, selectAllMedias, refreshKaraStats} from '../dao/kara';
-import { KaraList, KaraParams } from '../lib/types/kara';
-import { consolidateData } from '../lib/services/kara';
-import { ASSToLyrics } from '../lib/utils/ass';
+import {refreshKaraStats, selectAllKaras, selectAllMedias, selectAllYears, selectBaseStats} from '../dao/kara';
+import { copyFromData } from '../lib/dao/database';
 import { getASS } from '../lib/dao/karafile';
 import { generateDatabase } from '../lib/services/generation';
-import { createImagePreviews } from '../lib/utils/previews';
-import logger from '../lib/utils/logger';
-import { getConfig, resolvedPathRepos } from '../lib/utils/config';
-import { gitlabPostNewIssue } from './gitlab';
+import { consolidateData } from '../lib/services/kara';
+import { DBKara } from '../lib/types/database/kara';
 import { DownloadBundleServer } from '../lib/types/downloads';
-import sentry from '../utils/sentry';
+import { KaraList, KaraParams } from '../lib/types/kara';
 import { JWTTokenWithRoles } from '../lib/types/user';
-import { updateGit } from './git';
-import { findUserByName } from './user';
-import { getState } from '../utils/state';
+import { ASSToLyrics } from '../lib/utils/ass';
+import { getConfig, resolvedPathRepos } from '../lib/utils/config';
 import { downloadFile } from '../lib/utils/downloader';
 import { resolveFileInDirs } from '../lib/utils/files';
-import { DBKara } from '../lib/types/database/kara';
-import { copyFromData } from '../lib/dao/database';
+import logger from '../lib/utils/logger';
+import { createImagePreviews } from '../lib/utils/previews';
 import { generateHardsubs } from '../utils/hardsubs';
+import sentry from '../utils/sentry';
+import { getState } from '../utils/state';
+import { updateGit } from './git';
+import { gitlabPostNewIssue } from './gitlab';
+import { findUserByName } from './user';
 
 export async function getBaseStats() {
 	try {
 		return await selectBaseStats();
-	} catch(err) {
+	} catch (err) {
 		sentry.error(err);
 		throw err;
 	}
@@ -42,7 +42,7 @@ export function formatKaraList(karaList: any[], from: number, count: number): Ka
 			from: +from,
 			to: +from + data.length
 		},
-		i18n: i18n,
+		i18n,
 		content: data
 	};
 }
@@ -50,7 +50,7 @@ export function formatKaraList(karaList: any[], from: number, count: number): Ka
 export async function getAllYears() {
 	try {
 		return await selectAllYears();
-	} catch(err) {
+	} catch (err) {
 		sentry.error(err);
 		throw err;
 	}
@@ -80,10 +80,10 @@ export async function generate() {
 			downloadFile(downloadItem);
 		}
 		computeSubchecksums();
-		const promises = [createImagePreviews(karas, 'full', 1280),];
+		const promises = [createImagePreviews(karas, 'full', 1280)];
 		if (conf.Hardsub.Enabled) promises.push(generateHardsubs(karas));
 		await Promise.all(promises);
-	} catch(err) {
+	} catch (err) {
 		logger.error('Generation failed', {service: 'Gen', obj: err});
 		sentry.error(err, 'Fatal');
 	}
@@ -131,7 +131,7 @@ export async function getKara(params: KaraParams, token?: JWTTokenWithRoles) {
 			if (ASS) karas[0].lyrics = ASSToLyrics(ASS);
 		}
 		return karas[0];
-	} catch(err) {
+	} catch (err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
 		throw err;
@@ -150,7 +150,7 @@ export async function getAllKaras(params: KaraParams, token?: JWTTokenWithRoles,
 				throw {code: 404};
 			}
 		}
-		let pl = await selectAllKaras({
+		const pl = await selectAllKaras({
 			filter: params.filter,
 			from: +params.from,
 			size: +params.size,
@@ -161,7 +161,7 @@ export async function getAllKaras(params: KaraParams, token?: JWTTokenWithRoles,
 			random: params.random
 		}, includeStaging);
 		return formatKaraList(pl, +params.from, pl[0]?.count || 0);
-	} catch(err) {
+	} catch (err) {
 		// Skip Sentry if the error has a code.
 		if (err?.code) throw err;
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
@@ -207,7 +207,7 @@ export async function getRawKara(kid: string): Promise<DownloadBundleServer> {
 			},
 			...data
 		};
-	} catch(err) {
+	} catch (err) {
 		if (typeof err === 'object') {
 			sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 			sentry.error(err);
@@ -222,9 +222,11 @@ export async function newKaraIssue(kid: string, type: 'Media' | 'Metadata' | 'Ly
 	}, true);
 	const kara = karas[0];
 	logger.debug('Kara:', {service: 'GitLab', obj: kara});
-	let singerOrSerie = kara.series.length > 0 && kara.series[0].name || (kara.singers.length > 0 && kara.singers[0].name) || '';
-	let langs = (kara.langs.length > 0 && kara.langs[0].name.toUpperCase()) || '';
-	let songtype = (kara.songtypes.length > 0 && kara.songtypes[0].name) || '';
+	const singerOrSerie = 
+		(kara.series.length > 0 && kara.series[0].name) || 
+		(kara.singers.length > 0 && kara.singers[0].name) || '';
+	const langs = (kara.langs.length > 0 && kara.langs[0].name.toUpperCase()) || '';
+	const songtype = (kara.songtypes.length > 0 && kara.songtypes[0].name) || '';
 	const karaName = `${langs} - ${singerOrSerie} - ${songtype}${kara.songorder || ''} - ${kara.titles.eng}`;
 	const conf = getConfig();
 	const issueTemplate = conf.Gitlab.IssueTemplate.KaraProblem[type];
@@ -235,7 +237,7 @@ export async function newKaraIssue(kid: string, type: 'Media' | 'Metadata' | 'Ly
 		.replace('$comment', comment);
 	try {
 		if (conf.Gitlab.Enabled) return await gitlabPostNewIssue(title, desc, issueTemplate.Labels);
-	} catch(err) {
+	} catch (err) {
 		logger.error('Call to Gitlab API failed', {service: 'GitLab', obj: err});
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err, 'Warning');

@@ -1,12 +1,13 @@
-import {selectTags, selectTag, insertTag} from '../dao/tag';
-import { TagParams, TagList, Tag } from '../lib/types/tag';
-import { writeTagFile } from '../lib/dao/tagfile';
-import { resolvedPathRepos } from '../lib/utils/config';
 import { v4 as uuidV4 } from 'uuid';
-import { DBTag } from '../lib/types/database/tag';
-import sentry from '../utils/sentry';
+
+import {insertTag, selectTag, selectTags} from '../dao/tag';
 import { refreshTags, updateTagSearchVector } from '../lib/dao/tag';
+import { writeTagFile } from '../lib/dao/tagfile';
+import { DBTag } from '../lib/types/database/tag';
+import { Tag, TagList, TagParams } from '../lib/types/tag';
+import { resolvedPathRepos } from '../lib/utils/config';
 import { sanitizeFile } from '../lib/utils/files';
+import sentry from '../utils/sentry';
 
 export function formatTagList(tagList: DBTag[], from: number, count: number): TagList {
 	return {
@@ -23,7 +24,7 @@ export async function getTags(params: TagParams) {
 	try {
 		const tags = await selectTags(params);
 		return formatTagList(tags, +params.from, tags[0]?.count || 0);
-	} catch(err) {
+	} catch (err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
 		throw err;
@@ -32,10 +33,10 @@ export async function getTags(params: TagParams) {
 
 export async function getTag(tid: string) {
 	try {
-		let tag = await selectTag(tid);
+		const tag = await selectTag(tid);
 		if (tag) return tag;
 		return null;
-	} catch(err) {
+	} catch (err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
 		throw err;
@@ -44,7 +45,7 @@ export async function getTag(tid: string) {
 
 /* "Edit" a tag. Save its new version */
 // Unused? TODO: consider its removal
-/*export async function editTag(_tid: string, tag: Tag, _opts: any) {
+/* export async function editTag(_tid: string, tag: Tag, _opts: any) {
 	try {
 		await addTag(tag, null);
 		return tag;
@@ -53,7 +54,7 @@ export async function getTag(tid: string) {
 		sentry.error(err);
 		throw err;
 	}
-}*/
+} */
 
 export async function addTag(tag: Tag, opts = {forceRepo: ''}) {
 	try {
@@ -69,7 +70,7 @@ export async function addTag(tag: Tag, opts = {forceRepo: ''}) {
 		await updateTagSearchVector();
 		refreshTags();
 		return tag;
-	} catch(err) {
+	} catch (err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
 		throw err;

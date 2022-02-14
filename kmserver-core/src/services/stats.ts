@@ -1,13 +1,14 @@
-import { uuidRegexp } from '../lib/utils/constants';
 import testJSON from 'is-valid-json';
-import { check } from '../lib/utils/validators';
+
 import {
 	upsertInstance,
-	upsertSessions,
 	upsertPlayed,
 	upsertRequests,
+	upsertSessions,
 	wipeInstance} from '../dao/stats';
+import { uuidRegexp } from '../lib/utils/constants';
 import logger from '../lib/utils/logger';
+import { check } from '../lib/utils/validators';
 import sentry from '../utils/sentry';
 
 const payloadConstraints = {
@@ -23,11 +24,11 @@ export async function addPlayed(seid: string, kid: string, played_at: string) {
 	try {
 		const date = new Date(played_at);
 		await upsertPlayed([{
-			kid: kid,
-			seid: seid,
+			kid,
+			seid,
 			played_at: date
 		}]);
-	} catch(err) {
+	} catch (err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
 		throw err;
@@ -51,7 +52,7 @@ export async function processStatsPayload(payload: any) {
 			upsertRequests(payload.requests)
 		]);
 		logger.info(`Received payload from instance ${payload.instance.instance_id}`, {service: 'Shortener'});
-	} catch(err) {
+	} catch (err) {
 		logger.error(`Error with payload from ${payload?.instance?.instance_id}`, {service: 'Shortener', obj: err});
 		logger.debug('Payload in error', {service: 'Stats', obj: payload});
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));

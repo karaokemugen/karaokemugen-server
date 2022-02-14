@@ -1,6 +1,6 @@
 import { db } from '../lib/dao/database';
-import * as sql from './sqls/remote';
 import { RemoteAccessToken } from '../lib/types/remote';
+import * as sql from './sqls/remote';
 
 export async function getRemoteByToken(token: string): Promise<RemoteAccessToken> {
 	const res = await db().query(sql.sqlGetRemoteByToken, [

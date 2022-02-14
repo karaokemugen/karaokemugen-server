@@ -12,11 +12,11 @@ export async function selectInbox(inid?: string) {
 }
 
 export async function insertInbox(kara: DBInbox) {
-	return await db().query(yesql(sql.insertInbox)(kara));
+	return db().query(yesql(sql.insertInbox)(kara));
 }
 
 export async function updateInboxDownloaded(username: string, inid: string) {
-	return await db().query(sql.updateInboxDownloaded, [
+	return db().query(sql.updateInboxDownloaded, [
 		username,
 		new Date(),
 		inid
@@ -24,5 +24,5 @@ export async function updateInboxDownloaded(username: string, inid: string) {
 }
 
 export async function deleteInbox(inid: string) {
-	return await db().query(sql.deleteInbox, [inid]);
+	return db().query(sql.deleteInbox, [inid]);
 }
