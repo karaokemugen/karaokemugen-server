@@ -84,7 +84,7 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		if (conf.Gitlab.Enabled) {
 			issueURL = await gitlabPostNewSuggestion(karaData.kid, edit);
 		}
-		addKaraInInbox(kara, contact, issueURL, edit.kid);
+		addKaraInInbox(kara, contact, issueURL, edit ? edit.kid:undefined);
 		return issueURL;
 	} catch(err) {
 		logger.error('Error importing kara', {service: 'KaraGen', obj: err});
