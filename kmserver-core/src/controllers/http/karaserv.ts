@@ -189,7 +189,8 @@ export default function KSController(router: Router) {
 				Git: getConfig().System.Repositories[0].Git,
 				FullArchiveURL: getConfig().System.Repositories[0].FullArchiveURL,
 				SourceArchiveURL: getConfig().System.Repositories[0].SourceArchiveURL,
-				LatestCommit: await getLatestGitCommit()
+				LatestCommit: await getLatestGitCommit(),
+				ProjectID: getConfig().Gitlab.ProjectID
 			} as RepositoryManifest);
 		});
 	router.route('/karas/repository/diff')
