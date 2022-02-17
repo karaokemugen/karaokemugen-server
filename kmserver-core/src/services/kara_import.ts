@@ -10,8 +10,8 @@ import logger from 'winston';
 
 import { insertKara } from '../dao/kara';
 import { extractVideoSubtitles, getDataFromKaraFile, verifyKaraData } from '../lib/dao/karafile';
+import { applyKaraHooks } from '../lib/dao/hook';
 import {
-	applyKaraHooks,
 	defineFilename,
 	determineMediaAndLyricsFilenames,
 	processSubfile
