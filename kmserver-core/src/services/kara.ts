@@ -138,7 +138,7 @@ export async function getKara(params: KaraParams, token?: JWTTokenWithRoles) {
 	}
 }
 
-export async function getAllKaras(params: KaraParams, token?: JWTTokenWithRoles, includeStaging = false): Promise<KaraList> {
+export async function getAllKaras(params: KaraParams, token?: JWTTokenWithRoles, includeStaging = false): Promise<KaraList<DBKara>> {
 	try {
 		if (token) token.username = token.username.toLowerCase();
 		// User seeking favorites from someone, check if that's okay or not.
@@ -222,8 +222,8 @@ export async function newKaraIssue(kid: string, type: 'Media' | 'Metadata' | 'Ly
 	}, true);
 	const kara = karas[0];
 	logger.debug('Kara:', {service: 'GitLab', obj: kara});
-	const singerOrSerie = 
-		(kara.series.length > 0 && kara.series[0].name) || 
+	const singerOrSerie =
+		(kara.series.length > 0 && kara.series[0].name) ||
 		(kara.singers.length > 0 && kara.singers[0].name) || '';
 	const langs = (kara.langs.length > 0 && kara.langs[0].name.toUpperCase()) || '';
 	const songtype = (kara.songtypes.length > 0 && kara.songtypes[0].name) || '';
