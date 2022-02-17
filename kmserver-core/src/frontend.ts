@@ -1,13 +1,19 @@
-import logger from './lib/utils/logger';
+import compression from 'compression';
 import express from 'express';
+import range from 'express-range';
+import helmet from 'helmet';
+import {createServer} from 'http';
 import {resolve} from 'path';
+import vhost from 'vhost';
+
 import adminController from './controllers/http/admin';
 import authController from './controllers/http/auth';
-import KServerController from './controllers/http/karaserv';
+import favoritesController from './controllers/http/favorites';
+import inboxController from './controllers/http/inbox';
 import KImportController from './controllers/http/karaimport';
+import KServerController from './controllers/http/karaserv';
 import statsController from './controllers/http/stats';
 import userController from './controllers/http/user';
-import favoritesController from './controllers/http/favorites';
 import remoteSocketController from './controllers/ws/remote';
 import userSubSocketController from './controllers/ws/user';
 import {
@@ -15,23 +21,17 @@ import {
 	resolvedPath,
 	resolvedPathRepos
 } from './lib/utils/config';
-import range from 'express-range';
-import vhost from 'vhost';
-import {createServer} from 'http';
-import helmet from 'helmet';
-import compression from 'compression';
-import { getState } from './utils/state';
+import logger from './lib/utils/logger';
 import { initWS } from './lib/utils/ws';
 import { startKMExplorer } from './services/kmexplorer';
 import { initRemote } from './services/remote';
-import inboxController from './controllers/http/inbox';
+import { getState } from './utils/state';
 
 /**
  * Starting express which will serve our app.
  * Serving this app means it has to be built beforehand.
  */
 export function initFrontend(listenPort: number) {
-
 	const conf = getConfig();
 	const state = getState();
 	const app = express();
@@ -78,7 +78,7 @@ export function initFrontend(listenPort: number) {
 			: next();
 	});
 
-	//KMServer
+	// KMServer
 	// If static serve is enabled, we're serving all files from KMServer instead of Apache/nginx
 	if (state.opt.staticServe) {
 		app.use('/downloads', express.static(resolve(getState().appPath, getConfig().System.Repositories[0].BaseDir)));

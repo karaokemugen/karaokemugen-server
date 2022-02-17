@@ -1,7 +1,7 @@
 import {basename} from 'path';
 
-import { duration } from '../lib/utils/date';
 import { getConfig } from '../lib/utils/config';
+import { duration } from '../lib/utils/date';
 import HTTP from '../lib/utils/http';
 import logger from '../lib/utils/logger';
 import sentry from '../utils/sentry';
@@ -9,14 +9,14 @@ import { findUserByName } from './user';
 import { getKara } from './kara';
 import { EditElement } from '../types/kara_import';
 
-/** Use the appropriate template and post an inbox element to GitLab **/
+/** Use the appropriate template and post an inbox element to GitLab * */
 export async function gitlabPostNewSuggestion(kid: string, edit?: EditElement) {
 	const conf = getConfig();
 	const kara = await getKara({
 		q: `k:${kid}`
 	});
-	const issueTemplate = edit ? conf.Gitlab.IssueTemplate.Edit:conf.Gitlab.IssueTemplate.Import;
-	const title = (issueTemplate.Title || `Inbox ${edit ? 'edit':'creation'}: $kara`)
+	const issueTemplate = edit ? conf.Gitlab.IssueTemplate.Edit : conf.Gitlab.IssueTemplate.Import;
+	const title = (issueTemplate.Title || `Inbox ${edit ? 'edit' : 'creation'}: $kara`)
 		.replace('$kara', basename(kara.karafile, '.kara.json'));
 	const desc = (issueTemplate.Description || '')
 		.replace('$file', kara.karafile)
@@ -64,7 +64,7 @@ export async function gitlabPostNewIssue(title: string, desc: string, labels: st
 			timeout: 25000
 		});
 		return res.data.web_url;
-	} catch(err) {
+	} catch (err) {
 		logger.error('Unable to post new issue', {service: 'Gitlab', obj: err});
 		throw err;
 	}
@@ -84,7 +84,7 @@ export async function closeIssue(issue: number) {
 			},
 			timeout: 25000
 		});
-	} catch(err) {
+	} catch (err) {
 		logger.error('Unable to close issue', {service: 'Gitlab', obj: err});
 		throw err;
 	}
@@ -110,12 +110,12 @@ export async function postSuggestionToKaraBase(title: string, serie:string, type
 		desc = desc.replace('$link', link);
 		try {
 			return await gitlabPostNewIssue(titleIssue, desc, conf.Suggestion.Labels);
-		} catch(err) {
+		} catch (err) {
 			sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 			sentry.error(err);
 			logger.error('Call to Gitlab API failed', {service: 'KaraSuggestion', obj: err});
 		}
-	} catch(err) {
+	} catch (err) {
 		logger.error('Unable to post new suggestion to gitlab', {service: 'Gitlab', obj: err});
 		throw err;
 	}

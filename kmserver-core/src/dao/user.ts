@@ -1,9 +1,9 @@
 import {db, paramWords} from '../lib/dao/database';
-import { User } from '../lib/types/user';
 import { DBUser } from '../lib/types/database/user';
+import { User } from '../lib/types/user';
 import sql = require('./sqls/user');
 
-export async function updateLastLogin(username: string): Promise<String> {
+export async function updateLastLogin(username: string): Promise<string> {
 	const res = await db().query(sql.updateLastLogin, [username]);
 	return res.rows[0].last_login_at;
 }
@@ -16,17 +16,18 @@ export async function selectUser(searchType: string, value: any): Promise<DBUser
 
 export async function selectAllUsers(filter?: string, from?: number, size?: number, order = false): Promise<DBUser[]> {
 	const res = await db().query(
-		sql.selectUser(!!filter, '', (size) ? `LIMIT ${size} OFFSET ${from || 0}`:'', order),
-		filter ? [paramWords(filter).join(' & ')]:[]);
+		sql.selectUser(!!filter, '', (size) ? `LIMIT ${size} OFFSET ${from || 0}` : '', order),
+		filter ? [paramWords(filter).join(' & ')] : []
+);
 	return res.rows;
 }
 
 export async function deleteUser(username: string) {
-	return await db().query(sql.deleteUser, [username]);
+	return db().query(sql.deleteUser, [username]);
 }
 
 export async function insertUser(user: User) {
-	return await db().query(sql.insertUser, [
+	return db().query(sql.insertUser, [
 		user.login,
 		user.nickname,
 		user.password,
@@ -48,7 +49,6 @@ export async function updateUserPassword(username: string, password: string): Pr
 	]);
 	return new Date(res.rows[0].password_last_modified_at);
 }
-
 
 export async function updateUser(user: User): Promise<DBUser> {
 	return (await db().query(sql.updateUser, [

@@ -1,9 +1,10 @@
-import {buildTypeClauses, buildClauses, db} from '../lib/dao/database';
 import {pg as yesql} from 'yesql';
-import {Kara, KaraParams} from '../lib/types/kara';
-import { DBKara, DBYear, DBMedia } from '../lib/types/database/kara';
-import { DBStats } from '../types/database/kara';
+
+import {buildClauses, buildTypeClauses, db} from '../lib/dao/database';
 import { WhereClause } from '../lib/types/database';
+import { DBKara, DBMedia, DBYear } from '../lib/types/database/kara';
+import {Kara, KaraParams} from '../lib/types/kara';
+import { DBStats } from '../types/database/kara';
 import sql = require('./sqls/kara');
 import logger from '../lib/utils/logger';
 
@@ -21,7 +22,7 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 	const filterClauses: WhereClause = params.filter
 		? buildClauses(params.filter)
 		: {sql: [], params: {}, additionalFrom: []};
-	let typeClauses = params.q
+	const typeClauses = params.q
 		? buildTypeClauses(params.q, params.order)
 		: {sql: [], params: {}, additionalFrom: []};
 	const yesqlPayload = {

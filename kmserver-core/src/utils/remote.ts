@@ -1,7 +1,8 @@
-import { watch, promises as fs } from 'fs';
+import { promises as fs, watch } from 'fs';
 import { resolve } from 'path';
-import { resolvedPathRemoteRoot } from '../utils/config';
+
 import logger from '../lib/utils/logger';
+import { resolvedPathRemoteRoot } from './config';
 
 let availableRemotes: string[] = [];
 
@@ -19,7 +20,6 @@ export function watchRemotes(): void {
 export function getVersion(version: string): string | false {
 	if (availableRemotes.includes(version)) {
 		return resolve(resolvedPathRemoteRoot(), version);
-	} else {
+	} 
 		return false;
-	}
 }

@@ -8,9 +8,9 @@ export async function selectFavorites(username: string): Promise<Favorite[]> {
 }
 
 export async function insertFavorite(username: string, kid: string) {
-	return await db().query(sql.insertFavorite, [username, kid]);
+	return db().query(sql.insertFavorite, [username, kid]);
 }
 
 export async function deleteFavorite(username: string, kid: string) {
-	return await db().query(sql.deleteFavorite, [username, kid]);
+	return db().query(sql.deleteFavorite, [username, kid]);
 }

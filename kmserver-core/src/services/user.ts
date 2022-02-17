@@ -1,33 +1,34 @@
+import {compare, hash} from 'bcryptjs';
 import {createHash} from 'crypto';
-import {hash, compare} from 'bcryptjs';
 import { promises as fs } from 'fs';
-import merge from 'lodash.merge';
-import {decode} from 'jwt-simple';
-import {updateUser, updateUserPassword, insertUser, selectUser, selectAllUsers, deleteUser, updateLastLogin} from '../dao/user';
-import logger from '../lib/utils/logger';
-import {getConfig, resolvedPath} from '../lib/utils/config';
-import {fileExists, smartMove, detectFileType} from '../lib/utils/files';
-import { v4 as uuidV4 } from 'uuid';
-import {resolve, isAbsolute} from 'path';
-import { User, JWTTokenWithRoles } from '../lib/types/user';
-import { sendMail } from '../utils/mailer';
-import randomstring from 'randomstring';
-import sentry from '../utils/sentry';
-import { createJwtToken } from '../controllers/http/auth';
-import {UserList, UserOptions, UserParams} from '../types/user';
-import { delPubUser, pubUser } from './user_pubsub';
-import {asciiRegexp, tagTypes} from '../lib/utils/constants';
 import {copy} from 'fs-extra';
+import {decode} from 'jwt-simple';
+import merge from 'lodash.merge';
+import {isAbsolute, resolve} from 'path';
+import randomstring from 'randomstring';
+import { v4 as uuidV4 } from 'uuid';
+
+import { createJwtToken } from '../controllers/http/auth';
+import {deleteUser, insertUser, selectAllUsers, selectUser, updateLastLogin, updateUser, updateUserPassword} from '../dao/user';
 import {DBUser} from '../lib/types/database/user';
-import {getKara} from './kara';
+import { JWTTokenWithRoles, User } from '../lib/types/user';
+import {getConfig, resolvedPath} from '../lib/utils/config';
+import {asciiRegexp, tagTypes} from '../lib/utils/constants';
+import {detectFileType, fileExists, smartMove} from '../lib/utils/files';
+import logger from '../lib/utils/logger';
 import { isLooselyEqual } from '../lib/utils/objectHelpers';
+import {UserList, UserOptions, UserParams} from '../types/user';
 import {adminToken} from '../utils/constants';
+import { sendMail } from '../utils/mailer';
+import sentry from '../utils/sentry';
+import {getKara} from './kara';
+import { delPubUser, pubUser } from './user_pubsub';
 
 const passwordResetRequests = new Map();
 
 export async function resetPasswordRequest(username: string) {
 	try {
-		if (!username) throw('No user provided');
+		if (!username) throw ('No user provided');
 		username = username.toLowerCase();
 		const user = await findUserByName(username);
 		if (!user) throw new Error('User unknown');
@@ -38,7 +39,9 @@ export async function resetPasswordRequest(username: string) {
 			date: +(new Date().getTime() / 1000).toFixed(0)
 		});
 		const conf = getConfig();
-		sendMail('Karaoke Mugen Password Reset',`
+		sendMail(
+'Karaoke Mugen Password Reset',
+`
 		Hello ${username},
 
 		You (or someone) requested a password reset for your account at ${getConfig().API.Host}. If you didn't request this, please ignore this email.
@@ -49,9 +52,10 @@ export async function resetPasswordRequest(username: string) {
 
 		This link will expire in two hours.
 		`,
-		username,
-		user.email);
-	} catch(err) {
+username,
+user.email
+);
+	} catch (err) {
 		if (err.message !== 'User unknown' && err.message !== 'User has no configured mail. Ask server admin for a password reset') {
 			sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 			sentry.error(err);
@@ -70,7 +74,9 @@ export async function resetPassword(username: string, requestCode: string) {
 		const newPassword = randomstring.generate(12);
 		await changePassword(username, newPassword);
 		passwordResetRequests.delete(username);
-		sendMail('Karaoke Mugen Password has been reset',`
+		sendMail(
+'Karaoke Mugen Password has been reset',
+`
 		Hello ${username},
 
 		You (or someone) requested a password reset for your account at ${getConfig().API.Host}.
@@ -81,9 +87,10 @@ export async function resetPassword(username: string, requestCode: string) {
 		Please login using a Karaoke Mugen Application and change it to something else.
 
 		`,
-		username,
-		user.email);
-	} catch(err) {
+username,
+user.email
+);
+	} catch (err) {
 		if (err.message !== 'No request' && err.message !== 'User unknown') {
 			sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 			sentry.error(err);
@@ -99,19 +106,19 @@ export async function initUsers() {
 function cleanupPasswordResetRequests() {
 	const now = +(new Date().getTime() / 1000).toFixed(0);
 	passwordResetRequests.forEach((user: string, request: any) => {
-		if ((request.date + (60 * 60 * 2)) < now ) passwordResetRequests.delete(user);
+		if ((request.date + (60 * 60 * 2)) < now) passwordResetRequests.delete(user);
 	});
 }
 
 export function hashPassword(password: string) {
-	const hash = createHash('sha256');
-	hash.update(password);
-	return hash.digest('hex');
+	const newHash = createHash('sha256');
+	newHash.update(password);
+	return newHash.digest('hex');
 }
 
 export async function findUserByName(username: string, opts: UserOptions = {}) {
 	try {
-		if (!username) throw('No user provided');
+		if (!username) throw ('No user provided');
 		username = username.toLowerCase();
 		const user = await selectUser('pk_login', username);
 		if (!user) return user;
@@ -132,7 +139,7 @@ export async function findUserByName(username: string, opts: UserOptions = {}) {
 			delete user.password;
 		}
 		return user;
-	} catch(err) {
+	} catch (err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
 		logger.error('Error when retrieving an user', {obj: err, service: 'User'});
@@ -142,11 +149,11 @@ export async function findUserByName(username: string, opts: UserOptions = {}) {
 
 export async function removeUser(username: string) {
 	try {
-		if (!username) throw('No user provided');
+		if (!username) throw ('No user provided');
 		username = username.toLowerCase();
 		delPubUser(username);
 		return await deleteUser(username);
-	} catch(err) {
+	} catch (err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
 		throw err;
@@ -168,16 +175,16 @@ export async function getAllUsers(opts: UserParams = {public: false}) {
 	try {
 		const users = (await selectAllUsers(opts.filter, opts.from, opts.size, true)).filter(u => u.flag_public && opts.public);
 		if (opts.public) {
-			for (const index in users) {
-				delete users[index].password;
-				delete users[index].email;
-				delete users[index].password_last_modified_at;
-				delete users[index].language;
-				delete users[index].location;
-			}
+			users.forEach((_, i) => {
+				delete users[i].password;
+				delete users[i].email;
+				delete users[i].password_last_modified_at;
+				delete users[i].language;
+				delete users[i].location;
+			});
 		}
 		return formatUserList(users, opts.from);
-	} catch(err) {
+	} catch (err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
 		throw err;
@@ -189,8 +196,7 @@ export function hashPasswordbcrypt(password: string): Promise<string> {
 	return hash(password, 10);
 }
 
-
-export async function checkPassword(user: User,password: string) {
+export async function checkPassword(user: User, password: string) {
 	// First we test if password needs to be updated to new hash
 	const hashedPasswordSHA = hashPassword(password);
 	const hashedPasswordbcrypt = await hashPasswordbcrypt(password);
@@ -201,7 +207,7 @@ export async function checkPassword(user: User,password: string) {
 		user.password = hashedPasswordbcrypt;
 	}
 
-	return await compare(password, user.password);
+	return compare(password, user.password);
 }
 
 export async function createUser(user: User, opts: any = {}) {
@@ -236,7 +242,7 @@ export async function createUser(user: User, opts: any = {}) {
 			logger.error(`Unable to create user ${user.login}`, {service: 'User', obj: err});
 			throw ({ code: 'USER_CREATION_ERROR', data: err});
 		}
-	} catch(err) {
+	} catch (err) {
 		if (err.code !== 'USER_ALREADY_EXISTS') {
 			const args: any = arguments;
 			delete args.user.password;
@@ -275,7 +281,7 @@ async function replaceAvatar(oldImageFile: string, avatar: Express.Multer.File) 
 async function replaceBanner(preview: string) {
 	if (preview === 'default.jpg') return preview;
 	const customBanner = isAbsolute(preview);
-	const file = customBanner ? preview:resolve(resolvedPath('Previews'), preview);
+	const file = customBanner ? preview : resolve(resolvedPath('Previews'), preview);
 	let fileType: any;
 	if (customBanner) {
 		fileType = await detectFileType(file);
@@ -287,11 +293,11 @@ async function replaceBanner(preview: string) {
 	if (!await fileExists(file)) {
 		throw new Error('The requested preview is not available nor generated.');
 	} else {
-		const name = customBanner ? `${uuidV4()}.${fileType}`:preview;
+		const name = customBanner ? `${uuidV4()}.${fileType}` : preview;
 		const target = resolve(resolvedPath('Banners'), name);
 		// The banner is already in place (use by somebody else), no need to copy again.
 		if (await fileExists(target)) return preview;
-		else {
+		
 			if (!customBanner) {
 				const kid = preview.split('.')[0];
 				const bans = getConfig().Users.BannerBan;
@@ -308,7 +314,6 @@ async function replaceBanner(preview: string) {
 			}
 			await copy(file, target);
 			return name;
-		}
 	}
 }
 
@@ -316,7 +321,7 @@ export async function changePassword(username: string, password: string) {
 	try {
 		password = await hashPasswordbcrypt(password);
 		return await updateUserPassword(username, password);
-	} catch(err) {
+	} catch (err) {
 		sentry.error(err);
 		throw err;
 	}
@@ -394,7 +399,7 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 export async function updateUserLastLogin(username: string) {
 	try {
 		await updateLastLogin(username);
-	} catch(err) {
+	} catch (err) {
 		logger.error(`Unable to update login time for ${username}`, {service: 'User', obj: err});
 	}
 }

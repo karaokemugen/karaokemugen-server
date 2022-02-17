@@ -1,7 +1,8 @@
 import nodemailer, { Transporter } from 'nodemailer';
+import { MailOptions } from 'nodemailer/lib/smtp-transport';
+
 import { getConfig } from '../lib/utils/config';
 import logger from '../lib/utils/logger';
-import { MailOptions } from 'nodemailer/lib/smtp-transport';
 import sentry from './sentry';
 
 let transporter: Transporter;
@@ -22,12 +23,11 @@ export function initMailer() {
 	mailOptions = {
 		from: `"${conf.From}" <${conf.FromMail}>`,
 	};
-
 }
 
 export function sendMail(subject: string, message: string, to: string, toMail: string) {
 	if (transporter) transporter.sendMail({...mailOptions,
-		subject: subject,
+		subject,
 		text: message,
 		to: `"${to}" <${toMail}>`
 	}, (error, info) => {
@@ -40,4 +40,3 @@ export function sendMail(subject: string, message: string, to: string, toMail: s
 		}
 	});
 }
-

@@ -1,21 +1,19 @@
-import {resolve} from 'path';
-import {fileRequired} from '../lib/utils/files';
-import {exit} from '../';
-import logger from '../lib/utils/logger';
-import { getState, setState } from './state';
-import {Config} from '../types/config';
-import {BinariesConfig} from '../types/config';
-import { setConfigConstraints, configureLocale, loadConfigFiles, getConfig, configureIDs } from '../lib/utils/config';
-import { configConstraints, defaults } from './default_settings';
-import { configureLogger } from '../lib/utils/logger';
-import { v4 as uuidV4 } from 'uuid';
 import cloneDeep from 'lodash.clonedeep';
+import {resolve} from 'path';
+import { v4 as uuidV4 } from 'uuid';
+
+import {exit} from '..';
+import { configureIDs, configureLocale, getConfig, loadConfigFiles, setConfigConstraints } from '../lib/utils/config';
+import {fileRequired} from '../lib/utils/files';
+import logger, { configureLogger } from '../lib/utils/logger';
 import {emit} from '../lib/utils/pubsub';
+import {BinariesConfig, Config} from '../types/config';
+import { configConstraints, defaults } from './default_settings';
+import { getState, setState } from './state';
 
 async function checkBinaries(config: Config): Promise<BinariesConfig> {
-
 	const binariesPath = configuredBinariesForSystem(config);
-	let requiredBinariesChecks = [];
+	const requiredBinariesChecks = [];
 	requiredBinariesChecks.push(fileRequired(binariesPath.ffmpeg));
 	requiredBinariesChecks.push(fileRequired(binariesPath.git));
 
@@ -52,7 +50,7 @@ function configuredBinariesForSystem(config: Config): BinariesConfig {
 function binMissing(binariesPath: any, err: string) {
 	logger.error('One or more binaries could not be found!', {service: 'BinCheck', obj: err});
 	logger.error('Paths searched:', {service: 'BinCheck'});
-	logger.error('ffmpeg:' + binariesPath.ffmpeg, {service: 'BinCheck'});
+	logger.error(`ffmpeg:${binariesPath.ffmpeg}`, {service: 'BinCheck'});
 	logger.error('Exiting...', {service: 'BinCheck'});
 	console.log('\n');
 	console.log('One or more binaries needed by Karaoke Mugen could not be found.');
@@ -78,7 +76,7 @@ export async function initConfig(argv: any) {
 	if (conf.App.JwtSecret === 'Change me' || conf.App.InstanceID === 'Change me') {
 		console.log('ERROR : Your InstanceID and/or JwtSecret are not set.');
 		console.log('You MUST set a JwtSecret other than "Change me"');
-		console.log('You MUST set an Instance ID as a UUID v4. Here is a generated one for you : ' + uuidV4());
+		console.log(`You MUST set an Instance ID as a UUID v4. Here is a generated one for you : ${uuidV4()}`);
 		console.log('Set them in your config.yml file, see the sample provided for help.');
 		console.log('Aborting...');
 		exit(1);

@@ -1,5 +1,6 @@
-import { Config } from '../types/config';
 import { NuxtConfig as NuxtConfigType } from '@nuxt/types';
+
+import { Config } from '../types/config';
 import { sentryDSN } from './constants';
 
 // Karaoke Mugen default configuration file
@@ -220,7 +221,7 @@ A proposal to modify a karaoke has been sent. You will find all the new files in
 			KaraProblem: {
 				Media: {
 					Title: '[Media issue] $kara',
-					Labels: ['media','incident'],
+					Labels: ['media', 'incident'],
 					Description: `
 # Media issue
 
@@ -232,7 +233,7 @@ A proposal to modify a karaoke has been sent. You will find all the new files in
 				},
 				Metadata: {
 					Title: '[Metadata issue] $kara',
-					Labels: ['metadata','incident'],
+					Labels: ['metadata', 'incident'],
 					Description: `
 # Metadata issue
 
@@ -244,7 +245,7 @@ A proposal to modify a karaoke has been sent. You will find all the new files in
 				},
 				Lyrics: {
 					Title: '[Lyrics issue] $kara',
-					Labels: ['lyrics','incident'],
+					Labels: ['lyrics', 'incident'],
 					Description: `
 # Lyrics issue
 
@@ -278,7 +279,7 @@ export const configConstraints = {
 	'Frontend.Port': { numericality: true}
 };
 
-export let NuxtConfig: NuxtConfigType = {
+export const NuxtConfig: NuxtConfigType = {
 	target: 'server',
 	modern: 'server',
 	dev: false,
@@ -295,8 +296,8 @@ export let NuxtConfig: NuxtConfigType = {
 		EXPLORER_HOST: ''
 	},
 	/*
-    ** Nuxt.js dev-modules
-    */
+	 ** Nuxt.js dev-modules
+	 */
 	buildModules: [
 		'@nuxt/typescript-build'
 	],
@@ -348,7 +349,7 @@ export let NuxtConfig: NuxtConfigType = {
 					login: { url: '/api/auth/login', method: 'post', propertyName: 'token' },
 					user: { url: '/api/myaccount', method: 'get', propertyName: false },
 					logout: false
-				},
+			},
 				tokenType: false
 			}
 		},
@@ -411,7 +412,13 @@ export let NuxtConfig: NuxtConfigType = {
 		disabled: false,
 		publishRelease: false,
 		config: {
-			ignoreErrors: ['Request aborted','Network Error', 'document.querySelector(\'video\').webkitPresentationMode']
+			ignoreErrors: [
+				'Request aborted',
+				'Network Error',
+				'document.querySelector(\'video\').webkitPresentationMode',
+				'Request failed with status code 403',
+				'Request failed with status code 401',
+			]
 		}
 	},
 

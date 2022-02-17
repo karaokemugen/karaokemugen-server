@@ -7,7 +7,7 @@ export async function selectSettings() {
 }
 
 export async function upsertSetting(setting: string, value: any) {
-	return await db().query(sql.upsertSetting, [
+	return db().query(sql.upsertSetting, [
 		setting,
 		value
 	]);

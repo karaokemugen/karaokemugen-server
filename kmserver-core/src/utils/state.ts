@@ -1,6 +1,7 @@
 import merge from 'lodash.merge';
-import {State} from '../types/state';
+
 import pjson from '../../package.json';
+import {State} from '../types/state';
 
 // Internal settings
 let state: State = {

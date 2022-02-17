@@ -2,17 +2,13 @@
  * .kara files generation
  */
 
-import { v4 as UUIDv4 } from 'uuid';
-import logger from 'winston';
-import { basename, resolve } from 'path';
 import { promises as fs } from 'fs';
 import { copy } from 'fs-extra';
-import { getConfig, resolvedPath, resolvedPathRepos } from '../lib/utils/config';
-import { EditedKara, KaraFileV4 } from '../lib/types/kara';
-import { gitlabPostNewSuggestion } from './gitlab';
-import { smartMove } from '../lib/utils/files';
-import sentry from '../utils/sentry';
-import { addKaraInInbox } from './inbox';
+import { basename, resolve } from 'path';
+import { v4 as UUIDv4 } from 'uuid';
+import logger from 'winston';
+
+import { insertKara } from '../dao/kara';
 import { extractVideoSubtitles, getDataFromKaraFile, verifyKaraData } from '../lib/dao/karafile';
 import {
 	applyKaraHooks,
@@ -20,8 +16,13 @@ import {
 	determineMediaAndLyricsFilenames,
 	processSubfile
 } from '../lib/services/karaCreation';
-import { insertKara } from '../dao/kara';
 import { refreshKarasAfterDBChange, updateTags } from '../lib/services/karaManagement';
+import { EditedKara, KaraFileV4 } from '../lib/types/kara';
+import { getConfig, resolvedPath, resolvedPathRepos } from '../lib/utils/config';
+import { smartMove } from '../lib/utils/files';
+import sentry from '../utils/sentry';
+import { gitlabPostNewSuggestion } from './gitlab';
+import { addKaraInInbox } from './inbox';
 import { EditElement } from '../types/kara_import';
 
 
@@ -34,7 +35,7 @@ async function preflight(kara: KaraFileV4): Promise<KaraFileV4> {
 	// No sentry triggered if validation fails
 	try {
 		verifyKaraData(kara);
-	} catch(err) {
+	} catch (err) {
 		throw {code: 400, msg: err};
 	}
 
@@ -72,7 +73,7 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		}
 		await smartMove(mediaPath, mediaDest, { overwrite: true });
 		kara.medias[0].filename = filenames.mediafile;
-		const karaDest = resolve(resolvedPathRepos('Karaokes', kara.data.repository)[0], fileName + '.kara.json');
+		const karaDest = resolve(resolvedPathRepos('Karaokes', kara.data.repository)[0], `${fileName}.kara.json`);
 		await fs.writeFile(karaDest, JSON.stringify(kara, null, 2), 'utf-8');
 		const karaData = await getDataFromKaraFile(karaDest, kara, { media: true, lyrics: true });
 		karaData.karafile = basename(karaData.karafile);
@@ -86,7 +87,7 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		}
 		addKaraInInbox(kara, contact, issueURL, edit ? edit.kid:undefined);
 		return issueURL;
-	} catch(err) {
+	} catch (err) {
 		logger.error('Error importing kara', {service: 'KaraGen', obj: err});
 		if (!err.msg) {
 			sentry.addErrorInfo('Kara', JSON.stringify(kara, null, 2));

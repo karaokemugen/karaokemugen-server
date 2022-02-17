@@ -1,13 +1,14 @@
-import {removeUser, editUser, createUser, findUserByName, getAllUsers, resetPasswordRequest, resetPassword} from '../../services/user';
-import {unescape} from '../../lib/utils/validators';
-import multer from 'multer';
-import {getConfig} from '../../lib/utils/config';
-import {resolve} from 'path';
 import { Router } from 'express';
+import {RequestHandler} from 'express-serve-static-core';
+import multer from 'multer';
+import {resolve} from 'path';
+
+import {getConfig} from '../../lib/utils/config';
+import {unescape} from '../../lib/utils/validators';
+import {createUser, editUser, findUserByName, getAllUsers, removeUser, resetPassword, resetPasswordRequest} from '../../services/user';
+import { UserOptions } from '../../types/user';
 import { getState } from '../../utils/state';
 import {optionalAuth, requireAuth, requireValidUser, updateLoginTime} from '../middlewares/auth';
-import {RequestHandler} from 'express-serve-static-core';
-import { UserOptions } from '../../types/user';
 
 function editHandler(userFromToken: boolean): RequestHandler {
 	return async (req: any, res) => {
@@ -17,21 +18,21 @@ function editHandler(userFromToken: boolean): RequestHandler {
 		if (req.body.url) req.body.url = unescape(req.body.url.trim());
 		if (req.body.nickname) req.body.nickname = unescape(req.body.nickname.trim());
 		// if (req.body.flag_sendstats) req.body.flag_sendstats = req.body.flag_sendstats === 'true';
-		//Now we add user
+		// Now we add user
 		let avatar: Express.Multer.File;
 		if (req.files?.avatarfile) avatar = req.files.avatarfile[0];
 		let banner: Express.Multer.File;
 		if (req.files?.bannerfile) banner = req.files.bannerfile[0];
 		try {
 			const response = await editUser(
-				userFromToken ? req.authToken.username:req.params.user,
+				userFromToken ? req.authToken.username : req.params.user,
 				req.body,
 				avatar,
 				req.authToken,
 				banner
 			);
-			res.status(200).json(userFromToken ? {code: 'USER_EDITED', data: { token: response.token }}:response);
-		} catch(err) {
+			res.status(200).json(userFromToken ? {code: 'USER_EDITED', data: { token: response.token }} : response);
+		} catch (err) {
 			res.status(500).json(err);
 		}
 	};
@@ -40,7 +41,7 @@ function editHandler(userFromToken: boolean): RequestHandler {
 export default function userController(router: Router) {
 	const conf = getConfig();
 	// Middleware for playlist and files import
-	let upload = multer({ dest: resolve(getState().dataPath,conf.System.Path.Temp)});
+	const upload = multer({ dest: resolve(getState().dataPath, conf.System.Path.Temp)});
 	const uploadMiddleware = upload.fields([{name: 'avatarfile', maxCount: 1}, {name: 'bannerfile', maxCount: 1}]);
 
 	router.route('/users')
@@ -53,7 +54,7 @@ export default function userController(router: Router) {
 					size: +req.query.size
 				});
 				res.status(200).json(info);
-			} catch(err) {
+			} catch (err) {
 				res.status(500).json(err);
 			}
 		})
@@ -61,7 +62,7 @@ export default function userController(router: Router) {
 			try {
 				await removeUser(req.authToken.username);
 				res.send('User deleted');
-			} catch(err) {
+			} catch (err) {
 				res.status(500).send(err);
 			}
 		})
@@ -70,7 +71,7 @@ export default function userController(router: Router) {
 			try {
 				await createUser(req.body);
 				res.json({code: 'USER_CREATED'});
-			} catch(err) {
+			} catch (err) {
 				res.status(500).json(err.code);
 			}
 		});
@@ -85,7 +86,7 @@ export default function userController(router: Router) {
 				const info = await findUserByName(req.params.user, params);
 				if (!info) res.status(404).end();
 				else res.status(200).json(info);
-			} catch(err) {
+			} catch (err) {
 				res.status(500).json(err);
 			}
 		})
@@ -96,7 +97,7 @@ export default function userController(router: Router) {
 			try {
 				const info = await resetPasswordRequest(req.params.user);
 				res.status(200).json(info);
-			} catch(err) {
+			} catch (err) {
 				res.status(500).json(err);
 			}
 		});
@@ -105,7 +106,7 @@ export default function userController(router: Router) {
 			try {
 				const info = await resetPassword(req.params.user, req.params.requestCode);
 				res.status(200).json(info);
-			} catch(err) {
+			} catch (err) {
 				res.status(500).json(err);
 			}
 		});
@@ -141,11 +142,11 @@ export default function userController(router: Router) {
  *           "last_login_at": null,
  *           "login": "admin",
  *           "nickname": "Administrator",
- * 			 "url": null,
- * 			 "email": null,
- * 			 "bio": null,
- * 			 "main_series_lang": "fre",
- * 			 "fallback_series_lang": "eng"
+ *  "url": null,
+ *  "email": null,
+ *  "bio": null,
+ *  "main_series_lang": "fre",
+ *  "fallback_series_lang": "eng"
  *       },
  *   ]
  * }
@@ -160,9 +161,9 @@ export default function userController(router: Router) {
  */
 		.get(requireAuth, requireValidUser, updateLoginTime, async (req: any, res: any) => {
 			try {
-				const userData = await findUserByName(req.authToken.username, {public:false});
+				const userData = await findUserByName(req.authToken.username, {public: false});
 				res.json(userData);
-			} catch(err) {
+			} catch (err) {
 				res.status(500).json(err);
 			}
 		})
@@ -190,7 +191,7 @@ export default function userController(router: Router) {
 			try {
 				await removeUser(req.authToken.username);
 				res.status(200).json('USER_DELETED');
-			} catch(err) {
+			} catch (err) {
 				res.status(500).json(err);
 			}
 		})

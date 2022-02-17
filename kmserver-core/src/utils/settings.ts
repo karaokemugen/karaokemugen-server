@@ -12,5 +12,5 @@ export async function getSettings() {
 }
 
 export async function updateSetting(setting: string, value: string) {
-	return await upsertSetting(setting, value);
+	return upsertSetting(setting, value);
 }

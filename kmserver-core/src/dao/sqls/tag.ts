@@ -1,6 +1,5 @@
 // Tags SQL
 
-
 export const getAllTags = (filterClauses: string[], typeClauses: string, limitClause: string, offsetClause: string, joinClauses: string, orderClauses: string, stripClause: string, additionalFrom: string[]) => `
 SELECT t.pk_tid AS tid,
 	t.types,
@@ -20,7 +19,7 @@ LEFT JOIN all_tags at ON at.pk_tid = t.pk_tid
 ${joinClauses}
 ${additionalFrom.join('')}
 WHERE 1 = 1
-  ${filterClauses.map(clause => 'AND (' + clause + ')').reduce((a, b) => (a + ' ' + b), '')}
+  ${filterClauses.map(clause => `AND (${clause})`).reduce((a, b) => (`${a} ${b}`), '')}
   ${typeClauses}
   ${stripClause}
 ORDER BY ${orderClauses}

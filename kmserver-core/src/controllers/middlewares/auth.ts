@@ -42,7 +42,6 @@ export const optionalAuth = (req, res, next) => {
 	}
 };
 
-
 export const requireAdmin = (req, res, next) => {
 	const token = decodeJwtToken(req.get('authorization'));
 	if (token && token.roles?.admin) {
@@ -50,7 +49,6 @@ export const requireAdmin = (req, res, next) => {
 	} else {
 		res.status(403).send('Only admins can use this function');
 	}
-
 };
 
 export const requireMaintainer = (req, res, next) => {
@@ -60,7 +58,6 @@ export const requireMaintainer = (req, res, next) => {
 	} else {
 		res.status(403).send('Only admins or maintainers can use this function');
 	}
-
 };
 
 export async function updateLoginTime(req, _res, next) {
