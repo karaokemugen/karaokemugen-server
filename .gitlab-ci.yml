@@ -19,7 +19,6 @@ update_sentry:
   cache:
     key: km-server-${CI_COMMIT_REF_SLUG}
     paths:
-      - node_modules/
       - .yarn/cache
       - kmexplorer/.nuxt
   script:
