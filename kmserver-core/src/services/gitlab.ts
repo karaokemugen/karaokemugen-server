@@ -70,26 +70,6 @@ export async function gitlabPostNewIssue(title: string, desc: string, labels: st
 	}
 }
 
-/** Close an issue */
-export async function closeIssue(issue: number) {
-	try {
-		const conf = getConfig();
-		const params = {
-			state_event: 'close'
-		};
-		await HTTP.put(`${conf.Gitlab.Host}/api/v4/projects/${conf.Gitlab.ProjectID}/issues/${issue}`, params, {
-			headers: {
-				'PRIVATE-TOKEN': conf.Gitlab.Token,
-				'Content-Type': 'application/json'
-			},
-			timeout: 25000
-		});
-	} catch (err) {
-		logger.error('Unable to close issue', {service: 'Gitlab', obj: err});
-		throw err;
-	}
-}
-
 export async function postSuggestionToKaraBase(title: string, serie:string, type:string, link:string, username: string): Promise<string> {
 	try {
 		const conf = getConfig().Gitlab.IssueTemplate;

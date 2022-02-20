@@ -14,7 +14,6 @@ import { getConfig, resolvedPathRepos } from '../lib/utils/config';
 import logger from '../lib/utils/logger';
 import {findFileByUUID} from '../utils/files';
 import Sentry from '../utils/sentry';
-import { closeIssue } from './gitlab';
 import { getKara } from './kara';
 import { getTag } from './tag';
 
@@ -115,9 +114,6 @@ export async function removeKaraFromInbox(inid: string) {
 		]);
 		await deleteKara([inbox.kid]);
 		await refreshKarasAfterDBChange('DELETE', [kara]);
-		const issueArr = inbox.gitlab_issue.split('/');
-		const issueNumber = +issueArr[issueArr.length - 1];
-		if (issueNumber) closeIssue(issueNumber);
 	} catch (err) {
 		logger.error(`Failed to delete inbox item ${inid}`, {service: 'Inbox', obj: err});
 		Sentry.error(err);
