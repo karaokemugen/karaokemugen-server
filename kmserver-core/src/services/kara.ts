@@ -23,6 +23,7 @@ import sentry from '../utils/sentry';
 import { getState } from '../utils/state';
 import { updateGit } from './git';
 import { gitlabPostNewIssue } from './gitlab';
+import { clearOldInboxEntries, clearUnusedStagingTags } from './inbox';
 import { findUserByName } from './user';
 
 export async function getBaseStats() {
@@ -82,6 +83,7 @@ export async function generate() {
 		computeSubchecksums();
 		const promises = [createImagePreviews(karas, 'full', 1280)];
 		if (conf.Hardsub.Enabled) promises.push(generateHardsubs(karas));
+		if (conf.KaraExplorer.Import) promises.push(clearOldInboxEntries(), clearUnusedStagingTags());
 		await Promise.all(promises);
 	} catch (err) {
 		logger.error('Generation failed', {service: 'Gen', obj: err});

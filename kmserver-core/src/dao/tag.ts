@@ -1,6 +1,6 @@
 import {pg as yesql} from 'yesql';
 
-import {databaseReady, db, paramWords} from '../lib/dao/database';
+import { db, paramWords } from '../lib/dao/database';
 import { WhereClause } from '../lib/types/database';
 import { DBTag } from '../lib/types/database/tag';
 import { Tag, TagParams } from '../lib/types/tag';
@@ -46,13 +46,13 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 		filterClauses.sql.push('t.repository != \'Staging\'');
 	}
 	const query = sql.getAllTags(
-filterClauses.sql, 
-typeClauses, 
-limitClause, 
-offsetClause, 
-joinClauses, 
+filterClauses.sql,
+typeClauses,
+limitClause,
+offsetClause,
+joinClauses,
 orderClause,
-stripClause, 
+stripClause,
 filterClauses.additionalFrom
 );
 	const res = await db().query(yesql(query)(filterClauses.params));
@@ -89,8 +89,8 @@ export async function insertTag(tag: Tag) {
 	]);
 }
 
-export async function clearUnusedStagingTags() {
-	await databaseReady();
-	await db().query(sql.clearStagingTags);
+export async function clearStagingTags(): Promise<string[]> {
+	const res = await db().query(sql.clearStagingTags);
 	await refreshTags();
+	return res.rows.map(t => t.tagfile);
 }

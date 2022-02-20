@@ -86,4 +86,9 @@ ON CONFLICT (pk_tid) DO UPDATE SET
 	karafile_tag = $11
 `;
 
-export const clearStagingTags = 'DELETE FROM tag WHERE pk_tid = ANY (SELECT pk_tid FROM all_tags WHERE repository = \'Staging\' AND karacount IS NULL)';
+export const clearStagingTags = `
+	DELETE FROM tag
+	WHERE pk_tid =
+	      ANY (SELECT pk_tid FROM all_tags WHERE repository = 'Staging' AND karacount IS NULL)
+	RETURNING tag.tagfile;
+`;

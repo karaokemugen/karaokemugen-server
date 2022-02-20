@@ -2,9 +2,9 @@ import { promises as fs } from 'fs';
 import { resolve } from 'path';
 import { v4 as uuidV4 } from 'uuid';
 
-import { deleteInbox, insertInbox, selectInbox, updateInboxDownloaded } from '../dao/inbox';
+import {clearInbox, deleteInbox, insertInbox, selectInbox, updateInboxDownloaded} from '../dao/inbox';
 import { deleteKara } from '../dao/kara';
-import { clearUnusedStagingTags } from '../dao/tag';
+import {clearStagingTags} from '../dao/tag';
 import { refreshKarasAfterDBChange } from '../lib/services/karaManagement';
 import {KaraMetaFile, MetaFile, TagMetaFile} from '../lib/types/downloads';
 import { Inbox } from '../lib/types/inbox';
@@ -12,6 +12,7 @@ import { KaraFileV4 } from '../lib/types/kara';
 import { TagFile } from '../lib/types/tag';
 import { getConfig, resolvedPathRepos } from '../lib/utils/config';
 import logger from '../lib/utils/logger';
+import {findFileByUUID} from '../utils/files';
 import Sentry from '../utils/sentry';
 import { closeIssue } from './gitlab';
 import { getKara } from './kara';
@@ -113,7 +114,6 @@ export async function removeKaraFromInbox(inid: string) {
 			fs.unlink(mediaPath)
 		]);
 		await deleteKara([inbox.kid]);
-		clearUnusedStagingTags();
 		await refreshKarasAfterDBChange('DELETE', [kara]);
 		const issueArr = inbox.gitlab_issue.split('/');
 		const issueNumber = +issueArr[issueArr.length - 1];
@@ -122,5 +122,57 @@ export async function removeKaraFromInbox(inid: string) {
 		logger.error(`Failed to delete inbox item ${inid}`, {service: 'Inbox', obj: err});
 		Sentry.error(err);
 		throw err;
+	}
+}
+
+export async function clearUnusedStagingTags() {
+	logger.debug('Clearing old inbox tags', {service: 'Inbox'});
+	const tagfiles = await clearStagingTags();
+	for (const tag of tagfiles) {
+		const tagDir = resolvedPathRepos('Tags', 'Staging')[0];
+		await fs.unlink(resolve(tagDir, tag));
+	}
+}
+
+export async function clearOldInboxEntries() {
+	logger.debug('Clearing old inbox entries', {service: 'Inbox'});
+	const deleted_karas = await clearInbox();
+	for (const kara of deleted_karas) {
+		logger.debug(`${kara.kid} was cleared`, {service: 'Inbox', obj: kara});
+		// Find and delete files
+		const karaPath = resolve(resolvedPathRepos('Karaokes', 'Staging')[0], kara.karafile);
+		await fs.unlink(karaPath).then(async () => {
+			const subPath = resolve(resolvedPathRepos('Lyrics', 'Staging')[0], kara.subfile);
+			const mediaPath = resolve(resolvedPathRepos('Medias', 'Staging')[0], kara.mediafile);
+			try {
+				await Promise.all([
+					fs.unlink(subPath),
+					fs.unlink(mediaPath)
+				]);
+			} catch (err) {
+				logger.error(`Error when cleaning kara (${kara.kid})`, {service: 'Inbox', obj: err});
+				throw err;
+			}
+		}, async () => {
+			// Fallback to finding the karaoke file by uuid
+			try {
+				const [name, content] = await findFileByUUID(
+					'kid',
+					kara.kid,
+					'Staging'
+				);
+				const newKaraPath = resolve(resolvedPathRepos('Karaokes', 'Staging')[0], name);
+				const subPath = resolve(resolvedPathRepos('Lyrics', 'Staging')[0], content.medias[0].lyrics[0].filename);
+				const mediaPath = resolve(resolvedPathRepos('Medias', 'Staging')[0], content.medias[0].filename);
+				await Promise.all([
+					fs.unlink(newKaraPath),
+					fs.unlink(subPath),
+					fs.unlink(mediaPath)
+				]);
+			} catch (err) {
+				logger.error(`Error when cleaning kara (kid fallback, ${kara.kid})`, {service: 'Inbox', obj: err});
+				throw err;
+			}
+		});
 	}
 }

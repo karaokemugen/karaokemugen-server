@@ -48,3 +48,9 @@ export const updateInboxDownloaded = `
 export const deleteInbox = `
 	DELETE FROM inbox WHERE pk_inid = $1
 `;
+
+export const clearInbox = `
+	DELETE FROM inbox i USING kara k
+	WHERE i.fk_kid = k.pk_kid AND k.repository != 'Staging'
+	RETURNING k.pk_kid AS kid, k.mediafile, k.karafile, k.subfile;
+`;

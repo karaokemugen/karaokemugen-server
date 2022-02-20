@@ -26,3 +26,8 @@ export async function updateInboxDownloaded(username: string, inid: string) {
 export async function deleteInbox(inid: string) {
 	return db().query(sql.deleteInbox, [inid]);
 }
+
+export async function clearInbox(): Promise<{ kid: string, mediafile: string, karafile: string, subfile: string }[]> {
+	const res = await db().query(sql.clearInbox);
+	return res.rows;
+}
