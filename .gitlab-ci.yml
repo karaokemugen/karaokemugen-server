@@ -20,10 +20,10 @@ update_sentry:
     key: km-server-${CI_COMMIT_REF_SLUG}
     paths:
       - node_modules/
-      - .yarn/
+      - .yarn/cache
       - kmexplorer/.nuxt
   script:
-    - yarn install
+    - yarn install --immutable --check-cache
     - yarn workspace kmserver-core add --dev @sentry/cli
     - yarn build:core
     - yarn workspace kmserver-core sentry:sourcemaps
