@@ -11,8 +11,9 @@ import { Inbox } from '../lib/types/inbox';
 import { KaraFileV4 } from '../lib/types/kara';
 import { TagFile } from '../lib/types/tag';
 import { getConfig, resolvedPathRepos } from '../lib/utils/config';
+import { fileExists } from '../lib/utils/files';
 import logger from '../lib/utils/logger';
-import {findFileByUUID} from '../utils/files';
+import { findFileByUUID } from '../utils/files';
 import Sentry from '../utils/sentry';
 import { getKara } from './kara';
 import { getTag } from './tag';
@@ -135,28 +136,18 @@ export async function clearOldInboxEntries() {
 	const deleted_karas = await clearInbox();
 	for (const kara of deleted_karas) {
 		logger.debug(`${kara.kid} was cleared`, {service: 'Inbox', obj: kara});
-		// Find and delete files
-		const karaPath = resolve(resolvedPathRepos('Karaokes', 'Staging')[0], kara.karafile);
-		await fs.unlink(karaPath).then(async () => {
-			const subPath = resolve(resolvedPathRepos('Lyrics', 'Staging')[0], kara.subfile);
-			const mediaPath = resolve(resolvedPathRepos('Medias', 'Staging')[0], kara.mediafile);
-			try {
+		try {
+			// Find and delete files
+			const karaPath = resolve(resolvedPathRepos('Karaokes', 'Staging')[0], kara.karafile);
+			if (await fileExists(karaPath)) {
+				const subPath = resolve(resolvedPathRepos('Lyrics', 'Staging')[0], kara.subfile);
+				const mediaPath = resolve(resolvedPathRepos('Medias', 'Staging')[0], kara.mediafile);
 				await Promise.all([
 					fs.unlink(subPath),
 					fs.unlink(mediaPath)
 				]);
-			} catch (err) {
-				logger.error(`Error when cleaning kara (${kara.kid})`, {service: 'Inbox', obj: err});
-				throw err;
-			}
-		}, async () => {
-			// Fallback to finding the karaoke file by uuid
-			try {
-				const [name, content] = await findFileByUUID(
-					'kid',
-					kara.kid,
-					'Staging'
-				);
+			} else {
+				const [name, content] = await findFileByUUID('kid', kara.kid, 'Staging');
 				const newKaraPath = resolve(resolvedPathRepos('Karaokes', 'Staging')[0], name);
 				const subPath = resolve(resolvedPathRepos('Lyrics', 'Staging')[0], content.medias[0].lyrics[0].filename);
 				const mediaPath = resolve(resolvedPathRepos('Medias', 'Staging')[0], content.medias[0].filename);
@@ -165,10 +156,10 @@ export async function clearOldInboxEntries() {
 					fs.unlink(subPath),
 					fs.unlink(mediaPath)
 				]);
-			} catch (err) {
-				logger.error(`Error when cleaning kara (kid fallback, ${kara.kid})`, {service: 'Inbox', obj: err});
-				throw err;
 			}
-		});
+		} catch (err) {
+			logger.error(`Error when cleaning kara (${kara.kid})`, {service: 'Inbox', obj: err});
+			throw err;
+		}
 	}
 }
