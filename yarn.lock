@@ -9716,7 +9716,6 @@ fsevents@~2.3.1:
     slugify: ^1.6.5
     socket.io: ^4.4.1
     sudo-block: 3
-    systeminformation: ^5.11.2
     toyunda2ass: ^1.0.12
     ts-loader: ^8.3.0
     ts-node: ^10.5.0
@@ -14863,16 +14862,6 @@ fsevents@~2.3.1:
   bin:
     svgo: ./bin/svgo
   checksum: 28a5680a61245eb4a1603bc03459095bb01ad5ebd23e95882d886c3c81752313c0a9a9fe48dd0bcbb9a27c52e11c603640df952971573b2b550d9e15a9ee6116
-  languageName: node
-  linkType: hard
-
-"systeminformation@npm:^5.11.2":
-  version: 5.11.2
-  resolution: "systeminformation@npm:5.11.2"
-  bin:
-    systeminformation: lib/cli.js
-  checksum: faee59044c257f42a7d31eaf1e91aded767292d2de0db76426ecb31b8575376ec68ab7540d20dadecdfc82f6c52a035db7f677f13808ac3976b6c0906a19d760
-  conditions: (os=darwin | os=linux | os=win32 | os=freebsd | os=openbsd | os=netbsd | os=sunos | os=android)
   languageName: node
   linkType: hard
 

@@ -106,7 +106,6 @@
 		"slugify": "^1.6.5",
 		"socket.io": "^4.4.1",
 		"sudo-block": "3",
-		"systeminformation": "^5.11.2",
 		"toyunda2ass": "^1.0.12",
 		"ts-node": "^10.5.0",
 		"ultrastar2ass": "^1.0.22",
