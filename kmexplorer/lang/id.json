@@ -112,6 +112,8 @@
 			"title": "Judul",
 			"title_required": "Mohon masukkan judul lagu dalam bahasa Inggris",
 			"title_tooltip": "Jika kamu tidak tahu, masukkan nama serialnya di sini juga. Dalam kasus versi alternatif, beri nama judulmu sebagai: 'My title ~ Disco vers.' sebagai contoh",
+			"titles_aliases": "Alias",
+			"titles_aliases_tooltip": "Nama pendek atau nama alternatif, digunakan untuk pencarian.",
 			"title_eng_required": "Nama bahasa Inggris wajib diisi",
 			"lyrics_file": "Berkas lirik",
 			"lyrics_file_tooltip": "Format berkas yang didukung: {formats}",

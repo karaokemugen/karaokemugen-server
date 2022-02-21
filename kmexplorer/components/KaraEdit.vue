@@ -76,6 +76,14 @@
 			<p v-if="!karaoke.data.titles.eng" class="help is-danger">
 				{{ $t('kara.import.title_eng_required') }}
 			</p>
+			<label class="label" :title="$t('kara.import.titles_aliases_tooltip')">
+				{{ $t('kara.import.titles_aliases') }}
+				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+			</label>
+			<editable-alias-group
+				:params="karaoke.data.titles_aliases"
+				@change="(aliases) => karaoke.data.titles_aliases = aliases"
+			/>
 		</div>
 		<div class="field">
 			<label class="label" :title="$t('kara.import.series_tooltip')">
@@ -394,6 +402,7 @@
 	import clonedeep from 'lodash.clonedeep';
 
 	import EditableTagGroup from './EditableTagGroup.vue';
+	import EditableAliasGroup from './EditableAliasGroup.vue';
 	import LanguagesList from './LanguagesList.vue';
 	import { tagTypes } from '~/assets/constants';
 	import { KaraFileV4, MediaInfo } from '%/lib/types/kara';
@@ -423,7 +432,7 @@
 
 		name: 'KaraEdit',
 
-		components: { EditableTagGroup, LanguagesList },
+		components: { EditableTagGroup, EditableAliasGroup, LanguagesList },
 		props: {
 			karaparam: {
 				type: Object,

@@ -72,6 +72,7 @@
 				return {
 					karaparam: {
 						titles: { eng: '' },
+						titles_aliases: [],
 						series: [],
 						versions: [],
 						singers: [],

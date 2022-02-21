@@ -107,6 +107,8 @@
 			"title_required": "Please enter a english song title",
 			"title_eng_required": "English name is mandatory",
 			"title_tooltip": "If you don't know, put the name of the series here as well. In the case of an alternative version, name your title as: 'My title ~ Disco vers.' for example",
+			"titles_aliases": "Aliases",
+			"titles_aliases_tooltip": "Short names or alternative names, used for search.",
 			"series_tooltip": "TV series, movie title, video game title, etc.",
 			"series_singers_required": "Series or Sung by cannot be empty in the same time.",
 			"songtypes_required": "Song type is mandatory",
