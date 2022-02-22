@@ -355,41 +355,41 @@
 		},
 		"tagtypes": {
 			"platforms": "",
-			"groups": "",
-			"origins": "",
-			"langs": "",
-			"genres": "",
-			"warnings": "",
-			"series": "",
-			"songtypes": "",
-			"singers": "",
+			"groups": "Gruppe | Gruppen",
+			"origins": "Herkunft | Herkünfte",
+			"langs": "Sprache | Sprachen",
+			"genres": "Genre | Genres",
+			"warnings": "Warnung | Warnungen",
+			"series": "Serie",
+			"songtypes": "Songtyp | Songtypen",
+			"singers": "Singer | Singer",
 			"songwriters": "",
 			"families": "",
-			"authors": "",
-			"misc": "",
-			"versions": "",
-			"creators": ""
+			"authors": "Karaoke Autor | Karaoke Autor",
+			"misc": "Verschieden",
+			"versions": "Version | Versionen",
+			"creators": "Ersteller | Ersteller"
 		},
-		"songwriters_by": "",
-		"download": "",
-		"live": "",
+		"songwriters_by": "Komponiert von",
+		"download": "Herunterladen",
+		"live": "In einem neuen Reiter öffnen",
 		"favorites": {
-			"remove": "",
-			"add": ""
+			"remove": "Von Favoriten entfernen",
+			"add": "Zu Favoriten hinzufügen"
 		},
 		"set_banner": {
-			"btn": "",
-			"forbidden_label": ""
+			"btn": "Als Profilbanner nutzen",
+			"forbidden_label": "Dieses Karaoke kann nicht als Profilbanner verwendet werden."
 		},
 		"problem": {
 			"btn": {
-				"media": "",
-				"metadata": "",
-				"lyrics": "",
-				"edit": ""
+				"media": "Problem mit der Mediendatei",
+				"metadata": "Problem mit den Metadaten",
+				"lyrics": "Problem mit dem Songtext",
+				"edit": "Eine Änderung vorschlagen"
 			},
 			"form": {
-				"title": "",
+				"title": "Ein Problem melden",
 				"subtitle": "",
 				"type": {
 					"label": "",
@@ -411,25 +411,25 @@
 					"placeholder": ""
 				}
 			},
-			"title": ""
+			"title": "Ein Problem mit {title}?"
 		},
 		"stats": {
 			"favorited": "",
 			"requested": "",
 			"played": ""
 		},
-		"phrase": "",
-		"meta": "",
-		"notfound": "",
-		"singers_by": "",
-		"creators_by": "",
-		"authors_by": "",
-		"duration": "",
-		"created_at": "",
-		"live_unavailable": "",
+		"phrase": "{songtype} von {series}",
+		"meta": "{songtitle} von {serieSinger}",
+		"notfound": "Karaoke nicht gefunden",
+		"singers_by": "Gesungen von",
+		"creators_by": "Erstellt durch",
+		"authors_by": "Karaoke erstellt durch",
+		"duration": "Dauer ",
+		"created_at": "Erstellt ",
+		"live_unavailable": "Karaoke kann nicht in diesem Browser abgespielt werden. Entweder ist das Video in einem Format, welches vom Browser nicht unterstützt wird, oder es wurde aus rechtlichen Gründen deaktiviert.",
 		"lyrics": {
-			"show": "",
-			"hide": ""
+			"show": "Text anzeigen",
+			"hide": "Text ausblenden"
 		}
 	},
 	"layout": {
@@ -452,10 +452,10 @@
 		"base_under_licence": ""
 	},
 	"error": {
-		"private_profile": "",
-		"not_found_profile": "",
+		"private_profile": "Dieses Profil ist privat.",
+		"not_found_profile": "Dieser Benutzer konnte nicht gefunden werden",
 		"home": "",
-		"generic": ""
+		"generic": "Fehler"
 	},
 	"stats": {
 		"all_duration": "",
