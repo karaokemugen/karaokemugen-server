@@ -58,6 +58,12 @@
 		},
 
 		watch: {
+			params(now) {
+				// Process resets
+				if (now.length === 0) {
+					this.values = [];
+				}
+			},
 			inputVisible(now) {
 				if (now) {
 					this.$nextTick(() => {
@@ -65,8 +71,10 @@
 					});
 				}
 			},
-			values(now) {
-				this.$emit('change', now);
+			values(now, old) {
+				if (old.length !== now.length) {
+					this.$emit('change', now);
+				}
 			}
 		},
 

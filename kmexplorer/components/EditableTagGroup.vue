@@ -109,8 +109,10 @@
 					});
 				}
 			},
-			values(now) {
-				this.$emit('change', now.map((t: DBTagMini) => t.tid));
+			values(now, old) {
+				if (old.length !== now.length) {
+					this.$emit('change', now.map((t: DBTagMini) => t.tid));
+				}
 			}
 		},
 
