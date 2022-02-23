@@ -1,4 +1,4 @@
-import cloneDeep from 'lodash.clonedeep';
+import { cloneDeep } from 'lodash';
 import {resolve} from 'path';
 import { v4 as uuidV4 } from 'uuid';
 

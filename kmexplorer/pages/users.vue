@@ -26,7 +26,7 @@
 <script lang="ts">
 	import Vue from 'vue';
 	import { mapState } from 'vuex';
-	import debounce from 'lodash.debounce';
+	import { debounce } from 'lodash';
 	import UserCard from '~/components/UserCard.vue';
 	import { UserList } from '%/types/user';
 	import { menuBarStore } from '~/utils/store-accessor';

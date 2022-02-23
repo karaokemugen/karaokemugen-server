@@ -1,4 +1,4 @@
-import merge from 'lodash.merge';
+import { merge } from 'lodash';
 
 import pjson from '../../package.json';
 import {State} from '../types/state';

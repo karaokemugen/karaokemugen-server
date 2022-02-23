@@ -1,4 +1,4 @@
-import merge from 'lodash.merge';
+import { merge } from 'lodash';
 import { Builder, Nuxt } from 'nuxt';
 
 import {getConfig} from '../lib/utils/config';

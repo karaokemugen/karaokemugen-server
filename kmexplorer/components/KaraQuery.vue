@@ -13,7 +13,7 @@
 
 <script lang="ts">
 	import Vue from 'vue';
-	import debounce from 'lodash.debounce';
+	import { debounce } from 'lodash';
 	import { mapState } from 'vuex';
 
 	import KaraList from '~/components/KaraList.vue';

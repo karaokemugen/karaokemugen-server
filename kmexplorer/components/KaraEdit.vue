@@ -399,7 +399,7 @@
 	import { v4 as uuid } from 'uuid';
 	import Vue, { PropOptions } from 'vue';
 	import { mapState } from 'vuex';
-	import clonedeep from 'lodash.clonedeep';
+	import { cloneDeep } from 'lodash';
 
 	import EditableTagGroup from './EditableTagGroup.vue';
 	import EditableAliasGroup from './EditableAliasGroup.vue';
@@ -600,7 +600,7 @@
 				} else if ((process as any).client) {
 					localStorage.setItem('sendContactInfos', 'false');
 				}
-				const karaoke = clonedeep(this.karaoke);
+				const karaoke = cloneDeep(this.karaoke);
 				for (const tag of Object.keys(karaoke.data.tags)) {
 					// @ts-ignore: Object.keys type inference is bad hot take
 					if (tag in karaoke.data.tags && karaoke.data.tags[tag].length === 0) {

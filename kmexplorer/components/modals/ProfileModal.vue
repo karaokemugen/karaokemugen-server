@@ -432,7 +432,7 @@
 
 <script lang="ts">
 	import Vue from 'vue';
-	import clonedeep from 'lodash.clonedeep';
+	import { cloneDeep } from 'lodash';
 	import { getNames, getAlpha3BCode } from '@karaokemugen/i18n-iso-languages';
 	import { getCountries } from '@hotosm/iso-countries-languages';
 
@@ -584,7 +584,7 @@
 			},
 			getUser(): void {
 				if (this.storeUser) {
-					this.user = clonedeep(this.storeUser);
+					this.user = cloneDeep(this.storeUser);
 					if (this.storeUser.location) {
 						this.location = this.getCountryName(this.storeUser.location) as string;
 					}

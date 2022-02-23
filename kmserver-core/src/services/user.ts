@@ -3,7 +3,7 @@ import {createHash} from 'crypto';
 import { promises as fs } from 'fs';
 import {copy} from 'fs-extra';
 import {decode} from 'jwt-simple';
-import merge from 'lodash.merge';
+import { merge } from 'lodash';
 import {isAbsolute, resolve} from 'path';
 import randomstring from 'randomstring';
 import { v4 as uuidV4 } from 'uuid';
