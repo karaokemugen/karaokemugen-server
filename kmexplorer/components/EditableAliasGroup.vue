@@ -72,7 +72,7 @@
 				}
 			},
 			values(now, old) {
-				if (old.length !== now.length) {
+				if (old.length !== 0 || now.length !== 0) {
 					this.$emit('change', now);
 				}
 			}
