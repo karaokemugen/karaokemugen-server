@@ -38,6 +38,7 @@ export const getAllKaras = (filterClauses: string[], orderClauses: string, limit
   ak.modified_at AS modified_at,
   ak.mediasize AS mediasize,
   ak.repository AS repository,
+  ak.comment AS comment,
   ksub.subchecksum AS subchecksum,
   ${selectClause}
   array_remove(array_agg(krc.fk_kid_parent), null) AS parents,
@@ -53,7 +54,7 @@ ${additionalFrom.join('')}
 WHERE ${includeStaging ? '1 = 1' : 'repository != \'Staging\''}
   ${filterClauses.map(clause => `AND (${clause})`).reduce((a, b) => (`${a} ${b}`), '')}
   ${whereClauses}
-GROUP BY ${groupClause} ak.pk_kid, ak.titles, ak.songorder, ak.tags, ak.serie_singer_sortable, ak.subfile, ak.year, ak.mediafile, ak.karafile, ak.duration, ak.gain, ak.loudnorm, ak.created_at, ak.modified_at, ak.mediasize, ak.repository, ak.songtypes_sortable, ak.titles_sortable, ksub.subchecksum
+GROUP BY ${groupClause} ak.pk_kid, ak.titles, ak.songorder, ak.tags, ak.serie_singer_sortable, ak.subfile, ak.year, ak.mediafile, ak.karafile, ak.duration, ak.gain, ak.loudnorm, ak.created_at, ak.modified_at, ak.mediasize, ak.repository, ak.comment, ak.songtypes_sortable, ak.titles_sortable, ksub.subchecksum
 ORDER BY ${orderClauses} ak.serie_singer_sortable, ak.songtypes_sortable DESC, ak.songorder, ak.titles_sortable
 ${limitClause}
 ${offsetClause}
