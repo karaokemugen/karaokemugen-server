@@ -1,5 +1,5 @@
 <template>
-	<div class="tile is-ancestor">
+	<div class="tile is-ancestor is-vertical">
 		<div class="tile is-parent is-12">
 			<div ref="leftTile" class="tile is-child" :class="{'is-8': !liveOpened, 'is-5': liveOpened}">
 				<kara-full-info :karaoke="karaoke" />
@@ -31,13 +31,40 @@
 				</div>
 			</div>
 		</div>
-	</div>
+		<div>
+			<template v-if="karaoke.parents && karaoke.parents.length > 0">
+				<div class="title-box">
+					<h1 class="title">
+						{{ $tc('kara.parents') }}
+					</h1>
+				</div>
+				<kara-query :kids="karaoke.parents" :with-suggest="false" :with-search="false" />
+			</template>
+			<template v-if="karaoke.children && karaoke.children.length > 0">
+				<div class="title-box">
+					<h1 class="title">
+						{{ $tc('kara.childrens') }}
+					</h1>
+				</div>
+				<kara-query :kids="karaoke.children" :with-suggest="false" :with-search="false" />
+			</template>
+			<template v-if="karaoke.siblings && karaoke.siblings.length > 0">
+				<div class="title-box">
+					<h1 class="title">
+						{{ $tc('kara.siblings') }}
+					</h1>
+				</div>
+				<kara-query :kids="karaoke.siblings" :with-suggest="false" :with-search="false" />
+			</template>
+		</div>
+</div>
 </template>
 
 <script lang="ts">
 	import Vue from 'vue';
 	import LivePlayer from '~/components/LivePlayer.vue';
 	import KaraFullInfo from '~/components/KaraFullInfo.vue';
+	import KaraQuery from '~/components/KaraQuery.vue';
 	import KaraReport from '~/components/modals/KaraReport.vue';
 	import { DBKara } from '%/lib/types/database/kara';
 	import { tagTypes } from '~/assets/constants';
@@ -56,7 +83,8 @@
 		components: {
 			LivePlayer,
 			KaraFullInfo,
-			KaraReport
+			KaraReport,
+			KaraQuery
 		},
 
 		async asyncData({ params, $axios, error, app }) {
@@ -184,4 +212,14 @@
 		}
 	}
 
+	.title-box {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		@media screen and (max-width: 769px) {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+		margin-bottom: .5rem;
+	}
 </style>

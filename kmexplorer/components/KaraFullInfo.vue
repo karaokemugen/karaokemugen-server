@@ -1,108 +1,82 @@
 <template>
-	<div>
-		<div class="box">
-			<h1 class="title is-1">
-				{{ title }}
-			</h1>
-			<kara-phrase tag="h4" class="subtitle is-4" :karaoke="karaoke" />
-			<h6 class="subtitle is-6 no-top-margin">
-				<a :href="`/years/${karaoke.year}`" @click.prevent="handleLink">
-					{{ karaoke.year }}
-				</a>
-			</h6>
-			<div class="buttons margin">
-				<button v-if="favorite" class="button is-yellow" :class="{'is-loading': loading}" @click="toggleFavorite">
-					<font-awesome-icon :icon="['fas', 'eraser']" :fixed-width="true" />
-					{{ $t('kara.favorites.remove') }}
-				</button>
-				<button v-else class="button is-yellow" :class="{'is-loading': loading}" @click="toggleFavorite">
-					<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
-					{{ $t('kara.favorites.add') }}
-				</button>
-				<button
-					v-if="loggedIn"
-					class="button is-purple is-long"
-					:disabled="bannerBan"
-					:title="bannerBan ? $t('kara.set_banner.forbidden_label'):null"
-					@click.prevent="modal.banner=true"
-				>
-					<font-awesome-icon :icon="['fas', 'image']" :fixed-width="true" />
-					{{ $t('kara.set_banner.btn') }}
-				</button>
-			</div>
-			<table class="table tagList">
-				<tbody>
-					<tr class="tr-line">
-						<td>
-							<font-awesome-icon :icon="['fas', 'clock']" :fixed-width="true" />
-							{{ duration }}
-						</td>
-						<td>
-							{{ $t('kara.created_at') }}:&nbsp;{{ new Date(karaoke.created_at).toLocaleString() }}
-						</td>
-					</tr>
-					<tr v-for="type in Object.keys(tagTypesSorted)" :key="type">
-						<td>
-							<span class="name">
-								<font-awesome-icon :icon="['fas', tagTypes[type].icon]" :fixed-width="true" />
-								{{ ['singers', 'songwriters', 'creators', 'authors'].includes(type) ?
-									$t(`kara.${type}_by`) :
-									$tc(`kara.tagtypes.${type}`, karaoke[type].length)
-								}}
-							</span>
-						</td>
-						<td>
-							<div class="tags are-medium">
-								<tag v-for="tag in karaoke[type]" :key="tag.tid" :type="type" :tag="tag" :staticheight="false" />
-							</div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			<div class="buttons">
-				<button class="button is-info" @click="toggleLyrics">
-					<font-awesome-icon :icon="['fas', 'closed-captioning']" :fixed-width="true" />
-					{{ lyrics ? $t('kara.lyrics.hide'):$t('kara.lyrics.show') }}
-				</button>
-				<a class="button is-success" @click.prevent="modal.download = true">
-					<font-awesome-icon :icon="['fas', 'cloud-download-alt']" :fixed-width="true" />
-					{{ $t('kara.download') }}
-				</a>
-			</div>
-			<div v-show="lyrics" class="box is-clear">
-				<ul>
-					<li v-for="(line, i) in karaoke.lyrics" :key="`lyrics-${i}`">
-						{{ line.text }}
-					</li>
-				</ul>
-			</div>
-			<DownloadModal :karaoke="karaoke" :active="modal.download" @close="modal.download=false" />
-			<BannerChangeModal :karaoke="karaoke" :active="modal.banner" @close="modal.banner=false" />
+	<div class="box">
+		<h1 class="title is-1">
+			{{ title }}
+		</h1>
+		<kara-phrase tag="h4" class="subtitle is-4" :karaoke="karaoke" />
+		<h6 class="subtitle is-6 no-top-margin">
+			<a :href="`/years/${karaoke.year}`" @click.prevent="handleLink">
+				{{ karaoke.year }}
+			</a>
+		</h6>
+		<div class="buttons margin">
+			<button v-if="favorite" class="button is-yellow" :class="{'is-loading': loading}" @click="toggleFavorite">
+				<font-awesome-icon :icon="['fas', 'eraser']" :fixed-width="true" />
+				{{ $t('kara.favorites.remove') }}
+			</button>
+			<button v-else class="button is-yellow" :class="{'is-loading': loading}" @click="toggleFavorite">
+				<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
+				{{ $t('kara.favorites.add') }}
+			</button>
+			<button
+				v-if="loggedIn"
+				class="button is-purple is-long"
+				:disabled="bannerBan"
+				:title="bannerBan ? $t('kara.set_banner.forbidden_label'):null"
+				@click.prevent="modal.banner=true"
+			>
+				<font-awesome-icon :icon="['fas', 'image']" :fixed-width="true" />
+				{{ $t('kara.set_banner.btn') }}
+			</button>
 		</div>
-		<template v-if="karaoke.parents && karaoke.parents.length > 0">
-			<div class="title-box">
-				<h1 class="title">
-					{{ $tc('kara.parents') }}
-				</h1>
-			</div>
-			<kara-query :kids="karaoke.parents" :with-suggest="false" :with-search="false" />
-		</template>
-		<template v-if="karaoke.children && karaoke.children.length > 0">
-			<div class="title-box">
-				<h1 class="title">
-					{{ $tc('kara.childrens') }}
-				</h1>
-			</div>
-			<kara-query :kids="karaoke.children" :with-suggest="false" :with-search="false" />
-		</template>
-		<template v-if="karaoke.siblings && karaoke.siblings.length > 0">
-			<div class="title-box">
-				<h1 class="title">
-					{{ $tc('kara.siblings') }}
-				</h1>
-			</div>
-			<kara-query :kids="karaoke.siblings" :with-suggest="false" :with-search="false" />
-		</template>
+		<table class="table tagList">
+			<tbody>
+				<tr class="tr-line">
+					<td>
+						<font-awesome-icon :icon="['fas', 'clock']" :fixed-width="true" />
+						{{ duration }}
+					</td>
+					<td>
+						{{ $t('kara.created_at') }}:&nbsp;{{ new Date(karaoke.created_at).toLocaleString() }}
+					</td>
+				</tr>
+				<tr v-for="type in Object.keys(tagTypesSorted)" :key="type">
+					<td>
+						<span class="name">
+							<font-awesome-icon :icon="['fas', tagTypes[type].icon]" :fixed-width="true" />
+							{{ ['singers', 'songwriters', 'creators', 'authors'].includes(type) ?
+								$t(`kara.${type}_by`) :
+								$tc(`kara.tagtypes.${type}`, karaoke[type].length)
+							}}
+						</span>
+					</td>
+					<td>
+						<div class="tags are-medium">
+							<tag v-for="tag in karaoke[type]" :key="tag.tid" :type="type" :tag="tag" :staticheight="false" />
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="buttons">
+			<button class="button is-info" @click="toggleLyrics">
+				<font-awesome-icon :icon="['fas', 'closed-captioning']" :fixed-width="true" />
+				{{ lyrics ? $t('kara.lyrics.hide'):$t('kara.lyrics.show') }}
+			</button>
+			<a class="button is-success" @click.prevent="modal.download = true">
+				<font-awesome-icon :icon="['fas', 'cloud-download-alt']" :fixed-width="true" />
+				{{ $t('kara.download') }}
+			</a>
+		</div>
+		<div v-show="lyrics" class="box is-clear">
+			<ul>
+				<li v-for="(line, i) in karaoke.lyrics" :key="`lyrics-${i}`">
+					{{ line.text }}
+				</li>
+			</ul>
+		</div>
+		<DownloadModal :karaoke="karaoke" :active="modal.download" @close="modal.download=false" />
+		<BannerChangeModal :karaoke="karaoke" :active="modal.banner" @close="modal.banner=false" />
 	</div>
 </template>
 
@@ -118,7 +92,6 @@
 	import { DBKara } from '%/lib/types/database/kara';
 	import { ShortTag } from '~/types/tags';
 	import duration from '~/assets/date';
-	import KaraQuery from '~/components/KaraQuery.vue';
 	import DownloadModal from '~/components/modals/DownloadModal.vue';
 	import BannerChangeModal from '~/components/modals/BannerChangeModal.vue';
 
@@ -140,8 +113,7 @@
 			Tag,
 			KaraPhrase,
 			DownloadModal,
-			BannerChangeModal,
-			KaraQuery
+			BannerChangeModal
 		},
 
 		props: {
@@ -330,16 +302,5 @@
 	.tr-line > td {
 		height: 2em;
 		line-height: 2em;
-	}
-
-	.title-box {
-		display: flex;
-		justify-content: flex-start;
-		align-items: center;
-		@media screen and (max-width: 769px) {
-			flex-direction: column;
-			align-items: flex-start;
-		}
-		margin-bottom: .5rem;
 	}
 </style>
