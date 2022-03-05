@@ -118,7 +118,7 @@
 			"lyrics_file": "Berkas lirik",
 			"lyrics_file_tooltip": "Format berkas yang didukung: {formats}",
 			"lyrics_file_missing": "Berkas lirik menghilang, ini mungkin terjadi jika kamu mengirimkan berkas MKV atau sebuah karaoke tanpa lirik (?).",
-			"songwriters_tooltip": "Penulis lagu menggubah lirik DAN musik.",
+			"songwriters_tooltip": "Komposer, Pengaransemen, dan Penulis Lirik.",
 			"creators_tooltip": "Entitas yang membuat serial. Bisa studio animasi, studio film, atau studio permainan.",
 			"restart": "Kirim karaoke baru",
 			"i18n_select": "Tambahkan sebuah bahasa",
@@ -126,7 +126,8 @@
 			"i18n_delete": "Hapus bahasa",
 			"send_contact_infos": "Bagikan informasi kontak saya dengan pengelola basis data",
 			"contact_infos": "Informasi kontak",
-			"auto_send_contact_infos": "Jika kamu masuk, kamu bisa mencentang sebuah kotak di formulir untuk secara otomatis membagikan informasi kontakmu dengan pengelola basis data."
+			"auto_send_contact_infos": "Jika kamu masuk, kamu bisa mencentang sebuah kotak di formulir untuk secara otomatis membagikan informasi kontakmu dengan pengelola basis data.",
+			"media_file_edit": "Mengganti berkas media"
 		},
 		"songwriters_by": "Digubah oleh",
 		"created_at": "Dibuat ",
@@ -239,7 +240,7 @@
 				},
 				"email": {
 					"label": "Surel",
-					"placeholder": "contoh@contoh.moe"
+					"placeholder": "tes@shelter.moe"
 				}
 			},
 			"title": "Daftar",
@@ -278,7 +279,7 @@
 					"checkbox": "Gunakan permintaan favorit dan karaoke saya untuk statistik"
 				},
 				"flag_displayfavorites": {
-					"desc": "Bersamaan dengan memperlihatkan profil publik kamu, kamu bisa menampilkan favoritmu (karena itu seleramu) ke semua orang. Pilihan ini dinonaktifkan secara baku, kamu bisa mencentangnya jika kamu mau. Untuk memperlihatkan favoritmu, pertama, profilmu harus sudah publik.",
+					"desc": "Dengan menampilkan profilmu secara publik, kamu dapat menampilkan daftar putar favoritmu (karena itu seleramu) ke semua orang. Pilihan ini dinonaktifkan secara bawaan, kamu bisa mencentangnya jika mau. Untuk memperlihatkan favoritmu, profilmu harus sudah publik sebelumnya.",
 					"label": "Favorit",
 					"checkbox": "Tampilkan favorit saya"
 				},
@@ -299,7 +300,7 @@
 				},
 				"email": {
 					"label": "Surel",
-					"placeholder": "contoh@contoh.moe"
+					"placeholder": "tes@shelter.moe"
 				},
 				"url": {
 					"label": "Situs Web",
@@ -313,7 +314,7 @@
 					"label": "Lokasi"
 				},
 				"discord": {
-					"label": "Discord",
+					"label": "&Discord",
 					"placeholder": "ContohNama#1234"
 				},
 				"instagram": {
@@ -321,8 +322,8 @@
 					"placeholder": "lapan_ri"
 				},
 				"twitch": {
-					"label": "Twitch",
-					"placeholder": "KaraokeLive"
+					"label": "&Twitch",
+					"placeholder": "&KaraokeLive"
 				},
 				"banner": {
 					"label": "Spanduk",
@@ -461,7 +462,7 @@
 	},
 	"toast": {
 		"LOG_ERROR": "Kredensial salah.",
-		"USER_ASCII_CHARACTERS_ONLY": "Mohon hanya karakter alfanumerik di nama pengguna kamu (kamu bisa mengubah nama penggunamu nanti kapan pun yang kamu mau).",
+		"USER_ASCII_CHARACTERS_ONLY": "Mohon hanya menggunakan karakter alfanumerik di nama pengguna kamu (nanti kamu bisa mengubah nama panggilan kapan pun yang kamu mau).",
 		"USER_CREATED": "Pengguna berhasil dibuat",
 		"GENERATED_KARA": "Karaoke berhasil dikirim.",
 		"EDITED_KARA": "Suntingan berhasil dikirim.",
