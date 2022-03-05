@@ -31,7 +31,7 @@
 				</div>
 			</div>
 		</div>
-		<div>
+		<div class="tile is-parent is-vertical relatives">
 			<template v-if="karaoke.parents && karaoke.parents.length > 0">
 				<div class="title-box">
 					<h1 class="title">
@@ -221,5 +221,9 @@
 			align-items: flex-start;
 		}
 		margin-bottom: .5rem;
+	}
+
+	.relatives {
+		margin-top: 1.5rem;
 	}
 </style>
