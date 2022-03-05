@@ -154,8 +154,9 @@
 				this.isFetching = true;
 				this.getTags(this.tagType, val)
 					.then((result: {content: DBTagMini[]}) => {
+						const tids = this.values.map(tag => tag.tid);
 						this.data = result.content
-							? result.content.sort((a, b) =>
+							? result.content.filter(tag => !tids.includes(tag.tid)).sort((a, b) =>
 								a.name.localeCompare(b.name)
 							)
 							: [];
