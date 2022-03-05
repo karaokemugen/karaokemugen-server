@@ -141,7 +141,10 @@
 			"favorited": "Ajouté aux favoris par {number} utilisateurs",
 			"requested": "Demandé {number} fois",
 			"played": "Joué {number} fois"
-		}
+		},
+		"siblings": "Karaokés similaires",
+		"childrens": "Karaokés enfants",
+		"parents": "Karaokés parents"
 	},
 	"layout": {
 		"loading": "Chargement…",
