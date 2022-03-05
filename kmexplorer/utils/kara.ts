@@ -35,8 +35,8 @@ const tagTypesKaraFileV4Order: (
 	];
 
 export function determineVersion(titles: Record<string, string>): string {
-	const mediaVersionArr = titles.eng.split(' ~ ');
-	return mediaVersionArr.length > 1 ? mediaVersionArr[mediaVersionArr.length - 1].replace(' Vers', '') : 'Default';
+	const mediaVersionArr = titles.eng?.split(' ~ ');
+	return mediaVersionArr?.length > 1 ? mediaVersionArr[mediaVersionArr.length - 1].replace(' Vers', '') : 'Default';
 }
 
 export function DBKaraToKaraFile(dbKara: DBKara): KaraFileV4 {
