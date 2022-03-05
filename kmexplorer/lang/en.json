@@ -141,7 +141,10 @@
 			"favorited": "Added to favorites by {number} users",
 			"requested": "Requested {number} times",
 			"played": "Played {number} times"
-		}
+		},
+		"siblings": "Similar songs",
+		"childrens": "Children songs",
+		"parents": "Parent songs"
 	},
 	"layout": {
 		"loading": "Loading…",

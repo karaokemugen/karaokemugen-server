@@ -6,13 +6,13 @@
 				<search-bar :filter="false" :results="false" />
 				<search-edit />
 			</div>
-			<kara-list :karaokes="karaokes" :loading="loading || $fetchState.pending" :favorites="favorites" />
+			<kara-list :karaokes="karaokes" :loading="loading || $fetchState.pending" :favorites="favorites" :with-suggest="withSuggest" />
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-	import Vue from 'vue';
+	import Vue, { PropOptions } from 'vue';
 	import { debounce } from 'lodash';
 	import { mapState } from 'vuex';
 
@@ -58,6 +58,13 @@
 		props: {
 			favorites: {
 				type: String
+			},
+			kids: {
+				type: Array
+			} as PropOptions<string[]>,
+			withSuggest: {
+				type: Boolean,
+				default: true
 			}
 		},
 
@@ -130,6 +137,9 @@
 					if (tags.length > 0) {
 						queries.push(`t:${tags.join(',')}`);
 					}
+				}
+				if (this.kids) {
+					queries.push(`k:${this.kids.join(',')}`);
 				}
 				return {
 					q: queries.join('!') || undefined,
