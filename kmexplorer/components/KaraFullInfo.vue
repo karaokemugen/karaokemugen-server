@@ -85,7 +85,7 @@
 					{{ $tc('kara.parents') }}
 				</h1>
 			</div>
-			<kara-query :kids="karaoke.parents" :with-suggest="false" />
+			<kara-query :kids="karaoke.parents" :with-suggest="false" :with-search="false" />
 		</template>
 		<template v-if="karaoke.children && karaoke.children.length > 0">
 			<div class="title-box">
@@ -93,7 +93,7 @@
 					{{ $tc('kara.childrens') }}
 				</h1>
 			</div>
-			<kara-query :kids="karaoke.children" :with-suggest="false" />
+			<kara-query :kids="karaoke.children" :with-suggest="false" :with-search="false" />
 		</template>
 		<template v-if="karaoke.siblings && karaoke.siblings.length > 0">
 			<div class="title-box">
@@ -101,7 +101,7 @@
 					{{ $tc('kara.siblings') }}
 				</h1>
 			</div>
-			<kara-query :kids="karaoke.siblings" :with-suggest="false" />
+			<kara-query :kids="karaoke.siblings" :with-suggest="false" :with-search="false" />
 		</template>
 	</div>
 </template>

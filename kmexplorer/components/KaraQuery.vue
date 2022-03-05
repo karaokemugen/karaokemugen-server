@@ -1,7 +1,7 @@
 <template>
 	<div class="tile is-ancestor">
 		<div class="tile is-vertical">
-			<div class="tile is-parent is-12 is-hidden-desktop">
+			<div v-if="withSearch" class="tile is-parent is-12 is-hidden-desktop">
 				<search-tags />
 				<search-bar :filter="false" :results="false" />
 				<search-edit />
@@ -63,6 +63,10 @@
 				type: Array
 			} as PropOptions<string[]>,
 			withSuggest: {
+				type: Boolean,
+				default: true
+			},
+			withSearch: {
 				type: Boolean,
 				default: true
 			}
