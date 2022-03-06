@@ -91,6 +91,7 @@
 			"create": "Créer",
 			"choose_file": "Choisissez un fichier",
 			"add_file_media_error": "{name} n'est pas un fichier média",
+			"add_file_media_not_supported_error": "{name} n'est pas un fichier média supporté, convertissez-le dans un des formats suivants : {formats}",
 			"add_file_lyrics_error": "{name} n'est pas un fichier de sous-titres",
 			"add_file_success": "Le fichier {name} a été ajouté avec succès",
 			"comment_tooltip": "Si vous voulez donner des indications aux mainteneurs de la base de karaokés ou simplement dire merci, faites-le ici !",

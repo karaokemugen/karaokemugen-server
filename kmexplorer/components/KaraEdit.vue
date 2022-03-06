@@ -499,7 +499,15 @@
 					// @ts-ignore: sisi y'a eu un typecheck en haut, ta gueule mtn :)
 					const file = (this.$refs.mediafile as HTMLInputElement).files[0];
 					this.mediafile_error = '';
-					if (!file || !this.isMediaFile(file.name)) {
+					if (file && !this.isSupportedMediaFile(file.name) && this.isMediaFile(file.type)) {
+						this.mediafile_error = this.$t(
+							'kara.import.add_file_media_not_supported_error',
+							{
+								name: file?.name,
+								formats: this.supportedMedias.join(', ')
+							}
+						) as string;
+					} else if (!file || !this.isSupportedMediaFile(file.name)) {
 						this.mediafile_error = this.$t(
 							'kara.import.add_file_media_error',
 							{
@@ -543,7 +551,7 @@
 					// @ts-ignore: sisi y'a eu un typecheck en haut, ta gueule mtn :)
 					const file = (this.$refs.subfile as HTMLInputElement).files[0];
 					this.mediafile_error = '';
-					if (!file || !this.isSubFile(file.name)) {
+					if (!file || !this.isSupportedLyricsFile(file.name)) {
 						this.subfile_error = this.$t(
 							'kara.import.add_file_lyrics_error',
 							{
@@ -577,12 +585,15 @@
 					}
 				}
 			},
-			isMediaFile(filename: string) {
+			isMediaFile(type: string) {
+				return /^(audio)|(video)\/.+$/.test(type);
+			},
+			isSupportedMediaFile(filename: string) {
 				return new RegExp(
 					`^.+\\.(${this.supportedMedias.join('|')})$`
 				).test(filename);
 			},
-			isSubFile(filename: string) {
+			isSupportedLyricsFile(filename: string) {
 				return new RegExp(
 					`^.+\\.(${this.supportedLyrics.join('|')})$`
 				).test(filename);

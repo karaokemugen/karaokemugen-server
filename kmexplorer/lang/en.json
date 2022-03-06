@@ -91,6 +91,7 @@
 			"create": "Create",
 			"choose_file": "Choose a file",
 			"add_file_media_error": "{name} is not a media file",
+			"add_file_media_not_supported_error": "{name} is not a supported media file, convert it to one of the following formats: {formats}",
 			"add_file_lyrics_error": "{name} is not a subtitle file",
 			"add_file_success": "{name} file added successfully",
 			"comment": "Leave a comment?",
