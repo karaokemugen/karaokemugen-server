@@ -229,6 +229,7 @@
 					this.resetNeeded = false;
 					this.resetList(true);
 				}
+				menuBarStore.setResultsCount(this.karaokes.infos.count);
 			},
 			actualResetList(navigation = false) {
 				if (!this.activated) {
