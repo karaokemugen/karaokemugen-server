@@ -49,6 +49,7 @@ export interface Config {
 		InProgressSongsList: string
 		Secure: boolean
 		NuxtOverrides?: any
+		SupportedMedias?: string []
 	},
 	Gitlab?: {
 		Enabled?: boolean,
