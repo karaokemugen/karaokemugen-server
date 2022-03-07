@@ -103,6 +103,6 @@
 	"parserOptions": {
 		"sourceType": "module",
 		"ecmaVersion": 2020,
-		"project": "./tsconfig.json"
+		"project": "./kmserver-core/tsconfig.json"
 	}
 }
