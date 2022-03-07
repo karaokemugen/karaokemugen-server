@@ -2,7 +2,7 @@ import { cloneDeep } from 'lodash';
 import {resolve} from 'path';
 import { v4 as uuidV4 } from 'uuid';
 
-import {exit} from '..';
+import {exit} from '../index';
 import { configureIDs, configureLocale, getConfig, loadConfigFiles, setConfigConstraints } from '../lib/utils/config';
 import {fileRequired} from '../lib/utils/files';
 import logger, { configureLogger } from '../lib/utils/logger';

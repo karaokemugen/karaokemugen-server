@@ -13,7 +13,7 @@ const defaultDB = {
 
 async function migrate() {
 	const ymlConfig = readFileSync('../app/config.yml', 'utf-8');
-	const conf: any = load(ymlConfig);
+	const conf = load(ymlConfig);
 	const dbConfig = {
 		/*host: conf.System.Database.host,
 		user: conf.System.Database.username,
@@ -32,7 +32,7 @@ async function migrate() {
 		database: dbConfig.database,
 		execQuery: (query) => client.query(query),
 		validateChecksums: false,
-});
+	});
 	const migrations = await migrator.migrate();
 	migrations.length > 0
 		? console.log(`Executed ${migrations.length} migrations`)

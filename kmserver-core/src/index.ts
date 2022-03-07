@@ -3,12 +3,12 @@ import detect from 'detect-port';
 import dotenv from 'dotenv';
 import findRemoveSync from 'find-remove';
 import findWorkspaceRoot from 'find-yarn-workspace-root';
-import {join, resolve} from 'path';
+import {readFileSync} from 'node:fs';
+import {join, resolve} from 'node:path';
 import sudoBlock from 'sudo-block';
 import { register } from 'ts-node';
 import logger from 'winston';
 
-import pjson from '../../package.json';
 import {initDB} from './dao/database';
 import { promoteToken } from './dao/remote';
 import {initFrontend} from './frontend';
@@ -29,6 +29,8 @@ import { getState, setState } from './utils/state';
 const appPath = findWorkspaceRoot();
 const dataPath = resolve(appPath, 'app/');
 const resourcePath = appPath;
+
+const pjson = JSON.parse(readFileSync(resolve(appPath, 'kmserver-core/package.json'), 'utf-8'));
 
 dotenv.config({path: join(appPath, '.env')});
 sentry.init();

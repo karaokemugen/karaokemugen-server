@@ -2,7 +2,7 @@ import {pg as yesql} from 'yesql';
 
 import {db} from '../lib/dao/database';
 import {DBInbox, SingleDBInbox} from '../lib/types/inbox';
-import sql = require('./sqls/inbox');
+import * as sql from './sqls/inbox';
 
 export async function selectInbox(): Promise<DBInbox[]>;
 export async function selectInbox(inid: string): Promise<[SingleDBInbox] | []>;

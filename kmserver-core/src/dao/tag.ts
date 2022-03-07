@@ -1,11 +1,11 @@
 import {pg as yesql} from 'yesql';
 
 import { db, paramWords } from '../lib/dao/database';
+import {refreshTags} from '../lib/dao/tag';
 import { WhereClause } from '../lib/types/database';
 import { DBTag } from '../lib/types/database/tag';
 import { Tag, TagParams } from '../lib/types/tag';
-import sql = require('./sqls/tag');
-import {refreshTags} from '../lib/dao/tag';
+import * as sql from './sqls/tag';
 
 export async function selectTag(tid: string): Promise<Tag> {
 	const res = await db().query(sql.selectTag, [tid]);

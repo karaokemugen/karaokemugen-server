@@ -1,7 +1,7 @@
 import {db, paramWords} from '../lib/dao/database';
 import { DBUser } from '../lib/types/database/user';
 import { User } from '../lib/types/user';
-import sql = require('./sqls/user');
+import * as sql from './sqls/user';
 
 export async function updateLastLogin(username: string): Promise<string> {
 	const res = await db().query(sql.updateLastLogin, [username]);

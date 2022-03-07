@@ -3,7 +3,7 @@ import express from 'express';
 import range from 'express-range';
 import helmet from 'helmet';
 import {createServer} from 'http';
-import {resolve} from 'path';
+import {resolve} from 'node:path';
 import vhost from 'vhost';
 
 import adminController from './controllers/http/admin';

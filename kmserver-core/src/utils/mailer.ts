@@ -1,5 +1,5 @@
 import nodemailer, { Transporter } from 'nodemailer';
-import { MailOptions } from 'nodemailer/lib/smtp-transport';
+import { MailOptions } from 'nodemailer/lib/smtp-transport/index.js';
 
 import { getConfig } from '../lib/utils/config';
 import logger from '../lib/utils/logger';

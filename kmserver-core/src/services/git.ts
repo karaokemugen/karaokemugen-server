@@ -1,4 +1,4 @@
-import execa from 'execa';
+import { execa } from 'execa';
 import {promises as fs} from 'fs';
 import {resolve} from 'path';
 
