@@ -28,6 +28,11 @@ dast:
   rules:
     - if: $CI_COMMIT_BRANCH == "dev"
     - when: never
+dependency_scanning:
+  stage: scan
+  rules:
+    - if: $CI_COMMIT_BRANCH == "dev"
+    - when: never
 sast:
   variables:
     SAST_EXCLUDED_PATHS: spec, test, tests, tmp, assets, build, img, util, packages, dist
