@@ -1,17 +1,87 @@
+# You can override the included template(s) by including variable overrides
+# SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
+# Secret Detection customization: https://docs.gitlab.com/ee/user/application_security/secret_detection/#customizing-settings
+# Dependency Scanning customization: https://docs.gitlab.com/ee/user/application_security/dependency_scanning/#customizing-the-dependency-scanning-settings
+# Note that environment variables can be set in several places
+# See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
+
 image: takkatakka/lftp
+include:
+  - template: Security/Dependency-Scanning.gitlab-ci.yml
+  - template: Security/SAST.gitlab-ci.yml
+  - template: Security/Secret-Detection.gitlab-ci.yml
+  - template: Security/License-Scanning.gitlab-ci.yml
+  - template: DAST.gitlab-ci.yml
 
 stages:
   - deploy
-
+  - scan
+  
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
-before_script:
-  - mkdir ~/.ssh
-  - echo "$SSH_KEY" > ~/.ssh/id_rsa
-  - ssh-keyscan -H '$HOST'
-  - chmod -R 700 ~/.ssh
-  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+dast:
+  stage: scan
+  dast_configuration:
+    site_profile: "Kara.moe"
+    scanner_profile: "Kara.moe"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "dev"
+    - when: never
+sast:
+  variables:
+    SAST_EXCLUDED_PATHS: spec, test, tests, tmp, assets, build, img, util, packages, dist
+    SECRET_DETECTION_EXCLUDED_PATHS: doc, spec, test, tests, .md, node_modules, yarn.lock, kmexplorer/node_modules, dist    
+  stage: scan
+  rules:
+    - if: $CI_COMMIT_BRANCH == "dev"
+    - when: never
+
+license_scanning:
+  interruptible: true
+  stage: scan
+  rules:
+    - if: $CI_COMMIT_BRANCH == "dev"
+    - when: never
+semgrep-sast:
+  interruptible: true
+  stage: scan
+  rules:
+    - if: $CI_COMMIT_BRANCH == "dev"
+    - when: never
+eslint-sast:
+  interruptible: true
+  stage: scan
+  rules:
+    - if: $CI_COMMIT_BRANCH == "dev"
+    - when: never
+gemnasium-dependency_scanning:
+  interruptible: true
+  stage: scan
+  rules:
+    - if: $CI_COMMIT_BRANCH == "dev"
+    - when: never
+retire-js-dependency_scanning:
+  interruptible: true
+  stage: scan
+  rules:
+    - if: $CI_COMMIT_BRANCH == "dev"
+    - when: never
+nodejs-scan-sast:
+  interruptible: true
+  stage: scan
+  rules:
+    - if: $CI_COMMIT_BRANCH == "dev"
+    - when: never
+secret_detection:
+  interruptible: true
+  stage: scan
+  variables:
+    SECRET_DETECTION_EXCLUDED_PATHS: 'node_modules kmexplorer/node_modules dist'
+  rules:
+    - if: $CI_COMMIT_BRANCH == "dev"
+    - when: never
+  
 
 update_sentry:
   stage: deploy
@@ -33,6 +103,11 @@ update_sentry:
 deploy_moe:
   stage: deploy
   script:
+    - mkdir ~/.ssh
+    - echo "$SSH_KEY" > ~/.ssh/id_rsa
+    - ssh-keyscan -H '$HOST'
+    - chmod -R 700 ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd srv/kmserver; mirror -Rnev --parallel=10 --exclude .env --exclude .git/ --exclude app/ --exclude config.yml --exclude database.json --exclude karaokemugen-app/ --exclude logs/ --exclude node_modules/ --exclude kmexplorer/.nuxt/ --exclude .yarn/cache --exclude .yarn/build-state.yml --exclude .yarn/install-state.gz "
     - ssh -l $USERNAME $HOST 'cd srv/kmserver ; yarn install ; yarn migrate; yarn build:all'
     - ssh -l $USERNAME $HOST 'sudo systemctl restart karaokemugen-server'
@@ -47,6 +122,11 @@ deploy_moe:
 deploy_world:
   stage: deploy
   script:
+    - mkdir ~/.ssh
+    - echo "$SSH_KEY" > ~/.ssh/id_rsa
+    - ssh-keyscan -H '$HOST'
+    - chmod -R 700 ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd srv/kmserver-world; mirror -Rnev --parallel=10 --exclude .env --exclude .git/ --exclude app/ --exclude config.yml --exclude database.json --exclude karaokemugen-app/ --exclude logs/ --exclude node_modules/ --exclude kmexplorer/.nuxt/ --exclude .yarn/cache --exclude .yarn/build-state.yml --exclude .yarn/install-state.gz "
     - ssh -l $USERNAME $HOST 'cd srv/kmserver-world ; yarn install ; yarn migrate; yarn build:all'
     - ssh -l $USERNAME $HOST 'sudo systemctl restart karaokemugen-server-world'
@@ -61,6 +141,11 @@ deploy_world:
 deploy_dev:
   stage: deploy
   script:
+    - mkdir ~/.ssh
+    - echo "$SSH_KEY" > ~/.ssh/id_rsa
+    - ssh-keyscan -H '$HOST'
+    - chmod -R 700 ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd srv/kmserver-dev; mirror -Rnev --parallel=10 --exclude .env --exclude .git/ --exclude app/ --exclude config.yml --exclude database.json --exclude karaokemugen-app/ --exclude logs/ --exclude node_modules/ --exclude kmexplorer/.nuxt/ --exclude .yarn/cache --exclude .yarn/build-state.yml --exclude .yarn/install-state.gz "
     - ssh -l $USERNAME $HOST 'cd srv/kmserver-dev ; yarn install ; yarn migrate; yarn build:all'
     - ssh -l $USERNAME $HOST 'sudo systemctl restart karaokemugen-server-dev'
