@@ -16,6 +16,8 @@ include:
 stages:
   - deploy
   - scan
+  - dast
+  - test  
   
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
@@ -28,20 +30,10 @@ dast:
   rules:
     - if: $CI_COMMIT_BRANCH == "dev"
     - when: never
-dependency_scanning:
-  stage: scan
-  rules:
-    - if: $CI_COMMIT_BRANCH == "dev"
-    - when: never
 sast:
   variables:
     SAST_EXCLUDED_PATHS: spec, test, tests, tmp, assets, build, img, util, packages, dist
-    SECRET_DETECTION_EXCLUDED_PATHS: doc, spec, test, tests, .md, node_modules, yarn.lock, kmexplorer/node_modules, dist    
-  stage: scan
-  rules:
-    - if: $CI_COMMIT_BRANCH == "dev"
-    - when: never
-
+    SECRET_DETECTION_EXCLUDED_PATHS: doc, spec, test, tests, .md, node_modules, yarn.lock, kmexplorer/node_modules, dist      
 license_scanning:
   interruptible: true
   stage: scan
