@@ -53,12 +53,6 @@ eslint-sast:
   rules:
     - if: $CI_COMMIT_BRANCH == "dev"
     - when: never
-retire-js-dependency_scanning:
-  interruptible: true
-  stage: scan
-  rules:
-    - if: $CI_COMMIT_BRANCH == "dev"
-    - when: never
 nodejs-scan-sast:
   interruptible: true
   stage: scan
