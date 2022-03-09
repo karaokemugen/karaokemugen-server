@@ -77,7 +77,7 @@ function generateConfig(production = false) {
 export async function buildKMExplorer() {
 	const NConfig = generateConfig(true);
 	logger.debug('Building Nuxt with config', {service: 'KMExplorer', obj: NConfig});
-	const nuxt = new Nuxt(NuxtConfig);
+	const nuxt = new Nuxt(NConfig);
 	await nuxt.ready();
 	const builder = new Builder(nuxt);
 	await builder.build();
@@ -86,9 +86,9 @@ export async function buildKMExplorer() {
 export async function startKMExplorer() {
 	const NConfig = generateConfig();
 	logger.debug('Starting Nuxt with config', {service: 'KMExplorer', obj: NConfig});
-	const nuxt = new Nuxt(NuxtConfig);
+	const nuxt = new Nuxt(NConfig);
 	await nuxt.ready();
-	if (NuxtConfig.dev) {
+	if (NConfig.dev) {
 		const builder = new Builder(nuxt);
 		await builder.build();
 	}
