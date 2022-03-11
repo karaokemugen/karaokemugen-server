@@ -105,7 +105,7 @@
 			"creators": ""
 		},
 		"meta": "",
-		"notfound": "",
+		"notfound": "Karaoke non trovata",
 		"favorites": {
 			"remove": "",
 			"add": ""
@@ -473,9 +473,9 @@
 		"end_favorites": ""
 	},
 	"error": {
-		"not_found_profile": "",
-		"generic": "",
-		"private_profile": "",
+		"not_found_profile": "Impossibile trovare utente",
+		"generic": "Errore",
+		"private_profile": "Profilo è privato.",
 		"home": ""
 	}
 }
