@@ -391,6 +391,12 @@ export const NuxtConfig: NuxtConfigType = {
 				name: 'bahasa Indonesia',
 				iso: 'id',
 				file: 'id.json'
+			},
+			{
+				code: 'de',
+				name: 'Deutsch',
+				iso: 'de',
+				file: 'de.json'
 			}
 		],
 		baseUrl: 'http://localhost:1350/',
