@@ -127,7 +127,8 @@
 			"send_contact_infos": "Bagikan informasi kontak saya dengan pengelola basis data",
 			"contact_infos": "Informasi kontak",
 			"auto_send_contact_infos": "Jika kamu masuk, kamu bisa mencentang sebuah kotak di formulir untuk secara otomatis membagikan informasi kontakmu dengan pengelola basis data.",
-			"media_file_edit": "Mengganti berkas media"
+			"media_file_edit": "Mengganti berkas media",
+			"add_file_media_not_supported_error": "{name} bukan berkas media yang didukung, konversi ke salah satu dari format berikut: {formats}"
 		},
 		"songwriters_by": "Digubah oleh",
 		"created_at": "Dibuat ",
@@ -135,7 +136,10 @@
 			"favorited": "Ditambahkan ke favorit oleh {number} pengguna",
 			"requested": "Diminta {number} kali",
 			"played": "Diputar {number} kali"
-		}
+		},
+		"siblings": "Lagu serupa",
+		"childrens": "Lagu anak",
+		"parents": "Lagu induk"
 	},
 	"error": {
 		"private_profile": "Profil ini privat.",
