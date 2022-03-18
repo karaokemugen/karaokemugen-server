@@ -177,7 +177,7 @@
 		},
 
 		mounted() {
-			if (this.favorites) {
+			if (this.favorites || this.kids) {
 				// There is a weird bug: if you go from a KaraList to a UserView, the "activated" event
 				// down below will not trigger, so we use the mounted one to workaround it.
 				// It's really weird however because the deactivated will fire correctly in that setup.
