@@ -10,10 +10,10 @@
 	"scripts": {
 		"prestart": "node ../util/runMigrations.mjs",
 		"start": "cross-env NODE_ENV=production EIO_WS_ENGINE=eiows node dist/kmserver-core/src/index.js",
-		"watch": "yarn prestart && cross-env NODE_ENV=development ts-node src/index.ts --",
+		"watch": "yarn prestart && yarn build && cross-env NODE_ENV=development node dist/index.js",
 		"generate": "node dist/kmserver-core/src/index.js --generate",
 		"build": "tsc && node esbuild.js",
-		"build:kmexplorer": "rimraf \"../kmexplorer/.nuxt\" && cross-env NODE_ENV=production ts-node src/index.ts -- --build",
+		"build:kmexplorer": "rimraf \"../kmexplorer/.nuxt\" && cross-env NODE_ENV=production node dist/index.js -- --build",
 		"sentry:sourcemaps": "node ../util/sentryUpdateReleases.mjs"
 	},
 	"devDependencies": {

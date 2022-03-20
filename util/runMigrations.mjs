@@ -1,7 +1,8 @@
 import {load} from 'js-yaml';
 import {readFileSync} from 'fs';
 import Postgrator from 'postgrator';
-import { Client } from 'pg';
+import pg from 'pg';
+const { Client } = pg;
 
 const defaultDB = {
 	username: 'karaokemugen_server',

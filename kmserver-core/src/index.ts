@@ -59,13 +59,11 @@ export function exit(rc: number) {
 	process.exit(rc || 0);
 }
 
-if (process.env.NODE_ENV === 'production') {
-	// Workaround for Nuxt store to work in production environments
-	register({
-		transpileOnly: true,
-		project: join(appPath, 'kmexplorer/tsconfig.json')
-	});
-}
+// Workaround for Nuxt store to work in production environments
+register({
+	transpileOnly: true,
+	project: join(appPath, 'kmexplorer/tsconfig.json')
+});
 
 main().catch(err => {
 	logger.error('Error during launch', {service: 'Launcher', obj: err});
