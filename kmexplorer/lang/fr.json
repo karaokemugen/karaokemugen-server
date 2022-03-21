@@ -24,7 +24,8 @@
 			"groups": "Groupe | Groupes",
 			"misc": "Divers",
 			"versions": "Version | Versions",
-			"warnings": "Warning | Warnings"
+			"warnings": "Warning | Warnings",
+			"collections": "Collection | Collections"
 		},
 		"singers_by": "Chanté par",
 		"songwriters_by": "Composé par",
@@ -113,6 +114,7 @@
 			"series_tooltip": "Série TV, nom de film, de jeu vidéo, etc.",
 			"series_singers_required": "Les champs Séries et Chanté par ne peuvent être vide en même temps.",
 			"songtypes_required": "Le type de chanson est obligatoire",
+			"collections_required": "Une collection au moins doit être cochée",
 			"songorder": "Numéro de chanson",
 			"songorder_invalid": "Le numéro de chanson est invalide",
 			"songorder_tooltip": "Numéro de l'opening/ending/etc. Si c'est le seul opening/ending dans la série, laissez vide.",
@@ -157,6 +159,7 @@
 		"end_my_favorites": "C'est la fin de vos favoris.",
 		"explore": "Allez en ajouter !",
 		"results": "{count} résultat | {count} résultats",
+		"collections": "Karaoke Mugen propose différentes collections, choisissez celles qui vous intéressent.",
 		"slogan": "Ce son est disponible sur la base Karaoke Mugen !",
 		"end_users": "Vous avez atteint la fin des utilisateurs (bravo !)."
 	},

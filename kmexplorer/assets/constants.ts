@@ -89,6 +89,11 @@ export const tagTypesMap: { [key: number]: tagType } = {
 		icon: 'exclamation-triangle',
 		class: 'is-danger',
 		name: 'warnings'
+	},
+	16: {
+		icon: 'layer-group',
+		class: 'is-white',
+		name: 'collections'
 	}
 };
 
@@ -172,6 +177,11 @@ export const tagTypes: { [key: string]: tagType } = {
 		icon: 'exclamation-triangle',
 		class: 'is-danger',
 		type: 15
+	},
+	collections: {
+		icon: 'layer-group',
+		class: 'is-white',
+		type: 16
 	}
 };
 

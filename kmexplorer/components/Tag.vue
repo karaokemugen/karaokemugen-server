@@ -82,7 +82,7 @@
 				return !tidToRemove.includes(tid);
 			},
 			handleLink() {
-				if (!this.nolink) {
+				if (!this.nolink && this.type !== 'collections') { // Collections are not clickable
 					// If no tags are present, redirect the user to the KaraList view with this tag.
 					const payload = { tag: this.tag, type: this.type };
 					// Put i18n in tag directly

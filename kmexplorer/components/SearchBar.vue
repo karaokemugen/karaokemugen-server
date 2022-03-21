@@ -1,9 +1,7 @@
 <template>
 	<div class="field is-expanded has-addons">
 		<div v-if="results" class="control">
-			<button class="button is-static with-icon">
-				{{ searchLabel }}
-			</button>
+			<collections-picker :label="searchLabel" />
 		</div>
 		<div class="control is-expanded" :class="{'has-icons-left': icon}">
 			<input
@@ -48,6 +46,8 @@
 	import { menuBarStore } from '~/store';
 	import { sortTypes } from '~/store/menubar';
 
+	import CollectionsPicker from './CollectionsPicker.vue';
+
 	interface VState {
 		search: string,
 		sort: sortTypes,
@@ -56,6 +56,10 @@
 
 	export default Vue.extend({
 		name: 'SearchBar',
+
+		components: {
+			CollectionsPicker
+		},
 
 		props: {
 			results: {

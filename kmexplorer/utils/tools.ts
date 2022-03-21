@@ -6,8 +6,11 @@ import { Tag } from '%/lib/types/tag';
 import menubar from '~/store/menubar';
 import { tagTypes } from '~/assets/constants';
 
-export function getTagInLanguage(tag: DBKaraTag | DBTag, mainLanguage: string, fallbackLanguage: string, i18nParam?: any) {
-	const i18n = (i18nParam && i18nParam[tag.tid]) ? i18nParam[tag.tid] : tag.i18n;
+export function getPropertyInLanguage(prop: 'i18n', tag: DBKaraTag | DBTag, mainLanguage: string, fallbackLanguage: string, i18nParam?: any): string
+export function getPropertyInLanguage(prop: 'description', tag: DBTag, mainLanguage: string, fallbackLanguage: string): string
+export function getPropertyInLanguage(prop: 'description' | 'i18n', tag: DBKaraTag | DBTag, mainLanguage: string, fallbackLanguage: string, i18nParam?: any): string {
+	// @ts-ignore: The overload will prevent DBKaraTag (without description) being passed to get descriptions
+	const i18n = (i18nParam && i18nParam[tag.tid]) ? i18nParam[tag.tid] : tag[prop];
 	if (i18n) {
 		return i18n[mainLanguage]
 			? i18n[mainLanguage]
@@ -16,15 +19,23 @@ export function getTagInLanguage(tag: DBKaraTag | DBTag, mainLanguage: string, f
 				: (i18n.eng ? i18n.eng : tag.name)
 			);
 	} else {
-		return tag.name;
+		return prop === 'i18n' ? tag.name : '';
 	}
 }
 
 export function getTagInLocale(tag: DBKaraTag | DBTag, user: User, i18nParam?: any) {
 	if (user && user.main_series_lang && user.fallback_series_lang) {
-		return getTagInLanguage(tag, user.main_series_lang, user.fallback_series_lang, i18nParam);
+		return getPropertyInLanguage('i18n', tag, user.main_series_lang, user.fallback_series_lang, i18nParam);
 	} else {
-		return getTagInLanguage(tag, getNavigatorLanguageIn3B(), 'eng', i18nParam);
+		return getPropertyInLanguage('i18n', tag, getNavigatorLanguageIn3B(), 'eng', i18nParam);
+	}
+}
+
+export function getDescriptionInLocale(tag: DBTag, user: User) {
+	if (user && user.main_series_lang && user.fallback_series_lang) {
+		return getPropertyInLanguage('description', tag, user.main_series_lang, user.fallback_series_lang);
+	} else {
+		return getPropertyInLanguage('description', tag, getNavigatorLanguageIn3B(), 'eng');
 	}
 }
 
@@ -83,7 +94,10 @@ export function sortTypesKara(karaoke: DBKara): DBKara {
 }
 
 export function generateNavigation(menuBarStore: menubar) {
-	const navigation = { path: `/search/${encodeURIComponent(menuBarStore.search)}`, query: {} as { q?: string } };
+	const navigation = {
+		path: `/search/${encodeURIComponent(menuBarStore.search)}`,
+		query: { collections: menuBarStore.enabledCollections.join(':') } as { collections: string, q?: string }
+	};
 	const criterias: string[] = [];
 	const tags: string[] = [];
 	for (const tag of menuBarStore.tags) {

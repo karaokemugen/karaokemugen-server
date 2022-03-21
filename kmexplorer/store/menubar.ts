@@ -16,13 +16,15 @@ export type sortTypes = 'az' | 'karacount' | 'recent' | 'played' | 'favorited' |
 	namespaced: true
 })
 export default class MenuBar extends VuexModule {
-	tags: TagExtend[] = []
+	tags: TagExtend[] = [];
 
-	search: string = ''
+	search: string = '';
 
-	sort: sortTypes = 'recent'
+	sort: sortTypes = 'recent';
 
-	resultsCount: number = 0
+	resultsCount: number = 0;
+
+	enabledCollections: string[] = process.env.DEFAULT_COLLECTIONS as unknown as string[];
 
 	@Mutation
 	addTag(tag: TagExtend) {
@@ -62,6 +64,17 @@ export default class MenuBar extends VuexModule {
 	@Mutation
 	setResultsCount(count: number) {
 		this.resultsCount = count;
+	}
+
+	@Mutation
+	setEnabledCollections(collecs: string[]) {
+		// Don't allow no collections
+		if (collecs.length > 0) {
+			this.enabledCollections = collecs;
+			if (process.client) {
+				window.localStorage.setItem('enabled_collections', collecs.join(':'));
+			}
+		}
 	}
 
 	@Mutation

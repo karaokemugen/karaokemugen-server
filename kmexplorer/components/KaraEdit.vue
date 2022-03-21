@@ -103,6 +103,23 @@
 			</p>
 		</div>
 		<div class="field">
+			<label class="label">{{ $tc('kara.tagtypes.collections', karaoke.data.tags.collections.length) }}</label>
+			<div class="control">
+				<editable-tag-group
+					:checkboxes="true"
+					:tag-type="16"
+					:params="karaoke.data.tags.collections"
+					@change="(tags) => karaoke.data.tags.collections = tags"
+				/>
+			</div>
+			<p
+				v-if="karaoke.data.tags.collections.length === 0"
+				class="help is-danger"
+			>
+				{{ $t('kara.import.collections_required') }}
+			</p>
+		</div>
+		<div class="field">
 			<label class="label">{{ $tc('kara.tagtypes.songtypes', karaoke.data.tags.songtypes.length) }}</label>
 			<editable-tag-group
 				:checkboxes="true"
@@ -480,6 +497,7 @@
 							this.karaoke.data.tags.singers?.length === 0) ||
 						this.karaoke.data.tags.songtypes.length === 0 ||
 						this.karaoke.data.tags.langs.length === 0 ||
+						this.karaoke.data.tags.collections.length === 0 ||
 						!this.karaoke.data.year ||
 						this.karaoke.data.year < 1800 ||
 						this.karaoke.data.year > new Date().getFullYear() ||

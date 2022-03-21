@@ -7,6 +7,8 @@ import {Kara, KaraParams} from '../lib/types/kara';
 import logger from '../lib/utils/logger';
 import { DBStats } from '../types/database/kara';
 import * as sql from './sqls/kara';
+import {tagTypes} from "../lib/utils/constants";
+import {getConfig} from "../lib/utils/config";
 
 export async function selectAllMedias(): Promise<DBMedia[]> {
 	const res = await db().query(sql.selectAllMedias);
@@ -82,6 +84,12 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 		orderClauses = `RANDOM(), ${orderClauses}`;
 		limitClause = `LIMIT ${params.random}`;
 	}
+	const collectionClauses = [];
+	if (!params.ignoreCollections) {
+		for (const collection of (params.forceCollections || getConfig().System.DefaultCollections)) {
+			if (collection) collectionClauses.push(`'${collection}~${tagTypes.collections}' = ANY(ak.tid)`);
+		}
+	}
 	const query = sql.getAllKaras(
 		yesqlPayload.sql,
 		orderClauses,
@@ -92,7 +100,8 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 		groupClause,
 		whereClauses,
 		yesqlPayload.additionalFrom,
-		includeStaging
+		includeStaging,
+		collectionClauses
 	);
 	const res = await db().query(yesql(query)(yesqlPayload.params));
 	return res.rows;

@@ -25,6 +25,7 @@ import { updateGit } from './git';
 import { gitlabPostNewIssue } from './gitlab';
 import { clearOldInboxEntries, clearUnusedStagingTags } from './inbox';
 import { findUserByName } from './user';
+import {uuidRegexp} from "../lib/utils/constants";
 
 export async function getBaseStats() {
 	try {
@@ -65,7 +66,7 @@ export async function updateRepo() {
 export async function generate() {
 	try {
 		await generateDatabase({validateOnly: false});
-		const karas = await getAllKaras({}, undefined, true);
+		const karas = await getAllKaras({ ignoreCollections: true }, undefined, true);
 		refreshKaraStats();
 		const conf = getConfig();
 		// Download master.zip from gitlab to serve it ourselves
@@ -93,7 +94,7 @@ export async function generate() {
 
 export async function computeSubchecksums() {
 	logger.info('Starting computing checksums', {service: 'Kara'});
-	const karas = await getAllKaras({}, undefined, true);
+	const karas = await getAllKaras({ ignoreCollections: true }, undefined, true);
 	const mapper = async (lyrics: any[]) => {
 		return checksumASS(lyrics);
 	};
@@ -152,6 +153,11 @@ export async function getAllKaras(params: KaraParams, token?: JWTTokenWithRoles,
 				throw {code: 404};
 			}
 		}
+		if (params.forceCollections) {
+			for (const collection of params.forceCollections) {
+				if (!uuidRegexp.test(collection)) throw {code: 400};
+			}
+		}
 		const pl = await selectAllKaras({
 			filter: params.filter,
 			from: +params.from,
@@ -160,7 +166,9 @@ export async function getAllKaras(params: KaraParams, token?: JWTTokenWithRoles,
 			q: params.q || '',
 			username: token?.username,
 			favorites: params.favorites,
-			random: params.random
+			random: params.random,
+			ignoreCollections: params.ignoreCollections,
+			forceCollections: params.forceCollections || []
 		}, includeStaging);
 		return formatKaraList(pl, +params.from, pl[0]?.count || 0);
 	} catch (err) {

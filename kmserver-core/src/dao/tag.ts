@@ -86,6 +86,7 @@ export async function insertTag(tag: Tag) {
 		tag.noLiveDownload || false,
 		tag.priority || 10,
 		tag.karafile_tag || null,
+		tag.description || {}
 	]);
 }
 

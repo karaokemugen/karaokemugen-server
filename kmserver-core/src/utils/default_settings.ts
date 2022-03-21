@@ -40,7 +40,8 @@ export const defaults: Config = {
 			Banners: 'banners',
 			Previews: 'previews',
 			Hardsubs: 'hardsubs',
-		}
+		},
+		DefaultCollections: ['c7db86a0-ff64-4044-9be4-66dd1ef1d1c1']
 	},
 	Shortener: {
 		Enabled: true,
@@ -321,7 +322,8 @@ export const NuxtConfig: NuxtConfigType = {
 
 	plugins: [
 		'~/plugins/icons.js',
-		{src: '~/plugins/axios.js', ssr: false}
+		{src: '~/plugins/axios.js', mode: 'client'},
+		{src: '~/plugins/collections_memories.js', mode: 'client'}
 	],
 
 	head: {

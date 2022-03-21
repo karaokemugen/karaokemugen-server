@@ -109,7 +109,8 @@ export interface Config {
 			Encores?: string[],
 			Sponsors?: string[],
 			StreamFiles?: string,
-		}
+		},
+		DefaultCollections: string[],
 	},
 	Mail: {
 		Enabled: boolean,

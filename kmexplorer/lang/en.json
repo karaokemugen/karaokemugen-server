@@ -24,7 +24,8 @@
 			"groups": "Group | Groups",
 			"misc": "Miscellaneous",
 			"versions": "Version | Versions",
-			"warnings": "Warning | Warnings"
+			"warnings": "Warning | Warnings",
+			"collections": "Collection | Collections"
 		},
 		"singers_by": "Sung by",
 		"songwriters_by": "Composed by",
@@ -113,6 +114,7 @@
 			"series_tooltip": "TV series, movie title, video game title, etc.",
 			"series_singers_required": "Series or Sung by cannot be empty in the same time.",
 			"songtypes_required": "Song type is mandatory",
+			"collections_required": "At least one collection must be checked",
 			"songorder": "Song order",
 			"songorder_invalid": "Song order is invalid",
 			"songorder_tooltip": "Opening/Ending number. If this is the only opening/ending in the series, leave blank.",
@@ -157,6 +159,7 @@
 		"end_my_favorites": "This is the end of your favorites.",
 		"explore": "Go add some!",
 		"results": "{count} result | {count} results",
+		"collections": "Karaoke Mugen provides many collections, choose the ones you are interested in.",
 		"slogan": "This song is available on the Karaoke Mugen songbase!",
 		"end_users": "You've reached the end of the user list (congratulations!)."
 	},

@@ -118,7 +118,7 @@ async function main() {
 	if (conf.Hardsub.Enabled) initHardsubGeneration();
 
 	if (argv.opts().createPreviews) {
-		const karas = await getAllKaras({}, undefined, true);
+		const karas = await getAllKaras({ ignoreCollections: true }, undefined, true);
 		await createImagePreviews(karas, 'full', 1280);
 		exit(0);
 	}

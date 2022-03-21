@@ -16,7 +16,8 @@ const tagTypesKaraFileV4Order: (
 	'songtypes'|
 	'songwriters'|
 	'versions'|
-	'warnings')[] = [
+	'warnings'|
+	'collections')[] = [
 		'authors',
 		'creators',
 		'families',
@@ -31,7 +32,8 @@ const tagTypesKaraFileV4Order: (
 		'songtypes',
 		'songwriters',
 		'versions',
-		'warnings'
+		'warnings',
+		'collections'
 	];
 
 export function determineVersion(titles: Record<string, string>): string {

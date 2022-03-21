@@ -8,7 +8,7 @@ export const selectAllMedias = `
 	WHERE repository != 'Staging'
 `;
 
-export const getAllKaras = (filterClauses: string[], orderClauses: string, limitClause: string, offsetClause: string, selectClause: string, joinClause: string, groupClause: string, whereClauses: string, additionalFrom: string[], includeStaging: boolean) => `SELECT
+export const getAllKaras = (filterClauses: string[], orderClauses: string, limitClause: string, offsetClause: string, selectClause: string, joinClause: string, groupClause: string, whereClauses: string, additionalFrom: string[], includeStaging: boolean, collectionClauses: string[]) => `SELECT
   ak.pk_kid AS kid,
   ak.titles AS titles,
   ak.songorder AS songorder,
@@ -29,6 +29,7 @@ export const getAllKaras = (filterClauses: string[], orderClauses: string, limit
   jsonb_path_query_array( tags, '$[*] ? (@.type_in_kara == 1)') AS series,
   jsonb_path_query_array( tags, '$[*] ? (@.type_in_kara == 14)') AS versions,
   jsonb_path_query_array( tags, '$[*] ? (@.type_in_kara == 15)') AS warnings,
+  jsonb_path_query_array( tags, '$[*] ? (@.type_in_kara == 16)') AS collections,
   ak.mediafile AS mediafile,
   ak.karafile AS karafile,
   ak.duration AS duration,
@@ -52,6 +53,11 @@ LEFT JOIN kara_subchecksum ksub ON ksub.fk_kid = ak.pk_kid
 ${joinClause}
 ${additionalFrom.join('')}
 WHERE ${includeStaging ? '1 = 1' : 'repository != \'Staging\''}
+  ${
+    collectionClauses.length > 0
+	  ? `AND (${collectionClauses.map(clause => `(${clause})`).join(' OR ')})`
+      : ''
+  }
   ${filterClauses.map(clause => `AND (${clause})`).reduce((a, b) => (`${a} ${b}`), '')}
   ${whereClauses}
 GROUP BY ${groupClause} ak.pk_kid, ak.titles, ak.songorder, ak.tags, ak.serie_singer_sortable, ak.subfile, ak.year, ak.mediafile, ak.karafile, ak.duration, ak.gain, ak.loudnorm, ak.created_at, ak.modified_at, ak.mediasize, ak.repository, ak.comment, ak.songtypes_sortable, ak.titles_sortable, ksub.subchecksum

@@ -29,7 +29,8 @@ function generateConfig(production = false) {
 			BASE_URL: `http${conf.KaraExplorer.Secure ? 's' : ''}://${conf.KaraExplorer.Host}${
 				(production || conf.API.Port === 443 || conf.API.Port === 80) ? '' : `:${conf.Frontend.Port}`}/`,
 			BANNER_BAN: conf.Users.BannerBan,
-			USERS: conf.Users.Enabled
+			USERS: conf.Users.Enabled,
+			DEFAULT_COLLECTIONS: conf.System.DefaultCollections
 		},
 		axios: {
 			baseURL: `http${conf.API.Secure ? 's' : ''}://${conf.API.Host}${

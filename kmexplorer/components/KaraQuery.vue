@@ -33,7 +33,8 @@
 		order?: string,
 		filter?: string,
 		q?: string,
-		favorites?: string
+		favorites?: string,
+		force_collections: string
 	}
 
 	interface VState {
@@ -121,6 +122,9 @@
 					}
 					menuBarStore.setTags(tagExtends);
 				}
+				if (typeof this.$route.query.collections === 'string') {
+					menuBarStore.setEnabledCollections(this.$route.query.collections.split(':'));
+				}
 			}
 			// Load the first page
 			await this.loadNextPage(true);
@@ -151,16 +155,18 @@
 					from: (this.from * 12),
 					size: 12,
 					order: this.sort || undefined,
-					favorites: this.favorites || undefined
+					favorites: this.favorites || undefined,
+					force_collections: this.enabledCollections.join(':')
 				};
 			},
-			...mapState('menubar', ['sort', 'search', 'tags'])
+			...mapState('menubar', ['sort', 'search', 'tags', 'enabledCollections'])
 		},
 
 		watch: {
 			sort() { this.resetList(); },
 			search() { this.resetList(true); },
 			tags() { this.resetList(true); },
+			enabledCollections() { this.resetList(true); },
 			loading(now) {
 				if (now) { this.$nuxt.$loading.start(); } else { this.$nuxt.$loading.finish(); }
 			}
@@ -242,6 +248,7 @@
 				this.loadNextPage(true);
 				if (navigation && !this.favorites &&
 					(this.$route.params.query !== (menuBarStore.search || undefined) ||
+						this.$route.query.collections !== menuBarStore.enabledCollections.join(':') ||
 						this.$route.query.q !== this.reqParams.q)) {
 					this.$router.replace(generateNavigation(menuBarStore));
 				}
