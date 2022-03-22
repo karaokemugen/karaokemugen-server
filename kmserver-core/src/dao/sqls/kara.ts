@@ -50,6 +50,7 @@ FROM all_karas AS ak
 LEFT OUTER JOIN kara_relation krp ON krp.fk_kid_parent = ak.pk_kid
 LEFT OUTER JOIN kara_relation krc ON krc.fk_kid_child = ak.pk_kid
 LEFT JOIN kara_subchecksum ksub ON ksub.fk_kid = ak.pk_kid
+LEFT JOIN kara k ON k.pk_kid = ak.pk_kid
 ${joinClause}
 ${additionalFrom.join('')}
 WHERE ${includeStaging ? '1 = 1' : 'repository != \'Staging\''}

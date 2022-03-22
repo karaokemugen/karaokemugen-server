@@ -4,11 +4,11 @@ import {buildClauses, buildTypeClauses, db} from '../lib/dao/database';
 import { WhereClause } from '../lib/types/database';
 import { DBKara, DBMedia, DBYear } from '../lib/types/database/kara';
 import {Kara, KaraParams} from '../lib/types/kara';
+import {getConfig} from '../lib/utils/config';
+import {tagTypes} from '../lib/utils/constants';
 import logger from '../lib/utils/logger';
 import { DBStats } from '../types/database/kara';
 import * as sql from './sqls/kara';
-import {tagTypes} from "../lib/utils/constants";
-import {getConfig} from "../lib/utils/config";
 
 export async function selectAllMedias(): Promise<DBMedia[]> {
 	const res = await db().query(sql.selectAllMedias);
