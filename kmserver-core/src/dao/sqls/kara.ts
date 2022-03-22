@@ -53,7 +53,7 @@ LEFT JOIN kara_subchecksum ksub ON ksub.fk_kid = ak.pk_kid
 LEFT JOIN kara k ON k.pk_kid = ak.pk_kid
 ${joinClause}
 ${additionalFrom.join('')}
-WHERE ${includeStaging ? '1 = 1' : 'repository != \'Staging\''}
+WHERE ${includeStaging ? '1 = 1' : 'ak.repository != \'Staging\''}
   ${
     collectionClauses.length > 0
 	  ? `AND (${collectionClauses.map(clause => `(${clause})`).join(' OR ')})`
