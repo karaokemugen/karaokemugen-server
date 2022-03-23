@@ -125,7 +125,8 @@ export async function getKara(params: KaraParams, token?: JWTTokenWithRoles) {
 		const karas = await selectAllKaras({
 			order: params.order,
 			q: params.q,
-			username: token?.username.toLowerCase()
+			username: token?.username.toLowerCase(),
+			ignoreCollections: true
 		}, true);
 		if (!karas[0]) return;
 		karas[0].lyrics = null;
