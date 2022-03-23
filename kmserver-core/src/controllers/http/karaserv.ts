@@ -74,6 +74,7 @@ export default function KSController(router: Router) {
 			try {
 				const kara = await getKara({
 					q: `k:${req.params.kid}`,
+					ignoreCollections: true
 				}, req?.authToken);
 				res.json(kara);
 			} catch (err) {
