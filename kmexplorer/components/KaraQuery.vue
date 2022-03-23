@@ -5,6 +5,9 @@
 				<search-tags />
 				<search-bar :filter="false" :results="false" />
 				<search-edit />
+				<div class="field is-expanded">
+					<collections-picker :label="$t('search.types.karaokes')" />
+				</div>
 			</div>
 			<kara-list :karaokes="karaokes" :loading="loading || $fetchState.pending" :favorites="favorites" :with-suggest="withSuggest" />
 		</div>
@@ -20,6 +23,7 @@
 	import SearchBar from '~/components/SearchBar.vue';
 	import SearchTags from '~/components/SearchTags.vue';
 	import SearchEdit from '~/components/SearchEdit.vue';
+	import CollectionsPicker from '~/components/CollectionsPicker.vue';
 	import { KaraList as KaraListType } from '%/lib/types/kara';
 	import { menuBarStore } from '~/store';
 	import { tagRegex, tagTypes, tagTypesMap } from '~/assets/constants';
@@ -53,7 +57,8 @@
 			KaraList,
 			SearchBar,
 			SearchTags,
-			SearchEdit
+			SearchEdit,
+			CollectionsPicker
 		},
 
 		props: {
@@ -263,3 +268,14 @@
 		}
 	});
 </script>
+
+<style lang="scss">
+	.field.is-expanded {
+		flex-grow: 1;
+		flex-shrink: 0;
+
+		.dropdown-trigger > button {
+			width: 100%;
+		}
+	}
+</style>
