@@ -71,7 +71,7 @@
 				const date = new Date();
 				return {
 					karaparam: {
-						titles: { eng: '' },
+						titles: {},
 						titles_aliases: [],
 						series: [],
 						versions: [],

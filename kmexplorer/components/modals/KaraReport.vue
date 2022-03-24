@@ -176,7 +176,7 @@
 
 		computed: {
 			title(): string {
-				return getTitleInLocale(this.karaoke.titles, this.$store.state.auth.user);
+				return getTitleInLocale(this.karaoke.titles, this.$store.state.auth.user, this.karaoke.titles_default_language);
 			}
 		},
 

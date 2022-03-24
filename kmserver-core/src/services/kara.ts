@@ -238,7 +238,7 @@ export async function newKaraIssue(kid: string, type: 'Media' | 'Metadata' | 'Ly
 		(kara.singers.length > 0 && kara.singers[0].name) || '';
 	const langs = (kara.langs.length > 0 && kara.langs[0].name.toUpperCase()) || '';
 	const songtype = (kara.songtypes.length > 0 && kara.songtypes[0].name) || '';
-	const karaName = `${langs} - ${singerOrSerie} - ${songtype}${kara.songorder || ''} - ${kara.titles.eng}`;
+	const karaName = `${langs} - ${singerOrSerie} - ${songtype}${kara.songorder || ''} - ${kara.titles[kara.titles_default_language]}`;
 	const conf = getConfig();
 	const issueTemplate = conf.Gitlab.IssueTemplate.KaraProblem[type];
 	let title = issueTemplate.Title || '$kara';

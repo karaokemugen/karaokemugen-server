@@ -114,7 +114,7 @@
 		head() {
 			return {
 				// @ts-ignore: no?
-				title: this.karaoke.titles.eng,
+				title: this.karaoke.titles[this.karaoke.titles_default_language],
 				meta: [
 					{ hid: 'twitter:card', name: 'twitter:card', content: 'player' },
 					{ hid: 'og:type', property: 'og:type', content: 'article' },

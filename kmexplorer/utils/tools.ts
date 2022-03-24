@@ -39,16 +39,16 @@ export function getDescriptionInLocale(tag: DBTag, user: User) {
 	}
 }
 
-export function getTitleInLocale(titles: any, user: User) {
+export function getTitleInLocale(titles: any, user: User, titles_default_language?:string) {
 	if (user && user.main_series_lang && user.fallback_series_lang) {
 		return titles[user.main_series_lang]
 			? titles[user.main_series_lang]
 			: (titles[user.fallback_series_lang]
 				? titles[user.fallback_series_lang]
-				: titles.eng
+				: titles[titles_default_language || 'eng']
 			);
 	} else {
-		return titles[getNavigatorLanguageIn3B()] ? titles[getNavigatorLanguageIn3B()] : titles.eng;
+		return titles[getNavigatorLanguageIn3B()] ? titles[getNavigatorLanguageIn3B()] : titles[titles_default_language || 'eng'];
 	}
 }
 

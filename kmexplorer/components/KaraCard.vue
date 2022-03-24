@@ -115,7 +115,7 @@
 
 		computed: {
 			title(): string {
-				return getTitleInLocale(this.karaoke.titles, this.$store.state.auth.user);
+				return getTitleInLocale(this.karaoke.titles, this.$store.state.auth.user, this.karaoke.titles_default_language);
 			},
 			images(): string[] {
 				return this.karaoke.mediafile.endsWith('.mp3')
@@ -126,7 +126,7 @@
 					];
 			},
 			slug(): string {
-				return slug(this.karaoke.titles.eng);
+				return slug(this.karaoke.titles[this.karaoke.titles_default_language || 'eng']);
 			},
 			tagTypesSorted(): object {
 				const tagTypes = { ...this.tagTypes };

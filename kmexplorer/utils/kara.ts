@@ -36,13 +36,13 @@ const tagTypesKaraFileV4Order: (
 		'collections'
 	];
 
-export function determineVersion(titles: Record<string, string>): string {
-	const mediaVersionArr = titles.eng?.split(' ~ ');
+export function determineVersion(titles: Record<string, string>, titles_default_language?: string): string {
+	const mediaVersionArr = titles[titles_default_language || 'eng']?.split(' ~ ');
 	return mediaVersionArr?.length > 1 ? mediaVersionArr[mediaVersionArr.length - 1].replace(' Vers', '') : 'Default';
 }
 
 export function DBKaraToKaraFile(dbKara: DBKara): KaraFileV4 {
-	const mediaVersion = determineVersion(dbKara.titles);
+	const mediaVersion = determineVersion(dbKara.titles, dbKara.titles_default_language);
 	return {
 		header: {
 			description: 'Karaoke Mugen Karaoke Data File',
@@ -89,8 +89,9 @@ export function DBKaraToKaraFile(dbKara: DBKara): KaraFileV4 {
 						}
 					})),
 			titles: dbKara.titles,
+			titles_default_language: dbKara.titles_default_language || 'eng',
 			titles_aliases: dbKara.titles_aliases,
-			title: dbKara.titles.eng,
+			title: dbKara.titles[dbKara.titles_default_language || 'eng'],
 			year: dbKara.year
 		}
 	};

@@ -68,13 +68,12 @@
 			</label>
 			<languages-list
 				:value="karaoke.data.titles"
+				:default-language="karaoke.data.titles_default_language"
 				@change="(titles) => karaoke.data.titles = titles"
+				@onDefaultLanguageSelect="(defaultLanguage) => karaoke.data.titles_default_language = defaultLanguage"
 			/>
 			<p v-if="!karaoke.data.titles || Object.keys(karaoke.data.titles).length === 0" class="help is-danger">
 				{{ $t('kara.import.title_required') }}
-			</p>
-			<p v-if="!karaoke.data.titles.eng" class="help is-danger">
-				{{ $t('kara.import.title_eng_required') }}
 			</p>
 			<label class="label" :title="$t('kara.import.titles_aliases_tooltip')">
 				{{ $t('kara.import.titles_aliases') }}
@@ -492,7 +491,7 @@
 						this.subfile_error.length > 0 ||
 						!this.karaoke.data.titles ||
 						Object.keys(this.karaoke.data.titles).length === 0 ||
-						!this.karaoke.data.titles.eng ||
+						!this.karaoke.data.titles_default_language ||
 						(this.karaoke.data.tags.series?.length === 0 &&
 							this.karaoke.data.tags.singers?.length === 0) ||
 						this.karaoke.data.tags.songtypes.length === 0 ||
@@ -551,7 +550,7 @@
 							}
 						);
 						this.karaoke.medias = [{
-							version: determineVersion(this.karaoke.data.titles),
+							version: determineVersion(this.karaoke.data.titles, this.karaoke.data.titles_default_language),
 							filename: result.filename,
 							audiogain: result.gain,
 							loudnorm: result.loudnorm,
@@ -637,7 +636,7 @@
 						delete karaoke.data.tags[tag];
 					}
 				}
-				karaoke.data.title = karaoke.data.titles.eng;
+				karaoke.data.title = karaoke.data.titles[karaoke.data.titles_default_language || 'eng'];
 				if (this.$route.params.id) {
 					this.$axios.$put(
 						`/api/karas/${this.karaoke.data.kid}`,

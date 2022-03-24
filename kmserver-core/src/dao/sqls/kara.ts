@@ -71,6 +71,7 @@ export const insertKara = `
 INSERT INTO kara(
 	titles,
 	titles_aliases,
+	titles_default_language,
 	year,
 	songorder,
 	mediafile,
@@ -91,6 +92,7 @@ INSERT INTO kara(
 VALUES(
 	:titles,
 	:titles_aliases,
+	:titles_default_language,
 	:year,
 	:songorder,
 	:mediafile,

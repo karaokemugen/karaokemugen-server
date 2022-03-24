@@ -143,21 +143,21 @@
 						hid: 'twitter:title',
 						name: 'twitter:title',
 						content: this.$t('kara.meta', { // @ts-ignore: mais²
-							songtitle: this.karaoke.titles.eng, serieSinger: this.serieSinger.name
+							songtitle: this.karaoke.titles[this.karaoke.titles_default_language], serieSinger: this.serieSinger.name
 						}) as string
 					},
 					{
 						hid: 'description',
 						name: 'description',
 						content: this.$t('kara.meta', { // @ts-ignore: mais²
-							songtitle: this.karaoke.titles.eng, serieSinger: this.serieSinger.name
+							songtitle: this.karaoke.titles[this.karaoke.titles_default_language], serieSinger: this.serieSinger.name
 						}) as string
 					},
 					{
 						hid: 'og:title',
 						property: 'og:title',
 						content: this.$t('kara.meta', { // @ts-ignore: mais²
-							songtitle: this.karaoke.titles.eng, serieSinger: this.serieSinger.name
+							songtitle: this.karaoke.titles[this.karaoke.titles_default_language], serieSinger: this.serieSinger.name
 						}) as string
 					}
 				]
@@ -166,7 +166,7 @@
 
 		computed: {
 			title(): string {
-				return getTitleInLocale(this.karaoke.titles, this.$store.state.auth.user);
+				return getTitleInLocale(this.karaoke.titles, this.$store.state.auth.user, this.karaoke.titles_default_language);
 			},
 			tagTypesSorted(): object {
 				const tagTypes = { ...this.tagTypes };

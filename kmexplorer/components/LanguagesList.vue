@@ -36,6 +36,32 @@
 				</div>
 			</div>
 		</div>
+		<div v-if="defaultLanguage && Object.keys(i18n).length > 0" class="field is-horizontal is-grouped is-grouped-centered">
+			<label class="label">
+				{{ $t('kara.import.default_language') }}
+			</label>
+			<div class="control">
+				<div class="select">
+					<select
+						id="type"
+						v-model="defaultLang"
+						:required="true"
+						name="type"
+						autocomplete="off"
+						@change="(event) => setDefaultLanguage(event.target.value)"
+					>
+						<option
+							v-for="lang in listDefaultLanguagesAvailable()"
+							:key="lang.value"
+							:value="lang.value"
+							:selected="defaultLang === lang.value"
+						>
+							{{ lang.label }} ({{ lang.value.toUpperCase() }})
+						</option>
+					</select>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -48,6 +74,7 @@
 		i18n: Record<string, string>,
 		inputToFocus: string,
 		selectVisible: boolean,
+		defaultLang?: string
 	}
 
 	export default Vue.extend({
@@ -57,7 +84,11 @@
 			value: {
 				type: Object,
 				required: true
-			} as PropOptions<Record<string, string>>
+			} as PropOptions<Record<string, string>>,
+			defaultLanguage: {
+				type: String,
+				required: false
+			}
 		},
 
 		data(): VState {
@@ -65,13 +96,22 @@
 				langFilter: '',
 				i18n: this.value,
 				inputToFocus: '',
-				selectVisible: false
+				selectVisible: false,
+				defaultLang: this.defaultLanguage
 			};
 		},
 
 		computed: {
 			getListLanguages(): Array<{ value: string, label: string }> {
 				return this.listLanguages(this.langFilter);
+			}
+		},
+
+		watch: {
+			defaultLanguage(now) {
+				if (now) {
+					this.defaultLang = now;
+				}
 			}
 		},
 
@@ -82,7 +122,13 @@
 					option.value.toString()
 						.toLowerCase().includes(lang.toLowerCase()));
 			},
+			listDefaultLanguagesAvailable() {
+				return getListLanguagesInLocale().filter(value => Object.keys(this.i18n).includes(value.value));
+			},
 			addLang(lang:{label:string, value: string}) {
+				if (Object.keys(this.i18n).length === 0) {
+					this.setDefaultLanguage(lang.value);
+				}
 				this.i18n[lang.value] = '';
 				this.selectVisible = false;
 				this.inputToFocus = lang.value;
@@ -95,6 +141,9 @@
 			},
 			setValueLanguage() {
 				this.$emit('change', this.i18n);
+			},
+			setDefaultLanguage(lang: string) {
+				this.$emit('onDefaultLanguageSelect', lang);
 			}
 		}
 	});

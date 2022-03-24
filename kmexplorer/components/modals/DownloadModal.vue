@@ -8,7 +8,7 @@
 		<section class="modal-card-body">
 			<div class="columns">
 				<div class="column">
-					<a :href="bundleUrl" class="button" :download="`${serieSinger.name} - ${karaoke.titles.eng}.karabundle.json`" @click="closeModal">
+					<a :href="bundleUrl" class="button" :download="`${serieSinger.name} - ${karaoke.titles[karaoke.titles_default_language]}.karabundle.json`" @click="closeModal">
 						<font-awesome-icon :icon="['fas', 'file-export']" :fixed-width="true" />
 						{{ $t('modal.download.karabundle') }}
 					</a>
