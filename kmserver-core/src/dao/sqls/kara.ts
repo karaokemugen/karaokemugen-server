@@ -11,6 +11,7 @@ export const selectAllMedias = `
 export const getAllKaras = (filterClauses: string[], orderClauses: string, limitClause: string, offsetClause: string, selectClause: string, joinClause: string, groupClause: string, whereClauses: string, additionalFrom: string[], includeStaging: boolean, collectionClauses: string[]) => `SELECT
   ak.pk_kid AS kid,
   ak.titles AS titles,
+  ak.titles_default_language as titles_default_language,
   ak.songorder AS songorder,
   ak.subfile AS subfile,
   jsonb_path_query_array( tags, '$[*] ? (@.type_in_kara == 2)') AS singers,
