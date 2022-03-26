@@ -111,7 +111,7 @@
 					if (tagType === 'years') { continue; }
 					// @ts-ignore: il est 23h27 <- ceci n'est pas une raison
 					for (const tag of this.karaoke[tagType]) {
-						if (tag.nolivedownload) {
+						if (tag.noLiveDownload) {
 							noLiveDownload = true;
 						}
 					}
