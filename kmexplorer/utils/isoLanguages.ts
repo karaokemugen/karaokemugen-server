@@ -19,9 +19,11 @@ if (process.client) {
 
 export function getListLanguagesInLocale(): Array<{ value: string, label: string }> {
 	const result = [];
-	const langs = Object.values(getNames(navigatorLanguage));
-	for (const langInLocale of langs) {
-		result.push({ value: getAlpha3BCode(langInLocale, navigatorLanguage) as string, label: langInLocale });
+	if (process.client) {
+		const langs = Object.values(getNames(navigatorLanguage));
+		for (const langInLocale of langs) {
+			result.push({ value: getAlpha3BCode(langInLocale, navigatorLanguage) as string, label: langInLocale });
+		}
 	}
 	return result;
 }
