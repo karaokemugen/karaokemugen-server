@@ -70,7 +70,7 @@
 				:value="karaoke.data.titles"
 				:default-language="karaoke.data.titles_default_language"
 				@change="(titles) => karaoke.data.titles = titles"
-				@onDefaultLanguageSelect="(defaultLanguage) => karaoke.data.titles_default_language = defaultLanguage"
+				@onDefaultLanguage="onDefaultLanguageSelect"
 			/>
 			<p v-if="!karaoke.data.titles || Object.keys(karaoke.data.titles).length === 0" class="help is-danger">
 				{{ $t('kara.import.title_required') }}
@@ -511,6 +511,10 @@
 		},
 
 		methods: {
+			onDefaultLanguageSelect(defaultLanguage: string) {
+				this.karaoke.data.titles_default_language = defaultLanguage;
+				Vue.set(this.karaoke, 'data.titles_default_language', defaultLanguage);
+			},
 			async handleMediafileUpload() {
 				if ((this.$refs.mediafile as HTMLInputElement)?.files?.length !== 0) {
 					// @ts-ignore: sisi y'a eu un typecheck en haut, ta gueule mtn :)

@@ -143,7 +143,7 @@
 				this.$emit('change', this.i18n);
 			},
 			setDefaultLanguage(lang: string) {
-				this.$emit('onDefaultLanguageSelect', lang);
+				this.$emit('onDefaultLanguage', lang);
 			}
 		}
 	});
