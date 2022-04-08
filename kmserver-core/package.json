@@ -60,7 +60,8 @@
 	},
 	"dependencies": {
 		"@nuxtjs/axios": "^5.13.6",
-		"@sentry/node": "^6.19.4",
+		"@sentry/node": "^6.19.6",
+		"@sentry/tracing": "^6.19.6",
 		"ass-compiler": "^0.1.4",
 		"async-await-parallel": "^1.0.0",
 		"axios": "^0.26.1",

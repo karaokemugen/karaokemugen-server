@@ -419,6 +419,18 @@ export const NuxtConfig: NuxtConfigType = {
 		dsn: sentryDSN,
 		disabled: false,
 		publishRelease: false,
+		tracing: {
+			tracesSampleRate: 0.5,
+			vueOptions: {
+			  tracing: true,
+			  tracingOptions: {
+				hooks: ['mount', 'update'],
+				timeout: 2000,
+				trackComponents: true
+			  }
+			},
+			browserOptions: {}
+		},
 		config: {
 			ignoreErrors: [
 				'Request aborted',
