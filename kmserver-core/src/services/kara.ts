@@ -1,4 +1,5 @@
 import {createHash} from 'crypto';
+import { execa } from 'execa';
 import { promises as fs } from 'fs';
 import parallel from 'p-map';
 import { basename, resolve } from 'path';
@@ -85,10 +86,22 @@ export async function generate() {
 		const promises = [createImagePreviews(karas, 'full', 1280)];
 		if (conf.Hardsub.Enabled) promises.push(generateHardsubs(karas));
 		if (conf.KaraExplorer.Import) promises.push(clearOldInboxEntries(), clearUnusedStagingTags());
+		if (conf.System.Repositories[0].OnUpdateTrigger) promises.push(updateTrigger())
 		await Promise.all(promises);
 	} catch (err) {
 		logger.error('Generation failed', {service: 'Gen', obj: err});
 		sentry.error(err, 'Fatal');
+	}
+}
+
+async function updateTrigger() {
+	const trigger = getConfig().System.Repositories[0].OnUpdateTrigger;
+	const [cmd, args] = trigger.split(/ (.+)/);
+	logger.info(`Update trigger: ${trigger}`, { service: 'Gen' });
+	try {
+		await execa(cmd, args.split(' '));
+	} catch(err) {
+		logger.error('Update trigger failed', { service: 'Gen', obj: err});
 	}
 }
 
