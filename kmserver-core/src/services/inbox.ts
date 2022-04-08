@@ -5,6 +5,7 @@ import { v4 as uuidV4 } from 'uuid';
 import {clearInbox, deleteInbox, insertInbox, selectInbox, updateInboxDownloaded} from '../dao/inbox';
 import { deleteKara } from '../dao/kara';
 import {clearStagingTags} from '../dao/tag';
+import { formatKaraV4 } from '../lib/dao/karafile';
 import { refreshKarasAfterDBChange } from '../lib/services/karaManagement';
 import {KaraMetaFile, MetaFile, TagMetaFile} from '../lib/types/downloads';
 import { Inbox } from '../lib/types/inbox';
@@ -114,7 +115,8 @@ export async function removeKaraFromInbox(inid: string) {
 			fs.unlink(mediaPath)
 		]);
 		await deleteKara([inbox.kid]);
-		await refreshKarasAfterDBChange('DELETE', [kara]);
+		const karaData = formatKaraV4(kara);
+		await refreshKarasAfterDBChange('DELETE', [karaData.data]);
 	} catch (err) {
 		logger.error(`Failed to delete inbox item ${inid}`, {service: 'Inbox', obj: err});
 		Sentry.error(err);

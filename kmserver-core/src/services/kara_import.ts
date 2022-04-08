@@ -9,8 +9,8 @@ import { v4 as UUIDv4 } from 'uuid';
 import logger from 'winston';
 
 import { insertKara } from '../dao/kara';
-import { extractVideoSubtitles, getDataFromKaraFile, verifyKaraData } from '../lib/dao/karafile';
 import { applyKaraHooks } from '../lib/dao/hook';
+import { extractVideoSubtitles, getDataFromKaraFile, verifyKaraData } from '../lib/dao/karafile';
 import {
 	defineFilename,
 	determineMediaAndLyricsFilenames,
@@ -20,11 +20,10 @@ import { refreshKarasAfterDBChange, updateTags } from '../lib/services/karaManag
 import { EditedKara, KaraFileV4 } from '../lib/types/kara';
 import { getConfig, resolvedPath, resolvedPathRepos } from '../lib/utils/config';
 import { smartMove } from '../lib/utils/files';
+import { EditElement } from '../types/kara_import';
 import sentry from '../utils/sentry';
 import { gitlabPostNewSuggestion } from './gitlab';
 import { addKaraInInbox } from './inbox';
-import { EditElement } from '../types/kara_import';
-
 
 // Preflight checks before any import operation
 async function preflight(kara: KaraFileV4): Promise<KaraFileV4> {
@@ -76,16 +75,16 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		const karaDest = resolve(resolvedPathRepos('Karaokes', kara.data.repository)[0], `${fileName}.kara.json`);
 		await fs.writeFile(karaDest, JSON.stringify(kara, null, 2), 'utf-8');
 		const karaData = await getDataFromKaraFile(karaDest, kara, { media: true, lyrics: true });
-		karaData.karafile = basename(karaData.karafile);
+		karaData.meta.karaFile = basename(karaData.meta.karaFile);
 		await insertKara(karaData);
-		await updateTags(karaData);
-		await refreshKarasAfterDBChange('ADD', [karaData]);
+		await updateTags(karaData.data);
+		await refreshKarasAfterDBChange('ADD', [karaData.data]);
 		logger.debug('Kara', {service: 'Import', obj: karaData});
 		let issueURL: string;
 		if (conf.Gitlab.Enabled) {
-			issueURL = await gitlabPostNewSuggestion(karaData.kid, edit);
+			issueURL = await gitlabPostNewSuggestion(karaData.data.kid, edit);
 		}
-		addKaraInInbox(kara, contact, issueURL, edit ? edit.kid:undefined);
+		addKaraInInbox(kara, contact, issueURL, edit ? edit.kid : undefined);
 		return issueURL;
 	} catch (err) {
 		logger.error('Error importing kara', {service: 'KaraGen', obj: err});

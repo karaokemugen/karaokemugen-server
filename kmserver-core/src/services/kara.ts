@@ -15,6 +15,7 @@ import { KaraList, KaraParams } from '../lib/types/kara';
 import { JWTTokenWithRoles } from '../lib/types/user';
 import { ASSToLyrics } from '../lib/utils/ass';
 import { getConfig, resolvedPathRepos } from '../lib/utils/config';
+import {uuidRegexp} from '../lib/utils/constants';
 import { downloadFile } from '../lib/utils/downloader';
 import { resolveFileInDirs } from '../lib/utils/files';
 import logger from '../lib/utils/logger';
@@ -26,7 +27,6 @@ import { updateGit } from './git';
 import { gitlabPostNewIssue } from './gitlab';
 import { clearOldInboxEntries, clearUnusedStagingTags } from './inbox';
 import { findUserByName } from './user';
-import {uuidRegexp} from "../lib/utils/constants";
 
 export async function getBaseStats() {
 	try {
@@ -86,7 +86,7 @@ export async function generate() {
 		const promises = [createImagePreviews(karas, 'full', 1280)];
 		if (conf.Hardsub.Enabled) promises.push(generateHardsubs(karas));
 		if (conf.KaraExplorer.Import) promises.push(clearOldInboxEntries(), clearUnusedStagingTags());
-		if (conf.System.Repositories[0].OnUpdateTrigger) promises.push(updateTrigger())
+		if (conf.System.Repositories[0].OnUpdateTrigger) promises.push(updateTrigger());
 		await Promise.all(promises);
 	} catch (err) {
 		logger.error('Generation failed', {service: 'Gen', obj: err});
@@ -100,7 +100,7 @@ async function updateTrigger() {
 	logger.info(`Update trigger: ${trigger}`, { service: 'Gen' });
 	try {
 		await execa(cmd, args.split(' '));
-	} catch(err) {
+	} catch (err) {
 		logger.error('Update trigger failed', { service: 'Gen', obj: err});
 	}
 }
