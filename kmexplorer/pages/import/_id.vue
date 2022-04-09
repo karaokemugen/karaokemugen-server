@@ -73,6 +73,7 @@
 					karaparam: {
 						titles: {},
 						titles_aliases: [],
+						titles_default_language: null,
 						series: [],
 						versions: [],
 						singers: [],
