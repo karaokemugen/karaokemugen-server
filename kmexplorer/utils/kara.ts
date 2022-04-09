@@ -37,7 +37,7 @@ const tagTypesKaraFileV4Order: (
 	];
 
 export function determineVersion(titles: Record<string, string>, titles_default_language?: string): string {
-	const mediaVersionArr = titles[titles_default_language || 'eng']?.split(' ~ ');
+	const mediaVersionArr = titles && titles[titles_default_language || 'eng']?.split(' ~ ');
 	return mediaVersionArr?.length > 1 ? mediaVersionArr[mediaVersionArr.length - 1].replace(' Vers', '') : 'Default';
 }
 
