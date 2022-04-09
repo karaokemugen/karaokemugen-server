@@ -202,7 +202,7 @@ export default function KSController(router: Router) {
 				const diff = await getGitDiff(req.query.commit);
 				res.status(200).type('text/plain').send(diff);
 			} catch (err) {
-				res.status(err.code).send(err.msg);
+				res.status(err?.code || 500).send(err.msg);
 			}
 		});
 	router.route('/karas/repository/diff/full')
@@ -211,7 +211,7 @@ export default function KSController(router: Router) {
 				const diff = await getGitDiff(req.query.commit, true);
 				res.status(200).json(diff);
 			} catch (err) {
-				res.status(err.code).send(err.msg);
+				res.status(err?.code || 500).send(err.msg);
 			}
 		});
 }
