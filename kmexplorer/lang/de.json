@@ -133,5 +133,8 @@
 		"not_found_profile": "Dieser Benutzer konnte nicht gefunden werden",
 		"home": "Zur Startseite zurückkehren",
 		"generic": "Fehler"
+	},
+	"layout": {
+		"explore": "Füge welche hinzu!"
 	}
 }
