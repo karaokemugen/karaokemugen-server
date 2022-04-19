@@ -377,7 +377,7 @@
 				<button
 					class="button is-link"
 					:class="{'is-loading': loading}"
-					:disabled="submitDisabled"
+					:disabled="submitDisabled()"
 					@click="submit"
 				>
 					{{ $t('kara.import.submit') }}
@@ -484,6 +484,10 @@
 		},
 
 		computed: {
+			...mapState('auth', ['loggedIn'])
+		},
+
+		methods: {
 			submitDisabled(): boolean {
 				return Boolean(
 					(!this.$route.params.id && !this.mediafile) ||
@@ -507,13 +511,8 @@
 						this.loading
 				);
 			},
-			...mapState('auth', ['loggedIn'])
-		},
-
-		methods: {
 			onDefaultLanguageSelect(defaultLanguage: string) {
 				this.karaoke.data.titles_default_language = defaultLanguage;
-				Vue.set(this.karaoke, 'data.titles_default_language', defaultLanguage);
 			},
 			async handleMediafileUpload() {
 				if ((this.$refs.mediafile as HTMLInputElement)?.files?.length !== 0) {
