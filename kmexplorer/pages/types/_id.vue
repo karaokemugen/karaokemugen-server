@@ -55,7 +55,8 @@
 		size: number,
 		order?: string,
 		filter?: string,
-		stripEmpty?: boolean
+		stripEmpty?: boolean,
+		collections?: string
 	}
 
 	interface VState {
@@ -116,10 +117,11 @@
 					size: 100,
 					order: this.sort,
 					stripEmpty: true,
-					filter: this.search || undefined
+					filter: this.search || undefined,
+					collections: this.enabledCollections.join(',') || undefined
 				};
 			},
-			...mapState('menubar', ['search', 'sort'])
+			...mapState('menubar', ['search', 'sort', 'enabledCollections'])
 		},
 
 		watch: {
