@@ -134,6 +134,9 @@
 			search() {
 				this.setPage(1);
 			},
+			enabledCollections() {
+				this.setPage(1);
+			},
 			tags(now) {
 				menuBarStore.setResultsCount(now.infos.count);
 			}
