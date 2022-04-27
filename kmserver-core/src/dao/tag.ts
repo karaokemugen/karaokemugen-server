@@ -29,7 +29,7 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 	if (params.type > 0) {
 		joinClauses = `LEFT   JOIN LATERAL (
 	   	SELECT elem->>'count' AS karacounttype
-	   	FROM   jsonb_array_elements(at.karacount::jsonb) a(elem)
+	   	FROM   jsonb_array_elements(t_count.count_per_type::jsonb) a(elem)
 	   	WHERE  elem->>'type' = '${params.type}'
 	   	) a ON true
 		`;
