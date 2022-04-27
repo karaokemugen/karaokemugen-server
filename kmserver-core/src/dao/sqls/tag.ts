@@ -1,22 +1,39 @@
 // Tags SQL
 
-export const getAllTags = (filterClauses: string[], typeClauses: string, limitClause: string, offsetClause: string, joinClauses: string, orderClauses: string, stripClause: string, additionalFrom: string[]) => `
+export const getAllTags = (filterClauses: string[], typeClauses: string, limitClause: string, offsetClause: string, joinClauses: string, orderClauses: string, stripClause: string, additionalFrom: string[], collectionClause: string[]) => `
+WITH kara_available AS (
+	SELECT k.pk_kid
+	FROM kara k
+	LEFT JOIN kara_tag kt ON k.pk_kid = kt.fk_kid
+	WHERE ${collectionClause.join(' OR ')}
+),
+t_count AS (
+	SELECT a.fk_tid,
+		json_agg(json_build_object('type', a.type, 'count', a.c))::text AS count_per_type
+	FROM (SELECT kara_tag.fk_tid,
+				count(kara_tag.fk_kid) AS c,
+				kara_tag.type
+		FROM kara_tag
+		WHERE kara_tag.fk_kid IN (SELECT * FROM kara_available)
+		GROUP BY kara_tag.fk_tid, kara_tag.type) a
+	GROUP BY a.fk_tid
+)
 SELECT t.pk_tid AS tid,
 	t.types,
 	t.name,
 	t.short,
 	t.aliases,
 	t.i18n,
-	at.karacount AS karacount,
 	t.tagfile,
 	t.repository,
 	t.nolivedownload AS "noLiveDownload",
 	t.priority,
 	t.karafile_tag,
     t.description,
+	t_count.count_per_type::jsonb AS karacount,
 	count(t.pk_tid) OVER()::integer AS count
 FROM tag t
-LEFT JOIN all_tags at ON at.pk_tid = t.pk_tid
+LEFT JOIN t_count ON t.pk_tid = t_count.fk_tid
 ${joinClauses}
 ${additionalFrom.join('')}
 WHERE 1 = 1
@@ -35,7 +52,6 @@ SELECT t.pk_tid AS tid,
 	t.short,
 	t.aliases,
 	t.i18n,
-	at.karacount AS karacount,
 	t.tagfile,
 	t.repository,
 	t.nolivedownload AS "noLiveDownload",
@@ -43,7 +59,6 @@ SELECT t.pk_tid AS tid,
 	t.karafile_tag,
 	count(t.pk_tid) OVER()::integer AS count
 FROM tag t
-LEFT JOIN all_tags at ON at.pk_tid = t.pk_tid
 WHERE t.pk_tid = $1
 `;
 

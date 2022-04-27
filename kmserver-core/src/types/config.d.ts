@@ -12,6 +12,9 @@ export interface Config {
 		Name: string
 		Link: string
 	},
+	Karaoke?: {
+		Collections: any
+	},
 	Remote: {
 		Enabled: boolean
 		BaseHost: string

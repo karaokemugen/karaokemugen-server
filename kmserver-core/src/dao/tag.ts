@@ -45,6 +45,7 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 	if (!params.includeStaging) {
 		filterClauses.sql.push('t.repository != \'Staging\'');
 	}
+	const collectionClauses = params.collections?.map(c => `kt.fk_tid = '${c}'`) || ['1 = 1'];
 	const query = sql.getAllTags(
 filterClauses.sql,
 typeClauses,
@@ -53,7 +54,8 @@ offsetClause,
 joinClauses,
 orderClause,
 stripClause,
-filterClauses.additionalFrom
+filterClauses.additionalFrom,
+collectionClauses
 );
 	const res = await db().query(yesql(query)(filterClauses.params));
 	res.rows.forEach((e: any, i: number) => {

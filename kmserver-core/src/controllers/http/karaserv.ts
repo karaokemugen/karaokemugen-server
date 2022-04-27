@@ -123,7 +123,8 @@ export default function KSController(router: Router) {
 					from: req.query.from,
 					size: req.query.size,
 					stripEmpty: Boolean(req.query.stripEmpty),
-					includeStaging: Boolean(req.query.includeStaging)
+					includeStaging: Boolean(req.query.includeStaging),
+					collections: req.query.collections?.split(',')
 				});
 				res.json(tags);
 			} catch (err) {
@@ -148,7 +149,8 @@ export default function KSController(router: Router) {
 					from: req.query.from,
 					size: req.query.size,
 					stripEmpty: Boolean(req.query.stripEmpty),
-					includeStaging: Boolean(req.query.includeStaging)
+					includeStaging: Boolean(req.query.includeStaging),
+					collections: req.query.collections?.split(',')
 				});
 				res.json(tags);
 			} catch (err) {

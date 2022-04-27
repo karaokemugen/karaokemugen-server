@@ -1,7 +1,7 @@
 import { v4 as uuidV4 } from 'uuid';
 
 import {insertTag, selectTag, selectTags} from '../dao/tag';
-import { refreshTags, updateTagSearchVector } from '../lib/dao/tag';
+import { updateTagSearchVector } from '../lib/dao/tag';
 import { writeTagFile } from '../lib/dao/tagfile';
 import { DBTag } from '../lib/types/database/tag';
 import { Tag, TagList, TagParams } from '../lib/types/tag';
@@ -43,19 +43,6 @@ export async function getTag(tid: string) {
 	}
 }
 
-/* "Edit" a tag. Save its new version */
-// Unused? TODO: consider its removal
-/* export async function editTag(_tid: string, tag: Tag, _opts: any) {
-	try {
-		await addTag(tag, null);
-		return tag;
-	} catch(err) {
-		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
-		sentry.error(err);
-		throw err;
-	}
-} */
-
 export async function addTag(tag: Tag, opts = {forceRepo: ''}) {
 	try {
 		tag.tid = uuidV4();
@@ -68,7 +55,6 @@ export async function addTag(tag: Tag, opts = {forceRepo: ''}) {
 			writeTagFile(tag, resolvedPathRepos('Tags', 'Staging')[0])
 		]);
 		await updateTagSearchVector();
-		refreshTags();
 		return tag;
 	} catch (err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
