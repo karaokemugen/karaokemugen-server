@@ -14,9 +14,9 @@
 				@keydown.enter="triggerSearch"
 				@input="keyDown"
 			>
-			<span v-if="icon" class="icon is-small is-left">
+			<div v-if="icon" class="icon is-small is-left search-icon">
 				<font-awesome-icon :icon="['fas', 'search']" />
-			</span>
+			</div>
 		</div>
 		<div v-if="results && resultsCount > 0 && ['search-query', 'types-id', 'types-years', 'user-login', 'users'].includes($route.name)" class="control">
 			<button class="button is-static">
@@ -157,5 +157,9 @@
 			box-shadow: unset;
 			background-color: #36393f;
 		}
+	}
+	.search-icon {
+		display: block;
+		padding: 8px;
 	}
 </style>
