@@ -135,6 +135,9 @@
 			},
 			removeLang(lang:string) {
 				Vue.delete(this.i18n, lang);
+				if (Object.keys(this.i18n).length > 0 && lang === this.defaultLang) {
+					this.setDefaultLanguage(Object.keys(this.i18n)[0]);
+				}
 			},
 			getLanguagesFromCode(code:string) {
 				return getLanguagesInLocaleFromCode(code);
