@@ -198,7 +198,8 @@ export async function getAllKaras(params: KaraParams, token?: JWTTokenWithRoles,
 export async function getRawKara(kid: string): Promise<DownloadBundleServer> {
 	try {
 		const kara = (await selectAllKaras({
-			q: `k:${kid}`
+			q: `k:${kid}`,
+			ignoreCollections: true
 		}, true))[0];
 		if (!kara) throw 'Unknown song';
 		// Create a set of tagfiles to get only unique tagfiles.
@@ -242,7 +243,8 @@ export async function getRawKara(kid: string): Promise<DownloadBundleServer> {
 
 export async function newKaraIssue(kid: string, type: 'Media' | 'Metadata' | 'Lyrics', comment: string, username: string) {
 	const karas = await selectAllKaras({
-		q: `k:${kid}`
+		q: `k:${kid}`,
+		ignoreCollections: true
 	}, true);
 	const kara = karas[0];
 	logger.debug('Kara:', {service: 'GitLab', obj: kara});
