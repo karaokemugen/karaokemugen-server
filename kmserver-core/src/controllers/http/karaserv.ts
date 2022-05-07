@@ -47,7 +47,8 @@ export default function KSController(router: Router) {
 			const karas = await selectAllKaras({
 				filter: req.query.filter,
 				random: req.query.size,
-				username: req.authToken?.username
+				username: req.authToken?.username,
+				forceCollections: req.query.force_collections?.split(':')
 			});
 			res.json(karas.map(k => k.kid));
 		});
