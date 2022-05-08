@@ -168,9 +168,11 @@ export default function KSController(router: Router) {
 			}
 		});
 	router.route('/karas/years')
-		.get(async (_, res) => {
+		.get(async (req, res) => {
 			try {
-				const years = await getAllYears();
+				const years = await getAllYears({
+					collections: typeof req.query.collections === 'string' ? req.query.collections?.split(',') : undefined
+				});
 				res.json(years);
 			} catch (err) {
 				res.status(500).json(err);

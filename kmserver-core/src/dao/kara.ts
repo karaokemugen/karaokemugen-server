@@ -15,8 +15,12 @@ export async function selectAllMedias(): Promise<DBMedia[]> {
 	return res.rows;
 }
 
-export async function selectAllYears(): Promise<DBYear[]> {
-	const res = await db().query(sql.getYears);
+export async function selectAllYears(collections: string[]): Promise<DBYear[]> {
+	const collectionsClauses = [];
+	for (const collection of collections) {
+		collectionsClauses.push(`'${collection}~${tagTypes.collections}' = ANY(ak.tid)`);
+	}
+	const res = await db().query(sql.getYears(collectionsClauses));
 	return res.rows;
 }
 

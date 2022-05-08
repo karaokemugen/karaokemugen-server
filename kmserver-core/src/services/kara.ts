@@ -50,9 +50,9 @@ export function formatKaraList(karaList: any[], from: number, count: number): Ka
 	};
 }
 
-export async function getAllYears() {
+export async function getAllYears(params: {collections: string[]}) {
 	try {
-		return await selectAllYears();
+		return await selectAllYears(params.collections);
 	} catch (err) {
 		sentry.error(err);
 		throw err;

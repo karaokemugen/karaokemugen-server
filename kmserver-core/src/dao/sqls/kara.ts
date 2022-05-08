@@ -117,7 +117,18 @@ export const deleteKara = `
 DELETE FROM kara WHERE pk_kid = ANY ($1);
 `;
 
-export const getYears = 'SELECT year, karacount::integer FROM all_years ORDER BY year';
+export const getYears = (collectionClauses: string[]) => `
+SELECT DISTINCT
+	k.year,
+	COUNT(k2.pk_kid) AS karacount
+FROM kara AS k
+LEFT JOIN kara k2 ON k2.pk_kid = k.pk_kid
+LEFT JOIN all_karas ak ON k2.pk_kid = ak.pk_kid
+WHERE true
+${collectionClauses.length > 0 ? `AND (${collectionClauses.map(clause => `(${clause})`).join(' OR ')})` : ''}
+GROUP BY k.year
+ORDER BY year;
+`;
 
 export const selectBaseStats = `SELECT
 (SELECT COUNT(1) FROM all_tags WHERE types @> ARRAY[2])::integer AS singers,
