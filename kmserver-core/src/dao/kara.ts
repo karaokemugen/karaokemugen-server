@@ -17,7 +17,7 @@ export async function selectAllMedias(): Promise<DBMedia[]> {
 
 export async function selectAllYears(collections: string[]): Promise<DBYear[]> {
 	const collectionsClauses = [];
-	if (params.collections) for (const collection of collections) {
+	if (collections) for (const collection of collections) {
 		collectionsClauses.push(`'${collection}~${tagTypes.collections}' = ANY(ak.tid)`);
 	}
 	const res = await db().query(sql.getYears(collectionsClauses));
