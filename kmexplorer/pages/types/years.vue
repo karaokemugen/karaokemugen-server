@@ -23,6 +23,7 @@
 	import { fakeYearTag } from '~/utils/tools';
 	import { Tag as TagType } from '%/lib/types/tag';
 	import { menuBarStore } from '~/store';
+	import { mapState } from 'vuex';
 
 	interface VState {
 		years: DBYear[]
@@ -36,9 +37,19 @@
 			Tag
 		},
 
+		data(): VState {
+			return {
+				years: []
+			};
+		},
+
 		async fetch() {
 			const res = await this.$axios
-				.get<DBYear[]>('/api/karas/years/')
+				.get<DBYear[]>('/api/karas/years/', {
+					params: {
+						collections: menuBarStore.enabledCollections.join(',')
+					}
+				})
 				.catch(_err =>
 					this.$nuxt.error({ statusCode: 404, message: this.$t('tag.notfound') as string })
 				);
@@ -50,12 +61,6 @@
 			}
 		},
 
-		data(): VState {
-			return {
-				years: []
-			};
-		},
-
 		computed: {
 			tags(): TagType[] {
 				const tags: TagType[] = [];
@@ -63,6 +68,25 @@
 					tags.push(fakeYearTag(year.year.toString(), year.karacount));
 				}
 				return tags;
+			},
+			...mapState('menubar', ['enabledCollections'])
+		},
+
+		watch: {
+			enabledCollections() {
+				this.setPage();
+			}
+		},
+
+		methods: {
+			async setPage(): Promise<void> {
+				const res = await this.$axios.get<DBYear[]>('/api/karas/years/', {
+					params: {
+						collections: menuBarStore.enabledCollections.join(',')
+					}
+				});
+				this.years = res.data;
+				menuBarStore.setResultsCount(res.data.length);
 			}
 		}
 	});
