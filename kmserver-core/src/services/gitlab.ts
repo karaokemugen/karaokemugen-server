@@ -8,6 +8,8 @@ import sentry from '../utils/sentry';
 import { findUserByName } from './user';
 import { getKara } from './kara';
 import { EditElement } from '../types/kara_import';
+import { isEqual } from 'lodash';
+import { tagTypes } from '../lib/utils/constants';
 
 /** Use the appropriate template and post an inbox element to GitLab * */
 export async function gitlabPostNewSuggestion(kid: string, edit?: EditElement) {
@@ -18,7 +20,7 @@ export async function gitlabPostNewSuggestion(kid: string, edit?: EditElement) {
 	const issueTemplate = edit ? conf.Gitlab.IssueTemplate.Edit : conf.Gitlab.IssueTemplate.Import;
 	const title = (issueTemplate.Title || `Inbox ${edit ? 'edit' : 'creation'}: $kara`)
 		.replace('$kara', basename(kara.karafile, '.kara.json'));
-	const desc = (issueTemplate.Description || '')
+	let desc = (issueTemplate.Description || '')
 		.replace('$file', kara.karafile)
 		.replace('$newSub', edit ? edit.modifiedLyrics.toString():'N/A')
 		.replace('$newVideo', edit ? edit.modifiedMedia.toString():'N/A')
@@ -41,7 +43,25 @@ export async function gitlabPostNewSuggestion(kid: string, edit?: EditElement) {
 		.replace('$origins', kara.origins.map(t => t.name).join(', '))
 		.replace('$versions', kara.versions.map(t => t.name).join(', '))
 		.replace('$warnings', kara.warnings.map(t => t.name).join(', '))
+		.replace('$collections', kara.collections.map(t => t.name).join(', '))
 		.replace('$duration', duration(kara.duration));
+		if (edit) {
+			const changes = [];
+			desc += `
+
+			# Modifications
+			
+			`;
+			if (!isEqual(edit.oldKara.year, kara.year)) changes.push(`YEAR updated : ${edit.oldKara.year} => ${kara.year}`);
+			if (!isEqual(edit.oldKara.songorder, kara.songorder)) changes.push(`SONGORDER updated : ${edit.oldKara.songorder} => ${kara.songorder}`);
+			if (!isEqual(edit.oldKara.titles, kara.titles)) changes.push(`TITLES updated : ${JSON.stringify(edit.oldKara.titles, null, 2)} => ${JSON.stringify(kara.titles, null, 2)}`);
+			if (!isEqual(edit.oldKara.titles_aliases, kara.titles_aliases)) changes.push(`TITLES ALIASES updated : ${JSON.stringify(edit.oldKara.titles_aliases, null, 2)} => ${JSON.stringify(kara.titles_aliases, null, 2)}`);
+			if (!isEqual(edit.oldKara.titles_default_language, kara.titles_default_language)) changes.push(`TITLES DEFAULT LANGUAGE updated : ${edit.oldKara.titles_default_language} => ${kara.titles_default_language}`);
+			for (const tagType of Object.keys(tagTypes)) {
+				if (!isEqual(edit.oldKara[tagType], kara[tagType])) changes.push(`${tagType.toUpperCase()} updated : (${edit.oldKara[tagType]?.map((t: any) => t.name).join(', ')}) => (${kara[tagType]?.map((t: any) => t.name).join(', ')})`)
+			}
+			desc += changes.map(c => `- ${c}`).join('\n');
+		}
 	return gitlabPostNewIssue(title, desc, issueTemplate.Labels);
 }
 

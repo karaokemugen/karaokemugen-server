@@ -24,6 +24,7 @@ import { EditElement } from '../types/kara_import';
 import sentry from '../utils/sentry';
 import { gitlabPostNewSuggestion } from './gitlab';
 import { addKaraInInbox } from './inbox';
+import { getKara } from './kara';
 
 // Preflight checks before any import operation
 async function preflight(kara: KaraFileV4): Promise<KaraFileV4> {
@@ -82,6 +83,12 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		logger.debug('Kara', {service: 'Import', obj: karaData});
 		let issueURL: string;
 		if (conf.Gitlab.Enabled) {
+			if (edit) {
+				edit.oldKara = await getKara({
+					q: `k:${edit.kid}`,
+					ignoreCollections: true
+				});
+			}
 			issueURL = await gitlabPostNewSuggestion(karaData.data.kid, edit);
 		}
 		addKaraInInbox(kara, contact, issueURL, edit ? edit.kid : undefined);
@@ -96,8 +103,8 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 	}
 }
 
-export async function editKara(edit: EditedKara, contact: string): Promise<string> {
-	const conf = getConfig();
+export async function editKara(edit: EditedKara, contact: string): Promise<string> {	
+	const conf = getConfig();	
 	const onlineRepo = conf.System.Repositories.find(r => r.Name !== 'Staging').Name;
 	const edited_kid = edit.kara.data.kid;
 	const kara = await preflight(edit.kara);
