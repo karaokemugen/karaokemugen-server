@@ -34,6 +34,7 @@ export const defaults: Config = {
 		},
 		Repositories: [],
 		Path: {
+			Dumps: 'dumps',
 			Temp: 'temp',
 			Import: 'inbox',
 			Avatars: 'avatars',

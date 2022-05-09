@@ -83,6 +83,7 @@ export async function generate() {
 			downloadFile(downloadItem);
 		}
 		computeSubchecksums();
+		createBaseDumps();
 		const promises = [createImagePreviews(karas, 'full', 1280)];
 		if (conf.Hardsub.Enabled) promises.push(generateHardsubs(karas));
 		if (conf.KaraExplorer.Import) promises.push(clearOldInboxEntries(), clearUnusedStagingTags());
@@ -92,6 +93,44 @@ export async function generate() {
 		logger.error('Generation failed', {service: 'Gen', obj: err});
 		sentry.error(err, 'Fatal');
 	}
+}
+
+async function createBaseDumps() {
+	await Promise.all([
+		createFileBaseDump(),
+		createDBBaseDump()
+	]).catch(err => {
+		logger.error('Unable to create dump', { service: 'Gen', obj: err});
+		sentry.error(err);
+	})
+}
+
+async function createDBBaseDump() {
+	const dump = await selectAllKaras({ ignoreCollections: true }, false);
+	const dumpFile = resolve(getState().dataPath, getConfig().System.Path.Dumps, 'basedb.json');
+	await fs.writeFile(dumpFile, JSON.stringify(dump, null, 2), 'utf-8');
+}
+
+async function createFileBaseDump() {
+	const repo = getConfig().System.Repositories[0];
+	const kdir = resolvedPathRepos('Karaokes', repo.Name)[0];
+	const tdir = resolvedPathRepos('Tags', repo.Name)[0];
+	const karaFiles = await fs.readdir(kdir);
+	const tagFiles = await fs.readdir(tdir);
+	const dump = {
+		Karaokes: [],
+		Tags: [],
+	}
+	for (const karaFile of karaFiles) {
+		const karaData = await fs.readFile(resolve(kdir, karaFile), 'utf-8');
+		dump.Karaokes.push(JSON.parse(karaData));
+	}
+	for (const tagFile of tagFiles) {
+		const tagData = await fs.readFile(resolve(tdir, tagFile), 'utf-8');
+		dump.Tags.push(JSON.parse(tagData));
+	}
+	const dumpFile = resolve(getState().dataPath, getConfig().System.Path.Dumps, 'basefiles.json');
+	await fs.writeFile(dumpFile, JSON.stringify(dump, null, 2), 'utf-8');
 }
 
 async function updateTrigger() {

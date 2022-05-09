@@ -95,6 +95,7 @@ export interface Config {
 		},
 		Repositories: RepositoryWithManifest[]
 		Path: {
+			Dumps?: string,
 			Hardsubs?: string,
 			Karas?: string,
 			Tags?: string,

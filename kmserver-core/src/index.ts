@@ -89,6 +89,7 @@ async function main() {
 	console.log('\n');
 	const paths = conf.System.Path;
 	const checks = [
+		asyncCheckOrMkdir(resolve(dataPath, paths.Dumps)),
 		asyncCheckOrMkdir(resolve(dataPath, paths.Import)),
 		asyncCheckOrMkdir(resolve(dataPath, paths.Temp)),
 		asyncCheckOrMkdir(resolve(dataPath, paths.Previews)),
