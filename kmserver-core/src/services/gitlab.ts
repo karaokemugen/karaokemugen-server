@@ -49,9 +49,11 @@ export async function gitlabPostNewSuggestion(kid: string, edit?: EditElement) {
 			const changes = [];
 			desc += `
 
-			# Modifications
-			
-			`;
+# Modifications
+
+`;
+			if (edit.modifiedLyrics) changes.push(`LYRICS updated`);
+			if (edit.modifiedMedia) changes.push(`MEDIA updated`);
 			if (!isEqual(edit.oldKara.year, kara.year)) changes.push(`YEAR updated : ${edit.oldKara.year} => ${kara.year}`);
 			if (!isEqual(edit.oldKara.songorder, kara.songorder)) changes.push(`SONGORDER updated : ${edit.oldKara.songorder} => ${kara.songorder}`);
 			if (!isEqual(edit.oldKara.titles, kara.titles)) changes.push(`TITLES updated : ${JSON.stringify(edit.oldKara.titles, null, 2)} => ${JSON.stringify(kara.titles, null, 2)}`);
