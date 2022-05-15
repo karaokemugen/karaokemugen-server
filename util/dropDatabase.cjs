@@ -3,12 +3,12 @@
 // DO NOT DO THIS AT HOME.
 
 const configFile = 'app/database.json';
-const {safeLoad} = require('js-yaml');
+const {load} = require('js-yaml');
 const {Pool} = require('pg');
 const {readFileSync} = require('fs');
 
 const config = readFileSync('app/config.yml', 'utf-8');
-const conf = safeLoad(config);
+const conf = load(config);
 const dbConfig = {
 	host: conf.System.Database.host,
 	user: conf.System.Database.username,
