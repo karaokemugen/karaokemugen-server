@@ -19,7 +19,8 @@
 			"series": "Serial",
 			"misc": "Lain-lain",
 			"families": "Keluarga",
-			"warnings": "Peringatan"
+			"warnings": "Peringatan",
+			"collections": "Koleksi"
 		},
 		"singers_by": "Dinyanyikan oleh",
 		"creators_by": "Dibuat oleh",
@@ -127,7 +128,9 @@
 			"contact_infos": "Informasi kontak",
 			"auto_send_contact_infos": "Jika kamu masuk, kamu bisa mencentang sebuah kotak di formulir untuk secara otomatis membagikan informasi kontakmu dengan pengelola basis data.",
 			"media_file_edit": "Mengganti berkas media",
-			"add_file_media_not_supported_error": "{name} bukan berkas media yang didukung, konversi ke salah satu dari format berikut: {formats}"
+			"add_file_media_not_supported_error": "{name} bukan berkas media yang didukung, konversi ke salah satu dari format berikut: {formats}",
+			"collections_required": "Paling tidak satu koleksi harus dicentang",
+			"default_language": "Bahasa baku"
 		},
 		"songwriters_by": "Digubah oleh",
 		"created_at": "Dibuat ",
@@ -157,7 +160,8 @@
 		"slogan": "Lagu ini tersedia di basis lagu Karaoke Mugen!",
 		"remove_tags": "Apakah kamu sudah mencoba menghapus beberapa tanda filter dari pencarian?",
 		"end_my_favorites": "Ini merupakan akhir dari favoritmu.",
-		"end_users": "Kamu sudah mencapai akhir dari daftar pengguna (selamat!)."
+		"end_users": "Kamu sudah mencapai akhir dari daftar pengguna (selamat!).",
+		"collections": "Karaoke Mugen menyediakan banyak koleksi, pilih salah satu yang menarik buat Anda."
 	},
 	"footer": {
 		"home": "Beranda proyek",
