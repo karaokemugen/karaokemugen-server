@@ -67,7 +67,7 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		if (kara.medias[0].lyrics[0]) {
 			const subPath = resolve(resolvedPath('Temp'), kara.medias[0].lyrics[0].filename);
 			const subDest = resolve(resolvedPathRepos('Lyrics', kara.data.repository)[0], filenames.lyricsfile);
-			await processSubfile(subPath, mediaPath);
+			await processSubfile(subPath);
 			await smartMove(subPath, subDest, { overwrite: true });
 			kara.medias[0].lyrics[0].filename = filenames.lyricsfile;
 		}
