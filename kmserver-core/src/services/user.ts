@@ -91,7 +91,7 @@ username,
 user.email
 );
 	} catch (err) {
-		if (err.message !== 'No request' && err.message !== 'User unknown') {
+		if (err.message !== 'No request' && err.message !== 'User unknown' && err.message !== 'Wrong code') {
 			sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 			sentry.error(err);
 		}
