@@ -237,6 +237,9 @@
 			},
 			submitForm() {
 				this.loading = true;
+				if (!this.formData.username) {
+					this.formData.username = 'Anonymous';
+				}
 				this.$axios.post('/api/karas/suggest', this.formData).then((res) => {
 					this.submitted = true;
 					this.loading = false;
