@@ -37,10 +37,6 @@
 			</div>
 
 			<div v-if="communityMenu" class="navbar-dropdown">
-				<a :aria-label="$t('menu.join_kara')" class="navbar-item" @click.prevent="modal.joinKara = true">
-					<font-awesome-icon :icon="['fas', 'person-booth']" :fixed-width="true" />
-					{{ $t('menu.join_kara') }}
-				</a>
 				<nuxt-link v-if="usersEnabled" class="navbar-item" to="/users">
 					<font-awesome-icon :icon="['fas', 'users']" :fixed-width="true" />
 					{{ $t('menu.search_users') }}
@@ -397,10 +393,6 @@
 				</p>
 				<ul class="menu-list">
 					<li>
-						<a aria-label="Join a karaoke party" @click.prevent="modal.joinKara = true">
-							<font-awesome-icon :icon="['fas', 'person-booth']" :fixed-width="true" />
-							{{ $t('menu.join_kara') }}
-						</a>
 						<nuxt-link to="/users" active-class="is-active">
 							<font-awesome-icon :icon="['fas', 'users']" :fixed-width="true" />
 							{{ $t('menu.search_users') }}

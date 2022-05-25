@@ -17,9 +17,36 @@
 		<h2 class="subtitle">
 			{{ explorerTagline }}
 		</h2>
+		<div class="is-hidden-mobile">
+			<label class="label" for="token">
+				{{ $t('modal.join_kara.desc') }}
+			</label>
+			<div class="field has-addons">
+				<div class="control is-expanded">
+					<input
+						id="token"
+						v-model="token"
+						type="text"
+						name="token"
+						class="input"
+					>
+				</div>
+				<div class="control">
+					<button class="button is-success" @click.prevent="joinKara">
+						<font-awesome-icon :icon="['fas', 'person-booth']" :fixed-width="true" /> {{ $t('modal.join_kara.label') }}
+					</button>
+				</div>
+			</div>
+			<p class="help">
+				{{ $t('modal.join_kara.help') }}
+			</p>
+			<p v-if="error" class="help is-danger">
+				{{ $t('modal.join_kara.error') }}
+			</p>
+		</div>
 		<div class="mobile-search-bar is-hidden-desktop">
 			<button class="button is-success" @click.prevent="openJoinKaraModal">
-				<font-awesome-icon :icon="['fas', 'person-booth']" :fixed-width="true" /> {{ $t('menu.join_kara') }}
+				<font-awesome-icon :icon="['fas', 'person-booth']" :fixed-width="true" /> {{ $t('modal.join_kara.label') }}
 			</button>
 			<search-bar :filter="false" :results="false" icon />
 		</div>
@@ -89,6 +116,25 @@
 	import { modalStore } from '~/store';
 	import SearchBar from '~/components/SearchBar.vue';
 
+	interface VState {
+		explorerHost?: string
+		explorerTagline?: string
+		remoteProtocol?: string
+		token: string
+		error: boolean
+		count: {
+			singers: number,
+			creators: number,
+			languages: number,
+			authors: number,
+			songwriters: number,
+			series: number,
+			karas: number,
+			duration: number,
+			mediasize: number
+		}
+	}
+
 	export default Vue.extend({
 		name: 'HomeStats',
 
@@ -96,10 +142,13 @@
 			SearchBar
 		},
 
-		data() {
+		data(): VState {
 			return {
 				explorerHost: process.env.EXPLORER_HOST,
 				explorerTagline: process.env.EXPLORER_TAGLINE,
+				remoteProtocol: process.env.REMOTE_PROTOCOL,
+				token: '',
+				error: false,
 				count: {
 					singers: 0,
 					creators: 0,
@@ -145,7 +194,24 @@
 			},
 			openJoinKaraModal() {
 				modalStore.openModal('joinKara');
-			}
+			},
+			async joinKara(): Promise<void> {
+				if (this.token) {
+					this.error = false;
+					try {
+						let url: string;
+						if (/^https?:\/\//.test(this.token)) {
+							url = this.token;
+						} else {
+							url = `${this.remoteProtocol}://${this.token}.${this.explorerHost}`;
+						}
+						await this.$axios.get(url);
+						window.open(url, '_self');
+					} catch (e) {
+						this.error = true;
+					}
+				}
+			},
 		}
 	});
 </script>
