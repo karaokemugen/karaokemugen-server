@@ -52,6 +52,10 @@ export const defaults: Config = {
 		Name: null,
 		Link: null
 	},
+	SocialNetworks: {
+		Discourse: null,
+		Discord: null
+	},
 	Remote: {
 		Enabled: true,
 		BaseHost: 'localhost',
@@ -295,7 +299,9 @@ export const NuxtConfig: NuxtConfigType = {
 		SUPPORTED_LYRICS: 'ass',
 		SUPPORTED_MEDIAS: 'mp4',
 		API_HOST: '',
-		EXPLORER_HOST: ''
+		EXPLORER_HOST: '',
+		DISCORD_LINK: '',
+		DISCOURSE_LINK: ''
 	},
 	/*
 	 ** Nuxt.js dev-modules

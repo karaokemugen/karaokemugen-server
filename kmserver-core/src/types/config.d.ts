@@ -12,6 +12,10 @@ export interface Config {
 		Name: string
 		Link: string
 	},
+	SocialNetworks: {
+		Discourse: string
+		Discord: string
+	},
 	Karaoke?: {
 		Collections: any
 	},

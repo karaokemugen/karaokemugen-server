@@ -66,13 +66,15 @@ import {
 	faEyeSlash,
 	faFilm,
 	faExclamationTriangle,
-	faLayerGroup
+	faLayerGroup,
+	faAt
 } from '@fortawesome/free-solid-svg-icons';
 import {
 	faTwitter,
 	faInstagram,
 	faDiscord,
-	faTwitch
+	faTwitch,
+	faDiscourse
 } from '@fortawesome/free-brands-svg-icons';
 
 // This is important, we are going to let Nuxt.js worry about the CSS
@@ -126,6 +128,7 @@ library.add(
 	faTachometerAlt,
 	faSearch,
 	faDice,
+	faAt,
 	faPortrait,
 	faPersonBooth,
 	faImage,
@@ -139,6 +142,7 @@ library.add(
 	faTwitter,
 	faInstagram,
 	faDiscord,
+	faDiscourse,
 	faTwitch,
 	faHeart,
 	faUserShield,

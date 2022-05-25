@@ -17,6 +17,11 @@
 				</div>
 				<div class="navbar-item has-dropdown is-hidden-desktop">
 					<a class="navbar-link" @click="openMenu('community')">
+						<font-awesome-icon :icon="['fas', 'at']" :fixed-width="true" />
+					</a>
+				</div>
+				<div class="navbar-item has-dropdown is-hidden-desktop">
+					<a class="navbar-link" @click="openMenu('participate')">
 						<font-awesome-icon :icon="['fas', 'cloud-upload-alt']" :fixed-width="true" />
 					</a>
 				</div>
@@ -41,6 +46,17 @@
 					<font-awesome-icon :icon="['fas', 'users']" :fixed-width="true" />
 					{{ $t('menu.search_users') }}
 				</nuxt-link>
+				<a v-if="discordLink" :href="discordLink" class="navbar-item">
+					<font-awesome-icon :icon="['fab', 'discord']" :fixed-width="true" />
+					{{ $t('menu.discord') }}
+				</a>
+				<a v-if="discourseLink" :href="discourseLink" class="navbar-item">
+					<font-awesome-icon :icon="['fab', 'discourse']" :fixed-width="true" />
+					{{ $t('menu.discourse') }}
+				</a>
+			</div>
+
+			<div v-if="participateMenu" class="navbar-dropdown">
 				<nuxt-link v-if="import_enabled" class="navbar-item" to="/import">
 					<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true" />
 					{{ $t('menu.kara_import') }}
@@ -397,6 +413,21 @@
 							<font-awesome-icon :icon="['fas', 'users']" :fixed-width="true" />
 							{{ $t('menu.search_users') }}
 						</nuxt-link>
+						<a v-if="discordLink" :href="discordLink" active-class="is-active">
+							<font-awesome-icon :icon="['fab', 'discord']" :fixed-width="true" />
+							{{ $t('menu.discord') }}
+						</a>
+						<a v-if="discourseLink" :href="discourseLink" active-class="is-active">
+							<font-awesome-icon :icon="['fab', 'discourse']" :fixed-width="true" />
+							{{ $t('menu.discourse') }}
+						</a>
+					</li>
+				</ul>
+				<p class="menu-label">
+					{{ $t('menu.participate') }}
+				</p>
+				<ul class="menu-list">
+					<li>
 						<nuxt-link v-if="import_enabled" to="/import" active-class="is-active">
 							<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true" />
 							{{ $t('menu.kara_import') }}
@@ -483,6 +514,7 @@
 	import Vue from 'vue';
 	import { mapState } from 'vuex';
 	import VueI18n from 'vue-i18n';
+	import { DBUser } from '~/../kmserver-core/src/lib/types/database/user';
 	import SearchTags from '~/components/SearchTags.vue';
 	import SearchBar from '~/components/SearchBar.vue';
 	import LoginModal from '~/components/modals/LoginModal.vue';
@@ -494,17 +526,19 @@
 	import { menuBarStore, modalStore } from '~/store';
 	import { generateNavigation } from '~/utils/tools';
 	import { ModalType } from '~/store/modal';
-	import { DBUser } from '~/../kmserver-core/src/lib/types/database/user';
 
 	interface VState {
 		import_enabled?: string,
 		base_license_name?: string,
 		base_license_link?: string,
 		explorerHost?: string,
+		discordLink?: string,
+		discourseLink?: string,
 		usersEnabled?: boolean,
 		tagsMenu: boolean,
 		databaseMenu: boolean,
 		communityMenu: boolean,
+		participateMenu: boolean
 		accountMenu: boolean,
 		languageMenu: boolean,
 		modal: {
@@ -536,10 +570,13 @@
 				base_license_name: process.env.BASE_LICENSE_NAME,
 				base_license_link: process.env.BASE_LICENSE_LINK,
 				explorerHost: process.env.EXPLORER_HOST,
+				discordLink: process.env.DISCORD_LINK,
+				discourseLink: process.env.DISCOURSE_LINK,
 				usersEnabled: process.env.USERS as unknown as boolean,
 				tagsMenu: false,
 				databaseMenu: false,
 				communityMenu: false,
+				participateMenu: false,
 				accountMenu: false,
 				languageMenu: false,
 				modal: {
@@ -598,6 +635,7 @@
 				this.accountMenu = false;
 				this.databaseMenu = false;
 				this.communityMenu = false;
+				this.participateMenu = false;
 				this.languageMenu = false;
 			});
 		},
@@ -615,14 +653,22 @@
 				if (menu === 'database') {
 					this.databaseMenu = !this.databaseMenu;
 					this.communityMenu = false;
+					this.participateMenu = false;
 					this.accountMenu = false;
 				} else if (menu === 'community') {
 					this.databaseMenu = false;
 					this.communityMenu = !this.communityMenu;
+					this.participateMenu = false;
+					this.accountMenu = false;
+				} else if (menu === 'participate') {
+					this.databaseMenu = false;
+					this.communityMenu = false;
+					this.participateMenu = !this.participateMenu;
 					this.accountMenu = false;
 				} else if (menu === 'account') {
 					this.databaseMenu = false;
 					this.communityMenu = false;
+					this.participateMenu = false;
 					this.accountMenu = !this.accountMenu;
 				}
 			},

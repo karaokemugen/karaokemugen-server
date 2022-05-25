@@ -30,7 +30,9 @@ function generateConfig(production = false) {
 				(production || conf.API.Port === 443 || conf.API.Port === 80) ? '' : `:${conf.Frontend.Port}`}/`,
 			BANNER_BAN: conf.Users.BannerBan,
 			USERS: conf.Users.Enabled,
-			DEFAULT_COLLECTIONS: conf.System.DefaultCollections
+			DEFAULT_COLLECTIONS: conf.System.DefaultCollections,
+			DISCORD_LINK: conf.SocialNetworks.Discord,
+			DISCOURSE_LINK: conf.SocialNetworks.Discourse
 		},
 		axios: {
 			baseURL: `http${conf.API.Secure ? 's' : ''}://${conf.API.Host}${
