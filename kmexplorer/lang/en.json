@@ -208,7 +208,8 @@
 		"discord": "Discord",
 		"discourse": "Discourse",
 		"participate": "Participate",
-		"kara_import": "Submit a kara",
+		"kara_import": "Submit a karaoke",
+		"kara_suggest": "Suggest a karaoke",
 		"account": "Account",
 		"login": "Login",
 		"logout": "Logout",
@@ -238,7 +239,9 @@
 			"recent": "By date added",
 			"most_played": "Most played",
 			"most_favorites": "Most favorites",
-			"most_requested": "Most requested"
+			"most_requested": "Most requested",
+			"likes": "Most likes",
+			"languages": "By languages"
 		},
 		"next": "Next page",
 		"previous": "Previous page",
@@ -250,7 +253,8 @@
 		"types": {
 			"karaokes": "Songs",
 			"users": "Users",
-			"favorites": "User's favorites"
+			"favorites": "User's favorites",
+			"suggestions": "Suggestions"
 		}
 	},
 	"modal": {
@@ -489,5 +493,29 @@
 		"contributor": "Contributor",
 		"maintainer": "Maintainer",
 		"admin": "Administrator"
-	}
+	},
+	"suggestions": {
+		"kara": {
+		  "yes": "Yes!",
+		  "ok": "All good!",
+		  "remove": "Remove"
+		},
+		"header": {
+			"title": "Import suggestions",
+		  	"description": "Use the search to find a karaoke you would like to see integrated later in Karaoke Mugen.",
+			"purpose": "Here are some karaoke songs that are ready to be imported, you can search for a particular song or press the \"Randomly select other songs\" button. You can endorse a karaoke song by pressing \"Yes!\" If you still can't find the song you're looking for, click \"Send Suggestion\".",
+			"random_selection": "Randomly select other songs",
+			"send_suggestion": "Send suggestion"
+		},
+		"modal": {
+		  "welcome": {
+			"title": "Where am I?",
+			"text": "There's a lot of other karaokes databases: ones for UltraStar, Karawin or Karafun softwares. So here are some titles which are already available, with their lyrics synchronized, but has we can't integrate immediately everything, we'd like to know your priorities!",
+			"text2": "You can either search something, or let the random do the job. In both cases, we'd be grateful for the time you spend enhancing our databases. Thank you!",
+			"text3": "If you want to ask for help, come and see us on {discord}. We're listening your suggestions and critics.",
+			"discord": "Discord",
+			"btn": "OK!"
+		  }
+		}
+	  }
 }

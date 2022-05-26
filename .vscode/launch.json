@@ -4,13 +4,12 @@
             "name": "Launch KM",
             "type": "node",
             "request": "launch",
-            "runtimeArgs": [
-                "-r",
-                "ts-node/register"
-            ],
             "args": [
-                "${workspaceFolder}/src/index.ts"
-            ]
+                "${workspaceFolder}/kmserver-core/dist/index.js"
+            ],
+            "env": {
+                "NODE_ENV": "development"
+            }
         }
     ]
 }

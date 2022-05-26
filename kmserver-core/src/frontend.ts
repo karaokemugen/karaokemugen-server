@@ -13,6 +13,7 @@ import inboxController from './controllers/http/inbox';
 import KImportController from './controllers/http/karaimport';
 import KServerController from './controllers/http/karaserv';
 import statsController from './controllers/http/stats';
+import suggestionsController from './controllers/http/suggestions';
 import userController from './controllers/http/user';
 import remoteSocketController from './controllers/ws/remote';
 import userSubSocketController from './controllers/ws/user';
@@ -135,5 +136,6 @@ function api() {
 		favoritesController(apiRouter);
 		authController(apiRouter);
 	}
+	if (conf.Suggestions.Enabled) suggestionsController(apiRouter);
 	return apiRouter;
 }

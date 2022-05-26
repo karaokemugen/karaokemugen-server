@@ -75,6 +75,9 @@ export const defaults: Config = {
 	Stats: {
 		Enabled: true
 	},
+	Suggestions: {
+		Enabled: true
+	},
 	API: {
 		Secure: true,
 		Host: 'localhost',
@@ -293,6 +296,7 @@ export const NuxtConfig: NuxtConfigType = {
 	env: {
 		LIVE_URL: 'false',
 		KM_IMPORT: 'false',
+		SUGGESTIONS: 'false',
 		IN_PROGRESS_SONGS_LIST: '',
 		BASE_LICENSE_NAME: '',
 		BASE_LICENSE_LINK: '',

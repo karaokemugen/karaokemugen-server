@@ -19,6 +19,7 @@ import { initGitRepos } from './services/git';
 import { generate, getAllKaras } from './services/kara';
 import {buildKMExplorer} from './services/kmexplorer';
 import {initRepos} from './services/repo';
+import { addSuggestionsFromFile } from './services/suggestions';
 import {addRoleToUser, changePassword, createUser, initUsers, removeRoleFromUser} from './services/user';
 import {initConfig} from './utils/config';
 import { initHardsubGeneration } from './utils/hardsubs';
@@ -158,6 +159,13 @@ async function main() {
 		exit(0);
 	}
 
+	if (argv.opts().suggestionSource && argv.opts().importSuggestionsFrom) {
+		await addSuggestionsFromFile(argv.opts().importSuggestionsFrom, argv.opts().suggestionSource);
+		exit(0);
+	}
+
+	// NOrmal start here.
+
 	const port = await detect(+argv.opts().port || conf.Frontend.Port);
 
 	if (port !== conf.Frontend.Port) setConfig({
@@ -200,5 +208,7 @@ function parseArgs() {
 		.option('--removeUserRole [user],[role]', 'Remove role from user', login)
 		.option('--promoteToken [token],[newcode]', 'Promote a remote token to a permanent one', login)
 		.option('--build', 'Build KMExplorer (required in production environments)')
+		.option('--importSuggestionsFrom [file]', 'Import suggestions from CSV file')
+		.option('--suggestionSource [source]', 'Name the source of your inported sugggestion CSV file')
 		.parse(argv);
 }

@@ -10,7 +10,7 @@
 			</div>
 		</div>
 		<loading-nanami v-if="loading" class="tile is-parent is-12" />
-		<kara-suggest v-if="fullyLoaded && !loading && !favorites && withSuggest" class="tile is-parent is-12" :empty="karaokes.content.length === 0" />
+		<suggest-line v-if="fullyLoaded && !loading && !favorites && withSuggest" class="tile is-parent is-12" :empty="karaokes.content.length === 0" />
 		<div v-else-if="fullyLoaded && !loading && myFavorites" class="tile is-parent">
 			<div class="tile is-child">
 				<div class="box">
@@ -41,7 +41,7 @@
 	import Vue, { PropOptions } from 'vue';
 	import LoadingNanami from './LoadingNanami.vue';
 	import KaraCard from './KaraCard.vue';
-	import KaraSuggest from './modals/KaraSuggest.vue';
+	import SuggestLine from './SuggestLine.vue';
 	import { KaraList } from '%/lib/types/kara';
 
 	export default Vue.extend({
@@ -50,7 +50,7 @@
 		components: {
 			LoadingNanami,
 			KaraCard,
-			KaraSuggest
+			SuggestLine
 		},
 
 		props: {

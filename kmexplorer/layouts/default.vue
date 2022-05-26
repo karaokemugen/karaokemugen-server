@@ -61,6 +61,10 @@
 					<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true" />
 					{{ $t('menu.kara_import') }}
 				</nuxt-link>
+				<nuxt-link v-if="suggestions" class="navbar-item" to="/suggest">
+					<font-awesome-icon :icon="['fas', 'envelope-circle-check']" :fixed-width="true" />
+					{{ $t('menu.kara_suggest') }}
+				</nuxt-link>
 			</div>
 
 			<div v-if="accountMenu" class="navbar-dropdown">
@@ -433,6 +437,12 @@
 							{{ $t('menu.kara_import') }}
 						</nuxt-link>
 					</li>
+					<li>
+						<nuxt-link v-if="suggestions" to="/suggest" active-class="is-active">
+							<font-awesome-icon :icon="['fas', 'envelope-circle-check']" :fixed-width="true" />
+							{{ $t('menu.kara_suggest') }}
+						</nuxt-link>
+					</li>
 				</ul>
 				<client-only>
 					<p class="menu-label">
@@ -535,6 +545,7 @@
 		discordLink?: string,
 		discourseLink?: string,
 		usersEnabled?: boolean,
+		suggestions?: boolean,
 		tagsMenu: boolean,
 		databaseMenu: boolean,
 		communityMenu: boolean,
@@ -573,6 +584,7 @@
 				discordLink: process.env.DISCORD_LINK,
 				discourseLink: process.env.DISCOURSE_LINK,
 				usersEnabled: process.env.USERS as unknown as boolean,
+				suggestions: process.env.SUGGESTIONS as unknown as boolean,
 				tagsMenu: false,
 				databaseMenu: false,
 				communityMenu: false,
@@ -602,7 +614,7 @@
 				return this.$route.params?.id?.substring(36);
 			},
 			onKaraTagUserListView(): boolean {
-				return ['types-id', 'search-query', 'user-login', 'users'].includes(this.$route.name as string);
+				return ['types-id', 'search-query', 'user-login', 'users', 'suggest'].includes(this.$route.name as string);
 			},
 			availableLocales(): VueI18n.Locale[] {
 				return this.$i18n.locales?.filter((i: any) => i.code && i.code !== this.$i18n.locale);

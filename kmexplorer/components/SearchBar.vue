@@ -1,7 +1,8 @@
 <template>
 	<div class="field is-expanded has-addons">
 		<div v-if="results" class="control">
-			<collections-picker :label="searchLabel" />
+			<collections-picker v-if="$route.name !== 'suggest'" :label="searchLabel" />
+			<languages-picker v-if="$route.name === 'suggest'" :label="searchLabel" />
 		</div>
 		<div class="control is-expanded" :class="{'has-icons-left': icon}">
 			<input
@@ -28,6 +29,10 @@
 					<template v-if="$route.name === 'types-id'">
 						<option value="karacount">{{ $t('search.sort.kara_count') }}</option>
 					</template>
+					<template v-else-if="$route.name === 'suggest'">
+						<option value="likes">{{ $t('search.sort.likes') }}</option>
+						<option value="language">{{ $t('search.sort.languages') }}</option>
+					</template>
 					<template v-else>
 						<option value="recent">{{ $t('search.sort.recent') }}</option>
 						<option value="played">{{ $t('search.sort.most_played') }}</option>
@@ -43,10 +48,10 @@
 <script lang="ts">
 	import Vue from 'vue';
 	import { mapState } from 'vuex';
+	import CollectionsPicker from './CollectionsPicker.vue';
+	import LanguagesPicker from './LanguagesPicker.vue';
 	import { menuBarStore } from '~/store';
 	import { sortTypes } from '~/store/menubar';
-
-	import CollectionsPicker from './CollectionsPicker.vue';
 
 	interface VState {
 		search: string,
@@ -58,7 +63,8 @@
 		name: 'SearchBar',
 
 		components: {
-			CollectionsPicker
+			CollectionsPicker,
+			LanguagesPicker
 		},
 
 		props: {
@@ -85,13 +91,15 @@
 
 		computed: {
 			canSort(): boolean {
-				return ['types-id', 'search-query', 'user-login'].includes(this.$route.name as string);
+				return ['types-id', 'search-query', 'user-login', 'suggest'].includes(this.$route.name as string);
 			},
 			searchLabel(): string {
 				if (this.$route.name === 'users') {
 					return this.$t('search.types.users') as string;
 				} else if (this.$route.name === 'user-login') {
 					return this.$t('search.types.favorites') as string;
+				} else if (this.$route.name === 'suggest') {
+					return this.$t('search.types.suggestions') as string;
 				} else if (['types-id', 'types-years'].includes(this.$route.name as string)) {
 					return this.$t(`menu.${this.$route.name === 'types-years' ? 'years' : this.$route.params.id}`) as string;
 				} else {

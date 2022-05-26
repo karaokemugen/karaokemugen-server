@@ -32,7 +32,8 @@ function generateConfig(production = false) {
 			USERS: conf.Users.Enabled,
 			DEFAULT_COLLECTIONS: conf.System.DefaultCollections,
 			DISCORD_LINK: conf.SocialNetworks.Discord,
-			DISCOURSE_LINK: conf.SocialNetworks.Discourse
+			DISCOURSE_LINK: conf.SocialNetworks.Discourse,
+			SUGGESTIONS: conf.Suggestions.Enabled
 		},
 		axios: {
 			baseURL: `http${conf.API.Secure ? 's' : ''}://${conf.API.Host}${
