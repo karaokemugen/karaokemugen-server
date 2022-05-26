@@ -8,11 +8,11 @@ export type ModalType = 'auth' | 'profile' | 'addRepo' | 'deleteAccount' | 'join
 	namespaced: true
 })
 export default class Modal extends VuexModule {
-	auth: boolean = false
-	profile: boolean = false
-	addRepo: boolean = false
-	deleteAccount: boolean = false
-	joinKara: boolean = false
+	auth: boolean = false;
+	profile: boolean = false;
+	addRepo: boolean = false;
+	deleteAccount: boolean = false;
+	joinKara: boolean = false;
 
 	@Mutation
 	openModal(type: ModalType) {

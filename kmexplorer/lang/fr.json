@@ -81,7 +81,7 @@
 			}
 		},
 		"import": {
-			"description": "Ce formulaire permet d'envoyer un karaoké à l'équipe de Karaoke Mugen. Il ne sera pas intégré immédiatement dans la base de karaokés car il nécessite une validation préalable. Aussi, votre karaoké peut être modifié par l'équipe de Karaoke Mugen s'il ne convient pas aux normes. Reportez-vous à la documentation pour plus d'information, section \"Guide du contributeur\" puis \"Documents de référence\".",
+			"description": "Ce formulaire permet d'envoyer un karaoké à l'équipe de Karaoke Mugen. Il ne sera pas intégré immédiatement dans la base de karaokés car il nécessite une validation préalable. Aussi, votre karaoké peut être modifié par l'équipe de Karaoke Mugen s'il ne convient pas aux normes. Reportez-vous à la documentation pour plus d'information, section “Guide du contributeur” puis “Documents de référence”.",
 			"attention": "ATTENTION :",
 			"check_in_progress": "Merci de vérifier la liste des karaokés en cours de réalisation avant de proposer un karaoké. Cela évitera à tout le monde de faire deux fois le travail, et le monde sera meilleur.",
 			"documentation_link": "Documentation",
@@ -209,6 +209,7 @@
 		"discourse": "Discourse",
 		"participate": "Participer",
 		"kara_import": "Envoyer un kara",
+		"kara_suggest": "Suggérer un kara",
 		"account": "Compte",
 		"login": "Se connecter",
 		"logout": "Se déconnecter",
@@ -238,7 +239,9 @@
 			"recent": "Par date d'ajout",
 			"most_played": "Plus joués",
 			"most_favorites": "Plus favoris",
-			"most_requested": "Plus demandés"
+			"most_requested": "Plus demandés",
+			"likes": "Le plus de likes",
+			"languages": "Par langues"
 		},
 		"next": "Page suivante",
 		"previous": "Page précédente",
@@ -250,7 +253,8 @@
 		"types": {
 			"karaokes": "Chansons",
 			"users": "Utilisateurs",
-			"favorites": "Favoris de l'utilisateur"
+			"favorites": "Favoris de l'utilisateur",
+			"suggestions": "Suggestions"
 		}
 	},
 	"modal": {
@@ -389,7 +393,7 @@
 			"label": "Ajouter ce dépôt à votre application Karaoke Mugen !",
 			"desc": "Vous pouvez ajouter ce dépôt à votre application Karaoke Mugen en cliquant sur le bouton ci-dessous. Si Karaoke Mugen n'est pas installé sur votre ordinateur, ce bouton n'aura aucun effet.",
 			"download": "L'application est téléchargeable ici.",
-			"manual": "Pour ajouter manuellement ce dépôt, ouvrez votre application Karaoke Mugen, ajoutez-y le dépôt {repository}, cochant la case \"{online}\".",
+			"manual": "Pour ajouter manuellement ce dépôt, ouvrez votre application Karaoke Mugen, ajoutez-y le dépôt {repository}, cochant la case “{online}”.",
 			"online": "En ligne",
 			"add": "Ajouter",
 			"cancel": "Annuler"
@@ -489,5 +493,29 @@
 		"contributor": "Contributeur(-ice)",
 		"maintainer": "Mainteneur(-se)",
 		"admin": "Administrateur(-ice)"
-	}
+	},
+	"suggestions": {
+		"kara": {
+		  "yes": "Oui !",
+		  "ok": "C'est noté !",
+		  "remove": "Supprimer"
+		},
+		"header": {
+			"title": "Suggestions d'import",
+			"description": "Qu'est-ce que c'est ?",
+			"purpose": "Voici des karaokés qui sont prêts à être importés, vous pouvez chercher une chanson en particulier ou appuyer sur le bouton “Choisir aléatoirement d'autres chansons”. Vous pouvez soutenir un karaoké en appuyant sur “Oui !”. Si vous ne trouvez toujours pas la chanson que vous cherchez, cliquez sur “Envoyer une suggestion”.",
+			"random_selection": "Choisir aléatoirement d'autres chansons",
+			"send_suggestion": "Envoyer une suggestion"
+		},
+		"modal": {
+		  "welcome": {
+			"title": "Où suis-je donc ?",
+			"text": "Il y a de nombreuses autres bases de karaokés à travers le monde : notamment celles se concentrant sur la réalisation de karaokés d'UltraStar, Karawin ou Karafun. Voici donc, des karaokés qui sont déjà disponibles, avec leurs paroles correctement synchronisées, mais comme on ne peut pas tout faire, on aimerait bien connaître vos priorités !",
+			"text2": "Vous pouvez soit effectuer une recherche, soit laisser le hasard vous présenter ce qu'il trouve pour vous. Dans les deux cas, nous vous serons reconnaissants du temps que vous passez pour améliorer nos bases. Merci !",
+			"text3": "Si vous souhaitez nous demander de l'aide, pensez à venir nous voir sur {discord}. Nous sommes à l'écoute de vos suggestions ou critiques.",
+			"discord": "Discord",
+			"btn": "Compris !"
+		  }
+		}
+	  }
 }

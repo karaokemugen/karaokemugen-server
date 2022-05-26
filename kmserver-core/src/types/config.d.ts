@@ -43,6 +43,9 @@ export interface Config {
 	Stats: {
 		Enabled: boolean,
 	},
+	Suggestions: {
+		Enabled: boolean,
+	},
 	Shortener: {
 		Enabled: boolean
 		ExpireTimeDays: number

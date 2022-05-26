@@ -47,6 +47,8 @@ Shortener:
   Enabled: true
 Stats:
   Enabled: true
+Suggestions:
+  Enabled: true
 KaraExplorer:
   Path: /base
   LiveURL: https://live.karaokes.moe

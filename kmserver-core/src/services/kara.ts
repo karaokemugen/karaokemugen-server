@@ -102,7 +102,7 @@ async function createBaseDumps() {
 	]).catch(err => {
 		logger.error('Unable to create dump', { service: 'Gen', obj: err});
 		sentry.error(err);
-	})
+	});
 }
 
 async function createDBBaseDump() {
@@ -120,7 +120,7 @@ async function createFileBaseDump() {
 	const dump = {
 		Karaokes: [],
 		Tags: [],
-	}
+	};
 	for (const karaFile of karaFiles) {
 		const karaData = await fs.readFile(resolve(kdir, karaFile), 'utf-8');
 		dump.Karaokes.push(JSON.parse(karaData));

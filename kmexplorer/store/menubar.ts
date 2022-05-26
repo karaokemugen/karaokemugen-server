@@ -8,7 +8,7 @@ export interface TagExtend {
 	tag: Tag | DBTag | DBKaraTag
 }
 
-export type sortTypes = 'az' | 'karacount' | 'recent' | 'played' | 'favorited' | 'requested';
+export type sortTypes = 'az' | 'karacount' | 'recent' | 'played' | 'favorited' | 'requested' | 'likes' | 'languages';
 
 @Module({
 	name: 'menubar',
@@ -25,6 +25,8 @@ export default class MenuBar extends VuexModule {
 	resultsCount: number = 0;
 
 	enabledCollections: string[] = process.env.DEFAULT_COLLECTIONS as unknown as string[];
+
+	enabledLanguages: string[] = [];
 
 	@Mutation
 	addTag(tag: TagExtend) {
@@ -75,6 +77,11 @@ export default class MenuBar extends VuexModule {
 				window.localStorage.setItem('enabled_collections', collecs.join(':'));
 			}
 		}
+	}
+
+	@Mutation
+	setEnabledLanguages(languages: string[]) {
+		this.enabledLanguages = languages;
 	}
 
 	@Mutation

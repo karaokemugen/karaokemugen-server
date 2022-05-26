@@ -67,6 +67,7 @@ import {
 	faFilm,
 	faExclamationTriangle,
 	faLayerGroup,
+	faEnvelopeCircleCheck,
 	faAt
 } from '@fortawesome/free-solid-svg-icons';
 import {
@@ -151,6 +152,7 @@ library.add(
 	faEyeSlash,
 	faFilm,
 	faExclamationTriangle,
+	faEnvelopeCircleCheck,
 	faLayerGroup);
 
 // Register the component globally
