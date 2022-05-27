@@ -1,5 +1,5 @@
 <template>
-	<b-dropdown v-model="enabledLanguages" aria-role="list" multiple>
+	<b-dropdown v-model="enabledLanguages" aria-role="list" multiple scrollable>
 		<template #trigger="{ active }">
 			<button class="button">
 				<font-awesome-icon fixed-width :icon="['fas', active ? 'chevron-up':'chevron-down']" />
@@ -62,11 +62,6 @@
 </script>
 
 <style scoped>
-
-.dropdown-menu {
-	height: 90vh;
-	overflow: auto;
-}
 
 .dropdown-content > p {
 	padding: .5em 1em;
