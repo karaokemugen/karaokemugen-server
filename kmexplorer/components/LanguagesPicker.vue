@@ -62,6 +62,12 @@
 </script>
 
 <style scoped>
+
+.dropdown-menu {
+	height: 90vh;
+	overflow: auto;
+}
+
 .dropdown-content > p {
 	padding: .5em 1em;
 	min-width: 18em;
