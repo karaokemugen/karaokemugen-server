@@ -167,7 +167,7 @@
 		"home": "Beranda proyek",
 		"software_under_license": "Perangkat lunak di bawah lisensi",
 		"translation": "Berkontribusi di penerjemahan",
-		"base_under_licence": "Basis karaoke di bawah lisensi"
+		"base_under_licence": "Basis data karaoke di bawah lisensi"
 	},
 	"menu": {
 		"register": "Daftar",
@@ -200,9 +200,11 @@
 		"singers": "Penyanyi",
 		"genres": "Genre",
 		"creators": "Pembuat",
-		"kara_import": "Kirim kara",
+		"kara_import": "Kirim karaoke",
 		"account": "Akun",
-		"warnings": "Peringatan"
+		"warnings": "Peringatan",
+		"participate": "Berpartisipasi",
+		"kara_suggest": "Usul karaoke"
 	},
 	"search": {
 		"aria": {
@@ -221,14 +223,16 @@
 			"most_requested": "Paling banyak diminta",
 			"recent": "Menurut tanggal ditambahkan",
 			"most_played": "Paling banyak diputar",
-			"a_z": "Dari A ke Z"
+			"a_z": "Dari A ke Z",
+			"languages": "Menurut bahasa"
 		},
 		"next": "Halaman selanjutnya",
 		"previous": "Halaman sebelumnya",
 		"types": {
 			"karaokes": "Lagu",
 			"favorites": "Favorit pengguna",
-			"users": "Pengguna"
+			"users": "Pengguna",
+			"suggestions": "Usulan"
 		}
 	},
 	"modal": {
@@ -488,5 +492,29 @@
 		"contributor": "Kontributor",
 		"maintainer": "Pengelola",
 		"admin": "Administrator"
+	},
+	"suggestions": {
+		"kara": {
+			"yes": "Ya!",
+			"ok": "Bagus semua!",
+			"remove": "Hapus"
+		},
+		"header": {
+			"title": "Impor usulan",
+			"description": "Gunakan pencarian untuk mencari karaoke yang kamu ingin lihat untuk diintegrasikan di Karaoke Mugen.",
+			"random_selection": "Pilih lagu lain secara acak",
+			"send_suggestion": "Kirim Usulan",
+			"purpose": "Berikut adalah beberapa lagu karaoke yang sudah siap untuk diimpor, kamu bisa mencari lagu tertentu atau pencet tombol \"Pilih lagu lain secara acak.\" Kamu bisa mendukung lagu karaoke tersebut dengan memencet \"Ya!\". Jika kamu belum bisa menemukan lagu yang kamu cari, pencet \"Kirim Usulan.\""
+		},
+		"modal": {
+			"welcome": {
+				"text3": "Jika kamu ingin meminta bantuan, temui kami di {discord}. Kami mendengarkan usulan dan kritik kamu.",
+				"btn": "OK!",
+				"text2": "Kamu bisa mencari sesuatu atau biarkan pengacakan melakukan pekerjaannya. Kami berterima kasih atas waktu yang kamu habiskan untuk meningkatkan basis data kami. Terima kasih!",
+				"title": "Di mana saya?",
+				"text": "Ada banyak basis data karaoke lain: untuk aplikasi UltraStar, Karawin, atau Karafun. Jadi di sini adalah beberapa judul yang sudah tersedia, dengan lirik yang sudah tersinkronisasi, tapi kami tidak bisa mengintegrasikan semuanya secara segera, kami ingin mengetahui prioritas kamu!",
+				"discord": "Discord"
+			}
+		}
 	}
 }
