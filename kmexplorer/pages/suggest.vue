@@ -16,7 +16,7 @@
 						<span class="icon"><font-awesome-icon :icon="['fas', 'dice']" /></span>
 						<span>{{ $t('suggestions.header.random_selection') }}</span>
 					</button>
-					<button class="button is-success" :class="{'is-loading': loading}" @click="modal.karaSuggest = true">
+					<button class="button is-success" @click="modal.karaSuggest = true">
 						<span class="icon"><font-awesome-icon :icon="['fas', 'plus']" /></span>
 						<span>{{ $t('suggestions.header.send_suggestion') }}</span>
 					</button>
