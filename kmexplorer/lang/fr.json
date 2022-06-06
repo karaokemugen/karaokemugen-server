@@ -496,9 +496,9 @@
 	},
 	"suggestions": {
 		"kara": {
-		  "yes": "Oui !",
-		  "ok": "C'est noté !",
-		  "remove": "Supprimer"
+			"yes": "Oui !",
+			"ok": "C'est noté !",
+			"remove": "Supprimer"
 		},
 		"header": {
 			"title": "Suggestions d'import",
@@ -508,14 +508,14 @@
 			"send_suggestion": "Envoyer une suggestion"
 		},
 		"modal": {
-		  "welcome": {
-			"title": "Où suis-je donc ?",
-			"text": "Il y a de nombreuses autres bases de karaokés à travers le monde : notamment celles se concentrant sur la réalisation de karaokés d'UltraStar, Karawin ou Karafun. Voici donc, des karaokés qui sont déjà disponibles, avec leurs paroles correctement synchronisées, mais comme on ne peut pas tout faire, on aimerait bien connaître vos priorités !",
-			"text2": "Vous pouvez soit effectuer une recherche, soit laisser le hasard vous présenter ce qu'il trouve pour vous. Dans les deux cas, nous vous serons reconnaissants du temps que vous passez pour améliorer nos bases. Merci !",
-			"text3": "Si vous souhaitez nous demander de l'aide, pensez à venir nous voir sur {discord}. Nous sommes à l'écoute de vos suggestions ou critiques.",
-			"discord": "Discord",
-			"btn": "Compris !"
-		  }
+			"welcome": {
+				"title": "Où suis-je donc ?",
+				"text": "Il y a de nombreuses autres bases de karaokés à travers le monde : notamment celles se concentrant sur la réalisation de karaokés d'UltraStar, Karawin ou Karafun. Voici donc, des karaokés qui sont déjà disponibles, avec leurs paroles correctement synchronisées, mais comme on ne peut pas tout faire, on aimerait bien connaître vos priorités !",
+				"text2": "Vous pouvez soit effectuer une recherche, soit laisser le hasard vous présenter ce qu'il trouve pour vous. Dans les deux cas, nous vous serons reconnaissants du temps que vous passez pour améliorer nos bases. Merci !",
+				"text3": "Si vous souhaitez nous demander de l'aide, pensez à venir nous voir sur {discord}. Nous sommes à l'écoute de vos suggestions ou critiques.",
+				"discord": "Discord",
+				"btn": "Compris !"
+			}
 		}
-	  }
+	}
 }
