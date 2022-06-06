@@ -501,7 +501,7 @@
 		},
 		"header": {
 			"title": "Impor usulan",
-			"description": "Gunakan pencarian untuk mencari karaoke yang kamu ingin lihat untuk diintegrasikan di Karaoke Mugen.",
+			"description": "",
 			"random_selection": "Pilih lagu lain secara acak",
 			"send_suggestion": "Kirim Usulan",
 			"purpose": "Berikut adalah beberapa lagu karaoke yang sudah siap untuk diimpor, kamu bisa mencari lagu tertentu atau pencet tombol \"Pilih lagu lain secara acak.\" Kamu bisa mendukung lagu karaoke tersebut dengan memencet \"Ya!\". Jika kamu belum bisa menemukan lagu yang kamu cari, pencet \"Kirim Usulan.\""
