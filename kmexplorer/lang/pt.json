@@ -1,1 +1,6 @@
-{}
+{
+	"error": {
+		"generic": "Erro",
+		"private_profile": "O perfil é privado."
+	}
+}
