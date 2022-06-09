@@ -108,6 +108,12 @@ article.media {
 	align-items: center;
 }
 
+@media screen and (max-width: 700px) {
+	article.media {
+		flex-direction: column;
+	}
+}
+
 div.media-content {
     margin: auto 0;
 }
