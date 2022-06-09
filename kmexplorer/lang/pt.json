@@ -1,6 +1,228 @@
 {
 	"error": {
 		"generic": "Erro",
-		"private_profile": "O perfil é privado."
+		"private_profile": "O perfil é privado.",
+		"not_found_profile": "Não é possível encontrar este utilizador"
+	},
+	"kara": {
+		"tagtypes": {
+			"groups": "Grupo | Grupos",
+			"series": "Séries",
+			"langs": "Idioma | Idiomas",
+			"songtypes": "Tipo de canção | Tipos de canções",
+			"singers": "Cantor | Cantores",
+			"songwriters": "Compositor | Compositores",
+			"families": "Família | Famílias",
+			"origins": "Origem | Origens",
+			"genres": "Género | Géneros",
+			"platforms": "Plataforma | Plataformas",
+			"creators": "Criador | Criadores",
+			"authors": "Autor de karaokês | Autores de karaokês",
+			"misc": "Diversos",
+			"versions": "Versão | Versões",
+			"warnings": "Aviso | Avisos",
+			"collections": "Coleção | Coleções"
+		},
+		"creators_by": "Criado por",
+		"songwriters_by": "Composto por",
+		"problem": {
+			"form": {
+				"username": {
+					"label": "Seu nome",
+					"placeholder": "EuSouMeticuloso"
+				},
+				"comment": {
+					"label": "Comentário",
+					"placeholder": "Após 2 minutos, a letra da canção não está sincronizada."
+				},
+				"title": "Relatar um problema",
+				"subtitle": "Fazemos o melhor possível para ter uma base de dados de alta qualidade, mas às vezes alguns problemas estão lá. Obrigado pela ajuda!",
+				"type": {
+					"label": "Tipo de problema",
+					"media": "Problema de mídia",
+					"metadata": "Problema de metadados",
+					"lyrics": "Problema com a letra"
+				},
+				"submit": "Enviar",
+				"thanks": {
+					"text": "Obrigado! Iremos resolver este problema o mais rapidamente possível: {url}",
+					"btn": "Fechar"
+				}
+			},
+			"title": "Um problema com {title}?",
+			"btn": {
+				"edit": "Sugerir uma edição",
+				"media": "Problema de mídia",
+				"metadata": "Problema de metadados",
+				"lyrics": "Problema com a letra"
+			}
+		},
+		"import": {
+			"description": "Este formulário permite-lhe submeter um karaokê à equipa do Karaoke Mugen. Não será imediatamente integrado na base de dados de karaokês porque tem que ser validado. Por favor, seja paciente. O seu karaokê pode ser modificado se não respeitar as regras do KM.",
+			"create": "Criar",
+			"submit": "Enviar karaokê",
+			"comment_tooltip": "Se quiser acrescentar uma mensagem para os integradores ou apenas dizer obrigado, diga-o aqui!",
+			"media_file_edit": "Substituir ficheiro multimédia",
+			"year": "Ano de emissão",
+			"year_invalid": "O ano de emissão é inválido",
+			"songwriters_tooltip": "Compositores, Arranjadores e Letristas.",
+			"authors_required": "Autor do karaokê é obrigatório",
+			"langs_required": "Por favor, escolha um idioma",
+			"i18n_delete": "Remover idioma",
+			"default_language": "Idioma padrão",
+			"attention": "ATENÇÃO:",
+			"check_in_progress": "Por favor, verifique a lista de karaokes que estão atualmente a ser feitos antes de nos enviar uma canção. Isto evitará a duplicação de trabalho, e o mundo será assim um lugar melhor.",
+			"documentation_link": "Documentação",
+			"in_progress_link": "Lista de Karaokes em progresso",
+			"license_reminder": "O seu karaokê será publicado com a licença {name}",
+			"license_link": "Saiba mais sobre esta licença, clicando aqui.",
+			"add": "Adicionar",
+			"choose_file": "Escolha um ficheiro",
+			"add_file_media_error": "{name} não é um arquivo de mídia",
+			"add_file_media_not_supported_error": "{name} não é um ficheiro multimédia suportado, converta-o para um dos seguintes formatos: {formats}",
+			"add_file_lyrics_error": "{name} não é um ficheiro de subtítulos",
+			"add_file_success": "Ficheiro {nome} adicionado com sucesso",
+			"comment": "Deixar um comentário?",
+			"media_file": "Ficheiro multimédia",
+			"media_file_required": "O ficheiro multimédia é obrigatório",
+			"media_file_tooltip": "Formatos de ficheiro suportados: {formats}",
+			"lyrics_file": "Arquivo de letras",
+			"lyrics_file_tooltip": "Formatos de ficheiro suportados: {formats}",
+			"title": "Título",
+			"title_required": "Por favor, insira um título de canção em inglês",
+			"titles_aliases_tooltip": "Nomes curtos ou nomes alternativos, utilizados para pesquisa.",
+			"series_tooltip": "Séries de TV, título de filme, título de videogame, etc.",
+			"songtypes_required": "O tipo de música é obrigatório",
+			"collections_required": "Pelo menos uma coleção deve ser assinalada",
+			"year_tooltip": "Ano em que a série foi difundida ou em que o vídeo foi produzido",
+			"year_required": "O ano de emissão é obrigatório",
+			"creators_tooltip": "Entidade que criou a série. Pode ser estúdio de animação, estúdio de cinema, ou estúdio de jogos.",
+			"authors_tooltip": "Deve adicionar-se aqui ;)",
+			"created_at": "Data de criação",
+			"add_success": "O seu karaokê foi enviado com sucesso!",
+			"add_error": "Ocorreu um erro, o karaokê não foi enviado corretamente",
+			"restart": "Submeter novo karaokê",
+			"i18n_select": "Adicione um idioma",
+			"send_contact_infos": "Partilhar as minhas informações de contacto com os responsáveis pela base de dados",
+			"contact_infos": "Informação de contacto"
+		},
+		"phrase": "{songtype} de {series}",
+		"meta": "{songtitle} de {serieSinger}",
+		"notfound": "Karaokê não encontrado",
+		"singers_by": "Cantado por",
+		"authors_by": "Karaokê criado por",
+		"duration": "Duração ",
+		"created_at": "Criado em ",
+		"download": "Descarregar",
+		"live": "Abrir numa nova aba",
+		"lyrics": {
+			"show": "Mostrar letras",
+			"hide": "Ocultar letras"
+		},
+		"favorites": {
+			"add": "Adicionar aos favoritos",
+			"remove": "Remover dos favoritos"
+		},
+		"set_banner": {
+			"btn": "Use como banner de perfil",
+			"forbidden_label": "Não pode usar este karaoke como banner do seu perfil."
+		},
+		"stats": {
+			"favorited": "Adicionado aos favoritos de {number} utilizadores",
+			"requested": "Pedido {number} vezes",
+			"played": "Reproduzido {number} vezes"
+		},
+		"siblings": "Canções semelhantes",
+		"childrens": "Canções criança",
+		"parents": "Canções parentes"
+	},
+	"layout": {
+		"end_my_favorites": "Este é o fim dos seus favoritos.",
+		"results": "{count} resultado | {count} resultados",
+		"loading": "Carregando…",
+		"empty": "Procuramos em todo o lado, não encontramos absolutamente nada.",
+		"suggest": "Não consegue encontrar o que está procurando?",
+		"end_favorites": "Este é o fim dos favoritos.",
+		"explore": "Vai adicionar alguns!",
+		"collections": "Karaoke Mugen oferece muitas coleções, escolha aquelas em que está interessado.",
+		"slogan": "Esta canção está disponível na base de canções do Karaoke Mugen!",
+		"end_users": "Você chegou ao fim da lista de usuários (parabéns!)."
+	},
+	"stats": {
+		"all_duration": "Duração de todos os karaokes",
+		"media_size": "Tamanho do mídia",
+		"last_generation": "Última actualização"
+	},
+	"duration": {
+		"days": "dias",
+		"hours": "horas",
+		"minutes": "minutos",
+		"seconds": "segundos"
+	},
+	"menu": {
+		"add_repository": "Adicione este repositório à sua aplicação",
+		"warnings": "Avisos",
+		"connection": "Login",
+		"search_users": "Pesquisar utilizadores",
+		"register": "Registe-se",
+		"switch_language": "Alternar idioma",
+		"discord": "Discord",
+		"discourse": "Discourse",
+		"kara_import": "Envie um karaokê",
+		"kara_suggest": "Sugira um karaokê",
+		"login": "Login",
+		"logout": "Sair",
+		"profile": "Edite seu perfil",
+		"account": "Conta",
+		"random": "Lançar um dado",
+		"database": "Base de dados",
+		"karas": "Canções",
+		"songtypes": "Tipos",
+		"tags": "Etiquetas",
+		"misc": "Diversos",
+		"groups": "Grupos",
+		"families": "Famílias",
+		"origins": "Origens",
+		"singers": "Cantores",
+		"platforms": "Plataformas",
+		"genres": "Géneros",
+		"versions": "Versões",
+		"series": "Series",
+		"songwriters": "Compositores",
+		"creators": "Criadores",
+		"authors": "Autores",
+		"langs": "Idiomas",
+		"years": "Anos",
+		"community": "Comunidade",
+		"participate": "Participe"
+	},
+	"profile": {
+		"favorites": "Favoritos"
+	},
+	"suggestions": {
+		"modal": {
+			"welcome": {
+				"discord": "Discord"
+			}
+		},
+		"kara": {
+			"yes": "Sim!",
+			"ok": "Tudo bem!",
+			"remove": "Remover"
+		},
+		"header": {
+			"title": "Importar sugestões",
+			"description": "O que é isto?"
+		}
+	},
+	"toast": {
+		"FILE_UPLOADED": "Ficheiro carregado.",
+		"USER_EDITED": "Utilizador editado com sucesso"
+	},
+	"roles": {
+		"donator": "Doador",
+		"contributor": "Contribuinte",
+		"maintainer": "Mantenedor",
+		"admin": "Administrador"
 	}
 }
