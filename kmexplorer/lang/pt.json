@@ -151,7 +151,8 @@
 	"stats": {
 		"all_duration": "Duração de todos os karaokes",
 		"media_size": "Tamanho do mídia",
-		"last_generation": "Última actualização"
+		"last_generation": "Última actualização",
+		"karaokes": "Karaokê | Karaokês"
 	},
 	"duration": {
 		"days": "dias",
@@ -197,12 +198,21 @@
 		"participate": "Participe"
 	},
 	"profile": {
-		"favorites": "Favoritos"
+		"favorites": "Favoritos",
+		"you": " (é você!)",
+		"edit": "Editar perfil",
+		"private": "O seu perfil é privado, só você o pode ver.",
+		"favorites_count": "{x} favorito | {x} favoritos",
+		"public_favorites": "Os seus favoritos são públicos. Clique para os esconder.",
+		"private_favorites": "Os seus favoritos são privados. Clique para os mostrar."
 	},
 	"suggestions": {
 		"modal": {
 			"welcome": {
-				"discord": "Discord"
+				"discord": "Discord",
+				"title": "Onde estou?",
+				"text3": "Se você quiser pedir ajuda, venha nos ver no {discord}. Estamos atentos ás suas sugestões e críticas.",
+				"btn": "OK!"
 			}
 		},
 		"kara": {
@@ -212,17 +222,262 @@
 		},
 		"header": {
 			"title": "Importar sugestões",
-			"description": "O que é isto?"
+			"description": "O que é isto?",
+			"random_selection": "Seleccionar aleatoriamente outras canções",
+			"send_suggestion": "Enviar sugestão"
 		}
 	},
 	"toast": {
 		"FILE_UPLOADED": "Ficheiro carregado.",
-		"USER_EDITED": "Utilizador editado com sucesso"
+		"USER_EDITED": "Utilizador editado com sucesso",
+		"LOG_ERROR": "Credenciais incorrectas.",
+		"USER_ASCII_CHARACTERS_ONLY": "Apenas caracteres alfanuméricos no seu nome de utilizador (pode mudar o seu apelido mais tarde para o que quiser).",
+		"USER_CREATED": "Utilizador criado com sucesso",
+		"GENERATED_KARA": "Karaokê enviado com sucesso.",
+		"EDITED_KARA": "Modificação enviada com sucesso.",
+		"CANNOT_EDIT_KARA": "Não é possível enviar a modificação.",
+		"CANNOT_GENERATE_KARA": "Não é possível enviar o karaokê."
 	},
 	"roles": {
 		"donator": "Doador",
 		"contributor": "Contribuinte",
 		"maintainer": "Mantenedor",
 		"admin": "Administrador"
+	},
+	"modal": {
+		"join_kara": {
+			"cancel": "Cancelar",
+			"label": "Junte-se a uma festa de karaokê",
+			"desc": "Introduza um código para se juntar a uma festa de karaokê existente",
+			"add": "Juntar",
+			"help": "Digite o código de sessão (geralmente são 4 letras) ou o URL do karaokê.",
+			"error": "O código é inválido, por favor verifique o que digitou."
+		},
+		"suggest": {
+			"submitted": {
+				"close": "Fechar",
+				"subtitle": "Mensagem ouvida em alto e bom som!",
+				"text": "A sua sugestão foi recebida, pode verificar o seu estado clicando {here}.",
+				"here": "aqui"
+			},
+			"title": "Sugestão",
+			"fields": {
+				"title": {
+					"label": "Título",
+					"placeholder": "JINGO JUNGLE"
+				},
+				"series": {
+					"label": "Séries / Cantor",
+					"placeholder": "Yôjo Senki: Saga of Tanya the Evil"
+				},
+				"type": {
+					"label": "Tipo"
+				},
+				"link": {
+					"label": "Link",
+					"placeholder": "https://www.youtube.com/watch?v=5VRyiaszGtA"
+				},
+				"name": {
+					"label": "O seu nome",
+					"placeholder": "Velho do Restelo"
+				}
+			},
+			"submit": "Enviar"
+		},
+		"crop": {
+			"cancel": "Cancelar",
+			"label": "Editar avatar",
+			"add": "Adicionar"
+		},
+		"download": {
+			"label": "Descarregar o karaokê",
+			"karabundle": "Descarregar dados (.json)",
+			"cancel": "Cancelar",
+			"subtitles": "Descarregar letra de canção (.{format})",
+			"media": "Descarregar media (.{format})"
+		},
+		"stats": {
+			"label": "Usar os meus favoritos e pedidos de karaokes para estatísticas",
+			"desc": "Utilizamos os seus favoritos, bem como os karaokes que solicitou durante uma sessão para fazer estatísticas de utilização (por exemplo, para descobrir os karaokes mais solicitados).",
+			"refuse_desc": "Se você não quiser participar, mesmo que seja anônimo, nestas estatísticas de uso, por favor, avise-nos. Se você recusar, os seus dados serão ignorados pelo servidor e não vão ser enviados pela aplicação do Karaoke Mugen.",
+			"change": "Você pode mudar isso a qualquer momento no seu perfil. Você aceita o uso das suas estatísticas?",
+			"yes": "Sim",
+			"no": "Não"
+		},
+		"set_banner": {
+			"label": "Escolha um banner",
+			"catch": "Personalize o seu perfil com um maravilhoso banner! Explora pelos banners e escolha o seu favorito.",
+			"cancel": "Cancelar",
+			"set": "Usar esta imagem",
+			"next": "Próxima imagem",
+			"previous": "Imagem anterior"
+		},
+		"signup": {
+			"fields": {
+				"password": {
+					"label": "Senha",
+					"placeholder": "NaVerdadeIdolM@steréMelhor"
+				},
+				"password_confirmation": {
+					"placeholder": "NaVerdadeIdolM@steréMelhor",
+					"label": "Confirmação de senha"
+				},
+				"email": {
+					"label": "Email",
+					"placeholder": "exemplo@shelter.moe"
+				},
+				"username": {
+					"label": "Nome de utilizador"
+				}
+			},
+			"passwords_mismatch": "As senhas não coincidem",
+			"submit": "Inscrever-se",
+			"title": "Inscreva-se",
+			"subtitle": "Registe-se para guardar os seus favoritos e criar o seu perfil!"
+		},
+		"profile": {
+			"fields": {
+				"nickname": {
+					"label": "Apelido",
+					"placeholder": "FanáticoDeLoveLive93"
+				},
+				"twitch": {
+					"label": "Twitch",
+					"placeholder": "KaraokeLive"
+				},
+				"flag_public": {
+					"checkbox": "Fazer o meu perfil público",
+					"label": "Perfil público"
+				},
+				"url": {
+					"label": "Site",
+					"placeholder": "https://karaokes.moe"
+				},
+				"bio": {
+					"placeholder": "É a minha vida",
+					"label": "Biografia"
+				},
+				"location": {
+					"label": "Localização"
+				},
+				"discord": {
+					"label": "Discord",
+					"placeholder": "Karak#1423"
+				},
+				"instagram": {
+					"label": "Instagram",
+					"placeholder": "karaokemugen"
+				},
+				"flag_displayfavorites": {
+					"label": "Favoritos",
+					"checkbox": "Mostrar os meus favoritos"
+				},
+				"flag_sendstats": {
+					"label": "Estatísticas"
+				},
+				"username": {
+					"label": "Nome de utilizador"
+				},
+				"password": {
+					"label": "Senha",
+					"placeholder": "EuPrefiroIdolM@ster"
+				},
+				"password_confirmation": {
+					"label": "Confirmação de senha",
+					"placeholder": "EuPrefiroIdolM@ster"
+				},
+				"email": {
+					"label": "Email",
+					"placeholder": "exemplo@shelter.moe"
+				},
+				"twitter": {
+					"label": "Twitter",
+					"placeholder": "KaraokeMugen"
+				},
+				"banner": {
+					"label": "Banner",
+					"remove": "Redefinir para o banner padrão",
+					"upload": "Carregar um banner"
+				},
+				"lang_prefs": {
+					"main_song_name_lang": "Preferência de exibição do nome da canção"
+				}
+			},
+			"title": "Editar perfil",
+			"headers": {
+				"profile": "Sobre",
+				"privacy": "Privacidade",
+				"lang": "Preferências de idioma",
+				"password": "Alterar senha"
+			},
+			"passwords_mismatch": "As senhas não coincidem",
+			"submit": "Gravar",
+			"delete": "Apagar conta",
+			"select_avatar": "Selecione um avatar"
+		},
+		"delete_account": {
+			"add": "Apagar a conta",
+			"cancel": "Cancelar",
+			"label": "Quer mesmo apagar a sua conta?"
+		},
+		"login": {
+			"subtitle": "Faça login para ver os seus favoritos e editar o seu perfil!",
+			"fields": {
+				"username": {
+					"label": "Nome de utilizador",
+					"placeholder": "LoveLiveFan93"
+				},
+				"password": {
+					"label": "Senha",
+					"placeholder": "NaVerdadeIdolM@steréMelhor"
+				},
+				"forgot_password": {
+					"label": "Esqueceu-se da senha?",
+					"success": "Um e-mail foi enviado com um link para redefinir a sua senha.",
+					"error": "Não foi possível redefinir a sua senha: entre em contato com o administrador do servidor ao qual a sua conta pertence."
+				}
+			},
+			"title": "Login",
+			"submit": "Login"
+		},
+		"add_repository": {
+			"button": "Repositório :",
+			"label": "Adicione este repositório à aplicação do Karaoke Mugen!",
+			"download": "A aplicação pode ser descarregada aqui.",
+			"online": "Online",
+			"add": "Adicionar",
+			"cancel": "Cancelar"
+		}
+	},
+	"search": {
+		"placeholder": {
+			"kara": "Séries, cantores, nomes…",
+			"user": "Nome de utilizador…",
+			"tag": "Nome da etiqueta…"
+		},
+		"sort": {
+			"a_z": "De A a Z",
+			"kara_count": "Contagem de karaokê",
+			"recent": "Por data adicionada",
+			"most_played": "Mais tocados",
+			"most_requested": "Mais pedidos",
+			"languages": "Por idiomas"
+		},
+		"aria": {
+			"page": "Página {0}",
+			"sort": "Ordenar por",
+			"goto": "Ir para a página {0}"
+		},
+		"types": {
+			"karaokes": "Canções",
+			"users": "Usuários",
+			"favorites": "Favoritos do usuário",
+			"suggestions": "Sugestões"
+		},
+		"next": "Próxima página",
+		"previous": "Página anterior"
+	},
+	"titles": {
+		"home": "Início"
 	}
 }
