@@ -3,13 +3,15 @@ import en from '@karaokemugen/i18n-iso-languages/langs/en.json';
 import fr from '@karaokemugen/i18n-iso-languages/langs/fr.json';
 import id from '@karaokemugen/i18n-iso-languages/langs/id.json';
 import de from '@karaokemugen/i18n-iso-languages/langs/de.json';
+import pt from '@karaokemugen/i18n-iso-languages/langs/pt.json';
 
 registerLocale(en);
 registerLocale(fr);
 registerLocale(id);
 registerLocale(de);
+registerLocale(pt);
 
-export const languagesSupport = ['en', 'fr', 'id', 'de'];
+export const languagesSupport = ['en', 'fr', 'id', 'de', 'pt'];
 let langSupport: string;
 let navigatorLanguage: string;
 if (process.client) {
