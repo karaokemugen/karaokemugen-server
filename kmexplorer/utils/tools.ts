@@ -1,5 +1,5 @@
 import { getNavigatorLanguageIn3B } from './isoLanguages';
-import { User } from '~/../kmserver-core/src/lib/types/user';
+import { User } from '%/lib/types/user';
 import { DBTag } from '%/lib/types/database/tag';
 import { DBKara, DBKaraTag } from '%/lib/types/database/kara';
 import { Tag } from '%/lib/types/tag';

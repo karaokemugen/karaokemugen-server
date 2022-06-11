@@ -117,13 +117,13 @@
 
 		methods: {
 			listLanguages(lang: string): Array<{ value: string, label: string }> {
-				return getListLanguagesInLocale().filter(option => option.label.toString()
+				return getListLanguagesInLocale(this.$auth.user.language).filter(option => option.label.toString()
 					.toLowerCase().includes(lang.toLowerCase()) ||
 					option.value.toString()
 						.toLowerCase().includes(lang.toLowerCase()));
 			},
 			listDefaultLanguagesAvailable() {
-				return getListLanguagesInLocale().filter(value => Object.keys(this.i18n).includes(value.value));
+				return getListLanguagesInLocale(this.$auth.user.language).filter(value => Object.keys(this.i18n).includes(value.value));
 			},
 			addLang(lang:{label:string, value: string}) {
 				if (Object.keys(this.i18n).length === 0) {
@@ -140,7 +140,7 @@
 				}
 			},
 			getLanguagesFromCode(code:string) {
-				return getLanguagesInLocaleFromCode(code);
+				return getLanguagesInLocaleFromCode(code, this.$auth.user.language);
 			},
 			setValueLanguage() {
 				this.$emit('change', this.i18n);

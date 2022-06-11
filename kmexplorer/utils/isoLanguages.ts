@@ -11,27 +11,24 @@ registerLocale(id);
 registerLocale(de);
 registerLocale(pt);
 
-export const languagesSupport = ['en', 'fr', 'id', 'de', 'pt'];
-let langSupport: string;
 let navigatorLanguage: string;
 if (process.client) {
 	navigatorLanguage = navigator.languages[0].substring(0, 2);
-	langSupport = languagesSupport.includes(navigatorLanguage) ? navigatorLanguage : 'en';
 }
 
-export function getListLanguagesInLocale(): Array<{ value: string, label: string }> {
+export function getListLanguagesInLocale(userLang:string): Array<{ value: string, label: string }> {
 	const result = [];
 	if (process.client) {
-		const langs = Object.values(getNames(navigatorLanguage));
+		const langs = Object.values(getNames(userLang));
 		for (const langInLocale of langs) {
-			result.push({ value: getAlpha3BCode(langInLocale, navigatorLanguage) as string, label: langInLocale });
+			result.push({ value: getAlpha3BCode(langInLocale, userLang) as string, label: langInLocale });
 		}
 	}
 	return result;
 }
 
-export function getLanguagesInLocaleFromCode(code: string) {
-	return getName(code, langSupport);
+export function getLanguagesInLocaleFromCode(code: string, userLang:string) {
+	return getName(code, userLang);
 }
 
 export function getNavigatorLanguageIn3B(): string {

@@ -55,7 +55,7 @@
 
 		methods: {
 			getLanguagesFromCode(code:string) {
-				return getLanguagesInLocaleFromCode(code);
+				return getLanguagesInLocaleFromCode(code, this.$auth.user.language);
 			}
 		}
 	});
