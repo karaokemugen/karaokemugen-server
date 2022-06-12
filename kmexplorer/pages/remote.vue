@@ -73,7 +73,7 @@
 				}
 			},
 			searchPermanent(remote: RemoteAccessToken, input: string) {
-				let inputBool: Boolean;
+				let inputBool: Boolean | undefined;
 				if (input === 'true') {
 					inputBool = true;
 				} else if (input === 'false') {
