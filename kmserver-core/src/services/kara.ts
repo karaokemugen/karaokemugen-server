@@ -91,7 +91,7 @@ export async function generate() {
 		await Promise.all(promises);
 	} catch (err) {
 		logger.error('Generation failed', {service: 'Gen', obj: err});
-		sentry.error(err, 'Fatal');
+		sentry.error(err, 'fatal');
 	}
 }
 
@@ -305,7 +305,7 @@ export async function newKaraIssue(kid: string, type: 'Media' | 'Metadata' | 'Ly
 	} catch (err) {
 		logger.error('Call to Gitlab API failed', {service: 'GitLab', obj: err});
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
-		sentry.error(err, 'Warning');
+		sentry.error(err, 'warning');
 		throw err;
 	}
 }
