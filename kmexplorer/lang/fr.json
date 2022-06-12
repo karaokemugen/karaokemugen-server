@@ -136,6 +136,7 @@
 			"restart": "Soumettre un nouveau karaoké",
 			"i18n_select": "Ajouter une langue",
 			"i18n_delete": "Supprimer la langue",
+			"romanization_warning": "Ce titre/tag contient une langue en alphabet non latin. Vous devez ajouter la langue “Alphabet Latin (Romanisation)” en plus",
 			"default_language": "Langue par défaut",
 			"send_contact_infos": "Partager mes informations de contact avec les mainteneurs de la base",
 			"contact_infos": "Informations de contact",

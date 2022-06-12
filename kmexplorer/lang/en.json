@@ -136,6 +136,7 @@
 			"restart": "Submit new karaoke",
 			"i18n_select": "Add a language",
 			"i18n_delete": "Remove language",
+			"romanization_warning": "This title/tag contains a non-Latin alphabet language. You must add the language “Latin Alphabet (Romanization)” in addition",
 			"default_language": "Default language",
 			"send_contact_infos": "Share my contact information with the maintainers of the database",
 			"contact_infos": "Contact information",

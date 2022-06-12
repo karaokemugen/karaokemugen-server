@@ -13,6 +13,14 @@
 				</div>
 			</div>
 		</div>
+		<div
+			v-if="!Object.keys(i18n).includes('qro') && langWithRomanization.some(v => Object.keys(i18n).includes(v))"
+			class="field is-horizontal"
+		>
+			<div class="notification is-warning">
+				{{ $t('kara.import.romanization_warning') }}
+			</div>
+		</div>
 		<div class="field is-horizontal is-grouped is-grouped-centered">
 			<label class="label">
 				{{ $t('kara.import.i18n_select') }}
@@ -67,14 +75,15 @@
 
 <script lang="ts">
 	import Vue, { PropOptions } from 'vue';
-	import { getLanguagesInLocaleFromCode, getListLanguagesInLocale } from '../utils/isoLanguages';
+	import { getLanguagesInLocaleFromCode, getListLanguagesInLocale, langWithRomanization } from '../utils/isoLanguages';
 
 	interface VState {
 		langFilter: string,
 		i18n: Record<string, string>,
 		inputToFocus: string,
 		selectVisible: boolean,
-		defaultLang?: string
+		defaultLang?: string,
+		langWithRomanization: string[]
 	}
 
 	export default Vue.extend({
@@ -97,7 +106,8 @@
 				i18n: this.value,
 				inputToFocus: '',
 				selectVisible: false,
-				defaultLang: this.defaultLanguage
+				defaultLang: this.defaultLanguage,
+				langWithRomanization
 			};
 		},
 
