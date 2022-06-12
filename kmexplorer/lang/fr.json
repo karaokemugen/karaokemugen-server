@@ -3,7 +3,9 @@
 		"generic": "Erreur",
 		"private_profile": "Le profil est privé.",
 		"not_found_profile": "Impossible de trouver l'utilisateur",
-		"home": "Aller à l'accueil"
+		"home": "Aller à l'accueil",
+		"not_found_tag": "Tag non trouvé",
+		"remote": "Erreur au chargement de la liste des remotes"
 	},
 	"kara": {
 		"phrase": "{songtype} de {series}",
@@ -204,6 +206,7 @@
 		"langs": "Langues",
 		"years": "Années",
 		"community": "Communauté",
+		"remotes": "Remotes",
 		"search_users": "Utilisateurs",
 		"discord": "Discord",
 		"discourse": "Discourse",
@@ -517,5 +520,16 @@
 				"btn": "Compris !"
 			}
 		}
+	  },
+	"remote": {
+		"code": "Code",
+		"last_ip": "Dernière ip",
+		"last_use": "Dernière utilisation",
+		"permanent": "Permanent",
+		"token": "Token",
+		"delete_button": "Supprimer la ligne",
+		"edit_success": "Edition du remote avec succès",
+		"edit_error": "Erreur lors de l'edition du remote",
+		"delete_error": "Erreur lors de la suppression de la ligne"
 	}
 }

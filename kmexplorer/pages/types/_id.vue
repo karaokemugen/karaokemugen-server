@@ -100,7 +100,7 @@
 					params: this.reqParams
 				})
 				.catch(_err =>
-					this.$nuxt.error({ statusCode: 404, message: this.$t('tag.notfound') as string })
+					this.$nuxt.error({ statusCode: 404, message: this.$t('error.not_found_tag') as string })
 				);
 			if (res && res.data) {
 				this.total = res.data.content.length > 0 ? Math.ceil(res.data.content[0].count / 100) : 0;

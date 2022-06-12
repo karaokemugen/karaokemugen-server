@@ -51,7 +51,7 @@
 					}
 				})
 				.catch(_err =>
-					this.$nuxt.error({ statusCode: 404, message: this.$t('tag.notfound') as string })
+					this.$nuxt.error({ statusCode: 404, message: this.$t('error.not_found_tag') as string })
 				);
 			if (res) {
 				this.years = res.data;

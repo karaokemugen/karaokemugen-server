@@ -3,7 +3,9 @@
 		"generic": "Error",
 		"private_profile": "The profile is private.",
 		"not_found_profile": "Cannot find this user",
-		"home": "Go home"
+		"home": "Go home",
+		"not_found_tag": "Tag not found",
+		"remote": "Error when loading remotes list"
 	},
 	"kara": {
 		"phrase": "{songtype} from {series}",
@@ -204,6 +206,7 @@
 		"langs": "Languages",
 		"years": "Years",
 		"community": "Community",
+		"remotes": "Remotes",
 		"search_users": "Search users",
 		"discord": "Discord",
 		"discourse": "Discourse",
@@ -517,5 +520,16 @@
 				"btn": "OK!"
 			}
 		}
+	  },
+	"remote": {
+		"code": "Code",
+		"last_ip": "Last ip",
+		"last_use": "Last use",
+		"permanent": "Permanent",
+		"token": "Token",
+		"delete_button": "Delete line",
+		"edit_success": "Remote edited with success",
+		"edit_error": "Error when edited remote",
+		"delete_error": "Error when deleted remote"
 	}
 }

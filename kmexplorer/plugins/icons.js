@@ -68,7 +68,9 @@ import {
 	faExclamationTriangle,
 	faLayerGroup,
 	faEnvelopeCircleCheck,
-	faAt
+	faAt,
+	faTrash,
+	faHouseLaptop
 } from '@fortawesome/free-solid-svg-icons';
 import {
 	faTwitter,
@@ -151,6 +153,8 @@ library.add(
 	faEye,
 	faEyeSlash,
 	faFilm,
+	faTrash,
+	faHouseLaptop,
 	faExclamationTriangle,
 	faEnvelopeCircleCheck,
 	faLayerGroup);

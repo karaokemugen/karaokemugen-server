@@ -42,6 +42,10 @@
 			</div>
 
 			<div v-if="communityMenu" class="navbar-dropdown">
+				<nuxt-link v-if="loggedIn && user.roles.admin" class="navbar-item" to="/remote">
+					<font-awesome-icon :icon="['fas', 'house-laptop']" :fixed-width="true" />
+					{{ $t('menu.remotes') }}
+				</nuxt-link>
 				<nuxt-link v-if="usersEnabled" class="navbar-item" to="/users">
 					<font-awesome-icon :icon="['fas', 'users']" :fixed-width="true" />
 					{{ $t('menu.search_users') }}
@@ -413,6 +417,10 @@
 				</p>
 				<ul class="menu-list">
 					<li>
+						<nuxt-link v-if="loggedIn && user.roles.admin" to="/remote" active-class="is-active">
+							<font-awesome-icon :icon="['fas', 'house-laptop']" :fixed-width="true" />
+							{{ $t('menu.remotes') }}
+						</nuxt-link>
 						<nuxt-link to="/users" active-class="is-active">
 							<font-awesome-icon :icon="['fas', 'users']" :fixed-width="true" />
 							{{ $t('menu.search_users') }}
