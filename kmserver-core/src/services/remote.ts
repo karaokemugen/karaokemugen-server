@@ -7,10 +7,11 @@ import { v4 as uuidV4 } from 'uuid';
 
 import {
 	deleteOldRemoteTokens,
-	getRemoteByToken,
+	deleteToken,
 	insertNewToken,
-	testCodeExistence,
-	updateRemoteToken
+	selectRemoteTokens,
+	updateRemoteToken,
+	updateRemoteTokenCode
 } from '../dao/remote';
 import { APIDataProxied } from '../lib/types/api';
 import { RemoteResponse, RemoteSettings } from '../lib/types/remote';
@@ -47,20 +48,32 @@ function setupRemote(code: string, version: string, socket: Socket) {
 	}
 }
 
+export async function getTokens() {
+	return selectRemoteTokens();
+}
+
+export async function removeToken(token: string) {
+	return deleteToken(token);
+}
+
+export async function promoteToken(token: string, code: string) {
+	return updateRemoteTokenCode(token, code);
+}
+
 async function findFreeCode() {
 	let code = '';
+	const tokens = await selectRemoteTokens();
+	const codesSet = new Set(tokens.map(t => t.code));
 	while (code === '') {
 		code = generate({ charset: 'alphabetic', length: 4, readable: true, capitalization: 'lowercase' });
-		if (await testCodeExistence(code)) {
-			code = '';
-		}
+		if (codesSet.has(code)) code = '';
 	}
 	return code;
 }
 
 export async function startRemote(socket: Socket, req: RemoteSettings): Promise<RemoteResponse> {
 	if (req.token) {
-		const instance = await getRemoteByToken(req.token);
+		const instance = (await selectRemoteTokens(req.token))[0];
 		if (instance) {
 			try {
 				// All good! Setup remote with the authenticated code

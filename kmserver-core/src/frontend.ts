@@ -12,6 +12,7 @@ import favoritesController from './controllers/http/favorites';
 import inboxController from './controllers/http/inbox';
 import KImportController from './controllers/http/karaimport';
 import KServerController from './controllers/http/karaserv';
+import remoteController from './controllers/http/remote';
 import statsController from './controllers/http/stats';
 import suggestionsController from './controllers/http/suggestions';
 import userController from './controllers/http/user';
@@ -124,6 +125,7 @@ function api() {
 	const conf = getConfig();
 	// Adding admin routes
 	adminController(apiRouter);
+	remoteController(apiRouter);
 	// Adding KaraServ routes
 	KServerController(apiRouter);
 	inboxController(apiRouter);

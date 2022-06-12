@@ -10,7 +10,6 @@ import { register } from 'ts-node';
 import logger from 'winston';
 
 import {initDB} from './dao/database';
-import { promoteToken } from './dao/remote';
 import {initFrontend} from './frontend';
 import {getConfig, setConfig} from './lib/utils/config';
 import {asyncCheckOrMkdir} from './lib/utils/files';
@@ -18,6 +17,7 @@ import { createImagePreviews } from './lib/utils/previews';
 import { initGitRepos } from './services/git';
 import { generate, getAllKaras } from './services/kara';
 import {buildKMExplorer} from './services/kmexplorer';
+import { promoteToken } from './services/remote';
 import {initRepos} from './services/repo';
 import { addSuggestionsFromFile } from './services/suggestions';
 import {addRoleToUser, changePassword, createUser, initUsers, removeRoleFromUser} from './services/user';
