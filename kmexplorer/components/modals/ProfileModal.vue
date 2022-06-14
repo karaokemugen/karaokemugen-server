@@ -433,7 +433,7 @@
 <script lang="ts">
 	import Vue from 'vue';
 	import { cloneDeep } from 'lodash';
-	import { getNames, getAlpha3BCode } from '@karaokemugen/i18n-iso-languages';
+	import { getNames, getAlpha3BCode, getName } from '@karaokemugen/i18n-iso-languages';
 	import { getCountries } from '@hotosm/iso-countries-languages';
 
 	import CropModal from './CropModal.vue';
@@ -587,6 +587,12 @@
 					this.user = cloneDeep(this.storeUser);
 					if (this.storeUser.location) {
 						this.location = this.getCountryName(this.storeUser.location) as string;
+					}
+					if (this.storeUser.main_series_lang) {
+						this.main_series_lang_name = getName(this.storeUser.main_series_lang, this.$i18n.locale);
+					}
+					if (this.storeUser.fallback_series_lang) {
+						this.fallback_series_lang_name = getName(this.storeUser.fallback_series_lang, this.$i18n.locale);
 					}
 					if (!this.user.social_networks) {
 						this.user.social_networks = {

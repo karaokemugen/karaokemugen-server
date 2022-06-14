@@ -214,6 +214,7 @@
 			password: string,
 			password_confirmation?: string,
 			login?: string
+			language?: string
 		},
 		mode: 'login' | 'signup',
 		loading: boolean
