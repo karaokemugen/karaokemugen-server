@@ -589,10 +589,10 @@
 						this.location = this.getCountryName(this.storeUser.location) as string;
 					}
 					if (this.storeUser.main_series_lang) {
-						this.main_series_lang_name = getName(this.storeUser.main_series_lang, this.$i18n.locale);
+						this.main_series_lang_name = getName(this.storeUser.main_series_lang, this.$i18n.locale) as string;
 					}
 					if (this.storeUser.fallback_series_lang) {
-						this.fallback_series_lang_name = getName(this.storeUser.fallback_series_lang, this.$i18n.locale);
+						this.fallback_series_lang_name = getName(this.storeUser.fallback_series_lang, this.$i18n.locale) as string;
 					}
 					if (!this.user.social_networks) {
 						this.user.social_networks = {
