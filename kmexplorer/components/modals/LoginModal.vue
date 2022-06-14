@@ -262,6 +262,7 @@
 				if (this.mode === 'signup') {
 					const signup = { ...this.login };
 					signup.login = this.login.username;
+					signup.language = this.$i18n.locale;
 					await this.$axios.post('/api/users', signup).catch(() => {
 						this.loading = false;
 					});
