@@ -444,7 +444,8 @@
 			"cancel": "Annuler",
 			"karabundle": "Télécharger les données (.json)",
 			"subtitles": "Télécharger les paroles (.{format})",
-			"media": "Télécharger le média (.{format})"
+			"media": "Télécharger le média (.{format})",
+			"media_hardsub" : "Télécharger le média avec les sous-titres incrustés (.{format} hardsub)"
 		},
 		"crop": {
 			"label": "Rogner",

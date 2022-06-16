@@ -20,6 +20,10 @@
 						<font-awesome-icon :icon="['fas', 'file-video']" :fixed-width="true" />
 						{{ $t('modal.download.media', {format: mediaExtension}) }}
 					</a>
+					<a v-if="liveURL && live" :href="mediaHardsubUrl" class="button" :download="hardsubMediaFileName" @click="closeModal">
+						<font-awesome-icon :icon="['fas', 'file-video']" :fixed-width="true" />
+						{{ $t('modal.download.media_hardsub', {format: mediaExtension}) }}
+					</a>
 				</div>
 			</div>
 		</section>
@@ -100,6 +104,13 @@
 			},
 			mediaUrl(): string {
 				return `${this.$axios.defaults.baseURL}downloads/medias/${encodeURIComponent(this.karaoke.mediafile)}`;
+			},
+			mediaHardsubUrl(): string {
+				return `${this.$axios.defaults.baseURL}hardsubs/${this.karaoke.kid}.${this.karaoke.subchecksum}.mp4`;
+			},
+			hardsubMediaFileName(): string {
+				const filename = this.karaoke.mediafile.substring(0, this.karaoke.mediafile.lastIndexOf('.')) || this.karaoke.mediafile;
+				return `${filename}.mp4`;
 			},
 			subtitlesUrl(): string {
 				return `${this.$axios.defaults.baseURL}downloads/lyrics/${encodeURIComponent(this.karaoke.subfile)}`;
