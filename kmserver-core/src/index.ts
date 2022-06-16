@@ -15,7 +15,7 @@ import {getConfig, setConfig} from './lib/utils/config';
 import {asyncCheckOrMkdir} from './lib/utils/files';
 import { createImagePreviews } from './lib/utils/previews';
 import { initGitRepos } from './services/git';
-import { generate, getAllKaras } from './services/kara';
+import { generate, generateHardsubsCache, getAllKaras } from './services/kara';
 import {buildKMExplorer} from './services/kmexplorer';
 import { promoteToken } from './services/remote';
 import {initRepos} from './services/repo';
@@ -185,6 +185,11 @@ async function main() {
 	if (conf.Mail.Enabled) initMailer();
 	await Promise.all(inits);
 	logger.info('Karaoke Mugen Server is READY', {service: 'Launcher'});
+
+	// Post launch stuff
+
+	const karas = await getAllKaras({ ignoreCollections: true }, undefined, true);
+	generateHardsubsCache(karas);
 }
 
 function parseArgs() {

@@ -101,11 +101,12 @@ export async function generate() {
 	}
 }
 
-function generateHardsubsCache(karas: KaraList) {
+export function generateHardsubsCache(karas: KaraList) {
 	hardsubsCache.clear();
 	for (const kara of karas.content) {
 		hardsubsCache.set(kara.kid, kara.hardsubbed_mediafile);
 	}
+	logger.info('Hardsubs cache generated', {service: 'Karas'});
 }
 
 export function getHardsubsCache() {
