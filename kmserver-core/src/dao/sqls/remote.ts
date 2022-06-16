@@ -23,7 +23,7 @@ delete from remote_tokens
 `;
 
 export const insertNewToken = `
-insert into remote_tokens(code, token, last_use, last_ip)
+insert into remote_tokens(code, token, last_use, last_ip, permanent)
 values ($1, $2, now(), $3, $4)`;
 
 export const updateRemoteToken = `
