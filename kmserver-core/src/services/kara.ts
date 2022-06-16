@@ -28,6 +28,9 @@ import { gitlabPostNewIssue } from './gitlab';
 import { clearOldInboxEntries, clearUnusedStagingTags } from './inbox';
 import { findUserByName } from './user';
 
+// KID => Filename
+const hardsubsCache: Map<string, string> = new Map();
+
 export async function getBaseStats() {
 	try {
 		return await selectBaseStats();
@@ -85,7 +88,10 @@ export async function generate() {
 		computeSubchecksums();
 		createBaseDumps();
 		const promises = [createImagePreviews(karas, 'full', 1280)];
-		if (conf.Hardsub.Enabled) promises.push(generateHardsubs(karas));
+		if (conf.Hardsub.Enabled) {
+			promises.push(generateHardsubs(karas));
+			generateHardsubsCache(karas);
+		}
 		if (conf.KaraExplorer.Import) promises.push(clearOldInboxEntries(), clearUnusedStagingTags());
 		if (conf.System.Repositories[0].OnUpdateTrigger) promises.push(updateTrigger());
 		await Promise.all(promises);
@@ -93,6 +99,17 @@ export async function generate() {
 		logger.error('Generation failed', {service: 'Gen', obj: err});
 		sentry.error(err, 'fatal');
 	}
+}
+
+function generateHardsubsCache(karas: KaraList) {
+	hardsubsCache.clear();
+	for (const kara of karas.content) {
+		hardsubsCache.set(kara.kid, kara.hardsubbed_mediafile);
+	}
+}
+
+export function getHardsubsCache() {
+	return hardsubsCache;
 }
 
 async function createBaseDumps() {

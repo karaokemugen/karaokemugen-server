@@ -42,6 +42,7 @@ export const getAllKaras = (filterClauses: string[], orderClauses: string, limit
   ak.repository AS repository,
   ak.comment AS comment,
   ksub.subchecksum AS subchecksum,
+  ak.pk_kid || '.' || ak.mediasize::text || '.' || COALESCE(ksub.subchecksum, 'no_ass_file') || '.mp4' AS hardsubbed_mediafile,
   ${selectClause}
   array_remove(array_agg(DISTINCT krc.fk_kid_parent), null) AS parents,
   array_remove(array_agg(DISTINCT krp.fk_kid_child), null) AS children,

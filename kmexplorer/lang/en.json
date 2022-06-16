@@ -444,7 +444,8 @@
 			"cancel": "Cancel",
 			"karabundle": "Download data (.json)",
 			"subtitles": "Download lyrics (.{format})",
-			"media": "Download media (.{format})"
+			"media": "Download media (.{format})",
+			"media_hardsub": "Download media including subtitles (hardsub .{format})"
 		},
 		"crop": {
 			"label": "Crop avatar",
