@@ -136,7 +136,7 @@
 				return getListLanguagesInLocale((this.$auth.loggedIn && this.$auth.user.language) || this.$i18n.locale).filter(value => Object.keys(this.i18n).includes(value.value));
 			},
 			addLang(lang:{label:string, value: string}) {
-				if (Object.keys(this.i18n).length === 0) {
+				if (Object.keys(this.i18n).length === 0 || lang.value === 'qro') {
 					this.setDefaultLanguage(lang.value);
 				}
 				this.i18n[lang.value] = '';
