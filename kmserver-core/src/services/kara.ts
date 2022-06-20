@@ -85,7 +85,7 @@ export async function generate() {
 			};
 			downloadFile(downloadItem);
 		}
-		computeSubchecksums();
+		await computeSubchecksums();
 		createBaseDumps();
 		const promises = [createImagePreviews(karas, 'full', 1280)];
 		if (conf.Hardsub.Enabled) {
