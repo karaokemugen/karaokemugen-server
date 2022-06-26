@@ -70,7 +70,6 @@ export async function updateRepo() {
 export async function generate() {
 	try {
 		await generateDatabase({validateOnly: false});
-		const karas = await getAllKaras({ ignoreCollections: true }, undefined, true);
 		refreshKaraStats();
 		const conf = getConfig();
 		// Download master.zip from gitlab to serve it ourselves
@@ -87,6 +86,7 @@ export async function generate() {
 		}
 		await computeSubchecksums();
 		createBaseDumps();
+		const karas = await getAllKaras({ ignoreCollections: true }, undefined, true);
 		const promises = [createImagePreviews(karas, 'full', 1280)];
 		if (conf.Hardsub.Enabled) {
 			promises.push(generateHardsubs(karas));
