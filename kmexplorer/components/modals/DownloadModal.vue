@@ -22,7 +22,7 @@
 					</a>
 					<a v-if="liveURL && live" :href="mediaHardsubUrl" class="button" :download="hardsubMediaFileName" @click="closeModal">
 						<font-awesome-icon :icon="['fas', 'file-video']" :fixed-width="true" />
-						{{ $t('modal.download.media_hardsub', {format: mediaExtension}) }}
+						{{ $t('modal.download.media_hardsub') }}
 					</a>
 				</div>
 			</div>
