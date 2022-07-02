@@ -106,7 +106,7 @@
 				return `${this.$axios.defaults.baseURL}downloads/medias/${encodeURIComponent(this.karaoke.mediafile)}`;
 			},
 			mediaHardsubUrl(): string {
-				return `${this.$axios.defaults.baseURL}hardsubs/${this.karaoke.kid}.${this.karaoke.subchecksum}.mp4`;
+				return `${this.$axios.defaults.baseURL}hardsubs/${this.karaoke.hardsubbed_mediafile}`;
 			},
 			hardsubMediaFileName(): string {
 				const filename = this.karaoke.mediafile.substring(0, this.karaoke.mediafile.lastIndexOf('.')) || this.karaoke.mediafile;
