@@ -2,7 +2,8 @@
 	"error": {
 		"generic": "Erro",
 		"private_profile": "O perfil é privado.",
-		"not_found_profile": "Não é possível encontrar este utilizador"
+		"not_found_profile": "Não é possível encontrar este utilizador",
+		"not_found_tag": "Tag não encontrada"
 	},
 	"kara": {
 		"tagtypes": {
@@ -236,7 +237,8 @@
 		"GENERATED_KARA": "Karaokê enviado com sucesso.",
 		"EDITED_KARA": "Modificação enviada com sucesso.",
 		"CANNOT_EDIT_KARA": "Não é possível enviar a modificação.",
-		"CANNOT_GENERATE_KARA": "Não é possível enviar o karaokê."
+		"CANNOT_GENERATE_KARA": "Não é possível enviar o karaokê.",
+		"SUBFILE_FORMAT_UNKOWN": "Formato de subfile desconhecido"
 	},
 	"roles": {
 		"donator": "Doador",
@@ -461,7 +463,8 @@
 			"recent": "Por data adicionada",
 			"most_played": "Mais tocados",
 			"most_requested": "Mais pedidos",
-			"languages": "Por idiomas"
+			"languages": "Por idiomas",
+			"likes": "Mais likes"
 		},
 		"aria": {
 			"page": "Página {0}",
@@ -479,5 +482,21 @@
 	},
 	"titles": {
 		"home": "Início"
+	},
+	"footer": {
+		"software_under_license": "Software sob a licença",
+		"base_under_licence": "Base de karaokê sob a licença",
+		"translation": "Participe na tradução"
+	},
+	"remote": {
+		"code": "Código",
+		"last_ip": "Último ip",
+		"last_use": "Último uso",
+		"permanent": "Permanente",
+		"token": "Token",
+		"delete_button": "Eliminar linha",
+		"edit_success": "Editado remotamente com sucesso",
+		"edit_error": "Erro ao editar remotamente",
+		"delete_error": "Erro ao eliminar remotamente"
 	}
 }
