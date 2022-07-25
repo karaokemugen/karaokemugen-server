@@ -206,22 +206,24 @@
 				this.$emit('close');
 			},
 			submitForm() {
-				this.loading = true;
-				if (!this.formData.username) {
-					this.formData.username = 'Anonymous';
+				if (this.formData.title && this.formData.serie && this.formData.link) {
+					this.loading = true;
+					if (!this.formData.username) {
+						this.formData.username = 'Anonymous';
+					}
+					this.$axios.post('/api/karas/suggest', this.formData).then((res) => {
+						this.submitted = true;
+						this.loading = false;
+						this.gitlabUrl = res.data;
+						this.formData = {
+							title: '',
+							serie: '',
+							type: 'OP',
+							link: '',
+							username: ''
+						};
+					});
 				}
-				this.$axios.post('/api/karas/suggest', this.formData).then((res) => {
-					this.submitted = true;
-					this.loading = false;
-					this.gitlabUrl = res.data;
-					this.formData = {
-						title: '',
-						serie: '',
-						type: 'OP',
-						link: '',
-						username: ''
-					};
-				});
 				this.closeModal();
 			}
 		}
