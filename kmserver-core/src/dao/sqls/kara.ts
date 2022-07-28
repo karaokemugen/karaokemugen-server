@@ -8,29 +8,15 @@ export const selectAllMedias = `
 	WHERE repository != 'Staging'
 `;
 
-export const getAllKaras = (filterClauses: string[], orderClauses: string, limitClause: string, offsetClause: string, selectClause: string, joinClause: string, groupClause: string, whereClauses: string, additionalFrom: string[], includeStaging: boolean, collectionClauses: string[]) => `SELECT
+export const getAllKaras = (filterClauses: string[], orderClauses: string, limitClause: string, offsetClause: string, selectClause: string, joinClause: string, groupClause: string, whereClauses: string, additionalFrom: string[], includeStaging: boolean, collectionClauses: string[]) => `
+SELECT
+  ak.tags AS tags,
   ak.pk_kid AS kid,
   ak.titles AS titles,
   ak.titles_default_language as titles_default_language,
   ak.songorder AS songorder,
   ak.subfile AS subfile,
-  jsonb_path_query_array( tags, '$[*] ? (@.type_in_kara == 2)') AS singers,
-  jsonb_path_query_array( tags, '$[*] ? (@.type_in_kara == 3)') AS songtypes,
-  jsonb_path_query_array( tags, '$[*] ? (@.type_in_kara == 4)') AS creators,
-  jsonb_path_query_array( tags, '$[*] ? (@.type_in_kara == 8)') AS songwriters,
   ak.year AS year,
-  jsonb_path_query_array( tags, '$[*] ? (@.type_in_kara == 5)') AS langs,
-  jsonb_path_query_array( tags, '$[*] ? (@.type_in_kara == 6)') AS authors,
-  jsonb_path_query_array( tags, '$[*] ? (@.type_in_kara == 9)') AS groups,
-  jsonb_path_query_array( tags, '$[*] ? (@.type_in_kara == 7)') AS misc,
-  jsonb_path_query_array( tags, '$[*] ? (@.type_in_kara == 11)') AS origins,
-  jsonb_path_query_array( tags, '$[*] ? (@.type_in_kara == 13)') AS platforms,
-  jsonb_path_query_array( tags, '$[*] ? (@.type_in_kara == 10)') AS families,
-  jsonb_path_query_array( tags, '$[*] ? (@.type_in_kara == 12)') AS genres,
-  jsonb_path_query_array( tags, '$[*] ? (@.type_in_kara == 1)') AS series,
-  jsonb_path_query_array( tags, '$[*] ? (@.type_in_kara == 14)') AS versions,
-  jsonb_path_query_array( tags, '$[*] ? (@.type_in_kara == 15)') AS warnings,
-  jsonb_path_query_array( tags, '$[*] ? (@.type_in_kara == 16)') AS collections,
   ak.mediafile AS mediafile,
   ak.karafile AS karafile,
   ak.duration AS duration,
@@ -56,13 +42,13 @@ LEFT JOIN kara k ON k.pk_kid = ak.pk_kid
 ${joinClause}
 ${additionalFrom.join('')}
 WHERE ${includeStaging ? '1 = 1' : 'ak.repository != \'Staging\''}
-  ${
-    collectionClauses.length > 0
-	  ? `AND (${collectionClauses.map(clause => `(${clause})`).join(' OR ')})`
-      : ''
-  }
-  ${filterClauses.map(clause => `AND (${clause})`).reduce((a, b) => (`${a} ${b}`), '')}
-  ${whereClauses}
+	${
+	collectionClauses.length > 0
+		? `AND (${collectionClauses.map(clause => `(${clause})`).join(' OR ')})`
+		: ''
+	}
+	${filterClauses.map(clause => `AND (${clause})`).reduce((a, b) => (`${a} ${b}`), '')}
+	${whereClauses}
 GROUP BY ${groupClause} ak.pk_kid, ak.titles, ak.titles_default_language, ak.songorder, ak.tags, ak.serie_singer_sortable, ak.subfile, ak.year, ak.mediafile, ak.karafile, ak.duration, ak.gain, ak.loudnorm, ak.created_at, ak.modified_at, ak.mediasize, ak.repository, ak.comment, ak.songtypes_sortable, ak.titles_sortable, ksub.subchecksum
 ORDER BY ${orderClauses} ak.serie_singer_sortable, ak.songtypes_sortable DESC, ak.songorder, ak.titles_sortable
 ${limitClause}
