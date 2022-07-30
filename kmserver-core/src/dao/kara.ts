@@ -5,7 +5,7 @@ import { WhereClause } from '../lib/types/database';
 import { DBKara, DBMedia, DBYear } from '../lib/types/database/kara';
 import {KaraFileV4, KaraParams} from '../lib/types/kara';
 import {getConfig} from '../lib/utils/config';
-import {tagTypes} from '../lib/utils/constants';
+import {getTagTypeName, tagTypes} from '../lib/utils/constants';
 import logger from '../lib/utils/logger';
 import { DBStats } from '../types/database/kara';
 import * as sql from './sqls/kara';
@@ -108,7 +108,23 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 		collectionClauses
 	);
 	const res = await db().query(yesql(query)(yesqlPayload.params));
-	return res.rows;
+	return res.rows.map((row) => {
+		const { tags, ...rowWithoutTags } = row;
+
+		for (const tagType of Object.keys(tagTypes)) {
+			rowWithoutTags[tagType] = [];
+		}
+		if (tags == null) {
+			return rowWithoutTags;
+		}
+		for (let tag of tags) {
+			if (tag?.type_in_kara == null) continue;
+			const type = getTagTypeName(tag.type_in_kara);
+			if (type == null) continue;
+			rowWithoutTags[type].push(tag);
+		}
+		return rowWithoutTags;
+	});
 }
 
 export async function insertKara(kara: KaraFileV4) {
