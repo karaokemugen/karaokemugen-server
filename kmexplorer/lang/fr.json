@@ -12,7 +12,7 @@
 		"meta": "{songtitle} de {serieSinger}",
 		"notfound": "Karaoké non trouvé",
 		"tagtypes": {
-			"series": "Série | Séries",
+			"series": "Œuvre | Œuvres",
 			"langs": "Langue | Langues",
 			"songtypes": "Type de chanson | Types de chanson",
 			"singers": "Chanteur | Chanteurs",
@@ -109,23 +109,23 @@
 			"lyrics_file_missing": "Le fichier de sous-titres est manquant, cela est approprié que si vous envoyez un mkv ou que votre karaoké n'a pas de paroles (?).",
 			"title": "Titre",
 			"title_required": "Le titre est obligatoire",
-			"title_tooltip": "Si vous ne le connaissez pas, mettez le nom de la série. Dans le cas d'une version alternative, nommez votre titre ainsi : 'Mon titre ~ Disco vers.' par exemple",
+			"title_tooltip": "Si vous ne le connaissez pas, mettez le nom de l'œuvre. Dans le cas d'une version alternative, nommez votre titre ainsi : 'Mon titre ~ Disco vers.' par exemple",
 			"titles_aliases": "Alias",
 			"titles_aliases_tooltip": "Noms courts ou alternatifs, utilisés pour la recherche.",
 			"series_tooltip": "Série TV, nom de film, de jeu vidéo, etc.",
-			"series_singers_required": "Les champs Séries et Chanté par ne peuvent être vide en même temps.",
+			"series_singers_required": "Les champs Œuvre et Chanté par ne peuvent être vide en même temps.",
 			"songtypes_required": "Le type de chanson est obligatoire",
 			"collections_required": "Une collection au moins doit être cochée",
 			"songorder": "Numéro de chanson",
 			"songorder_invalid": "Le numéro de chanson est invalide",
-			"songorder_tooltip": "Numéro de l'opening/ending/etc. Si c'est le seul opening/ending dans la série, laissez vide.",
+			"songorder_tooltip": "Numéro de l'opening/ending/etc. Si c'est le seul opening/ending dans l'œuvre, laissez vide.",
 			"langs_required": "Choisissez une langue",
 			"year": "Année de diffusion",
-			"year_tooltip": "Année de la diffusion de la série ou de la vidéo",
+			"year_tooltip": "Année de la diffusion de l'œuvre ou de la vidéo",
 			"year_required": "L'année de diffusion est obligatoire",
 			"year_invalid": "L'année de diffusion est invalide",
 			"songwriters_tooltip": "Compositeurs, Arrangeurs et paroliers.",
-			"creators_tooltip": "Entité qui a créé la série ou le clip. Peut être un studio d'animation, de cinéma, de jeu vidéo, etc.",
+			"creators_tooltip": "Entité qui a créé l'œuvre ou le clip. Peut être un studio d'animation, de cinéma, de jeu vidéo, etc.",
 			"authors_tooltip": "Vous devriez vous ajouter ici ;)",
 			"authors_required": "L'auteur du karaoké est obligatoire",
 			"groups_tooltip": "Groupes de téléchargement pour ce morceau. Le morceau sera ajouté dans ces paquets pour le téléchargement",
@@ -200,7 +200,7 @@
 		"platforms": "Plateformes",
 		"versions": "Versions",
 		"singers": "Chanteurs",
-		"series": "Séries",
+		"series": "Œuvres",
 		"songwriters": "Compositeurs",
 		"creators": "Créateurs",
 		"authors": "Auteurs",
@@ -233,7 +233,7 @@
 	},
 	"search": {
 		"placeholder": {
-			"kara": "Séries, chanteurs, noms…",
+			"kara": "Œuvres, chanteurs, noms…",
 			"user": "Nom d'utilisateur…",
 			"tag": "Nom du tag…"
 		},
@@ -416,7 +416,7 @@
 					"placeholder": "JINGO JUNGLE"
 				},
 				"series": {
-					"label": "Série / Chanteur",
+					"label": "Œuvre / Chanteur",
 					"placeholder": "Yôjo Senki : Saga of Tanya the Evil"
 				},
 				"type": {
