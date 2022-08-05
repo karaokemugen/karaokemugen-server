@@ -6,7 +6,7 @@ import { basename, resolve } from 'path';
 
 import {refreshKaraStats, selectAllKaras, selectAllMedias, selectAllYears, selectBaseStats} from '../dao/kara';
 import { copyFromData } from '../lib/dao/database';
-import { getASS } from '../lib/dao/karafile';
+import { getLyrics } from '../lib/dao/karafile';
 import { generateDatabase } from '../lib/services/generation';
 import { consolidateData } from '../lib/services/kara';
 import { DBKara } from '../lib/types/database/kara';
@@ -201,7 +201,7 @@ export async function getKara(params: KaraParams, token?: JWTTokenWithRoles) {
 		if (!karas[0]) return;
 		karas[0].lyrics = null;
 		if (karas[0].subfile) {
-			const ASS = await getASS(karas[0].subfile, karas[0].repository);
+			const ASS = await getLyrics(karas[0].subfile, karas[0].repository);
 			if (ASS) karas[0].lyrics = ASSToLyrics(ASS);
 		}
 		return karas[0];
