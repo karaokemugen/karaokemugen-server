@@ -7,7 +7,7 @@ import { DBTag } from '../lib/types/database/tag';
 import { Tag, TagParams } from '../lib/types/tag';
 import * as sql from './sqls/tag';
 
-export async function selectTag(tid: string): Promise<Tag> {
+export async function selectTag(tid: string): Promise<DBTag> {
 	const res = await db().query(sql.selectTag, [tid]);
 	if (!res.rows[0]) return null;
 	const karacounts = res.rows[0].karacount;
