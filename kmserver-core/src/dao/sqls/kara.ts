@@ -1,12 +1,12 @@
 // SQL for kara management
 
 export const selectAllMedias = (collectionClauses: string[]) => `
-	SELECT mediafile,
-	mediasize,
-	pk_kid AS kid
+	SELECT k.mediafile,
+	k.mediasize,
+	k.pk_kid AS kid
 	FROM kara k
 	LEFT JOIN all_karas ak ON k.pk_kid = ak.pk_kid
-	WHERE repository != 'Staging'
+	WHERE k.repository != 'Staging'
 	${collectionClauses.length > 0 ? `AND (${collectionClauses.map(clause => `(${clause})`).join(' OR ')})` : ''}
 
 `;
