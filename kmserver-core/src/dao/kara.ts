@@ -15,7 +15,7 @@ export async function selectAllMedias(collections?: string[]): Promise<DBMedia[]
 	if (collections) for (const collection of collections) {
 		collectionsClauses.push(`'${collection}~${tagTypes.collections}' = ANY(ak.tid)`);
 	}
-	const res = await db().query(sql.selectAllMedias(collections));
+	const res = await db().query(sql.selectAllMedias(collectionsClauses));
 	return res.rows;
 }
 
