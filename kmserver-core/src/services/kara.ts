@@ -186,8 +186,8 @@ async function checksumASS(lyrics: any[]): Promise<string[]> {
 	subdata = subdata.replace(/\r/g, '');
 	return [lyrics[1].kid, createHash('md5').update(subdata, 'utf-8').digest('hex')];
 }
-export function getAllMedias() {
-	return selectAllMedias();
+export function getAllMedias(collections?: string[]) {
+	return selectAllMedias(collections);
 }
 
 export async function getKara(params: KaraParams, token?: JWTTokenWithRoles) {

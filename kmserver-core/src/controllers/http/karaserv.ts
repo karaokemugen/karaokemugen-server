@@ -159,9 +159,18 @@ export default function KSController(router: Router) {
 			}
 		});
 	router.route('/karas/medias')
+		// Remove when KM App 6.0 is deprecated. KM 7+ uses POST.
 		.get(async (_req, res) => {
 			try {
 				const medias = await getAllMedias();
+				res.json(medias);
+			} catch (err) {
+				res.status(500).json(err);
+			}
+		})
+		.post(async (req, res) => {
+			try {
+				const medias = await getAllMedias(req.body.collections);
 				res.json(medias);
 			} catch (err) {
 				res.status(500).json(err);
