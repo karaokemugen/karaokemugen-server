@@ -1,11 +1,14 @@
 // SQL for kara management
 
-export const selectAllMedias = `
-	SELECT mediafile,
-	mediasize,
-	pk_kid AS kid
-	FROM kara
-	WHERE repository != 'Staging'
+export const selectAllMedias = (collectionClauses: string[]) => `
+	SELECT k.mediafile,
+	k.mediasize,
+	k.pk_kid AS kid
+	FROM kara k
+	LEFT JOIN all_karas ak ON k.pk_kid = ak.pk_kid
+	WHERE k.repository != 'Staging'
+	${collectionClauses.length > 0 ? `AND (${collectionClauses.map(clause => `(${clause})`).join(' OR ')})` : ''}
+
 `;
 
 export const getAllKaras = (filterClauses: string[], orderClauses: string, limitClause: string, offsetClause: string, selectClause: string, joinClause: string, groupClause: string, whereClauses: string, additionalFrom: string[], includeStaging: boolean, collectionClauses: string[]) => `

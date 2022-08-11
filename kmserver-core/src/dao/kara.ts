@@ -10,8 +10,12 @@ import logger from '../lib/utils/logger';
 import { DBStats } from '../types/database/kara';
 import * as sql from './sqls/kara';
 
-export async function selectAllMedias(): Promise<DBMedia[]> {
-	const res = await db().query(sql.selectAllMedias);
+export async function selectAllMedias(collections?: string[]): Promise<DBMedia[]> {
+	const collectionsClauses = [];
+	if (collections) for (const collection of collections) {
+		collectionsClauses.push(`'${collection}~${tagTypes.collections}' = ANY(ak.tid)`);
+	}
+	const res = await db().query(sql.selectAllMedias(collectionsClauses));
 	return res.rows;
 }
 
@@ -117,7 +121,7 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 		if (tags == null) {
 			return rowWithoutTags;
 		}
-		for (let tag of tags) {
+		for (const tag of tags) {
 			if (tag?.type_in_kara == null) continue;
 			const type = getTagTypeName(tag.type_in_kara);
 			if (type == null) continue;

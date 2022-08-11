@@ -60,7 +60,7 @@ export function fakeYearTag(year: string, count?: number): Tag {
 		name: year,
 		short: year,
 		tid: tagTid,
-		types: [0],
+		types: [<any>0],
 		i18n: {},
 		karacount: {
 			0: count || 0

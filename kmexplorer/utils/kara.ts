@@ -77,7 +77,6 @@ export function DBKaraToKaraFile(dbKara: DBKara): KaraFileV4 {
 			parents: dbKara.parents,
 			repository: dbKara.repository,
 			songorder: dbKara.songorder,
-			// @ts-ignore: langs and songtypes are already included
 			tags: Object.fromEntries(
 				tagTypesKaraFileV4Order // Get tagtypes
 					.map((t) => {
@@ -93,6 +92,7 @@ export function DBKaraToKaraFile(dbKara: DBKara): KaraFileV4 {
 			titles_aliases: dbKara.titles_aliases,
 			title: dbKara.titles[dbKara.titles_default_language || 'eng'],
 			year: dbKara.year
-		}
+		},
+		meta:{}
 	};
 }
