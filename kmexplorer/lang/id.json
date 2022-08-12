@@ -147,7 +147,9 @@
 		"private_profile": "Profil ini privat.",
 		"not_found_profile": "Tidak bisa menemukan pengguna ini",
 		"generic": "Galat",
-		"home": "Pergi ke beranda"
+		"home": "Pergi ke beranda",
+		"not_found_tag": "Label tidak ditemukan",
+		"remote": "Galat ketika memuat daftar jarak jauh"
 	},
 	"layout": {
 		"suggest": "Tidak bisa menemukan apa yang kamu cari?",
@@ -204,7 +206,8 @@
 		"account": "Akun",
 		"warnings": "Peringatan",
 		"participate": "Berpartisipasi",
-		"kara_suggest": "Usul karaoke"
+		"kara_suggest": "Usul karaoke",
+		"remotes": "Jarak Jauh"
 	},
 	"search": {
 		"aria": {
@@ -423,7 +426,8 @@
 			"cancel": "Batal",
 			"karabundle": "Unduh data (.json)",
 			"subtitles": "Unduh lirik (.{format})",
-			"media": "Unduh media (.{format})"
+			"media": "Unduh media (.{format})",
+			"media_hardsub": "Unduh media termasuk takarir (takarir tertanam .mp4)"
 		},
 		"join_kara": {
 			"label": "Gabung pesta karaoke",
@@ -501,7 +505,7 @@
 		},
 		"header": {
 			"title": "Impor usulan",
-			"description": "",
+			"description": "Apa ini?",
 			"random_selection": "Pilih lagu lain secara acak",
 			"send_suggestion": "Kirim Usulan",
 			"purpose": "Berikut adalah beberapa lagu karaoke yang sudah siap untuk diimpor, kamu bisa mencari lagu tertentu atau pencet tombol \"Pilih lagu lain secara acak.\" Kamu bisa mendukung lagu karaoke tersebut dengan memencet \"Ya!\". Jika kamu belum bisa menemukan lagu yang kamu cari, pencet \"Kirim Usulan.\""
@@ -516,5 +520,15 @@
 				"discord": "Discord"
 			}
 		}
+	},
+	"remote": {
+		"token": "Token",
+		"edit_error": "Galat ketika menyunting jarak jauh",
+		"delete_error": "Galat ketika menghapus jarak jauh",
+		"delete_button": "Hapus baris",
+		"code": "Kode",
+		"permanent": "Permanen",
+		"edit_success": "Jarak jauh sukses disunting",
+		"last_use": "Penggunaan terakhir"
 	}
 }
