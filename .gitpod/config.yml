@@ -1,0 +1,237 @@
+App:
+  InstanceID: changeit_InstanceID
+  JwtSecret: changeit_JwtSecret
+BaseLicense:
+  Name: ODbL/CC BY-NC-SA 4.0
+  Link: changeit_karaokebase/-/blob/master/LICENSE.md
+SocialNetworks:
+  Discourse: https://discourse.karaokes.moe
+  Discord: https://karaokes.moe/discord
+System:
+  Database:
+    username: changeit_username
+    password: changeit_password
+    host: localhost
+    database: changeit_database
+    port: 5432
+  Binaries:
+    ffmpeg:
+      Linux: /usr/bin/ffmpeg
+  Repositories:
+    - Name: kara.moe
+      Online: true
+      Enabled: true
+      BaseDir: 'data/git'
+      Path:
+        Medias:
+          - data/medias
+    - Name: Staging
+      Online: false
+      Enabled: true
+      BaseDir: 'staging/git'
+      Path:
+        Medias:
+          - staging/medias
+Frontend:
+  Port: changeit_FrontendPort
+API:
+  Host: changeit_APIHost
+  Port: 80
+Hardsub:
+  Enabled: false
+Users:
+  Enabled: true
+Shortener:
+  Enabled: true
+Stats:
+  Enabled: true
+Suggestions:
+  Enabled: true
+KaraExplorer:
+  Path: /base
+  LiveURL: https://live.karaokes.moe
+  MediaLinks: true
+  Import: true
+  InProgressSongsList: changeit_karaokebase/-/issues?scope=all&state=opened&label_name[]=Doing
+  Secure: false
+Gitlab:
+  Enabled: changeit_GitlabEnabled
+  Token: changeit_GitlabToken
+  Host: changeit_GitlabHost
+  ProjectID: changeit_GitlabProjectId
+  IssueTemplate:
+    Import:
+      Title: '[Inbox] $kara'
+      Labels:
+        - to integrate
+      Description: >
+        A new karaoke has been sent to the Karaoke Mugen team inbox. Please integrate it as soon as possible if it meets the required quality criteria.
+
+
+        The files (.kara, video, .ass and serial if necessary) are present in the following location of your FTP account: kmpublic / inbox
+
+
+        # Karaoke data
+
+
+        **File** : $file
+
+
+        **Author(s)** : $author
+
+
+        **Title** : $title
+
+
+        **Series** : $series
+
+
+        **Type** : $type$order
+
+
+        **Language** : $lang
+
+
+        **Year** : $year
+
+
+        **Singer(s)** : $singer
+
+
+        **Tag(s)** : Misc: $tags - Famillies: $families - Genres: $genres - Platforms: $platforms - Origins: $origins
+
+
+        **Songwriter(s)** : $songwriter
+
+
+        **Creator(s)** : $creator
+
+
+        **Group(s)** : $groups
+
+
+        **Duration** : $duration
+
+
+        **Comment** : $comment
+
+    Edit:
+      Title: '[Correction] $kara'
+      Labels:
+        - to integrate
+      Description: >
+        A proposal to modify a karaoke has been sent. You will find all the new files in the inbox.
+
+
+        # Karaoke data
+
+
+        **File** : $file
+
+
+        **New subtitle?**: $newSub
+
+
+        **New media?**: $newVideo
+
+
+        **Author(s)** : $author
+
+
+        **Title** : $title
+
+
+        **Series** : $series
+
+
+        **Type** : $type$order
+
+
+        **Language** : $lang
+
+
+        **Year** : $year
+
+
+        **Singer(s)** : $singer
+
+
+        **Tag(s)** : Misc: $tags - Famillies: $families - Genres: $genres - Platforms: $platforms - Origins: $origins
+
+
+        **Songwriter(s)** : $songwriter
+
+
+        **Creator(s)** : $creator
+
+
+        **Group(s)** : $groups
+
+
+        **Duration** : $duration
+
+
+        **Comment** : $comment
+
+    Suggestion:
+      Title: '[Suggestion] $serie - $title'
+      Labels:
+        - suggestion
+      Description: >
+        # Karaoke suggestion
+
+
+        **Issue author** : $username
+
+
+        **Title** : $title
+
+
+        **Series** : $serie
+
+
+        **Type** : $type
+
+
+        **Link** : $link
+
+    KaraProblem:
+      Media:
+        Title: '[Media issue] $kara'
+        Labels:
+          - media
+        Description: >
+          # Media issue
+
+
+          **Issue author** : $username
+
+
+          **Comment** : $comment
+
+      Metadata:
+        Title: '[Metadata issue] $kara'
+        Labels:
+          - metadata
+        Description: >
+          # Metadata issue
+
+
+          **Issue author** : $username
+
+
+          **Comment** : $comment
+
+      Lyrics:
+        Title: '[Lyrics issue] $kara'
+        Labels:
+          - lyrics
+        Description: >
+          # Lyrics issue
+
+
+          **Issue author** : $username
+
+
+          **Comment** : $comment
+
