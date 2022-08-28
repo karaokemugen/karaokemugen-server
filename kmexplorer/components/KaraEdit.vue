@@ -72,7 +72,7 @@
 				@change="(titles) => karaoke.data.titles = titles"
 				@onDefaultLanguage="onDefaultLanguageSelect"
 			/>
-			<p v-if="!karaoke.data.titles || Object.keys(karaoke.data.titles).length === 0" class="help is-danger">
+			<p v-if="!karaoke.data.titles || Object.keys(karaoke.data.titles).length === 0 || Object.values(this.karaoke.data.titles).includes('')" class="help is-danger">
 				{{ $t('kara.import.title_required') }}
 			</p>
 			<label class="label" :title="$t('kara.import.titles_aliases_tooltip')">
@@ -495,6 +495,7 @@
 						this.subfile_error.length > 0 ||
 						!this.karaoke.data.titles ||
 						Object.keys(this.karaoke.data.titles).length === 0 ||
+						Object.keys(this.karaoke.data.titles).includes('') ||
 						!this.karaoke.data.titles_default_language ||
 						(this.karaoke.data.tags.series?.length === 0 &&
 							this.karaoke.data.tags.singers?.length === 0) ||
