@@ -88,7 +88,7 @@ For production use :
 
 ## Prepare a karaoke base
 
-KM Server uses git to keep a karaoke base up to date. Stup one in any directory, like `app/karaokebase` via `git clone` then point the config to this directory, like this :
+KM Server uses git to keep a karaoke base up to date. Setup one in any directory, like `app/karaokebase` via `git clone` then point the config to this directory, like this :
 
 ```yaml
 System:
