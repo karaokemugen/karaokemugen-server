@@ -12,6 +12,8 @@ karaokemugen*.log
 *.backup
 *.ini
 config.yml
+!.gitpod/config.yml
+core.*
 *.bak
 database.json
 sftp-config.json
