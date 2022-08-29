@@ -191,6 +191,13 @@
 						type: 'series',
 						tag: this.karaoke.series[0]
 					};
+				} else if (this.karaoke.singergroups[0]) {
+					return {
+						name: getTagInLocale(this.karaoke.singergroups[0], this.$store.state.auth.user),
+						slug: slug(this.karaoke.singergroups[0].name),
+						type: 'singergroups',
+						tag: this.karaoke.singergroups[0]
+					}
 				} else if (this.karaoke.singers[0]) {
 					return {
 						name: getTagInLocale(this.karaoke.singers[0], this.$store.state.auth.user),
