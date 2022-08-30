@@ -79,7 +79,7 @@ export default function userController(router: Router) {
 		.get(optionalAuth, async (req: any, res) => {
 			try {
 				const params: UserOptions = { public: true };
-				if (req.authToken && req.query.forcePublic 
+				if (req.authToken && req.query.forcePublic
 					&& (req.authToken.roles?.admin || req.authToken.roles?.maintainer)) {
 					params.public = false;
 				}
@@ -111,54 +111,6 @@ export default function userController(router: Router) {
 			}
 		});
 	router.route('/myaccount')
-	/**
- * @api {get} /myaccount View own user details
- * @apiName GetMyAccount
- * @apiVersion 3.1.0
- * @apiGroup Users
- * @apiPermission own
- * @apiHeader authorization Auth token received from logging in
- * @apiSuccess {String} data/login User's login
- * @apiSuccess {String} data/nickname User's nickname
- * @apiSuccess {String} [data/avatar_file] Directory and name of avatar image file. Can be empty if no avatar has been selected.
- * @apiSuccess {Number} data/flag_online Is the user an online account ?
- * @apiSuccess {Number} data/type Type of account (`0` = admin, `1` = user, `2` = guest)
- * @apiSuccess {Number} data/last_login_at Last login time in UNIX timestamp.
- * @apiSuccess {Number} data/user_id User's ID in the database
- * @apiSuccess {String} data/url User's URL in its profile
- * @apiSuccess {String} data/bio User's bio
- * @apiSuccess {String} data/email User's email
- * @apiSuccess {String} data/main_series_lang ISO639-2B code for language to use as main language for series names (in case of mode 4).
- * @apiSuccess {String} data/fallback_series_lang ISO639-2B code for language to use as fallback language for series names (in case of mode 4).
- *
- * @apiSuccessExample Success-Response:
- * HTTP/1.1 200 OK
- * {
- *   "data": [
- *       {
- *           "avatar_file": "",
- *           "flag_online": false,
- *           "type": 0,
- *           "last_login_at": null,
- *           "login": "admin",
- *           "nickname": "Administrator",
- *  "url": null,
- *  "email": null,
- *  "bio": null,
- *  "main_series_lang": "fre",
- *  "fallback_series_lang": "eng"
- *       },
- *   ]
- * }
- * @apiError USER_VIEW_ERROR Unable to view user details
- * @apiErrorExample Error-Response:
- * HTTP/1.1 500 Internal Server Error
- * {
- *   "code": "USER_VIEW_ERROR",
- * }
- * @apiErrorExample Error-Response:
- * HTTP/1.1 403 Forbidden
- */
 		.get(requireAuth, requireValidUser, updateLoginTime, async (req: any, res: any) => {
 			try {
 				const userData = await findUserByName(req.authToken.username, {public: false});
@@ -167,26 +119,6 @@ export default function userController(router: Router) {
 				res.status(500).json(err);
 			}
 		})
-	/**
-	 * @api {delete} /myaccount Delete your local account
-	 * @apiName deleteLocal
-	 * @apiVersion 3.1.0
-	 * @apiGroup Users
-	 * @apiPermission own
-	 * @apiHeader authorization Auth token received from logging in
-	 * @apiSuccess {String} code Message to display
-	 *
-	 * @apiSuccessExample Success-Response:
-	 * HTTP/1.1 200 OK
-	 * {
-	 *   "code": "USER_DELETED"
-	 * }
-	 * @apiError USER_DELETE_ERROR Unable to delete your user
-	 * @apiErrorExample Error-Response:
-	 * HTTP/1.1 500 Internal Server Error
-	 * @apiErrorExample Error-Response:
-	 * HTTP/1.1 403 Forbidden
-	 */
 		.delete(requireAuth, requireValidUser, updateLoginTime, async (req: any, res: any) => {
 			try {
 				await removeUser(req.authToken.username);
@@ -195,58 +127,6 @@ export default function userController(router: Router) {
 				res.status(500).json(err);
 			}
 		})
-
-	/**
-		 * @api {patch} /myaccount Edit your own account (but allows partial updates)
-		 * @apiName EditMyAccount
-		 * @apiVersion 3.1.0
-		 * @apiGroup Users
-		 * @apiPermission own
-		 * @apiHeader authorization Auth token received from logging in
-		 * @apiParam {String} nickname New nickname for user
-		 * @apiParam {String} [password] New password. Can be empty (password won't be changed then)
-		 * @apiParam {String} [bio] User's bio info. Can be empty.
-		 * @apiParam {String} [email] User's mail. Can be empty.
-		 * @apiParam {String} [url] User's URL. Can be empty.
-		 * @apiParam {ImageFile} [avatarfile] New avatar
-		 * @apiParam {Number} [series_lang_mode] Mode (0-4) for series' names display : -1 = Let KM settings decide, 0 = Original/internal name, 1 = Depending on song's language, 2 = Depending on KM's language, 3 = Depending on user browser's language (default), 4 = Force languages with `main_series_lang` and `fallback_series_lang`
-		 * @apiParam {String} [main_series_lang] ISO639-2B code for language to use as main language for series names (in case of mode 4).
-		 * @apiParam {String} [fallback_series_lang] ISO639-2B code for language to use as fallback language for series names (in case of mode 4).
-		 * @apiSuccessExample Success-Response:
-		 * HTTP/1.1 200 OK
-		 * {code: "USER_EDITED"}
-		 * @apiError USER_UPDATE_ERROR Unable to edit user
-		 * @apiErrorExample Error-Response:
-		 * HTTP/1.1 500 Internal Server Error
-		 * @apiErrorExample Error-Response:
-		 * HTTP/1.1 403 Forbidden
-	 */
-
 		.patch(uploadMiddleware, requireAuth, requireValidUser, updateLoginTime, editHandler(true))
-
-	/**
- * @api {put} /myaccount Edit your own account
- * @apiName EditMyAccount
- * @apiVersion 3.1.0
- * @apiGroup Users
- * @apiPermission own
- * @apiHeader authorization Auth token received from logging in
- * @apiParam {String} nickname New nickname for user
- * @apiParam {String} [password] New password. Can be empty (password won't be changed then)
- * @apiParam {String} [bio] User's bio info. Can be empty.
- * @apiParam {String} [email] User's mail. Can be empty.
- * @apiParam {String} [url] User's URL. Can be empty.
- * @apiParam {ImageFile} [avatarfile] New avatar
- * @apiParam {String} [main_series_lang] ISO639-2B code for language to use as main language for series names (in case of mode 4).
- * @apiParam {String} [fallback_series_lang] ISO639-2B code for language to use as fallback language for series names (in case of mode 4).
- * @apiSuccessExample Success-Response:
- * HTTP/1.1 200 OK
- * {code: "USER_EDITED"}
- * @apiError USER_UPDATE_ERROR Unable to edit user
- * @apiErrorExample Error-Response:
- * HTTP/1.1 500 Internal Server Error
- * @apiErrorExample Error-Response:
- * HTTP/1.1 403 Forbidden
- */
 		.put(uploadMiddleware, requireAuth, requireValidUser, updateLoginTime, editHandler(true));
 }
