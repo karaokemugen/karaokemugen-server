@@ -30,6 +30,11 @@ export const tagTypesMap: { [key: number]: tagType } = {
 		class: 'is-warning',
 		name: 'singers'
 	},
+	17: {
+		icon: 'people-group',
+		class: 'is-warning',
+		name: 'singergroups'
+	},
 	8: {
 		icon: 'signature',
 		class: 'is-warning',
@@ -94,6 +99,11 @@ export const tagTypesMap: { [key: number]: tagType } = {
 		icon: 'layer-group',
 		class: 'is-white',
 		name: 'collections'
+	},
+	18: {
+		icon: 'sitemap',
+		class: 'is-success',
+		name: 'franchises'
 	}
 };
 

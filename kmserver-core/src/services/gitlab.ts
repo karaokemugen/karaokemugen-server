@@ -32,6 +32,7 @@ export async function gitlabPostNewSuggestion(kid: string, edit?: EditElement) {
 		.replace('$order', (kara.songorder && kara.songorder.toString()) || '')
 		.replace('$lang', kara.langs.map(t => t.name).join(', '))
 		.replace('$year', kara.year.toString())
+		.replace('$singergroup', kara.singergroups.map(t => t.name).join(', '))
 		.replace('$singer', kara.singers.map(t => t.name).join(', '))
 		.replace('$tags', kara.misc.map(t => t.name).join(', '))
 		.replace('$songwriter', kara.songwriters.map(t => t.name).join(', '))

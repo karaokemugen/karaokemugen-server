@@ -96,6 +96,9 @@ Gitlab:
         **Year** : $year
 
 
+        **Group(s) of singers** : $singergroup
+
+
         **Singer(s)** : $singer
 
 
@@ -151,6 +154,9 @@ Gitlab:
 
 
         **Year** : $year
+
+
+        **Group(s) of singers** : $singergroup
 
 
         **Singer(s)** : $singer
