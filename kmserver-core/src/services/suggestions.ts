@@ -18,8 +18,8 @@ export async function getSuggestions(params: SuggestionParams) {
 		return {
 			infos: {
 				count: (res.length > 0 && +res[0].count) || 0,
-				from: +params.from,
-				to: +params.from + res.length
+				from: +params.from || 0,
+				to: +params.from || 0 + res.length
 			},
 			content: res
 		};

@@ -3,7 +3,7 @@ pk_id_suggest as id,
 song,
 language,
 source,
-likes,
+likes::integer,
 created_at,
 count(pk_id_suggest) OVER()::integer AS count
 FROM suggestions

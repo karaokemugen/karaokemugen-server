@@ -164,8 +164,8 @@ export function formatUserList(users: DBUser[], from: number): UserList {
 	return {
 		infos: {
 			count: users[0]?.count || 0,
-			from,
-			to: from + users.length
+			from: from || 0,
+			to: from || 0 + users.length
 		},
 		content: users
 	};
