@@ -79,7 +79,7 @@ export default function KSController(router: Router) {
 				}, req?.authToken);
 				res.json(kara);
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(err);
 			}
 		});
 	router.route('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/raw')

@@ -199,7 +199,7 @@ export async function getKara(params: KaraParams, token?: JWTTokenWithRoles) {
 			username: token?.username.toLowerCase(),
 			ignoreCollections: true
 		}, true);
-		if (!karas[0]) return;
+		if (!karas[0]) throw {code: 404};
 		karas[0].lyrics = null;
 		if (karas[0].subfile) {
 			const ASS = await getLyrics(karas[0].subfile, karas[0].repository);
