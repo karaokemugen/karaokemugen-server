@@ -137,7 +137,7 @@ export default function KSController(router: Router) {
 			try {
 				const tag = await getTag(req.params.tid);
 				if (tag) res.json(tag);
-				throw { code: 404 };
+				res.status(404);
 			} catch (err) {
 				res.status(err.code || 500).json(err);
 			}
