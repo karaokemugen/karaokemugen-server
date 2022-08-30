@@ -136,9 +136,10 @@ export default function KSController(router: Router) {
 		.get(async (req: any, res) => {
 			try {
 				const tag = await getTag(req.params.tid);
-				res.json(tag);
+				if (tag) res.json(tag);
+				throw { code: 404 };
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(err);
 			}
 		});
 	router.route('/karas/tags')
