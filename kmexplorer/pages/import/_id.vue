@@ -89,6 +89,8 @@
 						genres: [],
 						platforms: [],
 						origins: [],
+						singergroups: [],
+						franchises: [],
 						created_at: date,
 						modified_at: date,
 						year: date.getFullYear(),

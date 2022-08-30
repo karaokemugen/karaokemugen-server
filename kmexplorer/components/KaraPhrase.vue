@@ -17,7 +17,7 @@
 		</template>
 		<template #series>
 			<a
-				:href="`/tags/${serieSinger.slug}/${serieSinger.tag.tid}~${serieSinger.type === 'series' ? '1':'2'}`"
+				:href="`/tags/${serieSinger.slug}/${serieSinger.tag.tid}~${serieSinger.type === 'series' ? '1': (serieSinger.type === 'singers' ? '2' : '17')}`"
 				@click.prevent="handleLink(serieSinger)"
 			>
 				{{ serieSinger.name }}
@@ -60,6 +60,13 @@
 						slug: slug(this.karaoke.series[0].name),
 						type: 'series',
 						tag: this.karaoke.series[0]
+					};
+				} else if (this.karaoke.singergroups[0]) {
+					return {
+						name: getTagInLocale(this.karaoke.singergroups[0], this.$store.state.auth.user),
+						slug: slug(this.karaoke.singergroups[0].name),
+						type: 'singergroups',
+						tag: this.karaoke.singergroups[0]
 					};
 				} else if (this.karaoke.singers[0]) {
 					return {

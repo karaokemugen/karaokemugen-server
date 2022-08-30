@@ -144,6 +144,10 @@
 						</a>
 
 						<div v-if="tagsMenu" class="navbar-dropdown">
+							<nuxt-link class="navbar-item" to="/types/singergroups">
+								<font-awesome-icon :icon="['fas', 'people-group']" :fixed-width="true" />
+								{{ $t('menu.singergroups') }}
+							</nuxt-link>
 							<nuxt-link class="navbar-item" to="/types/misc">
 								<font-awesome-icon :icon="['fas', 'tags']" :fixed-width="true" />
 								{{ $t('menu.misc') }}
@@ -182,6 +186,11 @@
 							<nuxt-link class="navbar-item" to="/types/versions">
 								<font-awesome-icon :icon="['fas', 'tachometer-alt']" :fixed-width="true" />
 								{{ $t('menu.versions') }}
+							</nuxt-link>
+
+							<nuxt-link class="navbar-item" to="/types/franchises">
+								<font-awesome-icon :icon="['fas', 'sitemap']" :fixed-width="true" />
+								{{ $t('menu.franchises') }}
 							</nuxt-link>
 						</div>
 					</div>
@@ -271,6 +280,16 @@
 						<ul v-if="tagsMenu" class="menu-list">
 							<li>
 								<nuxt-link
+									to="/types/singergroups"
+									active-class="is-active"
+									:class="{'is-active': tagType === '~17'}"
+								>
+									<font-awesome-icon :icon="['fas', 'people-group']" :fixed-width="true" />
+									{{ $t('menu.singergroups') }}
+								</nuxt-link>
+							</li>
+							<li>
+								<nuxt-link
 									to="/types/misc"
 									active-class="is-active"
 									:class="{'is-active': tagType === '~7'}"
@@ -347,6 +366,16 @@
 								>
 									<font-awesome-icon :icon="['fas', 'tachometer-alt']" :fixed-width="true" />
 									{{ $t('menu.versions') }}
+								</nuxt-link>
+							</li>
+							<li>
+								<nuxt-link
+									to="/types/franchises"
+									active-class="is-active"
+									:class="{'is-active': tagType === '~18'}"
+								>
+									<font-awesome-icon :icon="['fas', 'sitemap']" :fixed-width="true" />
+									{{ $t('menu.franchises') }}
 								</nuxt-link>
 							</li>
 						</ul>

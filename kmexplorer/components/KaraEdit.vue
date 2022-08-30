@@ -72,7 +72,7 @@
 				@change="(titles) => karaoke.data.titles = titles"
 				@onDefaultLanguage="onDefaultLanguageSelect"
 			/>
-			<p v-if="!karaoke.data.titles || Object.keys(karaoke.data.titles).length === 0 || Object.values(this.karaoke.data.titles).includes('')" class="help is-danger">
+			<p v-if="!karaoke.data.titles || Object.keys(karaoke.data.titles).length === 0 || Object.values(karaoke.data.titles).includes('')" class="help is-danger">
 				{{ $t('kara.import.title_required') }}
 			</p>
 			<label class="label" :title="$t('kara.import.titles_aliases_tooltip')">
@@ -95,11 +95,22 @@
 				@change="(tags) => karaoke.data.tags.series = tags"
 			/>
 			<p
-				v-if="karaoke.data.tags.series.length === 0 && karaoke.data.tags.singers.length === 0"
+				v-if="karaoke.data.tags.series.length === 0 && karaoke.data.tags.singers.length === 0 && karaoke.data.tags.singergroups.length === 0"
 				class="help is-danger"
 			>
 				{{ $t('kara.import.series_singers_required') }}
 			</p>
+		</div>
+		<div class="field">
+			<label class="label" :title="$t('kara.import.franchises_tooltip')">
+				{{ $tc('kara.tagtypes.franchises', karaoke.data.tags.franchises.length) }}
+				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+			</label>
+			<editable-tag-group
+				:tag-type="18"
+				:params="karaoke.data.tags.franchises"
+				@change="(tags) => karaoke.data.tags.franchises = tags"
+			/>
 		</div>
 		<div class="field">
 			<label class="label">{{ $tc('kara.tagtypes.collections', karaoke.data.tags.collections.length) }}</label>
@@ -192,7 +203,26 @@
 					@change="(tags) => karaoke.data.tags.singers = tags"
 				/>
 				<p
-					v-if="karaoke.data.tags.series.length === 0 && karaoke.data.tags.singers.length === 0"
+					v-if="karaoke.data.tags.series.length === 0 && karaoke.data.tags.singers.length === 0 && karaoke.data.tags.singergroups.length === 0"
+					class="help is-danger"
+				>
+					{{ $t('kara.import.series_singers_required') }}
+				</p>
+			</div>
+		</div>
+		<div class="field">
+			<label class="label" :title="$t('kara.import.singergroups_tooltip')">
+				{{ $t('kara.singergroups_by') }}
+				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+			</label>
+			<div class="control">
+				<editable-tag-group
+					:tag-type="17"
+					:params="karaoke.data.tags.singergroups"
+					@change="(tags) => karaoke.data.tags.singergroups = tags"
+				/>
+				<p
+					v-if="karaoke.data.tags.series.length === 0 && karaoke.data.tags.singers.length === 0 && karaoke.data.tags.singergroups.length === 0"
 					class="help is-danger"
 				>
 					{{ $t('kara.import.series_singers_required') }}
@@ -498,6 +528,7 @@
 						Object.keys(this.karaoke.data.titles).includes('') ||
 						!this.karaoke.data.titles_default_language ||
 						(this.karaoke.data.tags.series?.length === 0 &&
+							this.karaoke.data.tags.singergroups?.length === 0 &&
 							this.karaoke.data.tags.singers?.length === 0) ||
 						this.karaoke.data.tags.songtypes.length === 0 ||
 						this.karaoke.data.tags.langs.length === 0 ||

@@ -118,6 +118,11 @@ export const tagTypes: { [key: string]: tagType } = {
 		class: 'is-warning',
 		type: 2
 	},
+	singergroups: {
+		icon: 'people-group',
+		class: 'is-warning',
+		type: 17
+	},
 	songwriters: {
 		icon: 'signature',
 		class: 'is-warning',
@@ -182,6 +187,11 @@ export const tagTypes: { [key: string]: tagType } = {
 		icon: 'layer-group',
 		class: 'is-white',
 		type: 16
+	},
+	franchises: {
+		icon: 'sitemap',
+		class: 'is-success',
+		type: 18
 	}
 };
 

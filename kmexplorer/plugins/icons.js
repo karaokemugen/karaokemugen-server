@@ -70,7 +70,9 @@ import {
 	faEnvelopeCircleCheck,
 	faAt,
 	faTrash,
-	faHouseLaptop
+	faHouseLaptop,
+	faPeopleGroup,
+	faSitemap
 } from '@fortawesome/free-solid-svg-icons';
 import {
 	faTwitter,
@@ -157,7 +159,9 @@ library.add(
 	faHouseLaptop,
 	faExclamationTriangle,
 	faEnvelopeCircleCheck,
-	faLayerGroup);
+	faLayerGroup,
+	faPeopleGroup,
+	faSitemap);
 
 // Register the component globally
 Vue.component('FontAwesomeIcon', FontAwesomeIcon);

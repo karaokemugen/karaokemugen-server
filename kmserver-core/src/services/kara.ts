@@ -1,8 +1,9 @@
+import { convertToASS as srt2ass } from 'convert-srt-to-ass';
 import {createHash} from 'crypto';
 import { execa } from 'execa';
 import { promises as fs } from 'fs';
 import parallel from 'p-map';
-import { basename, resolve } from 'path';
+import { basename, parse, resolve } from 'path';
 
 import {refreshKaraStats, selectAllKaras, selectAllMedias, selectAllYears, selectBaseStats} from '../dao/kara';
 import { copyFromData } from '../lib/dao/database';
@@ -200,12 +201,19 @@ export async function getKara(params: KaraParams, token?: JWTTokenWithRoles) {
 			ignoreCollections: true
 		}, true);
 		if (!karas[0]) throw {code: 404};
-		karas[0].lyrics = null;
-		if (karas[0].subfile) {
-			const ASS = await getLyrics(karas[0].subfile, karas[0].repository);
-			if (ASS) karas[0].lyrics = ASSToLyrics(ASS);
+		const kara = karas[0];
+		kara.lyrics = null;
+		if (kara.subfile) {
+			// FIXME: add support for converting lrc/vtt on the fly here
+			const ext = parse(kara.subfile).ext;
+			let lyrics = await getLyrics(kara.subfile, kara.repository);
+			// If any other format we return.
+			if (ext === '.srt') {
+				lyrics = srt2ass(lyrics);
+			}
+			kara.lyrics = ASSToLyrics(lyrics);
 		}
-		return karas[0];
+		return kara;
 	} catch (err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
