@@ -35,7 +35,7 @@ SELECT
   ${selectClause}
   array_remove(array_agg(DISTINCT krc.fk_kid_parent), null) AS parents,
   array_remove(array_agg(DISTINCT krp.fk_kid_child), null) AS children,
-  array_remove((SELECT array_agg(DISTINCT fk_kid_child) FROM kara_relation WHERE fk_kid_parent = ANY (array_remove(array_agg(DISTINCT krc.fk_kid_parent), null))), ak.pk_kid) AS siblings,
+  COALESCE(array_remove((SELECT array_agg(DISTINCT fk_kid_child) FROM kara_relation WHERE fk_kid_parent = ANY (array_remove(array_agg(DISTINCT krc.fk_kid_parent), null))), ak.pk_kid), array[]::uuid[]) AS siblings,
   count(ak.pk_kid) OVER()::integer AS count
 FROM all_karas AS ak
 LEFT OUTER JOIN kara_relation krp ON krp.fk_kid_parent = ak.pk_kid
