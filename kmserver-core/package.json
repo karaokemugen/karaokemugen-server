@@ -69,6 +69,7 @@
 		"better-queue": "^3.8.10",
 		"commander": "^9.4.0",
 		"compression": "^1.7.4",
+		"convert-srt-to-ass": "^1.0.3",
 		"detect-port": "^1.3.0",
 		"dotenv": "^16.0.1",
 		"eiows": "^4.1.2",

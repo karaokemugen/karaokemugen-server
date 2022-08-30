@@ -154,8 +154,10 @@
 							(tagType === 'series' && i === 0) ||
 							// Remove the first songtype
 							(tagType === 'songtypes' && i === 0) ||
-							// Remove the first singer if the karaoke has no series
-							(tagType === 'singers' && i === 0 && this.karaoke.series.length === 0) ||
+							// Remove the first singergroups if the karaoke has no series
+							(tagType === 'singergroups' && i === 0 && this.karaoke.series.length === 0) ||
+							// Remove the first singer if the karaoke has no singergroups
+							(tagType === 'singers' && i === 0 && this.karaoke.singergroups.length === 0) ||
 							// Remove the next tags to avoid overflow
 							(i > 1)
 						)) {

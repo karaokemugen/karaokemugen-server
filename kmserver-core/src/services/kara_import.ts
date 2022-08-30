@@ -19,7 +19,7 @@ import {
 import { refreshKarasAfterDBChange, updateTags } from '../lib/services/karaManagement';
 import { EditedKara, KaraFileV4 } from '../lib/types/kara';
 import { getConfig, resolvedPath, resolvedPathRepos } from '../lib/utils/config';
-import { smartMove } from '../lib/utils/files';
+import { replaceExt, smartMove } from '../lib/utils/files';
 import { EditElement } from '../types/kara_import';
 import sentry from '../utils/sentry';
 import { gitlabPostNewSuggestion } from './gitlab';
@@ -67,9 +67,9 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		if (kara.medias[0].lyrics[0]) {
 			const subPath = resolve(resolvedPath('Temp'), kara.medias[0].lyrics[0].filename);
 			const subDest = resolve(resolvedPathRepos('Lyrics', kara.data.repository)[0], filenames.lyricsfile);
-			await processSubfile(subPath);
+			const ext = await processSubfile(subPath);
 			await smartMove(subPath, subDest, { overwrite: true });
-			kara.medias[0].lyrics[0].filename = filenames.lyricsfile;
+			kara.medias[0].lyrics[0].filename = replaceExt(filenames.lyricsfile, ext);
 		}
 		await smartMove(mediaPath, mediaDest, { overwrite: true });
 		kara.medias[0].filename = filenames.mediafile;
@@ -103,8 +103,8 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 	}
 }
 
-export async function editKara(edit: EditedKara, contact: string): Promise<string> {	
-	const conf = getConfig();	
+export async function editKara(edit: EditedKara, contact: string): Promise<string> {
+	const conf = getConfig();
 	const onlineRepo = conf.System.Repositories.find(r => r.Name !== 'Staging').Name;
 	const edited_kid = edit.kara.data.kid;
 	const kara = await preflight(edit.kara);
