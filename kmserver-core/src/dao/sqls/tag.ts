@@ -30,6 +30,7 @@ SELECT t.pk_tid AS tid,
 	t.priority,
 	t.karafile_tag,
     t.description,
+	t.external_database_ids,
 	t_count.count_per_type::jsonb AS karacount,
 	count(t.pk_tid) OVER()::integer AS count
 FROM tag t
@@ -57,6 +58,7 @@ SELECT t.pk_tid AS tid,
 	t.nolivedownload AS "noLiveDownload",
 	t.priority,
 	t.karafile_tag,
+	t.external_database_ids,
 	count(t.pk_tid) OVER()::integer AS count
 FROM tag t
 WHERE t.pk_tid = $1
