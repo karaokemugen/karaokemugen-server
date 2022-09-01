@@ -24,7 +24,7 @@ SELECT k.*,
 	 tsvector_agg(kt.tag_search_vector) || k.title_search_vector AS search_vector,
 	 to_tsvector('') as search_vector_parents,
 	 CASE WHEN MIN(kt.pk_tid::text) IS NULL THEN ARRAY[]::text[] ELSE array_agg(DISTINCT kt.pk_tid::text || '~' || ka.type::text) END AS tid,
-	 CASE WHEN MIn(kt.external_database_ids::text) IS NULL THEN ARRAY[]::text[] ELSE array_agg(DISTINCT kt.external_database_ids) END AS external_database_ids,
+	 CASE WHEN MIN(kt.external_database_ids::text) IS NULL THEN NULL ELSE array_agg(DISTINCT kt.external_database_ids) END AS external_database_ids,
 	 (select d.list
 		from kara k2
 		CROSS JOIN LATERAL (
