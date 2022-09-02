@@ -104,19 +104,21 @@ export async function removeKaraFromInbox(inid: string) {
 		const kara = await getKara({
 			q: `k:${inbox.kid}`
 		});
-		const karaPath = resolve(resolvedPathRepos('Karaokes', 'Staging')[0], inbox.karafile);
-		const subPath = resolve(resolvedPathRepos('Lyrics', 'Staging')[0], inbox.subfile);
-		const mediaPath = resolve(resolvedPathRepos('Medias', 'Staging')[0], inbox.mediafile);
-		// Delete all the thingies
+		// Kara might not exist anymore if something went wrong.
+		if (kara) {
+			const karaPath = resolve(resolvedPathRepos('Karaokes', 'Staging')[0], inbox.karafile);
+			const subPath = resolve(resolvedPathRepos('Lyrics', 'Staging')[0], inbox.subfile);
+			const mediaPath = resolve(resolvedPathRepos('Medias', 'Staging')[0], inbox.mediafile);
+			await Promise.all([
+				fs.unlink(karaPath),
+				fs.unlink(subPath),
+				fs.unlink(mediaPath)
+			]);
+			await deleteKara([inbox.kid]);
+			const karaData = formatKaraV4(kara);
+			refreshKarasAfterDBChange('DELETE', [karaData.data]);
+		}
 		await deleteInbox(inid);
-		await Promise.all([
-			fs.unlink(karaPath),
-			fs.unlink(subPath),
-			fs.unlink(mediaPath)
-		]);
-		await deleteKara([inbox.kid]);
-		const karaData = formatKaraV4(kara);
-		await refreshKarasAfterDBChange('DELETE', [karaData.data]);
 	} catch (err) {
 		logger.error(`Failed to delete inbox item ${inid}`, {service: 'Inbox', obj: err});
 		Sentry.error(err);
