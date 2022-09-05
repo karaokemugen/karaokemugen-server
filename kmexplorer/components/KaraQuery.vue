@@ -38,7 +38,7 @@
 		filter?: string,
 		q?: string,
 		favorites?: string,
-		force_collections: string
+		collections: string
 	}
 
 	interface VState {
@@ -161,7 +161,7 @@
 					size: 12,
 					order: this.sort || undefined,
 					favorites: this.favorites || undefined,
-					force_collections: this.enabledCollections.join(':')
+					collections: this.enabledCollections.join(',')
 				};
 			},
 			...mapState('menubar', ['sort', 'search', 'tags', 'enabledCollections'])

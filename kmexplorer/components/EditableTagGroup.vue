@@ -142,7 +142,7 @@
 
 		methods: {
 			async getTags(type: number, filter?: string) {
-				return await this.$axios.$get(`/api/karas/tags/${type}`, {
+				return await this.$axios.$get('/api/karas/tags', {
 					params: {
 						type,
 						filter,

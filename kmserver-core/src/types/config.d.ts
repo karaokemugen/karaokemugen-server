@@ -77,7 +77,8 @@ export interface Config {
 				Metadata?: GitlabTemplate,
 				Lyrics?: GitlabTemplate
 			}
-		}
+		},
+		KaraokesJsonLink?: string
 	},
 	System: {
 		Database: {

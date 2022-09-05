@@ -33,7 +33,8 @@ function generateConfig(production = false) {
 			DEFAULT_COLLECTIONS: conf.System.DefaultCollections,
 			DISCORD_LINK: conf.SocialNetworks.Discord,
 			DISCOURSE_LINK: conf.SocialNetworks.Discourse,
-			SUGGESTIONS: conf.Suggestions.Enabled
+			SUGGESTIONS: conf.Suggestions.Enabled,
+			KARAOKES_JSON_LINK: conf.Gitlab.KaraokesJsonLink
 		},
 		axios: {
 			baseURL: `http${conf.API.Secure ? 's' : ''}://${conf.API.Host}${

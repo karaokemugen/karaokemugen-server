@@ -60,6 +60,7 @@ Gitlab:
   Token: xxx
   Host: https://gitlab.com
   ProjectID: 1
+  KaraokesJsonLink: https://gitlab.com/karaokemugen/bases/karaokebase/-/raw/master/karaokes
   IssueTemplate:
     Import:
       Title: '[Inbox] $kara'

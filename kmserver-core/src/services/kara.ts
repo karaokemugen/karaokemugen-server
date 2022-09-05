@@ -3,7 +3,7 @@ import {createHash} from 'crypto';
 import { execa } from 'execa';
 import { promises as fs } from 'fs';
 import parallel from 'p-map';
-import { basename, parse, resolve } from 'path';
+import { parse, resolve } from 'path';
 
 import {refreshKaraStats, selectAllKaras, selectAllMedias, selectAllYears, selectBaseStats} from '../dao/kara';
 import { copyFromData } from '../lib/dao/database';
@@ -11,7 +11,6 @@ import { getLyrics } from '../lib/dao/karafile';
 import { generateDatabase } from '../lib/services/generation';
 import { consolidateData } from '../lib/services/kara';
 import { DBKara } from '../lib/types/database/kara';
-import { DownloadBundleServer } from '../lib/types/downloads';
 import { KaraList, KaraParams } from '../lib/types/kara';
 import { JWTTokenWithRoles } from '../lib/types/user';
 import { ASSToLyrics } from '../lib/utils/ass';
@@ -257,52 +256,6 @@ export async function getAllKaras(params: KaraParams, token?: JWTTokenWithRoles,
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		logger.error('Getting karas failed', {service: 'Karas', obj: err});
 		sentry.error(err);
-		throw err;
-	}
-}
-
-export async function getRawKara(kid: string): Promise<DownloadBundleServer> {
-	try {
-		const kara = (await selectAllKaras({
-			q: `k:${kid}`,
-			ignoreCollections: true
-		}, true))[0];
-		if (!kara) throw 'Unknown song';
-		// Create a set of tagfiles to get only unique tagfiles.
-		const tagfiles = new Set(kara.tagfiles);
-		const files = {
-			kara: resolve(resolvedPathRepos('Karaokes')[0], kara.karafile),
-			tags: Array.from(tagfiles).map(f => {
-				return f
-					? resolve(resolvedPathRepos('Tags')[0], f)
-					: null;
-			}),
-			lyrics: kara.subfile ? resolve(resolvedPathRepos('Lyrics')[0], kara.subfile) : null
-		};
-		let lyricsData = null;
-		if (kara.subfile) lyricsData = await fs.readFile(files.lyrics, 'utf-8');
-		const data = {
-			kara: {file: kara.karafile, data: JSON.parse(await fs.readFile(files.kara, 'utf-8'))},
-			lyrics: {file: kara.subfile || null, data: lyricsData},
-			tags: [],
-		};
-		for (const tagFile of files.tags) {
-			if (tagFile) data.tags.push({
-				file: basename(tagFile),
-				data: JSON.parse(await fs.readFile(tagFile, 'utf-8'))
-			});
-		}
-		return {
-			header: {
-				description: 'Karaoke Mugen Karaoke Bundle File'
-			},
-			...data
-		};
-	} catch (err) {
-		if (typeof err === 'object') {
-			sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
-			sentry.error(err);
-		}
 		throw err;
 	}
 }
