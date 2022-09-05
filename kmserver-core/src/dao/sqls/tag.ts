@@ -1,6 +1,6 @@
 // Tags SQL
 
-export const getAllTags = (filterClauses: string[], typeClauses: string, limitClause: string, offsetClause: string, joinClauses: string, orderClauses: string, stripClause: string, additionalFrom: string[], collectionClause: string[]) => `
+export const getAllTags = (filterClauses: string[], typeClauses: string, limitClause: string, offsetClause: string, joinClauses: string, orderClauses: string, stripClause: string, additionalFrom: string[], collectionClause: string[], whereClause: string) => `
 WITH kara_available AS (
 	SELECT k.pk_kid
 	FROM kara k
@@ -41,27 +41,10 @@ WHERE 1 = 1
   ${filterClauses.map(clause => `AND (${clause})`).reduce((a, b) => (`${a} ${b}`), '')}
   ${typeClauses}
   ${stripClause}
+  ${whereClause}
 ORDER BY ${orderClauses}
 ${limitClause}
 ${offsetClause}
-`;
-
-export const selectTag = `
-SELECT t.pk_tid AS tid,
-	t.types,
-	t.name,
-	t.short,
-	t.aliases,
-	t.i18n,
-	t.tagfile,
-	t.repository,
-	t.nolivedownload AS "noLiveDownload",
-	t.priority,
-	t.karafile_tag,
-	t.external_database_ids,
-	count(t.pk_tid) OVER()::integer AS count
-FROM tag t
-WHERE t.pk_tid = $1
 `;
 
 export const insertTag = `

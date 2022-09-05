@@ -5,16 +5,8 @@ import {refreshTags} from '../lib/dao/tag';
 import { WhereClause } from '../lib/types/database';
 import { DBTag } from '../lib/types/database/tag';
 import { Tag, TagParams } from '../lib/types/tag';
+import { uuidRegexp } from '../lib/utils/constants';
 import * as sql from './sqls/tag';
-
-export async function selectTag(tid: string): Promise<DBTag> {
-	const res = await db().query(sql.selectTag, [tid]);
-	if (!res.rows[0]) return null;
-	const karacounts = res.rows[0].karacount;
-	res.rows[0].karacount = {};
-	karacounts && karacounts.forEach((k: any) => res.rows[0].karacount[k.type] = k.count);
-	return res.rows[0];
-}
 
 export async function selectTags(params: TagParams): Promise<DBTag[]> {
 	const filterClauses = params.filter
@@ -26,6 +18,7 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 	let offsetClause = '';
 	let joinClauses = '';
 	let orderClause = 'name';
+	let whereClause = '';
 	if (params.type > 0) {
 		joinClauses = `LEFT   JOIN LATERAL (
 	   	SELECT elem->>'count' AS karacounttype
@@ -39,6 +32,10 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 		if (params.stripEmpty) {
 			stripClause = 'AND karacounttype::int2 > 0';
 		}
+	}
+	if (params.tid) {
+		if (!params.tid.match(uuidRegexp)) throw 'Invalid TID';
+		whereClause = `AND t.pk_tid = '${params.tid}'`;
 	}
 	if (params.from > 0) offsetClause = `OFFSET ${params.from} `;
 	if (params.size > 0) limitClause = `LIMIT ${params.size} `;
@@ -55,7 +52,8 @@ joinClauses,
 orderClause,
 stripClause,
 filterClauses.additionalFrom,
-collectionClauses
+collectionClauses,
+whereClause
 );
 	const res = await db().query(yesql(query)(filterClauses.params));
 	res.rows.forEach((e: any, i: number) => {

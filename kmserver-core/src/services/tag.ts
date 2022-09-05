@@ -1,6 +1,6 @@
 import { v4 as uuidV4 } from 'uuid';
 
-import {insertTag, selectTag, selectTags} from '../dao/tag';
+import {insertTag, selectTags} from '../dao/tag';
 import { updateTagSearchVector } from '../lib/dao/tag';
 import { writeTagFile } from '../lib/dao/tagfile';
 import { DBTag } from '../lib/types/database/tag';
@@ -33,7 +33,7 @@ export async function getTags(params: TagParams) {
 
 export async function getTag(tid: string) {
 	try {
-		const tag = await selectTag(tid);
+		const tag = await selectTags({ tid });
 		if (tag) return tag;
 		return null;
 	} catch (err) {
