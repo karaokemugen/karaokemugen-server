@@ -50,7 +50,8 @@ function configuredBinariesForSystem(config: Config): BinariesConfig {
 function binMissing(binariesPath: any, err: string) {
 	logger.error('One or more binaries could not be found!', {service: 'BinCheck', obj: err});
 	logger.error('Paths searched:', {service: 'BinCheck'});
-	logger.error(`ffmpeg:${binariesPath.ffmpeg}`, {service: 'BinCheck'});
+	logger.error(`ffmpeg: ${binariesPath.ffmpeg}`, {service: 'BinCheck'});
+	logger.error(`git: ${binariesPath.git}`, {service: 'BinCheck'});
 	logger.error('Exiting...', {service: 'BinCheck'});
 	console.log('\n');
 	console.log('One or more binaries needed by Karaoke Mugen could not be found.');
