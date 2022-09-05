@@ -19,6 +19,8 @@ import Sentry from '../utils/sentry';
 import { getKara } from './kara';
 import { getTag } from './tag';
 
+const service = 'Inbox';
+
 export async function getKaraInbox(inid: string): Promise<Inbox> {
 	try {
 		const conf = getConfig();
@@ -58,7 +60,7 @@ export async function getKaraInbox(inid: string): Promise<Inbox> {
 			extra_tags
 		};
 	} catch (err) {
-		logger.error(`Failed to get inbox item ${inid}`, {service: 'Inbox', obj: err});
+		logger.error(`Failed to get inbox item ${inid}`, {service, obj: err});
 		Sentry.error(err);
 		throw err;
 	}
@@ -74,7 +76,7 @@ export async function markKaraInboxAsDownloaded(inid: string, username: string) 
 		if (!inbox) throw {code: 404};
 		return await updateInboxDownloaded(username, inid);
 	} catch (err) {
-		logger.error(`Failed to mark inbox item ${inid} as downloaded by ${username}`, {service: 'Inbox', obj: err});
+		logger.error(`Failed to mark inbox item ${inid} as downloaded by ${username}`, {service, obj: err});
 		Sentry.error(err);
 		throw err;
 	}
@@ -92,7 +94,7 @@ export async function addKaraInInbox(kara: KaraFileV4, contact: string, issue?: 
 			edited_kid
 		});
 	} catch (err) {
-		logger.error('Unable to create kara in inbox', {service: 'Inbox', obj: err});
+		logger.error('Unable to create kara in inbox', {service, obj: err});
 		Sentry.error(err);
 	}
 }
@@ -120,14 +122,14 @@ export async function removeKaraFromInbox(inid: string) {
 		}
 		await deleteInbox(inid);
 	} catch (err) {
-		logger.error(`Failed to delete inbox item ${inid}`, {service: 'Inbox', obj: err});
+		logger.error(`Failed to delete inbox item ${inid}`, {service, obj: err});
 		Sentry.error(err);
 		throw err;
 	}
 }
 
 export async function clearUnusedStagingTags() {
-	logger.debug('Clearing old inbox tags', {service: 'Inbox'});
+	logger.debug('Clearing old inbox tags', {service});
 	const tagfiles = await clearStagingTags();
 	for (const tag of tagfiles) {
 		const tagDir = resolvedPathRepos('Tags', 'Staging')[0];
@@ -136,10 +138,10 @@ export async function clearUnusedStagingTags() {
 }
 
 export async function clearOldInboxEntries() {
-	logger.debug('Clearing old inbox entries', {service: 'Inbox'});
+	logger.debug('Clearing old inbox entries', {service});
 	const deleted_karas = await clearInbox();
 	for (const kara of deleted_karas) {
-		logger.debug(`${kara.kid} was cleared`, {service: 'Inbox', obj: kara});
+		logger.debug(`${kara.kid} was cleared`, {service, obj: kara});
 		try {
 			// Find and delete files
 			const karaPath = resolve(resolvedPathRepos('Karaokes', 'Staging')[0], kara.karafile);
@@ -162,7 +164,7 @@ export async function clearOldInboxEntries() {
 				]);
 			}
 		} catch (err) {
-			logger.error(`Error when cleaning kara (${kara.kid})`, {service: 'Inbox', obj: err});
+			logger.error(`Error when cleaning kara (${kara.kid})`, {service, obj: err});
 			throw err;
 		}
 	}

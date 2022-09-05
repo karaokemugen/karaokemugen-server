@@ -11,6 +11,8 @@ import logger, { profile } from '../lib/utils/logger';
 import { generateHardsubsCache, getAllKaras } from '../services/kara';
 import { getState } from './state';
 
+const service = 'Hardsubs';
+
 let queue = null;
 
 export async function initHardsubGeneration() {
@@ -21,15 +23,15 @@ export async function initHardsubGeneration() {
 
 async function wrappedGenerateHS(payload: [string, string, string, string]) {
 	const [mediaPath, subPath, outputFile, kid] = payload;
-	logger.info(`Creating hardsub for ${mediaPath}`, {service: 'Hardsubs'});
+	logger.info(`Creating hardsub for ${mediaPath}`, {service});
 	if (await fileExists(outputFile)) return;
 	const assPath = subPath ? `${kid}.ass` : null;
 	if (assPath) await fs.copyFile(payload[1], assPath);
 	try {
 		await createHardsub(mediaPath, assPath, outputFile);
-		logger.info(`${queue.length()} hardsubs left in queue`, {service: 'Hardsubs'});
+		logger.info(`${queue.length()} hardsubs left in queue`, {service});
 	} catch (err) {
-		logger.error(`Error creating hardsub for ${mediaPath} : ${err}`, {service: 'Hardsubs', obj: err});
+		logger.error(`Error creating hardsub for ${mediaPath} : ${err}`, {service, obj: err});
 		throw err;
 	} finally {
 		if (assPath) await fs.unlink(assPath);
@@ -37,7 +39,7 @@ async function wrappedGenerateHS(payload: [string, string, string, string]) {
 }
 
 export async function generateHardsubs(karas: KaraList) {
-	logger.info('Generate subchecksums', {service: 'Hardsubs'});
+	logger.info('Generate subchecksums', {service});
 	interface HardsubInfo {
 		kid: string,
 		mediafile: string,
@@ -69,7 +71,7 @@ export async function generateHardsubs(karas: KaraList) {
 
 		mediaWithInfosSet.add(media.mediafile.replace(ext, `.${media.mediasize}.${media.subchecksum}.mp4`));
 	}
-	logger.info('Generated subchecksums', {service: 'Hardsubs'});
+	logger.info('Generated subchecksums', {service});
 	const hardsubDir = resolve(getState().dataPath, getConfig().System.Path.Hardsubs);
 	const hardsubFiles = await fs.readdir(hardsubDir);
 	const hardsubSet = new Set<string>(hardsubFiles);
@@ -81,7 +83,7 @@ export async function generateHardsubs(karas: KaraList) {
 			// Compare mediasizes. If mediasize or subchecksum are different, remove file
 			if (mediaMap.get(fileParts[0]).mediasize !== +fileParts[1] || mediaMap.get(fileParts[0]).subchecksum !== fileParts[2]) {
 				fs.unlink(resolve(hardsubDir, file));
-				logger.info(`Removing ${file}`, {service: 'Hardsubs'});
+				logger.info(`Removing ${file}`, {service});
 			}
 		}
 	});
@@ -100,7 +102,7 @@ export async function generateHardsubs(karas: KaraList) {
 				queue.push([mediaPath, subPath, outputFile, media.kid]);
 			}
 		} catch (error) {
-			logger.error(`Error when creating hardsub for ${media.mediafile}: ${error}`, {service: 'Hardsubs'});
+			logger.error(`Error when creating hardsub for ${media.mediafile}: ${error}`, {service});
 		}
 	}
 	profile('createHardsubs');

@@ -6,6 +6,8 @@ import { adminToken } from '../utils/constants';
 import {getFavorites} from './favorites';
 import { findUserByName } from './user';
 
+const service = 'UserPubSub';
+
 export async function subUser(socket: Socket, username: string) {
 	if (await findUserByName(username)) {
 		socket.join(username);
@@ -26,7 +28,7 @@ export async function pubUser(username: string) {
 	]);
 	if (!user) {
 		// wtf?
-		logger.warn('A unknown user was pubbed, not normal', { service: 'UserPubsub', obj: username });
+		logger.warn('A unknown user was pubbed, not normal', { service, obj: username });
 		return;
 	}
 	getWS().ws.to(username).emit('user updated', { user, favorites });

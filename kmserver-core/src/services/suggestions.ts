@@ -5,6 +5,8 @@ import logger from '../lib/utils/logger';
 import { Suggestion, SuggestionParams } from '../types/suggestions';
 import sentry from '../utils/sentry';
 
+const service = 'Suggestions';
+
 export async function getSuggestions(params: SuggestionParams) {
 	try {
 		const res = await selectSuggestions({
@@ -24,7 +26,7 @@ export async function getSuggestions(params: SuggestionParams) {
 			content: res
 		};
 	} catch (err) {
-		logger.error('Unable to fetch suggestions', {service: 'Suggestions', obj: err});
+		logger.error('Unable to fetch suggestions', {service, obj: err});
 		sentry.error(err);
 		throw err;
 	}
@@ -35,7 +37,7 @@ export async function getSuggestionsLanguages() {
 		const rows = await selectSuggestionsLanguages();
 		return rows.map(row => row.language);
 	} catch (err) {
-		logger.error('Unable to fetch suggestions languages', {service: 'Suggestions', obj: err});
+		logger.error('Unable to fetch suggestions languages', {service, obj: err});
 		sentry.error(err);
 		throw err;
 	}
@@ -46,7 +48,7 @@ export async function updateLike(id: number) {
 		await addLikeToSuggestion(id);
 		return true;
 	} catch (err) {
-		logger.error(`Unable to update like to suggestion ${id}`, {service: 'Suggestions', obj: err});
+		logger.error(`Unable to update like to suggestion ${id}`, {service, obj: err});
 		sentry.error(err);
 		throw err;
 	}
@@ -57,14 +59,14 @@ async function addSuggestion(suggestions: Suggestion[]) {
 		await insertSuggestion(suggestions);
 		return true;
 	} catch (err) {
-		logger.error('Unable to add suggestion', {service: 'Suggestions', obj: err});
+		logger.error('Unable to add suggestion', {service, obj: err});
 		sentry.error(err);
 		throw err;
 	}
 }
 
 export async function addSuggestionsFromFile(file: string, source: string) {
-	logger.info('Importing suggestions from CSV file...', {service: 'Suggestions'});
+	logger.info('Importing suggestions from CSV file...', {service});
 	const fileData = await fs.readFile(file, 'utf-8');
 	const data = fileData.split('\n').map(l => {
 		const line = l.split(';');
@@ -76,7 +78,7 @@ export async function addSuggestionsFromFile(file: string, source: string) {
 	});
 	await addSuggestion(data);
 	await updateSuggestionSearchVector();
-	logger.info('Imported suggestions!', {service: 'Suggestions'});
+	logger.info('Imported suggestions!', {service});
 }
 
 export async function removeSuggestion(id: number) {
@@ -84,7 +86,7 @@ export async function removeSuggestion(id: number) {
 		await deleteSuggestion(id);
 		return true;
 	} catch (err) {
-		logger.error(`Unable to remove suggestion ${id}`, {service: 'Suggestions', obj: err});
+		logger.error(`Unable to remove suggestion ${id}`, {service, obj: err});
 		sentry.error(err);
 		throw err;
 	}

@@ -23,6 +23,8 @@ import {resolvedPathRemoteRoot} from '../utils/config';
 import { getVersion, watchRemotes } from '../utils/remote';
 import { getState } from '../utils/state';
 
+const service = 'Remote';
+
 let app: Express;
 
 const proxiedCodes: Set<string> = new Set();
@@ -79,7 +81,7 @@ export async function startRemote(socket: Socket, req: RemoteSettings): Promise<
 				// All good! Setup remote with the authenticated code
 				const forwarded = socket.handshake.headers['x-forwarded-for'] as string;
 				updateRemoteToken(instance.token, forwarded?.split(', ')[0] || socket.conn.remoteAddress).catch(err => {
-					logger.warn('Cannot update instance last use', {service: 'Remote', obj: err});
+					logger.warn('Cannot update instance last use', {service, obj: err});
 				});
 				setupRemote(instance.code, req.version, socket);
 				return {
@@ -102,7 +104,7 @@ export async function startRemote(socket: Socket, req: RemoteSettings): Promise<
 			setupRemote(code, req.version, socket);
 			return { host: `${code}.${getConfig().Remote.BaseHost}`, code, token };
 		} catch (err) {
-			logger.error('Cannot start remote and assign new token', {service: 'Remote', obj: err});
+			logger.error('Cannot start remote and assign new token', {service, obj: err});
 			return { err: true, reason: 'CANNOT_START' };
 		}
 	}
@@ -111,7 +113,7 @@ export async function startRemote(socket: Socket, req: RemoteSettings): Promise<
 export function stopRemote(socket: Socket, reason?: string) {
 	if (remotesReverse.has(socket)) {
 		const code = remotesReverse.get(socket);
-		logger.debug(`Stop remote for ${code} (hosted by ${socket.handshake.address})`, {service: 'Remote', obj: reason});
+		logger.debug(`Stop remote for ${code} (hosted by ${socket.handshake.address})`, {service, obj: reason});
 		remotesReverse.delete(socket);
 		remotesVersions.delete(code);
 		remotes.delete(code);
@@ -141,9 +143,9 @@ export function proxyBroadcast(socket: Socket, data: any) {
 
 function deleteOldRemote() {
 	deleteOldRemoteTokens().then(() => {
-		logger.info('Cleaned up expired tokens', {service: 'Remote'});
+		logger.info('Cleaned up expired tokens', {service});
 	}).catch(err => {
-		logger.warn('Cannot delete old remote tokens (better luck next time)', {service: 'Remote', obj: err});
+		logger.warn('Cannot delete old remote tokens (better luck next time)', {service, obj: err});
 	});
 }
 

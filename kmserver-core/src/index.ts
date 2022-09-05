@@ -31,7 +31,9 @@ const appPath = findWorkspaceRoot();
 const dataPath = resolve(appPath, 'app/');
 const resourcePath = appPath;
 
-const pjson = JSON.parse(readFileSync(resolve(appPath, 'kmserver-core/package.json'), 'utf-8'));
+export const pjson = JSON.parse(readFileSync(resolve(appPath, 'kmserver-core/package.json'), 'utf-8'));
+
+const service = 'Launcher';
 
 dotenv.config({path: join(appPath, '.env')});
 sentry.init();
@@ -47,12 +49,12 @@ process.on('unhandledRejection', (error) => {
 });
 
 process.once('SIGTERM', () => {
-	logger.info('Received SIGTERM, terminating properly.', {service: 'Launcher'});
+	logger.info('Received SIGTERM, terminating properly.', {service});
 	exit(0);
 });
 
 process.once('SIGINT', () => {
-	logger.info('Received SIGINT, terminating properly.', {service: 'Launcher'});
+	logger.info('Received SIGINT, terminating properly.', {service});
 	exit(0);
 });
 
@@ -67,7 +69,7 @@ register({
 });
 
 main().catch(err => {
-	logger.error('Error during launch', {service: 'Launcher', obj: err});
+	logger.error('Error during launch', {service, obj: err});
 	process.exit(1);
 });
 
@@ -170,7 +172,7 @@ async function main() {
 		}
 	});
 
-	logger.debug(`Port ${port} is available`, {service: 'Launcher'});
+	logger.debug(`Port ${port} is available`, {service});
 	
 	// Clean temp periodically of files older than two hours
 	setInterval(findRemoveSync.bind(this, resolve(dataPath, conf.System.Path.Temp), {age: {seconds: 7200}}), 2 * 60 * 60 * 1000);
@@ -178,7 +180,7 @@ async function main() {
 	initGitRepos();
 	if (conf.Mail.Enabled) initMailer();
 	initFrontend(port);
-	logger.info('Karaoke Mugen Server launched', {service: 'Launcher'});
+	logger.info('Karaoke Mugen Server launched', {service});
 
 	// Post launch stuff
 

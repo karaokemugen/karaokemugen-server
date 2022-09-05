@@ -26,6 +26,8 @@ import { gitlabPostNewSuggestion } from './gitlab';
 import { addKaraInInbox } from './inbox';
 import { getKara } from './kara';
 
+const service = 'KaraImport';
+
 // Preflight checks before any import operation
 async function preflight(kara: KaraFileV4): Promise<KaraFileV4> {
 	// Force values for new karaokes to avoid main repo pollution
@@ -80,7 +82,7 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		await insertKara(karaData);
 		await updateTags(karaData.data);
 		await refreshKarasAfterDBChange('ADD', [karaData.data]);
-		logger.debug('Kara', {service: 'Import', obj: karaData});
+		logger.debug('Kara', {service, obj: karaData});
 		let issueURL: string;
 		if (conf.Gitlab.Enabled) {
 			if (edit) {
@@ -94,7 +96,7 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		addKaraInInbox(kara, contact, issueURL, edit ? edit.kid : undefined);
 		return issueURL;
 	} catch (err) {
-		logger.error('Error importing kara', {service: 'KaraGen', obj: err});
+		logger.error('Error importing kara', {service, obj: err});
 		if (!err.msg) {
 			sentry.addErrorInfo('Kara', JSON.stringify(kara, null, 2));
 			sentry.error(err);

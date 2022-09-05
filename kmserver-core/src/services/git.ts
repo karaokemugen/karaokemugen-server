@@ -8,6 +8,8 @@ import { computeFileChanges } from '../lib/utils/patch';
 import Sentry from '../utils/sentry';
 import { getState } from '../utils/state';
 
+const service = 'Git';
+
 async function gitDiff(commit1: string, commit2: string, gitDir: string): Promise<string> {
 	const res = await execa(getState().binPath.git, [
 		'diff',
@@ -43,7 +45,7 @@ export async function getLatestGitCommit(): Promise<string> {
 		const commit = await fs.readFile(resolve(getState().dataPath, getConfig().System.Repositories[0].BaseDir, '.git/refs/heads/master'), 'utf-8');
 		return commit.replace('\n', '');
 	} catch (err) {
-		logger.error('Unable to get latest commit', {service: 'Git', obj: err});
+		logger.error('Unable to get latest commit', {service, obj: err});
 		Sentry.error(err);
 		throw err;
 	}
@@ -54,7 +56,7 @@ export async function updateGit() {
 		const repo = getConfig().System.Repositories.find(r => r.Name !== 'Staging');
 		await gitPull(resolve(getState().dataPath, repo.BaseDir));
 	} catch (err) {
-		logger.error('Unable to pull git repo', {service: 'Git', obj: err});
+		logger.error('Unable to pull git repo', {service, obj: err});
 		Sentry.error(err);
 		throw err;
 	}
@@ -75,7 +77,7 @@ export async function getGitDiff(commit: string, fullFiles = false): Promise<str
 		}
 		return changes;
 	} catch (err) {
-		logger.error(`Unable to get git diff for commit ${commit}`, {service: 'Git', obj: err});
+		logger.error(`Unable to get git diff for commit ${commit}`, {service, obj: err});
 		Sentry.error(err);
 		throw err;
 	}

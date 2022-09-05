@@ -29,6 +29,8 @@ import { startKMExplorer } from './services/kmexplorer';
 import { initRemote } from './services/remote';
 import { getState } from './utils/state';
 
+const service = 'Frontend';
+
 /**
  * Starting express which will serve our app.
  * Serving this app means it has to be built beforehand.
@@ -119,7 +121,7 @@ export function initFrontend(listenPort: number) {
 	}
 	userSubSocketController(ws);
 
-	server.listen(port, () => logger.info(`App listening on ${port}`, {service: 'App'}));
+	server.listen(port, () => logger.info(`App listening on ${port}`, {service}));
 }
 
 function api() {

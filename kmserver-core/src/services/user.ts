@@ -24,6 +24,8 @@ import sentry from '../utils/sentry';
 import {getKara} from './kara';
 import { delPubUser, pubUser } from './user_pubsub';
 
+const service = 'User';
+
 const passwordResetRequests = new Map();
 
 export async function resetPasswordRequest(username: string) {
@@ -142,7 +144,7 @@ export async function findUserByName(username: string, opts: UserOptions = {}) {
 	} catch (err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
-		logger.error('Error when retrieving an user', {obj: err, service: 'User'});
+		logger.error('Error when retrieving an user', {obj: err, service});
 		throw err;
 	}
 }
@@ -230,7 +232,7 @@ export async function createUser(user: User, opts: any = {}) {
 		verifyNameBans(user);
 		// Check if login or nickname already exists.
 		if (await selectUser('pk_login', user.login) || await selectUser('nickname', user.login)) {
-			logger.error(`User/nickname ${user.login} already exists, cannot create it`, {service: 'User'});
+			logger.error(`User/nickname ${user.login} already exists, cannot create it`, {service});
 			throw { code: 'USER_ALREADY_EXISTS', data: {username: user.login}};
 		}
 		if (user.password.length < 8) throw {code: 'PASSWORD_TOO_SHORT', data: user.password.length};
@@ -240,7 +242,7 @@ export async function createUser(user: User, opts: any = {}) {
 			delete user.password;
 			pubUser(user.login);
 		} catch (err) {
-			logger.error(`Unable to create user ${user.login}`, {service: 'User', obj: err});
+			logger.error(`Unable to create user ${user.login}`, {service, obj: err});
 			throw ({ code: 'USER_CREATION_ERROR', data: err});
 		}
 	} catch (err) {
@@ -280,7 +282,7 @@ async function replaceAvatar(oldImageFile: string, avatar: Express.Multer.File) 
 		await smartMove(avatar.path, newAvatarPath);
 		return newAvatarFile;
 	} catch (err) {
-		logger.error(`Unable to replace avatar ${oldImageFile} with ${avatar.path}`, {service: 'User', obj: err});
+		logger.error(`Unable to replace avatar ${oldImageFile} with ${avatar.path}`, {service, obj: err});
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
 		throw err;
@@ -387,14 +389,14 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		}
 		const updatedUser = await updateUser(mergedUser);
 		delete updatedUser.password;
-		logger.debug(`${username} (${user.nickname}) profile updated`, {service: 'User'});
+		logger.debug(`${username} (${user.nickname}) profile updated`, {service});
 		pubUser(username);
 		return {
 			user: updatedUser,
 			token: createJwtToken(updatedUser.login, updatedUser.roles, new Date(updatedUser.password_last_modified_at))
 		};
 	} catch (err) {
-		logger.error(`Failed to update ${username}'s profile`, {service: 'User', obj: err});
+		logger.error(`Failed to update ${username}'s profile`, {service, obj: err});
 		if (err !== 'Nickname already exists') {
 			sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 			sentry.error(new Error(err));
@@ -410,7 +412,7 @@ export async function updateUserLastLogin(username: string) {
 	try {
 		await updateLastLogin(username);
 	} catch (err) {
-		logger.error(`Unable to update login time for ${username}`, {service: 'User', obj: err});
+		logger.error(`Unable to update login time for ${username}`, {service, obj: err});
 	}
 }
 

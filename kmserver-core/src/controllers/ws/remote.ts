@@ -5,9 +5,11 @@ import { SocketIOApp } from '../../lib/utils/ws';
 import { proxyBroadcast, startRemote, stopRemote } from '../../services/remote';
 import { getVersion } from '../../utils/remote';
 
+const service = 'WSRemote';
+
 export default function remoteSocketController(app: SocketIOApp) {
 	app.route('remote start', async (socket, req: APIData<RemoteSettings>): Promise<RemoteResponse> => {
-		logger.info(`Start remote for ${req.body.InstanceID}`, {service: 'Remote'});
+		logger.info(`Start remote for ${req.body.InstanceID}`, {service});
 		if (getVersion(req.body.version) !== false) {
 			return startRemote(socket, req.body);
 		} 

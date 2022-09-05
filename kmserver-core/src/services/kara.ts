@@ -28,6 +28,8 @@ import { gitlabPostNewIssue } from './gitlab';
 import { clearOldInboxEntries, clearUnusedStagingTags } from './inbox';
 import { findUserByName } from './user';
 
+const service = 'Kara';
+
 // KID => Filename
 const hardsubsCache: Map<string, string> = new Map();
 
@@ -96,7 +98,7 @@ export async function generate() {
 		if (conf.System.Repositories[0].OnUpdateTrigger) promises.push(updateTrigger());
 		await Promise.all(promises);
 	} catch (err) {
-		logger.error('Generation failed', {service: 'Gen', obj: err});
+		logger.error('Generation failed', {service, obj: err});
 		sentry.error(err, 'fatal');
 	}
 }
@@ -106,7 +108,7 @@ export function generateHardsubsCache(karas: KaraList) {
 	for (const kara of karas.content) {
 		hardsubsCache.set(kara.kid, kara.hardsubbed_mediafile);
 	}
-	logger.info('Hardsubs cache generated', {service: 'Karas'});
+	logger.info('Hardsubs cache generated', {service});
 }
 
 export function getHardsubsCache() {
@@ -118,7 +120,7 @@ async function createBaseDumps() {
 		createFileBaseDump(),
 		createDBBaseDump()
 	]).catch(err => {
-		logger.error('Unable to create dump', { service: 'Gen', obj: err});
+		logger.error('Unable to create dump', { service, obj: err});
 		sentry.error(err);
 	});
 }
@@ -154,16 +156,16 @@ async function createFileBaseDump() {
 async function updateTrigger() {
 	const trigger = getConfig().System.Repositories[0].OnUpdateTrigger;
 	const [cmd, args] = trigger.split(/ (.+)/);
-	logger.info(`Update trigger: ${trigger}`, { service: 'Gen' });
+	logger.info(`Update trigger: ${trigger}`, { service });
 	try {
 		await execa(cmd, args.split(' '));
 	} catch (err) {
-		logger.error('Update trigger failed', { service: 'Gen', obj: err});
+		logger.error('Update trigger failed', { service, obj: err});
 	}
 }
 
 export async function computeSubchecksums() {
-	logger.info('Starting computing checksums', {service: 'Kara'});
+	logger.info('Starting computing checksums', {service});
 	const karas = await getAllKaras({ ignoreCollections: true }, undefined, true);
 	const mapper = async (lyrics: any[]) => {
 		return checksumASS(lyrics);
@@ -177,7 +179,7 @@ export async function computeSubchecksums() {
 		concurrency: 32
 	});
 	await copyFromData('kara_subchecksum', checksums);
-	logger.info('Finished computing checksums', {service: 'Kara'});
+	logger.info('Finished computing checksums', {service});
 }
 
 async function checksumASS(lyrics: any[]): Promise<string[]> {
@@ -254,7 +256,7 @@ export async function getAllKaras(params: KaraParams, token?: JWTTokenWithRoles,
 		// Skip Sentry if the error has a code.
 		if (err?.code) throw err;
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
-		logger.error('Getting karas failed', {service: 'Karas', obj: err});
+		logger.error('Getting karas failed', {service, obj: err});
 		sentry.error(err);
 		throw err;
 	}

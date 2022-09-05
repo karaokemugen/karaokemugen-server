@@ -11,6 +11,8 @@ import {BinariesConfig, Config} from '../types/config';
 import { configConstraints, defaults } from './default_settings';
 import { getState, setState } from './state';
 
+const service = 'Config';
+
 async function checkBinaries(config: Config): Promise<BinariesConfig> {
 	const binariesPath = configuredBinariesForSystem(config);
 	const requiredBinariesChecks = [];
@@ -48,11 +50,11 @@ function configuredBinariesForSystem(config: Config): BinariesConfig {
 }
 
 function binMissing(binariesPath: any, err: string) {
-	logger.error('One or more binaries could not be found!', {service: 'BinCheck', obj: err});
-	logger.error('Paths searched:', {service: 'BinCheck'});
-	logger.error(`ffmpeg: ${binariesPath.ffmpeg}`, {service: 'BinCheck'});
-	logger.error(`git: ${binariesPath.git}`, {service: 'BinCheck'});
-	logger.error('Exiting...', {service: 'BinCheck'});
+	logger.error('One or more binaries could not be found!', {service, obj: err});
+	logger.error('Paths searched:', {service});
+	logger.error(`ffmpeg: ${binariesPath.ffmpeg}`, {service});
+	logger.error(`git: ${binariesPath.git}`, {service});
+	logger.error('Exiting...', {service});
 	console.log('\n');
 	console.log('One or more binaries needed by Karaoke Mugen could not be found.');
 	console.log('Check the paths above and make sure these are available.');
@@ -72,7 +74,7 @@ export async function initConfig(argv: any) {
 	await configureLocale();
 	await loadConfigFiles(dataPath, argv.config, defaults, getState().appPath);
 	const conf = getConfig();
-	logger.debug('Checking if binaries are available', {service: 'Launcher'});
+	logger.debug('Checking if binaries are available', {service});
 	setState({binPath: await checkBinaries(conf)});
 	if (conf.App.JwtSecret === 'Change me' || conf.App.InstanceID === 'Change me') {
 		console.log('ERROR : Your InstanceID and/or JwtSecret are not set.');

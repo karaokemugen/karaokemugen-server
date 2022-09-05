@@ -11,6 +11,8 @@ import logger from '../lib/utils/logger';
 import { check } from '../lib/utils/validators';
 import sentry from '../utils/sentry';
 
+const service = 'Stats';
+
 const payloadConstraints = {
 	'instance.instance_id': {presence: true, format: uuidRegexp},
 	'instance.version': {presence: {allowEmpty: false }},
@@ -51,10 +53,10 @@ export async function processStatsPayload(payload: any) {
 			upsertPlayed(payload.viewcounts),
 			upsertRequests(payload.requests)
 		]);
-		logger.info(`Received payload from instance ${payload.instance.instance_id}`, {service: 'Shortener'});
+		logger.info(`Received payload from instance ${payload.instance.instance_id}`, {service});
 	} catch (err) {
-		logger.error(`Error with payload from ${payload?.instance?.instance_id}`, {service: 'Shortener', obj: err});
-		logger.debug('Payload in error', {service: 'Stats', obj: payload});
+		logger.error(`Error with payload from ${payload?.instance?.instance_id}`, {service, obj: err});
+		logger.debug('Payload in error', {service, obj: payload});
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
 		throw err;

@@ -1,15 +1,17 @@
+import { isEqual } from 'lodash';
 import {basename} from 'path';
 
 import { getConfig } from '../lib/utils/config';
+import { tagTypes } from '../lib/utils/constants';
 import { duration } from '../lib/utils/date';
 import HTTP from '../lib/utils/http';
 import logger from '../lib/utils/logger';
-import sentry from '../utils/sentry';
-import { findUserByName } from './user';
-import { getKara } from './kara';
 import { EditElement } from '../types/kara_import';
-import { isEqual } from 'lodash';
-import { tagTypes } from '../lib/utils/constants';
+import sentry from '../utils/sentry';
+import { getKara } from './kara';
+import { findUserByName } from './user';
+
+const service = 'Gitlab';
 
 /** Use the appropriate template and post an inbox element to GitLab * */
 export async function gitlabPostNewSuggestion(kid: string, edit?: EditElement) {
@@ -22,8 +24,8 @@ export async function gitlabPostNewSuggestion(kid: string, edit?: EditElement) {
 		.replace('$kara', basename(kara.karafile, '.kara.json'));
 	let desc = (issueTemplate.Description || '')
 		.replace('$file', kara.karafile)
-		.replace('$newSub', edit ? edit.modifiedLyrics.toString():'N/A')
-		.replace('$newVideo', edit ? edit.modifiedMedia.toString():'N/A')
+		.replace('$newSub', edit ? edit.modifiedLyrics.toString() : 'N/A')
+		.replace('$newVideo', edit ? edit.modifiedMedia.toString() : 'N/A')
 		.replace('$comment', kara.comment || '')
 		.replace('$author', kara.authors.map(t => t.name).join(', '))
 		.replace('$title', JSON.stringify(kara.titles))
@@ -53,15 +55,15 @@ export async function gitlabPostNewSuggestion(kid: string, edit?: EditElement) {
 # Modifications
 
 `;
-			if (edit.modifiedLyrics) changes.push(`LYRICS updated`);
-			if (edit.modifiedMedia) changes.push(`MEDIA updated`);
+			if (edit.modifiedLyrics) changes.push('LYRICS updated');
+			if (edit.modifiedMedia) changes.push('MEDIA updated');
 			if (!isEqual(edit.oldKara.year, kara.year)) changes.push(`YEAR updated : ${edit.oldKara.year} => ${kara.year}`);
 			if (!isEqual(edit.oldKara.songorder, kara.songorder)) changes.push(`SONGORDER updated : ${edit.oldKara.songorder} => ${kara.songorder}`);
 			if (!isEqual(edit.oldKara.titles, kara.titles)) changes.push(`TITLES updated : ${JSON.stringify(edit.oldKara.titles, null, 2)} => ${JSON.stringify(kara.titles, null, 2)}`);
 			if (!isEqual(edit.oldKara.titles_aliases, kara.titles_aliases)) changes.push(`TITLES ALIASES updated : ${JSON.stringify(edit.oldKara.titles_aliases, null, 2)} => ${JSON.stringify(kara.titles_aliases, null, 2)}`);
 			if (!isEqual(edit.oldKara.titles_default_language, kara.titles_default_language)) changes.push(`TITLES DEFAULT LANGUAGE updated : ${edit.oldKara.titles_default_language} => ${kara.titles_default_language}`);
 			for (const tagType of Object.keys(tagTypes)) {
-				if (!isEqual(edit.oldKara[tagType], kara[tagType])) changes.push(`${tagType.toUpperCase()} updated : (${edit.oldKara[tagType]?.map((t: any) => t.name).join(', ')}) => (${kara[tagType]?.map((t: any) => t.name).join(', ')})`)
+				if (!isEqual(edit.oldKara[tagType], kara[tagType])) changes.push(`${tagType.toUpperCase()} updated : (${edit.oldKara[tagType]?.map((t: any) => t.name).join(', ')}) => (${kara[tagType]?.map((t: any) => t.name).join(', ')})`);
 			}
 			desc += changes.map(c => `- ${c}`).join('\n');
 		}
@@ -88,7 +90,7 @@ export async function gitlabPostNewIssue(title: string, desc: string, labels: st
 		});
 		return res.data.web_url;
 	} catch (err) {
-		logger.error('Unable to post new issue', {service: 'Gitlab', obj: err});
+		logger.error('Unable to post new issue', {obj: err});
 		throw err;
 	}
 }
@@ -116,10 +118,10 @@ export async function postSuggestionToKaraBase(title: string, serie:string, type
 		} catch (err) {
 			sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 			sentry.error(err);
-			logger.error('Call to Gitlab API failed', {service: 'KaraSuggestion', obj: err});
+			logger.error('Call to Gitlab API failed', {service, obj: err});
 		}
 	} catch (err) {
-		logger.error('Unable to post new suggestion to gitlab', {service: 'Gitlab', obj: err});
+		logger.error('Unable to post new suggestion to gitlab', {service, obj: err});
 		throw err;
 	}
 }

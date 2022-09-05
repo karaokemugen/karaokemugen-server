@@ -10,6 +10,8 @@ import logger from '../lib/utils/logger';
 import { DBStats } from '../types/database/kara';
 import * as sql from './sqls/kara';
 
+const service = 'DB';
+
 export async function selectAllMedias(collections?: string[]): Promise<DBMedia[]> {
 	const collectionsClauses = [];
 	if (collections) for (const collection of collections) {
@@ -167,6 +169,6 @@ export async function selectBaseStats(): Promise<DBStats> {
 }
 
 export async function refreshKaraStats() {
-	logger.info('Refreshing kara stats', {service: 'DB'});
+	logger.info('Refreshing kara stats', {service});
 	return db().query(sql.refreshKaraStats);
 }
