@@ -5,7 +5,7 @@ import { RepositoryManifest } from '../../lib/types/repo';
 import {getConfig} from '../../lib/utils/config';
 import { getGitDiff, getLatestGitCommit } from '../../services/git';
 import { postSuggestionToKaraBase } from '../../services/gitlab';
-import {getAllKaras, getAllMedias, getAllYears, getBaseStats, getKara, newKaraIssue} from '../../services/kara';
+import {getAllKaras, getAllMedias, getAllYears, getBaseStats, getHardsubsCache, getKara, newKaraIssue} from '../../services/kara';
 import {getTag, getTags} from '../../services/tag';
 import { optionalAuth } from '../middlewares/auth';
 
@@ -58,6 +58,15 @@ export default function KSController(router: Router) {
 				res.status(err.code || 500).json(err);
 			}
 		});
+	// Hardsubs helper route
+	// This is to simplify queries to get hardsubs simply by their KIDs
+	router.route('/kara/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/hardsub')
+		.get((req, res) => {
+			const hardsubbedMediafile = getHardsubsCache().get(req.params.kid);
+			hardsubbedMediafile 
+				? res.redirect(301, `/hardsubs/${hardsubbedMediafile}`)
+				: res.status(404).send();
+	});
 	router.route('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/problem')
 		.post(async (req: any, res) => {
 			try {

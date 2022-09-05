@@ -25,7 +25,6 @@ import {
 } from './lib/utils/config';
 import logger from './lib/utils/logger';
 import { initWS } from './lib/utils/ws';
-import { getHardsubsCache } from './services/kara';
 import { startKMExplorer } from './services/kmexplorer';
 import { initRemote } from './services/remote';
 import { getState } from './utils/state';
@@ -39,6 +38,7 @@ export function initFrontend(listenPort: number) {
 	const state = getState();
 	const app = express();
 
+	// Trust our reverse proxy entirely
 	app.set('trust proxy', (ip: string) => {
 		return ip === '127.0.0.1' ||
 			ip === '::ffff:127.0.0.1';
@@ -72,6 +72,7 @@ export function initFrontend(listenPort: number) {
 
 	// Server allows resuming file downloads :
 	app.use(range());
+
 	app.use((req, res, next) => {
 		res.setHeader('Access-Control-Allow-Origin', '*');
 		res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -88,15 +89,7 @@ export function initFrontend(listenPort: number) {
 		app.use('/downloads/medias', express.static(resolvedPathRepos('Medias')[0]));
 		app.use('/hardsubs', express.static(resolve(getState().dataPath, getConfig().System.Path.Hardsubs)));
 	}
-
-	// Hardsubs helper route
-	// This is to simplify queries to get hardsubs simply by their KIDs
-	app.use('/kara/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/hardsub', (req, res) => {
-		const hardsubbedMediafile = getHardsubsCache().get(req.params.kid);
-		hardsubbedMediafile 
-			? res.redirect(301, `/hardsubs/${hardsubbedMediafile}`)
-			: res.status(404).send();
-	});
+	
 	// API router
 	app.use('/api', api());
 	if (conf.Users.Enabled) {
