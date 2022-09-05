@@ -1,6 +1,6 @@
 import { merge } from 'lodash';
 
-import { pjson } from '..';
+import { pjson } from '../index';
 import { State } from '../types/state';
 
 // Internal settings
