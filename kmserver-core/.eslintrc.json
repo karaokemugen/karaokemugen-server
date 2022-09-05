@@ -25,6 +25,7 @@
 		"default-param-last": 0,
 		"eqeqeq": 2,
 		"implicit-arrow-linebreak": 0,
+		"import/extensions": 0,
 		"import/no-cycle": 0,
 		"import/no-extraneous-dependencies": 0,
 		"import/no-relative-packages": 0,
