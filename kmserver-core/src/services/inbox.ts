@@ -103,11 +103,8 @@ export async function removeKaraFromInbox(inid: string) {
 	try {
 		const inbox = (await selectInbox(inid))[0];
 		if (!inbox) throw {code: 404};
-		const kara = await getKara({
-			q: `k:${inbox.kid}!r:Staging`
-		});
 		// Kara might not exist anymore if something went wrong.
-		if (kara) {
+		if (inbox.karafile) {
 			const karaPath = resolve(resolvedPathRepos('Karaokes', 'Staging')[0], inbox.karafile);
 			const subPath = resolve(resolvedPathRepos('Lyrics', 'Staging')[0], inbox.subfile);
 			const mediaPath = resolve(resolvedPathRepos('Medias', 'Staging')[0], inbox.mediafile);
@@ -116,6 +113,9 @@ export async function removeKaraFromInbox(inid: string) {
 				fs.unlink(subPath),
 				fs.unlink(mediaPath)
 			]);
+			const kara = await getKara({
+				q: `k:${inbox.kid}!r:Staging`
+			});
 			const karaData = formatKaraV4(kara);
 			await deleteKara([inbox.kid]);
 			refreshKarasAfterDBChange('DELETE', [karaData.data]);
