@@ -104,7 +104,7 @@ export async function removeKaraFromInbox(inid: string) {
 		const inbox = (await selectInbox(inid))[0];
 		if (!inbox) throw {code: 404};
 		const kara = await getKara({
-			q: `k:${inbox.kid}`
+			q: `k:${inbox.kid}!r:Staging`
 		});
 		// Kara might not exist anymore if something went wrong.
 		if (kara) {
@@ -116,8 +116,8 @@ export async function removeKaraFromInbox(inid: string) {
 				fs.unlink(subPath),
 				fs.unlink(mediaPath)
 			]);
-			await deleteKara([inbox.kid]);
 			const karaData = formatKaraV4(kara);
+			await deleteKara([inbox.kid]);
 			refreshKarasAfterDBChange('DELETE', [karaData.data]);
 		}
 		await deleteInbox(inid);

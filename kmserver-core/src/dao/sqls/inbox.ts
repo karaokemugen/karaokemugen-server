@@ -17,7 +17,7 @@ export const selectInbox = (uniqueKara: string) => `
 		i.edited_kid,
 		i.edited_kid is not null as fix
 	FROM inbox i
-	${uniqueKara ? 'INNER JOIN all_karas ak ON i.fk_kid = ak.pk_kid WHERE pk_inid = $1' : ''}
+	${uniqueKara ? 'LEFT JOIN all_karas ak ON i.fk_kid = ak.pk_kid WHERE pk_inid = $1' : ''}
 `;
 
 export const insertInbox = `
