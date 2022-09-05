@@ -131,9 +131,9 @@ export async function findUserByName(username: string, opts: UserOptions = {}) {
 				roles: user.roles,
 				nickname: user.nickname
 			};
-			// If the user has a public profile, but it's not his own profile, we remove the email bit.
-			delete user.email;
 		}
+		// If the user has a public profile, but it's not his own profile, we remove the email bit.
+		if (!opts.contact) delete user.email;
 		if (opts.public || !opts.password) {
 			delete user.password_last_modified_at;
 			delete user.password;

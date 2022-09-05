@@ -81,6 +81,7 @@ export default function userController(router: Router) {
 				const params: UserOptions = { public: true };
 				if (req.authToken && req.query.forcePublic
 					&& (req.authToken.roles?.admin || req.authToken.roles?.maintainer)) {
+					params.contact = true;
 					params.public = false;
 				}
 				const info = await findUserByName(req.params.user, params);

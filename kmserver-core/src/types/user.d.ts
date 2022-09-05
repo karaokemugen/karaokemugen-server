@@ -3,7 +3,8 @@ import {DBUser} from '../lib/types/database/user';
 
 export interface UserOptions {
     password?: boolean,
-    public?: boolean
+    public?: boolean,
+	contact?: boolean
 }
 
 export interface UserParams {
