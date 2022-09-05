@@ -6,9 +6,9 @@
 				:key="role.name"
 				class="tag"
 				:class="[role.class, edit ? 'edit':undefined]"
-				@click.prevent="toggleRole(role.name)"
+				@click="toggleRole(role.name)"
 			>
-				<input v-if="edit" type="checkbox" :checked="role.active" @change.prevent="toggleRole(role.name)">
+				<input v-if="edit" type="checkbox" :checked="role.active">
 				<font-awesome-icon :icon="['fas', role.icon]" fixed-width />
 				{{ $t(`roles.${role.name}`) }}
 			</div>
