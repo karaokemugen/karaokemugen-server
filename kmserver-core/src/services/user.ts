@@ -227,6 +227,7 @@ export async function createUser(user: User, opts: any = {}) {
 		if (!user.password) throw { code: 'USER_EMPTY_PASSWORD'};
 		if (!user.login) throw { code: 'USER_EMPTY_LOGIN'};
 		user.login = user.login.toLowerCase();
+		verifyNameBans(user);
 		// Check if login or nickname already exists.
 		if (await selectUser('pk_login', user.login) || await selectUser('nickname', user.login)) {
 			logger.error(`User/nickname ${user.login} already exists, cannot create it`, {service: 'User'});
@@ -250,6 +251,14 @@ export async function createUser(user: User, opts: any = {}) {
 			sentry.error(new Error(err.err));
 		}
 		throw err;
+	}
+}
+
+function verifyNameBans(user: User) {
+	const conf = getConfig();
+	if (conf.Users?.NameBan) for (const ban of conf.Users.NameBan) {
+		const regexp = new RegExp(ban, 'g');
+		if (user.login.match(regexp) || user.nickname.match(regexp)) throw 'Login or nickname contains banned strings';
 	}
 }
 
@@ -347,6 +356,7 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		const currentUser = await findUserByName(username, {password: true});
 		if (!currentUser) throw 'User unknown';
 		const mergedUser = merge(currentUser, user);
+		verifyNameBans(user);
 		delete mergedUser.password;
 		if (user.roles && !isLooselyEqual(user.roles, currentUser.roles) && token.roles && !token.roles.admin) throw 'Only admins can change a user\'s roles';
 		// Check if login already exists.

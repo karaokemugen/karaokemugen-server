@@ -39,6 +39,7 @@ export interface Config {
   	Users: {
 		Enabled: boolean,
 		BannerBan: string[]
+		NameBan: string[]
 	},
 	Stats: {
 		Enabled: boolean,
