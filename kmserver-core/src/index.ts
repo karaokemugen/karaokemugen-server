@@ -31,7 +31,7 @@ const appPath = findWorkspaceRoot();
 const dataPath = resolve(appPath, 'app/');
 const resourcePath = appPath;
 
-export const pjson = JSON.parse(readFileSync(resolve(appPath, 'kmserver-core/package.json'), 'utf-8'));
+const pjson = JSON.parse(readFileSync(resolve(appPath, 'kmserver-core/package.json'), 'utf-8'));
 
 const service = 'Launcher';
 
@@ -116,7 +116,7 @@ async function main() {
 
 	await initDB(getState().opt.sql);
 	await initUsers();
-	
+
 	if (argv.opts().createPreviews) {
 		const karas = await getAllKaras({ ignoreCollections: true }, undefined, true);
 		await createImagePreviews(karas, 'full', 1280);
@@ -173,7 +173,7 @@ async function main() {
 	});
 
 	logger.debug(`Port ${port} is available`, {service});
-	
+
 	// Clean temp periodically of files older than two hours
 	setInterval(findRemoveSync.bind(this, resolve(dataPath, conf.System.Path.Temp), {age: {seconds: 7200}}), 2 * 60 * 60 * 1000);
 

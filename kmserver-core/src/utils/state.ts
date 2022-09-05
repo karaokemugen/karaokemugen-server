@@ -1,7 +1,11 @@
+import findWorkspaceRoot from 'find-yarn-workspace-root';
+import { readFileSync } from 'fs';
 import { merge } from 'lodash';
+import { resolve } from 'path';
 
-import { pjson } from '../index';
 import { State } from '../types/state';
+
+const pjson = JSON.parse(readFileSync(resolve(findWorkspaceRoot(), 'kmserver-core/package.json'), 'utf-8'));
 
 // Internal settings
 let state: State = {
