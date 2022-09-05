@@ -91,7 +91,7 @@ export default function userController(router: Router) {
 				res.status(500).json(err);
 			}
 		})
-		.patch(uploadMiddleware, requireAuth, requireValidUser, updateLoginTime, editHandler(false))		
+		.patch(uploadMiddleware, requireAuth, requireValidUser, updateLoginTime, editHandler(false));
 	router.route('/users/:user/resetpassword')
 		.post(async (req, res) => {
 			try {
