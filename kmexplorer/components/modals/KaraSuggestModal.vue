@@ -180,8 +180,11 @@
 		},
 
 		async fetch() {
-			const res = await this.$axios.get<TagList>('/api/karas/tags/3', {
-				params: { stripEmpty: true }
+			const res = await this.$axios.get<TagList>('/api/karas/tags', {
+				params: { 
+					stripEmpty: true,
+					type: 3
+				}
 			});
 			if (res) {
 				const songtypes: Record<string, Record<string, string>> = {};

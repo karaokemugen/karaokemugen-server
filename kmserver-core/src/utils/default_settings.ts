@@ -311,7 +311,8 @@ export const NuxtConfig: NuxtConfigType = {
 		API_HOST: '',
 		EXPLORER_HOST: '',
 		DISCORD_LINK: '',
-		DISCOURSE_LINK: ''
+		DISCOURSE_LINK: '',
+		KARAOKES_JSON_LINK: ''
 	},
 	/*
 	 ** Nuxt.js dev-modules

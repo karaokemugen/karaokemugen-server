@@ -41,8 +41,12 @@
 		},
 
 		async fetch() {
-			const collections = await this.$axios.$get<{ content: DBTag[] }>('/api/karas/tags/16');
-			this.collections = collections.content;
+			const collections = await this.$axios.$get('/api/karas/tags', {
+				params: {
+					type: 16
+				}
+			});
+			this.collections = collections.content as DBTag[];
 		},
 
 		computed: {

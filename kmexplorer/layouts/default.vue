@@ -725,10 +725,11 @@
 				modalStore.openModal('addRepo');
 			},
 			async openRandomKara() {
-				const res = await this.$axios.get('/api/karas/random', {
+				const res = await this.$axios.get('/api/karas/search', {
 					params: {
 						size: 1,
-						force_collections: menuBarStore.enabledCollections.join(':')
+						random: true,
+						collections: menuBarStore.enabledCollections.join(',')
 					}
 				});
 				const kid = res.data[0];

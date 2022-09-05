@@ -8,7 +8,7 @@
 		<section class="modal-card-body">
 			<div class="columns">
 				<div class="column">
-					<a :href="bundleUrl" class="button" :download="`${serieSinger.name} - ${karaoke.titles[karaoke.titles_default_language]}.karabundle.json`" @click="closeModal">
+					<a v-if="karaokesJsonLink" :href="jsonUrl" class="button" :download="`${serieSinger.name} - ${karaoke.titles[karaoke.titles_default_language]}.karabundle.json`" @click="closeModal">
 						<font-awesome-icon :icon="['fas', 'file-export']" :fixed-width="true" />
 						{{ $t('modal.download.karabundle') }}
 					</a>
@@ -41,7 +41,8 @@
 
 	interface VState {
 		explorerHost?: string,
-		liveURL?: string
+		liveURL?: string,
+		karaokesJsonLink?: string
 	}
 
 	export default Vue.extend({
@@ -62,7 +63,8 @@
 		data(): VState {
 			return {
 				explorerHost: process.env.EXPLORER_HOST,
-				liveURL: process.env.LIVE_URL
+				liveURL: process.env.LIVE_URL,
+				karaokesJsonLink: process.env.KARAOKES_JSON_LINK
 			};
 		},
 		computed: {
@@ -106,8 +108,8 @@
 			kmAppUrl(): string {
 				return `km://download/${process.env.API_HOST}/${this.karaoke.kid}`;
 			},
-			bundleUrl(): string {
-				return `${this.$axios.defaults.baseURL}api/karas/${this.karaoke.kid}/raw`;
+			jsonUrl(): string {
+				return `${process.env.KARAOKES_JSON_LINK}/${this.karaoke.karafile}`;
 			},
 			mediaUrl(): string {
 				return `${this.$axios.defaults.baseURL}downloads/medias/${encodeURIComponent(this.karaoke.mediafile)}`;

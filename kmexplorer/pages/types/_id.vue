@@ -56,7 +56,8 @@
 		order?: string,
 		filter?: string,
 		stripEmpty?: boolean,
-		collections?: string
+		collections?: string,
+		type?: number
 	}
 
 	interface VState {
@@ -96,7 +97,7 @@
 
 		async fetch() {
 			const res = await this.$axios
-				.get<TagList>(`/api/karas/tags/${tagTypes[this.$route.params.id].type}`, {
+				.get<TagList>(`/api/karas/tags`, {
 					params: this.reqParams
 				})
 				.catch(_err =>
@@ -118,7 +119,8 @@
 					order: this.sort,
 					stripEmpty: true,
 					filter: this.search || undefined,
-					collections: this.enabledCollections.join(',') || undefined
+					collections: this.enabledCollections.join(',') || undefined,
+					type: tagTypes[this.$route.params.id].type
 				};
 			},
 			...mapState('menubar', ['search', 'sort', 'enabledCollections'])
@@ -157,7 +159,7 @@
 				this.page = e;
 				this.loading = true;
 				const { data } = await this.$axios.get<TagList>(
-					`/api/karas/tags/${tagTypes[this.$route.params.id].type}`,
+					`/api/karas/tags`,
 					{
 						params: this.reqParams
 					}

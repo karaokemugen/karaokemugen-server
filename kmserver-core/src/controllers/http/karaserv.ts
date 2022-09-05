@@ -1,12 +1,11 @@
 import { Router } from 'express';
 
-import { selectAllKaras } from '../../dao/kara';
 import {getSettings} from '../../lib/dao/database';
 import { RepositoryManifest } from '../../lib/types/repo';
 import {getConfig} from '../../lib/utils/config';
 import { getGitDiff, getLatestGitCommit } from '../../services/git';
 import { postSuggestionToKaraBase } from '../../services/gitlab';
-import {getAllKaras, getAllMedias, getAllYears, getBaseStats, getKara, getRawKara, newKaraIssue} from '../../services/kara';
+import {getAllKaras, getAllMedias, getAllYears, getBaseStats, getKara, newKaraIssue} from '../../services/kara';
 import {getTag, getTags} from '../../services/tag';
 import { optionalAuth } from '../middlewares/auth';
 
@@ -20,20 +19,6 @@ export default function KSController(router: Router) {
 				res.status(500).json(err);
 			}
 		});
-
-	router.route('/karas')
-		.get(async (req: any, res) => {
-			try {
-				const karas = await getAllKaras({
-					filter: req.query.filter,
-					from: req.query.from,
-					size: req.query.size
-				});
-				res.json(karas);
-			} catch (err) {
-				res.status(500).json(err);
-			}
-		});
 	router.route('/karas/stats')
 		.get(async (_, res) => {
 			try {
@@ -41,16 +26,6 @@ export default function KSController(router: Router) {
 			} catch (err) {
 				res.status(500).json(err);
 			}
-		});
-	router.route('/karas/random')
-		.get(optionalAuth, async (req: any, res) => {
-			const karas = await selectAllKaras({
-				filter: req.query.filter,
-				random: req.query.size,
-				username: req.authToken?.username,
-				forceCollections: req.query.force_collections?.split(':')
-			});
-			res.json(karas.map(k => k.kid));
 		});
 	router.route('/karas/search')
 		.get(optionalAuth, async (req: any, res) => {
@@ -62,8 +37,9 @@ export default function KSController(router: Router) {
 					q: req.query.q,
 					username: req.authToken?.username,
 					order: req.query.order,
+					random: req.query.random,
 					favorites: req.query.favorites,
-					forceCollections: req.query.force_collections?.split(':')
+					forceCollections: req.query.collections?.split(',')
 				}, req.authToken);
 				res.json(karas);
 			} catch (err) {
@@ -82,52 +58,11 @@ export default function KSController(router: Router) {
 				res.status(err.code || 500).json(err);
 			}
 		});
-	router.route('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/raw')
-		.get(async (req: any, res) => {
-			try {
-				const kara = await getRawKara(req.params.kid);
-				res.json(kara);
-			} catch (err) {
-				res.status(500).json(err);
-			}
-		});
 	router.route('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/problem')
 		.post(async (req: any, res) => {
 			try {
 				const url = await newKaraIssue(req.params.kid, req.body.type, req.body.comment, req.body.username);
 				res.status(200).json(url);
-			} catch (err) {
-				res.status(500).json(err);
-			}
-		});
-	router.route('/karas/recent')
-		.get(async (req: any, res) => {
-			try {
-				const karas = await getAllKaras({
-					filter: req.query.filter,
-					from: req.query.from,
-					size: req.query.size,
-					order: 'recent'
-				});
-				res.json(karas);
-			} catch (err) {
-				res.status(500).json(err);
-			}
-		});
-	router.route('/karas/tags/:tagtype([0-9]+)')
-		.get(async (req: any, res) => {
-			try {
-				const tags = await getTags({
-					filter: req.query.filter,
-					type: req.params.tagtype,
-					order: req.query.order,
-					from: req.query.from,
-					size: req.query.size,
-					stripEmpty: Boolean(req.query.stripEmpty),
-					includeStaging: Boolean(req.query.includeStaging),
-					collections: req.query.collections?.split(',')
-				});
-				res.json(tags);
 			} catch (err) {
 				res.status(500).json(err);
 			}
@@ -147,7 +82,7 @@ export default function KSController(router: Router) {
 			try {
 				const tags = await getTags({
 					filter: req.query.filter,
-					type: null,
+					type: req.query.type,
 					from: req.query.from,
 					size: req.query.size,
 					stripEmpty: Boolean(req.query.stripEmpty),
