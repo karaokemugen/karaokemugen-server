@@ -134,7 +134,6 @@ function api() {
 	if (conf.KaraExplorer.Import) KImportController(apiRouter);
 	// Stats
 	if (conf.Stats.Enabled) statsController(apiRouter);
-	// Online Mode for KM App
 	if (conf.Users.Enabled) {
 		userController(apiRouter);
 		favoritesController(apiRouter);
