@@ -8,12 +8,15 @@ import { getConfig, resolvedPathRepos } from '../lib/utils/config';
 import { createHardsub } from '../lib/utils/ffmpeg';
 import { fileExists, resolveFileInDirs } from '../lib/utils/files';
 import logger, { profile } from '../lib/utils/logger';
+import { generateHardsubsCache, getAllKaras } from '../services/kara';
 import { getState } from './state';
 
 let queue = null;
 
 export async function initHardsubGeneration() {
 	queue = fastq<never, [string, string, string, string], void>(wrappedGenerateHS, 1);
+	const karas = await getAllKaras({ ignoreCollections: true }, undefined, true);
+	generateHardsubsCache(karas);
 }
 
 async function wrappedGenerateHS(payload: [string, string, string, string]) {

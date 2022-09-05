@@ -15,7 +15,7 @@ import {getConfig, setConfig} from './lib/utils/config';
 import {asyncCheckOrMkdir} from './lib/utils/files';
 import { createImagePreviews } from './lib/utils/previews';
 import { initGitRepos } from './services/git';
-import { generate, generateHardsubsCache, getAllKaras } from './services/kara';
+import { generate, getAllKaras } from './services/kara';
 import {buildKMExplorer} from './services/kmexplorer';
 import { promoteToken } from './services/remote';
 import {initRepos} from './services/repo';
@@ -110,15 +110,11 @@ async function main() {
 	}
 
 	if (argv.opts().sql) setState({ opt: {sql: true }});
-
-	await initDB(getState().opt.sql);
-
 	if (argv.opts().staticServe) setState({opt: {staticServe: true}});
 
+	await initDB(getState().opt.sql);
 	await initUsers();
-
-	if (conf.Hardsub.Enabled) initHardsubGeneration();
-
+	
 	if (argv.opts().createPreviews) {
 		const karas = await getAllKaras({ ignoreCollections: true }, undefined, true);
 		await createImagePreviews(karas, 'full', 1280);
@@ -164,7 +160,7 @@ async function main() {
 		exit(0);
 	}
 
-	// NOrmal start here.
+	// Normal start here.
 
 	const port = await detect(+argv.opts().port || conf.Frontend.Port);
 
@@ -175,21 +171,18 @@ async function main() {
 	});
 
 	logger.debug(`Port ${port} is available`, {service: 'Launcher'});
-	const inits = [];
-
+	
 	// Clean temp periodically of files older than two hours
 	setInterval(findRemoveSync.bind(this, resolve(dataPath, conf.System.Path.Temp), {age: {seconds: 7200}}), 2 * 60 * 60 * 1000);
 
-	inits.push(initFrontend(port));
 	initGitRepos();
 	if (conf.Mail.Enabled) initMailer();
-	await Promise.all(inits);
-	logger.info('Karaoke Mugen Server is READY', {service: 'Launcher'});
+	initFrontend(port);
+	logger.info('Karaoke Mugen Server launched', {service: 'Launcher'});
 
 	// Post launch stuff
 
-	const karas = await getAllKaras({ ignoreCollections: true }, undefined, true);
-	generateHardsubsCache(karas);
+	if (conf.Hardsub.Enabled) initHardsubGeneration();
 }
 
 function parseArgs() {
