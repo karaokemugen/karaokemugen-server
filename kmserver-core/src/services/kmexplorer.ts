@@ -33,8 +33,8 @@ function generateConfig(production = false) {
 			BANNER_BAN: conf.Users.BannerBan,
 			USERS: conf.Users.Enabled,
 			DEFAULT_COLLECTIONS: conf.System.DefaultCollections,
-			DISCORD_LINK: conf.SocialNetworks.Discord,
-			DISCOURSE_LINK: conf.SocialNetworks.Discourse,
+			DISCORD_LINK: conf.KaraExplorer.DiscordURL,
+			DISCOURSE_LINK: conf.KaraExplorer.DiscourseURL,
 			SUGGESTIONS: conf.Suggestions.Enabled,
 			KARAOKES_JSON_LINK: conf.Gitlab.KaraokesJsonLink
 		},

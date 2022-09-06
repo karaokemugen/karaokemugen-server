@@ -12,10 +12,6 @@ export interface Config {
 		Name: string
 		Link: string
 	},
-	SocialNetworks: {
-		Discourse: string
-		Discord: string
-	},
 	Karaoke?: {
 		Collections: any
 	},
@@ -51,6 +47,8 @@ export interface Config {
 		Host: string
 		Tagline: string
 		LiveURL: string
+		DiscordURL?: string
+		DiscourseURL?: string
 		MediaLinks: boolean
 		Import: boolean
 		InProgressSongsList: string

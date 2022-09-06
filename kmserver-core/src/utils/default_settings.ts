@@ -48,10 +48,6 @@ export const defaults: Config = {
 		Name: null,
 		Link: null
 	},
-	SocialNetworks: {
-		Discourse: null,
-		Discord: null
-	},
 	Remote: {
 		Enabled: true,
 		BaseHost: 'localhost',
@@ -83,6 +79,8 @@ export const defaults: Config = {
 		Host: 'localhost',
 		Tagline: 'Explore! Find! Sing!',
 		LiveURL: 'https://live.karaokes.moe',
+		DiscordURL: null,
+		DiscourseURL: null,
 		MediaLinks: true,
 		Import: true,
 		Secure: true,
