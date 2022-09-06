@@ -7,7 +7,10 @@ import { DBTag } from '../lib/types/database/tag';
 import { Tag, TagList, TagParams } from '../lib/types/tag';
 import { resolvedPathRepos } from '../lib/utils/config';
 import { sanitizeFile } from '../lib/utils/files';
+import logger from '../lib/utils/logger';
 import sentry from '../utils/sentry';
+
+const service = 'Tags';
 
 export function formatTagList(tagList: DBTag[], from: number, count: number): TagList {
 	return {
@@ -25,6 +28,7 @@ export async function getTags(params: TagParams) {
 		const tags = await selectTags(params);
 		return formatTagList(tags, +params.from, tags[0]?.count || 0);
 	} catch (err) {
+		logger.error('Unable to get tags', {service, obj: err});
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
 		throw err;
@@ -38,6 +42,7 @@ export async function getTag(tid: string) {
 		if (tag) return tag;
 		return null;
 	} catch (err) {
+		logger.error('Unable to get single tag', {service, obj: err});
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
 		throw err;
@@ -55,9 +60,10 @@ export async function addTag(tag: Tag, opts = {forceRepo: ''}) {
 			insertTag(tag),
 			writeTagFile(tag, resolvedPathRepos('Tags', 'Staging')[0])
 		]);
-		await updateTagSearchVector();
+		updateTagSearchVector();
 		return tag;
 	} catch (err) {
+		logger.error('Unable to add tag', {service, obj: err});
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
 		throw err;
