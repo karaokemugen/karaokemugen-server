@@ -44,10 +44,6 @@ export const defaults: Config = {
 		},
 		DefaultCollections: ['c7db86a0-ff64-4044-9be4-66dd1ef1d1c1', 'dbcf2c22-524d-4708-99bb-601703633927']
 	},
-	Shortener: {
-		Enabled: true,
-		ExpireTimeDays: 1
-	},
 	BaseLicense: {
 		Name: null,
 		Link: null
@@ -62,8 +58,7 @@ export const defaults: Config = {
 		FrontendRoot: '/'
 	},
 	Frontend: {
-		Port: 1350,
-		SeriesLanguageMode: 3
+		Port: 1350
 	},
 	Hardsub: {
 		Enabled: true
@@ -277,7 +272,6 @@ A proposal to modify a karaoke has been sent. You will find all the new files in
 		Enabled: false
 	},
 	Online: {
-		Stats: false,
 		ErrorTracking: true,
 	}
 };
@@ -290,7 +284,6 @@ export const configConstraints = {
 	'System.Database.host': { presence: {allowEmpty: false}},
 	'System.Database.database': { presence: {allowEmpty: false}},
 	'System.Binaries.ffmpeg': { presence: {allowEmpty: false}},
-	'Shortener.ExpireTimeDays': { numericality: { greaterThan: 0 }},
 	'Frontend.Port': { numericality: true}
 };
 

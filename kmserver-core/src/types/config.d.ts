@@ -26,7 +26,6 @@ export interface Config {
 	},
 	Frontend: {
 		Port: number
-		SeriesLanguageMode: number
 	},
 	API: {
 		Secure: boolean
@@ -47,11 +46,7 @@ export interface Config {
 	Suggestions: {
 		Enabled: boolean,
 	},
-	Shortener: {
-		Enabled: boolean
-		ExpireTimeDays: number
-	},
-  	KaraExplorer: {
+	KaraExplorer: {
 		Enabled: boolean
 		Host: string
 		Tagline: string
@@ -106,10 +101,6 @@ export interface Config {
 		Path: {
 			Dumps?: string,
 			Hardsubs?: string,
-			Karas?: string,
-			Tags?: string,
-			Medias?: string,
-			Lyrics?: string,
 			Temp?: string,
 			Previews?: string,
 			Avatars?: string,
@@ -137,7 +128,6 @@ export interface Config {
 		FromMail?: string
 	},
 	Online: {
-		Stats?: boolean,
 		ErrorTracking?: boolean,
 	}
 }
