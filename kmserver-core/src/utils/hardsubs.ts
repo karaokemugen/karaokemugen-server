@@ -75,37 +75,46 @@ export async function generateHardsubs(karas: KaraList) {
 	const hardsubDir = resolve(getState().dataPath, getConfig().System.Path.Hardsubs);
 	const hardsubFiles = await fs.readdir(hardsubDir);
 	const hardsubSet = new Set<string>(hardsubFiles);
-	// Remove unused previewFiles
 	profile('removeHardsubs');
-	hardsubFiles.forEach((file: string) => {
-		const fileParts = file.split('.');
-		if (mediaMap.has(fileParts[0])) {
-			// Compare mediasizes. If mediasize or subchecksum are different, remove file
-			if (mediaMap.get(fileParts[0]).mediasize !== +fileParts[1] || mediaMap.get(fileParts[0]).subchecksum !== fileParts[2]) {
-				fs.unlink(resolve(hardsubDir, file));
-				logger.info(`Removing ${file}`, {service});
-			}
-		}
-	});
-	profile('removeHardsubs');
-	profile('createHardsubs');
-	for (const media of mediaMap.values()) {
-		try {
-			const hardsubFile = `${media.kid}.${media.mediasize}.${media.subchecksum}.mp4`;
-			if (!hardsubSet.has(hardsubFile)) {
-				const mediaPath = (await resolveFileInDirs(media.mediafile, resolvedPathRepos('Medias', media.repository)))[0];
-				let subPath = null;
-				if (media.subfile) {
-					subPath = (await resolveFileInDirs(media.subfile, resolvedPathRepos('Lyrics', media.repository)))[0];
+	try {
+		hardsubFiles.forEach((file: string) => {
+			const fileParts = file.split('.');
+			if (mediaMap.has(fileParts[0])) {
+				// Compare mediasizes. If mediasize or subchecksum are different, remove file
+				if (mediaMap.get(fileParts[0]).mediasize !== +fileParts[1] || mediaMap.get(fileParts[0]).subchecksum !== fileParts[2]) {
+					fs.unlink(resolve(hardsubDir, file));
+					logger.info(`Removing ${file}`, {service});
 				}
-				const outputFile = resolve(hardsubDir, hardsubFile);
-				queue.push([mediaPath, subPath, outputFile, media.kid]);
 			}
-		} catch (error) {
-			logger.error(`Error when creating hardsub for ${media.mediafile}: ${error}`, {service});
-		}
+		});
+	} catch (err) {
+		logger.error('Unable to remove hardsubs, continuing', {service});
+	} finally {
+		profile('removeHardsubs');
 	}
 	profile('createHardsubs');
+	try {
+		for (const media of mediaMap.values()) {
+			try {
+				const hardsubFile = `${media.kid}.${media.mediasize}.${media.subchecksum}.mp4`;
+				if (!hardsubSet.has(hardsubFile)) {
+					const mediaPath = (await resolveFileInDirs(media.mediafile, resolvedPathRepos('Medias', media.repository)))[0];
+					let subPath = null;
+					if (media.subfile) {
+						subPath = (await resolveFileInDirs(media.subfile, resolvedPathRepos('Lyrics', media.repository)))[0];
+					}
+					const outputFile = resolve(hardsubDir, hardsubFile);
+					queue.push([mediaPath, subPath, outputFile, media.kid]);
+				}
+			} catch (error) {
+				logger.error(`Error when creating hardsub for ${media.mediafile}: ${error}`, {service});
+			}
+		}
+	} catch (err) {
+		logger.warn('Some hardsubs could not be created', {service});
+	} finally {
+		profile('createHardsubs');
+	}
 }
 
 async function generateSubchecksum(path: string) {

@@ -4,11 +4,13 @@ import { resolve } from 'path';
 import logger from '../lib/utils/logger';
 import { resolvedPathRemoteRoot } from './config';
 
+const service = 'Remote';
+
 let availableRemotes: string[] = [];
 
 export async function listAvailableRemotes(): Promise<string[]> {
 	availableRemotes = await fs.readdir(resolvedPathRemoteRoot());
-	logger.debug('Computed remote frontends', { service: 'Remote', obj: availableRemotes });
+	logger.debug('Computed remote frontends', { service, obj: availableRemotes });
 	return availableRemotes;
 }
 
