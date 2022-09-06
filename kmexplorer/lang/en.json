@@ -173,6 +173,7 @@
 	},
 	"footer": {
 		"home": "Project home",
+		"api_documentation": "API Documentation",
 		"translation": "Participate in the translation",
 		"software_under_license": "Software under license",
 		"base_under_licence": "Karaoke base under license"

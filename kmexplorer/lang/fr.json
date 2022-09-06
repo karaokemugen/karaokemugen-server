@@ -173,6 +173,7 @@
 	},
 	"footer": {
 		"home": "Accueil du projet",
+		"api_documentation": "Documentation de l'API",
 		"translation": "Participer à la traduction",
 		"software_under_license": "Logiciel sous licence",
 		"base_under_licence": "Base de karaokés sous licence"

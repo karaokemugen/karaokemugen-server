@@ -531,6 +531,9 @@
 				<p class="column">
 					Karaoke Mugen Server -
 					<a
+						href="https://api.karaokes.moe/server"
+					>{{ $t('footer.api_documentation') }}</a> -
+					<a
 						href="https://gitlab.com/karaokemugen/karaokemugen-server"
 					>GIT</a> -
 					<a href="https://hosted.weblate.org/projects/karaoke-mugen/">{{ $t('footer.translation') }}</a> -
