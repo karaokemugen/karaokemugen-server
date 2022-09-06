@@ -10,7 +10,7 @@ import adminController from './controllers/http/admin';
 import authController from './controllers/http/auth';
 import favoritesController from './controllers/http/favorites';
 import inboxController from './controllers/http/inbox';
-import KImportController from './controllers/http/karaimport';
+import KImportController from './controllers/http/karaImport';
 import KServerController from './controllers/http/karaserv';
 import remoteController from './controllers/http/remote';
 import statsController from './controllers/http/stats';

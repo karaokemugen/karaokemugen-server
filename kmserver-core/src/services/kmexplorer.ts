@@ -5,7 +5,7 @@ import {getConfig} from '../lib/utils/config';
 import { supportedFiles } from '../lib/utils/constants';
 import logger from '../lib/utils/logger';
 import { sentryDSN } from '../utils/constants';
-import { NuxtConfig } from '../utils/default_settings';
+import { NuxtConfig } from '../utils/defaultSettings';
 
 const service = 'KMExplorer';
 

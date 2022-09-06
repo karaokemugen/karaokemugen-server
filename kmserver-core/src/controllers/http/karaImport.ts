@@ -5,7 +5,7 @@ import {resolve} from 'path';
 import { APIMessage, errMessage } from '../../lib/services/frontend';
 import { processUploadedMedia } from '../../lib/services/karaCreation';
 import {getConfig} from '../../lib/utils/config';
-import {createKara, editKara} from '../../services/kara_import';
+import {createKara, editKara} from '../../services/karaImport';
 import { addTag } from '../../services/tag';
 import { getState } from '../../utils/state';
 

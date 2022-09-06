@@ -8,7 +8,7 @@ import {fileRequired} from '../lib/utils/files';
 import logger, { configureLogger } from '../lib/utils/logger';
 import {emit} from '../lib/utils/pubsub';
 import {BinariesConfig, Config} from '../types/config';
-import { configConstraints, defaults } from './default_settings';
+import { configConstraints, defaults } from './defaultSettings';
 import { getState, setState } from './state';
 
 const service = 'Config';

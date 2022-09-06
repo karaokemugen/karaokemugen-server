@@ -6,7 +6,7 @@ import { tagTypes } from '../lib/utils/constants';
 import { duration } from '../lib/utils/date';
 import HTTP from '../lib/utils/http';
 import logger from '../lib/utils/logger';
-import { EditElement } from '../types/kara_import';
+import { EditElement } from '../types/karaImport';
 import sentry from '../utils/sentry';
 import { getKara } from './kara';
 import { findUserByName } from './user';

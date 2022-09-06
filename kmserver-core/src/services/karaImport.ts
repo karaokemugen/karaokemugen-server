@@ -20,7 +20,7 @@ import { refreshKarasAfterDBChange, updateTags } from '../lib/services/karaManag
 import { EditedKara, KaraFileV4 } from '../lib/types/kara';
 import { getConfig, resolvedPath, resolvedPathRepos } from '../lib/utils/config';
 import { replaceExt, smartMove } from '../lib/utils/files';
-import { EditElement } from '../types/kara_import';
+import { EditElement } from '../types/karaImport';
 import sentry from '../utils/sentry';
 import { gitlabPostNewSuggestion } from './gitlab';
 import { addKaraInInbox } from './inbox';

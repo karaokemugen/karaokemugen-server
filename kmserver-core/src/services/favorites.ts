@@ -2,7 +2,7 @@ import { deleteFavorite, insertFavorite, selectFavorites } from '../dao/favorite
 import { JWTTokenWithRoles } from '../lib/types/user';
 import logger from '../lib/utils/logger';
 import sentry from '../utils/sentry';
-import { pubUser } from './user_pubsub';
+import { pubUser } from './userPubSub';
 
 const service = 'Favorites';
 

@@ -22,7 +22,7 @@ import {adminToken} from '../utils/constants';
 import { sendMail } from '../utils/mailer';
 import sentry from '../utils/sentry';
 import {getKara} from './kara';
-import { delPubUser, pubUser } from './user_pubsub';
+import { delPubUser, pubUser } from './userPubSub';
 
 const service = 'User';
 
