@@ -9,7 +9,7 @@ import {refreshKaraStats, selectAllKaras, selectAllMedias, selectAllYears, selec
 import { copyFromData } from '../lib/dao/database';
 import { getLyrics } from '../lib/dao/karafile';
 import { generateDatabase } from '../lib/services/generation';
-import { consolidateData } from '../lib/services/kara';
+import { formatKaraList } from '../lib/services/kara';
 import { DBKara } from '../lib/types/database/kara';
 import { KaraList, KaraParams } from '../lib/types/kara';
 import { JWTTokenWithRoles } from '../lib/types/user';
@@ -40,19 +40,6 @@ export async function getBaseStats() {
 		sentry.error(err);
 		throw err;
 	}
-}
-
-export function formatKaraList(karaList: any[], from: number, count: number): KaraList {
-	const {i18n, data} = consolidateData(karaList);
-	return {
-		infos: {
-			count: +count,
-			from: +from,
-			to: +from + data.length
-		},
-		i18n,
-		content: data
-	};
 }
 
 export async function getAllYears(params: {collections: string[]}) {
