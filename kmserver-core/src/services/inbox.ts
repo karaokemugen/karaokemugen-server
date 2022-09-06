@@ -137,6 +137,10 @@ export async function clearUnusedStagingTags() {
 	}
 }
 
+/** Clear inbox of songs that have been validated and added tot he main database
+ * These songs should have the same KID but not the Staging repository in database.
+ * :uuid
+ */
 export async function clearOldInboxEntries() {
 	logger.debug('Clearing old inbox entries', {service});
 	const deleted_karas = await clearInbox();
