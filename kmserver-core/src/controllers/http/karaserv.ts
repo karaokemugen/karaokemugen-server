@@ -63,7 +63,7 @@ export default function KSController(router: Router) {
 	router.route('/kara/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/hardsub')
 		.get((req, res) => {
 			const hardsubbedMediafile = getHardsubsCache().get(req.params.kid);
-			hardsubbedMediafile 
+			hardsubbedMediafile
 				? res.redirect(301, `/hardsubs/${hardsubbedMediafile}`)
 				: res.status(404).send();
 	});
@@ -94,6 +94,7 @@ export default function KSController(router: Router) {
 					type: req.query.type,
 					from: req.query.from,
 					size: req.query.size,
+					order: req.query.order,
 					stripEmpty: Boolean(req.query.stripEmpty),
 					includeStaging: Boolean(req.query.includeStaging),
 					collections: req.query.collections?.split(',')
