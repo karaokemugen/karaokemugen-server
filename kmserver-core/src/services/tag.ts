@@ -37,7 +37,7 @@ export async function getTags(params: TagParams) {
 
 export async function getTag(tid: string) {
 	try {
-		const tags = await selectTags({ tid });
+		const tags = await selectTags({ tid, includeStaging: true });
 		const tag = tags[0];
 		if (tag) return tag;
 		return null;
