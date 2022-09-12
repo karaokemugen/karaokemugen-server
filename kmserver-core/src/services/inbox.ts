@@ -153,6 +153,7 @@ export async function clearOldInboxEntries() {
 				const subPath = resolve(resolvedPathRepos('Lyrics', 'Staging')[0], kara.subfile);
 				const mediaPath = resolve(resolvedPathRepos('Medias', 'Staging')[0], kara.mediafile);
 				await Promise.all([
+					fs.unlink(karaPath),
 					fs.unlink(subPath),
 					fs.unlink(mediaPath)
 				]);
