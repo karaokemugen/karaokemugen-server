@@ -730,8 +730,7 @@
 			async openRandomKara() {
 				const res = await this.$axios.get('/api/karas/search', {
 					params: {
-						size: 1,
-						random: true,
+						random: 1,
 						collections: menuBarStore.enabledCollections.join(',')
 					}
 				});
