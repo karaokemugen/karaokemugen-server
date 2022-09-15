@@ -735,7 +735,7 @@
 						collections: menuBarStore.enabledCollections.join(',')
 					}
 				});
-				const kid = res.data[0];
+				const kid = res.data.content[0].kid;
 				this.$router.push(`/kara/${kid}`);
 			},
 			resetSearch() {
