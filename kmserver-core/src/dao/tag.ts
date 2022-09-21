@@ -1,7 +1,7 @@
-import {pg as yesql} from 'yesql';
+import { pg as yesql } from 'yesql';
 
 import { db, paramWords } from '../lib/dao/database';
-import {refreshTags} from '../lib/dao/tag';
+import { refreshTags } from '../lib/dao/tag';
 import { WhereClause } from '../lib/types/database';
 import { DBTag } from '../lib/types/database/tag';
 import { Tag, TagParams } from '../lib/types/tag';
@@ -86,7 +86,8 @@ export async function insertTag(tag: Tag) {
 		tag.noLiveDownload || false,
 		tag.priority || 10,
 		tag.karafile_tag || null,
-		tag.description || {}
+		tag.description || {},
+		tag.external_database_ids ||  null,
 	]);
 }
 

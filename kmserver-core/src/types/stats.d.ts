@@ -19,6 +19,12 @@ export interface Favorite {
 	kid: string
 }
 
+export interface AnimeLists {
+	myanimelistIds: number[]
+	anilistIds: number[]
+	kitsuIds: number[]
+}
+
 export interface Played {
 	kid: string,
 	seid: string,

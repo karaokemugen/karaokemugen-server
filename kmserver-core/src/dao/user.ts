@@ -31,14 +31,18 @@ export async function insertUser(user: User) {
 		user.login,
 		user.nickname,
 		user.password,
-		user.roles,
+		user.roles || null,
 		user.avatar_file,
 		user.bio,
 		user.url,
 		user.email,
 		user.location,
 		user.flag_sendstats,
-		user.language
+		user.social_networks || null,
+		user.language,
+		user.anime_list_to_fetch,
+		user.anime_list_last_modified_at,
+		user.anime_list_ids
 	]);
 }
 
@@ -57,16 +61,19 @@ export async function updateUser(user: User): Promise<DBUser> {
 		user.url,
 		user.email,
 		user.avatar_file,
-		JSON.stringify(user.roles),
+		user.roles || null,
 		user.main_series_lang,
 		user.fallback_series_lang,
 		user.location,
 		user.flag_sendstats,
 		user.flag_public,
 		user.flag_displayfavorites,
-		JSON.stringify(user.social_networks),
+		user.social_networks || null,
 		user.banner,
 		user.language,
+		user.anime_list_to_fetch,
+		user.anime_list_last_modified_at,
+		user.anime_list_ids,
 		user.flag_parentsonly,
 		user.login
 	])).rows[0];

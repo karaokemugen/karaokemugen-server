@@ -1,14 +1,15 @@
 import { Router } from 'express';
-import {RequestHandler} from 'express-serve-static-core';
+import { RequestHandler } from 'express-serve-static-core';
 import multer from 'multer';
-import {resolve} from 'path';
+import { resolve } from 'path';
 
-import {getConfig} from '../../lib/utils/config';
-import {unescape} from '../../lib/utils/validators';
-import {createUser, editUser, findUserByName, getAllUsers, removeUser, resetPassword, resetPasswordRequest} from '../../services/user';
+import { getConfig } from '../../lib/utils/config';
+import { unescape } from '../../lib/utils/validators';
+import { refreshAnimeList } from '../../services/anime_list';
+import { createUser, editUser, findUserByName, getAllUsers, removeUser, resetPassword, resetPasswordRequest } from '../../services/user';
 import { UserOptions } from '../../types/user';
 import { getState } from '../../utils/state';
-import {optionalAuth, requireAuth, requireValidUser, updateLoginTime} from '../middlewares/auth';
+import { optionalAuth, requireAuth, requireValidUser, updateLoginTime } from '../middlewares/auth';
 
 function editHandler(userFromToken: boolean): RequestHandler {
 	return async (req: any, res) => {
@@ -31,7 +32,7 @@ function editHandler(userFromToken: boolean): RequestHandler {
 				req.authToken,
 				banner
 			);
-			res.status(200).json(userFromToken ? {code: 'USER_EDITED', data: { token: response.token }} : response);
+			res.status(200).json(userFromToken ? { code: 'USER_EDITED', data: { token: response.token } } : response);
 		} catch (err) {
 			res.status(500).json(err);
 		}
@@ -41,8 +42,8 @@ function editHandler(userFromToken: boolean): RequestHandler {
 export default function userController(router: Router) {
 	const conf = getConfig();
 	// Middleware for playlist and files import
-	const upload = multer({ dest: resolve(getState().dataPath, conf.System.Path.Temp)});
-	const uploadMiddleware = upload.fields([{name: 'avatarfile', maxCount: 1}, {name: 'bannerfile', maxCount: 1}]);
+	const upload = multer({ dest: resolve(getState().dataPath, conf.System.Path.Temp) });
+	const uploadMiddleware = upload.fields([{ name: 'avatarfile', maxCount: 1 }, { name: 'bannerfile', maxCount: 1 }]);
 
 	router.route('/users')
 		.get(async (req, res) => {
@@ -70,7 +71,7 @@ export default function userController(router: Router) {
 			req.body.login = unescape(req.body.login.trim());
 			try {
 				await createUser(req.body);
-				res.json({code: 'USER_CREATED'});
+				res.json({ code: 'USER_CREATED' });
 			} catch (err) {
 				res.status(500).json(err.code);
 			}
@@ -113,7 +114,7 @@ export default function userController(router: Router) {
 	router.route('/myaccount')
 		.get(requireAuth, requireValidUser, updateLoginTime, async (req: any, res: any) => {
 			try {
-				const userData = await findUserByName(req.authToken.username, {public: false});
+				const userData = await findUserByName(req.authToken.username, { public: false });
 				res.json(userData);
 			} catch (err) {
 				res.status(500).json(err);
@@ -128,4 +129,13 @@ export default function userController(router: Router) {
 			}
 		})
 		.patch(uploadMiddleware, requireAuth, requireValidUser, updateLoginTime, editHandler(true));
+	router.route('/myaccount/myanime')
+		.post(requireAuth, requireValidUser, updateLoginTime, async (req: any, res) => {
+			try {
+				await refreshAnimeList(req.authToken.username);
+				res.status(200).json();
+			} catch (err) {
+				res.status(500).json(err);
+			}
+		});
 }
