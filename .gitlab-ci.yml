@@ -25,6 +25,8 @@ dast:
   stage: scan
   variables:
     DAST_WEBSITE: https://dev.kara.moe
+  tags: 
+    - $RUNNER_LINUX
   dast_configuration:
     site_profile: "Kara.moe"
     scanner_profile: "Kara.moe"
@@ -38,30 +40,32 @@ sast:
 license_scanning:
   interruptible: true
   stage: scan
+  tags: 
+    - $RUNNER_LINUX
   rules:
     - if: $CI_COMMIT_BRANCH == "dev"
     - when: never
 semgrep-sast:
   interruptible: true
   stage: scan
-  rules:
-    - if: $CI_COMMIT_BRANCH == "dev"
-    - when: never
-eslint-sast:
-  interruptible: true
-  stage: scan
+  tags: 
+    - $RUNNER_LINUX
   rules:
     - if: $CI_COMMIT_BRANCH == "dev"
     - when: never
 nodejs-scan-sast:
   interruptible: true
   stage: scan
+  tags: 
+    - $RUNNER_LINUX
   rules:
     - if: $CI_COMMIT_BRANCH == "dev"
     - when: never
 secret_detection:
   interruptible: true
   stage: scan
+  tags: 
+    - $RUNNER_LINUX
   variables:
     SECRET_DETECTION_EXCLUDED_PATHS: 'node_modules kmexplorer/node_modules dist'
   rules:
@@ -72,6 +76,8 @@ secret_detection:
 update_sentry:
   stage: deploy
   image: node:14
+  tags: 
+    - $RUNNER_LINUX
   cache:
     key: km-server-${CI_COMMIT_REF_SLUG}
     paths:
@@ -87,6 +93,8 @@ update_sentry:
 
 deploy_moe:
   stage: deploy
+  tags: 
+    - $RUNNER_LINUX
   script:
     - mkdir ~/.ssh
     - echo "$SSH_KEY" > ~/.ssh/id_rsa
@@ -106,6 +114,8 @@ deploy_moe:
 
 deploy_dev:
   stage: deploy
+  tags: 
+    - $RUNNER_LINUX
   script:
     - mkdir ~/.ssh
     - echo "$SSH_KEY" > ~/.ssh/id_rsa
