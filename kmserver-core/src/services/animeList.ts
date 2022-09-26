@@ -1,13 +1,13 @@
-import { KitsuResponseLibraryEntries } from '../lib/types/animeListApi';
 import Anilist from 'anilist-node';
 import Kitsu from 'kitsu';
 import malScraper from 'mal-scraper';
 
 import { selectUser, updateUser } from '../dao/user';
+import { KitsuResponseLibraryEntries } from '../lib/types/animeListApi';
+import { myanimelistStatusCompleted, myanimelistStatusWatching } from '../lib/utils/constants';
 import logger from '../lib/utils/logger';
 import sentry from '../utils/sentry';
 import { pubUser } from './userPubSub';
-import { myanimelistStatusCompleted, myanimelistStatusWatching } from '../lib/utils/constants';
 
 const anilist = new Anilist();
 const kitsu = new Kitsu();
@@ -62,7 +62,7 @@ export async function getAnimeListFromMyanimelist(name: string): Promise<number[
 	try {
 		let offset = 0;
 		const animeIds: number[] = [];
-		for (let i = 0; i < 10; i++) { // to avoid infinite loop
+		for (let i = 0; i < 10; i += 1) { // to avoid infinite loop
 			const partialEntries = await malScraper.getWatchListFromUser(name, offset, 'anime');
 			const length = partialEntries.length;
 			if (length <= 0) { // keep requesting only if remaining anime
@@ -102,7 +102,7 @@ export async function getAnimeListFromKitsu(userId: number): Promise<number[]> {
 	try {
 		let offset = 0;
 		const animeIds: number[] = [];
-		for (let i = 0; i < 10; i++) { // to avoid infinite loop
+		for (let i = 0; i < 10; i += 1) { // to avoid infinite loop
 			const partialEntries: KitsuResponseLibraryEntries = await kitsu.get('library-entries', {
 				params: {
 					filter: {
