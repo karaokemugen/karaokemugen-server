@@ -21,7 +21,7 @@ import {UserList, UserOptions, UserParams} from '../types/user';
 import {adminToken} from '../utils/constants';
 import { sendMail } from '../utils/mailer';
 import sentry from '../utils/sentry';
-import { refreshAnimeList } from './anime_list';
+import { refreshAnimeList } from './animeList';
 import {getKara} from './kara';
 import { delPubUser, pubUser } from './userPubSub';
 

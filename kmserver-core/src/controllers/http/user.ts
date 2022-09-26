@@ -5,7 +5,7 @@ import { resolve } from 'path';
 
 import { getConfig } from '../../lib/utils/config';
 import { unescape } from '../../lib/utils/validators';
-import { refreshAnimeList } from '../../services/anime_list';
+import { refreshAnimeList } from '../../services/animeList';
 import { createUser, editUser, findUserByName, getAllUsers, removeUser, resetPassword, resetPasswordRequest } from '../../services/user';
 import { UserOptions } from '../../types/user';
 import { getState } from '../../utils/state';

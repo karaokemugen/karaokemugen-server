@@ -1,4 +1,4 @@
-import { KitsuResponseLibraryEntries } from './../lib/types/animeListApi.d';
+import { KitsuResponseLibraryEntries } from '../lib/types/animeListApi';
 import Anilist from 'anilist-node';
 import Kitsu from 'kitsu';
 import malScraper from 'mal-scraper';
