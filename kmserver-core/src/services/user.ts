@@ -21,6 +21,7 @@ import {UserList, UserOptions, UserParams} from '../types/user';
 import {adminToken} from '../utils/constants';
 import { sendMail } from '../utils/mailer';
 import sentry from '../utils/sentry';
+import { refreshAnimeList } from './anime_list';
 import {getKara} from './kara';
 import { delPubUser, pubUser } from './userPubSub';
 
@@ -308,7 +309,7 @@ async function replaceBanner(preview: string) {
 		const target = resolve(resolvedPath('Banners'), name);
 		// The banner is already in place (use by somebody else), no need to copy again.
 		if (await fileExists(target)) return preview;
-		
+
 			if (!customBanner) {
 				const kid = preview.split('.')[0];
 				const bans = getConfig().Users.BannerBan;
@@ -391,6 +392,13 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		delete updatedUser.password;
 		logger.debug(`${username} (${user.nickname}) profile updated`, {service});
 		pubUser(username);
+
+		const animeList = user.anime_list_to_fetch;
+		if ((animeList && animeList !== currentUser.anime_list_to_fetch) ||
+		(animeList && user.social_networks[animeList] && user.social_networks[animeList] !== currentUser.social_networks[animeList])
+		) {
+			refreshAnimeList(username).catch();
+		}
 		return {
 			user: updatedUser,
 			token: createJwtToken(updatedUser.login, updatedUser.roles, new Date(updatedUser.password_last_modified_at))
