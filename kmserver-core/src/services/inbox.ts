@@ -108,17 +108,24 @@ export async function removeKaraFromInbox(inid: string) {
 			const karaPath = resolve(resolvedPathRepos('Karaokes', 'Staging')[0], inbox.karafile);
 			const subPath = resolve(resolvedPathRepos('Lyrics', 'Staging')[0], inbox.subfile);
 			const mediaPath = resolve(resolvedPathRepos('Medias', 'Staging')[0], inbox.mediafile);
-			await Promise.all([
-				fs.unlink(karaPath),
-				fs.unlink(subPath),
-				fs.unlink(mediaPath)
-			]);
+			try {
+				await Promise.all([
+					fs.unlink(karaPath),
+					fs.unlink(subPath),
+					fs.unlink(mediaPath)
+				]);
+			} catch (err) {
+				logger.warn(`Unable to remove some files after inbox deleteion for song ${inbox.name}`, { service });
+			}
 			const kara = await getKara({
 				q: `k:${inbox.kid}!r:Staging`
 			});
-			const karaData = formatKaraV4(kara);
-			await deleteKara([inbox.kid]);
-			refreshKarasAfterDBChange('DELETE', [karaData.data]);
+			// If kara is not found, it means the song has already been added to the database by kara.moe
+			if (kara) {
+				const karaData = formatKaraV4(kara);
+				await deleteKara([inbox.kid]);
+				refreshKarasAfterDBChange('DELETE', [karaData.data]);
+			}
 		}
 		await deleteInbox(inid);
 	} catch (err) {
@@ -137,14 +144,14 @@ export async function clearUnusedStagingTags() {
 	}
 }
 
-/** Clear inbox of songs that have been validated and added tot he main database
+/** Clear inbox of songs that have been validated and added to the main database
  * These songs should have the same KID but not the Staging repository in database.
  * :uuid
  */
 export async function clearOldInboxEntries() {
 	logger.debug('Clearing old inbox entries', {service});
-	const deleted_karas = await clearInbox();
-	for (const kara of deleted_karas) {
+	const deletedKaras = await clearInbox();
+	for (const kara of deletedKaras) {
 		logger.debug(`${kara.kid} was cleared`, {service, obj: kara});
 		try {
 			// Find and delete files
