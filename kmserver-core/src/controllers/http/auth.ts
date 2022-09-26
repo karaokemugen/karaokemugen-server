@@ -4,6 +4,7 @@ import {encode} from 'jwt-simple';
 import { Roles, TokenResponseWithRoles } from '../../lib/types/user';
 import {getConfig} from '../../lib/utils/config';
 import logger from '../../lib/utils/logger';
+import { refreshAnimeList } from '../../services/animeList';
 import {checkPassword, decodeJwtToken, findUserByName, updateUserLastLogin} from '../../services/user';
 import sentry from '../../utils/sentry';
 import { requireAuth, requireValidUser } from '../middlewares/auth';
@@ -36,6 +37,7 @@ export default function authController(router: Router) {
 		try {
 			const token = await checkLogin(req.body.username, req.body.password);
 			updateUserLastLogin(req.body.username.toLowerCase());
+			refreshAnimeList(req.body.user).catch();
 			res.send(token);
 		} catch (err) {
 			if (err === 'No user provided') {

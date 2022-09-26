@@ -17,6 +17,10 @@ export async function refreshAnimeList(username: string): Promise<boolean> {
 	try {
 		username = username.toLowerCase();
 		const user = await selectUser('pk_login', username);
+		const animeList = user.anime_list_to_fetch;
+		if (!animeList || !user.social_networks[animeList]) {
+			return false;
+		}
 		if (isTooSoonToRefresh(user.anime_list_last_modified_at)) {
 			return false;
 		}
