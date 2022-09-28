@@ -369,6 +369,21 @@
 					"label": "Twitch",
 					"placeholder": "KaraokeLive"
 				},
+				"myanimelist": {
+					"label": "MyAnimeList",
+					"placeholder": "karaokemugen"
+				},
+				"anilist": {
+					"label": "AniList",
+					"placeholder": "karaokemugen"
+				},
+				"kitsu": {
+					"label": "Kitsu",
+					"placeholder": "karaokemugen"
+				},
+				"anime_list_to_fetch": {
+					"label": "Anime list to fetch"
+				},
 				"banner": {
 					"label": "Banner",
 					"remove": "Reset to the default banner",

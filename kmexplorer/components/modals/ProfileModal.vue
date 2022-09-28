@@ -215,7 +215,90 @@
 					</div>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
-							<span class="label">Bannière</span>
+							<label for="myanimelist" class="label">{{ $t('modal.profile.fields.myanimelist.label') }}</label>
+						</div>
+						<div class="field-body">
+							<div class="field">
+								<div class="control">
+									<input
+										id="myanimelist"
+										v-model="user.social_networks.myanimelist"
+										type="text"
+										name="myanimelist"
+										class="input"
+										pattern="[A-Za-z0-9_-]{2,16}"
+										:placeholder="$t('modal.profile.fields.myanimelist.placeholder')"
+									>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="field is-horizontal">
+						<div class="field-label is-normal">
+							<label for="anilist" class="label">{{ $t('modal.profile.fields.anilist.label') }}</label>
+						</div>
+						<div class="field-body">
+							<div class="field">
+								<div class="control">
+									<input
+										id="anilist"
+										v-model="user.social_networks.anilist"
+										type="text"
+										name="anilist"
+										class="input"
+										pattern="[a-zA-Z0-9]{2,20}"
+										:placeholder="$t('modal.profile.fields.anilist.placeholder')"
+									>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="field is-horizontal">
+						<div class="field-label is-normal">
+							<label for="kitsu" class="label">{{ $t('modal.profile.fields.kitsu.label') }}</label>
+						</div>
+						<div class="field-body">
+							<div class="field">
+								<div class="control">
+									<input
+										id="kitsu"
+										v-model="user.social_networks.kitsu"
+										type="number"
+										name="kitsu"
+										class="input"
+										:placeholder="$t('modal.profile.fields.kitsu.placeholder')"
+									>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="field is-horizontal">
+						<div class="field-label is-normal">
+							<label for="anime_list_to_fetch" class="label">{{ $t('modal.profile.fields.anime_list_to_fetch.label') }}</label>
+						</div>
+						<div class="field-body">
+							<div class="field">
+								<div class="control">
+									<div class="select">
+										<select id="type" v-model="user.anime_list_to_fetch" name="anime_list_to_fetch" autocomplete="off">
+											<option value="myanimelist">
+												MyAnimeList
+											</option>
+											<option value="anilist">
+												AniList
+											</option>
+											<option value="kitsu">
+												Kitsu
+											</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="field is-horizontal">
+						<div class="field-label is-normal">
+							<span class="label">{{ $t('modal.profile.fields.banner.label') }}</span>
 						</div>
 						<div class="field-body flex-column">
 							<img
