@@ -31,7 +31,7 @@ SELECT
   ak.mediasize AS mediasize,
   ak.repository AS repository,
   ak.comment AS comment,
-  ak.ignore_hooks AS ignoreHooks,
+  ak.ignore_hooks AS ignore_hooks,
   ksub.subchecksum AS subchecksum,
   ak.pk_kid || '.' || ak.mediasize::text || '.' || COALESCE(ksub.subchecksum, 'no_ass_file') || '.mp4' AS hardsubbed_mediafile,
   ${selectClause}

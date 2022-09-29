@@ -75,7 +75,7 @@ export function DBKaraToKaraFile(dbKara: DBKara): KaraFileV4 {
 		data: {
 			comment: dbKara.comment,
 			created_at: new Date(dbKara.created_at).toISOString(),
-			ignoreHooks: dbKara.ignoreHooks,
+			ignoreHooks: dbKara.ignore_hooks,
 			kid: dbKara.kid,
 			modified_at: new Date(dbKara.modified_at).toISOString(),
 			parents: dbKara.parents,
