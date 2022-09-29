@@ -37,7 +37,7 @@ export default function authController(router: Router) {
 		try {
 			const token = await checkLogin(req.body.username, req.body.password);
 			updateUserLastLogin(req.body.username.toLowerCase());
-			refreshAnimeList(req.body.user).catch();
+			refreshAnimeList(req.body.username.toLowerCase()).catch();
 			res.send(token);
 		} catch (err) {
 			if (err === 'No user provided') {

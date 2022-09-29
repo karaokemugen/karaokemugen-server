@@ -132,7 +132,7 @@ export default function userController(router: Router) {
 	router.route('/myaccount/myanime')
 		.post(requireAuth, requireValidUser, updateLoginTime, async (req: any, res) => {
 			try {
-				await refreshAnimeList(req.authToken.username);
+				await refreshAnimeList(req.authToken.username.toLowerCase());
 				res.status(200).json();
 			} catch (err) {
 				res.status(500).json(err);
