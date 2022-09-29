@@ -114,7 +114,7 @@ export default function userController(router: Router) {
 	router.route('/myaccount')
 		.get(requireAuth, requireValidUser, updateLoginTime, async (req: any, res: any) => {
 			try {
-				const userData = await findUserByName(req.authToken.username, { public: false });
+				const userData = await findUserByName(req.authToken.username, { public: false, contact: true });
 				res.json(userData);
 			} catch (err) {
 				res.status(500).json(err);
