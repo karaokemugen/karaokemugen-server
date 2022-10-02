@@ -1,4 +1,4 @@
-import {db, paramWords} from '../lib/dao/database';
+import { db, paramWords } from '../lib/dao/database';
 import { DBUser } from '../lib/types/database/user';
 import { User } from '../lib/types/user';
 import * as sql from './sqls/user';
@@ -18,7 +18,7 @@ export async function selectAllUsers(filter?: string, from?: number, size?: numb
 	const res = await db().query(
 		sql.selectUser(!!filter, '', (size) ? `LIMIT ${size} OFFSET ${from || 0}` : '', order),
 		filter ? [paramWords(filter).join(' & ')] : []
-);
+	);
 	return res.rows;
 }
 
@@ -69,7 +69,7 @@ export async function updateUser(user: User): Promise<DBUser> {
 		user.flag_public,
 		user.flag_displayfavorites,
 		user.social_networks || null,
-		user.banner,
+		user.banner || 'default.jpg',
 		user.language,
 		user.anime_list_to_fetch,
 		user.anime_list_last_modified_at,
