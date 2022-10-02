@@ -1,28 +1,28 @@
-import {compare, hash} from 'bcryptjs';
-import {createHash} from 'crypto';
+import { compare, hash } from 'bcryptjs';
+import { createHash } from 'crypto';
 import { promises as fs } from 'fs';
-import {copy} from 'fs-extra';
-import {decode} from 'jwt-simple';
-import { merge } from 'lodash';
-import {isAbsolute, resolve} from 'path';
+import { copy } from 'fs-extra';
+import { decode } from 'jwt-simple';
+import { cloneDeep, merge } from 'lodash';
+import { isAbsolute, resolve } from 'path';
 import randomstring from 'randomstring';
 import { v4 as uuidV4 } from 'uuid';
 
 import { createJwtToken } from '../controllers/http/auth';
-import {deleteUser, insertUser, selectAllUsers, selectUser, updateLastLogin, updateUser, updateUserPassword} from '../dao/user';
-import {DBUser} from '../lib/types/database/user';
+import { deleteUser, insertUser, selectAllUsers, selectUser, updateLastLogin, updateUser, updateUserPassword } from '../dao/user';
+import { DBUser } from '../lib/types/database/user';
 import { JWTTokenWithRoles, User } from '../lib/types/user';
-import {getConfig, resolvedPath} from '../lib/utils/config';
-import {asciiRegexp, tagTypes} from '../lib/utils/constants';
-import {detectFileType, fileExists, smartMove} from '../lib/utils/files';
+import { getConfig, resolvedPath } from '../lib/utils/config';
+import { asciiRegexp, tagTypes } from '../lib/utils/constants';
+import { detectFileType, fileExists, smartMove } from '../lib/utils/files';
 import logger from '../lib/utils/logger';
 import { isLooselyEqual } from '../lib/utils/objectHelpers';
-import {UserList, UserOptions, UserParams} from '../types/user';
-import {adminToken} from '../utils/constants';
+import { UserList, UserOptions, UserParams } from '../types/user';
+import { adminToken } from '../utils/constants';
 import { sendMail } from '../utils/mailer';
 import sentry from '../utils/sentry';
 import { refreshAnimeList } from './animeList';
-import {getKara} from './kara';
+import { getKara } from './kara';
 import { delPubUser, pubUser } from './userPubSub';
 
 const service = 'User';
@@ -43,8 +43,8 @@ export async function resetPasswordRequest(username: string) {
 		});
 		const conf = getConfig();
 		sendMail(
-'Karaoke Mugen Password Reset',
-`
+			'Karaoke Mugen Password Reset',
+			`
 		Hello ${username},
 
 		You (or someone) requested a password reset for your account at ${getConfig().API.Host}. If you didn't request this, please ignore this email.
@@ -55,9 +55,9 @@ export async function resetPasswordRequest(username: string) {
 
 		This link will expire in two hours.
 		`,
-username,
-user.email
-);
+			username,
+			user.email
+		);
 	} catch (err) {
 		if (err.message !== 'User unknown' && err.message !== 'User has no configured mail. Ask server admin for a password reset') {
 			sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
@@ -78,8 +78,8 @@ export async function resetPassword(username: string, requestCode: string) {
 		await changePassword(username, newPassword);
 		passwordResetRequests.delete(username);
 		sendMail(
-'Karaoke Mugen Password has been reset',
-`
+			'Karaoke Mugen Password has been reset',
+			`
 		Hello ${username},
 
 		You (or someone) requested a password reset for your account at ${getConfig().API.Host}.
@@ -90,9 +90,9 @@ export async function resetPassword(username: string, requestCode: string) {
 		Please login using a Karaoke Mugen Application and change it to something else.
 
 		`,
-username,
-user.email
-);
+			username,
+			user.email
+		);
 	} catch (err) {
 		if (err.message !== 'No request' && err.message !== 'User unknown' && err.message !== 'Wrong code') {
 			sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
@@ -145,7 +145,7 @@ export async function findUserByName(username: string, opts: UserOptions = {}) {
 	} catch (err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
-		logger.error('Error when retrieving an user', {obj: err, service});
+		logger.error('Error when retrieving an user', { obj: err, service });
 		throw err;
 	}
 }
@@ -174,7 +174,7 @@ export function formatUserList(users: DBUser[], from: number): UserList {
 	};
 }
 
-export async function getAllUsers(opts: UserParams = {public: false}) {
+export async function getAllUsers(opts: UserParams = { public: false }) {
 	try {
 		const users = (await selectAllUsers(opts.filter, opts.from, opts.size, true)).filter(u => u.flag_public && opts.public);
 		if (opts.public) {
@@ -226,25 +226,25 @@ export async function createUser(user: User, opts: any = {}) {
 			user: true,
 			admin: opts.admin
 		};
-		if (!asciiRegexp.test(user.login)) throw { code: 'USER_ASCII_CHARACTERS_ONLY'};
-		if (!user.password) throw { code: 'USER_EMPTY_PASSWORD'};
-		if (!user.login) throw { code: 'USER_EMPTY_LOGIN'};
+		if (!asciiRegexp.test(user.login)) throw { code: 'USER_ASCII_CHARACTERS_ONLY' };
+		if (!user.password) throw { code: 'USER_EMPTY_PASSWORD' };
+		if (!user.login) throw { code: 'USER_EMPTY_LOGIN' };
 		user.login = user.login.toLowerCase();
 		verifyNameBans(user);
 		// Check if login or nickname already exists.
 		if (await selectUser('pk_login', user.login) || await selectUser('nickname', user.login)) {
-			logger.error(`User/nickname ${user.login} already exists, cannot create it`, {service});
-			throw { code: 'USER_ALREADY_EXISTS', data: {username: user.login}};
+			logger.error(`User/nickname ${user.login} already exists, cannot create it`, { service });
+			throw { code: 'USER_ALREADY_EXISTS', data: { username: user.login } };
 		}
-		if (user.password.length < 8) throw {code: 'PASSWORD_TOO_SHORT', data: user.password.length};
+		if (user.password.length < 8) throw { code: 'PASSWORD_TOO_SHORT', data: user.password.length };
 		user.password = await hashPasswordbcrypt(user.password);
 		try {
 			await insertUser(user);
 			delete user.password;
 			pubUser(user.login);
 		} catch (err) {
-			logger.error(`Unable to create user ${user.login}`, {service, obj: err});
-			throw ({ code: 'USER_CREATION_ERROR', data: err});
+			logger.error(`Unable to create user ${user.login}`, { service, obj: err });
+			throw ({ code: 'USER_CREATION_ERROR', data: err });
 		}
 	} catch (err) {
 		if (err.code !== 'USER_ALREADY_EXISTS') {
@@ -269,8 +269,8 @@ async function replaceAvatar(oldImageFile: string, avatar: Express.Multer.File) 
 	try {
 		const fileType = await detectFileType(avatar.path);
 		if (fileType !== 'jpg' &&
-				fileType !== 'gif' &&
-				fileType !== 'png') {
+			fileType !== 'gif' &&
+			fileType !== 'png') {
 			throw 'Wrong avatar file type';
 		}
 		// Construct the name of the new avatar file with its ID and filetype.
@@ -283,7 +283,7 @@ async function replaceAvatar(oldImageFile: string, avatar: Express.Multer.File) 
 		await smartMove(avatar.path, newAvatarPath);
 		return newAvatarFile;
 	} catch (err) {
-		logger.error(`Unable to replace avatar ${oldImageFile} with ${avatar.path}`, {service, obj: err});
+		logger.error(`Unable to replace avatar ${oldImageFile} with ${avatar.path}`, { service, obj: err });
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
 		throw err;
@@ -299,7 +299,7 @@ async function replaceBanner(preview: string) {
 		fileType = await detectFileType(file);
 		if (fileType !== 'jpg' &&
 			fileType !== 'png') {
-			throw {code: 'INVALID_FILE', data: 'Please input valid banners (jpg, png)'};
+			throw { code: 'INVALID_FILE', data: 'Please input valid banners (jpg, png)' };
 		}
 	}
 	if (!await fileExists(file)) {
@@ -310,22 +310,22 @@ async function replaceBanner(preview: string) {
 		// The banner is already in place (use by somebody else), no need to copy again.
 		if (await fileExists(target)) return preview;
 
-			if (!customBanner) {
-				const kid = preview.split('.')[0];
-				const bans = getConfig().Users.BannerBan;
-				const kara = await getKara({
-					q: `k:${kid}`,
-				});
-				for (const key of Object.keys(tagTypes)) {
-					for (const tag of kara[key]) {
-						if (bans.includes(tag.tid)) {
-							throw {code: 'BANNER_BANNED', data: 'This banner cannot be used'};
-						}
+		if (!customBanner) {
+			const kid = preview.split('.')[0];
+			const bans = getConfig().Users.BannerBan;
+			const kara = await getKara({
+				q: `k:${kid}`,
+			});
+			for (const key of Object.keys(tagTypes)) {
+				for (const tag of kara[key]) {
+					if (bans.includes(tag.tid)) {
+						throw { code: 'BANNER_BANNED', data: 'This banner cannot be used' };
 					}
 				}
 			}
-			await copy(file, target);
-			return name;
+		}
+		await copy(file, target);
+		return name;
 	}
 }
 
@@ -356,16 +356,16 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		if (!username) throw 'No user provided';
 		username = username.toLowerCase();
 		if (token.username.toLowerCase() !== username && token.roles && !token.roles.admin) throw 'Only admins can edit another user';
-		const currentUser = await findUserByName(username, {password: true});
+		const currentUser = await findUserByName(username, { password: true });
 		if (!currentUser) throw 'User unknown';
-		const mergedUser = merge(currentUser, user);
+		const mergedUser = merge(cloneDeep(currentUser), cloneDeep(user));
 		verifyNameBans(user);
 		delete mergedUser.password;
 		if (user.roles && !isLooselyEqual(user.roles, currentUser.roles) && token.roles && !token.roles.admin) throw 'Only admins can change a user\'s roles';
 		// Check if login already exists.
 		if (user.nickname && currentUser.nickname !== user.nickname && await selectUser('nickname', user.nickname)) throw 'Nickname already exists';
 		if (user.password) {
-			if (user.password.length < 8) throw {code: 'PASSWORD_TOO_SHORT', data: user.password.length};
+			if (user.password.length < 8) throw { code: 'PASSWORD_TOO_SHORT', data: user.password.length };
 			const password = await hashPasswordbcrypt(user.password);
 			await updateUserPassword(username, password);
 		}
@@ -373,7 +373,7 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 			if (mergedUser.roles.donator || mergedUser.roles.admin) {
 				mergedUser.banner = await replaceBanner(banner.path);
 			} else {
-				throw {code: 'BANNER_BANNED', data: 'This function is reserved to donators'};
+				throw { code: 'BANNER_BANNED', data: 'This function is reserved to donators' };
 			}
 		} else if (user.banner) {
 			mergedUser.banner = await replaceBanner(user.banner);
@@ -390,12 +390,12 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		}
 		const updatedUser = await updateUser(mergedUser);
 		delete updatedUser.password;
-		logger.debug(`${username} (${user.nickname}) profile updated`, {service});
+		logger.debug(`${username} (${user.nickname}) profile updated`, { service });
 		pubUser(username);
 
-		const animeList = user.anime_list_to_fetch;
-		if ((animeList && animeList !== currentUser.anime_list_to_fetch) ||
-		(animeList && user.social_networks[animeList] && user.social_networks[animeList] !== currentUser.social_networks[animeList])
+		const animeListToFetch = user.anime_list_to_fetch;
+		if ((animeListToFetch !== currentUser.anime_list_to_fetch) ||
+			(user.social_networks[animeListToFetch] !== currentUser.social_networks[animeListToFetch])
 		) {
 			refreshAnimeList(username).catch();
 		}
@@ -404,7 +404,7 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 			token: createJwtToken(updatedUser.login, updatedUser.roles, new Date(updatedUser.password_last_modified_at))
 		};
 	} catch (err) {
-		logger.error(`Failed to update ${username}'s profile`, {service, obj: err});
+		logger.error(`Failed to update ${username}'s profile`, { service, obj: err });
 		if (err !== 'Nickname already exists') {
 			sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 			sentry.error(new Error(err));
@@ -420,7 +420,7 @@ export async function updateUserLastLogin(username: string) {
 	try {
 		await updateLastLogin(username);
 	} catch (err) {
-		logger.error(`Unable to update login time for ${username}`, {service, obj: err});
+		logger.error(`Unable to update login time for ${username}`, { service, obj: err });
 	}
 }
 
