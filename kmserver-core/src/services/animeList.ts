@@ -17,39 +17,33 @@ export async function refreshAnimeList(username: string): Promise<boolean> {
 	try {
 		username = username.toLowerCase();
 		const user = await selectUser('pk_login', username);
-		const animeList = user.anime_list_to_fetch;
-		if (!animeList || !user.social_networks[animeList]) {
-			return false;
-		}
-		if (isTooSoonToRefresh(user.anime_list_last_modified_at)) {
-			return false;
-		}
-		await updateUser({
-			...user,
-			anime_list_last_modified_at: new Date(),
-		});
+		const animeListToFetch = user.anime_list_to_fetch;
+
 		let animeListIds: number[] = null;
-		switch (user.anime_list_to_fetch) {
-			case 'myanimelist':
-				if (user.social_networks?.myanimelist == null) return false;
-				animeListIds = await getAnimeListFromMyanimelist(user.social_networks.myanimelist);
-				break;
-			case 'anilist':
-				if (user.social_networks?.anilist == null) return false;
-				animeListIds = await getAnimeListFromAnilist(user.social_networks.anilist);
-				break;
-			case 'kitsu':
-				if (user.social_networks?.kitsu == null) return false;
-				animeListIds = await getAnimeListFromKitsu(user.social_networks.kitsu);
-				break;
-			default:
-				break;
+		if (user.social_networks[animeListToFetch]) {
+			if (isTooSoonToRefresh(user.anime_list_last_modified_at)) {
+				return false;
+			}
+			user.anime_list_last_modified_at = new Date();
+			await updateUser(user);
+			switch (animeListToFetch) {
+				case 'myanimelist':
+					animeListIds = await getAnimeListFromMyanimelist(user.social_networks.myanimelist);
+					break;
+				case 'anilist':
+					animeListIds = await getAnimeListFromAnilist(user.social_networks.anilist);
+					break;
+				case 'kitsu':
+					animeListIds = await getAnimeListFromKitsu(user.social_networks.kitsu);
+					break;
+				default:
+					break;
+			}
+			user.anime_list_last_modified_at = new Date();
+			await updateUser(user);
 		}
-		await updateUser({
-			...user,
-			anime_list_last_modified_at: new Date(),
-			anime_list_ids: animeListIds,
-		});
+		user.anime_list_ids = animeListIds;
+		await updateUser(user);
 		pubUser(username);
 		return true;
 	} catch (err) {
@@ -83,8 +77,7 @@ export async function getAnimeListFromMyanimelist(name: string): Promise<number[
 			service,
 			obj: err,
 		});
-		sentry.error(err);
-		throw err;
+		return null;
 	}
 }
 
@@ -97,8 +90,7 @@ export async function getAnimeListFromAnilist(name: string): Promise<number[]> {
 			.map(entry => entry.media.id);
 	} catch (err) {
 		logger.error('Failed to fetch data from Anilist', { service, obj: err });
-		sentry.error(err);
-		throw err;
+		return null;
 	}
 }
 
@@ -135,8 +127,7 @@ export async function getAnimeListFromKitsu(userId: number): Promise<number[]> {
 		return animeIds;
 	} catch (err) {
 		logger.error('Failed to fetch data from Kitsu', { service, obj: err });
-		sentry.error(err);
-		throw err;
+		return null;
 	}
 }
 
