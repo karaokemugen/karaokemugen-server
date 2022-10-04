@@ -111,7 +111,7 @@
 			"comment_tooltip": "Jika kamu ingin menambahkan pesan untuk integrator atau hanya ingin bilang terima kasih, bilanglah di sini!",
 			"media_file_tooltip": "Format berkas yang didukung: {formats}",
 			"title": "Judul",
-			"title_required": "Mohon masukkan judul lagu dalam bahasa Inggris",
+			"title_required": "Mohon masukkan judul lagu",
 			"title_tooltip": "Jika kamu tidak tahu, masukkan nama serialnya di sini juga. Dalam kasus versi alternatif, beri nama judulmu sebagai: 'My title ~ Disco vers.' sebagai contoh",
 			"titles_aliases": "Alias",
 			"titles_aliases_tooltip": "Nama pendek atau nama alternatif, digunakan untuk pencarian.",

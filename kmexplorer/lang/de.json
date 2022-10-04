@@ -41,7 +41,7 @@
 			"media_file": "Mediendatei",
 			"lyrics_file_missing": "Die Untertiteldatei fehlt. Dies ist nur zulässig, wenn eine MKV Datei oder ein Karaoke ohne Text gesendet wird (?).",
 			"title": "Titel",
-			"title_required": "Bitte einen englischen Songtitel eingeben",
+			"title_required": "Bitte einen Songtitel eingeben",
 			"year": "Ausstrahlungsjahr",
 			"media_file_required": "Mediendatei ist erforderlich",
 			"lyrics_file": "Untertiteldatei",

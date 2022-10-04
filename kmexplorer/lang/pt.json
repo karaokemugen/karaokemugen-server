@@ -90,7 +90,7 @@
 			"lyrics_file": "Arquivo de letras",
 			"lyrics_file_tooltip": "Formatos de ficheiro suportados: {formats}",
 			"title": "Título",
-			"title_required": "Por favor, insira um título de canção em inglês",
+			"title_required": "Por favor, insira um título de canção",
 			"titles_aliases_tooltip": "Nomes curtos ou nomes alternativos, utilizados para pesquisa.",
 			"series_tooltip": "Séries de TV, título de filme, título de videogame, etc.",
 			"songtypes_required": "O tipo de música é obrigatório",
