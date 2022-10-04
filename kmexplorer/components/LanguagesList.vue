@@ -5,7 +5,7 @@
 				{{ getLanguagesFromCode(langKey) }}
 			</label>
 			<div class="control">
-				<input v-model="i18n[langKey]" class="input" type="text" @change="setValueLanguage">
+				<input :value="i18n[langKey]" class="input" type="text" @input="event => setValueLanguage(langKey, event.target.value)">
 			</div>
 			<div class="control">
 				<div class="button" :title="$t('kara.import.i18n_delete')" @click="() => removeLang(langKey)">
@@ -152,7 +152,8 @@
 			getLanguagesFromCode(code:string) {
 				return getLanguagesInLocaleFromCode(code, (this.$auth.loggedIn && this.$auth.user.language) || this.$i18n.locale);
 			},
-			setValueLanguage() {
+			setValueLanguage(langKey:string, value:string) {
+				this.i18n[langKey] = value;
 				this.$emit('change', this.i18n);
 			},
 			setDefaultLanguage(lang: string) {

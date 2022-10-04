@@ -69,7 +69,7 @@
 			<languages-list
 				:value="karaoke.data.titles"
 				:default-language="karaoke.data.titles_default_language"
-				@change="(titles) => karaoke.data.titles = titles"
+				@change="onTitlesChange"
 				@onDefaultLanguage="onDefaultLanguageSelect"
 			/>
 			<p v-if="!karaoke.data.titles || Object.keys(karaoke.data.titles).length === 0 || Object.values(karaoke.data.titles).includes('')" class="help is-danger">
@@ -542,6 +542,9 @@
 						this.uploading.sub ||
 						this.loading
 				);
+			},
+			onTitlesChange(titles: string) {
+				this.karaoke.data.titles = titles;
 			},
 			onDefaultLanguageSelect(defaultLanguage: string) {
 				this.karaoke.data.titles_default_language = defaultLanguage;
