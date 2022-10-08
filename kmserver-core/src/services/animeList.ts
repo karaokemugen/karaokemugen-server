@@ -20,7 +20,7 @@ export async function refreshAnimeList(username: string): Promise<boolean> {
 		const animeListToFetch = user.anime_list_to_fetch;
 
 		let animeListIds: number[] = null;
-		if (user.social_networks[animeListToFetch]) {
+		if (user.social_networks != null && user.social_networks[animeListToFetch]) {
 			if (isTooSoonToRefresh(user.anime_list_last_modified_at)) {
 				return false;
 			}
