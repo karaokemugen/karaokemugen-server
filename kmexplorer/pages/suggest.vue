@@ -2,6 +2,13 @@
 	<div>
 		<section>
 			<div class="hero-body">
+				<div class="tile is-parent is-12 is-hidden-desktop">
+					<search-bar :filter="false" :results="false" />
+					<search-edit />
+					<div class="field is-expanded">
+						<languages-picker :label="$t('search.types.suggestions')" />
+					</div>
+				</div>
 				<div class="container">
 					<h1 class="title">
 						{{ $t('suggestions.header.title') }}
@@ -41,6 +48,9 @@
 	import Pagination from '~/components/Pagination.vue';
 	import KaraSuggestModal from '~/components/modals/KaraSuggestModal.vue';
 	import { menuBarStore } from '~/utils/store-accessor';
+	import LanguagesPicker from '~/components/LanguagesPicker.vue';
+	import SearchBar from '~/components/SearchBar.vue';
+	import SearchEdit from '~/components/SearchEdit.vue';
 
 	const numberKaraokesByPage = 10;
 
@@ -51,7 +61,10 @@
 			SuggestCard,
 			FirstTimeSuggestModal,
 			Pagination,
-			KaraSuggestModal
+			KaraSuggestModal,
+			LanguagesPicker,
+			SearchBar,
+			SearchEdit
 		},
 
 		data() {

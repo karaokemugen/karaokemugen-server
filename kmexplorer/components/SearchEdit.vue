@@ -12,6 +12,10 @@
 					<template v-if="$route.name === 'types-id'">
 						<option value="karacount">{{ $t('search.sort.kara_count') }}</option>
 					</template>
+					<template v-else-if="$route.name === 'suggest'">
+						<option value="likes">{{ $t('search.sort.likes') }}</option>
+						<option value="language">{{ $t('search.sort.languages') }}</option>
+					</template>
 					<template v-else>
 						<option value="recent">{{ $t('search.sort.recent') }}</option>
 						<option value="played">{{ $t('search.sort.most_played') }}</option>
@@ -53,7 +57,7 @@
 
 		computed: {
 			canSort(): boolean {
-				return ['types-id', 'search-query', 'user-login'].includes(this.$route.name as string);
+				return ['types-id', 'search-query', 'user-login', 'suggest'].includes(this.$route.name as string);
 			},
 			...mapState('menubar', ['resultsCount'])
 		},
