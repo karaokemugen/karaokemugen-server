@@ -525,7 +525,7 @@
 						this.subfile_error.length > 0 ||
 						!this.karaoke.data.titles ||
 						Object.keys(this.karaoke.data.titles).length === 0 ||
-						Object.keys(this.karaoke.data.titles).includes('') ||
+						Object.values(this.karaoke.data.titles).includes('') ||
 						!this.karaoke.data.titles_default_language ||
 						(this.karaoke.data.tags.series?.length === 0 &&
 							this.karaoke.data.tags.singergroups?.length === 0 &&
