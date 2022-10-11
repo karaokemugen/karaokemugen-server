@@ -232,7 +232,7 @@
 			},
 			activate() {
 				this.activated = true;
-				if (menuBarStore.sort === 'karacount') {
+				if (menuBarStore.sort === 'karacount' || (this.$route.name !== 'suggest' && ['likes', 'language'].includes(menuBarStore.sort))) {
 					menuBarStore.setSort('recent');
 				}
 				window.addEventListener('scroll', this.scrollEvent, { passive: true });
