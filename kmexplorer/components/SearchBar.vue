@@ -7,7 +7,7 @@
 		<div class="control is-expanded" :class="{'has-icons-left': icon}">
 			<input
 				class="input is-fullwidth"
-				type="text"
+				type="search"
 				:placeholder="placeholder"
 				:value="search"
 				@keydown.enter="triggerSearch"
