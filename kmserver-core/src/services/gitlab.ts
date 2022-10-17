@@ -77,14 +77,14 @@ export async function gitlabPostNewIssue(title: string, desc: string, labels: st
 		const conf = getConfig();
 		if (!labels) labels = [];
 		const params = {
-			id: `${conf.Gitlab.ProjectID}`,
+			id: `${conf.System.Repositories[0].Git.ProjectID}`,
 			title,
 			description: desc,
 			labels: labels.join(',')
 		};
-		const res = await HTTP.post(`${conf.Gitlab.Host}/api/v4/projects/${conf.Gitlab.ProjectID}/issues`, params, {
+		const res = await HTTP.post(`${conf.System.Repositories[0].Git.URL}/api/v4/projects/${conf.System.Repositories[0].Git.ProjectID}/issues`, params, {
 			headers: {
-				'PRIVATE-TOKEN': conf.Gitlab.Token,
+				'PRIVATE-TOKEN': conf.System.Repositories[0].Git.Password,
 				'Content-Type': 'application/json'
 			},
 			timeout: 25000

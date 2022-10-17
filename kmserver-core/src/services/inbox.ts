@@ -13,6 +13,7 @@ import { KaraFileV4 } from '../lib/types/kara';
 import { TagFile } from '../lib/types/tag';
 import { getConfig, resolvedPathRepos } from '../lib/utils/config';
 import { fileExists } from '../lib/utils/files';
+import { closeIssue } from '../lib/utils/gitlab';
 import logger from '../lib/utils/logger';
 import { findFileByUUID } from '../utils/files';
 import Sentry from '../utils/sentry';
@@ -156,6 +157,8 @@ export async function clearOldInboxEntries() {
 		logger.debug(`${kara.kid} was cleared`, {service, obj: kara});
 		try {
 			// Find and delete files
+			const numberIssue = +kara.gitlab_issue.split('/')[kara.gitlab_issue.split('/').length - 1];
+			await closeIssue(numberIssue, getConfig().System.Repositories[0].Name);
 			const karaPath = resolve(resolvedPathRepos('Karaokes', 'Staging')[0], kara.karafile);
 			if (await fileExists(karaPath)) {
 				const subPath = resolve(resolvedPathRepos('Lyrics', 'Staging')[0], kara.subfile);

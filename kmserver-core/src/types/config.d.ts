@@ -1,7 +1,7 @@
-import { RepositoryCommon, RepositoryManifest } from '../lib/types/repo';
+import { RepositoryMaintainerSettings, RepositoryManifest } from '../lib/types/repo';
 import { RepositoryServer } from './repo';
 
-type RepositoryWithManifest = RepositoryCommon & RepositoryManifest & RepositoryServer;
+type RepositoryWithManifest = RepositoryMaintainerSettings & RepositoryManifest & RepositoryServer;
 
 export interface Config {
 	App: {
@@ -58,9 +58,6 @@ export interface Config {
 	},
 	Gitlab?: {
 		Enabled?: boolean,
-		Host?: string,
-		Token?: string,
-		ProjectID?: number,
 		IssueTemplate?: {
 			Import?: GitlabTemplate
 			Suggestion?: GitlabTemplate
