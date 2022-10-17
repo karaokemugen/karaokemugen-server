@@ -411,7 +411,7 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		}
 		throw {
 			message: err,
-			data: user.nickname
+			data: user?.nickname
 		};
 	}
 }
