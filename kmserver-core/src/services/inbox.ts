@@ -106,6 +106,15 @@ export async function removeKaraFromInbox(inid: string) {
 		const inbox = (await selectInbox(inid))[0];
 		if (!inbox) throw {code: 404};
 		// Kara might not exist anymore if something went wrong.
+		const kara = await getKara({
+				q: `k:${inbox.kid}!r:Staging`
+			});
+			// If kara is not found, it means the song has already been added to the database by kara.moe
+			if (kara) {
+				const karaData = formatKaraV4(kara);
+				await deleteKara([inbox.kid]);
+				refreshKarasAfterDBChange('DELETE', [karaData.data]);
+			}
 		if (inbox.karafile) {
 			const karaPath = resolve(resolvedPathRepos('Karaokes', 'Staging')[0], inbox.karafile);
 			const subPath = resolve(resolvedPathRepos('Lyrics', 'Staging')[0], inbox.subfile);
@@ -118,15 +127,6 @@ export async function removeKaraFromInbox(inid: string) {
 				]);
 			} catch (err) {
 				logger.warn(`Unable to remove some files after inbox deleteion for song ${inbox.name}`, { service });
-			}
-			const kara = await getKara({
-				q: `k:${inbox.kid}!r:Staging`
-			});
-			// If kara is not found, it means the song has already been added to the database by kara.moe
-			if (kara) {
-				const karaData = formatKaraV4(kara);
-				await deleteKara([inbox.kid]);
-				refreshKarasAfterDBChange('DELETE', [karaData.data]);
 			}
 		}
 		await deleteInbox(inid);
