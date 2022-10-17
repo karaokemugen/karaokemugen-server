@@ -44,6 +44,7 @@ export async function getKaraInbox(inid: string): Promise<Inbox> {
 		const extra_tids = inbox.tags.filter(t => t.repository === 'Staging').map(t => t.tid);
 		const extra_tags: TagMetaFile[] = await Promise.all(extra_tids.map(async tid => {
 			const tag = await getTag(tid);
+			if (!tag) throw `Tag ${tid} not found in Staging repository`;
 			const tagPath = resolve(resolvedPathRepos('Tags', 'Staging')[0], tag.tagfile);
 			const tagData: TagFile = JSON.parse(await fs.readFile(tagPath, 'utf-8'));
 			tagData.tag.repository = onlineRepo;
