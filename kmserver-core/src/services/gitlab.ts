@@ -82,7 +82,8 @@ export async function gitlabPostNewIssue(title: string, desc: string, labels: st
 			description: desc,
 			labels: labels.join(',')
 		};
-		const res = await HTTP.post(`${conf.System.Repositories[0].Git.URL}/api/v4/projects/${conf.System.Repositories[0].Git.ProjectID}/issues`, params, {
+		const url = new URL(conf.System.Repositories[0].Git.URL);
+		const res = await HTTP.post(`${url.protocol}//${url.hostname}/api/v4/projects/${conf.System.Repositories[0].Git.ProjectID}/issues`, params, {
 			headers: {
 				'PRIVATE-TOKEN': conf.System.Repositories[0].Git.Password,
 				'Content-Type': 'application/json'
