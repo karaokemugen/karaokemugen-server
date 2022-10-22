@@ -1,7 +1,7 @@
-import { RepositoryMaintainerSettings, RepositoryManifest } from '../lib/types/repo';
+import { Repository, RepositoryManifest } from '../lib/types/repo';
 import { RepositoryServer } from './repo';
 
-type RepositoryWithManifest = RepositoryMaintainerSettings & RepositoryManifest & RepositoryServer;
+type RepositoryWithManifest = Repository & RepositoryManifest & RepositoryServer;
 
 export interface Config {
 	App: {
