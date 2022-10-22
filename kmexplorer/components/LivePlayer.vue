@@ -1,8 +1,6 @@
 <template>
 	<div
 		class="box"
-		@mouseenter="hover = true"
-		@mouseleave="hover = false"
 	>
 		<iframe
 			v-if="show"
@@ -12,6 +10,8 @@
 			:style="{ height: size === -1 ? undefined:`${size.toString()}px` }"
 			allowfullscreen
 			title="VideoPlayer"
+			@mouseenter="hover = true"
+			@mouseleave="hover = false"
 		/>
 		<div
 			v-else
