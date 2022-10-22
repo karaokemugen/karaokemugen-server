@@ -65,7 +65,7 @@
 		"anilist-node": "^1.12.1",
 		"ass-compiler": "^0.1.4",
 		"async-await-parallel": "^1.0.0",
-		"axios": "^1.1.3",
+		"axios": "^0.27.2",
 		"bcryptjs": "^2.4.3",
 		"better-queue": "^3.8.12",
 		"commander": "^9.4.1",
