@@ -688,6 +688,15 @@
 				}
 			},
 			async submitForm(): Promise<void> {
+				if (!this.user.social_networks || (!this.user.social_networks.anilist && !this.user.social_networks.myanimelist && !this.user.social_networks.kitsu)) {
+					this.user.anime_list_to_fetch = undefined;
+				} else if (this.user.social_networks.anilist && !this.user.social_networks.myanimelist && !this.user.social_networks.kitsu) {
+					this.user.anime_list_to_fetch = 'anilist';
+				} else if (!this.user.social_networks.anilist && this.user.social_networks.myanimelist && !this.user.social_networks.kitsu) {
+					this.user.anime_list_to_fetch = 'myanimelist';
+				} else if (!this.user.social_networks.anilist && !this.user.social_networks.myanimelist && this.user.social_networks.kitsu) {
+					this.user.anime_list_to_fetch = 'kitsu';
+				}
 				this.loading = true;
 				await this.$axios.patch('/api/myaccount', {
 					...this.user, avatar_file: undefined, roles: undefined, banner: undefined
