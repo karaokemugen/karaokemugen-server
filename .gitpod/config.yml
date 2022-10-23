@@ -2,7 +2,7 @@ App:
   InstanceID: changeit_InstanceID
   JwtSecret: changeit_JwtSecret
 BaseLicense:
-  Name: ODbL/CC BY-NC-SA 4.0
+  Name: ODbL/CC BY-SA 4.0
   Link: changeit_karaokebase/-/blob/master/LICENSE.md
 SocialNetworks:
   Discourse: https://discourse.karaokes.moe
