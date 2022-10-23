@@ -1,441 +1,460 @@
 <template>
 	<div>
-		<div class="field">
-			<label class="label" :title="$t('kara.import.media_file_tooltip', {formats: supportedMedias.join(', ')})">
-				{{ $route.params.id ? $t('kara.import.media_file_edit'):$t('kara.import.media_file') }}
-				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
-			</label>
-			<div class="file has-name is-fullwidth" :class="{'is-attached-bottom': uploading.media}">
-				<label class="file-label">
-					<input
-						ref="mediafile"
-						class="file-input"
-						type="file"
-						name="resume"
-						accept="video/*, audio/*, .mkv"
-						@change="handleMediafileUpload()"
-					>
-					<span class="file-cta">
-						<span class="file-icon">
-							<font-awesome-icon :icon="['fas', 'upload']" :fixed-width="true" />
-						</span>
-						<span class="file-label">{{ $t('kara.import.choose_file') }}</span>
-					</span>
-					<span class="file-name">{{ mediafile }}</span>
+		<label class="title">{{ $t('kara.import.sections.files') }}</label>
+		<div class="box">
+			<div class="field">
+				<label class="label" :title="$t('kara.import.media_file_tooltip', {formats: supportedMedias.join(', ')})">
+					{{ $route.params.id ? $t('kara.import.media_file_edit'):$t('kara.import.media_file') }}
+					<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
 				</label>
-			</div>
-			<progress v-if="uploading.media" class="progress is-success is-attached-top" :value="uploading.media === true ? undefined:uploading.media" max="100" />
-			<p v-if="!$route.params.id && !mediafile" class="help is-danger">
-				{{ $t('kara.import.media_file_required') }}
-			</p>
-			<p v-if="mediafile_error" class="help is-danger">
-				{{ mediafile_error }}
-			</p>
-		</div>
-		<div class="field">
-			<label class="label" :title="$t('kara.import.lyrics_file_tooltip', {formats: supportedLyrics.join(', ')})">
-				{{ $t('kara.import.lyrics_file') }}
-				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
-			</label>
-			<div class="file has-name is-fullwidth" :class="{'is-attached-bottom': uploading.sub}">
-				<label class="file-label">
-					<input
-						ref="subfile"
-						class="file-input"
-						type="file"
-						name="resume"
-						:accept="supportedLyrics.map(val => '.'+val).join(',')"
-						@change="handleSubfileUpload()"
-					>
-					<span class="file-cta">
-						<span class="file-icon">
-							<font-awesome-icon :icon="['fas', 'upload']" :fixed-width="true" />
+				<div class="file has-name is-fullwidth" :class="{'is-attached-bottom': uploading.media}">
+					<label class="file-label">
+						<input
+							ref="mediafile"
+							class="file-input"
+							type="file"
+							name="resume"
+							accept="video/*, audio/*, .mkv"
+							@change="handleMediafileUpload()"
+						>
+						<span class="file-cta">
+							<span class="file-icon">
+								<font-awesome-icon :icon="['fas', 'upload']" :fixed-width="true" />
+							</span>
+							<span class="file-label">{{ $t('kara.import.choose_file') }}</span>
 						</span>
-						<span class="file-label">{{ $t('kara.import.choose_file') }}</span>
-					</span>
-					<span class="file-name">{{ subfile }}</span>
+						<span class="file-name">{{ mediafile }}</span>
+					</label>
+				</div>
+				<progress v-if="uploading.media" class="progress is-success is-attached-top" :value="uploading.media === true ? undefined:uploading.media" max="100" />
+				<p v-if="!$route.params.id && !mediafile" class="help is-danger">
+					{{ $t('kara.import.media_file_required') }}
+				</p>
+				<p v-if="mediafile_error" class="help is-danger">
+					{{ mediafile_error }}
+				</p>
+			</div>
+			<div class="field">
+				<label class="label" :title="$t('kara.import.lyrics_file_tooltip', {formats: supportedLyrics.join(', ')})">
+					{{ $t('kara.import.lyrics_file') }}
+					<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
 				</label>
-			</div>
-			<progress v-if="uploading.sub" class="progress is-success is-attached-top" :value="uploading.sub === true ? undefined:uploading.sub" max="100" />
-			<p v-if="subfile_error" class="help is-danger">
-				{{ subfile_error }}
-			</p>
-		</div>
-		<div class="field">
-			<label class="label" :title="$t('kara.import.title_tooltip')">
-				{{ $t('kara.import.title') }}
-				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
-			</label>
-			<languages-list
-				:value="karaoke.data.titles"
-				:default-language="karaoke.data.titles_default_language"
-				@change="onTitlesChange"
-				@onDefaultLanguage="onDefaultLanguageSelect"
-			/>
-			<p v-if="!karaoke.data.titles || Object.keys(karaoke.data.titles).length === 0 || Object.values(karaoke.data.titles).includes('')" class="help is-danger">
-				{{ $t('kara.import.title_required') }}
-			</p>
-			<label class="label" :title="$t('kara.import.titles_aliases_tooltip')">
-				{{ $t('kara.import.titles_aliases') }}
-				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
-			</label>
-			<editable-alias-group
-				:params="karaoke.data.titles_aliases"
-				@change="(aliases) => karaoke.data.titles_aliases = aliases"
-			/>
-		</div>
-		<div class="field">
-			<label class="label" :title="$t('kara.import.series_tooltip')">
-				{{ $tc('kara.tagtypes.series', karaoke.data.tags.series.length) }}
-				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
-			</label>
-			<editable-tag-group
-				:tag-type="1"
-				:params="karaoke.data.tags.series"
-				@change="(tags) => karaoke.data.tags.series = tags"
-			/>
-			<p
-				v-if="karaoke.data.tags.series.length === 0 && karaoke.data.tags.singers.length === 0 && karaoke.data.tags.singergroups.length === 0"
-				class="help is-danger"
-			>
-				{{ $t('kara.import.series_singers_required') }}
-			</p>
-		</div>
-		<div class="field">
-			<label class="label" :title="$t('kara.import.franchises_tooltip')">
-				{{ $tc('kara.tagtypes.franchises', karaoke.data.tags.franchises.length) }}
-				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
-			</label>
-			<editable-tag-group
-				:tag-type="18"
-				:params="karaoke.data.tags.franchises"
-				@change="(tags) => karaoke.data.tags.franchises = tags"
-			/>
-		</div>
-		<div class="field">
-			<label class="label">{{ $tc('kara.tagtypes.collections', karaoke.data.tags.collections.length) }}</label>
-			<div class="control">
-				<editable-tag-group
-					:checkboxes="true"
-					:tag-type="16"
-					:params="karaoke.data.tags.collections"
-					@change="(tags) => karaoke.data.tags.collections = tags"
-				/>
-			</div>
-			<p
-				v-if="karaoke.data.tags.collections.length === 0"
-				class="help is-danger"
-			>
-				{{ $t('kara.import.collections_required') }}
-			</p>
-		</div>
-		<div class="field">
-			<label class="label">{{ $tc('kara.tagtypes.songtypes', karaoke.data.tags.songtypes.length) }}</label>
-			<editable-tag-group
-				:checkboxes="true"
-				:tag-type="3"
-				:params="karaoke.data.tags.songtypes"
-				@change="(tags) => karaoke.data.tags.songtypes = tags"
-			/>
-			<p
-				v-if="karaoke.data.tags.songtypes.length === 0"
-				class="help is-danger"
-			>
-				{{ $t('kara.import.songtypes_required') }}
-			</p>
-		</div>
-		<div class="field">
-			<label class="label">{{ $tc('kara.tagtypes.versions', karaoke.data.tags.versions.length) }}</label>
-			<editable-tag-group
-				:checkboxes="true"
-				:tag-type="14"
-				:params="karaoke.data.tags.versions"
-				@change="(tags) => karaoke.data.tags.versions = tags"
-			/>
-		</div>
-		<div class="field">
-			<label class="label" :title="$t('kara.import.songorder_tooltip')">
-				{{ $t('kara.import.songorder') }}
-				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
-			</label>
-			<div class="control">
-				<input v-model="karaoke.data.songorder" class="input short" type="number">
-				<p v-if="karaoke.data.songorder > 999" class="help is-danger">
-					{{ $t('kara.import.songorder_invalid') }}
+				<div class="file has-name is-fullwidth" :class="{'is-attached-bottom': uploading.sub}">
+					<label class="file-label">
+						<input
+							ref="subfile"
+							class="file-input"
+							type="file"
+							name="resume"
+							:accept="supportedLyrics.map(val => '.'+val).join(',')"
+							@change="handleSubfileUpload()"
+						>
+						<span class="file-cta">
+							<span class="file-icon">
+								<font-awesome-icon :icon="['fas', 'upload']" :fixed-width="true" />
+							</span>
+							<span class="file-label">{{ $t('kara.import.choose_file') }}</span>
+						</span>
+						<span class="file-name">{{ subfile }}</span>
+					</label>
+				</div>
+				<progress v-if="uploading.sub" class="progress is-success is-attached-top" :value="uploading.sub === true ? undefined:uploading.sub" max="100" />
+				<p v-if="subfile_error" class="help is-danger">
+					{{ subfile_error }}
 				</p>
 			</div>
 		</div>
-		<div class="field">
-			<label class="label">{{ $tc('kara.tagtypes.langs', karaoke.data.tags.langs.length) }}</label>
-			<div class="control">
-				<editable-tag-group
-					:tag-type="5"
-					:params="karaoke.data.tags.langs"
-					no-create
-					@change="(tags) => karaoke.data.tags.langs = tags"
+		<label class="title">{{ $t('kara.import.sections.titles') }}</label>
+		<div class="box">
+			<div class="content">
+				<p>{{ $t('kara.import.desc.titles') }}</p>
+				<p>{{ $t('kara.import.desc.titles_default_language') }}</p>
+			</div>
+			<div class="field">
+				<label class="label" :title="$t('kara.import.title_tooltip')">
+					{{ $t('kara.import.title') }}
+					<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+				</label>
+				<languages-list
+					:value="karaoke.data.titles"
+					:default-language="karaoke.data.titles_default_language"
+					@change="onTitlesChange"
+					@onDefaultLanguage="onDefaultLanguageSelect"
 				/>
-				<p v-if="karaoke.data.tags.langs.length === 0" class="help is-danger">
-					{{ $t('kara.import.langs_required') }}
+				<p v-if="!karaoke.data.titles || Object.keys(karaoke.data.titles).length === 0 || Object.values(karaoke.data.titles).includes('')" class="help is-danger">
+					{{ $t('kara.import.title_required') }}
 				</p>
-			</div>
-		</div>
-		<div class="field">
-			<label class="label" :title="$t('kara.import.year_tooltip')">
-				{{ $t('kara.import.year') }}
-				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
-			</label>
-			<div class="control">
-				<input v-model="karaoke.data.year" class="input short" type="number" min="1800" :max="new Date().getFullYear()">
-				<p v-if="!karaoke.data.year" class="help is-danger">
-					{{ $t('kara.import.year_required') }}
-				</p>
-				<p v-if="karaoke.data.year && (karaoke.data.year < 1800 || karaoke.data.year > new Date().getFullYear())" class="help is-danger">
-					{{ $t('kara.import.year_invalid') }}
-				</p>
-			</div>
-		</div>
-		<div class="field">
-			<label class="label">{{ $t('kara.singers_by') }}</label>
-			<div class="control">
-				<editable-tag-group
-					:tag-type="2"
-					:params="karaoke.data.tags.singers"
-					@change="(tags) => karaoke.data.tags.singers = tags"
-				/>
-				<p
-					v-if="karaoke.data.tags.series.length === 0 && karaoke.data.tags.singers.length === 0 && karaoke.data.tags.singergroups.length === 0"
-					class="help is-danger"
-				>
-					{{ $t('kara.import.series_singers_required') }}
-				</p>
-			</div>
-		</div>
-		<div class="field">
-			<label class="label" :title="$t('kara.import.singergroups_tooltip')">
-				{{ $t('kara.singergroups_by') }}
-				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
-			</label>
-			<div class="control">
-				<editable-tag-group
-					:tag-type="17"
-					:params="karaoke.data.tags.singergroups"
-					@change="(tags) => karaoke.data.tags.singergroups = tags"
-				/>
-				<p
-					v-if="karaoke.data.tags.series.length === 0 && karaoke.data.tags.singers.length === 0 && karaoke.data.tags.singergroups.length === 0"
-					class="help is-danger"
-				>
-					{{ $t('kara.import.series_singers_required') }}
-				</p>
-			</div>
-		</div>
-		<div class="field">
-			<label class="label" :title="$t('kara.import.songwriters_tooltip')">
-				{{ $t('kara.songwriters_by') }}
-				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
-			</label>
-			<div class="control">
-				<editable-tag-group
-					:tag-type="8"
-					:params="karaoke.data.tags.songwriters"
-					@change="(tags) => karaoke.data.tags.songwriters = tags"
+				<label class="label" :title="$t('kara.import.titles_aliases_tooltip')">
+					{{ $t('kara.import.titles_aliases') }}
+					<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+				</label>
+				<editable-alias-group
+					:params="karaoke.data.titles_aliases"
+					@change="(aliases) => karaoke.data.titles_aliases = aliases"
 				/>
 			</div>
 		</div>
-		<div class="field">
-			<label class="label" :title="$t('kara.import.creators_tooltip')">
-				{{ $t('kara.creators_by') }}
-				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
-			</label>
-			<div class="control">
-				<editable-tag-group
-					:tag-type="4"
-					:params="karaoke.data.tags.creators"
-					@change="(tags) => karaoke.data.tags.creators = tags"
-				/>
-			</div>
-		</div>
-		<div class="field">
-			<label class="label" :title="$t('kara.import.authors_tooltip')">
-				{{ $t('kara.authors_by') }}
-				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
-			</label>
-			<div class="control">
-				<editable-tag-group
-					:tag-type="6"
-					:params="karaoke.data.tags.authors"
-					@change="(tags) => karaoke.data.tags.authors = tags"
-				/>
-				<p
-					v-if="karaoke.data.tags.authors.length === 0"
-					class="help is-danger"
-				>
-					{{ $t('kara.import.authors_required') }}
-				</p>
-			</div>
-		</div>
-		<div class="field">
-			<label class="label">{{ $tc('kara.tagtypes.families', karaoke.data.tags.families.length) }}</label>
-			<div class="control">
-				<editable-tag-group
-					:checkboxes="true"
-					:tag-type="10"
-					:params="karaoke.data.tags.families"
-					@change="(tags) => karaoke.data.tags.families = tags"
-				/>
-			</div>
-		</div>
-		<div class="field">
-			<label class="label">{{ $tc('kara.tagtypes.platforms', karaoke.data.tags.platforms.length) }}</label>
-			<div class="control">
-				<editable-tag-group
-					:checkboxes="true"
-					:tag-type="13"
-					:params="karaoke.data.tags.platforms"
-					@change="(tags) => karaoke.data.tags.platforms = tags"
-				/>
-			</div>
-		</div>
-		<div class="field">
-			<label class="label">{{ $tc('kara.tagtypes.genres', karaoke.data.tags.genres.length) }}</label>
-			<div class="control">
-				<editable-tag-group
-					:checkboxes="true"
-					:tag-type="12"
-					:params="karaoke.data.tags.genres"
-					@change="(tags) => karaoke.data.tags.genres = tags"
-				/>
-			</div>
-		</div>
-		<div class="field">
-			<label class="label">{{ $tc('kara.tagtypes.origins', karaoke.data.tags.origins.length) }}</label>
-			<div class="control">
-				<editable-tag-group
-					:checkboxes="true"
-					:tag-type="11"
-					:params="karaoke.data.tags.origins"
-					@change="(tags) => karaoke.data.tags.origins = tags"
-				/>
-			</div>
-		</div>
-		<div class="field">
-			<label class="label">{{ $tc('kara.tagtypes.misc', karaoke.data.tags.misc.length) }}</label>
-			<div class="control">
-				<editable-tag-group
-					:checkboxes="true"
-					:tag-type="7"
-					:params="karaoke.data.tags.misc"
-					@change="(tags) => karaoke.data.tags.misc = tags"
-				/>
-			</div>
-		</div>
-		<div class="field">
-			<label class="label">{{ $tc('kara.tagtypes.warnings', karaoke.data.tags.warnings.length) }}</label>
-			<div class="control">
-				<editable-tag-group
-					:checkboxes="true"
-					:tag-type="15"
-					:params="karaoke.data.tags.warnings"
-					@change="(tags) => karaoke.data.tags.warnings = tags"
-				/>
-			</div>
-		</div>
-		<div class="field">
-			<label class="label" :title="$t('kara.import.groups_tooltip')">
-				{{ $tc('kara.tagtypes.groups', karaoke.data.tags.groups.length) }}
-				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
-			</label>
-			<div class="control">
-				<editable-tag-group
-					:checkboxes="true"
-					:tag-type="9"
-					:params="karaoke.data.tags.groups"
-					@change="(tags) => karaoke.data.tags.groups = tags"
-				/>
-			</div>
-		</div>
-		<div class="field">
-			<label class="label">{{ $t('kara.import.created_at') }}</label>
-			<div class="control">
-				<input
-					class="input is-static"
-					type="text"
-					readonly
-					:value="karaoke.data.created_at ? new Date(karaoke.data.created_at).toLocaleString() : null"
-				>
-			</div>
-		</div>
-		<div class="field">
-			<label class="label" :title="$t('kara.import.comment_tooltip')">
-				{{ $t('kara.import.comment') }}
-				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
-			</label>
-			<div class="control">
-				<input
-					v-model="karaoke.data.comment"
-					class="input"
-					type="text"
-				>
-			</div>
-		</div>
-		<div v-if="loggedIn" class="field">
-			<label for="contact">
-				<input
-					id="contact"
-					v-model="sendContactInfos"
-					type="checkbox"
-				>
-				{{ $t('kara.import.send_contact_infos') }}
-			</label>
-		</div>
-		<div v-if="!loggedIn" class="field">
-			<label class="label" :title="$t('kara.import.contact_infos_tooltip')">
-				{{ $t('kara.import.contact_infos') }}
-				<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
-			</label>
-			<div class="control">
-				<input
-					v-model="contactInfos"
-					class="input"
-					type="text"
-				>
-				<label>{{ $t('kara.import.auto_send_contact_infos') }}</label>
-			</div>
-		</div>
-		<div class="field">
-			<div class="control submit">
-				<button
-					class="button is-link"
-					:class="{'is-loading': loading}"
-					:disabled="submitDisabled()"
-					@click="submit"
-				>
-					{{ $t('kara.import.submit') }}
-				</button>
-				<span v-if="!subfile && !subfile_error" class="help is-warning">{{ $t('kara.import.lyrics_file_missing') }}</span>
-			</div>
-		</div>
-		<div class="modal" :class="{'is-active': gitlabUrl}">
-			<div class="modal-background" />
-			<div class="modal-card">
-				<header class="modal-card-head">
-					<p class="modal-card-title">
-						{{ $t('kara.import.add_success') }}
+		<label class="title">{{ $t('kara.import.sections.identity') }}</label>
+		<div class="box">
+			<div class="field">
+				<label class="label">{{ $tc('kara.tagtypes.langs', karaoke.data.tags.langs.length) }}</label>
+				<div class="control">
+					<editable-tag-group
+						:tag-type="5"
+						:params="karaoke.data.tags.langs"
+						no-create
+						@change="(tags) => karaoke.data.tags.langs = tags"
+					/>
+					<p v-if="karaoke.data.tags.langs.length === 0" class="help is-danger">
+						{{ $t('kara.import.langs_required') }}
 					</p>
-					<a class="delete" aria-label="close" @click.prevent="reset" />
-				</header>
-				<i18n path="kara.import.add_success_description" tag="section" class="modal-card-body">
-					<template #url>
-						<a :href="gitlabUrl" target="_blank">
-							{{ gitlabUrl }}
-						</a>
-					</template>
-				</i18n>
-				<footer class="modal-card-foot">
-					<button class="button is-success" @click.prevent="reset">
-						{{ $t('kara.import.restart') }}
-					</button>
-				</footer>
+				</div>
+			</div>
+			<div class="field">
+				<label class="label" :title="$t('kara.import.series_tooltip')">
+					{{ $tc('kara.tagtypes.series', karaoke.data.tags.series.length) }}
+					<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+				</label>
+				<editable-tag-group
+					:tag-type="1"
+					:params="karaoke.data.tags.series"
+					@change="(tags) => karaoke.data.tags.series = tags"
+				/>
+				<p
+					v-if="karaoke.data.tags.series.length === 0 && karaoke.data.tags.singers.length === 0 && karaoke.data.tags.singergroups.length === 0"
+					class="help is-danger"
+				>
+					{{ $t('kara.import.series_singers_required') }}
+				</p>
+			</div>
+			<div class="field">
+				<label class="label" :title="$t('kara.import.franchises_tooltip')">
+					{{ $tc('kara.tagtypes.franchises', karaoke.data.tags.franchises.length) }}
+					<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+				</label>
+				<editable-tag-group
+					:tag-type="18"
+					:params="karaoke.data.tags.franchises"
+					@change="(tags) => karaoke.data.tags.franchises = tags"
+				/>
+			</div>
+			<div class="field">
+				<label class="label">{{ $tc('kara.tagtypes.songtypes', karaoke.data.tags.songtypes.length) }}</label>
+				<editable-tag-group
+					:checkboxes="true"
+					:tag-type="3"
+					:params="karaoke.data.tags.songtypes"
+					@change="(tags) => karaoke.data.tags.songtypes = tags"
+				/>
+				<p
+					v-if="karaoke.data.tags.songtypes.length === 0"
+					class="help is-danger"
+				>
+					{{ $t('kara.import.songtypes_required') }}
+				</p>
+			</div>
+			<div class="field">
+				<label class="label" :title="$t('kara.import.songorder_tooltip')">
+					{{ $t('kara.import.songorder') }}
+					<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+				</label>
+				<div class="control">
+					<input v-model="karaoke.data.songorder" class="input short" type="number">
+					<p v-if="karaoke.data.songorder > 999" class="help is-danger">
+						{{ $t('kara.import.songorder_invalid') }}
+					</p>
+				</div>
+			</div>
+			<div class="field">
+				<label class="label">{{ $tc('kara.tagtypes.versions', karaoke.data.tags.versions.length) }}</label>
+				<editable-tag-group
+					:checkboxes="true"
+					:tag-type="14"
+					:params="karaoke.data.tags.versions"
+					@change="(tags) => karaoke.data.tags.versions = tags"
+				/>
+			</div>
+			<div class="field">
+				<label class="label">{{ $t('kara.singers_by') }}</label>
+				<div class="control">
+					<editable-tag-group
+						:tag-type="2"
+						:params="karaoke.data.tags.singers"
+						@change="(tags) => karaoke.data.tags.singers = tags"
+					/>
+					<p
+						v-if="karaoke.data.tags.series.length === 0 && karaoke.data.tags.singers.length === 0 && karaoke.data.tags.singergroups.length === 0"
+						class="help is-danger"
+					>
+						{{ $t('kara.import.series_singers_required') }}
+					</p>
+				</div>
+			</div>
+			<div class="field">
+				<label class="label" :title="$t('kara.import.singergroups_tooltip')">
+					{{ $t('kara.singergroups_by') }}
+					<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+				</label>
+				<div class="control">
+					<editable-tag-group
+						:tag-type="17"
+						:params="karaoke.data.tags.singergroups"
+						@change="(tags) => karaoke.data.tags.singergroups = tags"
+					/>
+					<p
+						v-if="karaoke.data.tags.series.length === 0 && karaoke.data.tags.singers.length === 0 && karaoke.data.tags.singergroups.length === 0"
+						class="help is-danger"
+					>
+						{{ $t('kara.import.series_singers_required') }}
+					</p>
+				</div>
+			</div>
+			<div class="field">
+				<label class="label" :title="$t('kara.import.songwriters_tooltip')">
+					{{ $t('kara.songwriters_by') }}
+					<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+				</label>
+				<div class="control">
+					<editable-tag-group
+						:tag-type="8"
+						:params="karaoke.data.tags.songwriters"
+						@change="(tags) => karaoke.data.tags.songwriters = tags"
+					/>
+				</div>
+			</div>
+			<div class="field">
+				<label class="label" :title="$t('kara.import.creators_tooltip')">
+					{{ $t('kara.creators_by') }}
+					<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+				</label>
+				<div class="control">
+					<editable-tag-group
+						:tag-type="4"
+						:params="karaoke.data.tags.creators"
+						@change="(tags) => karaoke.data.tags.creators = tags"
+					/>
+				</div>
+			</div>
+			<div class="field">
+				<label class="label" :title="$t('kara.import.year_tooltip')">
+					{{ $t('kara.import.year') }}
+					<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+				</label>
+				<div class="control">
+					<input v-model="karaoke.data.year" class="input short" type="number" min="1800" :max="new Date().getFullYear()">
+					<p v-if="!karaoke.data.year" class="help is-danger">
+						{{ $t('kara.import.year_required') }}
+					</p>
+					<p v-if="karaoke.data.year && (karaoke.data.year < 1800 || karaoke.data.year > new Date().getFullYear())" class="help is-danger">
+						{{ $t('kara.import.year_invalid') }}
+					</p>
+				</div>
+			</div>
+		</div>
+		<label class="title">{{ $t('kara.import.sections.categorization') }}</label>
+		<div class="box">
+			<div class="field">
+				<label class="label">{{ $tc('kara.tagtypes.collections', karaoke.data.tags.collections.length) }}</label>
+				<div class="control">
+					<editable-tag-group
+						:checkboxes="true"
+						:tag-type="16"
+						:params="karaoke.data.tags.collections"
+						@change="(tags) => karaoke.data.tags.collections = tags"
+					/>
+				</div>
+				<p
+					v-if="karaoke.data.tags.collections.length === 0"
+					class="help is-danger"
+				>
+					{{ $t('kara.import.collections_required') }}
+				</p>
+			</div>
+			<div class="field">
+				<label class="label">{{ $tc('kara.tagtypes.families', karaoke.data.tags.families.length) }}</label>
+				<div class="control">
+					<editable-tag-group
+						:checkboxes="true"
+						:tag-type="10"
+						:params="karaoke.data.tags.families"
+						@change="(tags) => karaoke.data.tags.families = tags"
+					/>
+				</div>
+			</div>
+			<div class="field">
+				<label class="label">{{ $tc('kara.tagtypes.platforms', karaoke.data.tags.platforms.length) }}</label>
+				<div class="control">
+					<editable-tag-group
+						:checkboxes="true"
+						:tag-type="13"
+						:params="karaoke.data.tags.platforms"
+						@change="(tags) => karaoke.data.tags.platforms = tags"
+					/>
+				</div>
+			</div>
+			<div class="field">
+				<label class="label">{{ $tc('kara.tagtypes.genres', karaoke.data.tags.genres.length) }}</label>
+				<div class="control">
+					<editable-tag-group
+						:checkboxes="true"
+						:tag-type="12"
+						:params="karaoke.data.tags.genres"
+						@change="(tags) => karaoke.data.tags.genres = tags"
+					/>
+				</div>
+			</div>
+			<div class="field">
+				<label class="label">{{ $tc('kara.tagtypes.origins', karaoke.data.tags.origins.length) }}</label>
+				<div class="control">
+					<editable-tag-group
+						:checkboxes="true"
+						:tag-type="11"
+						:params="karaoke.data.tags.origins"
+						@change="(tags) => karaoke.data.tags.origins = tags"
+					/>
+				</div>
+			</div>
+			<div class="field">
+				<label class="label">{{ $tc('kara.tagtypes.misc', karaoke.data.tags.misc.length) }}</label>
+				<div class="control">
+					<editable-tag-group
+						:checkboxes="true"
+						:tag-type="7"
+						:params="karaoke.data.tags.misc"
+						@change="(tags) => karaoke.data.tags.misc = tags"
+					/>
+				</div>
+			</div>
+			<div class="field">
+				<label class="label">{{ $tc('kara.tagtypes.warnings', karaoke.data.tags.warnings.length) }}</label>
+				<div class="control">
+					<editable-tag-group
+						:checkboxes="true"
+						:tag-type="15"
+						:params="karaoke.data.tags.warnings"
+						@change="(tags) => karaoke.data.tags.warnings = tags"
+					/>
+				</div>
+			</div>
+			<div class="field">
+				<label class="label" :title="$t('kara.import.groups_tooltip')">
+					{{ $tc('kara.tagtypes.groups', karaoke.data.tags.groups.length) }}
+					<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+				</label>
+				<div class="control">
+					<editable-tag-group
+						:checkboxes="true"
+						:tag-type="9"
+						:params="karaoke.data.tags.groups"
+						@change="(tags) => karaoke.data.tags.groups = tags"
+					/>
+				</div>
+			</div>
+			<label class="title">{{ $t('kara.import.sections.meta') }}</label>
+			<div class="box">
+				<div class="field">
+					<label class="label" :title="$t('kara.import.authors_tooltip')">
+						{{ $t('kara.authors_by') }}
+						<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+					</label>
+					<div class="control">
+						<editable-tag-group
+							:tag-type="6"
+							:params="karaoke.data.tags.authors"
+							@change="(tags) => karaoke.data.tags.authors = tags"
+						/>
+						<p
+							v-if="karaoke.data.tags.authors.length === 0"
+							class="help is-danger"
+						>
+							{{ $t('kara.import.authors_required') }}
+						</p>
+					</div>
+				</div>
+				<div class="field">
+					<label class="label" :title="$t('kara.import.comment_tooltip')">
+						{{ $t('kara.import.comment') }}
+						<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+					</label>
+					<div class="control">
+						<input
+							v-model="karaoke.data.comment"
+							class="input"
+							type="text"
+						>
+					</div>
+				</div>
+				<div class="field">
+					<label class="label">{{ $t('kara.import.created_at') }}</label>
+					<div class="control">
+						<input
+							class="input is-static"
+							type="text"
+							readonly
+							:value="karaoke.data.created_at ? new Date(karaoke.data.created_at).toLocaleString() : null"
+						>
+					</div>
+				</div>
+				<div v-if="loggedIn" class="field">
+					<label for="contact">
+						<input
+							id="contact"
+							v-model="sendContactInfos"
+							type="checkbox"
+						>
+						{{ $t('kara.import.send_contact_infos') }}
+					</label>
+				</div>
+				<div v-if="!loggedIn" class="field">
+					<label class="label" :title="$t('kara.import.contact_infos_tooltip')">
+						{{ $t('kara.import.contact_infos') }}
+						<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+					</label>
+					<div class="control">
+						<input
+							v-model="contactInfos"
+							class="input"
+							type="text"
+						>
+						<label>{{ $t('kara.import.auto_send_contact_infos') }}</label>
+					</div>
+				</div>
+				<div class="field">
+					<div class="control submit">
+						<button
+							class="button is-link"
+							:class="{'is-loading': loading}"
+							:disabled="submitDisabled()"
+							@click="submit"
+						>
+							{{ $t('kara.import.submit') }}
+						</button>
+						<span v-if="!subfile && !subfile_error" class="help is-warning">{{ $t('kara.import.lyrics_file_missing') }}</span>
+					</div>
+				</div>
+				<div class="modal" :class="{'is-active': gitlabUrl}">
+					<div class="modal-background" />
+					<div class="modal-card">
+						<header class="modal-card-head">
+							<p class="modal-card-title">
+								{{ $t('kara.import.add_success') }}
+							</p>
+							<a class="delete" aria-label="close" @click.prevent="reset" />
+						</header>
+						<i18n path="kara.import.add_success_description" tag="section" class="modal-card-body">
+							<template #url>
+								<a :href="gitlabUrl" target="_blank">
+									{{ gitlabUrl }}
+								</a>
+							</template>
+						</i18n>
+						<footer class="modal-card-foot">
+							<button class="button is-success" @click.prevent="reset">
+								{{ $t('kara.import.restart') }}
+							</button>
+						</footer>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -761,5 +780,12 @@
 		border-top-right-radius: 0;
 		margin-bottom: 0;
 		background-color: inherit;
+	}
+
+	.box {
+		background-color: transparent;
+		border-top: 1px #5e6d6f solid;
+		border-top-left-radius: 0;
+		border-top-right-radius: 0;
 	}
 </style>

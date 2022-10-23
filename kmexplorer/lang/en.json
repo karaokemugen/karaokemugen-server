@@ -86,6 +86,18 @@
 			}
 		},
 		"import": {
+			"sections": {
+				"files": "Files",
+				"titles": "Title(s)",
+				"identity": "Identity",
+				"categorization": "Categorization",
+				"meta": "Metadata"
+			},
+			"desc": {
+				"titles": "Set all titles the song has in different languages. Usually, there's only one title.",
+				"titles_default_language": "Default title language should be the song's original title. For titles in non-latin languages (chinese, japanese, arabic, korean…), add a \"Romanization\" title and make it default.",
+				"aliases": "If the song is known as something else (abbreviations for example), set them here to help people find it through search. No need to use words already contained in the song title(s)."
+			},
 			"description": "This form allows you to submit a karaoke to the Karaoke Mugen team. It will not be immediately integrated in the karaoke database because it requires a validation. Please be patient. Your karaoke may be modified if it doesn't comply to KM's rules.",
 			"attention": "ATTENTION:",
 			"check_in_progress": "Please check the list of karaokes currently being made before sending us a song. This'll avoid duplicate work, and the world will thus be a better place.",
