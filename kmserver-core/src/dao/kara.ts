@@ -49,6 +49,7 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 	let joinClause = '';
 	let groupClause = '';
 	let whereClauses = '';
+	const withCTEs = ['blank AS (SELECT true)'];
 	if (params.username) {
 		selectClause = `
 			(CASE WHEN f.fk_kid IS NULL
@@ -64,6 +65,19 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 		joinClause += ' LEFT JOIN users_favorites AS fv ON fv.fk_kid = ak.pk_kid';
 		yesqlPayload.params.username_favs = params.favorites;
 		whereClauses = 'AND fv.fk_login = :username_favs';
+	}
+	if (params.userAnimeList) {
+		withCTEs.push(
+			'anime_list_infos AS (SELECT anime_list_ids, anime_list_to_fetch FROM users where users.pk_login = :username_anime_list)'
+		);
+		whereClauses += ` AND (
+			(SELECT anime_list_to_fetch FROM anime_list_infos) = 'myanimelist' AND myanimelist_ids::int[] && (SELECT anime_list_ids FROM anime_list_infos)
+		OR (
+			SELECT anime_list_to_fetch FROM anime_list_infos) = 'anilist' AND anilist_ids::int[] && (SELECT anime_list_ids FROM anime_list_infos)
+		OR (
+			SELECT anime_list_to_fetch FROM anime_list_infos) = 'kitsu' AND kitsu_ids::int[] && (SELECT anime_list_ids FROM anime_list_infos)
+		)`;
+		yesqlPayload.params.username_anime_list = params.userAnimeList;
 	}
 	if (params.order === 'recent') orderClauses = 'created_at DESC, ';
 	if (params.order === 'played') {
@@ -111,7 +125,8 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 		whereClauses,
 		yesqlPayload.additionalFrom,
 		includeStaging,
-		collectionClauses
+		collectionClauses,
+		withCTEs
 	);
 	const res = await db().query(yesql(query)(yesqlPayload.params));
 	return res.rows.map((row) => {

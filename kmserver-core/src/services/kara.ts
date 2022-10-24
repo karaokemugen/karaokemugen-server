@@ -236,6 +236,7 @@ export async function getAllKaras(params: KaraParams, token?: JWTTokenWithRoles,
 			favorites: params.favorites,
 			random: params.random,
 			ignoreCollections: params.ignoreCollections,
+			userAnimeList: params.userAnimeList,
 			forceCollections: params.forceCollections || []
 		}, includeStaging);
 		return formatKaraList(pl, +params.from, pl[0]?.count || 0);

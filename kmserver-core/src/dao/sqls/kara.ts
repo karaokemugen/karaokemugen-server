@@ -11,7 +11,21 @@ export const selectAllMedias = (collectionClauses: string[]) => `
 
 `;
 
-export const getAllKaras = (filterClauses: string[], orderClauses: string, limitClause: string, offsetClause: string, selectClause: string, joinClause: string, groupClause: string, whereClauses: string, additionalFrom: string[], includeStaging: boolean, collectionClauses: string[]) => `
+export const getAllKaras = (
+	filterClauses: string[], 
+	orderClauses: string, 
+	limitClause: string, 
+	offsetClause: string, 
+	selectClause: string, 
+	joinClause: string, 
+	groupClause: string, 
+	whereClauses: string, 
+	additionalFrom: string[], 
+	includeStaging: boolean, 
+	collectionClauses: string[],
+	withCTE: string[],
+	) => `
+WITH ${withCTE.join(', \n')}
 SELECT
   ak.tags AS tags,
   ak.pk_kid AS kid,

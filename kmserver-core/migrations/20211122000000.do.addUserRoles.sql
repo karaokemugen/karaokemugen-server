@@ -1,4 +1,4 @@
-ALTER TABLE users ADD COLUMN roles JSONB;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS roles JSONB;
 
 UPDATE users SET roles = '{"admin": true, "user": true}'::jsonb WHERE type = 0;
 UPDATE users SET roles = '{"maintainer": true, "user": true}'::jsonb WHERE type = 0.5;
