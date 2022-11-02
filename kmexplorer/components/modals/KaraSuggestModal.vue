@@ -206,6 +206,7 @@
 
 		methods: {
 			closeModal(): void {
+				this.submitted = false;
 				this.$emit('close');
 			},
 			submitForm() {
@@ -227,7 +228,6 @@
 						};
 					});
 				}
-				this.closeModal();
 			}
 		}
 	});
