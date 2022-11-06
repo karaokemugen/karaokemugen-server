@@ -10374,6 +10374,17 @@ fsevents@~2.3.1:
   languageName: unknown
   linkType: soft
 
+"kbp2ass@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "kbp2ass@npm:1.0.0"
+  dependencies:
+    ass-stringify: ^0.1.3
+  bin:
+    kbp2ass: dist/index.js
+  checksum: 9600da6b11e5fa75b67e0a96c5fb7a61086bbe408bb7a86de2ea73ace2fc08fdc24a0def3a250b501a2193100f533e6f5125eff6cc59ff1868f3ad4938001a37
+  languageName: node
+  linkType: hard
+
 "kfn-to-ass@npm:^1.1.0":
   version: 1.1.0
   resolution: "kfn-to-ass@npm:1.1.0"
@@ -10576,6 +10587,7 @@ fsevents@~2.3.1:
     js-yaml: ^4.1.0
     jwt-simple: ^0.5.6
     kar-to-ass: ^1.0.11
+    kbp2ass: ^1.0.0
     kfn-to-ass: ^1.1.0
     kitsu: ^10.0.2
     klaw: ^4.0.1
