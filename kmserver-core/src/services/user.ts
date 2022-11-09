@@ -409,10 +409,7 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 			sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 			sentry.error(new Error(err));
 		}
-		throw {
-			message: err,
-			data: user?.nickname
-		};
+		throw err;
 	}
 }
 
