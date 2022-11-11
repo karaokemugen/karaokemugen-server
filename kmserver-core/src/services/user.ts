@@ -33,7 +33,7 @@ export async function resetPasswordRequest(username: string) {
 	try {
 		if (!username) throw ('No user provided');
 		username = username.toLowerCase();
-		const user = await findUserByName(username);
+		const user = await findUserByName(username, { contact: true });
 		if (!user) throw new Error('User unknown');
 		if (!user.email) throw new Error('User has no configured mail. Ask server admin for a password reset');
 		const requestCode = uuidV4();
