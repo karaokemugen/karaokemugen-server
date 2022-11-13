@@ -106,14 +106,18 @@ export async function removeKaraFromInbox(inid: string) {
 		const inbox = (await selectInbox(inid))[0];
 		if (!inbox) throw {code: 404};
 		// Kara might not exist anymore if something went wrong.
-		const kara = await getKara({
-			q: `k:${inbox.edited_kid ? inbox.edited_kid : inbox.kid}!r:Staging`
-		});
-		// If kara is not found, it means the song has already been added to the database by kara.moe
-		if (kara) {
-			const karaData = formatKaraV4(kara);
-			await deleteKara([kara.kid]);
-			refreshKarasAfterDBChange('DELETE', [karaData.data]);
+		try {
+			const kara = await getKara({
+				q: `k:${inbox.edited_kid ? inbox.edited_kid : inbox.kid}!r:Staging`
+			});
+			// If kara is not found, it means the song has already been added to the database by kara.moe
+			if (kara) {
+				const karaData = formatKaraV4(kara);
+				await deleteKara([kara.kid]);
+				refreshKarasAfterDBChange('DELETE', [karaData.data]);
+			}
+		} catch (err) {
+			logger.info(`Kara ${inbox.name} is not found, it means the song has already been added to the database by kara.moe`, { service });
 		}
 		if (inbox.karafile) {
 			const karaPath = resolve(resolvedPathRepos('Karaokes', 'Staging')[0], inbox.karafile);
@@ -126,7 +130,7 @@ export async function removeKaraFromInbox(inid: string) {
 					fs.unlink(mediaPath)
 				]);
 			} catch (err) {
-				logger.warn(`Unable to remove some files after inbox deleteion for song ${inbox.name}`, { service });
+				logger.warn(`Unable to remove some files after inbox deletion for song ${inbox.name}`, { service });
 			}
 		}
 		await deleteInbox(inid);
