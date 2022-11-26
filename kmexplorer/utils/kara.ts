@@ -49,8 +49,8 @@ export function DBKaraToKaraFile(dbKara: DBKara): KaraFileV4 {
 	const mediaVersion = determineVersion(dbKara.titles, dbKara.titles_default_language);
 	return {
 		header: {
-			description: 'Karaoke Mugen Karaoke Data File',
-			version: 4
+			version: 4,
+			description: 'Karaoke Mugen Karaoke Data File'
 		},
 		medias: [
 			{
@@ -94,7 +94,6 @@ export function DBKaraToKaraFile(dbKara: DBKara): KaraFileV4 {
 			titles: dbKara.titles,
 			titles_default_language: dbKara.titles_default_language || 'eng',
 			titles_aliases: dbKara.titles_aliases,
-			title: dbKara.titles[dbKara.titles_default_language || 'eng'],
 			year: dbKara.year
 		},
 		meta:{}

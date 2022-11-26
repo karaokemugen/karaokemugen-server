@@ -27,6 +27,7 @@ logs/
 !app/banners/default.jpg
 
 kmexplorer/.nuxt
+kmexplorer/.output
 sw.*
 
 kmserver-core/dist/

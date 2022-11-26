@@ -693,7 +693,6 @@
 						delete karaoke.data.tags[tag];
 					}
 				}
-				karaoke.data.title = karaoke.data.titles[karaoke.data.titles_default_language || 'eng'];
 				if (this.$route.params.id) {
 					this.$axios.$put(
 						`/api/karas/${this.karaoke.data.kid}`,

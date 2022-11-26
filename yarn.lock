@@ -10555,7 +10555,7 @@ fsevents@~2.3.1:
     langs: ^2.0.0
     lodash: ^4.17.21
     mal-scraper: ^2.11.4
-    multer: 1.4.4-lts.1
+    multer: 1.4.5-lts.1
     node-schedule: ^2.1.0
     nodemailer: ^6.8.0
     nuxt: ^2.15.8
@@ -11850,9 +11850,9 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"multer@npm:1.4.4-lts.1":
-  version: 1.4.4-lts.1
-  resolution: "multer@npm:1.4.4-lts.1"
+"multer@npm:1.4.5-lts.1":
+  version: 1.4.5-lts.1
+  resolution: "multer@npm:1.4.5-lts.1"
   dependencies:
     append-field: ^1.0.0
     busboy: ^1.0.0
@@ -11861,7 +11861,7 @@ fsevents@~2.3.1:
     object-assign: ^4.1.1
     type-is: ^1.6.4
     xtend: ^4.0.0
-  checksum: da04b06efdbff9bd42d9f71297eeb2c0566231a4b9c895f49479c09b163c5e404aa6e58bd1c19f006f82e2114362545e39cbf7e0163ffd8d73d0f88adf4489e2
+  checksum: d6dfa78a6ec592b74890412f8962da8a87a3dcfe20f612e039b735b8e0faa72c735516c447f7de694ee0d981eb0a1b892fb9e2402a0348dc6091d18c38d89ecc
   languageName: node
   linkType: hard
 
