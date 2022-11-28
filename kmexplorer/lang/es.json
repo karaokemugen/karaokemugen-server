@@ -405,7 +405,7 @@
 	},
 	"error": {
 		"private_profile": "",
-		"generic": "",
+		"generic": "Error",
 		"home": "",
 		"not_found_profile": ""
 	},
