@@ -72,7 +72,7 @@ export async function resetPassword(username: string, requestCode: string) {
 		const request = passwordResetRequests.get(username);
 		if (!request) throw new Error('No request');
 		if (request.code !== requestCode) throw new Error('Wrong code');
-		const user = await findUserByName(username);
+		const user = await findUserByName(username, {contact: true});
 		if (!user) throw new Error('User unknown');
 		if (!user.email) throw new Error('User has no configured mail. Ask server admin for a password reset');
 		const newPassword = randomstring.generate(12);
