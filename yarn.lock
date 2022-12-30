@@ -6186,6 +6186,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dayjs@npm:^1.11.7":
+  version: 1.11.7
+  resolution: "dayjs@npm:1.11.7"
+  checksum: 5003a7c1dd9ed51385beb658231c3548700b82d3548c0cfbe549d85f2d08e90e972510282b7506941452c58d32136d6362f009c77ca55381a09c704e9f177ebb
+  languageName: node
+  linkType: hard
+
 "de-indent@npm:^1.0.2":
   version: 1.0.2
   resolution: "de-indent@npm:1.0.2"
@@ -10500,6 +10507,7 @@ fsevents@~2.3.1:
     compression: ^1.7.4
     convert-srt-to-ass: ^1.0.3
     cross-env: ^7.0.3
+    dayjs: ^1.11.7
     detect-port: ^1.5.1
     dotenv: ^16.0.3
     eiows: ^4.1.2
@@ -10533,6 +10541,7 @@ fsevents@~2.3.1:
     klaw: ^4.0.1
     langs: ^2.0.0
     lodash: ^4.17.21
+    m3u-parser-generator: ^1.2.0
     mal-scraper: ^2.11.4
     multer: 1.4.5-lts.1
     node-schedule: ^2.1.0
@@ -11244,6 +11253,13 @@ fsevents@~2.3.1:
   version: 1.28.0
   resolution: "luxon@npm:1.28.0"
   checksum: 5250cb9f138b6048eeb0b3a9044a4ac994d0058f680c72a0da4b6aeaec8612460385639cba2b1052ef6d5564879e9ed144d686f26d9d97b38ab920d82e18281c
+  languageName: node
+  linkType: hard
+
+"m3u-parser-generator@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "m3u-parser-generator@npm:1.2.0"
+  checksum: 5577834d70096c36e0494bf9015285d1c70a05a8e1fc02afe039fcf727e2589d9310e3e442ec3d4a0d537313e961d46689e35818fe2f38e4866b02c36ad8ff6e
   languageName: node
   linkType: hard
 
