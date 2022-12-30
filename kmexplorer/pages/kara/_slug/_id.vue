@@ -10,7 +10,7 @@
 				</div>
 				<div v-else class="tile is-child">
 					<div class="box">
-						<img :src="`/previews/${karaoke.kid}.${karaoke.mediasize}.25.hd.jpg`" alt="">
+						<img :src="`/previews/${karaoke.kid}.${karaoke.mediasize}.25.jpg`" alt="">
 						<div class="message is-info">
 							<div class="message-body">
 								{{ $t('kara.live_unavailable') }}
@@ -21,8 +21,8 @@
 				<div v-show="!liveOpened" v-if="!mp3" class="tile is-child">
 					<div class="box">
 						<div class="imgGroup">
-							<img :src="`/previews/${karaoke.kid}.${karaoke.mediasize}.33.hd.jpg`" alt="">
-							<img :src="`/previews/${karaoke.kid}.${karaoke.mediasize}.50.hd.jpg`" alt="">
+							<img :src="`/previews/${karaoke.kid}.${karaoke.mediasize}.33.jpg`" alt="">
+							<img :src="`/previews/${karaoke.kid}.${karaoke.mediasize}.50.jpg`" alt="">
 						</div>
 					</div>
 				</div>
@@ -124,9 +124,9 @@
 					{ hid: 'twitter:player:height', name: 'twitter:player:height', content: '720' },
 					{ hid: 'twitter:player:width', name: 'twitter:player:width', content: '1280' },
 					// @ts-ignore: No. :c
-					{ hid: 'og:image', property: 'og:image', content: `https://${process.env.EXPLORER_HOST}/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.hd.jpg` },
+					{ hid: 'og:image', property: 'og:image', content: `https://${process.env.EXPLORER_HOST}/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg` },
 					// @ts-ignore: rah :O
-					{ hid: 'twitter:image', name: 'twitter:image', content: `https://${process.env.EXPLORER_HOST}/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.hd.jpg` }
+					{ hid: 'twitter:image', name: 'twitter:image', content: `https://${process.env.EXPLORER_HOST}/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg` }
 					// The rest of meta tags is handled by KaraFullInfo.vue
 				]
 			};

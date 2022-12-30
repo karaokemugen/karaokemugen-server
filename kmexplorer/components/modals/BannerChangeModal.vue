@@ -86,14 +86,14 @@
 
 		computed: {
 			previews(): string[] {
-				const arr: string[] = [`${this.karaoke.kid}.${this.karaoke.mediasize}.25.hd.jpg`];
+				const arr: string[] = [`${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg`];
 				if (this.karaoke.mediafile.endsWith('.mp3')) {
 					return arr;
 				} else {
 					return [
 						...arr,
-						`${this.karaoke.kid}.${this.karaoke.mediasize}.33.hd.jpg`,
-						`${this.karaoke.kid}.${this.karaoke.mediasize}.50.hd.jpg`
+						`${this.karaoke.kid}.${this.karaoke.mediasize}.33.jpg`,
+						`${this.karaoke.kid}.${this.karaoke.mediasize}.50.jpg`
 					];
 				}
 			}

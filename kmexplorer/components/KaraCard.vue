@@ -119,10 +119,10 @@
 			},
 			images(): string[] {
 				return this.karaoke.mediafile.endsWith('.mp3')
-					? [`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.hd.jpg`]
+					? [`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg`]
 					: [
-						`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.hd.jpg`,
-						`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.33.hd.jpg`
+						`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg`,
+						`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.33.jpg`
 					];
 			},
 			slug(): string {
