@@ -534,7 +534,7 @@
 						href="https://api.karaokes.moe/server"
 					>{{ $t('footer.api_documentation') }}</a> -
 					<a
-						href="https://gitlab.com/karaokemugen/karaokemugen-server"
+						href="https://gitlab.com/karaokemugen/code/karaokemugen-server"
 					>GIT</a> -
 					<a href="https://hosted.weblate.org/projects/karaoke-mugen/">{{ $t('footer.translation') }}</a> -
 					<a href="http://karaokes.moe">{{ $t('footer.home') }}</a>
@@ -542,7 +542,7 @@
 				<p class="column">
 					{{ $t('footer.software_under_license') }}
 					<a
-						href="https://gitlab.com/karaokemugen/karaokemugen-server/-/blob/master/LICENSE.md"
+						href="https://gitlab.com/karaokemugen/code/karaokemugen-server/-/blob/master/LICENSE.md"
 					>MIT</a>
 					<template v-if="base_license_name">
 						/ {{ $t('footer.base_under_licence') }}

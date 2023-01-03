@@ -3,7 +3,7 @@
    "version": "3.0.0",
    "description": "Karaoke Mugen online server",
    "main": "kmserver-core/dist/index.js",
-   "repository": "https://gitlab.com/karaokemugen/karaokemugen-server.git",
+   "repository": "https://gitlab.com/karaokemugen/code/karaokemugen-server.git",
    "author": "Guillaume Lebigot <axel@teri-chan.net>",
    "license": "MIT",
    "homepage": "https://mugen.karaokes.moe",
@@ -26,7 +26,7 @@
       "pull": "git pull && git submodule sync --recursive && git submodule update --init --recursive"
    },
    "bugs": {
-      "url": "https://gitlab.com/karaokemugen/karaokemugen-server/-/issues",
+      "url": "https://gitlab.com/karaokemugen/code/karaokemugen-server/-/issues",
       "email": "axel@teri-chan.net"
    },
    "engines": {
