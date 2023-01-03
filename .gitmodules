@@ -3,4 +3,4 @@
 	url = ../lib.git
 [submodule "assets/guestAvatars"]
 	path = assets/guestAvatars
-	url = ../medias/guest-avatars.git
+	url = ../../medias/guest-avatars.git
