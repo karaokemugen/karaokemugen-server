@@ -51,12 +51,12 @@
 	import Vue, { PropOptions } from 'vue';
 	import { debounce } from 'lodash';
 	import { alpha2ToAlpha3B } from '@karaokemugen/i18n-iso-languages';
-	import { DBTagMini } from '%/lib/types/database/tag';
+	import { DBTag } from '%/lib/types/database/tag';
 	import { KaraTag } from '%/lib/types/kara';
 
 	interface VState {
-		data: DBTagMini[],
-		values: DBTagMini[],
+		data: DBTag[],
+		values: DBTag[],
 		inputVisible: boolean,
 		currentVal: string,
 		isFetching: boolean,
@@ -111,7 +111,7 @@
 			},
 			values(now, old) {
 				if (old.length !== 0 || now.length !== 0) {
-					this.$emit('change', now.map((t: DBTagMini) => t.tid));
+					this.$emit('change', now.map((t: DBTag) => t.tid));
 				}
 			}
 		},
@@ -123,7 +123,7 @@
 				this.data = result.content;
 			}
 			if (this.params.length > 0) {
-				const tags: DBTagMini[] = [];
+				const tags: DBTag[] = [];
 				for (const tag of this.params) {
 					const tag2 = this.data.find(val => val.tid === tag);
 					if (tag2) {
@@ -153,7 +153,7 @@
 			getAsyncData(val: string) {
 				this.isFetching = true;
 				this.getTags(this.tagType, val)
-					.then((result: {content: DBTagMini[]}) => {
+					.then((result: {content: DBTag[]}) => {
 						const tids = this.values.map(tag => tag.tid);
 						this.data = result.content
 							? result.content.filter(tag => !tids.includes(tag.tid)).sort((a, b) =>
@@ -165,18 +165,18 @@
 						this.isFetching = false;
 					});
 			},
-			localizedName(tag: DBTagMini) {
+			localizedName(tag: DBTag) {
 				if (tag.i18n) {
 					return tag.i18n[alpha2ToAlpha3B(this.$i18n.locale) as string] || tag.i18n.eng || tag.name;
 				} else {
 					return tag.name;
 				}
 			},
-			addValue(option: DBTagMini) {
+			addValue(option: DBTag) {
 				this.inputVisible = false;
 				this.currentVal = '';
 				if (option) {
-					const values: DBTagMini[] = this.values;
+					const values: DBTag[] = this.values;
 					values.push(option);
 					this.values = values;
 				}
@@ -184,7 +184,7 @@
 			async newValue() {
 				if (this.currentVal) {
 					this.loading = true;
-					const res: { tag: DBTagMini } = await this.$axios.$post('/api/tags/createStaging', {
+					const res: { tag: DBTag } = await this.$axios.$post('/api/tags/createStaging', {
 						name: this.currentVal,
 						types: [this.tagType],
 						i18n: {
