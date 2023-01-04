@@ -181,7 +181,7 @@
 
 		async fetch() {
 			const res = await this.$axios.get<TagList>('/api/karas/tags', {
-				params: { 
+				params: {
 					stripEmpty: true,
 					type: 3
 				}
@@ -189,7 +189,7 @@
 			if (res) {
 				const songtypes: Record<string, Record<string, string>> = {};
 				for (const songtype of res.data.content) {
-					songtypes[songtype.name] = songtype.i18n;
+					songtypes[songtype.name] = songtype.i18n as Record<string, string>;
 				}
 				this.songtypes = songtypes;
 			}

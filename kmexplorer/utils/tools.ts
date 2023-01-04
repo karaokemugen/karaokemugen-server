@@ -2,7 +2,6 @@ import { getNavigatorLanguageIn3B } from './isoLanguages';
 import { User } from '%/lib/types/user';
 import { DBTag } from '%/lib/types/database/tag';
 import { DBKara, DBKaraTag } from '%/lib/types/database/kara';
-import { Tag } from '%/lib/types/tag';
 import menubar from '~/store/menubar';
 import { tagTypes } from '~/assets/constants';
 
@@ -53,7 +52,7 @@ export function getTitleInLocale(titles: any, user: User, titles_default_languag
 }
 
 // Generate a fake tag with tid
-export function fakeYearTag(year: string, count?: number): Tag {
+export function fakeYearTag(year: string, count?: number): DBTag {
 	// That's really crappy, but at least the function will return the same tag tid
 	const tagTid = `09b149df-dec1-${year}-9083-829000e60199`;
 	return {

@@ -104,7 +104,7 @@
 					this.$nuxt.error({ statusCode: 404, message: this.$t('error.not_found_tag') as string })
 				);
 			if (res && res.data) {
-				this.total = res.data.content.length > 0 ? Math.ceil(res.data.content[0].count / 100) : 0;
+				this.total = res.data.content.length > 0 ? Math.ceil(res.data.content[0].count as number / 100) : 0;
 				this.tags = res.data;
 			} else {
 				this.$nuxt.error({ statusCode: 500, message: 'Huh?' });
@@ -167,7 +167,7 @@
 				data.content = data.content.filter(
 					(tag: DBTag) => tag.karacount && Object.keys(tag.karacount).length > 0
 				);
-				this.total = data.content.length > 0 ? Math.ceil(data.content[0].count / 100) : 0;
+				this.total = data.content.length > 0 ? Math.ceil(data.content[0].count as number / 100) : 0;
 				this.tags = data;
 				this.loading = false;
 			}
