@@ -120,7 +120,10 @@
 					{ hid: 'og:type', property: 'og:type', content: 'article' },
 					{ hid: 'og:description', property: 'og:description', content: this.$t('layout.slogan') as string },
 					// @ts-ignore: No. :c
-					{ hid: 'twitter:player', name: 'twitter:player', content: `${process.env.EXPLORER_HOST}/hardsubs/${this.karaoke.hardsubbed_mediafile}` },
+					{ hid: 'twitter:player', name: 'twitter:player', content: `${process.env.LIVE_URL}/?video=${this.karaoke.kid}` },
+					// compatibility for apps that use youtube-dl for direct streaming (without breaking the card view as with og:type video) 
+					// see https://github.com/ytdl-org/youtube-dl/blob/master/youtube_dl/extractor/generic.py#L3643
+					{ hid: 'twitter:player:stream', name: 'twitter:player:stream', content: `${process.env.EXPLORER_HOST}/hardsubs/${this.karaoke.hardsubbed_mediafile}` }, 
 					{ hid: 'twitter:player:height', name: 'twitter:player:height', content: '720' },
 					{ hid: 'twitter:player:width', name: 'twitter:player:width', content: '1280' },
 					// @ts-ignore: No. :c
