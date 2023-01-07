@@ -121,16 +121,17 @@
 					{ hid: 'og:description', property: 'og:description', content: this.$t('layout.slogan') as string },
 					// @ts-ignore: No. :c
 					{ hid: 'twitter:player', name: 'twitter:player', content: `${process.env.LIVE_URL}/?video=${this.karaoke.kid}` },
-					// compatibility for apps that use youtube-dl for direct streaming (without breaking the card view as with og:type video) 
-					// see https://github.com/ytdl-org/youtube-dl/blob/master/youtube_dl/extractor/generic.py#L3643
-					// @ts-ignore: No. :c
-					{ hid: 'twitter:player:stream', name: 'twitter:player:stream', content: this.karaoke.hardsubbed_mediafile ? `${process.env.EXPLORER_HOST}/hardsubs/${this.karaoke.hardsubbed_mediafile}` : '' }, 
 					{ hid: 'twitter:player:height', name: 'twitter:player:height', content: '720' },
 					{ hid: 'twitter:player:width', name: 'twitter:player:width', content: '1280' },
 					// @ts-ignore: No. :c
 					{ hid: 'og:image', property: 'og:image', content: `https://${process.env.EXPLORER_HOST}/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg` },
 					// @ts-ignore: rah :O
-					{ hid: 'twitter:image', name: 'twitter:image', content: `https://${process.env.EXPLORER_HOST}/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg` }
+					{ hid: 'twitter:image', name: 'twitter:image', content: `https://${process.env.EXPLORER_HOST}/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg` },
+					// hardsub compatibility for apps that use youtube-dl for direct streaming (without breaking the card view as with og:type video) 
+					// see https://github.com/ytdl-org/youtube-dl/blob/master/youtube_dl/extractor/generic.py#L3624
+					// @ts-ignore: No. :c
+					{ name: 'video_url', content: this.karaoke.hardsubbed_mediafile ? `video_url: 'https://${process.env.EXPLORER_HOST}/hardsubs/${this.karaoke.hardsubbed_mediafile}'` : '' }, 
+
 					// The rest of meta tags is handled by KaraFullInfo.vue
 				]
 			};
