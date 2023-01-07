@@ -128,7 +128,7 @@
 					// @ts-ignore: rah :O
 					{ hid: 'twitter:image', name: 'twitter:image', content: `https://${process.env.EXPLORER_HOST}/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg` },
 					// hardsub compatibility for apps that use youtube-dl for direct streaming (without breaking the card view as with og:type video) 
-					// see https://github.com/ytdl-org/youtube-dl/blob/master/youtube_dl/extractor/generic.py#L3624
+					// see https://github.com/ytdl-org/youtube-dl/blob/master/youtube_dl/extractor/generic.py#L3620
 					// @ts-ignore: No. :c
 					{ name: 'video_url', content: this.karaoke.hardsubbed_mediafile ? `source=https://${process.env.EXPLORER_HOST}/hardsubs/${this.karaoke.hardsubbed_mediafile}` : '' }, 
 
