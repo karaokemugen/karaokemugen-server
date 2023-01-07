@@ -130,7 +130,7 @@
 					// hardsub compatibility for apps that use youtube-dl for direct streaming (without breaking the card view as with og:type video) 
 					// see https://github.com/ytdl-org/youtube-dl/blob/master/youtube_dl/extractor/generic.py#L3624
 					// @ts-ignore: No. :c
-					{ name: 'video_url', content: this.karaoke.hardsubbed_mediafile ? `video_url: 'https://${process.env.EXPLORER_HOST}/hardsubs/${this.karaoke.hardsubbed_mediafile}'` : '' }, 
+					{ name: 'video_url', content: this.karaoke.hardsubbed_mediafile ? `source=https://${process.env.EXPLORER_HOST}/hardsubs/${this.karaoke.hardsubbed_mediafile}` : '' }, 
 
 					// The rest of meta tags is handled by KaraFullInfo.vue
 				]
