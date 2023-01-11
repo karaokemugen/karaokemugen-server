@@ -48,5 +48,6 @@
 	}
 	.tag {
 		margin: 0.1em;
+		max-width: 100%;
 	}
 </style>
