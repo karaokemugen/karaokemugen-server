@@ -6,7 +6,7 @@
 		@click.prevent="handleLink"
 	>
 		<font-awesome-icon v-if="icon" :icon="['fas', tagTypes[type].icon]" :fixed-width="true" />
-		{{ localizedName }}
+		<p>{{ localizedName }}</p>
 		<span v-if="showkaracount" class="karacount">&nbsp;({{ tag.karacount[tagTypes[type].type] }})</span>
 		<button v-if="deletebtn" class="delete is-small" @click="$emit('close')" />
 	</a>
@@ -112,5 +112,9 @@
 	.karacount {
 		font-size: 0.8em;
 		opacity: 0.6;
+	}
+	.tag p {
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 </style>
