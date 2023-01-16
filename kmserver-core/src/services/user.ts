@@ -422,10 +422,11 @@ export async function updateUserLastLogin(username: string) {
 	}
 }
 
-export function decodeJwtToken(token: string) {
+export function decodeJwtToken(token: string): JWTTokenWithRoles | false {
 	try {
 		const conf = getConfig();
-		return verify(token, conf.App.JwtSecret);
+		const jwt = verify(token, conf.App.JwtSecret) as unknown;
+		return jwt as JWTTokenWithRoles;
 	} catch (err) {
 		return false;
 	}
