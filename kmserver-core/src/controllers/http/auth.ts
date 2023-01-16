@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import {encode} from 'jwt-simple';
+import {sign} from 'jsonwebtoken';
 
 import { Roles, TokenResponseWithRoles } from '../../lib/types/user';
 import {getConfig} from '../../lib/utils/config';
@@ -60,7 +60,7 @@ export default function authController(router: Router) {
 export function createJwtToken(username: string, roles: Roles, passwordLastModifiedAt: Date) {
 	const conf = getConfig();
 	const timestamp = new Date().getTime();
-	return encode(
+	return sign(
 		{ username, iat: timestamp, roles, passwordLastModifiedAt },
 		conf.App.JwtSecret
 	);

@@ -2,7 +2,7 @@ import { compare, hash } from 'bcryptjs';
 import { createHash } from 'crypto';
 import { promises as fs } from 'fs';
 import { copy } from 'fs-extra';
-import { decode } from 'jwt-simple';
+import { verify } from 'jsonwebtoken';
 import { cloneDeep, merge } from 'lodash';
 import { isAbsolute, resolve } from 'path';
 import randomstring from 'randomstring';
@@ -422,10 +422,10 @@ export async function updateUserLastLogin(username: string) {
 	}
 }
 
-export function decodeJwtToken(token: string): Record<string, any> | false {
+export function decodeJwtToken(token: string) {
 	try {
 		const conf = getConfig();
-		return decode(token, conf.App.JwtSecret);
+		return verify(token, conf.App.JwtSecret);
 	} catch (err) {
 		return false;
 	}
