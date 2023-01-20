@@ -109,7 +109,7 @@
 				return `km://download/${process.env.API_HOST}/${this.karaoke.kid}`;
 			},
 			jsonUrl(): string {
-				return `${process.env.KARAOKES_JSON_LINK}/${this.karaoke.karafile}`;
+				return `${process.env.KARAOKES_JSON_LINK}/${encodeURIComponent(this.karaoke.karafile)}`;
 			},
 			mediaUrl(): string {
 				return `${this.$axios.defaults.baseURL}downloads/medias/${encodeURIComponent(this.karaoke.mediafile)}`;
