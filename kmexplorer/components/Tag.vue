@@ -30,7 +30,7 @@
 
 	const { addTag, setSearch } = useMenubarStore();
 	const route = useRoute();
-	const router = useRouter();
+	const { push } = useRouter();
 
 	const props = withDefaults(defineProps<{
 		tag: DBTag,
@@ -68,7 +68,7 @@
 				setSearch('');
 			}
 			if (!['search-query', 'user-login'].includes(route.name as string)) {
-				router.push(generateNavigation());
+				push(generateNavigation());
 			}
 		}
 	}

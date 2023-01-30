@@ -48,6 +48,7 @@
 	const { enabledCollections } = storeToRefs(useLocalStorageStore());
 	const { setEnabledCollections } = useLocalStorageStore();
 	const route = useRoute();
+	const { replace } = useRouter();
 
 	const loading = ref(true);
 	const karaokes = ref<KaraListType>({ infos: { count: 0, from: 0, to: 0 }, i18n: {}, content: [] });
@@ -164,7 +165,7 @@
 			(route.params.query !== (search.value || undefined) ||
 				route.query.collections !== enabledCollections.value.join(':') ||
 				route.query.q !== reqParams().q)) {
-			useRouter().replace(generateNavigation());
+			replace(generateNavigation());
 		}
 	}
 
