@@ -13,7 +13,7 @@
 				<kara-card
 					v-if="karaokes.content[(n-1)*3+n2-1]"
 					:karaoke="karaokes.content[(n-1)*3+n2-1]"
-					:karaoke-i18n="karaokes.i18n"
+					:karaokes-i18n="karaokes.i18n"
 				/>
 			</div>
 		</div>
