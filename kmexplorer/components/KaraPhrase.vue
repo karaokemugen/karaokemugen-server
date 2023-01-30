@@ -42,7 +42,7 @@
 	const props = defineProps<{
 		tag: string
 		karaoke: DBKara
-		karaokesI18n?: Record<string, string>
+		karaokesI18n?: Record<string, Record<string, string>>
 	}>();
 
 	const { push } = useRouter();

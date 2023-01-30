@@ -36,7 +36,7 @@
 		tag: DBTag,
 		icon?: boolean
 		type: string
-		i18n?: Record<string, string>
+		i18n?: Record<string, Record<string, string>>
 		nolink?: boolean
 		staticheight?: boolean
 		showkaracount?: boolean
