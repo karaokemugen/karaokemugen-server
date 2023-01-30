@@ -196,6 +196,8 @@ const nuxtConfig = defineNuxtConfig({
 		shim: false
 	},
 
+	telemetry: false,
+
 	modulesDir: ['../node_modules/']
 });
 
