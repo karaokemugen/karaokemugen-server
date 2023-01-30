@@ -81,21 +81,18 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 	}
 	if (params.order === 'recent') orderClauses = 'created_at DESC, ';
 	if (params.order === 'played') {
-		whereClauses += ' AND ks.played > 1';
 		orderClauses = 'ks.played DESC, ';
 		selectClause += 'ks.played,';
 		groupClause += 'ks.played, ';
 		joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
 	}
 	if (params.order === 'favorited') {
-		whereClauses += ' AND ks.favorited > 1';
 		orderClauses = 'ks.favorited DESC, ';
 		selectClause += 'ks.favorited,';
 		groupClause += 'ks.favorited, ';
 		joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
 	}
 	if (params.order === 'requested') {
-		whereClauses += ' AND ks.requested > 1';
 		orderClauses = 'ks.requested DESC, ';
 		selectClause += 'ks.requested,';
 		groupClause += 'ks.requested, ';
