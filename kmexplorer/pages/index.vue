@@ -173,6 +173,7 @@
 	import duration from '~/assets/date';
 	import { useModalStore } from '~/store/modal';
 	import { DBStats } from '%/../src/types/database/kara';
+	import { useMenubarStore } from '~/store/menubar';
 
 	export interface Stats extends DBStats {
 		mediasizeString?: string,
@@ -199,6 +200,7 @@
 	const explorerHost = conf.public.EXPLORER_HOST;
 	const explorerTagline = conf.public.EXPLORER_TAGLINE;
 
+	const { reset } = useMenubarStore();
 	const { openModal } = useModalStore();
 
 	const { t } = useI18n();
@@ -213,6 +215,8 @@
 	useHead({
 		title: t('titles.home') as string
 	});
+
+	reset();
 
 	fetch();
 

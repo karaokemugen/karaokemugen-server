@@ -5,7 +5,6 @@
 				<nuxt-link
 					class="navbar-item"
 					to="/"
-					@click="reset"
 				>
 					<picture>
 						<source
@@ -1014,7 +1013,7 @@
 	const { beforeEach, push } = useRouter();
 	const { locale, locales, setLocale } = useI18n();
 
-	const { $onAction, reset } = useMenubarStore();
+	const { $onAction } = useMenubarStore();
 	const { auth, joinKara, stats, deleteAccount, addRepo, profile } = storeToRefs(useModalStore());
 	const { closeAll, openModal } = useModalStore();
 	const { loggedIn, user } = storeToRefs(useAuthStore());
