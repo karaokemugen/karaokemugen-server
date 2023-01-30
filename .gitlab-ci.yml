@@ -84,6 +84,8 @@ update_sentry:
       - .yarn/cache
       - kmexplorer/.nuxt
   script:
+    - mkdir -p app
+    - touch app/config.yml
     - yarn install --immutable --check-cache
     - yarn build:all
     - yarn workspace kmserver-core sentry:sourcemaps
