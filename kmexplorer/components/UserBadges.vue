@@ -8,59 +8,54 @@
 				:class="[role.class, edit ? 'edit':undefined]"
 				@click="toggleRole(role.name)"
 			>
-				<input v-if="edit" type="checkbox" :checked="role.active">
-				<font-awesome-icon :icon="['fas', role.icon]" fixed-width />
+				<input
+					v-if="edit"
+					type="checkbox"
+					:checked="role.active"
+				>
+				<font-awesome-icon
+					:icon="['fas', role.icon]"
+					fixed-width
+				/>
 				{{ $t(`roles.${role.name}`) }}
 			</div>
 		</template>
 	</div>
 </template>
 
-<script lang="ts">
-	import Vue, { PropOptions } from 'vue';
+<script setup lang="ts">
 	import { RoleDetail, roles } from '~/assets/constants';
 	import { Roles } from '%/lib/types/user';
 
-	type Role = RoleDetail & { name: string, active: boolean };
+	type Role = RoleDetail & { name: RoleKey, active: boolean };
 	type RoleKey = keyof Roles;
 
-	export default Vue.extend({
-		name: 'UserBadges',
-
-		props: {
-			roles: {
-				type: Object,
-				required: true
-			} as PropOptions<Roles>,
-			edit: {
-				type: Boolean,
-				default: false
-			}
-		},
-
-		computed: {
-			effectiveRoles(): Role[] {
-				// Only values that exists in roles table
-				const realRoles = Object.keys(roles) as RoleKey[];
-				return realRoles.map((r) => {
-					return {
-						...roles[r],
-						name: r,
-						active: !!this.roles[r]
-					} as Role;
-				});
-			}
-		},
-
-		methods: {
-			toggleRole(name: string) {
-				if (this.edit) {
-					this.$emit('toggle', name);
-				}
-			}
-		}
+	const props = withDefaults(defineProps<{
+		roles?: Roles
+		edit?: boolean
+	}>(), {
+		edit: false
 	});
 
+	const emit = defineEmits<{(e: 'toggle', nname: RoleKey): void}>();
+
+	const effectiveRoles  = computed<Role[]>(() => {
+		// Only values that exists in roles table
+		const realRoles = Object.keys(roles) as RoleKey[];
+		return realRoles.map((r) => {
+			return {
+				...roles[r],
+				name: r,
+				active: props.roles && !!props.roles[r]
+			} as Role;
+		});
+	});
+
+	function toggleRole(name: RoleKey) {
+		if (props.edit) {
+			emit('toggle', name);
+		}
+	}
 </script>
 
 <style scoped lang="scss">

@@ -53,6 +53,7 @@ KaraExplorer:
   MediaLinks: true
   Import: true
   InProgressSongsList: https://gitlab.com/karaokemugen/bases/karaokebase/-/issues?scope=all&state=opened&label_name[]=Doing
+  AddRepoModalInMenu: false
 Gitlab:
   Enabled: true
   Token: xxx

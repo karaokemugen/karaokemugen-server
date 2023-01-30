@@ -12,7 +12,7 @@
 			<div class="image-chooser">
 				<img
 					class="pending-banner"
-					:src="`/previews/${previews[img]}`"
+					:src="`${apiUrl}/previews/${previews[img]}`"
 					:alt="`Banner #${img + 1}`"
 				>
 				<div class="space-buttons">
@@ -52,82 +52,69 @@
 	</modal>
 </template>
 
-<script lang="ts">
-	import Vue, { PropOptions } from 'vue';
+<script setup lang="ts">
 	import Modal from './Modal.vue';
 	import { DBKara } from '%/lib/types/database/kara';
+	import { useAuthStore } from '~/store/auth';
 
-	interface VState {
-		loading: boolean,
-		img: number
-	}
 
-	export default Vue.extend({
-		name: 'BannerChangeModal',
+	const props = defineProps<{
+		karaoke: DBKara
+		active: boolean
+	}>();
 
-		components: {
-			Modal
-		},
+	const loading = ref(false);
+	const img = ref(0);
 
-		props: {
-			karaoke: {
-				type: Object,
-				required: true
-			} as PropOptions<DBKara>,
-			active: Boolean
-		},
+	const emit = defineEmits<{(e: 'close'): void}>();
 
-		data(): VState {
-			return {
-				loading: false,
-				img: 0
-			};
-		},
+	const { setToken } = useAuthStore();
 
-		computed: {
-			previews(): string[] {
-				const arr: string[] = [`${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg`];
-				if (this.karaoke.mediafile.endsWith('.mp3')) {
-					return arr;
-				} else {
-					return [
-						...arr,
-						`${this.karaoke.kid}.${this.karaoke.mediasize}.33.jpg`,
-						`${this.karaoke.kid}.${this.karaoke.mediasize}.50.jpg`
-					];
-				}
-			}
-		},
+	const conf = useRuntimeConfig();
+	const apiUrl = conf.public.API_URL;
 
-		methods: {
-			closeModal(): void {
-				this.$emit('close');
-			},
-			submitBanner(img: string): void {
-				if (this.loading) { return; }
-				this.loading = true;
-				this.$axios.$patch('/api/myaccount', {
-					banner: img
-				}).then(async (response) => {
-					// Refresh auth
-					await this.$auth.setUserToken(response.data.token);
-					this.closeModal();
-				}).finally(() => {
-					this.loading = false;
-				});
-			},
-			cycleBanner(step: number) {
-				const computed = this.img + step;
-				if (computed >= this.previews.length) {
-					this.img = 0;
-				} else if (computed < 0) {
-					this.img = this.previews.length - 1;
-				} else {
-					this.img = computed;
-				}
-			}
+	const previews = computed (() => {
+		const arr: string[] = [`${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`];
+		if (props.karaoke.mediafile.endsWith('.mp3')) {
+			return arr;
+		} else {
+			return [
+				...arr,
+				`${props.karaoke.kid}.${props.karaoke.mediasize}.33.jpg`,
+				`${props.karaoke.kid}.${props.karaoke.mediasize}.50.jpg`
+			];
 		}
 	});
+
+	function closeModal(): void {
+		emit('close');
+	}
+	function submitBanner(img: string): void {
+		if (loading.value) { return; }
+		loading.value = true;
+		useCustomFetch<{ code: string, data: { token: string } }>('/api/myaccount', {
+			method: 'PATCH',
+			body: {
+				banner: img
+			}
+		}).then(async (response) => {
+			// Refresh auth
+			await setToken(response.data.token);
+			closeModal();
+		}).finally(() => {
+			loading.value = false;
+		});
+	}
+	function cycleBanner(step: number) {
+		const computed = img.value + step;
+		if (computed >= previews.value.length) {
+			img.value = 0;
+		} else if (computed < 0) {
+			img.value = previews.value.length - 1;
+		} else {
+			img.value = computed;
+		}
+	}
 </script>
 
 <style scoped lang="scss">

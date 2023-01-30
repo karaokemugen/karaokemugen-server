@@ -18,6 +18,6 @@ Thanks to our users helping us find bugs and improve our software! You're all aw
 /* SITE */
 (humans.txt) Last update: 2020/08/25
 Standards: HTML5, CSS3, PWA, EcmaScript
-Components: Nuxt.js (Vue.js, Vuex, Vue-router, Vue-SSR, Vue-meta), Nuxt PWA, Bulma, Buefy
+Components: Nuxt.js (Vue.js, Pinia, Vue-router, Vue-SSR, Vue-meta), Nuxt PWA, Bulma
 Software: JetBrains WebStorm, Microsoft Visual Studio Code, Yarn
 

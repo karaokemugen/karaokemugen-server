@@ -1,10 +1,22 @@
 <template>
 	<div class="field is-expanded has-addons">
-		<div v-if="results" class="control">
-			<collections-picker v-if="$route.name !== 'suggest'" :label="searchLabel" />
-			<languages-picker v-if="$route.name === 'suggest'" :label="searchLabel" />
+		<div
+			v-if="results"
+			class="control"
+		>
+			<collections-picker
+				v-if="route.name !== 'suggest'"
+				:label="searchLabel"
+			/>
+			<languages-picker
+				v-if="route.name === 'suggest'"
+				:label="searchLabel"
+			/>
 		</div>
-		<div class="control is-expanded" :class="{'has-icons-left': icon}">
+		<div
+			class="control is-expanded"
+			:class="{'has-icons-left': icon}"
+		>
 			<input
 				class="input is-fullwidth"
 				type="search"
@@ -13,23 +25,39 @@
 				@keydown.enter="triggerSearch"
 				@input="keyDown"
 			>
-			<div v-if="icon" class="icon is-small is-left search-icon">
+			<div
+				v-if="icon"
+				class="icon is-small is-left search-icon"
+			>
 				<font-awesome-icon :icon="['fas', 'search']" />
 			</div>
 		</div>
-		<div v-if="results && resultsCount > 0 && ['search-query', 'types-id', 'types-years', 'user-login', 'users'].includes($route.name)" class="control">
+		<div
+			v-if="results && resultsCount > 0 && canCount"
+			class="control"
+		>
 			<button class="button is-static">
-				{{ $tc('layout.results', resultsCount, {count: resultsCount}) }}
+				{{ $t('layout.results', {count: resultsCount}) }}
 			</button>
 		</div>
-		<div v-if="filter" class="control">
+		<div
+			v-if="filter"
+			class="control"
+		>
 			<span class="select">
-				<select v-model="sort" :aria-label="$t('search.aria.sort')" :disabled="!canSort">
-					<option value="az" selected>{{ $t('search.sort.a_z') }}</option>
-					<template v-if="$route.name === 'types-id'">
+				<select
+					v-model="sort"
+					:aria-label="$t('search.aria.sort')"
+					:disabled="!canSort"
+				>
+					<option
+						value="az"
+						selected
+					>{{ $t('search.sort.a_z') }}</option>
+					<template v-if="route.name === 'types-id'">
 						<option value="karacount">{{ $t('search.sort.kara_count') }}</option>
 					</template>
-					<template v-else-if="$route.name === 'suggest'">
+					<template v-else-if="route.name === 'suggest'">
 						<option value="likes">{{ $t('search.sort.likes') }}</option>
 						<option value="language">{{ $t('search.sort.languages') }}</option>
 					</template>
@@ -45,113 +73,62 @@
 	</div>
 </template>
 
-<script lang="ts">
-	import Vue from 'vue';
-	import { mapState } from 'vuex';
-	import CollectionsPicker from './CollectionsPicker.vue';
-	import LanguagesPicker from './LanguagesPicker.vue';
-	import { menuBarStore } from '~/store';
-	import { sortTypes } from '~/store/menubar';
+<script setup lang="ts">
+	import { storeToRefs } from 'pinia';
+	import { useMenubarStore } from '~/store/menubar';
 
-	interface VState {
-		search: string,
-		sort: sortTypes,
-		VuexUnsubscribe?: Function
-	}
+	const { sort, resultsCount, search: menuSearch } = storeToRefs(useMenubarStore());
+	const { setSearch } = useMenubarStore();
+	const route = useRoute();
+	const $t = useI18n().t;
 
-	export default Vue.extend({
-		name: 'SearchBar',
+	const search = ref<string>('');
 
-		components: {
-			CollectionsPicker,
-			LanguagesPicker
-		},
+	withDefaults(defineProps<{
+		results?: boolean
+		filter?: boolean
+		icon?: boolean
+	}>(), {
+		results: true,
+		filter: true,
+		icon: true
+	});
 
-		props: {
-			results: {
-				type: Boolean,
-				default: true
-			},
-			filter: {
-				type: Boolean,
-				default: true
-			},
-			icon: {
-				type: Boolean,
-				default: false
-			}
-		},
-
-		data(): VState {
-			return {
-				search: '',
-				sort: 'recent'
-			};
-		},
-
-		computed: {
-			canSort(): boolean {
-				return ['types-id', 'search-query', 'user-login', 'suggest'].includes(this.$route.name as string);
-			},
-			searchLabel(): string {
-				if (this.$route.name === 'users') {
-					return this.$t('search.types.users') as string;
-				} else if (this.$route.name === 'user-login') {
-					return this.$t('search.types.favorites') as string;
-				} else if (this.$route.name === 'suggest') {
-					return this.$t('search.types.suggestions') as string;
-				} else if (['types-id', 'types-years'].includes(this.$route.name as string)) {
-					return this.$t(`menu.${this.$route.name === 'types-years' ? 'years' : this.$route.params.id}`) as string;
-				} else {
-					return this.$t('search.types.karaokes') as string;
-				}
-			},
-			placeholder(): string {
-				if (this.$route.name === 'users') {
-					return this.$t('search.placeholder.user') as string;
-				} else if (['types-id', 'types-years'].includes(this.$route.name as string)) {
-					return this.$t('search.placeholder.tag') as string;
-				} else {
-					return this.$t('search.placeholder.kara') as string;
-				}
-			},
-			...mapState('menubar', ['resultsCount'])
-		},
-
-		watch: {
-			sort(now, _old) {
-				menuBarStore.setSort(now);
-			}
-		},
-
-		mounted() {
-			this.VuexUnsubscribe = this.$store.subscribe((mutation, _state) => {
-				if (mutation.type === 'menubar/setSearch') {
-					this.search = mutation.payload;
-				} else if (mutation.type === 'menubar/setSort') {
-					this.sort = mutation.payload;
-				} else if (mutation.type === 'menubar/reset') {
-					this.sort = 'recent';
-					this.search = '';
-				}
-			});
-			this.search = menuBarStore.search;
-			this.sort = menuBarStore.sort;
-		},
-
-		destroyed() {
-			if (this.VuexUnsubscribe) { this.VuexUnsubscribe(); }
-		},
-
-		methods: {
-			triggerSearch() {
-				menuBarStore.setSearch(this.search);
-			},
-			keyDown(e: KeyboardEvent) {
-				this.search = (e.target as HTMLInputElement).value;
-			}
+	const canCount = computed(() => ['types-id', 'search-query', 'user-login', 'users', 'types-years'].includes(route.name as string));
+	const canSort = computed(() => ['types-id', 'search-query', 'user-login', 'suggest'].includes(route.name as string));
+	const searchLabel = computed((): string => {
+		if (route.name === 'users') {
+			return $t('search.types.users') as string;
+		} else if (route.name === 'user-login') {
+			return $t('search.types.favorites') as string;
+		} else if (route.name === 'suggest') {
+			return $t('search.types.suggestions') as string;
+		} else if (['types-id', 'types-years'].includes(route.name as string)) {
+			return $t(`menu.${route.name === 'types-years' ? 'years' : route.params.id}`) as string;
+		} else {
+			return $t('search.types.karaokes') as string;
 		}
 	});
+	const placeholder = computed((): string => {
+		if (route.name === 'users') {
+			return $t('search.placeholder.user') as string;
+		} else if (['types-id', 'types-years'].includes(route.name as string)) {
+			return $t('search.placeholder.tag') as string;
+		} else {
+			return $t('search.placeholder.kara') as string;
+		}
+	});
+
+	watch(menuSearch, (now) => search.value = now);
+
+
+	function triggerSearch() {
+		setSearch(search.value);
+	}
+
+	function keyDown(e: Event) {
+		search.value = (e.target as HTMLInputElement).value;
+	}
 </script>
 
 <style scoped lang="scss">

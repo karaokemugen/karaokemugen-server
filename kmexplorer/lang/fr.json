@@ -239,7 +239,6 @@
 		"logout": "Se déconnecter",
 		"register": "S'inscrire",
 		"connection": "Connexion",
-		"profile": "Éditer son profil",
 		"switch_language": "Changer la langue"
 	},
 	"profile": {
@@ -292,7 +291,7 @@
 				},
 				"password": {
 					"label": "Mot de passe",
-					"placeholder": "EnVraiJePréfèreIdolM@ster"
+					"placeholder": "EnVraiJePréfèreIdolM{'@'}ster"
 				},
 				"forgot_password": {
 					"label": "Mot de passe oublié ?",
@@ -312,15 +311,15 @@
 				},
 				"password": {
 					"label": "Mot de passe",
-					"placeholder": "EnVraiJePréfèreIdolM@ster"
+					"placeholder": "EnVraiJePréfèreIdolM{'@'}ster"
 				},
 				"password_confirmation": {
 					"label": "Confirmation du mot de passe",
-					"placeholder": "EnVraiJePréfèreIdolM@ster"
+					"placeholder": "EnVraiJePréfèreIdolM{'@'}ster"
 				},
 				"email": {
 					"label": "Email",
-					"placeholder": "test@shelter.moe"
+					"placeholder": "test{'@'}shelter.moe"
 				}
 			},
 			"passwords_mismatch": "Les mots de passe ne correspondent pas",
@@ -344,15 +343,15 @@
 				},
 				"password": {
 					"label": "Mot de passe",
-					"placeholder": "EnVraiJePréfèreIdolM@ster"
+					"placeholder": "EnVraiJePréfèreIdolM{'@'}ster"
 				},
 				"password_confirmation": {
 					"label": "Confirmation du mot de passe",
-					"placeholder": "EnVraiJePréfèreIdolM@ster"
+					"placeholder": "EnVraiJePréfèreIdolM{'@'}ster"
 				},
 				"email": {
 					"label": "Email",
-					"placeholder": "test@shelter.moe"
+					"placeholder": "test{'@'}shelter.moe"
 				},
 				"url": {
 					"label": "Site web",
@@ -526,7 +525,8 @@
 		"SUBFILE_FORMAT_UNKOWN": "Format du fichier de sous-titres inconnus",
 		"CANNOT_EDIT_KARA": "Impossible d'envoyer la modification.",
 		"FILE_UPLOADED": "Fichier mis en ligne.",
-		"USER_EDITED": "Utilisateur édité avec succès"
+		"USER_EDITED": "Utilisateur édité avec succès",
+		"TAG_CREATED": "Tag créé avec succès"
 	},
 	"roles": {
 		"donator": "Donateur(-ice)",
@@ -543,7 +543,8 @@
 		"header": {
 			"title": "Suggestions d'import",
 			"description": "Qu'est-ce que c'est ?",
-			"purpose": "Voici des karaokés qui sont prêts à être importés, vous pouvez chercher une chanson en particulier ou appuyer sur le bouton “Choisir aléatoirement d'autres chansons”. Vous pouvez soutenir un karaoké en appuyant sur “Oui !”. Si vous ne trouvez toujours pas la chanson que vous cherchez, cliquez sur “Envoyer une suggestion”.",
+			"purpose": "Voici des karaokés qui sont prêts à être importés, vous pouvez chercher une chanson en particulier ou appuyer sur le bouton “Choisir aléatoirement d'autres chansons”. Vous pouvez soutenir un karaoké en appuyant sur “Oui !”.",
+			"suggestion": "Si vous ne trouvez toujours pas la chanson que vous cherchez, cliquez sur “Envoyer une suggestion”.",
 			"random_selection": "Choisir aléatoirement d'autres chansons",
 			"send_suggestion": "Envoyer une suggestion"
 		},

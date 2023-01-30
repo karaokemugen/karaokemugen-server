@@ -18,7 +18,8 @@ const transformImportsPlugin = {
 			const content = await fs.readFile(args.path, 'utf-8');
 			const newContent = content
 				// Append .js extensions to local imports
-				.replace(/import ([A-Za-z0-9*{},\s]+) from ["']\.(.+)["'];/g, (m, p1, p2) => `import ${p1} from ".${p2}.js";`);
+				.replace(/import ([A-Za-z0-9*{},\s]+) from ["']\.(.+)["'];/g, (m, p1, p2) => `import ${p1} from ".${p2}.js";`)
+				.replace(/import ([A-Za-z0-9*{},\s]+) from ["']\.(.+).mjs.js["'];/g, (m, p1, p2) => `import ${p1} from ".${p2}.mjs";`);
 			return {
 				// Use object explodes for CJS modules
 				contents: await replaceAsync(newContent, /import {([A-Za-z0-9*{},\s]+)} from ["']([^.;]+)["'];/g, async (m, payload, mod) => {

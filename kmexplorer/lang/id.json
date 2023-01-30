@@ -192,7 +192,6 @@
 		"search_users": "Cari pengguna",
 		"discord": "Discord",
 		"discourse": "Discourse",
-		"profile": "Sunting profil kamu",
 		"login": "Masuk",
 		"logout": "Keluar",
 		"connection": "Masuk",
@@ -255,7 +254,7 @@
 				},
 				"email": {
 					"label": "Surel",
-					"placeholder": "tes@shelter.moe"
+					"placeholder": "tes{'@'}shelter.moe"
 				}
 			},
 			"title": "Daftar",
@@ -315,7 +314,7 @@
 				},
 				"email": {
 					"label": "Surel",
-					"placeholder": "tes@shelter.moe"
+					"placeholder": "tes{'@'}shelter.moe"
 				},
 				"url": {
 					"label": "Situs Web",
@@ -486,7 +485,8 @@
 		"SUBFILE_FORMAT_UNKOWN": "Format takarir tidak diketahui",
 		"CANNOT_EDIT_KARA": "Tidak bisa mengirim suntingan.",
 		"USER_EDITED": "Pengguna berhasil disunting",
-		"FILE_UPLOADED": "Berkas diunggah."
+		"FILE_UPLOADED": "Berkas diunggah.",
+		"TAG_CREATED": "Tanda berhasil dibuat"
 	},
 	"titles": {
 		"home": "Beranda"
@@ -508,7 +508,8 @@
 			"description": "Apa ini?",
 			"random_selection": "Pilih lagu lain secara acak",
 			"send_suggestion": "Kirim Usulan",
-			"purpose": "Berikut adalah beberapa lagu karaoke yang sudah siap untuk diimpor, kamu bisa mencari lagu tertentu atau pencet tombol \"Pilih lagu lain secara acak.\" Kamu bisa mendukung lagu karaoke tersebut dengan memencet \"Ya!\". Jika kamu belum bisa menemukan lagu yang kamu cari, pencet \"Kirim Usulan.\""
+			"purpose": "Berikut adalah beberapa lagu karaoke yang sudah siap untuk diimpor, kamu bisa mencari lagu tertentu atau pencet tombol \"Pilih lagu lain secara acak.\" Kamu bisa mendukung lagu karaoke tersebut dengan memencet \"Ya!\".",
+			"suggestion": "Jika kamu belum bisa menemukan lagu yang kamu cari, pencet \"Kirim Usulan.\""
 		},
 		"modal": {
 			"welcome": {

@@ -1,21 +1,42 @@
 <template>
 	<div>
-		<div v-for="n in Math.ceil(karaokes.infos.to / 3)" :key="n" class="tile is-parent is-12">
-			<div v-for="n2 in 3" :key="`${n}_${n2}`" class="tile is-child is-4">
+		<div
+			v-for="n in Math.ceil(karaokes.infos.to / 3)"
+			:key="n"
+			class="tile is-parent is-12"
+		>
+			<div
+				v-for="n2 in 3"
+				:key="`${n}_${n2}`"
+				class="tile is-child is-4"
+			>
 				<kara-card
 					v-if="karaokes.content[(n-1)*3+n2-1]"
 					:karaoke="karaokes.content[(n-1)*3+n2-1]"
-					:i18n="karaokes.i18n"
+					:karaoke-i18n="karaokes.i18n"
 				/>
 			</div>
 		</div>
-		<loading-nanami v-if="loading" class="tile is-parent is-12" />
-		<suggest-line v-if="fullyLoaded && !loading && !favorites && withSuggest" class="tile is-parent is-12" :empty="karaokes.content.length === 0" />
-		<div v-else-if="fullyLoaded && !loading && myFavorites" class="tile is-parent">
+		<loading-nanami
+			v-if="loading"
+			class="tile is-parent is-12"
+		/>
+		<suggest-line
+			v-if="fullyLoaded && !loading && !favorites && withSuggest"
+			class="tile is-parent is-12"
+			:empty="karaokes.content.length === 0"
+		/>
+		<div
+			v-else-if="fullyLoaded && !loading && myFavorites"
+			class="tile is-parent"
+		>
 			<div class="tile is-child">
 				<div class="box">
 					<h4 class="title is-4 with-img">
-						<img :src="require('~/assets/nanami-surpris.png')" alt="Nanamin surprised">
+						<img
+							src="~/assets/nanami-surpris.png"
+							alt="Nanamin surprised"
+						>
 						<span>{{ $t('layout.end_my_favorites') }}&nbsp;</span>
 						<nuxt-link to="/search/">
 							{{ $t('layout.explore') }}
@@ -24,11 +45,17 @@
 				</div>
 			</div>
 		</div>
-		<div v-else-if="fullyLoaded && !loading && favorites" class="tile is-parent">
+		<div
+			v-else-if="fullyLoaded && !loading && favorites"
+			class="tile is-parent"
+		>
 			<div class="tile is-child">
 				<div class="box">
 					<h4 class="title is-4 with-img">
-						<img :src="require('~/assets/nanami-surpris.png')" alt="Nanamin surprised">
+						<img
+							src="~/assets/nanami-surpris.png"
+							alt="Nanamin surprised"
+						>
 						<span>{{ $t('layout.end_favorites') }}&nbsp;</span>
 					</h4>
 				</div>
@@ -37,50 +64,25 @@
 	</div>
 </template>
 
-<script lang="ts">
-	import Vue, { PropOptions } from 'vue';
-	import LoadingNanami from './LoadingNanami.vue';
-	import KaraCard from './KaraCard.vue';
-	import SuggestLine from './SuggestLine.vue';
+<script setup lang="ts">
+	import { storeToRefs } from 'pinia';
 	import { KaraList } from '%/lib/types/kara';
+	import { useAuthStore } from '~/store/auth';
 
-	export default Vue.extend({
-		name: 'KaraList',
-
-		components: {
-			LoadingNanami,
-			KaraCard,
-			SuggestLine
-		},
-
-		props: {
-			karaokes: {
-				type: Object,
-				required: true
-			} as PropOptions<KaraList>,
-			loading: {
-				type: Boolean,
-				required: true
-			},
-			favorites: {
-				type: String,
-				default: ''
-			},
-			withSuggest: {
-				type: Boolean,
-				default: true
-			}
-		},
-
-		computed: {
-			fullyLoaded(): boolean {
-				return this.karaokes.infos.to === this.karaokes.infos.count;
-			},
-			myFavorites(): boolean {
-				return this.$auth.user?.login === this.favorites;
-			}
-		}
+	const props = withDefaults(defineProps<{
+		karaokes: KaraList
+		loading: Boolean
+		favorites: string
+		withSuggest: boolean
+	}>(), {
+		favorites: '',
+		withSuggest: true
 	});
+
+	const { user } = storeToRefs(useAuthStore());
+
+	const fullyLoaded = computed(() => props.karaokes.infos.to === props.karaokes.infos.count);
+	const myFavorites = computed(() => user?.value?.login === props.favorites);
 </script>
 
 <style lang="scss" scoped>

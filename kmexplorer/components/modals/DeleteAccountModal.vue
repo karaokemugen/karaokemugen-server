@@ -9,43 +9,28 @@
 	/>
 </template>
 
-<script lang="ts">
-	import Vue from 'vue';
-	import Modal from './Modal.vue';
+<script setup lang="ts">
+	import { useAuthStore } from '~/store/auth';
 
-	interface VState {
-		explorerHost?: string
+	defineProps<{
+		active: boolean
+	}>();
+
+	const { logout } = useAuthStore();
+
+	const emit = defineEmits<{(e: 'close'| 'logout'): void}>();
+
+	function submitForm(): void {
+		useCustomFetch('/api/myaccount', {
+			method: 'DELETE'
+		});
+		emit('logout');
+		logout();
+		closeModal();
 	}
-
-	export default Vue.extend({
-		name: 'DeleteAccountModal',
-
-		components: {
-			Modal
-		},
-
-		props: {
-			active: Boolean
-		},
-
-		data(): VState {
-			return {
-				explorerHost: process.env.EXPLORER_HOST
-			};
-		},
-
-		methods: {
-			submitForm(): void {
-				this.$axios.delete('/api/myaccount');
-				this.$emit('logout');
-				this.$auth.logout();
-				this.closeModal();
-			},
-			closeModal(): void {
-				this.$emit('close');
-			}
-		}
-	});
+	function closeModal(): void {
+		emit('close');
+	}
 </script>
 
 <style lang="scss" scoped>

@@ -1,9 +1,11 @@
 import { getNavigatorLanguageIn3B } from './isoLanguages';
-import { User } from '%/lib/types/user';
 import { DBTag } from '%/lib/types/database/tag';
 import { DBKara, DBKaraTag } from '%/lib/types/database/kara';
-import menubar from '~/store/menubar';
+import { useMenubarStore } from '~/store/menubar';
 import { tagTypes } from '~/assets/constants';
+import { useLocalStorageStore } from '~/store/localStorage';
+import { useAuthStore } from '~/store/auth';
+import { storeToRefs } from 'pinia';
 
 export function getPropertyInLanguage(prop: 'i18n', tag: DBKaraTag | DBTag, mainLanguage: string, fallbackLanguage: string, i18nParam?: any): string
 export function getPropertyInLanguage(prop: 'description', tag: DBTag, mainLanguage: string, fallbackLanguage: string): string
@@ -22,28 +24,31 @@ export function getPropertyInLanguage(prop: 'description' | 'i18n', tag: DBKaraT
 	}
 }
 
-export function getTagInLocale(tag: DBKaraTag | DBTag, user: User, i18nParam?: any) {
-	if (user && user.main_series_lang && user.fallback_series_lang) {
-		return getPropertyInLanguage('i18n', tag, user.main_series_lang, user.fallback_series_lang, i18nParam);
+export function getTagInLocale(tag: DBKaraTag | DBTag, i18nParam?: any) {
+	const { user } = storeToRefs(useAuthStore());
+	if (user?.value && user?.value.main_series_lang && user?.value.fallback_series_lang) {
+		return getPropertyInLanguage('i18n', tag, user?.value.main_series_lang, user?.value.fallback_series_lang, i18nParam);
 	} else {
 		return getPropertyInLanguage('i18n', tag, getNavigatorLanguageIn3B(), 'eng', i18nParam);
 	}
 }
 
-export function getDescriptionInLocale(tag: DBTag, user: User) {
-	if (user && user.main_series_lang && user.fallback_series_lang) {
-		return getPropertyInLanguage('description', tag, user.main_series_lang, user.fallback_series_lang);
+export function getDescriptionInLocale(tag: DBTag) {
+	const { user } = storeToRefs(useAuthStore());
+	if (user?.value && user?.value.main_series_lang && user?.value.fallback_series_lang) {
+		return getPropertyInLanguage('description', tag, user?.value.main_series_lang, user?.value.fallback_series_lang);
 	} else {
 		return getPropertyInLanguage('description', tag, getNavigatorLanguageIn3B(), 'eng');
 	}
 }
 
-export function getTitleInLocale(titles: any, user: User, titles_default_language?:string) {
-	if (user && user.main_series_lang && user.fallback_series_lang) {
-		return titles[user.main_series_lang]
-			? titles[user.main_series_lang]
-			: (titles[user.fallback_series_lang]
-				? titles[user.fallback_series_lang]
+export function getTitleInLocale(titles: any, titles_default_language?:string) {
+	const { user } = storeToRefs(useAuthStore());
+	if (user?.value && user?.value.main_series_lang && user?.value.fallback_series_lang) {
+		return titles[user?.value.main_series_lang]
+			? titles[user?.value.main_series_lang]
+			: (titles[user?.value.fallback_series_lang]
+				? titles[user?.value.fallback_series_lang]
 				: titles[titles_default_language || 'eng']
 			);
 	} else {
@@ -92,22 +97,24 @@ export function sortTypesKara(karaoke: DBKara): DBKara {
 	return karaoke;
 }
 
-export function generateNavigation(menuBarStore: menubar) {
+export function generateNavigation() {
+	const { search, tags } = storeToRefs(useMenubarStore());
+	const { enabledCollections } = storeToRefs(useLocalStorageStore());
 	const navigation = {
-		path: `/search/${encodeURIComponent(menuBarStore.search)}`,
-		query: { collections: menuBarStore.enabledCollections.join(':') } as { collections: string, q?: string }
+		path: `/search/${encodeURIComponent(search.value)}`,
+		query: { collections: enabledCollections.value?.join(':') } as { collections: string, q?: string }
 	};
 	const criterias: string[] = [];
-	const tags: string[] = [];
-	for (const tag of menuBarStore.tags) {
+	const tagsUpdated: string[] = [];
+	for (const tag of tags.value) {
 		if (tag.type === 'years') {
 			criterias.push(`y:${tag.tag.name}`);
 		} else {
-			tags.push(`${tag.tag.tid}~${tagTypes[tag.type].type}`);
+			tagsUpdated.push(`${tag.tag.tid}~${tagTypes[tag.type].type}`);
 		}
 	}
-	if (tags.length > 0) {
-		criterias.push(`t:${tags.join(',')}`);
+	if (tagsUpdated.length > 0) {
+		criterias.push(`t:${tagsUpdated.join(',')}`);
 	}
 	if (criterias.length > 0) {
 		navigation.query.q = criterias.join('!');

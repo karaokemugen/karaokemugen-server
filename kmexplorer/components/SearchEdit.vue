@@ -1,18 +1,28 @@
 <template>
 	<div class="field is-expanded has-addons">
-		<div v-if="results && resultsCount > 0 && ['search-query', 'types-id', 'types-years', 'user-login', 'users'].includes($route.name)" class="control is-expanded">
+		<div
+			v-if="results && resultsCount > 0 && canCount"
+			class="control is-expanded"
+		>
 			<button class="button is-static">
-				{{ $tc('layout.results', resultsCount, {count: resultsCount}) }}
+				{{ $t('layout.results', {count: resultsCount}) }}
 			</button>
 		</div>
 		<div class="control">
 			<span class="select">
-				<select v-model="sort" :aria-label="$t('search.aria.sort')" :disabled="!canSort">
-					<option value="az" selected>{{ $t('search.sort.a_z') }}</option>
-					<template v-if="$route.name === 'types-id'">
+				<select
+					v-model="sort"
+					:aria-label="$t('search.aria.sort')"
+					:disabled="!canSort"
+				>
+					<option
+						value="az"
+						selected
+					>{{ $t('search.sort.a_z') }}</option>
+					<template v-if="route.name === 'types-id'">
 						<option value="karacount">{{ $t('search.sort.kara_count') }}</option>
 					</template>
-					<template v-else-if="$route.name === 'suggest'">
+					<template v-else-if="route.name === 'suggest'">
 						<option value="likes">{{ $t('search.sort.likes') }}</option>
 						<option value="language">{{ $t('search.sort.languages') }}</option>
 					</template>
@@ -28,58 +38,22 @@
 	</div>
 </template>
 
-<script lang="ts">
-	import Vue from 'vue';
-	import { mapState } from 'vuex';
-	import { menuBarStore } from '~/store';
-	import { sortTypes } from '~/store/menubar';
+<script setup lang="ts">
+	import { storeToRefs } from 'pinia';
+	import { useMenubarStore } from '~/store/menubar';
 
-	interface VState {
-		sort: sortTypes,
-		VuexUnsubscribe?: Function
-	}
+	const { resultsCount, sort } = storeToRefs(useMenubarStore());
+	const route = useRoute();
+	const $t = useI18n().t;
 
-	export default Vue.extend({
-		name: 'SearchEdit',
-
-		props: {
-			results: {
-				type: Boolean,
-				default: true
-			}
-		},
-
-		data(): VState {
-			return {
-				sort: 'recent'
-			};
-		},
-
-		computed: {
-			canSort(): boolean {
-				return ['types-id', 'search-query', 'user-login', 'suggest'].includes(this.$route.name as string);
-			},
-			...mapState('menubar', ['resultsCount'])
-		},
-
-		watch: {
-			sort(now, _old) {
-				menuBarStore.setSort(now);
-			}
-		},
-
-		mounted() {
-			this.VuexUnsubscribe = this.$store.subscribe((mutation, _state) => {
-				if (mutation.type === 'menubar/setSort') {
-					this.sort = mutation.payload;
-				}
-			});
-		},
-
-		destroyed() {
-			if (this.VuexUnsubscribe) { this.VuexUnsubscribe(); }
-		}
+	withDefaults(defineProps<{
+		results?: boolean
+	}>(), {
+		results: true
 	});
+
+	const canCount = computed(() => ['types-id', 'search-query', 'user-login', 'users', 'types-years'].includes(route.name as string));
+	const canSort = computed(() => ['types-id', 'search-query', 'user-login', 'suggest'].includes(route.name as string));
 </script>
 
 <style scoped lang="scss">

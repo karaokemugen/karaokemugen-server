@@ -1,114 +1,105 @@
 <template>
-	<i18n path="kara.phrase" :tag="tag">
+	<i18n-t
+		keypath="kara.phrase"
+		:tag="tag"
+	>
 		<template #songtype>
-			<a
-				:href="`/tags/${songtype.slug}/${songtype.tag.tid}~3`"
+			<nuxt-link
 				@click.prevent="handleLink(songtype)"
 			>
-				{{ songtype.name }}<template v-if="karaoke.songorder">&nbsp;{{ karaoke.songorder }}</template>
-			</a>
+				{{ songtype.name }}<template v-if="karaoke.songorder">
+					&nbsp;{{ karaoke.songorder }}
+				</template>
+			</nuxt-link>
 			<span v-if="versions.length > 0">
-				(<template v-for="(version, index) in versions"><a
+				(<template
+					v-for="(version, index) in versions"
 					:key="version.tag.tid"
-					:href="`/tags/${version.slug}/${version.tag.tid}~14`"
-					@click.prevent="handleLink(version)"
-				>{{ version.name }}</a><template v-if="index+1 < versions.length">, </template></template>)
+				>
+					<nuxt-link
+						@click.prevent="handleLink(version)"
+					>{{ version.name }}</nuxt-link>
+					<template v-if="index+1 < versions.length">, </template>
+				</template>)
 			</span>
 		</template>
 		<template #series>
-			<a
-				:href="`/tags/${serieSinger.slug}/${serieSinger.tag.tid}~${serieSinger.type === 'series' ? '1': (serieSinger.type === 'singers' ? '2' : '17')}`"
+			<nuxt-link
 				@click.prevent="handleLink(serieSinger)"
 			>
 				{{ serieSinger.name }}
-			</a>
+			</nuxt-link>
 		</template>
-	</i18n>
+	</i18n-t>
 </template>
 
-<script lang="ts">
-	import Vue, { PropOptions } from 'vue';
+<script setup lang="ts">
 	import slug from 'slug';
 	import { ShortTag } from '~/types/tags';
-	import { generateNavigation, getTagInLocale } from '~/utils/tools';
 	import { DBKara } from '%/lib/types/database/kara';
-	import { menuBarStore } from '~/store';
+	import { useMenubarStore } from '~/store/menubar';
 
-	export default Vue.extend({
-		name: 'KaraPhrase',
+	const props = defineProps<{
+		tag: string
+		karaoke: DBKara
+		karaokesI18n?: Record<string, string>
+	}>();
 
-		props: {
-			tag: {
-				type: String,
-				required: true
-			},
-			karaoke: {
-				type: Object,
-				required: true
-			} as PropOptions<DBKara>,
-			i18n: {
-				type: Object,
-				default: undefined
-			}
-		},
+	const { push } = useRouter();
+	const { addTag } = useMenubarStore();
 
-		computed: {
-			serieSinger(): ShortTag {
-				if (this.karaoke.series[0]) {
-					return {
-						name: getTagInLocale(this.karaoke.series[0], this.$store.state.auth.user, this.i18n),
-						slug: slug(this.karaoke.series[0].name),
-						type: 'series',
-						tag: this.karaoke.series[0]
-					};
-				} else if (this.karaoke.singergroups[0]) {
-					return {
-						name: getTagInLocale(this.karaoke.singergroups[0], this.$store.state.auth.user),
-						slug: slug(this.karaoke.singergroups[0].name),
-						type: 'singergroups',
-						tag: this.karaoke.singergroups[0]
-					};
-				} else if (this.karaoke.singers[0]) {
-					return {
-						name: getTagInLocale(this.karaoke.singers[0], this.$store.state.auth.user, this.i18n),
-						slug: slug(this.karaoke.singers[0].name),
-						type: 'singers',
-						tag: this.karaoke.singers[0]
-					};
-				} else { // You never know~
-					throw new TypeError('The karaoke does not have any series nor singers, wtf?');
-				}
-			},
-			songtype(): ShortTag {
-				return {
-					slug: slug(this.karaoke.songtypes[0].name),
-					name: getTagInLocale(this.karaoke.songtypes[0], this.$store.state.auth.user, this.i18n),
-					type: 'songtypes',
-					tag: this.karaoke.songtypes[0]
-				};
-			},
-			versions(): ShortTag[] {
-				const tab = [];
-				for (const version of this.karaoke.versions) {
-					tab.push({
-						name: getTagInLocale(version, this.$store.state.auth.user, this.i18n),
-						slug: slug(version.name),
-						type: 'versions',
-						tag: version
-					});
-				}
-				return tab;
-			}
-		},
-
-		methods: {
-			handleLink(tag: ShortTag) {
-				menuBarStore.addTag({
-					type: tag.type,
-					tag: tag.tag
-				});
-				this.$router.push(generateNavigation(menuBarStore));
-			}
+	const serieSinger = computed<ShortTag>(() => {
+		if (props.karaoke.series[0]) {
+			return {
+				name: getTagInLocale(props.karaoke.series[0], props.karaokesI18n),
+				slug: slug(props.karaoke.series[0].name),
+				type: 'series',
+				tag: props.karaoke.series[0]
+			};
+		} else if (props.karaoke.singergroups[0]) {
+			return {
+				name: getTagInLocale(props.karaoke.singergroups[0]),
+				slug: slug(props.karaoke.singergroups[0].name),
+				type: 'singergroups',
+				tag: props.karaoke.singergroups[0]
+			};
+		} else if (props.karaoke.singers[0]) {
+			return {
+				name: getTagInLocale(props.karaoke.singers[0], props.karaokesI18n),
+				slug: slug(props.karaoke.singers[0].name),
+				type: 'singers',
+				tag: props.karaoke.singers[0]
+			};
+		} else { // You never know~
+			throw new TypeError('The karaoke does not have any series nor singers, wtf?');
 		}
 	});
+	const songtype = computed<ShortTag>(() => {
+		return {
+			slug: slug(props.karaoke.songtypes[0].name),
+			name: getTagInLocale(props.karaoke.songtypes[0], props.karaokesI18n),
+			type: 'songtypes',
+			tag: props.karaoke.songtypes[0]
+		};
+	});
+	const versions = computed<ShortTag[]>(() => {
+		const tab = [];
+		for (const version of props.karaoke.versions) {
+			tab.push({
+				name: getTagInLocale(version, props.karaokesI18n),
+				slug: slug(version.name),
+				type: 'versions',
+				tag: version
+			});
+		}
+		return tab;
+	});
+
+	function handleLink(tag: ShortTag) {
+		addTag({
+			type: tag.type,
+			tag: tag.tag
+		});
+		push(generateNavigation());
+	}
 </script>
