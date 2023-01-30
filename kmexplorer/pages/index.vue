@@ -94,7 +94,7 @@
 					to="/search"
 					class="km-home--stats--link"
 				>
-					<strong>{{ count.karas>0 ? count.karas : '-' }}</strong>
+					<strong>{{ count.karas >0 ? `${count.karas} ` : '- ' }}</strong>
 					<span>{{ $t("stats.karaokes", count.karas) }}</span>
 				</nuxt-link>
 			</li>
@@ -103,7 +103,7 @@
 					to="/types/series"
 					class="km-home--stats--link"
 				>
-					<strong>{{ count.series>0 ? count.series : '-' }}</strong>
+					<strong>{{ count.series >0 ? `${count.series} ` : '- ' }}</strong>
 					<span>{{ $t("kara.tagtypes.series", count.series) }}</span>
 				</nuxt-link>
 			</li>
@@ -112,7 +112,7 @@
 					to="/types/singers"
 					class="km-home--stats--link"
 				>
-					<strong>{{ count.singers>0 ? count.singers : '-' }}</strong>
+					<strong>{{ count.singers >0 ? `${count.singers} ` : '- ' }}</strong>
 					<span>{{ $t("kara.tagtypes.singers", count.singers) }}</span>
 				</nuxt-link>
 			</li>
@@ -121,7 +121,7 @@
 					to="/types/creators"
 					class="km-home--stats--link"
 				>
-					<strong>{{ count.creators>0 ? count.creators : '-' }}</strong>
+					<strong>{{ count.creators >0 ? `${count.creators} ` : '- ' }}</strong>
 					<span>{{ $t("kara.tagtypes.creators", count.creators) }}</span>
 				</nuxt-link>
 			</li>
@@ -130,7 +130,7 @@
 					to="/types/langs"
 					class="km-home--stats--link"
 				>
-					<strong>{{ count.languages>0 ? count.languages : '-' }}</strong>
+					<strong>{{ count.languages >0 ? `${count.languages} ` : '- ' }}</strong>
 					<span>{{ $t("kara.tagtypes.langs", count.languages) }}</span>
 				</nuxt-link>
 			</li>
@@ -139,7 +139,7 @@
 					to="/types/authors"
 					class="km-home--stats--link"
 				>
-					<strong>{{ count.authors>0 ? count.authors : '-' }}</strong>
+					<strong>{{ count.authors >0 ? `${count.authors} ` : '- ' }}</strong>
 					<span>{{ $t("kara.tagtypes.authors", count.authors) }}</span>
 				</nuxt-link>
 			</li>
@@ -148,7 +148,7 @@
 					to="/types/songwriters"
 					class="km-home--stats--link"
 				>
-					<strong>{{ count.songwriters>0 ? count.songwriters : '-' }}</strong>
+					<strong>{{ count.songwriters >0 ? `${count.songwriters} ` : '- ' }}</strong>
 					<span>{{ $t("kara.tagtypes.songwriters", count.songwriters) }}</span>
 				</nuxt-link>
 			</li>
@@ -229,7 +229,7 @@
 			if (countUpdated.mediasize) { countUpdated.mediasizeString = prettyBytes(Number(countUpdated.mediasize)); }
 			if (countUpdated.duration) {
 				const durationArray = duration(countUpdated.duration);
-				let returnString = '';
+				let returnString = ' ';
 				if (durationArray[0] !== 0) { returnString += `${durationArray[0]} ${t('duration.days')} `; }
 				if (durationArray[1] !== 0) { returnString += `${durationArray[1]} ${t('duration.hours')} `; }
 				if (durationArray[2] !== 0) { returnString += `${durationArray[2]} ${t('duration.minutes')} `; }
