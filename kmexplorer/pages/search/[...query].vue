@@ -7,6 +7,9 @@
 
 	const { setSearch } = useMenubarStore();
 	const { params } = useRoute();
+	const { replace } = useRouter();
+
+	replace(generateNavigation());
 
 	onMounted(() =>  {
 		if (process.server && params.query) {
