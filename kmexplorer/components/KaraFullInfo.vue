@@ -151,7 +151,7 @@
 	import slug from 'slug';
 	import { storeToRefs } from 'pinia';
 	import { tagTypes } from '~/assets/constants';
-	import { DBKara, DBKaraTag } from '%/lib/types/database/kara';
+	import { DBKara } from '%/lib/types/database/kara';
 	import { ShortTag } from '~/types/tags';
 	import duration from '~/assets/date';
 	import { useMenubarStore } from '~/store/menubar';
@@ -170,6 +170,7 @@
 	const { loggedIn } = storeToRefs(useAuthStore());
 	const { download, banner} = storeToRefs(useModalStore());
 	const { openModal, closeModal} = useModalStore();
+	const { search } = storeToRefs(useMenubarStore());
 	const { addTag } = useMenubarStore();
 	const { push } = useRouter();
 
@@ -248,6 +249,8 @@
 	onMounted(() => {
 		if (props.karaoke?.flag_favorites) { favorite.value = true; }
 	});
+
+	watch(search, () => push('/search'));
 
 	useHead({
 		meta: [
