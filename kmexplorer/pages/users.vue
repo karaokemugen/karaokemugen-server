@@ -88,7 +88,7 @@
 			throw createError({ statusCode: 404 });
 		}
 		// Load the first page
-		await loadNextPage(true);
+		await resetList();
 	}
 
 	async function loadNextPage(force = false) {
@@ -115,10 +115,10 @@
 		}
 	}
 
-	function resetList() {
+	async function resetList() {
 		users.value = { infos: { count: 0, to: 0, from: 0 }, content: [] };
 		from.value = -1;
-		loadNextPage(true);
+		await loadNextPage(true);
 	}
 
 	function reqParams(): UsersRequest {

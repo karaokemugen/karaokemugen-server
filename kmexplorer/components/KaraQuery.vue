@@ -125,9 +125,10 @@
 		}
 		if (typeof route.query.collections === 'string') {
 			setEnabledCollections(route.query.collections.split(':'));
+		} else {
+			// Load the first page
+			await resetList(true);
 		}
-		// Load the first page
-		await loadNextPage(true);
 	}
 
 	async function loadNextPage(force = false) {
@@ -157,10 +158,10 @@
 		}
 	}
 
-	function resetList(navigation = false) {
+	async function resetList(navigation = false) {
 		karaokes.value = { infos: { count: 0, to: 0, from: 0 }, i18n: {}, content: [] };
 		from.value = -1;
-		loadNextPage(true);
+		await loadNextPage(true);
 		if (navigation && !props.favorites &&
 			(route.params.query !== (search.value || undefined) ||
 				route.query.collections !== enabledCollections.value.join(':') ||
