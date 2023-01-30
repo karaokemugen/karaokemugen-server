@@ -169,11 +169,12 @@
 </template>
 
 <script setup lang="ts">
+	import { DBStats } from '%/../src/types/database/kara';
+	import { storeToRefs } from 'pinia';
 	import prettyBytes from 'pretty-bytes';
 	import duration from '~/assets/date';
-	import { useModalStore } from '~/store/modal';
-	import { DBStats } from '%/../src/types/database/kara';
 	import { useMenubarStore } from '~/store/menubar';
+	import { useModalStore } from '~/store/modal';
 
 	export interface Stats extends DBStats {
 		mediasizeString?: string,
@@ -200,8 +201,10 @@
 	const explorerHost = conf.public.EXPLORER_HOST;
 	const explorerTagline = conf.public.EXPLORER_TAGLINE;
 
+	const { search } = storeToRefs(useMenubarStore());
 	const { reset } = useMenubarStore();
 	const { openModal } = useModalStore();
+	const { push } = useRouter();
 
 	const { t } = useI18n();
 
@@ -217,6 +220,8 @@
 	});
 
 	reset();
+
+	watch(search, () => push('/search'));
 
 	fetch();
 
