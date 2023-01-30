@@ -25,81 +25,78 @@
 				/>
 			</div>
 			<div class="media-right">
-				<button v-if="canDelete" class="button is-danger" :disabled="done.delete" :class="{'is-loading': loading}" @click="subDelete">
+				<button
+					v-if="canDelete"
+					class="button is-danger"
+					:disabled="done_delete"
+					:class="{'is-loading': loading}"
+					@click="deleteLike"
+				>
 					{{ $t('suggestions.kara.remove') }}
 				</button>
-				<button class="button is-success" :disabled="done.vote" :class="{'is-loading': loading}" @click="submit('like')">
-					{{ done.vote ? $t('suggestions.kara.ok'):$t('suggestions.kara.yes') }} ({{ kara.likes }})
+				<button
+					class="button is-success"
+					:disabled="done_vote"
+					:class="{'is-loading': loading}"
+					@click="addLike()"
+				>
+					{{ done_vote ? $t('suggestions.kara.ok'):$t('suggestions.kara.yes') }} ({{ likes }})
 				</button>
 			</div>
 		</article>
 	</div>
 </template>
 
-<script lang="ts">
-	import Vue from 'vue';
-	import { getLanguagesInLocaleFromCode } from '../utils/isoLanguages';
-	import { likesStore } from '~/store';
-	import Tag from '~/components/Tag.vue';
+<script setup lang="ts">
+	import { storeToRefs } from 'pinia';
+	import { useLocalStorageStore } from '~/store/localStorage';
+	import { useAuthStore } from '~/store/auth';
+	import { Suggestion } from '~/../kmserver-core/src/types/suggestions';
 
-	export default Vue.extend({
-		name: 'SuggestCard',
+	const props = defineProps<{
+		kara: Suggestion
+	}>();
 
-		components: {
-			Tag
-		},
+	const loading = ref(false);
+	const done_delete = ref(false);
+	const done_vote = ref(false);
+	const likes = ref(props.kara.likes || 0);
 
-		props: {
-			kara: Object
-		},
+	const { loggedIn, user } = storeToRefs(useAuthStore());
+	const { karas } = storeToRefs(useLocalStorageStore());
+	const { addKara } = useLocalStorageStore();
+	const { locale } = useI18n();
 
-		data() {
-			return {
-				loading: false,
-				done: {
-					delete: false,
-					vote: false
-				}
-			};
-		},
+	const canDelete = computed(() => loggedIn.value && !!user?.value?.roles?.admin);
+	const canSeeSource = computed(() => loggedIn.value && (!!user?.value?.roles?.admin || !!user?.value?.roles?.maintainer));
 
-		computed: {
-			canDelete(): boolean {
-				return this.$auth.loggedIn && !!this.$auth.user.roles.admin;
-			},
-			canSeeSource(): boolean {
-				return this.$auth.loggedIn && (!!this.$auth.user.roles.admin || !!this.$auth.user.roles.maintainer);
-			}
-		},
-
-		created() {
-			if (likesStore.karas.find(el => el === this.kara.id) !== undefined) {
-				this.done.vote = true;
-			}
-		},
-
-		methods: {
-			async submit(type: string) {
-				this.loading = true;
-				await this.$axios.post(`/api/suggestions/${this.kara.id}`, {
-					type
-				});
-				likesStore.addKara(this.kara.id);
-				this.loading = false;
-				this.done.vote = true;
-				this.kara.likes++;
-			},
-			async subDelete() {
-				this.loading = true;
-				await this.$axios.delete(`/api/suggestions/${this.kara.id}`);
-				this.loading = false;
-				this.done.delete = true;
-			},
-			getLanguagesFromCode(code:string) {
-				return getLanguagesInLocaleFromCode(code, (this.$auth.loggedIn && this.$auth.user.language) || this.$i18n.locale);
-			}
+	onMounted( () => {
+		if (karas.value.find(el => el === props.kara.id) !== undefined) {
+			done_vote.value = true;
 		}
 	});
+
+	async function addLike() {
+		loading.value = true;
+		await useCustomFetch(`/api/suggestions/${props.kara.id}`, {
+			method: 'POST'
+		});
+		if (props.kara.id) addKara(props.kara.id);
+		loading.value = false;
+		done_vote.value = true;
+		likes.value++;
+	}
+	async function deleteLike() {
+		loading.value = true;
+		await useCustomFetch(`/api/suggestions/${props.kara.id}`, {
+			method: 'DELETE'
+		});
+		loading.value = false;
+		done_delete.value = true;
+	}
+	function getLanguagesFromCode(code:string) {
+		return getLanguagesInLocaleFromCode(code, (loggedIn.value && user?.value?.language) || locale.value);
+	}
 </script>
 
 <style lang="scss">

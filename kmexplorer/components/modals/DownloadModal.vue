@@ -8,144 +8,153 @@
 		<section class="modal-card-body">
 			<div class="columns">
 				<div class="column">
-					<a v-if="karaokesJsonLink" :href="jsonUrl" class="button" :download="`${serieSinger.name} - ${karaoke.titles[karaoke.titles_default_language]}.karabundle.json`" @click="closeModal">
-						<font-awesome-icon :icon="['fas', 'file-export']" :fixed-width="true" />
+					<nuxt-link
+						v-if="karaokesJsonLink"
+						:href="jsonUrl"
+						class="button"
+						:download="`${serieSinger.name} - ${karaoke.titles[karaoke.titles_default_language]}.karabundle.json`"
+						@click="closeModal"
+					>
+						<font-awesome-icon
+							:icon="['fas', 'file-export']"
+							:fixed-width="true"
+						/>
 						{{ $t('modal.download.karabundle') }}
-					</a>
-					<a v-if="karaoke.subfile" :href="subtitlesUrl" class="button" download @click="closeModal">
-						<font-awesome-icon :icon="['fas', 'closed-captioning']" :fixed-width="true" />
+					</nuxt-link>
+					<nuxt-link
+						v-if="karaoke.subfile"
+						:href="subtitlesUrl"
+						class="button"
+						download
+						@click="closeModal"
+					>
+						<font-awesome-icon
+							:icon="['fas', 'closed-captioning']"
+							:fixed-width="true"
+						/>
 						{{ $t('modal.download.subtitles', {format: subtitlesExtension}) }}
-					</a>
-					<a v-if="liveURL && live" :href="mediaUrl" class="button" download @click="closeModal">
-						<font-awesome-icon :icon="['fas', 'file-video']" :fixed-width="true" />
+					</nuxt-link>
+					<nuxt-link
+						v-if="liveURL && live"
+						:href="mediaUrl"
+						class="button"
+						download
+						@click="closeModal"
+					>
+						<font-awesome-icon
+							:icon="['fas', 'file-video']"
+							:fixed-width="true"
+						/>
 						{{ $t('modal.download.media', {format: mediaExtension}) }}
-					</a>
-					<a v-if="liveURL && live" :href="mediaHardsubUrl" class="button" :download="hardsubMediaFileName" @click="closeModal">
-						<font-awesome-icon :icon="['fas', 'file-video']" :fixed-width="true" />
+					</nuxt-link>
+					<nuxt-link
+						v-if="liveURL && live"
+						:href="mediaHardsubUrl"
+						class="button"
+						:download="hardsubMediaFileName"
+						@click="closeModal"
+					>
+						<font-awesome-icon
+							:icon="['fas', 'file-video']"
+							:fixed-width="true"
+						/>
 						{{ $t('modal.download.media_hardsub') }}
-					</a>
+					</nuxt-link>
 				</div>
 			</div>
 		</section>
 	</modal>
 </template>
 
-<script lang="ts">
-	import Vue, { PropOptions } from 'vue';
+<script setup lang="ts">
 	import slug from 'slug';
-	import Modal from './Modal.vue';
-	import { getTagInLocale } from '~/utils/tools';
 	import { DBKara } from '%/lib/types/database/kara';
-	import { ShortTag } from '~/types/tags';
 	import { tagTypes } from '~/assets/constants';
 
-	interface VState {
-		explorerHost?: string,
-		liveURL?: string,
-		karaokesJsonLink?: string
-	}
+	const conf = useRuntimeConfig();
+	const liveURL = conf.public.LIVE_URL;
+	const karaokesJsonLink = conf.public.KARAOKES_JSON_LINK;
+	const apiHost = conf.public.API_HOST;
 
-	export default Vue.extend({
-		name: 'DownloadModal',
+	const props = defineProps<{
+		active: boolean,
+		karaoke: DBKara
+	}>();
 
-		components: {
-			Modal
-		},
+	const emit = defineEmits<{(e: 'close'): void}>();
 
-		props: {
-			active: Boolean,
-			karaoke: {
-				type: Object,
-				required: true
-			} as PropOptions<DBKara>
-		},
-
-		data(): VState {
+	const serieSinger = computed(() => {
+		if (props.karaoke.series[0]) {
 			return {
-				explorerHost: process.env.EXPLORER_HOST,
-				liveURL: process.env.LIVE_URL,
-				karaokesJsonLink: process.env.KARAOKES_JSON_LINK
+				name: getTagInLocale(props.karaoke.series[0]),
+				slug: slug(props.karaoke.series[0].name),
+				type: 'series',
+				tag: props.karaoke.series[0]
 			};
-		},
-		computed: {
-			serieSinger(): ShortTag {
-				if (this.karaoke.series[0]) {
-					return {
-						name: getTagInLocale(this.karaoke.series[0], this.$store.state.auth.user),
-						slug: slug(this.karaoke.series[0].name),
-						type: 'series',
-						tag: this.karaoke.series[0]
-					};
-				} else if (this.karaoke.singergroups[0]) {
-					return {
-						name: getTagInLocale(this.karaoke.singergroups[0], this.$store.state.auth.user),
-						slug: slug(this.karaoke.singergroups[0].name),
-						type: 'singergroups',
-						tag: this.karaoke.singergroups[0]
-					};
-				} else if (this.karaoke.singers[0]) {
-					return {
-						name: getTagInLocale(this.karaoke.singers[0], this.$store.state.auth.user),
-						slug: slug(this.karaoke.singers[0].name),
-						type: 'singers',
-						tag: this.karaoke.singers[0]
-					};
-				} else { // You never know~
-					throw new TypeError('The karaoke does not have any series nor singers, wtf?');
-				}
-			},
-			mediaExtension(): string {
-				const mediafile = this.karaoke.mediafile.split('.');
-				return mediafile[mediafile.length - 1];
-			},
-			subtitlesExtension(): string {
-				if (this.karaoke.subfile) {
-					const subfile = this.karaoke.subfile.split('.');
-					return subfile[subfile.length - 1];
-				}
-				return '';
-			},
-			kmAppUrl(): string {
-				return `km://download/${process.env.API_HOST}/${this.karaoke.kid}`;
-			},
-			jsonUrl(): string {
-				return `${process.env.KARAOKES_JSON_LINK}/${encodeURIComponent(this.karaoke.karafile)}`;
-			},
-			mediaUrl(): string {
-				return `${this.$axios.defaults.baseURL}downloads/medias/${encodeURIComponent(this.karaoke.mediafile)}`;
-			},
-			mediaHardsubUrl(): string {
-				return `${this.$axios.defaults.baseURL}hardsubs/${this.karaoke.hardsubbed_mediafile}`;
-			},
-			hardsubMediaFileName(): string {
-				const filename = this.karaoke.mediafile.substring(0, this.karaoke.mediafile.lastIndexOf('.')) || this.karaoke.mediafile;
-				return `${filename}.mp4`;
-			},
-			subtitlesUrl(): string {
-				return `${this.$axios.defaults.baseURL}downloads/lyrics/${encodeURIComponent(this.karaoke.subfile)}`;
-			},
-			live(): boolean {
-				// Loop all tags to find a tag with noLiveDownload
-				let noLiveDownload = false;
-				for (const tagType in tagTypes) {
-					if (tagType === 'years') { continue; }
-					// @ts-ignore: il est 23h27 <- ceci n'est pas une raison
-					for (const tag of this.karaoke[tagType]) {
-						if (tag.noLiveDownload) {
-							noLiveDownload = true;
-						}
-					}
-				}
-				return !noLiveDownload;
-			}
-		},
-
-		methods: {
-			closeModal(): void {
-				this.$emit('close');
-			}
+		} else if (props.karaoke.singergroups[0]) {
+			return {
+				name: getTagInLocale(props.karaoke.singergroups[0]),
+				slug: slug(props.karaoke.singergroups[0].name),
+				type: 'singergroups',
+				tag: props.karaoke.singergroups[0]
+			};
+		} else if (props.karaoke.singers[0]) {
+			return {
+				name: getTagInLocale(props.karaoke.singers[0]),
+				slug: slug(props.karaoke.singers[0].name),
+				type: 'singers',
+				tag: props.karaoke.singers[0]
+			};
+		} else { // You never know~
+			throw new TypeError('The karaoke does not have any series nor singers, wtf?');
 		}
 	});
+	
+	const mediaExtension = computed(() => {
+		const mediafile = props.karaoke.mediafile.split('.');
+		return mediafile[mediafile.length - 1];
+	});
+	const subtitlesExtension = computed(() => {
+		if (props.karaoke.subfile) {
+			const subfile = props.karaoke.subfile.split('.');
+			return subfile[subfile.length - 1];
+		}
+		return '';
+	});
+	const jsonUrl = computed(() => {
+		return `${karaokesJsonLink}/${encodeURIComponent(props.karaoke.karafile)}`;
+	});
+	const mediaUrl = computed(() => {
+		return `${apiHost}downloads/medias/${encodeURIComponent(props.karaoke.mediafile)}`;
+	});
+	const mediaHardsubUrl = computed(() => {
+		return `${apiHost}hardsubs/${props.karaoke.hardsubbed_mediafile}`;
+	});
+	const hardsubMediaFileName = computed(() => {
+		const filename = props.karaoke.mediafile.substring(0, props.karaoke.mediafile.lastIndexOf('.')) || props.karaoke.mediafile;
+		return `${filename}.mp4`;
+	});
+	const subtitlesUrl = computed(() => {
+		return `${apiHost}downloads/lyrics/${encodeURIComponent(props.karaoke.subfile)}`;
+	});
+	const live = computed(() => {
+		// Loop all tags to find a tag with noLiveDownload
+		let noLiveDownload = false;
+		for (const tagType in tagTypes) {
+			if (tagType === 'years') { continue; }
+			// @ts-ignore: il est 23h27 <- ceci n'est pas une raison
+			for (const tag of props.karaoke[tagType]) {
+				if (tag.noLiveDownload) {
+					noLiveDownload = true;
+				}
+			}
+		}
+		return !noLiveDownload;
+	});
+
+	function closeModal(): void {
+		emit('close');
+	}
 </script>
 
 <style lang="scss" scoped>

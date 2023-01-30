@@ -8,11 +8,14 @@
 		@close="closeModal"
 	>
 		<section class="modal-card-body">
-			<label class="label" for="token">
+			<label
+				class="label"
+				for="token_join_kara"
+			>
 				{{ $t('modal.join_kara.desc') }}
 			</label>
 			<input
-				id="token"
+				id="token_join_kara"
 				v-model="token"
 				type="text"
 				name="token"
@@ -21,68 +24,52 @@
 			<p class="help">
 				{{ $t('modal.join_kara.help') }}
 			</p>
-			<p v-if="error" class="help is-danger">
+			<p
+				v-if="error"
+				class="help is-danger"
+			>
 				{{ $t('modal.join_kara.error') }}
 			</p>
 		</section>
 	</modal>
 </template>
 
-<script lang="ts">
-	import Vue from 'vue';
-	import Modal from './Modal.vue';
+<script setup lang="ts">
 
-	interface VState {
-		explorerHost?: string
-		remoteProtocol?: string
-		token: string
-		error: boolean
-	}
+	defineProps<{
+		active: boolean
+	}>();
 
-	export default Vue.extend({
-		name: 'JoinKaraModal',
+	const emit = defineEmits<{(e: 'close'): void}>();
 
-		components: {
-			Modal
-		},
+	const token = ref('');
+	const error = ref(false);
 
-		props: {
-			active: Boolean
-		},
+	const conf = useRuntimeConfig();
+	const explorerProtocol = conf.public.EXPLORER_PROTOCOL;
+	const explorerHost = conf.public.EXPLORER_HOST;
 
-		data(): VState {
-			return {
-				explorerHost: process.env.EXPLORER_HOST,
-				remoteProtocol: process.env.REMOTE_PROTOCOL,
-				token: '',
-				error: false
-			};
-		},
-
-		methods: {
-			async submitForm(): Promise<void> {
-				if (this.token) {
-					this.error = false;
-					try {
-						let url: string;
-						if (/^https?:\/\//.test(this.token)) {
-							url = this.token;
-						} else {
-							url = `${this.remoteProtocol}://${this.token}.${this.explorerHost}`;
-						}
-						await this.$axios.get(url);
-						window.open(url, '_self');
-					} catch (e) {
-						this.error = true;
-						throw e;
-					}
+	async function submitForm(): Promise<void> {
+		if (token.value) {
+			error.value = false;
+			try {
+				let url: string;
+				if (/^https?:\/\//.test(token.value)) {
+					url = token.value;
+				} else {
+					url = `${explorerProtocol}://${token.value}.${explorerHost}`;
 				}
-			},
-			closeModal(): void {
-				this.$emit('close');
+				await $fetch(url);
+				window.open(url, '_self');
+			} catch (e) {
+				error.value = true;
+				throw e;
 			}
 		}
-	});
+	}
+	function closeModal(): void {
+		emit('close');
+	}
 </script>
 
 <style lang="scss" scoped>

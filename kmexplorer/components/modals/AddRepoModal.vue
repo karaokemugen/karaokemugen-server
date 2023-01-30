@@ -10,59 +10,42 @@
 		<section class="modal-card-body">
 			<label class="label">
 				{{ $t('modal.add_repository.desc') }}
-				<a :href="`https://mugen.karaokes.moe/${$i18n.locale === 'fre' ? '' : 'en/'}download.html`">
+				<nuxt-link :href="`https://mugen.karaokes.moe/${$i18n.locale === 'fre' ? '' : 'en/'}download.html`">
 					{{ $t('modal.add_repository.download') }}
-				</a>
+				</nuxt-link>
 			</label>
 			<label class="label">
-				<i18n path="modal.add_repository.manual" tag="label">
+				<i18n-t
+					keypath="modal.add_repository.manual"
+					tag="label"
+				>
 					<template #repository>
 						<span class="boldLabel">{{ explorerHost }}</span>
 					</template>
 					<template #online>
 						<span class="boldLabel">{{ $t('modal.add_repository.online') }}</span>
 					</template>
-				</i18n>
+				</i18n-t>
 			</label>
 		</section>
 	</modal>
 </template>
 
-<script lang="ts">
-	import Vue from 'vue';
-	import Modal from './Modal.vue';
+<script setup lang="ts">
+	defineProps<{
+		active: boolean
+	}>();
 
-	interface VState {
-		explorerHost?: string
+	const explorerHost = useRuntimeConfig().public.EXPLORER_HOST;
+	const emit = defineEmits<{(e: 'close'): void}>();
+
+	function submitForm(): void {
+		window.open(`km://addRepo/${explorerHost}`);
+		closeModal();
 	}
-
-	export default Vue.extend({
-		name: 'AddRepoModal',
-
-		components: {
-			Modal
-		},
-
-		props: {
-			active: Boolean
-		},
-
-		data(): VState {
-			return {
-				explorerHost: process.env.EXPLORER_HOST
-			};
-		},
-
-		methods: {
-			submitForm(): void {
-				window.open(`km://addRepo/${this.explorerHost}`);
-				this.closeModal();
-			},
-			closeModal(): void {
-				this.$emit('close');
-			}
-		}
-	});
+	function closeModal(): void {
+		emit('close');
+	}
 </script>
 
 <style lang="scss" scoped>

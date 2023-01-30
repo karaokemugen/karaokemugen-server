@@ -1,64 +1,66 @@
 <template>
-	<b-dropdown v-model="enabledLanguages" aria-role="list" multiple scrollable>
+	<o-dropdown
+		v-model="enabledLanguagesModel"
+		aria-role="list"
+		multiple
+		scrollable
+	>
 		<template #trigger="{ active }">
 			<button class="button">
-				<font-awesome-icon fixed-width :icon="['fas', active ? 'chevron-up':'chevron-down']" />
+				<font-awesome-icon
+					fixed-width
+					:icon="['fas', active ? 'chevron-up':'chevron-down']"
+				/>
 				{{ label }}
 			</button>
 		</template>
-		<b-dropdown-item v-for="language in languages" :key="language" :value="language" aria-role="listitem">
+		<o-dropdown-item
+			v-for="language in languages"
+			:key="language"
+			:value="language"
+			aria-role="listitem"
+		>
 			{{ getLanguagesFromCode(language) }}
-		</b-dropdown-item>
-	</b-dropdown>
+		</o-dropdown-item>
+	</o-dropdown>
 </template>
 
-<script lang="ts">
-	import Vue from 'vue';
-	import { menuBarStore } from '~/store';
-	import { getLanguagesInLocaleFromCode } from '~/utils/isoLanguages';
+<script setup lang="ts">
+	import { storeToRefs } from 'pinia';
+	import { useAuthStore } from '~/store/auth';
+	import { useMenubarStore } from '~/store/menubar';
 
-	interface VState {
-		languages: string[]
+	defineProps<{
+		label: string
+	}>();
+
+	const languages = ref<string[]>([]);
+
+	const { locale } = useI18n();
+
+	const { loggedIn, user } = storeToRefs(useAuthStore());
+	const { enabledLanguages } = storeToRefs(useMenubarStore());
+	const { setEnabledLanguages } = useMenubarStore();
+
+	fetch();
+
+	async function fetch() {
+		const res = await useCustomFetch<string[]>('/api/suggestions/languages');
+		languages.value = res.filter((value:string) => value !== '');
 	}
 
-	export default Vue.extend({
-		name: 'LanguagesPicker',
-
-		props: {
-			label: {
-				type: String,
-				required: true
-			}
+	const enabledLanguagesModel = computed({
+		get(): string[] {
+			return enabledLanguages.value;
 		},
-
-		data(): VState {
-			return {
-				languages: []
-			};
-		},
-
-		async fetch() {
-			const languages = await this.$axios.$get('/api/suggestions/languages');
-			this.languages = languages.filter((value:string) => value !== '');
-		},
-
-		computed: {
-			enabledLanguages: {
-				get(): string[] {
-					return menuBarStore.enabledLanguages;
-				},
-				set(languages: string[]) {
-					menuBarStore.setEnabledLanguages(languages);
-				}
-			}
-		},
-
-		methods: {
-			getLanguagesFromCode(code:string) {
-				return getLanguagesInLocaleFromCode(code, (this.$auth.loggedIn && this.$auth.user.language) || this.$i18n.locale);
-			}
+		set(languages: string[]) {
+			setEnabledLanguages(languages);
 		}
 	});
+
+	function getLanguagesFromCode(code:string) {
+		return getLanguagesInLocaleFromCode(code, (loggedIn.value && user?.value?.language) || locale.value);
+	}
 </script>
 
 <style scoped>

@@ -1,5 +1,5 @@
 <template>
-	<div v-if="tags.length > 0">
+	<div>
 		<tag
 			v-for="(tag, key) in tags"
 			:key="key"
@@ -8,36 +8,17 @@
 			icon
 			nolink
 			deletebtn
-			@close="tagRemover(tag)"
+			@close="removeTag(tag)"
 		/>
 	</div>
 </template>
 
-<script lang="ts">
-	import Vue from 'vue';
-	import { mapState } from 'vuex';
-	import Tag from '~/components/Tag.vue';
-	import { menuBarStore } from '~/store';
-	import { TagExtend } from '~/store/menubar';
+<script setup lang="ts">
+	import { storeToRefs } from 'pinia';
+	import { useMenubarStore } from '~/store/menubar';
 
-	export default Vue.extend({
-		name: 'SearchTags',
-
-		components: {
-			Tag
-		},
-
-		computed: {
-			...mapState('menubar', ['tags'])
-		},
-
-		methods: {
-			tagRemover(tag: TagExtend) {
-				menuBarStore.removeTag(tag);
-			}
-		}
-
-	});
+	const { removeTag } = useMenubarStore();
+	const { tags } = storeToRefs(useMenubarStore());
 </script>
 
 <style scoped lang="scss">

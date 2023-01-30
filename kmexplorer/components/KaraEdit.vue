@@ -1,16 +1,25 @@
 <template>
 	<div>
-		<label class="title">{{ $t('kara.import.sections.files') }}</label>
+		<label class="title">{{ t('kara.import.sections.files') }}</label>
 		<div class="box">
 			<div class="field">
-				<label class="label" :title="$t('kara.import.media_file_tooltip', {formats: supportedMedias.join(', ')})">
-					{{ $route.params.id ? $t('kara.import.media_file_edit'):$t('kara.import.media_file') }}
-					<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+				<label
+					class="label"
+					:title="t('kara.import.media_file_tooltip', {formats: supportedMedias.join(', ')})"
+				>
+					{{ $route.params.id ? t('kara.import.media_file_edit'):t('kara.import.media_file') }}
+					<font-awesome-icon
+						:icon="['fas', 'question-circle']"
+						:fixed-width="true"
+					/>
 				</label>
-				<div class="file has-name is-fullwidth" :class="{'is-attached-bottom': uploading.media}">
+				<div
+					class="file has-name is-fullwidth"
+					:class="{'is-attached-bottom': uploading_media}"
+				>
 					<label class="file-label">
 						<input
-							ref="mediafile"
+							ref="mediafileInput"
 							class="file-input"
 							type="file"
 							name="resume"
@@ -19,30 +28,53 @@
 						>
 						<span class="file-cta">
 							<span class="file-icon">
-								<font-awesome-icon :icon="['fas', 'upload']" :fixed-width="true" />
+								<font-awesome-icon
+									:icon="['fas', 'upload']"
+									:fixed-width="true"
+								/>
 							</span>
-							<span class="file-label">{{ $t('kara.import.choose_file') }}</span>
+							<span class="file-label">{{ t('kara.import.choose_file') }}</span>
 						</span>
 						<span class="file-name">{{ mediafile }}</span>
 					</label>
 				</div>
-				<progress v-if="uploading.media" class="progress is-success is-attached-top" :value="uploading.media === true ? undefined:uploading.media" max="100" />
-				<p v-if="!$route.params.id && !mediafile" class="help is-danger">
-					{{ $t('kara.import.media_file_required') }}
+				<progress
+					v-if="uploading_media"
+					class="progress is-success is-attached-top"
+					:value="uploading_media === true ? undefined : uploading_media"
+					max="100"
+				/>
+				<p
+					v-if="!$route.params.id && !mediafile"
+					class="help is-danger"
+				>
+					{{ t('kara.import.media_file_required') }}
 				</p>
-				<p v-if="mediafile_error" class="help is-danger">
+				<p
+					v-if="mediafile_error"
+					class="help is-danger"
+				>
 					{{ mediafile_error }}
 				</p>
 			</div>
 			<div class="field">
-				<label class="label" :title="$t('kara.import.lyrics_file_tooltip', {formats: supportedLyrics.join(', ')})">
-					{{ $t('kara.import.lyrics_file') }}
-					<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+				<label
+					class="label"
+					:title="t('kara.import.lyrics_file_tooltip', {formats: supportedLyrics.join(', ')})"
+				>
+					{{ t('kara.import.lyrics_file') }}
+					<font-awesome-icon
+						:icon="['fas', 'question-circle']"
+						:fixed-width="true"
+					/>
 				</label>
-				<div class="file has-name is-fullwidth" :class="{'is-attached-bottom': uploading.sub}">
+				<div
+					class="file has-name is-fullwidth"
+					:class="{'is-attached-bottom': uploading_sub}"
+				>
 					<label class="file-label">
 						<input
-							ref="subfile"
+							ref="subfileInput"
 							class="file-input"
 							type="file"
 							name="resume"
@@ -51,53 +83,79 @@
 						>
 						<span class="file-cta">
 							<span class="file-icon">
-								<font-awesome-icon :icon="['fas', 'upload']" :fixed-width="true" />
+								<font-awesome-icon
+									:icon="['fas', 'upload']"
+									:fixed-width="true"
+								/>
 							</span>
-							<span class="file-label">{{ $t('kara.import.choose_file') }}</span>
+							<span class="file-label">{{ t('kara.import.choose_file') }}</span>
 						</span>
 						<span class="file-name">{{ subfile }}</span>
 					</label>
 				</div>
-				<progress v-if="uploading.sub" class="progress is-success is-attached-top" :value="uploading.sub === true ? undefined:uploading.sub" max="100" />
-				<p v-if="subfile_error" class="help is-danger">
+				<progress
+					v-if="uploading_sub"
+					class="progress is-success is-attached-top"
+					:value="uploading_sub === true ? undefined : uploading_sub"
+					max="100"
+				/>
+				<p
+					v-if="subfile_error"
+					class="help is-danger"
+				>
 					{{ subfile_error }}
 				</p>
 			</div>
 		</div>
-		<label class="title">{{ $t('kara.import.sections.titles') }}</label>
+		<label class="title">{{ t('kara.import.sections.titles') }}</label>
 		<div class="box">
 			<div class="content">
-				<p>{{ $t('kara.import.desc.titles') }}</p>
-				<p>{{ $t('kara.import.desc.titles_default_language') }}</p>
+				<p>{{ t('kara.import.desc.titles') }}</p>
+				<p>{{ t('kara.import.desc.titles_default_language') }}</p>
 			</div>
 			<div class="field">
-				<label class="label" :title="$t('kara.import.title_tooltip')">
-					{{ $t('kara.import.title') }}
-					<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+				<label
+					class="label"
+					:title="t('kara.import.title_tooltip')"
+				>
+					{{ t('kara.import.title') }}
+					<font-awesome-icon
+						:icon="['fas', 'question-circle']"
+						:fixed-width="true"
+					/>
 				</label>
 				<languages-list
 					:value="karaoke.data.titles"
 					:default-language="karaoke.data.titles_default_language"
 					@change="onTitlesChange"
-					@onDefaultLanguage="onDefaultLanguageSelect"
+					@on-default-language="onDefaultLanguageSelect"
 				/>
-				<p v-if="!karaoke.data.titles || Object.keys(karaoke.data.titles).length === 0 || Object.values(karaoke.data.titles).includes('')" class="help is-danger">
-					{{ $t('kara.import.title_required') }}
+				<p
+					v-if="!karaoke.data.titles || Object.keys(karaoke.data.titles).length === 0 || Object.values(karaoke.data.titles).includes('')"
+					class="help is-danger"
+				>
+					{{ t('kara.import.title_required') }}
 				</p>
-				<label class="label" :title="$t('kara.import.titles_aliases_tooltip')">
-					{{ $t('kara.import.titles_aliases') }}
-					<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+				<label
+					class="label"
+					:title="t('kara.import.titles_aliases_tooltip')"
+				>
+					{{ t('kara.import.titles_aliases') }}
+					<font-awesome-icon
+						:icon="['fas', 'question-circle']"
+						:fixed-width="true"
+					/>
 				</label>
 				<editable-alias-group
-					:params="karaoke.data.titles_aliases"
+					:params="karaoke.data.titles_aliases || []"
 					@change="(aliases) => karaoke.data.titles_aliases = aliases"
 				/>
 			</div>
 		</div>
-		<label class="title">{{ $t('kara.import.sections.identity') }}</label>
+		<label class="title">{{ t('kara.import.sections.identity') }}</label>
 		<div class="box">
 			<div class="field">
-				<label class="label">{{ $tc('kara.tagtypes.langs', karaoke.data.tags.langs.length) }}</label>
+				<label class="label">{{ t('kara.tagtypes.langs', karaoke.data.tags.langs.length) }}</label>
 				<div class="control">
 					<editable-tag-group
 						:tag-type="5"
@@ -105,15 +163,24 @@
 						no-create
 						@change="(tags) => karaoke.data.tags.langs = tags"
 					/>
-					<p v-if="karaoke.data.tags.langs.length === 0" class="help is-danger">
-						{{ $t('kara.import.langs_required') }}
+					<p
+						v-if="karaoke.data.tags.langs.length === 0"
+						class="help is-danger"
+					>
+						{{ t('kara.import.langs_required') }}
 					</p>
 				</div>
 			</div>
 			<div class="field">
-				<label class="label" :title="$t('kara.import.series_tooltip')">
-					{{ $tc('kara.tagtypes.series', karaoke.data.tags.series.length) }}
-					<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+				<label
+					class="label"
+					:title="t('kara.import.series_tooltip')"
+				>
+					{{ t('kara.tagtypes.series', karaoke.data.tags.series.length) }}
+					<font-awesome-icon
+						:icon="['fas', 'question-circle']"
+						:fixed-width="true"
+					/>
 				</label>
 				<editable-tag-group
 					:tag-type="1"
@@ -124,13 +191,19 @@
 					v-if="karaoke.data.tags.series.length === 0 && karaoke.data.tags.singers.length === 0 && karaoke.data.tags.singergroups.length === 0"
 					class="help is-danger"
 				>
-					{{ $t('kara.import.series_singers_required') }}
+					{{ t('kara.import.series_singers_required') }}
 				</p>
 			</div>
 			<div class="field">
-				<label class="label" :title="$t('kara.import.franchises_tooltip')">
-					{{ $tc('kara.tagtypes.franchises', karaoke.data.tags.franchises.length) }}
-					<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+				<label
+					class="label"
+					:title="t('kara.import.franchises_tooltip')"
+				>
+					{{ t('kara.tagtypes.franchises', karaoke.data.tags.franchises.length) }}
+					<font-awesome-icon
+						:icon="['fas', 'question-circle']"
+						:fixed-width="true"
+					/>
 				</label>
 				<editable-tag-group
 					:tag-type="18"
@@ -139,7 +212,7 @@
 				/>
 			</div>
 			<div class="field">
-				<label class="label">{{ $tc('kara.tagtypes.songtypes', karaoke.data.tags.songtypes.length) }}</label>
+				<label class="label">{{ t('kara.tagtypes.songtypes', karaoke.data.tags.songtypes.length) }}</label>
 				<editable-tag-group
 					:checkboxes="true"
 					:tag-type="3"
@@ -150,23 +223,36 @@
 					v-if="karaoke.data.tags.songtypes.length === 0"
 					class="help is-danger"
 				>
-					{{ $t('kara.import.songtypes_required') }}
+					{{ t('kara.import.songtypes_required') }}
 				</p>
 			</div>
 			<div class="field">
-				<label class="label" :title="$t('kara.import.songorder_tooltip')">
-					{{ $t('kara.import.songorder') }}
-					<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+				<label
+					class="label"
+					:title="t('kara.import.songorder_tooltip')"
+				>
+					{{ t('kara.import.songorder') }}
+					<font-awesome-icon
+						:icon="['fas', 'question-circle']"
+						:fixed-width="true"
+					/>
 				</label>
 				<div class="control">
-					<input v-model="karaoke.data.songorder" class="input short" type="number">
-					<p v-if="karaoke.data.songorder > 999" class="help is-danger">
-						{{ $t('kara.import.songorder_invalid') }}
+					<input
+						v-model="karaoke.data.songorder"
+						class="input short"
+						type="number"
+					>
+					<p
+						v-if="karaoke.data.songorder && karaoke.data.songorder > 999"
+						class="help is-danger"
+					>
+						{{ t('kara.import.songorder_invalid') }}
 					</p>
 				</div>
 			</div>
 			<div class="field">
-				<label class="label">{{ $tc('kara.tagtypes.versions', karaoke.data.tags.versions.length) }}</label>
+				<label class="label">{{ t('kara.tagtypes.versions', karaoke.data.tags.versions.length) }}</label>
 				<editable-tag-group
 					:checkboxes="true"
 					:tag-type="14"
@@ -175,7 +261,7 @@
 				/>
 			</div>
 			<div class="field">
-				<label class="label">{{ $t('kara.singers_by') }}</label>
+				<label class="label">{{ t('kara.singers_by') }}</label>
 				<div class="control">
 					<editable-tag-group
 						:tag-type="2"
@@ -186,14 +272,20 @@
 						v-if="karaoke.data.tags.series.length === 0 && karaoke.data.tags.singers.length === 0 && karaoke.data.tags.singergroups.length === 0"
 						class="help is-danger"
 					>
-						{{ $t('kara.import.series_singers_required') }}
+						{{ t('kara.import.series_singers_required') }}
 					</p>
 				</div>
 			</div>
 			<div class="field">
-				<label class="label" :title="$t('kara.import.singergroups_tooltip')">
-					{{ $t('kara.singergroups_by') }}
-					<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+				<label
+					class="label"
+					:title="t('kara.import.singergroups_tooltip')"
+				>
+					{{ t('kara.singergroups_by') }}
+					<font-awesome-icon
+						:icon="['fas', 'question-circle']"
+						:fixed-width="true"
+					/>
 				</label>
 				<div class="control">
 					<editable-tag-group
@@ -205,14 +297,20 @@
 						v-if="karaoke.data.tags.series.length === 0 && karaoke.data.tags.singers.length === 0 && karaoke.data.tags.singergroups.length === 0"
 						class="help is-danger"
 					>
-						{{ $t('kara.import.series_singers_required') }}
+						{{ t('kara.import.series_singers_required') }}
 					</p>
 				</div>
 			</div>
 			<div class="field">
-				<label class="label" :title="$t('kara.import.songwriters_tooltip')">
-					{{ $t('kara.songwriters_by') }}
-					<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+				<label
+					class="label"
+					:title="t('kara.import.songwriters_tooltip')"
+				>
+					{{ t('kara.songwriters_by') }}
+					<font-awesome-icon
+						:icon="['fas', 'question-circle']"
+						:fixed-width="true"
+					/>
 				</label>
 				<div class="control">
 					<editable-tag-group
@@ -223,9 +321,15 @@
 				</div>
 			</div>
 			<div class="field">
-				<label class="label" :title="$t('kara.import.creators_tooltip')">
-					{{ $t('kara.creators_by') }}
-					<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+				<label
+					class="label"
+					:title="t('kara.import.creators_tooltip')"
+				>
+					{{ t('kara.creators_by') }}
+					<font-awesome-icon
+						:icon="['fas', 'question-circle']"
+						:fixed-width="true"
+					/>
 				</label>
 				<div class="control">
 					<editable-tag-group
@@ -236,25 +340,43 @@
 				</div>
 			</div>
 			<div class="field">
-				<label class="label" :title="$t('kara.import.year_tooltip')">
-					{{ $t('kara.import.year') }}
-					<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+				<label
+					class="label"
+					:title="t('kara.import.year_tooltip')"
+				>
+					{{ t('kara.import.year') }}
+					<font-awesome-icon
+						:icon="['fas', 'question-circle']"
+						:fixed-width="true"
+					/>
 				</label>
 				<div class="control">
-					<input v-model="karaoke.data.year" class="input short" type="number" min="1800" :max="new Date().getFullYear()">
-					<p v-if="!karaoke.data.year" class="help is-danger">
-						{{ $t('kara.import.year_required') }}
+					<input
+						v-model="karaoke.data.year"
+						class="input short"
+						type="number"
+						min="1800"
+						:max="new Date().getFullYear()"
+					>
+					<p
+						v-if="!karaoke.data.year"
+						class="help is-danger"
+					>
+						{{ t('kara.import.year_required') }}
 					</p>
-					<p v-if="karaoke.data.year && (karaoke.data.year < 1800 || karaoke.data.year > new Date().getFullYear())" class="help is-danger">
-						{{ $t('kara.import.year_invalid') }}
+					<p
+						v-if="karaoke.data.year && (karaoke.data.year < 1800 || karaoke.data.year > new Date().getFullYear())"
+						class="help is-danger"
+					>
+						{{ t('kara.import.year_invalid') }}
 					</p>
 				</div>
 			</div>
 		</div>
-		<label class="title">{{ $t('kara.import.sections.categorization') }}</label>
+		<label class="title">{{ t('kara.import.sections.categorization') }}</label>
 		<div class="box">
 			<div class="field">
-				<label class="label">{{ $tc('kara.tagtypes.collections', karaoke.data.tags.collections.length) }}</label>
+				<label class="label">{{ t('kara.tagtypes.collections', karaoke.data.tags.collections.length) }}</label>
 				<div class="control">
 					<editable-tag-group
 						:checkboxes="true"
@@ -267,11 +389,11 @@
 					v-if="karaoke.data.tags.collections.length === 0"
 					class="help is-danger"
 				>
-					{{ $t('kara.import.collections_required') }}
+					{{ t('kara.import.collections_required') }}
 				</p>
 			</div>
 			<div class="field">
-				<label class="label">{{ $tc('kara.tagtypes.families', karaoke.data.tags.families.length) }}</label>
+				<label class="label">{{ t('kara.tagtypes.families', karaoke.data.tags.families.length) }}</label>
 				<div class="control">
 					<editable-tag-group
 						:checkboxes="true"
@@ -282,7 +404,7 @@
 				</div>
 			</div>
 			<div class="field">
-				<label class="label">{{ $tc('kara.tagtypes.platforms', karaoke.data.tags.platforms.length) }}</label>
+				<label class="label">{{ t('kara.tagtypes.platforms', karaoke.data.tags.platforms.length) }}</label>
 				<div class="control">
 					<editable-tag-group
 						:checkboxes="true"
@@ -293,7 +415,7 @@
 				</div>
 			</div>
 			<div class="field">
-				<label class="label">{{ $tc('kara.tagtypes.genres', karaoke.data.tags.genres.length) }}</label>
+				<label class="label">{{ t('kara.tagtypes.genres', karaoke.data.tags.genres.length) }}</label>
 				<div class="control">
 					<editable-tag-group
 						:checkboxes="true"
@@ -304,7 +426,7 @@
 				</div>
 			</div>
 			<div class="field">
-				<label class="label">{{ $tc('kara.tagtypes.origins', karaoke.data.tags.origins.length) }}</label>
+				<label class="label">{{ t('kara.tagtypes.origins', karaoke.data.tags.origins.length) }}</label>
 				<div class="control">
 					<editable-tag-group
 						:checkboxes="true"
@@ -315,7 +437,7 @@
 				</div>
 			</div>
 			<div class="field">
-				<label class="label">{{ $tc('kara.tagtypes.misc', karaoke.data.tags.misc.length) }}</label>
+				<label class="label">{{ t('kara.tagtypes.misc', karaoke.data.tags.misc.length) }}</label>
 				<div class="control">
 					<editable-tag-group
 						:checkboxes="true"
@@ -326,7 +448,7 @@
 				</div>
 			</div>
 			<div class="field">
-				<label class="label">{{ $tc('kara.tagtypes.warnings', karaoke.data.tags.warnings.length) }}</label>
+				<label class="label">{{ t('kara.tagtypes.warnings', karaoke.data.tags.warnings.length) }}</label>
 				<div class="control">
 					<editable-tag-group
 						:checkboxes="true"
@@ -337,9 +459,15 @@
 				</div>
 			</div>
 			<div class="field">
-				<label class="label" :title="$t('kara.import.groups_tooltip')">
-					{{ $tc('kara.tagtypes.groups', karaoke.data.tags.groups.length) }}
-					<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+				<label
+					class="label"
+					:title="t('kara.import.groups_tooltip')"
+				>
+					{{ t('kara.tagtypes.groups', karaoke.data.tags.groups.length) }}
+					<font-awesome-icon
+						:icon="['fas', 'question-circle']"
+						:fixed-width="true"
+					/>
 				</label>
 				<div class="control">
 					<editable-tag-group
@@ -350,12 +478,18 @@
 					/>
 				</div>
 			</div>
-			<label class="title">{{ $t('kara.import.sections.meta') }}</label>
+			<label class="title">{{ t('kara.import.sections.meta') }}</label>
 			<div class="box">
 				<div class="field">
-					<label class="label" :title="$t('kara.import.authors_tooltip')">
-						{{ $t('kara.authors_by') }}
-						<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+					<label
+						class="label"
+						:title="t('kara.import.authors_tooltip')"
+					>
+						{{ t('kara.authors_by') }}
+						<font-awesome-icon
+							:icon="['fas', 'question-circle']"
+							:fixed-width="true"
+						/>
 					</label>
 					<div class="control">
 						<editable-tag-group
@@ -367,14 +501,20 @@
 							v-if="karaoke.data.tags.authors.length === 0"
 							class="help is-danger"
 						>
-							{{ $t('kara.import.authors_required') }}
+							{{ t('kara.import.authors_required') }}
 						</p>
 					</div>
 				</div>
 				<div class="field">
-					<label class="label" :title="$t('kara.import.comment_tooltip')">
-						{{ $t('kara.import.comment') }}
-						<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+					<label
+						class="label"
+						:title="t('kara.import.comment_tooltip')"
+					>
+						{{ t('kara.import.comment') }}
+						<font-awesome-icon
+							:icon="['fas', 'question-circle']"
+							:fixed-width="true"
+						/>
 					</label>
 					<div class="control">
 						<input
@@ -385,7 +525,7 @@
 					</div>
 				</div>
 				<div class="field">
-					<label class="label">{{ $t('kara.import.created_at') }}</label>
+					<label class="label">{{ t('kara.import.created_at') }}</label>
 					<div class="control">
 						<input
 							class="input is-static"
@@ -395,20 +535,32 @@
 						>
 					</div>
 				</div>
-				<div v-if="loggedIn" class="field">
+				<div
+					v-if="loggedIn"
+					class="field"
+				>
 					<label for="contact">
 						<input
 							id="contact"
 							v-model="sendContactInfos"
 							type="checkbox"
 						>
-						{{ $t('kara.import.send_contact_infos') }}
+						{{ t('kara.import.send_contact_infos') }}
 					</label>
 				</div>
-				<div v-if="!loggedIn" class="field">
-					<label class="label" :title="$t('kara.import.contact_infos_tooltip')">
-						{{ $t('kara.import.contact_infos') }}
-						<font-awesome-icon :icon="['fas', 'question-circle']" :fixed-width="true" />
+				<div
+					v-if="!loggedIn"
+					class="field"
+				>
+					<label
+						class="label"
+						:title="t('kara.import.contact_infos_tooltip')"
+					>
+						{{ t('kara.import.contact_infos') }}
+						<font-awesome-icon
+							:icon="['fas', 'question-circle']"
+							:fixed-width="true"
+						/>
 					</label>
 					<div class="control">
 						<input
@@ -416,7 +568,7 @@
 							class="input"
 							type="text"
 						>
-						<label>{{ $t('kara.import.auto_send_contact_infos') }}</label>
+						<label>{{ t('kara.import.auto_send_contact_infos') }}</label>
 					</div>
 				</div>
 				<div class="field">
@@ -427,30 +579,50 @@
 							:disabled="submitDisabled()"
 							@click="submit"
 						>
-							{{ $t('kara.import.submit') }}
+							{{ t('kara.import.submit') }}
 						</button>
-						<span v-if="!subfile && !subfile_error" class="help is-warning">{{ $t('kara.import.lyrics_file_missing') }}</span>
+						<span
+							v-if="!subfile && !subfile_error"
+							class="help is-warning"
+						>{{ t('kara.import.lyrics_file_missing') }}</span>
 					</div>
 				</div>
-				<div class="modal" :class="{'is-active': gitlabUrl}">
+				<div
+					class="modal"
+					:class="{'is-active': gitlabUrl}"
+				>
 					<div class="modal-background" />
 					<div class="modal-card">
 						<header class="modal-card-head">
 							<p class="modal-card-title">
-								{{ $t('kara.import.add_success') }}
+								{{ t('kara.import.add_success') }}
 							</p>
-							<a class="delete" aria-label="close" @click.prevent="reset" />
+							<nuxt-link
+								class="delete"
+								aria-label="close"
+								@click.prevent="reset"
+							/>
 						</header>
-						<i18n path="kara.import.add_success_description" tag="section" class="modal-card-body">
+						<i18n-t
+							keypath="kara.import.add_success_description"
+							tag="section"
+							class="modal-card-body"
+						>
 							<template #url>
-								<a :href="gitlabUrl" target="_blank">
+								<nuxt-link
+									:href="gitlabUrl"
+									target="_blank"
+								>
 									{{ gitlabUrl }}
-								</a>
+								</nuxt-link>
 							</template>
-						</i18n>
+						</i18n-t>
 						<footer class="modal-card-foot">
-							<button class="button is-success" @click.prevent="reset">
-								{{ $t('kara.import.restart') }}
+							<button
+								class="button is-success"
+								@click.prevent="reset"
+							>
+								{{ t('kara.import.restart') }}
 							</button>
 						</footer>
 					</div>
@@ -460,280 +632,242 @@
 	</div>
 </template>
 
-<script lang="ts">
-	import { v4 as uuid } from 'uuid';
-	import Vue, { PropOptions } from 'vue';
-	import { mapState } from 'vuex';
-	import { cloneDeep } from 'lodash';
+<script setup lang="ts">
+	import _ from 'lodash';
 
-	import EditableTagGroup from './EditableTagGroup.vue';
-	import EditableAliasGroup from './EditableAliasGroup.vue';
-	import LanguagesList from './LanguagesList.vue';
-	import { tagTypes } from '~/assets/constants';
-	import { KaraFileV4, MediaInfo } from '%/lib/types/kara';
+	import { MediaInfo } from '%/lib/types/kara';
 	import { DBKara } from '%/lib/types/database/kara';
-	import { DBKaraToKaraFile, determineVersion } from '~/utils/kara';
+	import { useAuthStore } from '~/store/auth';
+	import { useLocalStorageStore } from '~/store/localStorage';
+	import { storeToRefs } from 'pinia';
 
-	interface VState {
-		tagTypes: typeof tagTypes,
-		karaoke: KaraFileV4,
-		mediafile: string,
-		subfile: string,
-		mediafile_error: string,
-		subfile_error: string,
-		supportedLyrics: string[],
-		supportedMedias: string[],
-		gitlabUrl: string,
-		loading: boolean,
-		uploading: {
-			media: boolean | number,
-			sub: boolean | number
-		},
-		sendContactInfos: boolean,
-		contactInfos: string
+	const props = defineProps<{
+		kara?: DBKara
+	}>();
+
+	const karaoke = ref(convertDBKaraToKaraFile(props.kara));
+	const mediafile = ref('');
+	const subfile = ref('');
+	const mediafile_error = ref('');
+	const subfile_error = ref('');
+	const gitlabUrl = ref('');
+	const loading = ref(false);
+	const uploading_media = ref<number | boolean>(false);
+	const uploading_sub = ref<number | boolean>(false);
+	const contactInfos = ref('');
+
+	const mediafileInput = ref<HTMLInputElement>();
+	const subfileInput = ref<HTMLInputElement>();
+
+	const conf = useRuntimeConfig();
+	const supportedLyrics = conf.public.SUPPORTED_LYRICS;
+	const supportedMedias = conf.public.SUPPORTED_MEDIAS;
+	const instanceName = conf.public.INSTANCE_NAME;
+
+	const { params } = useRoute();
+	const { push } = useRouter();
+
+	const { sendContactInfos } = storeToRefs(useLocalStorageStore());
+	const { setSendContactInfos } = useLocalStorageStore();
+	const { loggedIn, user } = storeToRefs(useAuthStore());
+	const { t } = useI18n();
+
+	function submitDisabled(): boolean {
+		return Boolean(
+			(!params.id && !mediafile) ||
+				mediafile_error.value.length > 0 ||
+				subfile_error.value.length > 0 ||
+				!karaoke.value.data.titles ||
+				Object.keys(karaoke.value.data.titles).length === 0 ||
+				Object.values(karaoke.value.data.titles).includes('') ||
+				!karaoke.value.data.titles_default_language ||
+				(karaoke.value.data.tags.series?.length === 0 &&
+					karaoke.value.data.tags.singergroups?.length === 0 &&
+					karaoke.value.data.tags.singers?.length === 0) ||
+				karaoke.value.data.tags.songtypes.length === 0 ||
+				karaoke.value.data.tags.langs.length === 0 ||
+				karaoke.value.data.tags.collections.length === 0 ||
+				!karaoke.value.data.year ||
+				karaoke.value.data.year < 1800 ||
+				karaoke.value.data.year > new Date().getFullYear() ||
+				(karaoke.value.data.songorder || 0) > 999 ||
+				karaoke.value.data.tags.authors?.length === 0 ||
+				uploading_media.value ||
+				uploading_sub.value ||
+				loading.value
+		);
 	}
-
-	export default Vue.extend({
-
-		name: 'KaraEdit',
-
-		components: { EditableTagGroup, EditableAliasGroup, LanguagesList },
-		props: {
-			karaparam: {
-				type: Object,
-				required: false
-			} as PropOptions<DBKara>,
-			i18n: {
-				type: Object,
-				required: false
-			}
-		},
-
-		data(): VState {
-			return {
-				tagTypes,
-				karaoke: DBKaraToKaraFile(this.karaparam),
-				mediafile: '',
-				subfile: '',
-				mediafile_error: '',
-				subfile_error: '',
-				supportedLyrics: process.env.SUPPORTED_LYRICS as unknown as string[],
-				supportedMedias: process.env.SUPPORTED_MEDIAS as unknown as string[],
-				gitlabUrl: '',
-				loading: false,
-				uploading: {
-					media: false,
-					sub: false
-				},
-				sendContactInfos: (process as any)?.client
-					? localStorage.getItem('sendContactInfos') === 'true'
-					: false,
-				contactInfos: ''
-			};
-		},
-
-		computed: {
-			...mapState('auth', ['loggedIn'])
-		},
-
-		methods: {
-			submitDisabled(): boolean {
-				return Boolean(
-					(!this.$route.params.id && !this.mediafile) ||
-						this.mediafile_error.length > 0 ||
-						this.subfile_error.length > 0 ||
-						!this.karaoke.data.titles ||
-						Object.keys(this.karaoke.data.titles).length === 0 ||
-						Object.values(this.karaoke.data.titles).includes('') ||
-						!this.karaoke.data.titles_default_language ||
-						(this.karaoke.data.tags.series?.length === 0 &&
-							this.karaoke.data.tags.singergroups?.length === 0 &&
-							this.karaoke.data.tags.singers?.length === 0) ||
-						this.karaoke.data.tags.songtypes.length === 0 ||
-						this.karaoke.data.tags.langs.length === 0 ||
-						this.karaoke.data.tags.collections.length === 0 ||
-						!this.karaoke.data.year ||
-						this.karaoke.data.year < 1800 ||
-						this.karaoke.data.year > new Date().getFullYear() ||
-						(this.karaoke.data.songorder || 0) > 999 ||
-						this.karaoke.data.tags.authors?.length === 0 ||
-						this.uploading.media ||
-						this.uploading.sub ||
-						this.loading
-				);
-			},
-			onTitlesChange(titles: string) {
-				this.karaoke.data.titles = titles;
-			},
-			onDefaultLanguageSelect(defaultLanguage: string) {
-				this.karaoke.data.titles_default_language = defaultLanguage;
-			},
-			async handleMediafileUpload() {
-				if ((this.$refs.mediafile as HTMLInputElement)?.files?.length !== 0) {
-					// @ts-ignore: sisi y'a eu un typecheck en haut, ta gueule mtn :)
-					const file = (this.$refs.mediafile as HTMLInputElement).files[0];
-					this.mediafile_error = '';
-					if (file && !this.isSupportedMediaFile(file.name) && this.isMediaFile(file.type)) {
-						this.mediafile_error = this.$t(
-							'kara.import.add_file_media_not_supported_error',
-							{
-								name: file?.name,
-								formats: this.supportedMedias.join(', ')
-							}
-						) as string;
-					} else if (!file || !this.isSupportedMediaFile(file.name)) {
-						this.mediafile_error = this.$t(
-							'kara.import.add_file_media_error',
-							{
-								name: file?.name
-							}
-						) as string;
-					} else {
-						this.mediafile = file.name;
-						this.uploading.media = true;
-						this.mediafile_error = '';
-						const formData = new FormData();
-						formData.append('file', file);
-						const result: MediaInfo = await this.$axios.$post(
-							'/api/karas/importMedia',
-							formData,
-							{
-								headers: {
-									'Content-Type': 'multipart/form-data'
-								},
-								onUploadProgress: (progressEvent) => {
-									this.uploading.media = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-								}
-							}
-						);
-						this.karaoke.medias = [{
-							version: determineVersion(this.karaoke.data.titles, this.karaoke.data.titles_default_language),
+	function onTitlesChange(titles: Record<string, string>) {
+		karaoke.value.data.titles = titles;
+	}
+	function onDefaultLanguageSelect(defaultLanguage: string) {
+		karaoke.value.data.titles_default_language = defaultLanguage;
+	}
+	async function handleMediafileUpload() {
+		if (mediafileInput.value?.files?.length !== 0) {
+			// @ts-ignore: sisi y'a eu un typecheck en haut, ta gueule mtn :)
+			const file = mediafileInput.value?.files[0];
+			mediafile_error.value = '';
+			if (file && !isSupportedMediaFile(file.name) && isMediaFile(file.type)) {
+				mediafile_error.value = t(
+					'kara.import.add_file_media_not_supported_error',
+					{
+						name: file?.name,
+						formats: supportedMedias.join(', ')
+					}
+				) as string;
+			} else if (!file || !isSupportedMediaFile(file.name)) {
+				mediafile_error.value = t(
+					'kara.import.add_file_media_error',
+					{
+						name: file?.name
+					}
+				) as string;
+			} else {
+				mediafile.value = file.name;
+				uploading_media.value = true;
+				mediafile_error.value = '';	
+				const formData = new FormData();
+				formData.append('file', file);
+				useUploadFile(
+					'api/karas/importMedia',
+					formData,
+					(progressEvent: ProgressEvent<EventTarget>) => {
+						uploading_media.value = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+					},
+					(result: MediaInfo) => {
+						karaoke.value.medias = [{
+							version: determineVersion(karaoke.value.data.titles, karaoke.value.data.titles_default_language),
 							filename: result.filename,
 							audiogain: result.gain,
 							loudnorm: result.loudnorm,
 							filesize: Number(result.size),
 							duration: result.duration,
 							default: true,
-							lyrics: this.karaoke.medias[0].lyrics || []
+							lyrics: karaoke.value.medias[0].lyrics || []
 						}];
-						this.uploading.media = false;
+						uploading_media.value = false;
 					}
-				}
-			},
-			async handleSubfileUpload() {
-				if ((this.$refs.subfile as HTMLInputElement)?.files?.length !== 0) {
-					// @ts-ignore: sisi y'a eu un typecheck en haut, ta gueule mtn :)
-					const file = (this.$refs.subfile as HTMLInputElement).files[0];
-					this.mediafile_error = '';
-					if (!file || !this.isSupportedLyricsFile(file.name)) {
-						this.subfile_error = this.$t(
-							'kara.import.add_file_lyrics_error',
-							{
-								name: file?.name
-							}
-						) as string;
-					} else {
-						this.subfile = file.name;
-						this.uploading.sub = true;
-						this.subfile_error = '';
-						const formData = new FormData();
-						formData.append('file', file);
-						const result = await this.$axios.$post(
-							'/api/karas/importSub',
-							formData,
-							{
-								headers: {
-									'Content-Type': 'multipart/form-data'
-								},
-								onUploadProgress: (progressEvent) => {
-									this.uploading.sub = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-								}
-							}
-						);
-						this.karaoke.medias[0].lyrics = [{
+				);
+			}
+		}
+	}
+	async function handleSubfileUpload() {
+		if (subfileInput.value?.files?.length !== 0) {
+			// @ts-ignore: sisi y'a eu un typecheck en haut, ta gueule mtn :)
+			const file = subfileInput.value?.files[0];
+			mediafile_error.value = '';
+			if (!file || !isSupportedLyricsFile(file.name)) {
+				subfile_error.value = t(
+					'kara.import.add_file_lyrics_error',
+					{
+						name: file?.name
+					}
+				) as string;
+			} else {
+				subfile.value = file.name;
+				uploading_sub.value = true;
+				subfile_error.value = '';
+				const formData = new FormData();
+				formData.append('file', file);
+				useUploadFile(
+					'api/karas/importSub',
+					formData,
+					(progressEvent: ProgressEvent<EventTarget>) => {
+						uploading_sub.value = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+					},
+					(result: string) => {
+						karaoke.value.medias[0].lyrics = [{
 							filename: result,
 							default: true,
 							version: 'Default'
 						}];
-						this.uploading.sub = false;
+						uploading_sub.value = false;
 					}
-				}
-			},
-			isMediaFile(type: string) {
-				return /^(audio)|(video)\/.+$/.test(type);
-			},
-			isSupportedMediaFile(filename: string) {
-				return new RegExp(
-					`^.+\\.(${this.supportedMedias.join('|')})$`
-				).test(filename);
-			},
-			isSupportedLyricsFile(filename: string) {
-				return new RegExp(
-					`^.+\\.(${this.supportedLyrics.join('|')})$`
-				).test(filename);
-			},
-			submit() {
-				this.loading = true;
-				let contact: string = '';
-				if (this.$auth.loggedIn && this.sendContactInfos) {
-					contact = `${this.$auth.user.login}@${process.env.API_HOST}`;
-					if ((process as any).client) {
-						localStorage.setItem('sendContactInfos', 'true');
-					}
-				} else if (!this.$auth.loggedIn) {
-					contact = this.contactInfos;
-				} else if ((process as any).client) {
-					localStorage.setItem('sendContactInfos', 'false');
-				}
-				const karaoke = cloneDeep(this.karaoke);
-				for (const tag of Object.keys(karaoke.data.tags)) {
-					// @ts-ignore: Object.keys type inference is bad hot take
-					if (tag in karaoke.data.tags && karaoke.data.tags[tag].length === 0) {
-						// @ts-ignore
-						delete karaoke.data.tags[tag];
-					}
-				}
-				if (this.$route.params.id) {
-					this.$axios.$put(
-						`/api/karas/${this.karaoke.data.kid}`,
-						{
-							kara: karaoke,
-							modifiedMedia: !!this.mediafile,
-							modifiedLyrics: !!this.subfile,
-							contact
-						}
-					).then((res) => {
-						this.gitlabUrl = res.data;
-					}).finally(() => {
-						this.loading = false;
-					});
-				} else {
-					this.$axios.$post(
-						'/api/karas/',
-						{ kara: karaoke, contact }
-					).then((res) => {
-						this.gitlabUrl = res.data;
-					}).finally(() => {
-						this.loading = false;
-					});
-				}
-			},
-			reset() {
-				if (this.$route.params.id) {
-					this.$router.push('/import');
-				} else {
-					this.karaoke = DBKaraToKaraFile({ ...this.karaparam, kid: uuid() });
-					this.mediafile = '';
-					this.subfile = '';
-					this.mediafile_error = '';
-					this.subfile_error = '';
-					this.gitlabUrl = '';
-					(this.$refs.mediafile as HTMLInputElement).value = '';
-					(this.$refs.subfile as HTMLInputElement).value = '';
-				}
+				);
 			}
 		}
-	});
+	}
+	function isMediaFile(type: string) {
+		return /^(audio)|(video)\/.+$/.test(type);
+	}
+	function isSupportedMediaFile(filename: string) {
+		return new RegExp(
+			`^.+\\.(${supportedMedias.join('|')})$`
+		).test(filename);
+	}
+	function isSupportedLyricsFile(filename: string) {
+		return new RegExp(
+			`^.+\\.(${supportedLyrics.join('|')})$`
+		).test(filename);
+	}
+	function submit() {
+		loading.value = true;
+		let contact: string = '';
+		if (loggedIn.value && sendContactInfos) {
+			contact = `${user?.value?.login}@${instanceName}`;
+			setSendContactInfos(true);
+		} else if (!loggedIn.value) {
+			contact = contactInfos.value;
+		} else {
+			setSendContactInfos(false);
+		}
+		const karaokeElem = _.cloneDeep(karaoke.value);
+		for (const tag of Object.keys(karaokeElem.data.tags)) {
+			// @ts-ignore: Object.keys type inference is bad hot take
+			if (tag in karaokeElem.data.tags && karaokeElem.data.tags[tag].length === 0) {
+				// @ts-ignore
+				delete karaokeElem.data.tags[tag];
+			}
+		}
+		if (params.id) {
+			useCustomFetch<{data : string }>(
+				`/api/karas/${karaokeElem.data.kid}`,
+				{
+					method: 'PUT',
+					body: {
+						kara: karaokeElem,
+						modifiedMedia: !!mediafile,
+						modifiedLyrics: !!subfile,
+						contact
+					}
+				}
+			).then((res) => {
+				gitlabUrl.value = res.data;
+			}).finally(() => {
+				loading.value = false;
+			});
+		} else {
+			useCustomFetch<{data : string }>(
+				'/api/karas/',
+				{
+					method: 'POST',
+					body: {
+						kara: karaokeElem,
+						contact
+					}
+				}
+			).then((res) => {
+				gitlabUrl.value = res.data;
+			}).finally(() => {
+				loading.value = false;
+			});
+		}
+	}
+	function reset() {
+		if (params.id) {
+			push('/import');
+		} else {
+			karaoke.value = convertDBKaraToKaraFile();
+			mediafile.value = '';
+			subfile.value = '';
+			mediafile_error.value = '';
+			subfile_error.value = '';
+			gitlabUrl.value = '';
+			mediafileInput.value = undefined;
+			subfileInput.value = undefined;
+		}
+	}
 </script>
 
 <style scoped lang="scss">

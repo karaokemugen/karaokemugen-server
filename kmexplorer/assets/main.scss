@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////
 // DARKLY
 ////////////////////////////////////////////////
-@import '~bulmaswatch/darkly/_variables';
+@import 'bulmaswatch/darkly/_variables';
 
 @import '@fortawesome/fontawesome-svg-core/styles.css';
 
@@ -37,9 +37,9 @@ $purple: #8702a3;
 
 $footer-padding: 3rem 1.5rem 3rem;
 
-@import "~bulma";
+@import 'bulma/bulma.sass';
 
-@import '~bulmaswatch/darkly/_overrides';
+@import 'bulmaswatch/darkly/_overrides';
 
 body.has-navbar-fixed-top, html.has-navbar-fixed-top {
 	padding-top: 5rem;
@@ -127,4 +127,4 @@ body.has-navbar-fixed-top, html.has-navbar-fixed-top {
 	padding: 0.75rem;
 }
 
-@import '~buefy/src/scss/buefy';
+@import '@oruga-ui/theme-bulma/dist/scss/bulma';

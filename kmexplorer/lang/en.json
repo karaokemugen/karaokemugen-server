@@ -239,7 +239,6 @@
 		"logout": "Logout",
 		"register": "Register",
 		"connection": "Login",
-		"profile": "Edit your profile",
 		"switch_language": "Switch language"
 	},
 	"profile": {
@@ -292,7 +291,7 @@
 				},
 				"password": {
 					"label": "Password",
-					"placeholder": "ActuallyIdolM@sterIsBetter"
+					"placeholder": "ActuallyIdolM{'@'}sterIsBetter"
 				},
 				"forgot_password": {
 					"label": "Forgot password?",
@@ -312,15 +311,15 @@
 				},
 				"password": {
 					"label": "Password",
-					"placeholder": "ActuallyIdolM@sterIsBetter"
+					"placeholder": "ActuallyIdolM{'@'}sterIsBetter"
 				},
 				"password_confirmation": {
 					"label": "Password Confirmation",
-					"placeholder": "ActuallyIdolM@sterIsBetter"
+					"placeholder": "ActuallyIdolM{'@'}sterIsBetter"
 				},
 				"email": {
 					"label": "Email",
-					"placeholder": "test@shelter.moe"
+					"placeholder": "test{'@'}shelter.moe"
 				}
 			},
 			"passwords_mismatch": "Passwords do not match",
@@ -344,15 +343,15 @@
 				},
 				"password": {
 					"label": "Password",
-					"placeholder": "ReallyIPreferIdolM@ster"
+					"placeholder": "ReallyIPreferIdolM{'@'}ster"
 				},
 				"password_confirmation": {
 					"label": "Password confirmation",
-					"placeholder": "ReallyIPreferIdolM@ster"
+					"placeholder": "ReallyIPreferIdolM{'@'}ster"
 				},
 				"email": {
 					"label": "Email",
-					"placeholder": "test@shelter.moe"
+					"placeholder": "test{'@'}shelter.moe"
 				},
 				"url": {
 					"label": "Website",
@@ -526,7 +525,8 @@
 		"SUBFILE_FORMAT_UNKOWN": "Subfile format unkown",
 		"CANNOT_EDIT_KARA": "Cannot send modification.",
 		"FILE_UPLOADED": "File uploaded.",
-		"USER_EDITED": "User successfully edited"
+		"USER_EDITED": "User successfully edited",
+		"TAG_CREATED": "Tag successfully created"
 	},
 	"roles": {
 		"donator": "Donator",
@@ -543,7 +543,8 @@
 		"header": {
 			"title": "Import suggestions",
 			"description": "What is this?",
-			"purpose": "Here are some karaoke songs that are ready to be imported, you can search for a particular song or press the \"Randomly select other songs\" button. You can endorse a karaoke song by pressing \"Yes!\" If you still can't find the song you're looking for, click \"Send Suggestion\".",
+			"purpose": "Here are some karaoke songs that are ready to be imported, you can search for a particular song or press the \"Randomly select other songs\" button. You can endorse a karaoke song by pressing \"Yes!\".",
+			"suggestion": "If you still can't find the song you're looking for, click \"Send Suggestion\".",
 			"random_selection": "Randomly select other songs",
 			"send_suggestion": "Send suggestion"
 		},

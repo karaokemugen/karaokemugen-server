@@ -1,95 +1,137 @@
 <template>
-	<nav class="pagination" role="navigation" aria-label="pagination">
-		<a v-if="page > 1" class="pagination-previous" @click="changePage(page - 1)">{{ $t('search.previous') }}</a>
-		<a v-if="page !== lastPage" class="pagination-next" @click="changePage(page + 1)">{{ $t('search.next') }}</a>
-		<ul v-if="showAll" class="pagination-list">
-			<li v-for="n in lastPage" :key="n">
-				<a class="pagination-link" :class="{'is-current': n === page}" :aria-current="n === page" :aria-label="$t('search.aria.goto', [n])" @click="changePage(n)">{{ n }}</a>
+	<nav
+		class="pagination"
+		role="navigation"
+		aria-label="pagination"
+	>
+		<nuxt-link
+			v-if="page > 1"
+			class="pagination-previous"
+			@click="changePage(page - 1)"
+		>
+			{{ $t('search.previous') }}
+		</nuxt-link>
+		<nuxt-link
+			v-if="page !== lastPage"
+			class="pagination-next"
+			@click="changePage(page + 1)"
+		>
+			{{ $t('search.next') }}
+		</nuxt-link>
+		<ul
+			v-if="showAll"
+			class="pagination-list"
+		>
+			<li
+				v-for="n in lastPage"
+				:key="n"
+			>
+				<nuxt-link
+					class="pagination-link"
+					:class="{'is-current': n === page}"
+					:aria-current="n === page"
+					:aria-label="$t('search.aria.goto', [n])"
+					@click="changePage(n)"
+				>
+					{{ n }}
+				</nuxt-link>
 			</li>
 		</ul>
-		<ul v-else class="pagination-list">
+		<ul
+			v-else
+			class="pagination-list"
+		>
 			<li v-if="page > 3">
-				<a class="pagination-link" :aria-label="$t('search.aria.goto', [1])" @click="changePage(1)">1</a>
+				<nuxt-link
+					class="pagination-link"
+					:aria-label="$t('search.aria.goto', [1])"
+					@click="changePage(1)"
+				>
+					1
+				</nuxt-link>
 			</li>
-			<li v-if="page > 4" @click="showAll = true">
+			<li
+				v-if="page > 4"
+				@click="showAll = true"
+			>
 				<span class="pagination-ellipsis">&hellip;</span>
 			</li>
 			<li v-if="page > 2">
-				<a
+				<nuxt-link
 					class="pagination-link"
 					:aria-label="$t('search.aria.goto', [page - 2])"
 					@click="changePage(page - 2)"
-				>{{ page-2 }}</a>
+				>
+					{{ page-2 }}
+				</nuxt-link>
 			</li>
 			<li v-if="page > 1">
-				<a
+				<nuxt-link
 					class="pagination-link"
 					:aria-label="$t('search.aria.goto', [page - 1])"
 					@click="changePage(page - 1)"
-				>{{ page-1 }}</a>
+				>
+					{{ page-1 }}
+				</nuxt-link>
 			</li>
 			<li>
-				<a class="pagination-link is-current" :aria-label="$t('search.aria.page', [page])" aria-current="page">{{
-					page }}</a>
+				<nuxt-link
+					class="pagination-link is-current"
+					:aria-label="$t('search.aria.page', [page])"
+					aria-current="page"
+				>
+					{{
+						page }}
+				</nuxt-link>
 			</li>
 			<li v-if="page < (lastPage - 1)">
-				<a
+				<nuxt-link
 					class="pagination-link"
 					:aria-label="$t('search.aria.goto', [page + 1])"
 					@click="changePage(page + 1)"
-				>{{ page+1 }}</a>
+				>
+					{{ page+1 }}
+				</nuxt-link>
 			</li>
 			<li v-if="page < (lastPage - 2)">
-				<a
+				<nuxt-link
 					class="pagination-link"
 					:aria-label="$t('search.aria.goto', [page + 2])"
 					@click="changePage(page + 2)"
-				>{{ page+2 }}</a>
+				>
+					{{ page+2 }}
+				</nuxt-link>
 			</li>
-			<li v-if="page < (lastPage - 3)" @click="showAll = true">
+			<li
+				v-if="page < (lastPage - 3)"
+				@click="showAll = true"
+			>
 				<span class="pagination-ellipsis">&hellip;</span>
 			</li>
 			<li v-if="page <= (lastPage - 1)">
-				<a
+				<nuxt-link
 					class="pagination-link"
 					:aria-label="$t('search.aria.goto', [lastPage])"
 					@click="changePage(lastPage)"
-				>{{ lastPage }}</a>
+				>
+					{{ lastPage }}
+				</nuxt-link>
 			</li>
 		</ul>
 	</nav>
 </template>
 
-<script lang="ts">
-	import Vue from 'vue';
+<script setup lang="ts">
+	const showAll = ref(false);
 
-	interface VState {
-		showAll: boolean
+	defineProps<{
+		page: number
+		lastPage: number
+	}>();
+
+	const emit = defineEmits(['page']);
+
+	function changePage(page: number) {
+		emit('page', page);
 	}
-
-	export default Vue.extend({
-		props: {
-			page: {
-				type: Number,
-				required: true
-			},
-			lastPage: {
-				type: Number,
-				required: true
-			}
-		},
-
-		data(): VState {
-			return {
-				showAll: false
-			};
-		},
-
-		methods: {
-			changePage(page: number) {
-				this.$emit('page', page);
-			}
-		}
-
-	});
 </script>

@@ -1,9 +1,10 @@
+import { resolve } from 'node:path';
+
 import compression from 'compression';
 import express from 'express';
 import range from 'express-range';
 import helmet from 'helmet';
-import {createServer} from 'http';
-import {resolve} from 'node:path';
+import { createServer } from 'http';
 import vhost from 'vhost';
 
 import adminController from './controllers/http/admin';
@@ -106,9 +107,7 @@ export function initFrontend(listenPort: number) {
 	if (conf.KaraExplorer.Enabled) {
 		app.use('/previews', express.static(resolvedPath('Previews')));
 
-		startKMExplorer().then(nuxt => {
-			app.use(nuxt.render);
-		});
+		startKMExplorer(app);
 	}
 
 	const port = listenPort;

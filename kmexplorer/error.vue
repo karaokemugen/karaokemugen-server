@@ -5,9 +5,18 @@
 				<div class="box">
 					<h4 class="title is-4 with-img">
 						<picture>
-							<source type="image/webp" :srcset="require('~/assets/nanami-surpris.webp')">
-							<source type="image/png" :srcset="require('~/assets/nanami-surpris.png')">
-							<img :src="require('~/assets/nanami-surpris.png')" alt="Surprised Nanami">
+							<source
+								type="image/webp"
+								src="~/assets/nanami-surpris.webp"
+							>
+							<source
+								type="image/png"
+								src="~/assets/nanami-surpris.png"
+							>
+							<img
+								src="~/assets/nanami-surpris.png"
+								alt="Surprised Nanami"
+							>
 						</picture>
 						{{ error.message || $t('error.generic') }}&nbsp;
 						<nuxt-link to="/">
@@ -21,13 +30,11 @@
 </template>
 
 <script>
-	import Vue from 'vue';
-
-	export default Vue.extend({
+	export default {
 		name: 'Error',
 
 		props: ['error']
-	});
+	};
 </script>
 
 <style scoped lang="scss">

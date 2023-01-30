@@ -85,7 +85,7 @@ update_sentry:
       - kmexplorer/.nuxt
   script:
     - yarn install --immutable --check-cache
-    - yarn build:core
+    - yarn build:all
     - yarn workspace kmserver-core sentry:sourcemaps
   only:
     - master

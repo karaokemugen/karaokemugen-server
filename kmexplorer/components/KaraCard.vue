@@ -1,9 +1,25 @@
 <template>
 	<div class="box">
-		<div class="header" @mouseenter="switchImage" @mouseleave="switchImage">
-			<nuxt-link :to="`/kara/${slug}/${karaoke.kid}`" class="images" :class="{blur: karaoke.warnings.length > 0}">
-				<v-lazy-image :src="images[0]" alt="" />
-				<v-lazy-image v-if="images.length > 1" :src="images[1]" :class="{activate}" alt="" />
+		<div
+			class="header"
+			@mouseenter="switchImage"
+			@mouseleave="switchImage"
+		>
+			<nuxt-link
+				:to="`/kara/${getSlug}/${karaoke.kid}`"
+				class="images"
+				:class="{blur: karaoke.warnings.length > 0}"
+			>
+				<img
+					:src="images[0]"
+					alt=""
+				>
+				<img
+					v-if="images.length > 1"
+					:src="images[1]"
+					:class="{activate}"
+					alt=""
+				>
 			</nuxt-link>
 		</div>
 		<div class="title-block">
@@ -14,7 +30,10 @@
 				:title="$t('kara.favorites.remove')"
 				@click="toggleFavorite"
 			>
-				<font-awesome-icon :icon="['fas', 'eraser']" :fixed-width="true" />
+				<font-awesome-icon
+					:icon="['fas', 'eraser']"
+					:fixed-width="true"
+				/>
 			</button>
 			<button
 				v-else-if="favorites"
@@ -23,13 +42,24 @@
 				:title="$t('kara.favorites.add')"
 				@click="toggleFavorite"
 			>
-				<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
+				<font-awesome-icon
+					:icon="['fas', 'star']"
+					:fixed-width="true"
+				/>
 			</button>
 			<div>
-				<nuxt-link :to="`/kara/${slug}/${karaoke.kid}`" class="title is-3 is-spaced">
+				<nuxt-link
+					:to="`/kara/${getSlug}/${karaoke.kid}`"
+					class="title is-3 is-spaced"
+				>
 					{{ title }}
 				</nuxt-link>
-				<kara-phrase :karaoke="karaoke" :i18n="i18n" tag="h5" class="subtitle is-56" />
+				<kara-phrase
+					:karaoke="karaoke"
+					:karaokes-i18n="karaokesI18n"
+					tag="h5"
+					class="subtitle is-56"
+				/>
 			</div>
 		</div>
 		<div class="lebonflex">
@@ -39,173 +69,157 @@
 					:key="`${karaoke.kid}-${tag.tag.tid}~${tagTypes[tag.type].type}`"
 					:type="tag.type"
 					:tag="tag.tag"
-					:i18n="i18n"
+					:i18n="karaokesI18n"
 					:staticheight="false"
 					icon
 				/>
 			</div>
-			<i18n v-if="karaoke.favorited" path="kara.stats.favorited" tag="div" class="box stats">
+			<i18n-t
+				v-if="karaoke.favorited"
+				keypath="kara.stats.favorited"
+				tag="div"
+				class="box stats"
+			>
 				<template #number>
 					<span class="nb">{{ karaoke.favorited }}</span>
 				</template>
-			</i18n>
-			<i18n v-if="karaoke.requested" path="kara.stats.requested" tag="div" class="box stats blue">
+			</i18n-t>
+			<i18n-t
+				v-if="karaoke.requested"
+				keypath="kara.stats.requested"
+				tag="div"
+				class="box stats blue"
+			>
 				<template #number>
 					<span class="nb">{{ karaoke.requested }}</span>
 				</template>
-			</i18n>
-			<i18n v-if="karaoke.played" path="kara.stats.played" tag="div" class="box stats blue">
+			</i18n-t>
+			<i18n-t
+				v-if="karaoke.played"
+				keypath="kara.stats.played"
+				tag="div"
+				class="box stats blue"
+			>
 				<template #number>
 					<span class="nb">{{ karaoke.played }}</span>
 				</template>
-			</i18n>
+			</i18n-t>
 		</div>
 	</div>
 </template>
 
-<script lang="ts">
-	import Vue, { PropOptions } from 'vue';
-	import slug from 'slug';
-	import VLazyImage from 'v-lazy-image';
-	import { fakeYearTag, getTitleInLocale } from '~/utils/tools';
-	import { tagTypes } from '~/assets/constants';
-	import Tag from '~/components/Tag.vue';
-	import KaraPhrase from '~/components/KaraPhrase.vue';
+<script setup lang="ts">
 	import { DBKara } from '%/lib/types/database/kara';
-	import { modalStore } from '~/store';
+	import { storeToRefs } from 'pinia';
+	import slug from 'slug';
+	import { tagTypes } from '~/assets/constants';
+	import { useAuthStore } from '~/store/auth';
 	import { TagExtend } from '~/store/menubar';
+	import { useModalStore } from '~/store/modal';
 
-	interface VState {
-		tagTypes: typeof tagTypes,
-		activate: boolean,
-		loading: boolean,
-		favorite: boolean,
-		favorites: boolean
-	}
+	const props = defineProps<{
+		karaoke: DBKara
+		karaokesI18n?: Record<string, string>
+	}>();
 
-	export default Vue.extend({
-		name: 'KaraCard',
+	const { openModal } = useModalStore();
+	const { loggedIn } = storeToRefs(useAuthStore());
 
-		components: {
-			Tag,
-			VLazyImage,
-			KaraPhrase
-		},
+	const conf = useRuntimeConfig();
+	const apiUrl = conf.public.API_URL;
 
-		props: {
-			karaoke: {
-				type: Object,
-				required: true
-			} as PropOptions<DBKara>,
-			i18n: {
-				type: Object,
-				required: true
-			}
-		},
+	const activate = ref(false);
+	const loading = ref(false);
+	// If the tag is present, the user is logged in
+	const favorite = ref(typeof props.karaoke.flag_favorites === 'boolean' ? props.karaoke.flag_favorites : false);
+	const favorites = ref(typeof props.karaoke.flag_favorites === 'boolean');
 
-		data(): VState {
-			return {
-				tagTypes,
-				activate: false,
-				loading: false,
-				favorite: false,
-				favorites: false
-			};
-		},
-
-		computed: {
-			title(): string {
-				return getTitleInLocale(this.karaoke.titles, this.$store.state.auth.user, this.karaoke.titles_default_language);
-			},
-			images(): string[] {
-				return this.karaoke.mediafile.endsWith('.mp3')
-					? [`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg`]
-					: [
-						`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.25.jpg`,
-						`/previews/${this.karaoke.kid}.${this.karaoke.mediasize}.33.jpg`
-					];
-			},
-			slug(): string {
-				return slug(this.karaoke.titles[this.karaoke.titles_default_language || 'eng']);
-			},
-			tagTypesSorted(): object {
-				const tagTypes = { ...this.tagTypes };
-				delete tagTypes.years; // This is a decoy for fake years tag
-				delete tagTypes.versions; // Versions are in KaraPhrase
-				delete tagTypes.collections; // Collections are not useful information
-				// Remove unused tagTypes in context
-				for (const tagType in tagTypes) {
-					// @ts-ignore
-					if (this.karaoke[tagType].length === 0) {
-						delete tagTypes[tagType];
-					}
-				}
-				return tagTypes;
-			},
-			tags(): TagExtend[] {
-				const tags: TagExtend[] = [];
-				for (const tagType in this.tagTypesSorted) {
-					let i = 0;
-					// @ts-ignore
-					for (const tag of this.karaoke[tagType]) {
-						// Removing all tags mentioned in the karaphrase
-						if (!(
-							// Remove the first series
-							(tagType === 'series' && i === 0) ||
-							// Remove the first songtype
-							(tagType === 'songtypes' && i === 0) ||
-							// Remove the first singergroups if the karaoke has no series
-							(tagType === 'singergroups' && i === 0 && this.karaoke.series.length === 0) ||
-							// Remove the first singer if the karaoke has no singergroups and no series
-							(tagType === 'singers' && i === 0 && this.karaoke.singergroups.length === 0 && this.karaoke.series.length === 0) ||
-							// Remove the next tags to avoid overflow
-							(i > 1)
-						)) {
-							tags.push({
-								type: tagType,
-								tag
-							});
-						}
-						i++;
-					}
-				}
-				tags.push({
-					type: 'years',
-					tag: fakeYearTag(this.karaoke.year.toString())
-				});
-				return tags;
-			}
-		},
-
-		created() {
-			if (typeof this.karaoke.flag_favorites === 'boolean') { // If the tag is present, the user is logged in
-				this.favorite = this.karaoke.flag_favorites;
-				this.favorites = true;
-			} else {
-				this.favorites = false;
-			}
-		},
-
-		methods: {
-			switchImage() {
-				this.activate = !this.activate;
-			},
-			async toggleFavorite() {
-				if (this.$auth.loggedIn) {
-					this.loading = true;
-					if (this.favorite) {
-						await this.$axios.delete(`/api/favorites/${this.karaoke.kid}`);
-					} else {
-						await this.$axios.post(`/api/favorites/${this.karaoke.kid}`);
-					}
-					this.favorite = !this.favorite;
-					this.loading = false;
-				} else {
-					modalStore.openModal('auth');
-				}
+	const title = computed((): string => {
+		return getTitleInLocale(props.karaoke.titles, props.karaoke.titles_default_language);
+	});
+	const images = computed((): string[] => {
+		return props.karaoke.mediafile.endsWith('.mp3')
+			? [`${apiUrl}/previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`]
+			: [
+				`${apiUrl}/previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`,
+				`${apiUrl}/previews/${props.karaoke.kid}.${props.karaoke.mediasize}.33.jpg`,
+			];
+	});
+	const getSlug = computed((): string => {
+		return slug(props.karaoke.titles[props.karaoke.titles_default_language || 'eng']);
+	});
+	const tagTypesSorted = computed((): object => {
+		const tagTypesSorted = { ...tagTypes };
+		delete tagTypesSorted.years; // This is a decoy for fake years tag
+		delete tagTypesSorted.versions; // Versions are in KaraPhrase
+		delete tagTypesSorted.collections; // Collections are not useful information
+		// Remove unused tagTypes in context
+		for (const tagType in tagTypesSorted) {
+			// @ts-ignore
+			if (props.karaoke[tagType].length === 0) {
+				delete tagTypesSorted[tagType];
 			}
 		}
+		return tagTypesSorted;
 	});
+	const tags = computed((): TagExtend[] => {
+		const tags: TagExtend[] = [];
+		for (const tagType in tagTypesSorted.value) {
+			let i = 0;
+			// @ts-ignore
+			for (const tag of props.karaoke[tagType]) {
+				// Removing all tags mentioned in the karaphrase
+				if (!(
+					// Remove the first series
+					(tagType === 'series' && i === 0) ||
+					// Remove the first songtype
+					(tagType === 'songtypes' && i === 0) ||
+					// Remove the first singergroups if the karaoke has no series
+					(tagType === 'singergroups' && i === 0 && props.karaoke.series.length === 0) ||
+					// Remove the first singer if the karaoke has no singergroups and no series
+					(tagType === 'singers' &&
+						i === 0 &&
+						props.karaoke.singergroups.length === 0 &&
+						props.karaoke.series.length === 0) ||
+					// Remove the next tags to avoid overflow
+					i > 1
+				)) {
+					tags.push({
+						type: tagType,
+						tag
+					});
+				}
+				i++;
+			}
+		}
+		tags.push({
+			type: 'years',
+			tag: fakeYearTag(props.karaoke.year.toString()),
+		});
+		return tags;
+	});
+
+	function switchImage() {
+		activate.value = !activate.value;
+	}
+	async function toggleFavorite() {
+		if (loggedIn.value) {
+			loading.value = true;
+			if (favorite.value) {
+				await useCustomFetch(`/api/favorites/${props.karaoke.kid}`, {
+					method: 'DELETE',
+				});
+			} else {
+				await useCustomFetch(`/api/favorites/${props.karaoke.kid}`, {
+					method: 'POST',
+				});
+			}
+			favorite.value = !favorite.value;
+			loading.value = false;
+		} else {
+			openModal('auth');
+		}
+	}
 </script>
 
 <style scoped lang="scss">

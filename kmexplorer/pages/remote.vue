@@ -1,21 +1,56 @@
 <template>
-	<b-table :data="data">
-		<b-table-column v-slot="props" field="token" :label="$t('remote.token')" searchable>
+	<o-table :data="remotesToken">
+		<o-table-column
+			v-slot="props"
+			field="token"
+			:label="$t('remote.token')"
+			searchable
+		>
 			{{ props.row.token }}
-		</b-table-column>
-		<b-table-column v-slot="props" field="code" :label="$t('remote.code')" searchable>
-			<input v-model="props.row.code" class="input" type="text" @keydown.enter="promoteToken(props.row)">
-		</b-table-column>
-		<b-table-column v-slot="props" field="last_ip" :label="$t('remote.last_ip')" searchable>
+		</o-table-column>
+		<o-table-column
+			v-slot="props"
+			field="code"
+			:label="$t('remote.code')"
+			searchable
+		>
+			<input
+				v-model="props.row.code"
+				class="input"
+				type="text"
+				@keydown.enter="promoteToken(props.row)"
+			>
+		</o-table-column>
+		<o-table-column
+			v-slot="props"
+			field="last_ip"
+			:label="$t('remote.last_ip')"
+			searchable
+		>
 			{{ props.row.last_ip }}
-		</b-table-column>
-		<b-table-column v-slot="props" field="last_use" :label="$t('remote.last_use')" searchable>
+		</o-table-column>
+		<o-table-column
+			v-slot="props"
+			field="last_use"
+			:label="$t('remote.last_use')"
+			searchable
+		>
 			{{ props.row.last_use }}
-		</b-table-column>
-		<b-table-column v-slot="props" field="permanent" :label="$t('remote.permanent')" searchable :custom-search="searchPermanent">
-			<input type="checkbox" disabled :checked="props.row.permanent">
-		</b-table-column>
-		<b-table-column v-slot="props">
+		</o-table-column>
+		<o-table-column
+			v-slot="props"
+			field="permanent"
+			:label="$t('remote.permanent')"
+			searchable
+			:custom-search="searchPermanent"
+		>
+			<input
+				type="checkbox"
+				disabled
+				:checked="props.row.permanent"
+			>
+		</o-table-column>
+		<o-table-column v-slot="props">
 			<button
 				class="button"
 				@click="removeToken(props.row.token)"
@@ -23,64 +58,64 @@
 				<font-awesome-icon :icon="['fas', 'trash']" />
 				<span>{{ $t('remote.delete_button') }}</span>
 			</button>
-		</b-table-column>
-	</b-table>
+		</o-table-column>
+	</o-table>
 </template>
 
-<script lang="ts">
-	import Vue from 'vue';
-
+<script setup lang="ts">
 	import { RemoteAccessToken } from '%/lib/types/remote';
+	import * as Toast from 'vue-toastification';
 
-	interface VState {
-		data: RemoteAccessToken[]
+	// @ts-ignore
+	const useToast = Toast.useToast ?? Toast.default.useToast;
+
+	const remotesToken = ref<RemoteAccessToken[]>([]);
+
+	const { t } = useI18n();
+	const toast = useToast();
+
+	fetch();
+
+	async function fetch() {
+		const res = await useCustomFetch<RemoteAccessToken[]>('/api/remote')
+			.catch(_err => {
+				throw createError({ statusCode: 404, message: t('error.remote') as string });
+			});
+		remotesToken.value = res ? res : [];
 	}
 
-	export default Vue.extend({
-		name: 'RemoteList',
-
-		data(): VState {
-			return {
-				data: []
-			};
-		},
-
-		async fetch() {
-			const res = await this.$axios
-				.get<RemoteAccessToken[]>('/api/remote')
-				.catch(_err =>
-					this.$nuxt.error({ statusCode: 404, message: this.$t('error.remote') as string })
-				);
-			this.data = res ? res.data : [];
-		},
-
-		methods: {
-			async removeToken(token: string) {
-				try {
-					await this.$axios.delete(`/api/remote/${token}`);
-					this.$fetch();
-				} catch (e) {
-					this.$toast.error(this.$t('remote.delete_error') as string, { icon: 'error' });
-				}
-			},
-			async promoteToken(remote: RemoteAccessToken) {
-				try {
-					await this.$axios.put('/api/remote/promote', { token: remote.token, code: remote.code });
-					this.$toast.success(this.$t('remote.edit_success') as string);
-					this.$fetch();
-				} catch (e) {
-					this.$toast.error(this.$t('remote.edit_error') as string, { icon: 'error' });
-				}
-			},
-			searchPermanent(remote: RemoteAccessToken, input: string) {
-				let inputBool: Boolean | undefined;
-				if (input === 'true') {
-					inputBool = true;
-				} else if (input === 'false') {
-					inputBool = false;
-				}
-				return inputBool === undefined || remote.permanent === inputBool;
-			}
+	async function removeToken(token: string) {
+		try {
+			await useCustomFetch(`/api/remote/${token}`, {
+				method: 'DELETE'
+			});
+			fetch();
+		} catch (e) {
+			toast.error(t('remote.delete_error') as string, { icon: 'error' });
 		}
-	});
+	}
+	async function promoteToken(remote: RemoteAccessToken) {
+		try {
+			await useCustomFetch('/api/remote/promote', {
+				method: 'PUT',
+				body: {
+					token: remote.token,
+					code: remote.code
+				}
+			});
+			toast.success(t('remote.edit_success') as string);
+			fetch();
+		} catch (e) {
+			toast.error(t('remote.edit_error') as string, { icon: 'error' });
+		}
+	}
+	function searchPermanent(remote: RemoteAccessToken, input: string) {
+		let inputBool: Boolean | undefined;
+		if (input === 'true') {
+			inputBool = true;
+		} else if (input === 'false') {
+			inputBool = false;
+		}
+		return inputBool === undefined || remote.permanent === inputBool;
+	}
 </script>

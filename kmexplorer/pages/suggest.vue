@@ -3,7 +3,10 @@
 		<section>
 			<div class="hero-body">
 				<div class="tile is-parent is-12 is-hidden-desktop">
-					<search-bar :filter="false" :results="false" />
+					<search-bar
+						:filter="false"
+						:results="false"
+					/>
 					<search-edit />
 					<div class="field is-expanded">
 						<languages-picker :label="$t('search.types.suggestions')" />
@@ -14,16 +17,27 @@
 						{{ $t('suggestions.header.title') }}
 					</h1>
 					<h2 class="subtitle is-underlined">
-						<a @click.prevent="modal.suggestPurpose = true">{{ $t('suggestions.header.description') }}</a>
+						<nuxt-link @click.prevent="openHideSuggestionModal">
+							{{ $t('suggestions.header.description') }}
+						</nuxt-link>
 					</h2>
 					<h2 class="subtitle">
 						{{ $t('suggestions.header.purpose') }}
+						<span v-if="gitlab">{{ $t('suggestions.header.suggestion') }}</span>
 					</h2>
-					<button class="button is-primary" :class="{'is-loading': loading}" @click="fetchRandomKaras">
+					<button
+						class="button is-primary"
+						:class="{'is-loading': loading}"
+						@click="fetchRandomKaras"
+					>
 						<span class="icon"><font-awesome-icon :icon="['fas', 'dice']" /></span>
 						<span>{{ $t('suggestions.header.random_selection') }}</span>
 					</button>
-					<button class="button is-success" @click="modal.karaSuggest = true">
+					<button
+						v-if="gitlab"
+						class="button is-success"
+						@click="() => openModal('karaSuggest')"
+					>
 						<span class="icon"><font-awesome-icon :icon="['fas', 'plus']" /></span>
 						<span>{{ $t('suggestions.header.send_suggestion') }}</span>
 					</button>
@@ -31,132 +45,124 @@
 			</div>
 		</section>
 		<div class="container">
-			<pagination v-if="total > 1" :page="page" :last-page="total" @page="setPage" />
-			<suggest-card v-for="kara in karas.content" :key="kara.id" :kara="kara" />
-			<pagination v-if="total > 1" :page="page" :last-page="total" @page="setPage" />
+			<pagination
+				v-if="total > 1"
+				:page="page"
+				:last-page="total"
+				@page="setPage"
+			/>
+			<suggest-card
+				v-for="kara in karas.content"
+				:key="kara.id"
+				:kara="kara"
+			/>
+			<pagination
+				v-if="total > 1"
+				:page="page"
+				:last-page="total"
+				@page="setPage"
+			/>
 		</div>
-		<first-time-suggest-modal :active="modal.suggestPurpose" @close="modal.suggestPurpose=false" />
-		<kara-suggest-modal v-if="!loading" :active="modal.karaSuggest" @close="modal.karaSuggest=false" />
+		<first-time-suggest-modal
+			:active="!hideSuggestionModal"
+			@close="() => setHideSuggestionModal()"
+		/>
+		<kara-suggest-modal
+			v-if="!loading && gitlab"
+			:active="karaSuggest"
+			@close="() => closeModal('karaSuggest')"
+		/>
 	</div>
 </template>
 
-<script lang="ts">
-	import Vue from 'vue';
-	import { mapState } from 'vuex';
-	import SuggestCard from '~/components/SuggestCard.vue';
-	import FirstTimeSuggestModal from '~/components/modals/FirstTimeSuggestModal.vue';
-	import Pagination from '~/components/Pagination.vue';
-	import KaraSuggestModal from '~/components/modals/KaraSuggestModal.vue';
-	import { menuBarStore } from '~/utils/store-accessor';
-	import LanguagesPicker from '~/components/LanguagesPicker.vue';
-	import SearchBar from '~/components/SearchBar.vue';
-	import SearchEdit from '~/components/SearchEdit.vue';
+<script setup lang="ts">
+	import { storeToRefs } from 'pinia';
+	import { sortTypes, useMenubarStore } from '~/store/menubar';
+	import { useModalStore } from '~/store/modal';
+	import { useLocalStorageStore } from '~/store/localStorage';
+	import { Suggestion } from '~/../kmserver-core/src/types/suggestions';
+
+	type SuggestList = {
+		content: Suggestion[]
+		infos: {
+			count: number
+			from: number
+			to: number
+		}
+	}
 
 	const numberKaraokesByPage = 10;
 
-	export default Vue.extend({
-		name: 'SuggestSearch',
+	const loading = ref(true);
+	const page = ref(1);
+	const total = ref(1);
+	const karas = ref<SuggestList>({
+		infos: { count: 0, from: 0, to: 0 },
+		content: []
+	});
 
-		components: {
-			SuggestCard,
-			FirstTimeSuggestModal,
-			Pagination,
-			KaraSuggestModal,
-			LanguagesPicker,
-			SearchBar,
-			SearchEdit
-		},
+	const { search, sort, enabledLanguages } = storeToRefs(useMenubarStore());
+	const { setSearch, setSort } = useMenubarStore();
+	const { hideSuggestionModal } = storeToRefs(useLocalStorageStore());
+	const { setHideSuggestionModal, openHideSuggestionModal } = useLocalStorageStore();
+	const { karaSuggest } = storeToRefs(useModalStore());
+	const { closeModal, openModal } = useModalStore();
 
-		data() {
-			return {
-				loading: true,
-				page: 1,
-				total: 1,
-				karas: {
-					infos: { count: 0, from: 0, to: 0 },
-					content: []
-				},
-				modal: {
-					suggestPurpose: (process.client && !window.localStorage.hideSuggestionModal) || false,
-					karaSuggest: false
-				}
-			};
-		},
+	const conf = useRuntimeConfig();
+	const gitlab = conf.public.GITLAB;
 
-		computed: {
-			...mapState('menubar', ['search', 'sort', 'enabledLanguages'])
-		},
+	const { query } = useRoute();
 
-		watch: {
-			loading(now, _old) {
-				if (now) {
-					this.$nuxt.$loading.start();
-				} else {
-					this.$nuxt.$loading.finish();
-				}
-			},
-			enabledLanguages() {
-				this.setPage(1);
-			},
-			search() {
-				this.setPage(1);
-			},
-			sort() {
-				this.setPage(1);
-			}
-		},
+	watch(enabledLanguages, () => setPage(1));
+	watch(search, () => setPage(1));
+	watch(sort, () => setPage(1));
 
-		beforeCreate() {
-			menuBarStore.setSearch('');
-			menuBarStore.setSort('likes');
-		},
+	onMounted(() => {
 
-		mounted() {
-			this.$nextTick(() => {
-				this.$nuxt.$loading.start();
-			});
-			this.fetchRandomKaras();
-		},
-
-		created() {
-			if (typeof this.$route.query.q === 'string') { this.search = this.$route.query.q; }
-			if (typeof this.$route.query.sort === 'string') { this.sort = this.$route.query.sort; }
-			if (typeof this.$route.query.page === 'string') { this.page = parseInt(this.$route.query.page); }
-		},
-
-		methods: {
-			async fetchRandomKaras() {
-				this.loading = true;
-				this.total = 0;
-				const res = await this.$axios.get('/api/suggestions/random', {
-					params: {
-						size: 5,
-						languages: menuBarStore.enabledLanguages
-					}
-				});
-				this.karas = res.data;
-				this.loading = false;
-			},
-			async fetchPage(page: number) {
-				const res = await this.$axios.get('/api/suggestions', {
-					params: {
-						page,
-						filter: this.search ? this.search : undefined,
-						size: numberKaraokesByPage,
-						from: (this.page - 1) * numberKaraokesByPage,
-						order: this.sort,
-						languages: menuBarStore.enabledLanguages
-					}
-				});
-				this.karas = res.data;
-				this.total = res.data.content.length > 0 ? Math.ceil(res.data.content[0].count / numberKaraokesByPage) : 0;
-				this.loading = false;
-			},
-			setPage(e: number) {
-				this.page = e;
-				this.fetchPage(e);
-			}
+		setSearch('');
+		setSort('likes');
+		if (typeof query.q === 'string') {
+			setSearch(query.q);
+		}
+		if (typeof query.sort === 'string') {
+			setSort(query.sort as sortTypes);
+		}
+		if (typeof query.page === 'string') {
+			page.value = parseInt(query.page);
 		}
 
+		fetchRandomKaras();
 	});
+
+	async function fetchRandomKaras() {
+		loading.value = true;
+		total.value = 0;
+		const res = await useCustomFetch<SuggestList>('/api/suggestions/random', {
+			params: {
+				size: 5,
+				'languages[]': enabledLanguages.value
+			}
+		});
+		karas.value = res;
+		loading.value = false;
+	}
+	async function fetchPage(page: number) {
+		const res = await useCustomFetch<SuggestList>('/api/suggestions', {
+			params: {
+				page,
+				filter: search.value ? search.value : undefined,
+				size: numberKaraokesByPage,
+				from: (page - 1) * numberKaraokesByPage,
+				order: sort.value,
+				'languages[]': enabledLanguages.value
+			}
+		});
+		karas.value = res;
+		total.value = res.content.length > 0 && res.content[0].count ? Math.ceil(res.content[0].count / numberKaraokesByPage) : 0;
+		loading.value = false;
+	}
+	function setPage(e: number) {
+		page.value = e;
+		fetchPage(e);
+	}
 </script>

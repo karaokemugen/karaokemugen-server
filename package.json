@@ -16,13 +16,14 @@
    },
    "type": "module",
    "scripts": {
-      "migrate": "cd kmserver-core && yarn prestart",
-      "build:core": "yarn workspace kmserver-core build",
-      "build:kmexplorer": "yarn workspace kmserver-core build:kmexplorer",
-      "build:all": "yarn workspace kmserver-core build && yarn workspace kmserver-core build:kmexplorer",
-      "start": "yarn workspace kmserver-core start",
-      "start:dev": "yarn workspace kmserver-core watch",
+      "migrate": "yarn workspace kmserver-core prestart",
       "generate": "yarn workspace kmserver-core generate",
+      "build:core": "yarn workspace kmserver-core build",
+      "build:kmexplorer": "yarn workspace kmexplorer build",
+      "build:all": "yarn build:kmexplorer && yarn build:core",
+      "start": "yarn workspace kmserver-core start",
+      "watch:core": "yarn workspace kmserver-core watch",
+      "watch:kmexplorer": "yarn workspace kmexplorer watch",
       "pull": "git pull && git submodule sync --recursive && git submodule update --init --recursive"
    },
    "bugs": {

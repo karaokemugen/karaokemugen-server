@@ -10,8 +10,8 @@
 		<section class="modal-card-body">
 			<client-only>
 				<cropper
-					ref="cropper"
-					class="cropper"
+					ref="cropperElement"
+					class="cropperElement"
 					:src="image"
 					:stencil-props="{
 						aspectRatio: ratio
@@ -22,49 +22,34 @@
 	</modal>
 </template>
 
-<script lang="ts">
-	import Vue from 'vue';
+<script setup lang="ts">
 	import { Cropper } from 'vue-advanced-cropper';
 	import 'vue-advanced-cropper/dist/style.css';
-	import Modal from './Modal.vue';
 
-	export default Vue.extend({
-		name: 'CropAvatarModal',
-
-		components: {
-			Cropper,
-			Modal
-		},
-
-		props: {
-			image: {
-				type: String,
-				required: true
-			},
-			active: {
-				type: Boolean,
-				required: true
-			},
-			type: {
-				type: String,
-				default: 'avatar'
-			},
-			ratio: {
-				type: Number,
-				default: 1
-			}
-		},
-
-		methods: {
-			closeModal(): void {
-				this.$emit('close');
-			},
-			upload(): void {
-				const result = (this.$refs.cropper as any).getResult();
-				this.$emit('upload', result.canvas.toDataURL());
-			}
-		}
+	withDefaults(defineProps<{
+		image: string
+		active: boolean
+		type?: string
+		ratio?: number
+	}>(), {
+		type: 'avatar',
+		ratio: 1
 	});
+
+	const cropperElement = ref<{getResult: Function}>();
+
+	const emit = defineEmits<{
+		(e: 'close'): void
+		(e: 'upload', value?: string): void
+	}>();
+
+	function closeModal(): void {
+		emit('close');
+	}
+	function upload(): void {
+		const result = cropperElement.value?.getResult();
+		emit('upload', result.canvas.toDataURL());
+	}
 </script>
 
 <style lang="scss" scoped>
