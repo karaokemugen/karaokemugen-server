@@ -119,7 +119,7 @@
 		}
 	});
 
-	watch(menuSearch, (now) => search.value = now);
+	watch(menuSearch, (now) => search.value = now, { immediate: true });
 
 
 	function triggerSearch() {
