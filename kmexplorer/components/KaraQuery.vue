@@ -163,7 +163,7 @@
 		karaokes.value = { infos: { count: 0, to: 0, from: 0 }, i18n: {}, content: [] };
 		from.value = -1;
 		await loadNextPage(true);
-		if (navigation && !props.favorites &&
+		if (route.name === 'search-query' && navigation && !props.favorites &&
 			(route.params.query !== (search.value || undefined) ||
 				route.query.collections !== enabledCollections.value.join(':') ||
 				route.query.q !== reqParams().q)) {
