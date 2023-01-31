@@ -17,12 +17,12 @@ export const useCustomFetch = <T = unknown, R extends NitroFetchRequest = NitroF
 		},
 		...opts,
 		onResponse({ request, response, options }) {
-			if (response._data?.code) { // if no code is present don't display toast
+			if (response._data?.code && response.ok) { // if no code is present don't display toast
 				toast.success(useNuxtApp().$i18n.t(`toast.${response._data.code}`));
 			}
 		},
 		onResponseError({ request, response, options }) {
-			if (response._data?.code) { // if no code is present don't display toast
+			if (response._data?.code && !response.ok) { // if no code is present don't display toast
 				toast.error(useNuxtApp().$i18n.t(`toast.${response._data.code}`), { icon: 'error' });
 			}
 			if (response._data === 'Token has expired') {
