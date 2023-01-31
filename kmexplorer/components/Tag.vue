@@ -24,7 +24,6 @@
 
 <script setup lang="ts">
 	import { DBTag } from '%/lib/types/database/tag';
-	import slug from 'slug';
 	import { tagTypes } from '~/assets/constants';
 	import { useMenubarStore } from '~/store/menubar';
 
@@ -51,7 +50,6 @@
 	const emit = defineEmits<{(e: 'close'): void}>();
 
 	const localizedName= computed((): string => getTagInLocale(props.tag, props.i18n));
-	const getSlug = computed((): string => slug(props.tag.name));
 
 	function handleLink() {
 		if (!props.nolink && props.type !== 'collections') { // Collections are not clickable
