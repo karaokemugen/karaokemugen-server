@@ -82,6 +82,18 @@
 									{{ user.social_networks.twitter }}
 								</nuxt-link>
 							</div>
+							<div v-if="user.social_networks.mastodon">
+								<font-awesome-icon
+									:icon="['fab', 'mastodon']"
+									:fixed-width="true"
+								/>
+								<nuxt-link
+									:href="`https://${user.social_networks.mastodon.split('@')[1]}/@${user.social_networks.mastodon.split('@')[0]}/`"
+									target="_blank"
+								>
+									{{ user.social_networks.mastodon }}
+								</nuxt-link>
+							</div>
 							<div v-if="user.social_networks.instagram">
 								<font-awesome-icon
 									:icon="['fab', 'instagram']"
@@ -206,6 +218,7 @@
 		user.value?.social_networks?.discord ||
 		user.value?.social_networks?.instagram ||
 		user.value?.social_networks?.twitter ||
+		user.value?.social_networks?.mastodon ||
 		user.value?.social_networks?.twitch ||
 		user.value?.url ||
 		user.value?.location

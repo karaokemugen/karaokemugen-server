@@ -288,6 +288,10 @@
 					"placeholder": "idwiki",
 					"label": "Twitter"
 				},
+				"mastodon": {
+					"label": "Mastodon",
+					"placeholder": "karaokemugen{'@'}shelter.moe"
+				},
 				"flag_sendstats": {
 					"label": "Statistik",
 					"checkbox": "Gunakan permintaan favorit dan karaoke saya untuk statistik"

@@ -75,6 +75,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import {
 	faTwitter,
+	faMastodon,
 	faInstagram,
 	faDiscord,
 	faTwitch,
@@ -144,6 +145,7 @@ library.add(
 	faLink,
 	faUsers,
 	faTwitter,
+	faMastodon,
 	faInstagram,
 	faDiscord,
 	faDiscourse,

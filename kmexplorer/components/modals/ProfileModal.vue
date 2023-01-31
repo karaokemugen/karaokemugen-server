@@ -228,6 +228,32 @@
 					>
 						<div class="field-label is-normal">
 							<label
+								for="mastodon"
+								class="label"
+							>{{ $t('modal.profile.fields.mastodon.label') }}</label>
+						</div>
+						<div class="field-body">
+							<div class="field">
+								<div class="control">
+									<input
+										id="mastodon"
+										v-model="editedUser.social_networks.mastodon"
+										type="text"
+										name="mastodon"
+										class="input"			
+										pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
+										:placeholder="$t('modal.profile.fields.mastodon.placeholder')"
+									>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div
+						v-if="editedUser.social_networks"
+						class="field is-horizontal"
+					>
+						<div class="field-label is-normal">
+							<label
 								for="instagram"
 								class="label"
 							>{{ $t('modal.profile.fields.instagram.label') }}</label>
@@ -704,6 +730,7 @@
 			twitch: '',
 			discord: '',
 			twitter: '',
+			mastodon: '',
 			instagram: ''
 		},
 		roles: {
@@ -739,6 +766,7 @@
 					twitch: '',
 					discord: '',
 					twitter: '',
+					mastodon: '',
 					instagram: ''
 				};
 			}

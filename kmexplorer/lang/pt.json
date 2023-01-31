@@ -395,6 +395,10 @@
 					"label": "Twitter",
 					"placeholder": "KaraokeMugen"
 				},
+				"mastodon": {
+					"label": "Mastodon",
+					"placeholder": "karaokemugen{'@'}shelter.moe"
+				},
 				"banner": {
 					"label": "Banner",
 					"remove": "Redefinir para o banner padrão",
