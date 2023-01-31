@@ -96,6 +96,11 @@
 	});
 
 	function handleLink(tag: ShortTag) {
+		if (props.karaokesI18n && props.karaokesI18n[tag.tag.tid]) {
+			const tagUpdated = { ...tag.tag };
+			tagUpdated.i18n = props.karaokesI18n[tag.tag.tid];
+			tag.tag = tagUpdated;
+		}
 		addTag({
 			type: tag.type,
 			tag: tag.tag
