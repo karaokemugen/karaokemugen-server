@@ -18,12 +18,11 @@
 			:class="{'has-icons-left': icon}"
 		>
 			<input
+				v-model="search"
 				class="input is-fullwidth"
 				type="search"
 				:placeholder="placeholder"
-				:value="search"
 				@keydown.enter="triggerSearch"
-				@input="keyDown"
 			>
 			<div
 				v-if="icon"
@@ -80,6 +79,7 @@
 	const { sort, resultsCount, search: menuSearch } = storeToRefs(useMenubarStore());
 	const { setSearch } = useMenubarStore();
 	const route = useRoute();
+	const { push } = useRouter();
 	const $t = useI18n().t;
 
 	const search = ref<string>('');
@@ -95,7 +95,8 @@
 	});
 
 	const canCount = computed(() => ['types-id', 'search-query', 'user-login', 'users', 'types-years'].includes(route.name as string));
-	const canSort = computed(() => ['types-id', 'search-query', 'user-login', 'suggest'].includes(route.name as string));
+	const canSort = computed(() => ['types-id', 'search-query', 'user-login', 'users', 'types-years'].includes(route.name as string));
+	const canSearch = computed(() => ['types-id', 'search-query', 'user-login', 'users', 'types-years', 'suggest'].includes(route.name as string));
 	const searchLabel = computed((): string => {
 		if (route.name === 'users') {
 			return $t('search.types.users') as string;
@@ -121,13 +122,11 @@
 
 	watch(menuSearch, (now) => search.value = now, { immediate: true });
 
-
 	function triggerSearch() {
 		setSearch(search.value);
-	}
-
-	function keyDown(e: Event) {
-		search.value = (e.target as HTMLInputElement).value;
+		if (!canSearch.value) {
+			push('/search');
+		}
 	}
 </script>
 
