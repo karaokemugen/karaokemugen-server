@@ -125,10 +125,6 @@ const nuxtConfig = defineNuxtConfig({
 			htmlAttrs: {
 				class: ['has-navbar-fixed-top']
 			},
-			titleTemplate: (titleChunk) => {
-				// If undefined or blank then we don't need the hyphen
-				return titleChunk ? `${titleChunk} - Karaoke Mugen` : 'Karaoke Mugen';
-			},
 			meta: [
 				{ charset: 'utf-8' },
 				{ hid: 'viewport', name: 'viewport', content: 'width=device-width, initial-scale=1' },

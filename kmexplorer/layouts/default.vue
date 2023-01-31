@@ -1025,7 +1025,13 @@
 		const seo = useLocaleHead({ addDirAttribute: true, addSeoAttributes: true });
 		if (!Array.isArray(seo.value.meta)) { seo.value.meta = []; }
 		seo.value.meta.push({ hid: 'og:url', property: 'og:url', content: `${explorerProtocol}://${explorerHost}/${fullPath}` });
-		return seo.value;
+		return {
+			...seo.value,
+			titleTemplate: (titleChunk) => {
+				// If undefined or blank then we don't need the hyphen
+				return titleChunk ? `${titleChunk} - Karaoke Mugen` : 'Karaoke Mugen';
+			}
+		};
 	});
 	
 	const tagType = computed(() => params?.id && (params?.id as string).substring(36));
