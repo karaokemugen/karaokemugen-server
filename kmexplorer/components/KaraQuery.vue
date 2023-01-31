@@ -125,10 +125,9 @@
 		}
 		if (typeof route.query.collections === 'string') {
 			setEnabledCollections(route.query.collections.split(':'));
-		} else {
-			// Load the first page
-			await resetList(true);
 		}
+		// Load the first page
+		await resetList(true);
 	}
 
 	async function loadNextPage(force = false) {
@@ -143,7 +142,9 @@
 		for (const karaoke of data.content) {
 			sortTypesKara(karaoke);
 		}
-		karaokes.value.content.push(...data.content);
+		for (let i = data.infos.from; i < data.infos.to; i++){
+			karaokes.value.content[i] = data.content[i - data.infos.from];
+		}
 		karaokes.value.i18n = data.i18n;
 		karaokes.value.infos.count = data.infos.count;
 		karaokes.value.infos.to = data.infos.to;
