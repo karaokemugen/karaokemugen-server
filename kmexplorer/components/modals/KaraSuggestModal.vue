@@ -265,7 +265,7 @@
 			}
 			gitlabUrl.value = await useCustomFetch<string>('/api/karas/suggest', {
 				method: 'POST',
-				body: formData
+				body: formData.value
 			});
 			submitted.value = true;
 			loading.value = false;
