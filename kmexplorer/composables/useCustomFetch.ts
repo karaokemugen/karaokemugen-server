@@ -25,7 +25,8 @@ export const useCustomFetch = <T = unknown, R extends NitroFetchRequest = NitroF
 			if (response._data?.code && !response.ok) { // if no code is present don't display toast
 				toast.error(useNuxtApp().$i18n.t(`toast.${response._data.code}`), { icon: 'error' });
 			}
-			if (response._data === 'Token has expired') {
+			console.log(response);
+			if (response._data === 'Token has expired' || response._data === 'User logged in unknown') {
 				auth.logout();
 			}
 		}
