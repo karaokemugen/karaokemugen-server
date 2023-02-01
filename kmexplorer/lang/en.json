@@ -88,12 +88,15 @@
 		"import": {
 			"sections": {
 				"files": "Files",
+				"parents": "Parent Song(s)",
 				"titles": "Title(s)",
 				"identity": "Identity",
 				"categorization": "Categorization",
 				"meta": "Metadata"
 			},
 			"desc": {
+				"parents": "If this song is an alternative version of another one, select its parent(s) to pre-fill this form.",
+				"parents_public": "When a user selects a parent song in the public interface, they'll see all their children / alternative versions.",
 				"titles": "Set all titles the song has in different languages. Usually, there's only one title.",
 				"titles_default_language": "Default title language should be the song's original title. For titles in non-latin languages (chinese, japanese, arabic, korean…), add a \"Romanization\" title and make it default.",
 				"aliases": "If the song is known as something else (abbreviations for example), set them here to help people find it through search. No need to use words already contained in the song title(s)."
@@ -146,6 +149,8 @@
 			"authors_tooltip": "You should add yourself here ;)",
 			"authors_required": "Author of the karaoke is mandatory",
 			"groups_tooltip": "Download groups for this song. The song will be included in these download packs",
+			"parents": "Parents",
+			"parents_tooltip": "If a parent is defined, this karaoke will show as alternative to the selected parent karaoke(s). Please mind to select the good repository before filling this array to avoid adding karaokes from other repositories.",	
 			"created_at": "Creation date",
 			"add_success": "Your karaoke has been successfully sent!",
 			"add_success_description": "An issue has been created on our tracker. You can check its progression at {url}",

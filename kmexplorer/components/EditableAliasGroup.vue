@@ -53,12 +53,13 @@
 	const loading = ref(false);
 	const inputToFocus = ref<HTMLElement>();
 
-	watch([inputVisible], ([newInputVisible]) => {
+	watch([props, inputVisible], ([_newProps, newInputVisible]) => {
 		if (newInputVisible) {
 			nextTick(() => {
 				inputToFocus.value?.focus();
 			});
 		}
+		if (props.params.length !== values.value.length) values.value = props.params;
 	}, { deep: true });
 
 	const addValue = () => {
