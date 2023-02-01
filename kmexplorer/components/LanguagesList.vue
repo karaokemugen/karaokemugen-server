@@ -117,9 +117,9 @@
 
 	const getListLanguages = computed(() => listLanguages(langFilter.value));
 
-	watch([props, defaultLanguage], ([_newProps, newDefaultLanguage]) => {
-		if (newDefaultLanguage) {
-			defaultLanguage.value = newDefaultLanguage;
+	watch([props], ([newProps]) => {
+		if (newProps.defaultLanguage) {
+			defaultLanguage.value = newProps.defaultLanguage;
 		}
 		if (props.value !== i18n.value) i18n.value = props.value;
 	});
