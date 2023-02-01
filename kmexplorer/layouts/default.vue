@@ -776,6 +776,7 @@
 							{{ $t('menu.remotes') }}
 						</nuxt-link>
 						<nuxt-link
+							v-if="usersEnabled"
 							to="/users"
 							active-class="is-active"
 						>
