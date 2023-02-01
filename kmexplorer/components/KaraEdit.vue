@@ -107,6 +107,47 @@
 				</p>
 			</div>
 		</div>
+		<label class="title">{{ $t('kara.import.sections.parents') }}</label>
+		<div class="box">
+			<div class="content">
+				<p>{{ $t('kara.import.desc.parents') }}</p>
+				<p>{{ $t('kara.import.desc.parents_public') }}</p>
+			</div>
+			<div class="field">
+				<label
+					class="label"
+					:title="$t('kara.import.parents_tooltip')"
+				>
+					{{ $t('kara.import.parents') }}
+					<font-awesome-icon
+						:icon="['fas', 'question-circle']"
+						:fixed-width="true"
+					/>
+				</label>
+				<div class="tags">
+					<span
+						v-for="tag in parents"
+						:key="tag.value"
+						class="tag"
+					>
+						{{ tag.label }}
+						<nuxt-link
+							class="delete is-small"
+							@click.prevent="() => parents = parents.filter(parent => parent.value !== tag.value)"
+						/>
+					</span>
+				</div>
+				<o-autocomplete
+					v-model="currentParent"
+					open-on-focus
+					clear-on-select
+					:data="karaSearch"
+					field="label"
+					@typing="debouncedGetAsyncData"
+					@select="onParentKaraChange"
+				/>
+			</div>
+		</div>
 		<label class="title">{{ t('kara.import.sections.titles') }}</label>
 		<div class="box">
 			<div class="content">
@@ -635,7 +676,7 @@
 <script setup lang="ts">
 	import _ from 'lodash';
 
-	import { MediaInfo } from '%/lib/types/kara';
+	import { KaraList, MediaInfo } from '%/lib/types/kara';
 	import { DBKara } from '%/lib/types/database/kara';
 	import { useAuthStore } from '~/store/auth';
 	import { useLocalStorageStore } from '~/store/localStorage';
@@ -655,7 +696,11 @@
 	const uploading_media = ref<number | boolean>(false);
 	const uploading_sub = ref<number | boolean>(false);
 	const contactInfos = ref('');
+	const currentParent = ref<{ label: string; value: string }>();
+	const parents = ref<{ label: string; value: string }[]>([]);
+	const karaSearch = ref<{ label: string; value: string }[]>([]);
 
+	const debouncedGetAsyncData = ref();
 	const mediafileInput = ref<HTMLInputElement>();
 	const subfileInput = ref<HTMLInputElement>();
 
@@ -671,6 +716,86 @@
 	const { setSendContactInfos } = useLocalStorageStore();
 	const { loggedIn, user } = storeToRefs(useAuthStore());
 	const { t } = useI18n();
+
+	onMounted(async () => {
+		debouncedGetAsyncData.value = _.debounce(getAsyncData, 500, { leading: true, trailing: true, maxWait: 750 });
+	});
+
+	async function getAsyncData(val: string) {
+		const res = await useCustomFetch<KaraList>('/api/karas/search',
+			{
+				params: {
+					filter: val,
+					size: 50,
+					ignoreCollections: true
+				}
+			});
+		if (res.content) {
+			karaSearch.value = res.content
+				.filter(k => k.kid !== props.kara?.kid)
+				.filter(k => !props.kara || !k.parents.includes(props.kara?.kid))
+				.map(k => {
+					return {
+						label: buildKaraTitle(k, res.i18n),
+						value: k.kid,
+					};
+				});
+		}
+	}
+
+	getParents();
+
+	async function getParents() {
+		if (props.kara?.parents && props.kara?.parents?.length > 0) {
+			const res = await useCustomFetch<KaraList>('/api/karas/search',
+				{
+					params: {
+						q: `k:${props.kara?.parents.join()}`,
+						ignoreCollections: true
+					}
+				});
+			parents.value = res.content.map((kara: DBKara) => {
+				return {
+					label: buildKaraTitle(kara, res.i18n),
+					value: kara.kid
+				};
+			});
+		}
+	}
+
+	function onParentKaraChange(event: { label: string; value: string }) {
+		if (event?.value) {
+			applyFieldsFromKara(event.value);
+			parents.value?.push(event);
+		}
+	}
+	async function applyFieldsFromKara(kid: string) {
+		const karas = await useCustomFetch<KaraList>(
+			'/api/karas/search/',
+			{
+				params: {
+					q: `k:${kid}`,
+					size: 1,
+					ignoreCollections: true
+				}
+			}
+		);
+		// Check if user has already started doing input, or if it's an edit of existing kara
+		if (
+			karas.content.length > 0 &&
+			karas.content[0].kid === kid &&
+			!props.kara?.kid &&
+			karaoke.value?.data.tags.series.length === 0 &&
+			karaoke.value?.data.tags.langs.length === 0 &&
+			karaoke.value?.data.tags.versions.length === 0 &&
+			Object.keys(karaoke.value?.data?.titles).length === 0
+		) {
+			karas.content[0].kid = '';
+			const actualMedias = karaoke.value.medias;
+			karaoke.value = convertDBKaraToKaraFile(karas.content[0]);
+			karaoke.value.medias = actualMedias;
+		}
+	}
 
 	function submitDisabled(): boolean {
 		return Boolean(

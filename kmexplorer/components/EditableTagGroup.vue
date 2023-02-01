@@ -100,16 +100,21 @@
 
 	const { locale } = useI18n();
 
-	watch([inputVisible], ([newInputVisible]) => {
+	watch([props, inputVisible], ([_newProps, newInputVisible]) => {
 		if (newInputVisible) {
 			nextTick(() => {
 				inputToFocus.value?.focus();
 			});
 		}
+		updateProps();
 	}, { deep: true });
 
 	onMounted(async () => {
 		debouncedGetAsyncData.value = _.debounce(getAsyncData, 500, { leading: true, trailing: true, maxWait: 750 });
+		updateProps();
+	});
+
+	async function updateProps() {
 		if (props.checkboxes) {
 			availableTags.value = await getTags(props.tagType);
 		}
@@ -129,7 +134,7 @@
 			}
 			values.value = tags;
 		}
-	});
+	}
 
 	async function getTags(type: number, filter?: string): Promise<DBTag[]> {
 		const { content } = await useCustomFetch<{ content: DBTag[] }>('/api/karas/tags', {

@@ -56,6 +56,63 @@ export function getTitleInLocale(titles: any, titles_default_language?:string) {
 	}
 }
 
+export function buildKaraTitle(
+	data: DBKara,
+	i18nParam?: any
+): string {
+	const isMulti = data?.langs?.find(e => e.name.includes('mul'));
+	if (data?.langs && isMulti) {
+		data.langs = [isMulti];
+	}
+	const serieText =
+		data?.series?.length > 0
+			? data.series
+				.slice(0, 3)
+				.map(e => getTagInLocale(e, i18nParam))
+				.join(', ') + (data.series.length > 3 ? '...' : '')
+			: data?.singergroups?.length > 0
+				? data.singergroups
+					.slice(0, 3)
+					.map(e => getTagInLocale(e, i18nParam))
+					.join(', ') + (data.singergroups.length > 3 ? '...' : '')
+				: data?.singers?.length > 0
+					? data.singers
+						.slice(0, 3)
+						.map(e => getTagInLocale(e, i18nParam))
+						.join(', ') + (data.singers.length > 3 ? '...' : '')
+					: ''; // wtf?
+	const langsText = data?.langs
+		?.map(e => e.name)
+		.join(', ')
+		.toUpperCase();
+	const songtypeText = sortAndHideTags(data?.songtypes)
+		.map(e => (e.short ? +e.short : e.name))
+		.join(' ');
+	const songorderText = data?.songorder > 0 ? ' ' + data.songorder : '';
+	const versions = sortAndHideTags(data?.versions).map(t => `[${getTagInLocale(t, i18nParam)}]`);
+	const version = versions?.length > 0 ? ` ${versions.join(' ')}` : '';
+	return `${langsText} - ${serieText} - ${songtypeText} ${songorderText} - ${getTitleInLocale(
+		data.titles,
+		data.titles_default_language
+	)} ${version}`;
+}
+
+export function sortTagByPriority(a: any, b: any) {
+	return a.priority < b.priority ? 1 : a.name.localeCompare(b.name);
+}
+
+/**
+ * Tags can have a -1 priority to be hidden from public, and -2 to be hidden everywhere
+ * @param {Array} tags array of tags
+ * @param {String} scope public or admin
+ * @returns {Array} array of tags without hidden tags and sort
+ */
+export function sortAndHideTags(tags: any[]) {
+	return tags?.length > 0
+		? tags.filter(tag => tag.priority >= 0).sort(sortTagByPriority)
+		: [];
+}
+
 // Generate a fake tag with tid
 export function fakeYearTag(year: string, count?: number): DBTag {
 	// That's really crappy, but at least the function will return the same tag tid

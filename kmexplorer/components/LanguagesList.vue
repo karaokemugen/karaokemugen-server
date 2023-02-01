@@ -47,8 +47,8 @@
 					:data="getListLanguages"
 					@select="addLang"
 				>
-					<template #default="props">
-						{{ props.option.label }} ({{ props.option.value.toUpperCase() }})
+					<template #default="language">
+						{{ language.option.label }} ({{ language.option.value.toUpperCase() }})
 					</template>
 				</o-autocomplete>
 				<div
@@ -117,10 +117,11 @@
 
 	const getListLanguages = computed(() => listLanguages(langFilter.value));
 
-	watch(() => defaultLanguage, (now) => {
-		if (now.value) {
-			defaultLanguage.value = now.value;
+	watch([props, defaultLanguage], ([_newProps, newDefaultLanguage]) => {
+		if (newDefaultLanguage) {
+			defaultLanguage.value = newDefaultLanguage;
 		}
+		if (props.value !== i18n.value) i18n.value = props.value;
 	});
 
 	function listLanguages(lang: string): Array<{ value: string, label: string }> {

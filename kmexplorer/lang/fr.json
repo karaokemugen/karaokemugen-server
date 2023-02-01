@@ -88,12 +88,15 @@
 		"import": {
 			"sections": {
 				"files": "Fichiers",
+				"parents": "Chanson(s) parente(s)",
 				"titles": "Titre(s)",
 				"identity": "Identité",
 				"categorization": "Catégorisation",
 				"meta": "Metadonnées"
 			},
 			"desc": {
+				"parents": "Si cette chanson est une version alternative d'une autre, sélectionner son ou ses parent(s) pour préremplir ce formulaire.",
+				"parents_public": "Quand un utilisateur sélectionne une chanson parente dans l'interface publique, il verra alors toutes les versions alternatives / enfants.",
 				"titles": "Définissez tous les titres que cette chanson possède dans différentes langues. Habituellement, il n'y a qu'un titre.",
 				"titles_default_language": "La langue du titre par défaut devrait être le titre d'origine. Pour les titres en alphabet non-latin (chinois, japonais, coréen, arabe…), ajoutez un titre \"Romanisation\" et mettez-le par défaut.",
 				"aliases": "Si la chanson est connue sous un autre nom (abbréviation par exemple), indiquez-les ici pour aider le public à les trouver à travers la recherche. Pas besoin d'utiliser des mots déjà contenus dans le(s) titre(s)."
@@ -146,6 +149,8 @@
 			"authors_tooltip": "Vous devriez vous ajouter ici ;)",
 			"authors_required": "L'auteur du karaoké est obligatoire",
 			"groups_tooltip": "Groupes de téléchargement pour ce morceau. Le morceau sera ajouté dans ces paquets pour le téléchargement",
+			"parents": "Parents",
+			"parents_tooltip": "Si un parent est défini, ce karaoké apparaîtra comme une alternative au(x) kara(s) parent(s) renseigné(s). Veillez à définir le dépôt avant de remplir ce tableau pour éviter d'ajouter des karaokés d'autres dépôts.",	
 			"created_at": "Date de création",
 			"add_success": "Votre karaoké est envoyé !",
 			"add_success_description": "Un ticket a été crée sur notre outil de suivi. Vous pouvez consulter l'avancement de l'intégration de votre karaoké : {url}",

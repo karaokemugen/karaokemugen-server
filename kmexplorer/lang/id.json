@@ -120,6 +120,8 @@
 			"lyrics_file_missing": "Berkas lirik menghilang, ini mungkin terjadi jika kamu mengirimkan berkas MKV atau sebuah karaoke tanpa lirik (?).",
 			"songwriters_tooltip": "Komposer, Pengaransemen, dan Penulis Lirik.",
 			"creators_tooltip": "Entitas yang membuat serial. Bisa studio animasi, studio film, atau studio permainan.",
+			"parents": "Induk",
+			"parents_tooltip": "Jika induk ditentukan, karaoke ini akan ditampilkan sebagai alternatif kepada karaoke dipilih di induk. Harap diingat untuk memilih repositori yang bagus sebelum mengisi array ini untuk menghindari menambahkan karaoke dari repositori lain.",	
 			"restart": "Kirim karaoke baru",
 			"i18n_select": "Tambahkan sebuah bahasa",
 			"contact_infos_tooltip": "Masukkan detail kontakmu, sehingga kami bisa berhubungan dengan kamu jika kamu memiliki pertanyaan tentang karaoke ini.",
