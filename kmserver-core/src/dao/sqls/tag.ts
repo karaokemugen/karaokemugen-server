@@ -1,6 +1,6 @@
 // Tags SQL
 
-export const getAllTags = (filterClauses: string[], typeClauses: string, limitClause: string, offsetClause: string, joinClauses: string, orderClauses: string, stripClause: string, additionalFrom: string[], collectionClause: string[], whereClause: string) => `
+export const selectTags = (filterClauses: string[], typeClauses: string, limitClause: string, offsetClause: string, joinClauses: string, orderClauses: string, stripClause: string, additionalFrom: string[], collectionClause: string[], whereClause: string) => `
 WITH kara_available AS (
 	SELECT k.pk_kid
 	FROM kara k

@@ -43,7 +43,7 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 		filterClauses.sql.push('t.repository != \'Staging\'');
 	}
 	const collectionClauses = params.collections?.map(c => `kt.fk_tid = '${c}'`) || ['1 = 1'];
-	const query = sql.getAllTags(
+	const query = sql.selectTags(
 filterClauses.sql,
 typeClauses,
 limitClause,
@@ -87,7 +87,7 @@ export async function insertTag(tag: Tag) {
 		tag.priority || 10,
 		tag.karafile_tag || null,
 		tag.description || {},
-		tag.external_database_ids ||  null,
+		tag.external_database_ids || null,
 	]);
 }
 
