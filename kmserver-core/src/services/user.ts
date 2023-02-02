@@ -169,7 +169,7 @@ export function formatUserList(users: DBUser[], from: number): UserList {
 		infos: {
 			count: users[0]?.count || 0,
 			from: from || 0,
-			to: from || 0 + users.length
+			to: (from || 0) + users.length
 		},
 		content: users
 	};
