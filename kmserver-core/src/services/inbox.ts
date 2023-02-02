@@ -6,6 +6,7 @@ import {clearInbox, deleteInbox, insertInbox, selectInbox, updateInboxDownloaded
 import { deleteKara } from '../dao/kara';
 import {clearStagingTags} from '../dao/tag';
 import { formatKaraV4 } from '../lib/dao/karafile';
+import { getDataFromTagFile } from '../lib/dao/tagfile';
 import { refreshKarasAfterDBChange } from '../lib/services/karaManagement';
 import {KaraMetaFile, MetaFile, TagMetaFile} from '../lib/types/downloads';
 import { Inbox } from '../lib/types/inbox';
@@ -18,7 +19,7 @@ import logger from '../lib/utils/logger';
 import { findFileByUUID } from '../utils/files';
 import Sentry from '../utils/sentry';
 import { getKara } from './kara';
-import { getTag } from './tag';
+import { getTag, getTags } from './tag';
 
 const service = 'Inbox';
 
@@ -143,10 +144,25 @@ export async function removeKaraFromInbox(inid: string) {
 
 export async function clearUnusedStagingTags() {
 	logger.debug('Clearing old inbox tags', {service});
-	const tagfiles = await clearStagingTags();
-	for (const tag of tagfiles) {
-		const tagDir = resolvedPathRepos('Tags', 'Staging')[0];
-		await fs.unlink(resolve(tagDir, tag));
+	const tagFilesToDelete = await clearStagingTags();
+	const tags = await getTags({});
+	// List tags in staging
+	const tagDir = resolvedPathRepos('Tags', 'Staging')[0];
+	const tagFiles = await fs.readdir(tagDir);
+	for (const tagFile of tagFiles) {
+		const tag = await getDataFromTagFile(resolve(tagDir, tagFile));
+		const tagFromDB = tags.content.find(t => t.tid === tag.tid);
+		if (tagFromDB) {
+			// If tag is found but its repository isn't staging, it means it's been replaced by a tagfile from kara.moe and can be deleted.
+			if (tagFromDB.repository !== 'Staging') {
+				tagFilesToDelete.push(tagFile);
+			}
+		} else {
+			tagFilesToDelete.push(tagFile);
+		}
+	}
+	for (const tagFile of tagFilesToDelete) {
+		await fs.unlink(resolve(tagDir, tagFile));
 	}
 }
 
