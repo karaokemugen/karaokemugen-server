@@ -1,4 +1,3 @@
-import { promisify } from 'node:util';
 import { promises as fs } from 'node:fs';
 import { extname, dirname } from 'node:path';
 import { createRequire, builtinModules } from 'node:module';
@@ -50,7 +49,7 @@ const transformImportsPlugin = {
 }
 
 console.log('Clearing dist/');
-await promisify(rimraf)('dist/');
+await rimraf('dist/');
 
 const entryPoints = [];
 for await (const file of klaw('src')) {
