@@ -150,7 +150,7 @@
 			"authors_required": "Author of the karaoke is mandatory",
 			"groups_tooltip": "Download groups for this song. The song will be included in these download packs",
 			"parents": "Parents",
-			"parents_tooltip": "If a parent is defined, this karaoke will show as alternative to the selected parent karaoke(s). Please mind to select the good repository before filling this array to avoid adding karaokes from other repositories.",	
+			"parents_tooltip": "If a parent is defined, this karaoke will show as alternative to the selected parent karaoke(s). Please mind to select the good repository before filling this array to avoid adding karaokes from other repositories.",
 			"created_at": "Creation date",
 			"add_success": "Your karaoke has been successfully sent!",
 			"add_success_description": "An issue has been created on our tracker. You can check its progression at {url}",
@@ -213,7 +213,7 @@
 		"database": "Database",
 		"karas": "Songs",
 		"songtypes": "Types",
-		"tags": "Others...",
+		"tags": "Others…",
 		"singergroups": "Bands",
 		"misc": "Miscs",
 		"warnings": "Warnings",
@@ -566,7 +566,7 @@
 				"btn": "OK!"
 			}
 		}
-	  },
+	},
 	"remote": {
 		"code": "Code",
 		"last_ip": "Last ip",
