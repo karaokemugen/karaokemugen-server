@@ -13,6 +13,16 @@
 				<search-edit />
 				<div class="field is-expanded">
 					<collections-picker :label="$t('search.types.karaokes')" />
+					<nuxt-link
+						class="launchDice button"
+						@click.prevent="openRandomKara"
+					>
+						<font-awesome-icon
+							:icon="['fas', 'dice']"
+							:fixed-width="true"
+						/>
+						{{ $t('menu.random') }}
+					</nuxt-link>
 				</div>
 			</div>
 			<kara-list
@@ -28,6 +38,7 @@
 <script setup lang="ts">
 	import { KaraList as KaraListType } from '%/lib/types/kara';
 	import { storeToRefs } from 'pinia';
+	import slug from 'slug';
 	import { DBTag } from '~/../kmserver-core/src/lib/types/database/tag';
 	import { tagRegex, tagTypes, tagTypesMap } from '~/assets/constants';
 	import { useLocalStorageStore } from '~/store/localStorage';
@@ -48,7 +59,7 @@
 	const { enabledCollections } = storeToRefs(useLocalStorageStore());
 	const { setEnabledCollections } = useLocalStorageStore();
 	const route = useRoute();
-	const { replace } = useRouter();
+	const { replace, push } = useRouter();
 
 	const loading = ref(true);
 	const karaokes = ref<KaraListType>({ infos: { count: 0, from: 0, to: 0 }, i18n: {}, content: [] });
@@ -130,6 +141,18 @@
 		await resetList(true);
 	}
 
+	async function openRandomKara() {
+		const res = await useCustomFetch<KaraListType>('/api/karas/search', {
+			params: {
+				random: 1,
+				collections: enabledCollections.value.join(',')
+			}
+		});
+		const kid = res.content[0].kid;
+		const slugTitle = slug(res.content[0].titles[res.content[0].titles_default_language || 'eng']);
+		push(`/kara/${slugTitle}/${kid}`);
+	}
+
 	async function loadNextPage(force = false) {
 		if (!force && (karaokes.value.infos.to === karaokes.value.infos.count || loading.value)) {
 			return;
@@ -209,5 +232,8 @@
 		.dropdown-trigger > button {
 			width: 100%;
 		}
+	}
+	.launchDice {
+		margin-left: 1em;
 	}
 </style>

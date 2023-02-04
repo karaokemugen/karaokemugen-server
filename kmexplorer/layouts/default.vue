@@ -70,6 +70,16 @@
 
 			<div class="navbar-menu">
 				<client-only placeholder="You need to enable JavaScript in order to use search.">
+					<nuxt-link
+						class="launchDice button"
+						@click.prevent="openRandomKara"
+					>
+						<font-awesome-icon
+							:icon="['fas', 'dice']"
+							:fixed-width="true"
+						/>
+						{{ $t('menu.random') }}
+					</nuxt-link>
 					<search-tags class="navbar-item is-desktop" />
 					<div class="navbar-item is-expanded">
 						<search-bar />
@@ -233,16 +243,6 @@
 				class="navbar-dropdown"
 			>
 				<div class="is-hidden-desktop">
-					<nuxt-link
-						class="navbar-item"
-						@click.prevent="openRandomKara"
-					>
-						<font-awesome-icon
-							:icon="['fas', 'dice']"
-							:fixed-width="true"
-						/>
-						{{ $t('menu.random') }}
-					</nuxt-link>
 					<nuxt-link
 						href="/search"
 						class="navbar-item"
@@ -478,15 +478,6 @@
 								:fixed-width="true"
 							/>
 							{{ $t('menu.add_repository') }}
-						</nuxt-link>
-					</li>
-					<li class="launchDice">
-						<nuxt-link @click.prevent="openRandomKara">
-							<font-awesome-icon
-								:icon="['fas', 'dice']"
-								:fixed-width="true"
-							/>
-							{{ $t('menu.random') }}
 						</nuxt-link>
 					</li>
 				</ul>
@@ -1124,5 +1115,8 @@
 	.addRepo, .launchDice {
 		cursor: pointer;
 		max-width: 10em;
+	}
+	.launchDice {
+		margin: 0.75em;
 	}
 </style>
