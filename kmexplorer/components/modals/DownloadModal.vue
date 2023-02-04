@@ -74,7 +74,7 @@
 	const conf = useRuntimeConfig();
 	const liveURL = conf.public.LIVE_URL;
 	const karaokesJsonLink = conf.public.KARAOKES_JSON_LINK;
-	const apiHost = conf.public.API_HOST;
+	const apiUrl = conf.public.API_URL;
 
 	const props = defineProps<{
 		active: boolean,
@@ -125,17 +125,17 @@
 		return `${karaokesJsonLink}/${encodeURIComponent(props.karaoke.karafile)}`;
 	});
 	const mediaUrl = computed(() => {
-		return `${apiHost}downloads/medias/${encodeURIComponent(props.karaoke.mediafile)}`;
+		return `${apiUrl}downloads/medias/${encodeURIComponent(props.karaoke.mediafile)}`;
 	});
 	const mediaHardsubUrl = computed(() => {
-		return `${apiHost}hardsubs/${props.karaoke.hardsubbed_mediafile}`;
+		return `${apiUrl}hardsubs/${props.karaoke.hardsubbed_mediafile}`;
 	});
 	const hardsubMediaFileName = computed(() => {
 		const filename = props.karaoke.mediafile.substring(0, props.karaoke.mediafile.lastIndexOf('.')) || props.karaoke.mediafile;
 		return `${filename}.mp4`;
 	});
 	const subtitlesUrl = computed(() => {
-		return `${apiHost}downloads/lyrics/${encodeURIComponent(props.karaoke.subfile)}`;
+		return `${apiUrl}downloads/lyrics/${encodeURIComponent(props.karaoke.subfile)}`;
 	});
 	const live = computed(() => {
 		// Loop all tags to find a tag with noLiveDownload

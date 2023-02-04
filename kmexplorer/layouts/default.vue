@@ -47,17 +47,6 @@
 				<div class="navbar-item has-dropdown is-hidden-desktop">
 					<nuxt-link
 						class="navbar-link"
-						@click="openMenu('participate')"
-					>
-						<font-awesome-icon
-							:icon="['fas', 'cloud-upload-alt']"
-							:fixed-width="true"
-						/>
-					</nuxt-link>
-				</div>
-				<div class="navbar-item has-dropdown is-hidden-desktop">
-					<nuxt-link
-						class="navbar-link"
 						@click="openMenu('account')"
 					>
 						<font-awesome-icon
@@ -139,12 +128,6 @@
 					/>
 					{{ $t('menu.discourse') }}
 				</nuxt-link>
-			</div>
-
-			<div
-				v-if="menuOpen === 'participate'"
-				class="navbar-dropdown"
-			>
 				<nuxt-link
 					v-if="import_enabled"
 					class="navbar-item"
@@ -831,11 +814,6 @@
 							{{ $t('menu.discourse') }}
 						</nuxt-link>
 					</li>
-				</ul>
-				<p class="menu-label">
-					{{ $t('menu.participate') }}
-				</p>
-				<ul class="menu-list">
 					<li>
 						<nuxt-link
 							v-if="import_enabled"
@@ -904,8 +882,8 @@
 								{{ $t('menu.connection') }}
 							</nuxt-link>
 							<nuxt-link
-								:class="menuOpen === 'language' && 'is-active'"
-								@click="openMenu('language')"
+								:class="languagesOpen && 'is-active'"
+								@click="languagesOpen = !languagesOpen"
 							>
 								<font-awesome-icon
 									:icon="['fas', 'globe']"
@@ -914,7 +892,7 @@
 								{{ $t('menu.switch_language') }}
 							</nuxt-link>
 							<ul
-								v-if="menuOpen === 'language'"
+								v-if="languagesOpen"
 								class="menu-list"
 							>
 								<li
@@ -1027,7 +1005,7 @@
 	const suggestions = conf.public.SUGGESTIONS;
 	const addRepoModalInMenu = conf.public.ADD_REPO_MODAL_IN_MENU;
 
-	type TypeMenu = 'community'|'participate'|'account'|'language'|'database';
+	type TypeMenu = 'community'|'account'|'database';
 
 	const menuOpen = ref<TypeMenu>();
 	const tagsOpen = ref(false);

@@ -30,6 +30,8 @@ const nuxtConfig = defineNuxtConfig({
 			LIVE_URL: conf.KaraExplorer.LiveURL,
 			KM_IMPORT: conf.KaraExplorer.Import,
 			IN_PROGRESS_SONGS_LIST: conf.KaraExplorer.InProgressSongsList,
+			DISCORD_LINK: conf.KaraExplorer.DiscordURL,
+			DISCOURSE_LINK: conf.KaraExplorer.DiscourseURL,
 			BASE_LICENSE_NAME: conf.BaseLicense?.Name,
 			BASE_LICENSE_LINK: conf.BaseLicense?.Link,
 			SUPPORTED_LYRICS: supportedFiles.lyrics,
@@ -47,6 +49,7 @@ const nuxtConfig = defineNuxtConfig({
 			SUGGESTIONS: conf.Suggestions.Enabled,
 			DEFAULT_COLLECTIONS: conf.System.DefaultCollections,
 			GITLAB: conf.Gitlab?.Enabled,
+			KARAOKES_JSON_LINK: conf.Gitlab?.KaraokesJsonLink,
 			ADD_REPO_MODAL_IN_MENU: conf.KaraExplorer.AddRepoModalInMenu,
 			sentry: {
 				disabled: Boolean(process.env.SENTRY_TEST),
