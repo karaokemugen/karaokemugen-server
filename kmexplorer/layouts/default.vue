@@ -95,6 +95,7 @@
 					v-if="loggedIn && user?.roles?.admin"
 					class="navbar-item"
 					to="/remote"
+					@click="closeMenu"
 				>
 					<font-awesome-icon
 						:icon="['fas', 'house-laptop']"
@@ -106,6 +107,7 @@
 					v-if="usersEnabled"
 					class="navbar-item"
 					to="/users"
+					@click="closeMenu"
 				>
 					<font-awesome-icon
 						:icon="['fas', 'users']"
@@ -117,6 +119,7 @@
 					v-if="discordLink"
 					:href="discordLink"
 					class="navbar-item"
+					@click="closeMenu"
 				>
 					<font-awesome-icon
 						:icon="['fab', 'discord']"
@@ -128,6 +131,7 @@
 					v-if="discourseLink"
 					:href="discourseLink"
 					class="navbar-item"
+					@click="closeMenu"
 				>
 					<font-awesome-icon
 						:icon="['fab', 'discourse']"
@@ -145,6 +149,7 @@
 					v-if="import_enabled"
 					class="navbar-item"
 					to="/import"
+					@click="closeMenu"
 				>
 					<font-awesome-icon
 						:icon="['fas', 'file-import']"
@@ -156,6 +161,7 @@
 					v-if="suggestions"
 					class="navbar-item"
 					to="/suggest"
+					@click="closeMenu"
 				>
 					<font-awesome-icon
 						:icon="['fas', 'envelope-circle-check']"
@@ -175,6 +181,7 @@
 					class="navbar-item"
 					active-class="is-active"
 					aria-label="Profile"
+					@click="closeMenu"
 				>
 					<font-awesome-icon
 						:icon="['fas', 'user']"
@@ -186,7 +193,10 @@
 					v-else-if="usersEnabled"
 					class="navbar-item"
 					aria-label="Login"
-					@click.prevent="() => openModal('auth')"
+					@click.prevent="() => {
+						openModal('auth');
+						closeMenu();
+					}"
 				>
 					<font-awesome-icon
 						:icon="['fas', 'sign-in-alt']"
@@ -198,7 +208,10 @@
 					v-if="loggedIn"
 					class="navbar-item"
 					aria-label="Logout"
-					@click.prevent="logout"
+					@click.prevent="() => {
+						logout();
+						closeMenu();
+					}"
 				>
 					<font-awesome-icon
 						:icon="['fas', 'sign-out-alt']"
@@ -208,8 +221,8 @@
 				</nuxt-link>
 				<div class="navbar-item">
 					<nuxt-link
-						:class="menuOpen === 'language' && 'is-active'"
-						@click="openMenu('language')"
+						:class="languagesOpen && 'is-active'"
+						@click="() => languagesOpen = !languagesOpen"
 					>
 						<font-awesome-icon
 							:icon="['fas', 'globe']"
@@ -219,20 +232,20 @@
 					</nuxt-link>
 
 					<div
-						v-if="menuOpen === 'language'"
+						v-if="languagesOpen"
 						class="navbar-dropdown"
 					>
 						<nuxt-link
-							v-for="locale in availableLocales"
-							:key="locale.code"
+							v-for="availableLocale in availableLocales"
+							:key="availableLocale.code"
 							class="navbar-item"
 							href="#"
 							@click.prevent.stop="
-								setLocale(locale.code);
-								editUser(locale.code);
+								setLocale(availableLocale.code);
+								editUser(availableLocale.code);
 								closeMenu();"
 						>
-							{{ locale.name }}
+							{{ availableLocale.name }}
 						</nuxt-link>
 					</div>
 				</div>
@@ -257,6 +270,7 @@
 					<nuxt-link
 						class="navbar-item"
 						to="/types/songtypes"
+						@click="closeMenu"
 					>
 						<font-awesome-icon
 							:icon="['fas', 'list']"
@@ -283,6 +297,7 @@
 							<nuxt-link
 								class="navbar-item"
 								to="/types/singergroups"
+								@click="closeMenu"
 							>
 								<font-awesome-icon
 									:icon="['fas', 'people-group']"
@@ -293,6 +308,7 @@
 							<nuxt-link
 								class="navbar-item"
 								to="/types/misc"
+								@click="closeMenu"
 							>
 								<font-awesome-icon
 									:icon="['fas', 'tags']"
@@ -304,6 +320,7 @@
 							<nuxt-link
 								class="navbar-item"
 								to="/types/warnings"
+								@click="closeMenu"
 							>
 								<font-awesome-icon
 									:icon="['fas', 'exclamation-triangle']"
@@ -315,6 +332,7 @@
 							<nuxt-link
 								class="navbar-item"
 								to="/types/groups"
+								@click="closeMenu"
 							>
 								<font-awesome-icon
 									:icon="['fas', 'boxes']"
@@ -326,6 +344,7 @@
 							<nuxt-link
 								class="navbar-item"
 								to="/types/families"
+								@click="closeMenu"
 							>
 								<font-awesome-icon
 									:icon="['fas', 'photo-video']"
@@ -337,6 +356,7 @@
 							<nuxt-link
 								class="navbar-item"
 								to="/types/origins"
+								@click="closeMenu"
 							>
 								<font-awesome-icon
 									:icon="['fas', 'project-diagram']"
@@ -348,6 +368,7 @@
 							<nuxt-link
 								class="navbar-item"
 								to="/types/genres"
+								@click="closeMenu"
 							>
 								<font-awesome-icon
 									:icon="['fas', 'chess']"
@@ -359,6 +380,7 @@
 							<nuxt-link
 								class="navbar-item"
 								to="/types/platforms"
+								@click="closeMenu"
 							>
 								<font-awesome-icon
 									:icon="['fas', 'laptop']"
@@ -370,6 +392,7 @@
 							<nuxt-link
 								class="navbar-item"
 								to="/types/versions"
+								@click="closeMenu"
 							>
 								<font-awesome-icon
 									:icon="['fas', 'tachometer-alt']"
@@ -381,6 +404,7 @@
 							<nuxt-link
 								class="navbar-item"
 								to="/types/franchises"
+								@click="closeMenu"
 							>
 								<font-awesome-icon
 									:icon="['fas', 'sitemap']"
@@ -393,6 +417,7 @@
 					<nuxt-link
 						class="navbar-item"
 						to="/types/singers"
+						@click="closeMenu"
 					>
 						<font-awesome-icon
 							:icon="['fas', 'microphone-alt']"
@@ -403,6 +428,7 @@
 					<nuxt-link
 						class="navbar-item"
 						to="/types/series"
+						@click="closeMenu"
 					>
 						<font-awesome-icon
 							:icon="['fas', 'tv']"
@@ -413,6 +439,7 @@
 					<nuxt-link
 						class="navbar-item"
 						to="/types/songwriters"
+						@click="closeMenu"
 					>
 						<font-awesome-icon
 							:icon="['fas', 'signature']"
@@ -423,6 +450,7 @@
 					<nuxt-link
 						class="navbar-item"
 						to="/types/creators"
+						@click="closeMenu"
 					>
 						<font-awesome-icon
 							:icon="['fas', 'chalkboard-teacher']"
@@ -433,6 +461,7 @@
 					<nuxt-link
 						class="navbar-item"
 						to="/types/authors"
+						@click="closeMenu"
 					>
 						<font-awesome-icon
 							:icon="['fas', 'user-secret']"
@@ -443,6 +472,7 @@
 					<nuxt-link
 						class="navbar-item"
 						to="/types/langs"
+						@click="closeMenu"
 					>
 						<font-awesome-icon
 							:icon="['fas', 'language']"
@@ -453,6 +483,7 @@
 					<nuxt-link
 						class="navbar-item"
 						to="/types/years"
+						@click="closeMenu"
 					>
 						<font-awesome-icon
 							:icon="['fas', 'calendar-alt']"
@@ -1000,6 +1031,7 @@
 
 	const menuOpen = ref<TypeMenu>();
 	const tagsOpen = ref(false);
+	const languagesOpen = ref(false);
 
 	const { params, fullPath, name } = useRoute();
 	const { beforeEach, push } = useRouter();
@@ -1082,6 +1114,7 @@
 		if (name !== 'search-query') {
 			push(generateNavigation());
 		}
+		closeMenu();
 	}
 	function editUser(language: string) {
 		if (user?.value) {
