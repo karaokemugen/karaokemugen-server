@@ -207,6 +207,7 @@
 		"account": "Akun",
 		"warnings": "Peringatan",
 		"kara_suggest": "Usul karaoke",
+		"anime_list": "Anime saya",
 		"remotes": "Jarak Jauh"
 	},
 	"search": {
@@ -478,7 +479,8 @@
 		"private_favorites": "Favoritmu privat. Klik untuk memperlihatkannya.",
 		"favorites": "Favorit",
 		"edit": "Sunting profil",
-		"favorites_count": "{x} favorit"
+		"favorites_count": "{x} favorit",
+		"anime_list": "Anime saya"
 	},
 	"toast": {
 		"LOG_ERROR": "Kredensial salah.",

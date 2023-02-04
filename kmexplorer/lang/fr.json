@@ -239,6 +239,7 @@
 		"kara_import": "Envoyer un kara",
 		"kara_suggest": "Suggérer un kara",
 		"account": "Compte",
+		"anime_list": "Mes animés",
 		"login": "Se connecter",
 		"logout": "Se déconnecter",
 		"register": "S'inscrire",
@@ -251,6 +252,7 @@
 		"edit": "Éditer le profil",
 		"private": "Votre profil est privé, vous êtes le seul à pouvoir le voir.",
 		"favorites_count": "{x} favori | {x} favoris",
+		"anime_list": "Mes animés",
 		"public_favorites": "Vos favoris sont publics. Cliquez pour cacher vos favoris.",
 		"private_favorites": "Vos favoris sont privés. Cliquez pour partager vos favoris."
 	},

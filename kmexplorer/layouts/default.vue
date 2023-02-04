@@ -860,6 +860,17 @@
 								{{ user.nickname }}
 							</nuxt-link>
 							<nuxt-link
+								v-if="loggedIn && user && user.anime_list_to_fetch"
+								:to="`/user/${user.login}/animelist`"
+								active-class="is-active"
+								aria-label="My animes"
+							>
+								<i
+									:className="`icon-${user.anime_list_to_fetch}`"
+								/>
+								{{ $t('menu.anime_list') }}
+							</nuxt-link>
+							<nuxt-link
 								v-if="loggedIn"
 								aria-label="Logout"
 								@click.prevent="logout"

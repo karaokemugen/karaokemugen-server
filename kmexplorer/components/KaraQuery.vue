@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-	import { KaraList as KaraListType } from '%/lib/types/kara';
+	import { KaraList as KaraListType, KaraParams, OrderParam } from '%/lib/types/kara';
 	import { storeToRefs } from 'pinia';
 	import slug from 'slug';
 	import { DBTag } from '~/../kmserver-core/src/lib/types/database/tag';
@@ -44,13 +44,7 @@
 	import { useLocalStorageStore } from '~/store/localStorage';
 	import { TagExtend, useMenubarStore } from '~/store/menubar';
 
-	interface KaraRequest {
-		from: number,
-		size: number,
-		order?: string,
-		filter?: string,
-		q?: string,
-		favorites?: string,
+	interface KaraRequest extends KaraParams {
 		collections: string
 	}
 
@@ -70,6 +64,7 @@
 		kids?: string[]
 		withSuggest?: boolean
 		withSearch?: boolean
+		userAnimeList?: string
 	}>(), {
 		withSuggest: true,
 		withSearch: true
@@ -217,9 +212,10 @@
 			filter: search.value || undefined,
 			from: (from.value * 12),
 			size: 12,
-			order: sort.value || undefined,
+			order: (sort.value as OrderParam) || undefined,
 			favorites: props.favorites || undefined,
-			collections: enabledCollections.value.join(',')
+			collections: enabledCollections.value.join(','),
+			userAnimeList: props.userAnimeList || undefined
 		};
 	}
 </script>

@@ -1,7 +1,11 @@
 {
 	"menu": {
 		"discord": "Discord",
-		"discourse": "Discourse"
+		"discourse": "Discourse",
+		"anime_list": "Mis animes"
+	},
+	"profile": {
+		"anime_list": "Mis animes"
 	},
 	"error": {
 		"generic": "Error"

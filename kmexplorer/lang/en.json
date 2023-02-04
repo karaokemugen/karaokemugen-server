@@ -239,6 +239,7 @@
 		"kara_import": "Submit a karaoke",
 		"kara_suggest": "Suggest a karaoke",
 		"account": "Account",
+		"anime_list": "My animes",
 		"login": "Login",
 		"logout": "Logout",
 		"register": "Register",
@@ -251,6 +252,7 @@
 		"edit": "Edit profile",
 		"private": "Your profile is private, only you can see it.",
 		"favorites_count": "{x} favorite | {x} favorites",
+		"anime_list": "My animes",
 		"public_favorites": "Your favorites are public. Click to hide them.",
 		"private_favorites": "Your favorites are private. Click to show them."
 	},
