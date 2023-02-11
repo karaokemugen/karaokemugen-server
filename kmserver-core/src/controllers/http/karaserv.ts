@@ -98,7 +98,7 @@ export default function KSController(router: Router) {
 					order: req.query.order,
 					stripEmpty: Boolean(req.query.stripEmpty),
 					includeStaging: Boolean(req.query.includeStaging),
-					collections: req.query.collections?.split(',')
+					forceCollections: req.query.collections?.split(',')
 				});
 				res.json(tags);
 			} catch (err) {

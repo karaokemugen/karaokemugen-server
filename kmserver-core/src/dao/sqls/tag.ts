@@ -37,7 +37,7 @@ FROM tag t
 LEFT JOIN t_count ON t.pk_tid = t_count.fk_tid
 ${joinClauses}
 ${additionalFrom.join('')}
-WHERE 1 = 1
+WHERE TRUE
   ${filterClauses.map(clause => `AND (${clause})`).reduce((a, b) => (`${a} ${b}`), '')}
   ${typeClauses}
   ${stripClause}

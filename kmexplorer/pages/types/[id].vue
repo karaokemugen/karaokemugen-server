@@ -59,21 +59,15 @@
 </template>
 
 <script setup lang="ts">
-	import { TagList } from '%/lib/types/tag';
+	import { TagList, TagParams, TagTypeNum } from '%/lib/types/tag';
 	import { storeToRefs } from 'pinia';
 	import { DBTag } from '~/../kmserver-core/src/lib/types/database/tag';
 	import { tagTypes } from '~/assets/constants';
 	import { useLocalStorageStore } from '~/store/localStorage';
 	import { useMenubarStore } from '~/store/menubar';
 
-	interface TagsRequest {
-		from: number,
-		size: number,
-		order?: string,
-		filter?: string,
-		stripEmpty?: boolean,
-		collections?: string,
-		type?: number
+	interface TagsRequest extends TagParams {
+		collections: string
 	}
 
 	const { search, sort } = storeToRefs(useMenubarStore());
@@ -126,11 +120,11 @@
 		return {
 			from: (page.value - 1) * 100,
 			size: 100,
-			order: sort.value,
+			order: sort.value as 'az' | 'karacount',
 			stripEmpty: true,
 			filter: search.value || undefined,
-			collections: enabledCollections.value.join(',') || undefined,
-			type: tagTypes[params.id as string].type
+			collections: enabledCollections.value.join(','),
+			type: tagTypes[params.id as string].type as TagTypeNum
 		};
 	}
 </script>
