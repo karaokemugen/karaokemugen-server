@@ -4,7 +4,15 @@
    "description": "Karaoke Mugen online server",
    "main": "kmserver-core/dist/index.js",
    "repository": "https://gitlab.com/karaokemugen/code/karaokemugen-server.git",
-   "author": "Guillaume Lebigot <axel@teri-chan.net>",
+   "author": "Guillaume Lebigot <axel@teri-chan.net> (http://www.meido-rando.net)",
+   "contributors": [
+     "Mathieu Delestre <ldbglobe@gmail.com>",
+     "Florent Berthelot <florentius.b@gmail.com> (@Aeden_)",
+     "leonekmi <git+km@leonekmi.fr>",
+     "Themio <themio@protonmail.ch>",
+     "Damien HERBERT <dherbert98@gmail.com> (Dragicafit)",
+     "Ismaël Bussière <bussiereismael@gmail.com> (@red5h4d0w)"
+   ],
    "license": "MIT",
    "homepage": "https://mugen.karaokes.moe",
    "private": true,
