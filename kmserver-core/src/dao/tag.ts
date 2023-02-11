@@ -42,7 +42,7 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 	if (!params.includeStaging) {
 		filterClauses.sql.push('t.repository != \'Staging\'');
 	}
-	const collectionClauses = params.collections?.map(c => `kt.fk_tid = '${c}'`) || ['1 = 1'];
+	const collectionClauses = params.forceCollections?.map(c => `kt.fk_tid = '${c}'`) || ['TRUE'];
 	const query = sql.selectTags(
 filterClauses.sql,
 typeClauses,
