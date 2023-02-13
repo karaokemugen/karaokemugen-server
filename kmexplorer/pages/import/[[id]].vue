@@ -55,6 +55,7 @@
 
 	const config = useRuntimeConfig();
 	const route = useRoute();
+	const { t } = useI18n();
 
 	const base_license_name = ref(config.public.BASE_LICENSE_NAME);
 	const base_license_link = ref(config.public.BASE_LICENSE_LINK);
@@ -73,7 +74,7 @@
 			const data = await useCustomFetch<DBKara>(`/api/karas/${route.params.id}`);
 			kara.value = data;
 		} catch (e) {
-			throw createError({ statusCode: 404, message: useNuxtApp().i18n.t('kara.notfound') as string });
+			throw createError({ statusCode: 404, message: t('kara.notfound') as string });
 		}
 	}
 </script>
