@@ -77,29 +77,33 @@ const nuxtConfig = defineNuxtConfig({
 					]
 				}
 			},
-			pwa: {
-				manifest: {
-					name: 'Karaoke Mugen Explorer',
-					lang: 'fr',
-					short_name: 'KMExplorer',
-					description: 'Explorez la base de données de karaokés!',
-					background_color: '#36393f',
-					theme_color: '#375a7f',
-					display: 'standalone'
-				},
-				workbox: {
-					enabled: production,
-					runtimeCaching: [
-						{
-							urlPattern: '/previews/.*',
-							handler: 'cacheFirst'
-						}
-					]
-				}
-			}
 		},
-	},
 
+	},
+	pwa: {
+		manifest: {
+			name: 'Karaoke Mugen Explorer',
+			lang: 'fr',
+			short_name: 'KMExplorer',
+			description: 'Explorez la base de données de karaokés!',
+			background_color: '#36393f',
+			theme_color: '#375a7f',
+			display: 'standalone'
+		},				
+		icon: {
+			maskablePadding: 0
+		},
+		workbox: {
+			enabled: production,
+			runtimeCaching: [
+				{
+					urlPattern: '/previews/.*',
+					handler: 'cacheFirst'
+				}
+			]
+		}
+	},
+	
 	build: {
 		transpile: [
 			'@fortawesome/fontawesome-svg-core',
