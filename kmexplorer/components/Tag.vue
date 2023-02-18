@@ -58,7 +58,7 @@
 			// Put i18n in tag directly
 			if (props.i18n) {
 				const tag = { ...props.tag };
-				tag.i18n = props.i18n;
+				tag.i18n = props.i18n[tag.tid];
 				payload.tag = tag;
 			}
 			addTag(payload);
