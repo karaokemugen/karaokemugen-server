@@ -56,13 +56,13 @@ export function initFrontend(listenPort: number) {
 		contentSecurityPolicy: {
 			directives: {
 				defaultSrc: ['\'self\'', 'data:'],
-				scriptSrc: ['\'self\'', '\'unsafe-inline\'', '\'unsafe-eval\'', 'https://cdn.jsdelivr.net/'],
+				scriptSrc: ['\'self\'', '\'unsafe-inline\'', '\'unsafe-eval\'', 'https://storage.googleapis.com/workbox-cdn/'],
 				styleSrc: ['\'self\'', '\'unsafe-inline\''],
 				connectSrc: ['\'self\'', 'https:', 'wss:', 'data:'],
 				mediaSrc: ['\'self\'', 'https:', 'data:', 'blob:'],
 				imgSrc: ['\'self\'', 'https:', 'data:', 'blob:'],
 				frameSrc: ['\'self\'', getConfig().KaraExplorer.LiveURL],
-				workerSrc: ['\'self\'', 'https://cdn.jsdelivr.net']
+				workerSrc: ['\'self\'', 'https://storage.googleapis.com/workbox-cdn/']
 			}
 		}
 	}) as express.Handler);
