@@ -12,7 +12,7 @@
 						v-if="karaokesJsonLink"
 						:href="jsonUrl"
 						class="button"
-						:download="`${serieSinger.name} - ${karaoke.titles[karaoke.titles_default_language]}.karabundle.json`"
+						:download="`${serieSinger.name} - ${karaoke.titles[karaoke?.titles_default_language??0]}.karabundle.json`"
 						@click="closeModal"
 					>
 						<font-awesome-icon
