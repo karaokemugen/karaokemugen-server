@@ -1,19 +1,21 @@
 <template>
 	<div class="tile is-ancestor is-vertical">
-		<div class="tile is-parent is-12">
+		<div
+			v-if="karaoke"
+			class="tile is-parent is-12"
+		>
 			<div
 				ref="leftTile"
 				class="tile is-child"
 				:class="{'is-8': !liveOpened, 'is-5': liveOpened}"
 			>
 				<kara-full-info
-					v-if="karaoke"
 					:karaoke="karaoke"
 				/>
 			</div>
 			<div class="tile is-4-desktop-only is-parent is-vertical">
 				<div
-					v-if="liveURL && live && karaoke"
+					v-if="liveURL && live"
 					class="tile is-child"
 				>
 					<live-player
@@ -29,7 +31,7 @@
 				>
 					<div class="box">
 						<img
-							:src="`${apiUrl}/previews/${karaoke?.kid}.${karaoke?.mediasize}.25.jpg`"
+							:src="`${apiUrl}previews/${karaoke?.kid}.${karaoke?.mediasize}.25.jpg`"
 							alt=""
 						>
 						<div class="message is-info">
@@ -47,11 +49,11 @@
 					<div class="box">
 						<div class="imgGroup">
 							<img
-								:src="`${apiUrl}/previews/${karaoke?.kid}.${karaoke?.mediasize}.33.jpg`"
+								:src="`${apiUrl}previews/${karaoke?.kid}.${karaoke?.mediasize}.33.jpg`"
 								alt=""
 							>
 							<img
-								:src="`${apiUrl}/previews/${karaoke?.kid}.${karaoke?.mediasize}.50.jpg`"
+								:src="`${apiUrl}previews/${karaoke?.kid}.${karaoke?.mediasize}.50.jpg`"
 								alt=""
 							>
 						</div>
@@ -59,7 +61,6 @@
 				</div>
 				<div class="tile is-child">
 					<kara-report
-						v-if="karaoke"
 						:karaoke="karaoke"
 					/>
 				</div>
@@ -150,13 +151,13 @@
 			{ hid: 'twitter:player:height', name: 'twitter:player:height', content: '720' },
 			{ hid: 'twitter:player:width', name: 'twitter:player:width', content: '1280' },
 			// @ts-ignore: No. :c
-			{ hid: 'og:image', property: 'og:image', content: `${apiUrl}/previews/${karaoke.value?.kid}.${karaoke.value?.mediasize}.25.jpg` },
+			{ hid: 'og:image', property: 'og:image', content: `${apiUrl}previews/${karaoke.value?.kid}.${karaoke.value?.mediasize}.25.jpg` },
 			// @ts-ignore: rah :O
-			{ hid: 'twitter:image', name: 'twitter:image', content: `${apiUrl}/previews/${karaoke.value?.kid}.${karaoke.value?.mediasize}.25.jpg` },
+			{ hid: 'twitter:image', name: 'twitter:image', content: `${apiUrl}previews/${karaoke.value?.kid}.${karaoke.value?.mediasize}.25.jpg` },
 			// hardsub compatibility for apps that use youtube-dl for direct streaming (without breaking the card view as with og:type video) 
 			// see https://github.com/ytdl-org/youtube-dl/blob/master/youtube_dl/extractor/generic.py#L3620
 			// @ts-ignore: No. :c
-			{ name: 'video_url', content: karaoke.value?.hardsubbed_mediafile ? `source=${apiUrl}/hardsubs/${karaoke.value?.hardsubbed_mediafile}` : '' }, 
+			{ name: 'video_url', content: karaoke.value?.hardsubbed_mediafile ? `source=${apiUrl}hardsubs/${karaoke.value?.hardsubbed_mediafile}` : '' }, 
 
 			// The rest of meta tags is handled by KaraFullInfo.vue
 		])

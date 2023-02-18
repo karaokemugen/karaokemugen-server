@@ -7,7 +7,7 @@
 		<div class="user-box">
 			<div class="header">
 				<img
-					:src="`${apiUrl}/banners/${user.banner}`"
+					:src="`${apiUrl}banners/${user.banner}`"
 					alt="User banner"
 					class="banner"
 				>

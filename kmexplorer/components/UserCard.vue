@@ -2,13 +2,13 @@
 	<div class="user-box">
 		<div class="user-header">
 			<img
-				:src="`${apiUrl}/banners/${user.banner}`"
+				:src="`${apiUrl}banners/${user.banner}`"
 				alt="User banner"
 				class="banner"
 			>
 			<div class="title-bar">
 				<img
-					:src="`${apiUrl}/avatars/${user.avatar_file}`"
+					:src="`${apiUrl}avatars/${user.avatar_file}`"
 					alt=""
 					class="profile"
 				>

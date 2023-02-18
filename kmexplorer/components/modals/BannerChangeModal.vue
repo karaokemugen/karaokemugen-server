@@ -12,7 +12,7 @@
 			<div class="image-chooser">
 				<img
 					class="pending-banner"
-					:src="`${apiUrl}/previews/${previews[img]}`"
+					:src="`${apiUrl}previews/${previews[img]}`"
 					:alt="`Banner #${img + 1}`"
 				>
 				<div class="space-buttons">

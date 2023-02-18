@@ -139,10 +139,10 @@
 	});
 	const images = computed((): string[] => {
 		return props.karaoke.mediafile.endsWith('.mp3')
-			? [`${apiUrl}/previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`]
+			? [`${apiUrl}previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`]
 			: [
-				`${apiUrl}/previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`,
-				`${apiUrl}/previews/${props.karaoke.kid}.${props.karaoke.mediasize}.33.jpg`,
+				`${apiUrl}previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`,
+				`${apiUrl}previews/${props.karaoke.kid}.${props.karaoke.mediasize}.33.jpg`,
 			];
 	});
 	const getSlug = computed((): string => {

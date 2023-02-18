@@ -22,7 +22,7 @@
 			@keydown="showPlayer"
 		>
 			<img
-				:src="`${apiUrl}/previews/${karaoke.kid}.${karaoke.mediasize}.25.jpg`"
+				:src="`${apiUrl}previews/${karaoke.kid}.${karaoke.mediasize}.25.jpg`"
 				alt="Thumbnail"
 			>
 			<font-awesome-layers>

@@ -31,7 +31,7 @@
 							v-if="editedUser.avatar_file"
 							alt="Profile Picture"
 							class="img"
-							:src="editedUser.avatar_file.startsWith('data:') ? editedUser.avatar_file : `${apiUrl}/avatars/${editedUser.avatar_file}`"
+							:src="editedUser.avatar_file.startsWith('data:') ? editedUser.avatar_file : `${apiUrl}avatars/${editedUser.avatar_file}`"
 						>
 						<div class="data">
 							<span class="login">{{ `${editedUser.login}@${instanceName}` }}</span>
@@ -415,7 +415,7 @@
 						</div>
 						<div class="field-body flex-column">
 							<img
-								:src="editedUser.banner?.startsWith('data:') ? editedUser.banner: `${apiUrl}/banners/${editedUser.banner}`"
+								:src="editedUser.banner?.startsWith('data:') ? editedUser.banner: `${apiUrl}banners/${editedUser.banner}`"
 								alt="User banner"
 								class="banner"
 							>
