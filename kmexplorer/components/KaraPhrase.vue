@@ -8,7 +8,7 @@
 				@click.prevent="handleLink(songtype)"
 			>
 				{{ songtype.name }}<template v-if="karaoke.songorder">
-					&nbsp;{{ karaoke.songorder }}
+					{{ " " + karaoke.songorder }}
 				</template>
 			</nuxt-link>
 			<span v-if="versions.length > 0">
