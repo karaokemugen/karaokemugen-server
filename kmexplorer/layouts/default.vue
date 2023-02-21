@@ -1141,4 +1141,9 @@
 	.launchDice {
 		margin: 0.75em;
 	}
+
+	aside {
+		max-width: 200px;
+		padding-right: 15px;
+	}
 </style>
