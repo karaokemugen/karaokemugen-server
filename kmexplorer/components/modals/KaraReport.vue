@@ -43,7 +43,10 @@
 				action="#"
 				@submit.prevent="submitProblem"
 			>
-				<div class="modal-background" />
+				<div
+					class="modal-background"
+					@click.prevent="() => toggleModal()"
+				/>
 				<div class="modal-card">
 					<header class="modal-card-head">
 						<h4 class="modal-card-title">
