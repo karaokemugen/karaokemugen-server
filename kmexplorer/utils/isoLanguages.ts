@@ -59,14 +59,16 @@ export const langWithRomanization = [
 ];
 
 export function getListLanguagesInLocale(userLang:string): Array<{ value: string, label: string }> {
-	const result = [];
 	if (process.client) {
-		const langs = Object.values(i18nIsoLanguages.getNames(userLang));
-		for (const langInLocale of langs) {
-			result.push({ value: i18nIsoLanguages.getAlpha3BCode(langInLocale, userLang) as string, label: langInLocale });
-		}
+		const langMap = i18nIsoLanguages.getAlpha3BCodes();
+		const langs = Object.keys(langMap).map((lang3BCode) => ({
+			value: lang3BCode,
+			label: i18nIsoLanguages.getName(lang3BCode, userLang) 
+				|| langMap[lang3BCode], // fallback to primary language
+		}));
+		return langs;
 	}
-	return result;
+	return [];
 }
 
 export function getLanguagesInLocaleFromCode(code: string, userLang:string) {
