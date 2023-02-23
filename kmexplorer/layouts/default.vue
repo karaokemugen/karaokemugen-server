@@ -252,14 +252,36 @@
 					</nuxt-link>
 					<nuxt-link
 						class="navbar-item"
-						to="/types/songtypes"
+						to="/types/series"
 						@click="closeMenu"
 					>
 						<font-awesome-icon
-							:icon="['fas', 'list']"
+							:icon="['fas', 'tv']"
 							:fixed-width="true"
 						/>
-						{{ $t('menu.songtypes') }}
+						{{ $t('menu.series') }}
+					</nuxt-link>
+					<nuxt-link
+						class="navbar-item"
+						to="/types/singers"
+						@click="closeMenu"
+					>
+						<font-awesome-icon
+							:icon="['fas', 'microphone-alt']"
+							:fixed-width="true"
+						/>
+						{{ $t('menu.singers') }}
+					</nuxt-link>
+					<nuxt-link
+						class="navbar-item"
+						to="/types/langs"
+						@click="closeMenu"
+					>
+						<font-awesome-icon
+							:icon="['fas', 'language']"
+							:fixed-width="true"
+						/>
+						{{ $t('menu.langs') }}
 					</nuxt-link>
 					<div class="navbar-item">
 						<nuxt-link
@@ -272,11 +294,65 @@
 							/>
 							{{ $t('menu.tags') }}
 						</nuxt-link>
-
 						<div
 							v-if="tagsOpen"
 							class="navbar-dropdown"
 						>
+							<nuxt-link
+								class="navbar-item"
+								to="/types/songtypes"
+								@click="closeMenu"
+							>
+								<font-awesome-icon
+									:icon="['fas', 'list']"
+									:fixed-width="true"
+								/>
+								{{ $t('menu.songtypes') }}
+							</nuxt-link>
+							<nuxt-link
+								class="navbar-item"
+								to="/types/songwriters"
+								@click="closeMenu"
+							>
+								<font-awesome-icon
+									:icon="['fas', 'signature']"
+									:fixed-width="true"
+								/>
+								{{ $t('menu.songwriters') }}
+							</nuxt-link>
+							<nuxt-link
+								class="navbar-item"
+								to="/types/creators"
+								@click="closeMenu"
+							>
+								<font-awesome-icon
+									:icon="['fas', 'chalkboard-teacher']"
+									:fixed-width="true"
+								/>
+								{{ $t('menu.creators') }}
+							</nuxt-link>
+							<nuxt-link
+								class="navbar-item"
+								to="/types/authors"
+								@click="closeMenu"
+							>
+								<font-awesome-icon
+									:icon="['fas', 'user-secret']"
+									:fixed-width="true"
+								/>
+								{{ $t('menu.authors') }}
+							</nuxt-link>
+							<nuxt-link
+								class="navbar-item"
+								to="/types/years"
+								@click="closeMenu"
+							>
+								<font-awesome-icon
+									:icon="['fas', 'calendar-alt']"
+									:fixed-width="true"
+								/>
+								{{ $t('menu.years') }}
+							</nuxt-link>
 							<nuxt-link
 								class="navbar-item"
 								to="/types/singergroups"
@@ -397,83 +473,6 @@
 							</nuxt-link>
 						</div>
 					</div>
-					<nuxt-link
-						class="navbar-item"
-						to="/types/singers"
-						@click="closeMenu"
-					>
-						<font-awesome-icon
-							:icon="['fas', 'microphone-alt']"
-							:fixed-width="true"
-						/>
-						{{ $t('menu.singers') }}
-					</nuxt-link>
-					<nuxt-link
-						class="navbar-item"
-						to="/types/series"
-						@click="closeMenu"
-					>
-						<font-awesome-icon
-							:icon="['fas', 'tv']"
-							:fixed-width="true"
-						/>
-						{{ $t('menu.series') }}
-					</nuxt-link>
-					<nuxt-link
-						class="navbar-item"
-						to="/types/songwriters"
-						@click="closeMenu"
-					>
-						<font-awesome-icon
-							:icon="['fas', 'signature']"
-							:fixed-width="true"
-						/>
-						{{ $t('menu.songwriters') }}
-					</nuxt-link>
-					<nuxt-link
-						class="navbar-item"
-						to="/types/creators"
-						@click="closeMenu"
-					>
-						<font-awesome-icon
-							:icon="['fas', 'chalkboard-teacher']"
-							:fixed-width="true"
-						/>
-						{{ $t('menu.creators') }}
-					</nuxt-link>
-					<nuxt-link
-						class="navbar-item"
-						to="/types/authors"
-						@click="closeMenu"
-					>
-						<font-awesome-icon
-							:icon="['fas', 'user-secret']"
-							:fixed-width="true"
-						/>
-						{{ $t('menu.authors') }}
-					</nuxt-link>
-					<nuxt-link
-						class="navbar-item"
-						to="/types/langs"
-						@click="closeMenu"
-					>
-						<font-awesome-icon
-							:icon="['fas', 'language']"
-							:fixed-width="true"
-						/>
-						{{ $t('menu.langs') }}
-					</nuxt-link>
-					<nuxt-link
-						class="navbar-item"
-						to="/types/years"
-						@click="closeMenu"
-					>
-						<font-awesome-icon
-							:icon="['fas', 'calendar-alt']"
-							:fixed-width="true"
-						/>
-						{{ $t('menu.years') }}
-					</nuxt-link>
 				</div>
 			</div>
 		</nav>
@@ -514,19 +513,6 @@
 					</li>
 					<li>
 						<nuxt-link
-							to="/types/songtypes"
-							active-class="is-active"
-							:class="{'is-active': tagType === '~3'}"
-						>
-							<font-awesome-icon
-								:icon="['fas', 'list']"
-								:fixed-width="true"
-							/>
-							{{ $t('menu.songtypes') }}
-						</nuxt-link>
-					</li>
-					<li>
-						<nuxt-link
 							to="/types/series"
 							active-class="is-active"
 							:class="{'is-active': tagType === '~1'}"
@@ -536,6 +522,32 @@
 								:fixed-width="true"
 							/>
 							{{ $t('menu.series') }}
+						</nuxt-link>
+					</li>
+					<li>
+						<nuxt-link
+							to="/types/singers"
+							active-class="is-active"
+							:class="{'is-active': tagType === '~2'}"
+						>
+							<font-awesome-icon
+								:icon="['fas', 'microphone-alt']"
+								:fixed-width="true"
+							/>
+							{{ $t('menu.singers') }}
+						</nuxt-link>
+					</li>
+					<li>
+						<nuxt-link
+							to="/types/langs"
+							active-class="is-active"
+							:class="{'is-active': tagType === '~5'}"
+						>
+							<font-awesome-icon
+								:icon="['fas', 'language']"
+								:fixed-width="true"
+							/>
+							{{ $t('menu.langs') }}
 						</nuxt-link>
 					</li>
 					<li>
@@ -553,6 +565,71 @@
 							v-if="tagsOpen"
 							class="menu-list"
 						>
+							<li>
+								<nuxt-link
+									to="/types/songtypes"
+									active-class="is-active"
+									:class="{'is-active': tagType === '~3'}"
+								>
+									<font-awesome-icon
+										:icon="['fas', 'list']"
+										:fixed-width="true"
+									/>
+									{{ $t('menu.songtypes') }}
+								</nuxt-link>
+							</li>				
+							<li>
+								<nuxt-link
+									to="/types/songwriters"
+									active-class="is-active"
+									:class="{'is-active': tagType === '~8'}"
+								>
+									<font-awesome-icon
+										:icon="['fas', 'signature']"
+										:fixed-width="true"
+									/>
+									{{ $t('menu.songwriters') }}
+								</nuxt-link>
+							</li>
+							<li>
+								<nuxt-link
+									to="/types/creators"
+									active-class="is-active"
+									:class="{'is-active': tagType === '~4'}"
+								>
+									<font-awesome-icon
+										:icon="['fas', 'chalkboard-teacher']"
+										:fixed-width="true"
+									/>
+									{{ $t('menu.creators') }}
+								</nuxt-link>
+							</li>
+							<li>
+								<nuxt-link
+									to="/types/authors"
+									active-class="is-active"
+									:class="{'is-active': tagType === '~6'}"
+								>
+									<font-awesome-icon
+										:icon="['fas', 'user-secret']"
+										:fixed-width="true"
+									/>
+									{{ $t('menu.authors') }}
+								</nuxt-link>
+							</li>
+							<li>
+								<nuxt-link
+									to="/types/years"
+									active-class="is-active"
+									:class="{'is-active': $route.params.year}"
+								>
+									<font-awesome-icon
+										:icon="['fas', 'calendar-alt']"
+										:fixed-width="true"
+									/>
+									{{ $t('menu.years') }}
+								</nuxt-link>
+							</li>
 							<li>
 								<nuxt-link
 									to="/types/singergroups"
@@ -684,84 +761,6 @@
 								</nuxt-link>
 							</li>
 						</ul>
-					</li>
-					<li>
-						<nuxt-link
-							to="/types/singers"
-							active-class="is-active"
-							:class="{'is-active': tagType === '~2'}"
-						>
-							<font-awesome-icon
-								:icon="['fas', 'microphone-alt']"
-								:fixed-width="true"
-							/>
-							{{ $t('menu.singers') }}
-						</nuxt-link>
-					</li>
-					<li>
-						<nuxt-link
-							to="/types/songwriters"
-							active-class="is-active"
-							:class="{'is-active': tagType === '~8'}"
-						>
-							<font-awesome-icon
-								:icon="['fas', 'signature']"
-								:fixed-width="true"
-							/>
-							{{ $t('menu.songwriters') }}
-						</nuxt-link>
-					</li>
-					<li>
-						<nuxt-link
-							to="/types/creators"
-							active-class="is-active"
-							:class="{'is-active': tagType === '~4'}"
-						>
-							<font-awesome-icon
-								:icon="['fas', 'chalkboard-teacher']"
-								:fixed-width="true"
-							/>
-							{{ $t('menu.creators') }}
-						</nuxt-link>
-					</li>
-					<li>
-						<nuxt-link
-							to="/types/authors"
-							active-class="is-active"
-							:class="{'is-active': tagType === '~6'}"
-						>
-							<font-awesome-icon
-								:icon="['fas', 'user-secret']"
-								:fixed-width="true"
-							/>
-							{{ $t('menu.authors') }}
-						</nuxt-link>
-					</li>
-					<li>
-						<nuxt-link
-							to="/types/langs"
-							active-class="is-active"
-							:class="{'is-active': tagType === '~5'}"
-						>
-							<font-awesome-icon
-								:icon="['fas', 'language']"
-								:fixed-width="true"
-							/>
-							{{ $t('menu.langs') }}
-						</nuxt-link>
-					</li>
-					<li>
-						<nuxt-link
-							to="/types/years"
-							active-class="is-active"
-							:class="{'is-active': $route.params.year}"
-						>
-							<font-awesome-icon
-								:icon="['fas', 'calendar-alt']"
-								:fixed-width="true"
-							/>
-							{{ $t('menu.years') }}
-						</nuxt-link>
 					</li>
 				</ul>
 				<p class="menu-label">
