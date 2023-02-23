@@ -60,19 +60,13 @@ export const langWithRomanization = [
 
 export function getListLanguagesInLocale(userLang:string): Array<{ value: string, label: string }> {
 	if (process.client) {
-		const langMap = i18nIsoLanguages.getAlpha3BCodes();
-		const langs = Object.keys(langMap).map((lang3BCode) => ({
-			value: lang3BCode,
-			label: i18nIsoLanguages.getName(lang3BCode, userLang) 
-				|| langMap[lang3BCode], // fallback to primary language
-		}));
-		return langs;
+		return getAlpha3BLanguagesLocalized(userLang).map(lang => ({label: lang.name, value: lang.alpha3B}));
 	}
 	return [];
 }
 
 export function getLanguagesInLocaleFromCode(code: string, userLang:string) {
-	return i18nIsoLanguages.getName(code, userLang) || '';
+	return getLanguageName(code, userLang) || '';
 }
 
 export function getNavigatorLanguageIn3B(): string {
@@ -83,19 +77,22 @@ export function getLocaleIn3B(userLang:string): string {
 	return i18nIsoLanguages.alpha2ToAlpha3B(userLang) || '';
 }
 
-export function listLangs(name: string, userLang:string): string[] {
-	const listLangs = [];
-	for (const [_key, value] of Object.entries(
-		i18nIsoLanguages.getNames(userLang)
-	)) {
-		listLangs.push(value);
-	}
-	return listLangs.filter(value =>
-		value.toLowerCase().includes(name.toLowerCase())
-	);
+export function listLangs(name: string, userLang: string): string[] {
+	return getAlpha3BLanguagesLocalized(userLang)
+		.map(lang => lang.name)
+		.filter(langName => langName.toLowerCase().includes(name.toLowerCase()));
 }
 export function get3BCode(language: string, userLang:string): string {
-	return i18nIsoLanguages.getAlpha3BCode(
-		language, userLang
-	) as string;
+	return i18nIsoLanguages.getAlpha3BCode(language, userLang) as string || 
+		i18nIsoLanguages.getAlpha3BCode(language, 'en') as string;
 }
+
+function getAlpha3BLanguagesLocalized(userLang: string): Array<{alpha3B: string, name: string}> {
+	const alpha3BMap = i18nIsoLanguages.getAlpha3BCodes();
+	return Object.keys(alpha3BMap).map(code => ({alpha3B: code,
+		name: getLanguageName(code, userLang) || alpha3BMap[code]
+	}))
+}
+
+const getLanguageName = (alpha2orAlpha3: string, lang: string) => i18nIsoLanguages.getName(alpha2orAlpha3, lang) || 
+	i18nIsoLanguages.getName(alpha2orAlpha3, 'en');
