@@ -130,7 +130,7 @@
 			setTags(tagExtends);
 		}
 		if (typeof route.query.collections === 'string') {
-			setEnabledCollections(route.query.collections.split(':'));
+			setEnabledCollections(decodeURIComponent(route.query.collections).split(':'));
 		}
 		// Load the first page
 		await resetList(true);
@@ -183,7 +183,7 @@
 		await loadNextPage(true);
 		if (route.name === 'search-query' && navigation && !props.favorites &&
 			(route.params.query !== (search.value || undefined) ||
-				route.query.collections !== enabledCollections.value.join(':') ||
+				decodeURIComponent(route.query.collections as string) !== enabledCollections.value.join(':') ||
 				route.query.q !== reqParams().q)) {
 			replace(generateNavigation());
 		}

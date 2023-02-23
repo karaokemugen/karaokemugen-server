@@ -159,7 +159,7 @@ export function generateNavigation() {
 	const { enabledCollections } = storeToRefs(useLocalStorageStore());
 	const navigation = {
 		path: `/search/${encodeURIComponent(search.value)}`,
-		query: { collections: enabledCollections.value?.join(':') } as { collections: string, q?: string }
+		query: { collections: encodeURIComponent(enabledCollections.value?.join(':')) } as { collections: string, q?: string }
 	};
 	const criterias: string[] = [];
 	const tagsUpdated: string[] = [];
