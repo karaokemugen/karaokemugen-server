@@ -12,7 +12,7 @@
 	replace(generateNavigation());
 
 	onMounted(() =>  {
-		if (process.server && params.query) {
+		if (params.query) {
 			setSearch(decodeURIComponent(params.query as string));
 		}
 	});
