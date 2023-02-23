@@ -3,8 +3,7 @@
 		"notfound": "Karaoke non trovata"
 	},
 	"menu": {
-		"discord": "Discord",
-		"discourse": "Discourse"
+		"discord": "Discord"
 	},
 	"error": {
 		"not_found_profile": "Impossibile trovare utente",
