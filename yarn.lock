@@ -1774,10 +1774,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@karaokemugen/i18n-iso-languages@npm:^4.0.2":
-  version: 4.0.2
-  resolution: "@karaokemugen/i18n-iso-languages@npm:4.0.2"
-  checksum: 9be8a16ce1f319b59beb56bca6477b36f033ca1e92ecd99e637781172cb30c2e08e728df85023f4f79d636196c70f2b0fadcc721a349df77f9d9b0bdc8628162
+"@karaokemugen/i18n-iso-languages@npm:^4.0.3":
+  version: 4.0.3
+  resolution: "@karaokemugen/i18n-iso-languages@npm:4.0.3"
+  checksum: 2436ea369e12cfbfcfc3b5186c4502ad1a813aa1ad746f60ac75304ae9a105711ce10830a872c4f0e9ec2179777e9c8dff44455b62ba1bc01b98c150b3d4510e
   languageName: node
   linkType: hard
 
@@ -10485,7 +10485,7 @@ fsevents@~2.3.1:
     "@fortawesome/free-solid-svg-icons": ^6.2.1
     "@fortawesome/vue-fontawesome": ^2.0.9
     "@hotosm/iso-countries-languages": ^1.1.2
-    "@karaokemugen/i18n-iso-languages": ^4.0.2
+    "@karaokemugen/i18n-iso-languages": ^4.0.3
     "@nuxt/types": ^2.15.8
     "@nuxt/typescript-build": ^2.1.0
     "@nuxtjs/auth": ^4.9.1
