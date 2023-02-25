@@ -132,7 +132,7 @@
 			"titles_aliases_tooltip": "Noms courts ou alternatifs, utilisés pour la recherche.",
 			"series_tooltip": "Série TV, nom de film, de jeu vidéo, etc.",
 			"franchises_tooltip": "Si la série fait partie d'une franchise (Gundam, Mario, Zelda, Naruto, etc.) indiquez-le ici.",
-			"series_singers_required": "Les champs Œuvre, Chanté par et Du groupe musical ne peuvent être vide en même temps.",
+			"series_singers_required": "Les champs Œuvre, Chanté par et Du groupe musical ne peuvent être vides en même temps.",
 			"songtypes_required": "Le type de chanson est obligatoire",
 			"collections_required": "Une collection au moins doit être cochée",
 			"songorder": "Numéro de chanson",
