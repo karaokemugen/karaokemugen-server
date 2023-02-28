@@ -7,10 +7,7 @@
 
 	const { setSearch } = useMenubarStore();
 	const { params } = useRoute();
-	const { replace } = useRouter();
-
-	replace(generateNavigation());
-
+	
 	onMounted(() =>  {
 		if (params.query) {
 			setSearch(decodeURIComponent(params.query as string));
