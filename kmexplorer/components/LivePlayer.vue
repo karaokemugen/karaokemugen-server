@@ -94,7 +94,7 @@
 		}
 	});
 
-	watch(() => hover, (now) => {
+	watch(hover, (now) => {
 		if (now && show.value && !window.matchMedia('(hover: none)').matches) {
 			// Lock the vertical scroll to let user set volume in Live
 			scrollY.value = window.scrollY;
