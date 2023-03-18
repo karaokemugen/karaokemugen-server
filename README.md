@@ -16,7 +16,7 @@ Features :
 
 Make sure node and yarn are up to date
 
-- node 14 or later
+- node 18 or later
 - yarn 3 or later
 - PostgreSQL 12 or later
 

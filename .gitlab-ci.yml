@@ -75,7 +75,7 @@ secret_detection:
 
 update_sentry:
   stage: deploy
-  image: node:14
+  image: node:18
   tags: 
     - $RUNNER_LINUX
   cache:
