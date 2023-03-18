@@ -1,9 +1,10 @@
+import { resolve } from 'node:path';
+
 import compression from 'compression';
 import express from 'express';
 import range from 'express-range';
 import helmet from 'helmet';
-import {createServer} from 'http';
-import {resolve} from 'node:path';
+import { createServer } from 'http';
 import vhost from 'vhost';
 
 import adminController from './controllers/http/admin';
@@ -55,13 +56,13 @@ export function initFrontend(listenPort: number) {
 		contentSecurityPolicy: {
 			directives: {
 				defaultSrc: ['\'self\'', 'data:'],
-				scriptSrc: ['\'self\'', '\'unsafe-inline\'', '\'unsafe-eval\'', 'https://cdn.jsdelivr.net/'],
+				scriptSrc: ['\'self\'', '\'unsafe-inline\'', '\'unsafe-eval\'', 'https://storage.googleapis.com/workbox-cdn/'],
 				styleSrc: ['\'self\'', '\'unsafe-inline\''],
 				connectSrc: ['\'self\'', 'https:', 'wss:', 'data:'],
 				mediaSrc: ['\'self\'', 'https:', 'data:', 'blob:'],
 				imgSrc: ['\'self\'', 'https:', 'data:', 'blob:'],
 				frameSrc: ['\'self\'', getConfig().KaraExplorer.LiveURL],
-				workerSrc: ['\'self\'', 'https://cdn.jsdelivr.net']
+				workerSrc: ['\'self\'', 'https://storage.googleapis.com/workbox-cdn/']
 			}
 		}
 	}) as express.Handler);
@@ -106,9 +107,7 @@ export function initFrontend(listenPort: number) {
 	if (conf.KaraExplorer.Enabled) {
 		app.use('/previews', express.static(resolvedPath('Previews')));
 
-		startKMExplorer().then(nuxt => {
-			app.use(nuxt.render);
-		});
+		startKMExplorer(app);
 	}
 
 	const port = listenPort;

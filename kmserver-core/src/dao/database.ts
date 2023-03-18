@@ -4,6 +4,7 @@ import { connectDB } from '../lib/dao/database';
 import {getConfig} from '../lib/utils/config';
 import { refreshKaraStats } from './kara';
 import { upsertInstance } from './stats';
+import { deleteInactiveUsers } from './user';
 
 export async function initDB(log: boolean) {
 	await connectDB(() => {}, {superuser: false, db: getConfig().System.Database.database, log});
@@ -15,4 +16,5 @@ export async function initDB(log: boolean) {
 	});
 	// Execute this every day at midnight.
 	scheduleJob('0 0 0 * * *', refreshKaraStats);
+	scheduleJob('0 0 0 * * *', deleteInactiveUsers);
 }

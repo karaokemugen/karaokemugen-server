@@ -3,29 +3,55 @@
 		<h1 class="title is-1">
 			{{ title }}
 		</h1>
-		<kara-phrase tag="h4" class="subtitle is-4" :karaoke="karaoke" />
+		<kara-phrase
+			tag="h4"
+			class="subtitle is-4"
+			:karaoke="karaoke"
+		/>
 		<h6 class="subtitle is-6 no-top-margin">
-			<a :href="`/years/${karaoke.year}`" @click.prevent="handleLink">
+			<nuxt-link
+				:href="`/types/years/${karaoke.year}`"
+				@click.prevent="handleLink"
+			>
 				{{ karaoke.year }}
-			</a>
+			</nuxt-link>
 		</h6>
 		<div class="buttons margin">
-			<button v-if="favorite" class="button is-yellow" :class="{'is-loading': loading}" @click="toggleFavorite">
-				<font-awesome-icon :icon="['fas', 'eraser']" :fixed-width="true" />
+			<button
+				v-if="favorite"
+				class="button is-yellow"
+				:class="{'is-loading': loading}"
+				@click="toggleFavorite"
+			>
+				<font-awesome-icon
+					:icon="['fas', 'eraser']"
+					:fixed-width="true"
+				/>
 				{{ $t('kara.favorites.remove') }}
 			</button>
-			<button v-else class="button is-yellow" :class="{'is-loading': loading}" @click="toggleFavorite">
-				<font-awesome-icon :icon="['fas', 'star']" :fixed-width="true" />
+			<button
+				v-else
+				class="button is-yellow"
+				:class="{'is-loading': loading}"
+				@click="toggleFavorite"
+			>
+				<font-awesome-icon
+					:icon="['fas', 'star']"
+					:fixed-width="true"
+				/>
 				{{ $t('kara.favorites.add') }}
 			</button>
 			<button
 				v-if="loggedIn"
 				class="button is-purple is-long"
 				:disabled="bannerBan"
-				:title="bannerBan ? $t('kara.set_banner.forbidden_label'):null"
-				@click.prevent="modal.banner=true"
+				:title="bannerBan ? $t('kara.set_banner.forbidden_label') : undefined"
+				@click.prevent="() => openModal('banner')"
 			>
-				<font-awesome-icon :icon="['fas', 'image']" :fixed-width="true" />
+				<font-awesome-icon
+					:icon="['fas', 'image']"
+					:fixed-width="true"
+				/>
 				{{ $t('kara.set_banner.btn') }}
 			</button>
 		</div>
@@ -33,241 +59,253 @@
 			<tbody>
 				<tr class="tr-line">
 					<td>
-						<font-awesome-icon :icon="['fas', 'clock']" :fixed-width="true" />
-						{{ duration }}
+						<font-awesome-icon
+							:icon="['fas', 'clock']"
+							:fixed-width="true"
+						/>
+						{{ durationString }}
 					</td>
 					<td>
 						{{ $t('kara.created_at') }}:&nbsp;{{ new Date(karaoke.created_at).toLocaleString() }}
 					</td>
 				</tr>
-				<tr v-for="type in Object.keys(tagTypesSorted)" :key="type">
+				<tr
+					v-for="type in Object.keys(tagTypesSorted)"
+					:key="type"
+				>
 					<td>
 						<span class="name">
-							<font-awesome-icon :icon="['fas', tagTypes[type].icon]" :fixed-width="true" />
+							<font-awesome-icon
+								:icon="['fas', tagTypes[type].icon]"
+								:fixed-width="true"
+							/>
 							{{ ['singers', 'songwriters', 'creators', 'authors'].includes(type) ?
 								$t(`kara.${type}_by`) :
-								$tc(`kara.tagtypes.${type}`, karaoke[type].length)
+								$t(`kara.tagtypes.${type}`, (karaoke as any)[type].length)
 							}}
 						</span>
 					</td>
 					<td>
 						<div class="tags are-medium">
-							<tag v-for="tag in karaoke[type]" :key="tag.tid" :type="type" :tag="tag" :staticheight="false" />
+							<tag
+								v-for="tag in (karaoke as any)[type]"
+								:key="tag.tid"
+								:type="type"
+								:tag="tag"
+								:staticheight="false"
+							/>
 						</div>
 					</td>
 				</tr>
 			</tbody>
 		</table>
 		<div class="buttons">
-			<button class="button is-info" @click="toggleLyrics">
-				<font-awesome-icon :icon="['fas', 'closed-captioning']" :fixed-width="true" />
+			<button
+				class="button is-info"
+				@click="toggleLyrics"
+			>
+				<font-awesome-icon
+					:icon="['fas', 'closed-captioning']"
+					:fixed-width="true"
+				/>
 				{{ lyrics ? $t('kara.lyrics.hide'):$t('kara.lyrics.show') }}
 			</button>
-			<a class="button is-success" @click.prevent="modal.download = true">
-				<font-awesome-icon :icon="['fas', 'cloud-download-alt']" :fixed-width="true" />
+			<nuxt-link
+				class="button is-success"
+				@click.prevent="openModal('download')"
+			>
+				<font-awesome-icon
+					:icon="['fas', 'cloud-download-alt']"
+					:fixed-width="true"
+				/>
 				{{ $t('kara.download') }}
-			</a>
+			</nuxt-link>
 		</div>
-		<div v-show="lyrics" class="box is-clear">
+		<div
+			v-show="lyrics"
+			class="box is-clear"
+		>
 			<ul>
-				<li v-for="(line, i) in karaoke.lyrics" :key="`lyrics-${i}`">
+				<li
+					v-for="(line, i) in karaoke.lyrics"
+					:key="`lyrics-${i}`"
+				>
 					{{ line.text }}
 				</li>
 			</ul>
 		</div>
-		<DownloadModal :karaoke="karaoke" :active="modal.download" @close="modal.download=false" />
-		<BannerChangeModal :karaoke="karaoke" :active="modal.banner" @close="modal.banner=false" />
+		<DownloadModal
+			:karaoke="karaoke"
+			:active="download"
+			@close="() => closeModal('download')"
+		/>
+		<BannerChangeModal
+			:karaoke="karaoke"
+			:active="banner"
+			@close="() => closeModal('banner')"
+		/>
 	</div>
 </template>
 
-<script lang="ts">
-	import Vue, { PropOptions } from 'vue';
+<script setup lang='ts'>
 	import slug from 'slug';
-	import { mapState } from 'vuex';
-	import { fakeYearTag, generateNavigation, getTagInLocale, getTitleInLocale } from '~/utils/tools';
+	import { storeToRefs } from 'pinia';
 	import { tagTypes } from '~/assets/constants';
-	import Tag from '~/components/Tag.vue';
-	import KaraPhrase from '~/components/KaraPhrase.vue';
-	import { menuBarStore, modalStore } from '~/store';
 	import { DBKara } from '%/lib/types/database/kara';
 	import { ShortTag } from '~/types/tags';
 	import duration from '~/assets/date';
-	import DownloadModal from '~/components/modals/DownloadModal.vue';
-	import BannerChangeModal from '~/components/modals/BannerChangeModal.vue';
+	import { useMenubarStore } from '~/store/menubar';
+	import { useModalStore } from '~/store/modal';
+	import { useAuthStore } from '~/store/auth';
 
-	interface VState {
-		tagTypes: typeof tagTypes,
-		favorite: boolean,
-		lyrics: boolean,
-		loading: boolean,
-		modal: {
-			download: boolean,
-			banner: boolean
+	const props = defineProps<{
+		karaoke: DBKara
+	}>();
+
+	const favorite = ref(false);
+	const lyrics = ref(false);
+	const loading = ref(false);
+
+	const { t } = useI18n();
+	const { loggedIn } = storeToRefs(useAuthStore());
+	const { download, banner} = storeToRefs(useModalStore());
+	const { openModal, closeModal} = useModalStore();
+	const { search } = storeToRefs(useMenubarStore());
+	const { addTag } = useMenubarStore();
+	const { push } = useRouter();
+
+	const conf = useRuntimeConfig();
+	const bannerBanValue = conf.public.BANNER_BAN;
+
+	const title = computed(() => getTitleInLocale(props.karaoke.titles, props.karaoke.titles_default_language));
+	const tagTypesSorted = computed(() => {
+		const tagTypesUpdated = { ...tagTypes };
+		if (props.karaoke.songtypes.length === 1) {
+			delete tagTypesUpdated.songtypes; // Don't show songtypes on full view, as it's already shown in the title
 		}
-	}
-
-	export default Vue.extend({
-		name: 'KaraFullInfo',
-
-		components: {
-			Tag,
-			KaraPhrase,
-			DownloadModal,
-			BannerChangeModal
-		},
-
-		props: {
-			karaoke: {
-				type: Object,
-				required: true
-			} as PropOptions<DBKara>
-		},
-
-		data(): VState {
-			return {
-				tagTypes,
-				favorite: false,
-				lyrics: false,
-				loading: false,
-				modal: {
-					download: false,
-					banner: false
-				}
-			};
-		},
-
-		head() {
-			return {
-				meta: [
-					{
-						hid: 'twitter:title',
-						name: 'twitter:title',
-						content: this.$t('kara.meta', { // @ts-ignore: mais²
-							songtitle: this.karaoke.titles[this.karaoke.titles_default_language], serieSinger: this.serieSinger.name
-						}) as string
-					},
-					{
-						hid: 'description',
-						name: 'description',
-						content: this.$t('kara.meta', { // @ts-ignore: mais²
-							songtitle: this.karaoke.titles[this.karaoke.titles_default_language], serieSinger: this.serieSinger.name
-						}) as string
-					},
-					{
-						hid: 'og:title',
-						property: 'og:title',
-						content: this.$t('kara.meta', { // @ts-ignore: mais²
-							songtitle: this.karaoke.titles[this.karaoke.titles_default_language], serieSinger: this.serieSinger.name
-						}) as string
-					}
-				]
-			};
-		},
-
-		computed: {
-			title(): string {
-				return getTitleInLocale(this.karaoke.titles, this.$store.state.auth.user, this.karaoke.titles_default_language);
-			},
-			tagTypesSorted(): object {
-				const tagTypes = { ...this.tagTypes };
-				if (this.karaoke.songtypes.length === 1) {
-					delete tagTypes.songtypes; // Don't show songtypes on full view, as it's already shown in the title
-				}
-				delete tagTypes.years; // This is a decoy for fake years tag
-				// Remove unused tagTypes in context
-				for (const tagType in tagTypes) {
-					// @ts-ignore
-					if (this.karaoke[tagType].length === 0) {
-						delete tagTypes[tagType];
-					}
-				}
-				return tagTypes;
-			},
-			serieSinger(): ShortTag {
-				if (this.karaoke.series[0]) {
-					return {
-						name: getTagInLocale(this.karaoke.series[0], this.$store.state.auth.user),
-						slug: slug(this.karaoke.series[0].name),
-						type: 'series',
-						tag: this.karaoke.series[0]
-					};
-				} else if (this.karaoke.singergroups[0]) {
-					return {
-						name: getTagInLocale(this.karaoke.singergroups[0], this.$store.state.auth.user),
-						slug: slug(this.karaoke.singergroups[0].name),
-						type: 'singergroups',
-						tag: this.karaoke.singergroups[0]
-					}
-				} else if (this.karaoke.singers[0]) {
-					return {
-						name: getTagInLocale(this.karaoke.singers[0], this.$store.state.auth.user),
-						slug: slug(this.karaoke.singers[0].name),
-						type: 'singers',
-						tag: this.karaoke.singers[0]
-					};
-				} else { // You never know~
-					throw new TypeError('The karaoke does not have any series nor singers, wtf?');
-				}
-			},
-			bannerBan(): boolean {
-				let bannerBan = false;
-				for (const tagType in tagTypes) {
-					if (tagType === 'years') { continue; }
-					// @ts-ignore: il est 23h27 <- ceci n'est pas une raison
-					for (const tag of this.karaoke[tagType]) {
-						if (
-							(process.env.BANNER_BAN as unknown as string[]).includes(tag.tid)
-						) {
-							bannerBan = true;
-							break;
-						}
-					}
-				}
-				return bannerBan;
-			},
-			duration(): string {
-				const durationArray = duration(this.karaoke.duration);
-				const returnString = [];
-				if (durationArray[0] !== 0) { returnString.push(`${durationArray[0]} ${this.$t('duration.days')}`); }
-				if (durationArray[1] !== 0) { returnString.push(`${durationArray[1]} ${this.$t('duration.hours')}`); }
-				if (durationArray[2] !== 0) { returnString.push(`${durationArray[2]} ${this.$t('duration.minutes')}`); }
-				if (durationArray[3] !== 0) { returnString.push(`${durationArray[3]} ${this.$t('duration.seconds')}`); }
-				return returnString.join(' ');
-			},
-			...mapState('auth', ['loggedIn'])
-		},
-
-		created() {
-			if (this.karaoke?.flag_favorites) { this.favorite = true; }
-		},
-
-		methods: {
-			async toggleFavorite() {
-				if (this.$auth.loggedIn) {
-					this.loading = true;
-					if (this.favorite) {
-						await this.$axios.delete(`/api/favorites/${this.karaoke.kid}`);
-					} else {
-						await this.$axios.post(`/api/favorites/${this.karaoke.kid}`);
-					}
-					this.favorite = !this.favorite;
-					this.loading = false;
-				} else {
-					modalStore.openModal('auth');
-				}
-			},
-			toggleLyrics() {
-				this.lyrics = !this.lyrics;
-			},
-			handleLink() {
-				menuBarStore.addTag({
-					tag: fakeYearTag(this.karaoke.year.toString()),
-					type: 'years'
-				});
-				this.$router.push(generateNavigation(menuBarStore));
+		delete tagTypesUpdated.years; // This is a decoy for fake years tag
+		// Remove unused tagTypes in context
+		for (const tagType in tagTypesUpdated) {
+			// @ts-ignore
+			if (props.karaoke[tagType].length === 0) {
+				delete tagTypesUpdated[tagType];
 			}
 		}
+		return tagTypesUpdated;
 	});
+	const serieSinger = computed<ShortTag>(() => {
+		if (props.karaoke.series[0]) {
+			return {
+				name: getTagInLocale(props.karaoke.series[0]),
+				slug: slug(props.karaoke.series[0].name),
+				type: 'series',
+				tag: props.karaoke.series[0]
+			};
+		} else if (props.karaoke.singergroups[0]) {
+			return {
+				name: getTagInLocale(props.karaoke.singergroups[0]),
+				slug: slug(props.karaoke.singergroups[0].name),
+				type: 'singergroups',
+				tag: props.karaoke.singergroups[0]
+			};
+		} else if (props.karaoke.singers[0]) {
+			return {
+				name: getTagInLocale(props.karaoke.singers[0]),
+				slug: slug(props.karaoke.singers[0].name),
+				type: 'singers',
+				tag: props.karaoke.singers[0]
+			};
+		} else { // You never know~
+			throw new TypeError('The karaoke does not have any series nor singers, wtf?');
+		}
+	});
+	const bannerBan = computed(() => {
+		let bannerBan = false;
+		for (const tagType in tagTypes) {
+			if (tagType === 'years') { continue; }
+			// @ts-ignore: il est 23h27 <- ceci n'est pas une raison
+			for (const tag of props.karaoke[tagType]) {
+				if (
+					bannerBanValue.includes(tag.tid)
+				) {
+					bannerBan = true;
+					break;
+				}
+			}
+		}
+		return bannerBan;
+	});
+	const durationString = computed(() => {
+		const durationArray = duration(props.karaoke.duration);
+		const returnString = [];
+		if (durationArray[0] !== 0) { returnString.push(`${durationArray[0]} ${t('duration.days')}`); }
+		if (durationArray[1] !== 0) { returnString.push(`${durationArray[1]} ${t('duration.hours')}`); }
+		if (durationArray[2] !== 0) { returnString.push(`${durationArray[2]} ${t('duration.minutes')}`); }
+		if (durationArray[3] !== 0) { returnString.push(`${durationArray[3]} ${t('duration.seconds')}`); }
+		return returnString.join(' ');
+	});
+
+
+	onMounted(() => {
+		if (props.karaoke?.flag_favorites) { favorite.value = true; }
+	});
+
+	watch(search, () => push('/search'));
+
+	useHead({
+		meta: [
+			{
+				hid: 'twitter:title',
+				name: 'twitter:title',
+				content: t('kara.meta', {
+					songtitle: props.karaoke.titles_default_language && props.karaoke.titles[props.karaoke.titles_default_language], serieSinger: serieSinger.value.name
+				})
+			},
+			{
+				hid: 'description',
+				name: 'description',
+				content: t('kara.meta', {
+					songtitle: props.karaoke.titles_default_language && props.karaoke.titles[props.karaoke.titles_default_language], serieSinger: serieSinger.value.name
+				})
+			},
+			{
+				hid: 'og:title',
+				property: 'og:title',
+				content: t('kara.meta', {
+					songtitle: props.karaoke.titles_default_language && props.karaoke.titles[props.karaoke.titles_default_language], serieSinger: serieSinger.value.name
+				})
+			}
+		]
+	});
+
+	async function toggleFavorite() {
+		if (loggedIn.value) {
+			loading.value = true;
+			if (favorite.value) {
+				await useCustomFetch(`/api/favorites/${props.karaoke.kid}`, {
+					method: 'DELETE'
+				});
+			} else {
+				await useCustomFetch(`/api/favorites/${props.karaoke.kid}`, {
+					method: 'POST'
+				});
+			}
+			favorite.value = !favorite.value;
+			loading.value = false;
+		} else {
+			openModal('auth');
+		}
+	}
+	function toggleLyrics() {
+		lyrics.value = !lyrics.value;
+	}
+	function handleLink() {
+		addTag({
+			tag: fakeYearTag(props.karaoke.year.toString()),
+			type: 'years'
+		});
+		push(generateNavigation());
+	}
 </script>
 
 <style scoped lang="scss">

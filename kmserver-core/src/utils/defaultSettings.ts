@@ -1,7 +1,4 @@
-import { NuxtConfig as NuxtConfigType } from '@nuxt/types';
-
 import { Config } from '../types/config';
-import { sentryDSN } from './constants';
 
 // Karaoke Mugen default configuration file
 
@@ -44,10 +41,6 @@ export const defaults: Config = {
 		},
 		DefaultCollections: ['c7db86a0-ff64-4044-9be4-66dd1ef1d1c1', 'dbcf2c22-524d-4708-99bb-601703633927']
 	},
-	BaseLicense: {
-		Name: null,
-		Link: null
-	},
 	Remote: {
 		Enabled: true,
 		BaseHost: 'localhost',
@@ -79,12 +72,10 @@ export const defaults: Config = {
 		Host: 'localhost',
 		Tagline: 'Explore! Find! Sing!',
 		LiveURL: 'https://live.karaokes.moe',
-		DiscordURL: null,
-		DiscourseURL: null,
 		MediaLinks: true,
 		Import: true,
 		Secure: true,
-		InProgressSongsList: null
+		AddRepoModalInMenu: false
 	},
 	Gitlab: {
 		IssueTemplate: {
@@ -283,202 +274,4 @@ export const configConstraints = {
 	'System.Database.database': { presence: {allowEmpty: false}},
 	'System.Binaries.ffmpeg': { presence: {allowEmpty: false}},
 	'Frontend.Port': { numericality: true}
-};
-
-export const NuxtConfig: NuxtConfigType = {
-	target: 'server',
-	modern: 'server',
-	dev: false,
-
-	env: {
-		LIVE_URL: 'false',
-		KM_IMPORT: 'false',
-		SUGGESTIONS: 'false',
-		IN_PROGRESS_SONGS_LIST: '',
-		BASE_LICENSE_NAME: '',
-		BASE_LICENSE_LINK: '',
-		SUPPORTED_LYRICS: 'ass',
-		SUPPORTED_MEDIAS: 'mp4',
-		API_HOST: '',
-		EXPLORER_HOST: '',
-		DISCORD_LINK: '',
-		DISCOURSE_LINK: '',
-		KARAOKES_JSON_LINK: ''
-	},
-	/*
-	 ** Nuxt.js dev-modules
-	 */
-	buildModules: [
-		'@nuxt/typescript-build'
-	],
-
-	modules: [
-		// Doc: https://axios.nuxtjs.org/usage
-		'@nuxtjs/axios',
-		// Doc: https://nuxt-community.github.io/nuxt-i18n
-		'nuxt-i18n',
-		// Doc: https://buefy.org/documentation/start
-		['nuxt-buefy', { css: false, materialDesignIcons: false }],
-		// Doc: https://auth.nuxtjs.org/
-		'@nuxtjs/auth',
-		// Doc: https://github.com/nuxt-community/modules/tree/master/packages/toast
-		'@nuxtjs/toast',
-		// Doc: https://github.com/nuxt-community/sentry-module
-		'@nuxtjs/sentry',
-		// Doc: https://pwa.nuxtjs.org/
-		'@nuxtjs/pwa'
-	],
-
-	plugins: [
-		'~/plugins/icons.js',
-		{src: '~/plugins/axios.js', mode: 'client'},
-		{src: '~/plugins/collections_memories.js', mode: 'client'}
-	],
-
-	head: {
-		htmlAttrs: {
-			class: ['has-navbar-fixed-top']
-		},
-		titleTemplate: (titleChunk) => {
-			// If undefined or blank then we don't need the hyphen
-			return titleChunk ? `${titleChunk} - Karaoke Mugen` : 'Karaoke Mugen';
-		},
-		meta: [
-
-		]
-	},
-
-	axios: {
-		baseURL: 'http://localhost:1350',
-		https: false
-	},
-
-	auth: {
-		strategies: {
-			local: {
-				endpoints: {
-					login: { url: '/api/auth/login', method: 'post', propertyName: 'token' },
-					user: { url: '/api/myaccount', method: 'get', propertyName: false },
-					logout: false
-			},
-				tokenType: false
-			}
-		},
-		redirect: {
-			login: '/#login',
-			home: false
-		}
-	},
-
-	toast: {
-		position: 'top-center',
-		duration: '2500'
-	},
-
-	css: [
-		'~/assets/main.scss'
-	],
-
-	i18n: {
-		vueI18n: {
-			fallbackLocale: 'en',
-			silentFallbackWarn: true
-		},
-		locales: [
-			{
-				code: 'en',
-				name: 'English',
-				iso: 'en',
-				file: 'en.json'
-			},
-			{
-				code: 'fr',
-				name: 'Français',
-				iso: 'fr',
-				file: 'fr.json'
-			},
-			{
-				code: 'id',
-				name: 'bahasa Indonesia',
-				iso: 'id',
-				file: 'id.json'
-			},
-			{
-				code: 'pt',
-				name: 'Português',
-				iso: 'pt',
-				file: 'pt.json'
-			},
-			{
-				code: 'de',
-				name: 'Deutsch',
-				iso: 'de',
-				file: 'de.json'
-			}
-		],
-		baseUrl: 'http://localhost:1350/',
-		seo: false,
-		lazy: true,
-		defaultLocale: 'en',
-		fallbackLocale: 'en',
-		strategy: 'no_prefix',
-		detectBrowserLanguage: {
-			useCookie: true,
-			cookieKey: 'i18n_redirected'
-		},
-		langDir: 'lang/',
-		vuex: false
-	},
-
-	sentry: {
-		dsn: sentryDSN,
-		disabled: false,
-		publishRelease: false,
-		tracing: {
-			tracesSampleRate: 0.5,
-			vueOptions: {
-			  tracing: true,
-			  tracingOptions: {
-				hooks: ['mount', 'update'],
-				timeout: 2000,
-				trackComponents: true
-			  }
-			},
-			browserOptions: {}
-		},
-		config: {
-			ignoreErrors: [
-				'Request aborted',
-				'Network Error',
-				'document.querySelector(\'video\').webkitPresentationMode',
-				'Request failed with status code 403',
-				'Request failed with status code 401',
-			]
-		}
-	},
-
-	pwa: {
-		manifest: {
-			name: 'Karaoke Mugen Explorer',
-			lang: 'fr',
-			short_name: 'KMExplorer',
-			description: 'Explorez la base de données de karaokés!',
-			background_color: '#36393f',
-			theme_color: '#375a7f',
-			display: 'standalone'
-		},
-		workbox: {
-			runtimeCaching: [
-				{
-					urlPattern: '/previews/.*',
-					handler: 'cacheFirst'
-				}
-			]
-		}
-	},
-
-	modulesDir: ['../node_modules/'],
-	rootDir: '../kmexplorer/',
-	// No.
-	telemetry: false
 };

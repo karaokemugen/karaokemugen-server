@@ -1,9 +1,17 @@
 <template>
 	<div class="user-box">
 		<div class="user-header">
-			<img :src="`/banners/${user.banner}`" alt="User banner" class="banner">
+			<img
+				:src="`${apiUrl}banners/${user.banner}`"
+				alt="User banner"
+				class="banner"
+			>
 			<div class="title-bar">
-				<img :src="`/avatars/${user.avatar_file}`" alt="" class="profile">
+				<img
+					:src="`${apiUrl}avatars/${user.avatar_file}`"
+					alt=""
+					class="profile"
+				>
 				<div class="name-stats">
 					<nuxt-link :to="`/user/${user.login}`">
 						{{
@@ -12,7 +20,7 @@
 						}}
 					</nuxt-link>
 					<div>
-						{{ $tc('profile.favorites_count', user.favorites_count, { x: user.favorites_count }) }}
+						{{ $t('profile.favorites_count', { x: user.favorites_count }) }}
 					</div>
 				</div>
 			</div>
@@ -21,27 +29,21 @@
 	</div>
 </template>
 
-<script lang="ts">
-	import Vue, { PropOptions } from 'vue';
+<script setup lang="ts">
+	import { storeToRefs } from 'pinia';
 	import { DBUser } from '%/lib/types/database/user';
+	import { useAuthStore } from '~/store/auth';
 
-	export default Vue.extend({
-		name: 'UserCard',
+	const props = defineProps<{
+		user: DBUser
+	}>();
 
-		props: {
-			user: {
-				type: Object,
-				required: true
-			} as PropOptions<DBUser>
-		},
+	const { loggedIn, user:userConnected } = storeToRefs(useAuthStore());
 
-		computed: {
-			viewingSelf() {
-				// @ts-ignore: just send help.
-				return this.$auth.loggedIn && (this.user.login === this.$auth.user.login);
-			}
-		}
-	});
+	const conf = useRuntimeConfig();
+	const apiUrl = conf.public.API_URL;
+
+	const viewingSelf = computed(() => loggedIn.value && props.user.login === userConnected?.value?.login);
 </script>
 
 <style scoped lang="scss">

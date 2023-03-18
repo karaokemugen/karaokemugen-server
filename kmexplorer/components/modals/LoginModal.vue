@@ -1,30 +1,53 @@
 <template>
-	<div class="modal" :class="{'is-active': active}">
-		<form action="#" @submit.prevent="submitForm">
-			<div class="modal-background" @click="closeModal" />
+	<div
+		class="modal"
+		:class="{'is-active': active}"
+	>
+		<form
+			action="#"
+			@submit.prevent="submitForm"
+		>
+			<div
+				class="modal-background"
+				@click="closeModal"
+			/>
 			<div class="modal-card">
 				<header>
 					<div class="modal-card-head">
-						<a
+						<nuxt-link
 							class="modal-card-title"
 							:class="{'is-active' : mode === 'login' }"
 							@click="mode='login'"
-						>{{ $t('modal.login.title') }}</a>
-						<a
+						>
+							{{ $t('modal.login.title') }}
+						</nuxt-link>
+						<nuxt-link
 							class="modal-card-title"
 							:class="{'is-active' : mode === 'signup' }"
 							@click="mode='signup'"
-						>{{ $t('modal.signup.title') }}</a>
-						<a class="delete" aria-label="close" @click="closeModal" />
+						>
+							{{ $t('modal.signup.title') }}
+						</nuxt-link>
+						<nuxt-link
+							class="delete"
+							aria-label="close"
+							@click="closeModal"
+						/>
 					</div>
 				</header>
-				<section v-if="mode === 'login'" class="modal-card-body">
+				<section
+					v-if="mode === 'login'"
+					class="modal-card-body"
+				>
 					<h5 class="title is-5">
 						{{ $t('modal.login.subtitle') }}
 					</h5>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
-							<label for="title" class="label">{{ $t('modal.login.fields.username.label') }}</label>
+							<label
+								for="title"
+								class="label"
+							>{{ $t('modal.login.fields.username.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field has-addons">
@@ -42,7 +65,7 @@
 								</div>
 								<div class="control is-expanded">
 									<div class="button is-static">
-										{{ `@${apiHost}` }}
+										{{ `@${instanceName}` }}
 									</div>
 								</div>
 							</div>
@@ -50,7 +73,10 @@
 					</div>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
-							<label for="password" class="label">{{ $t('modal.login.fields.password.label') }}</label>
+							<label
+								for="password"
+								class="label"
+							>{{ $t('modal.login.fields.password.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
@@ -80,19 +106,28 @@
 									type="button"
 									@click="callForgetPasswordApi"
 								>
-									<font-awesome-icon :icon="['fas', 'lock']" :fixed-width="true" />
+									<font-awesome-icon
+										:icon="['fas', 'lock']"
+										:fixed-width="true"
+									/>
 								</button>
 							</div>
 						</div>
 					</div>
 				</section>
-				<section v-if="mode === 'signup'" class="modal-card-body">
+				<section
+					v-if="mode === 'signup'"
+					class="modal-card-body"
+				>
 					<h5 class="title is-5">
 						{{ $t('modal.signup.subtitle') }}
 					</h5>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
-							<label for="title" class="label">{{ $t('modal.signup.fields.username.label') }}</label>
+							<label
+								for="title"
+								class="label"
+							>{{ $t('modal.signup.fields.username.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field has-addons">
@@ -110,7 +145,7 @@
 								</div>
 								<div class="control is-expanded">
 									<div class="button is-static">
-										{{ `@${apiHost}` }}
+										{{ `@${instanceName}` }}
 									</div>
 								</div>
 							</div>
@@ -118,7 +153,10 @@
 					</div>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
-							<label for="password" class="label">{{ $t('modal.signup.fields.password.label') }}</label>
+							<label
+								for="password"
+								class="label"
+							>{{ $t('modal.signup.fields.password.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
@@ -169,7 +207,10 @@
 					</div>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
-							<label for="title" class="label">{{ $t('modal.signup.fields.email.label') }}</label>
+							<label
+								for="title"
+								class="label"
+							>{{ $t('modal.signup.fields.email.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
@@ -193,7 +234,7 @@
 					<button
 						class="button is-success"
 						:class="{'is-loading': loading}"
-						:disabled="passwordNotEquals()"
+						:disabled="formIsDisabled()"
 						type="submit"
 					>
 						{{ $t(mode === 'login' ? 'modal.login.submit' : 'modal.signup.submit') }}
@@ -204,99 +245,108 @@
 	</div>
 </template>
 
-<script lang="ts">
-	import Vue from 'vue';
+<script setup lang="ts">
+	import * as Toast from 'vue-toastification';
+	import { TokenResponseWithRoles } from '~/../kmserver-core/src/lib/types/user';
+	import { useAuthStore } from '~/store/auth';
 
-	interface VState {
-		apiHost?: string,
-		login: {
-			username: string,
-			password: string,
-			password_confirmation?: string,
-			login?: string
-			language?: string
-		},
-		mode: 'login' | 'signup',
-		loading: boolean
+	// @ts-ignore
+	const useToast = Toast.useToast ?? Toast.default.useToast;
+
+	const props = defineProps<{
+		active: boolean
+	}>();
+
+	const mode = ref<'login' | 'signup'>('login');
+	const loading = ref(false);
+	const login = ref<{
+		username: string,
+		password: string,
+		password_confirmation: string,
+		login?: string
+		language?: string
+		email?: string
+	}>({
+		username: '',
+		password: '',
+		password_confirmation: ''
+	});
+
+	const emit = defineEmits<{(e: 'close'|'login'): void}>();
+
+	const { locale, t } = useI18n();
+	const conf = useRuntimeConfig();
+	const instanceName = conf.public.INSTANCE_NAME;
+	const loginApi = useAuthStore().login;
+
+	const toast = useToast();
+
+	watch(() => props.active, (now) => {
+		if(now) resetForm();
+	});
+
+	function passwordNotEquals() {
+		return (
+			mode.value === 'signup' &&
+			login.value.password_confirmation !== '' &&
+			login.value.password !== login.value.password_confirmation
+		);
 	}
 
-	export default Vue.extend({
-		name: 'LoginModal',
-
-		props: {
-			active: {
-				type: Boolean,
-				required: true
-			}
-		},
-
-		data(): VState {
-			return {
-				apiHost: process.env.API_HOST,
-				login: {
-					username: '',
-					password: ''
-				},
-				mode: 'login',
-				loading: false
-			};
-		},
-
-		watch: {
-			active(now) {
-				if (now) {
-					this.resetForm();
-				}
-			}
-		},
-
-		methods: {
-			passwordNotEquals() {
-				return (
-					this.mode === 'signup' &&
-					this.login.password_confirmation &&
-					this.login.password !== this.login.password_confirmation
-				);
-			},
-			async submitForm() {
-				this.loading = true;
-				if (this.mode === 'signup') {
-					const signup = { ...this.login };
-					signup.login = this.login.username;
-					signup.language = this.$i18n.locale;
-					await this.$axios.post('/api/users', signup).catch(() => {
-						this.loading = false;
-					});
-				}
-				this.$auth.loginWith('local', { data: this.login }).then((_res) => {
-					this.$emit('login');
-					this.closeModal();
-				}).finally(() => {
-					this.loading = false;
+	function formIsDisabled() {
+		return (
+			mode.value === 'signup' &&
+			(login.value.password_confirmation === '' ||
+				login.value.password !== login.value.password_confirmation)
+		);
+	}
+	async function submitForm() {
+		loading.value = true;
+		if (mode.value === 'signup') {
+			const signup = { ...login.value };
+			signup.login = login.value.username;
+			signup.language = locale.value;
+			await useCustomFetch('/api/users', {
+				method: 'POST',
+				body: signup
+			}).catch(() => {
+				loading.value = false;
+			});
+		}
+		await useCustomFetch<TokenResponseWithRoles>('/api/auth/login', {
+			method: 'POST',
+			body: login.value
+		}).then((result) => {
+			loginApi(result);
+			emit('login');
+			closeModal();
+		}).finally(() => {
+			loading.value = false;
+		});
+	}
+	async function callForgetPasswordApi () {
+		if (login.value) {
+			try {
+				await useCustomFetch(`/api/users/${login.value.username}/resetpassword`, {
+					method: 'POST'
 				});
-			},
-			async callForgetPasswordApi () {
-				if (this.login) {
-					try {
-						await this.$axios.post(`/api/users/${this.login.username}/resetpassword`);
-						this.$toast.success(this.$t('modal.login.fields.forgot_password.success') as string);
-					} catch (e) {
-						this.$toast.error(this.$t('modal.login.fields.forgot_password.error') as string, { icon: 'error' });
-					}
-				}
-			},
-			closeModal() {
-				this.$emit('close');
-			},
-			resetForm() {
-				this.login = {
-					username: '',
-					password: ''
-				};
-				this.mode = 'login';
+				toast.success(t('modal.login.fields.forgot_password.success'));
+			} catch (e) {
+				toast.error(t('modal.login.fields.forgot_password.error'), { icon: 'error' });
 			}
 		}
-	});
+	}
+	function closeModal() {
+		emit('close');
+	}
+	function resetForm() {
+		login.value = {
+			username: '',
+			password: '',
+			password_confirmation: ''
+		};
+		mode.value = 'login';
+	}
 </script>
 
 <style lang="scss" scoped>

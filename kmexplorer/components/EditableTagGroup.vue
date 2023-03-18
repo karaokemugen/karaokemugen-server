@@ -1,36 +1,61 @@
 <template>
 	<div>
-		<div v-if="checkboxes" class="tags">
-			<label v-for="tag in data" :key="tag.tid" class="checkbox">
-				<input v-model="values" type="checkbox" :value="tag" @change="check">
+		<div
+			v-if="checkboxes"
+			class="tags"
+		>
+			<label
+				v-for="tag in availableTags"
+				:key="tag.tid"
+				class="checkbox"
+			>
+				<input
+					v-model="values"
+					type="checkbox"
+					:value="tag"
+					@change="check"
+				>
 				{{ localizedName(tag) }}
 			</label>
 		</div>
 		<div v-if="!checkboxes">
 			<div class="tags">
-				<span v-for="tag in values" :key="tag.tid" class="tag">
+				<span
+					v-for="tag in values"
+					:key="tag.tid"
+					class="tag"
+				>
 					{{ localizedName(tag) }}
-					<a class="delete is-small" @click.prevent="() => deleteValue(tag)" />
+					<nuxt-link
+						class="delete is-small"
+						@click.prevent="() => deleteValue(tag)"
+					/>
 				</span>
-				<div class="button tag is-small" @click="inputVisible = true">
+				<div
+					class="button tag is-small"
+					@click="inputVisible = true"
+				>
 					<font-awesome-icon :icon="['fas', 'plus']" />
 					{{ $t('kara.import.add') }}
 				</div>
 			</div>
 			<div v-if="inputVisible">
-				<b-autocomplete
-					ref="input"
+				<o-autocomplete
+					ref="inputToFocus"
 					v-model="currentVal"
 					keep-first
 					open-on-focus
-					:data="data"
+					:data="availableTags"
 					:loading="isFetching"
 					:custom-formatter="localizedName"
 					:clear-on-select="true"
 					@typing="debouncedGetAsyncData"
 					@select="addValue"
 				>
-					<template v-if="!noCreate" #header>
+					<template
+						v-if="!noCreate"
+						#header
+					>
 						<button
 							class="button"
 							:class="{'is-loading': loading}"
@@ -41,169 +66,145 @@
 							<span>{{ $t('kara.import.create') }}</span>
 						</button>
 					</template>
-				</b-autocomplete>
+				</o-autocomplete>
 			</div>
 		</div>
 	</div>
 </template>
 
-<script lang="ts">
-	import Vue, { PropOptions } from 'vue';
-	import { debounce } from 'lodash';
-	import { alpha2ToAlpha3B } from '@karaokemugen/i18n-iso-languages';
+<script setup lang="ts">
+	import _ from 'lodash';
 	import { DBTag } from '%/lib/types/database/tag';
 	import { KaraTag } from '%/lib/types/kara';
 
-	interface VState {
-		data: DBTag[],
-		values: DBTag[],
-		inputVisible: boolean,
-		currentVal: string,
-		isFetching: boolean,
-		loading: boolean,
-		debouncedGetAsyncData?: Function
+	const props = withDefaults(defineProps<{
+		checkboxes?: boolean
+		tagType: number,
+		params: string[],
+		noCreate?: boolean
+	}>(), {
+		checkboxes: false,
+		noCreate: false
+	});
+
+	const emit = defineEmits<{(e: 'change', value: string[]): void}>();
+
+	const availableTags = ref<DBTag[]>([]);
+	const values = ref<DBTag[]>([]);
+	const inputVisible = ref(false);
+	const currentVal = ref('');
+	const isFetching = ref(false);
+	const loading = ref(false);
+	const debouncedGetAsyncData = ref();
+	const inputToFocus = ref<HTMLElement>();
+
+	const { locale } = useI18n();
+
+	watch([props, inputVisible], ([_newProps, newInputVisible]) => {
+		if (newInputVisible) {
+			nextTick(() => {
+				inputToFocus.value?.focus();
+			});
+		}
+		updateProps();
+	}, { deep: true });
+
+	onMounted(async () => {
+		debouncedGetAsyncData.value = _.debounce(getAsyncData, 500, { leading: true, trailing: true, maxWait: 750 });
+		updateProps();
+	});
+
+	async function updateProps() {
+		if (props.checkboxes) {
+			availableTags.value = await getTags(props.tagType);
+		}
+		if (props.params.length > 0) {
+			const tags: DBTag[] = [];
+			for (const tag of props.params) {
+				const tag2 = availableTags.value.find(val => val.tid === tag);
+				if (tag2) {
+					tags.push(tag2);
+				} else {
+					const data = await useCustomFetch<DBTag>(`/api/karas/tags/${tag}`);
+					if (!data) {
+						throw new TypeError(`Tag ${tag} unknown`);
+					}
+					tags.push(data);
+				}
+			}
+			values.value = tags;
+		}
 	}
 
-	export default Vue.extend({
-		name: 'EditableTagGroup',
-
-		props: {
-			checkboxes: {
-				type: Boolean
-			},
-			tagType: {
-				type: Number,
-				required: true
-			},
-			params: {
-				type: Array
-			} as PropOptions<string[]>,
-			noCreate: {
-				type: Boolean,
-				default: false
+	async function getTags(type: number, filter?: string): Promise<DBTag[]> {
+		const { content } = await useCustomFetch<{ content: DBTag[] }>('/api/karas/tags', {
+			query: {
+				type,
+				filter,
+				includeStaging: true
 			}
-		},
-
-		data(): VState {
-			return {
-				data: [],
-				values: [],
-				inputVisible: false,
-				currentVal: '',
-				isFetching: false,
-				loading: false
-			};
-		},
-
-		watch: {
-			params(now) {
-				// Process resets
-				if (now.length === 0) {
-					this.values = [];
-				}
-			},
-			inputVisible(now) {
-				if (now) {
-					this.$nextTick(() => {
-						(this.$refs.input as any).$refs.input.$refs.input.focus();
-					});
-				}
-			},
-			values(now, old) {
-				if (old.length !== 0 || now.length !== 0) {
-					this.$emit('change', now.map((t: DBTag) => t.tid));
-				}
-			}
-		},
-
-		async mounted() {
-			this.debouncedGetAsyncData = debounce(this.getAsyncData, 500, { leading: true, trailing: true, maxWait: 750 });
-			if (this.checkboxes) {
-				const result = await this.getTags(this.tagType);
-				this.data = result.content;
-			}
-			if (this.params.length > 0) {
-				const tags: DBTag[] = [];
-				for (const tag of this.params) {
-					const tag2 = this.data.find(val => val.tid === tag);
-					if (tag2) {
-						tags.push(tag2);
-					} else {
-						const tagInfo = await this.$axios.$get(`/api/karas/tags/${tag}`);
-						if (!tagInfo) {
-							throw new TypeError(`Tag ${tag} unknown`);
-						}
-						tags.push(tagInfo);
-					}
-				}
-				this.values = tags;
-			}
-		},
-
-		methods: {
-			async getTags(type: number, filter?: string) {
-				return await this.$axios.$get('/api/karas/tags', {
-					params: {
-						type,
-						filter,
-						includeStaging: true
-					}
-				});
-			},
-			getAsyncData(val: string) {
-				this.isFetching = true;
-				this.getTags(this.tagType, val)
-					.then((result: {content: DBTag[]}) => {
-						const tids = this.values.map(tag => tag.tid);
-						this.data = result.content
-							? result.content.filter(tag => !tids.includes(tag.tid)).sort((a, b) =>
-								a.name.localeCompare(b.name)
-							)
-							: [];
-					})
-					.finally(() => {
-						this.isFetching = false;
-					});
-			},
-			localizedName(tag: DBTag) {
-				if (tag.i18n) {
-					return tag.i18n[alpha2ToAlpha3B(this.$i18n.locale) as string] || tag.i18n.eng || tag.name;
-				} else {
-					return tag.name;
-				}
-			},
-			addValue(option: DBTag) {
-				this.inputVisible = false;
-				this.currentVal = '';
-				if (option) {
-					const values: DBTag[] = this.values;
-					values.push(option);
-					this.values = values;
-				}
-			},
-			async newValue() {
-				if (this.currentVal) {
-					this.loading = true;
-					const res: { tag: DBTag } = await this.$axios.$post('/api/tags/createStaging', {
-						name: this.currentVal,
-						types: [this.tagType],
-						i18n: {
-							eng: this.currentVal
-						}
-					}).finally(() => {
-						this.loading = false;
-					});
-					this.addValue(res.tag);
-				}
-			},
-			deleteValue(option: KaraTag) {
-				this.values = this.values.filter(tag => tag.name !== option.name);
-			},
-			check() {
-				this.values = this.data.filter(tag => this.values.some(tag2 => tag.tid === tag2.tid));
-			}
+		});
+		return content;
+	}
+	function getAsyncData(val: string) {
+		isFetching.value = true;
+		getTags(props.tagType, val)
+			.then((content) => {
+				const tids = values.value.map(tag => tag.tid);
+				availableTags.value = content
+					? content.filter(tag => !tids.includes(tag.tid)).sort((a, b) =>
+						a.name.localeCompare(b.name)
+					)
+					: [];
+			})
+			.finally(() => {
+				isFetching.value = false;
+			});
+	}
+	function localizedName(tag: DBTag) {
+		
+		if (tag.i18n) {
+			return tag.i18n[getLocaleIn3B(locale.value)] || tag.i18n.eng || tag.name;
+		} else {
+			return tag.name;
 		}
-	});
+	}
+	function addValue(option: DBTag) {
+		inputVisible.value = false;
+		currentVal.value = '';
+		if (option) {
+			const valuesUpdated: DBTag[] = values.value;
+			valuesUpdated.push(option);
+			values.value = valuesUpdated;
+			emit('change', values.value.map((t: DBTag) => t.tid));
+		}
+	}
+	async function newValue() {
+		if (currentVal) {
+			loading.value = true;
+			const { tag } = await useCustomFetch<{ tag: DBTag }>('/api/tags/createStaging', {
+				method: 'POST',
+				body: {
+					name: currentVal.value,
+					types: [props.tagType],
+					i18n: {
+						eng: currentVal.value
+					}
+				}
+			}).finally(() => {
+				loading.value = false;
+			});
+			addValue(tag);
+		}
+	}
+	function deleteValue(option: KaraTag) {
+		values.value = values.value.filter((tag: DBTag) => tag.name !== option.name);
+		emit('change', values.value.map((t: DBTag) => t.tid));
+	}
+	function check() {
+		values.value = availableTags.value.filter((tag: DBTag) => values.value.some(tag2 => tag.tid === tag2.tid));
+		emit('change', values.value.map((t: DBTag) => t.tid));
+	}
 </script>
 
 <style scoped lang="scss">

@@ -20,7 +20,7 @@ export default function KIController(router: Router) {
 		} catch (err) {
 			const code = 'CANNOT_GENERATE_KARA';
 			errMessage(code, err);
-			res.status(err?.code || 500).json(APIMessage(err?.msg || code));
+			res.status((typeof err?.code === 'number' && err?.code) || 500).json(APIMessage(err?.msg || code));
 		}
 	});
 	router.put('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})', async (req: any, res: any) => {
@@ -30,7 +30,7 @@ export default function KIController(router: Router) {
 		} catch (err) {
 			const code = 'CANNOT_EDIT_KARA';
 			errMessage(code, err);
-			res.status(err?.code || 500).json(APIMessage(err?.msg || code));
+			res.status((typeof err?.code === 'number' && err?.code) || 500).json(APIMessage(err?.msg || code));
 		}
 	});
 	router.post('/karas/importMedia', upload.single('file'), async (req, res) => {

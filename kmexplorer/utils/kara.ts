@@ -1,5 +1,6 @@
 import { DBKara } from '%/lib/types/database/kara';
 import { KaraFileV4 } from '%/lib/types/kara';
+import { v4 as UUIDv4 } from 'uuid';
 
 const tagTypesKaraFileV4Order: (
 	'authors'|
@@ -45,8 +46,8 @@ export function determineVersion(titles: Record<string, string>, titles_default_
 	return mediaVersionArr?.length > 1 ? mediaVersionArr[mediaVersionArr.length - 1].replace(' Vers', '') : 'Default';
 }
 
-export function DBKaraToKaraFile(dbKara: DBKara): KaraFileV4 {
-	const mediaVersion = determineVersion(dbKara.titles, dbKara.titles_default_language);
+export function convertDBKaraToKaraFile(dbKara?: DBKara): KaraFileV4 {
+	const mediaVersion = determineVersion(dbKara?.titles, dbKara?.titles_default_language);
 	return {
 		header: {
 			version: 4,
@@ -55,13 +56,13 @@ export function DBKaraToKaraFile(dbKara: DBKara): KaraFileV4 {
 		medias: [
 			{
 				version: mediaVersion,
-				filename: dbKara.mediafile,
-				audiogain: dbKara.gain as number,
-				loudnorm: dbKara.loudnorm as string,
-				duration: dbKara.duration,
-				filesize: dbKara.mediasize,
+				filename: dbKara?.mediafile || '',
+				audiogain: dbKara?.gain as number,
+				loudnorm: dbKara?.loudnorm as string,
+				duration: dbKara?.duration || 0,
+				filesize: dbKara?.mediasize || 0,
 				default: true,
-				lyrics: dbKara.subfile
+				lyrics: dbKara?.subfile
 					? [
 						{
 							filename: dbKara.subfile,
@@ -73,28 +74,30 @@ export function DBKaraToKaraFile(dbKara: DBKara): KaraFileV4 {
 			}
 		],
 		data: {
-			comment: dbKara.comment,
-			created_at: new Date(dbKara.created_at).toISOString(),
-			ignoreHooks: dbKara.ignore_hooks,
-			kid: dbKara.kid,
-			modified_at: new Date(dbKara.modified_at).toISOString(),
-			parents: dbKara.parents,
-			repository: dbKara.repository,
-			songorder: dbKara.songorder,
+			comment: dbKara?.comment,
+			created_at: dbKara?.created_at ?
+				new Date(dbKara?.created_at).toISOString() :
+				new Date().toISOString(),
+			ignoreHooks: dbKara?.ignore_hooks || false,
+			kid: dbKara?.kid || UUIDv4(),
+			modified_at: new Date().toISOString(),
+			parents: dbKara?.parents,
+			repository: dbKara?.repository || '',
+			songorder: dbKara?.songorder,
 			tags: Object.fromEntries(
 				tagTypesKaraFileV4Order // Get tagtypes
 					.map((t) => {
 						// Find the good things
-						if (dbKara[t] instanceof Array && dbKara[t].length > 0) {
+						if (dbKara && dbKara[t] instanceof Array && dbKara[t].length > 0) {
 							return [t, dbKara[t].map(t2 => t2.tid)];
 						} else {
 							return [t, []];
 						}
 					})),
-			titles: dbKara.titles,
-			titles_default_language: dbKara.titles_default_language || 'eng',
-			titles_aliases: dbKara.titles_aliases,
-			year: dbKara.year
+			titles: dbKara?.titles || {},
+			titles_default_language: dbKara?.titles_default_language,
+			titles_aliases: dbKara?.titles_aliases || [],
+			year: dbKara?.year || new Date().getFullYear()
 		},
 		meta:{}
 	};

@@ -4,14 +4,28 @@
 			<div class="box">
 				<h4 class="title is-4 centered with-img">
 					<picture>
-						<source type="image/webp" :srcset="require('~/assets/nanami-surpris.webp')">
-						<source type="image/png" :srcset="require('~/assets/nanami-surpris.png')">
-						<img :src="require('~/assets/nanami-surpris.png')" alt="Surprised Nanami">
+						<source
+							type="image/webp"
+							src="~/assets/nanami-surpris.webp"
+						>
+						<source
+							type="image/png"
+							src="~/assets/nanami-surpris.png"
+						>
+						<img
+							src="~/assets/nanami-surpris.png"
+							alt="Surprised Nanami"
+						>
 					</picture>
 					<span>{{ $t(empty ? 'layout.empty':'layout.suggest') }}&nbsp;</span>
-					<nuxt-link to="/suggest">{{ $t('layout.suggest_open') }}</nuxt-link>
+					<nuxt-link to="/suggest">
+						{{ $t('layout.suggest_open') }}
+					</nuxt-link>
 				</h4>
-				<h4 v-if="tags.length > 0" class="title is-4 centered">
+				<h4
+					v-if="tags.length > 0"
+					class="title is-4 centered"
+				>
 					{{ $t('layout.remove_tags') }}
 				</h4>
 				<search-tags class="tagList" />
@@ -20,27 +34,17 @@
 	</div>
 </template>
 
-<script lang="ts">
-	import Vue from 'vue';
-	import { mapState } from 'vuex';
-	import SearchTags from './SearchTags.vue';
+<script setup lang="ts">
+	import { storeToRefs } from 'pinia';
+	import { useMenubarStore } from '~/store/menubar';
 
-	export default Vue.extend({
-		name: 'SuggestLine',
-
-		components: {
-			SearchTags
-		},
-
-		props: {
-			empty: {
-				type: Boolean,
-				default: false
-			}
-		},
-
-		computed: mapState('menubar', ['tags'])
+	withDefaults(defineProps<{
+		empty: boolean
+	}>(), {
+		empty: false
 	});
+
+	const { tags } = storeToRefs(useMenubarStore());
 </script>
 
 <style scoped lang="scss">

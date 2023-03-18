@@ -1,14 +1,27 @@
 <template>
 	<div>
-		<div v-for="langKey in Object.keys(i18n)" :key="langKey" class="field is-horizontal has-addons is-grouped is-grouped-centered">
+		<div
+			v-for="langKey in Object.keys(i18n)"
+			:key="langKey"
+			class="field is-horizontal has-addons is-grouped is-grouped-centered"
+		>
 			<label class="label">
 				{{ getLanguagesFromCode(langKey) }}
 			</label>
 			<div class="control">
-				<input :value="i18n[langKey]" class="input" type="text" @input="event => setValueLanguage(langKey, event.target.value)">
+				<input
+					:value="i18n[langKey]"
+					class="input"
+					type="text"
+					@input="event => setValueLanguage(langKey, (event.target as HTMLInputElement)?.value)"
+				>
 			</div>
 			<div class="control">
-				<div class="button" :title="$t('kara.import.i18n_delete')" @click="() => removeLang(langKey)">
+				<div
+					class="button"
+					:title="$t('kara.import.i18n_delete')"
+					@click="() => removeLang(langKey)"
+				>
 					<font-awesome-icon :icon="['fas', 'minus']" />
 				</div>
 			</div>
@@ -26,7 +39,7 @@
 				{{ $t('kara.import.i18n_select') }}
 			</label>
 			<div class="control">
-				<b-autocomplete
+				<o-autocomplete
 					v-if="selectVisible"
 					v-model="langFilter"
 					open-on-focus
@@ -34,17 +47,24 @@
 					:data="getListLanguages"
 					@select="addLang"
 				>
-					<template slot-scope="props">
-						{{ props.option.label }} ({{ props.option.value.toUpperCase() }})
+					<template #default="language">
+						{{ language.option.label }} ({{ language.option.value.toUpperCase() }})
 					</template>
-				</b-autocomplete>
-				<div v-if="!selectVisible" class="button tag is-small" @click="selectVisible = true">
+				</o-autocomplete>
+				<div
+					v-if="!selectVisible"
+					class="button tag is-small"
+					@click="selectVisible = true"
+				>
 					<font-awesome-icon :icon="['fas', 'plus']" />
 					{{ $t('kara.import.add') }}
 				</div>
 			</div>
 		</div>
-		<div v-if="defaultLanguage && Object.keys(i18n).length > 0" class="field is-horizontal is-grouped is-grouped-centered">
+		<div
+			v-if="defaultLanguage && Object.keys(i18n).length > 0"
+			class="field is-horizontal is-grouped is-grouped-centered"
+		>
 			<label class="label">
 				{{ $t('kara.import.default_language') }}
 			</label>
@@ -52,17 +72,17 @@
 				<div class="select">
 					<select
 						id="type"
-						v-model="defaultLang"
+						v-model="defaultLanguage"
 						:required="true"
 						name="type"
 						autocomplete="off"
-						@change="(event) => setDefaultLanguage(event.target.value)"
+						@change="(event) => setDefaultLanguage((event.target as HTMLInputElement)?.value)"
 					>
 						<option
 							v-for="lang in listDefaultLanguagesAvailable()"
 							:key="lang.value"
 							:value="lang.value"
-							:selected="defaultLang === lang.value"
+							:selected="defaultLanguage === lang.value"
 						>
 							{{ lang.label }} ({{ lang.value.toUpperCase() }})
 						</option>
@@ -73,94 +93,69 @@
 	</div>
 </template>
 
-<script lang="ts">
-	import Vue, { PropOptions } from 'vue';
-	import { getLanguagesInLocaleFromCode, getListLanguagesInLocale, langWithRomanization } from '../utils/isoLanguages';
+<script setup lang="ts">
+	import { storeToRefs } from 'pinia';
+	import { useAuthStore } from '~/store/auth';
 
-	interface VState {
-		langFilter: string,
-		i18n: Record<string, string>,
-		inputToFocus: string,
-		selectVisible: boolean,
-		defaultLang?: string,
-		langWithRomanization: string[]
-	}
+	const props = defineProps<{
+		value: Record<string, string>
+		defaultLanguage?: string
+	}>();
 
-	export default Vue.extend({
-		name: 'LanguagesList',
+	const emit = defineEmits<{
+		(e: 'change', value: Record<string, string>): void
+		(e: 'onDefaultLanguage', value: string): void
+	}>();
 
-		props: {
-			value: {
-				type: Object,
-				required: true
-			} as PropOptions<Record<string, string>>,
-			defaultLanguage: {
-				type: String,
-				required: false
-			}
-		},
+	const langFilter = ref('');
+	const i18n = ref(props.value);
+	const selectVisible = ref(false);
+	const defaultLanguage = ref(props.defaultLanguage);
 
-		data(): VState {
-			return {
-				langFilter: '',
-				i18n: this.value,
-				inputToFocus: '',
-				selectVisible: false,
-				defaultLang: this.defaultLanguage,
-				langWithRomanization
-			};
-		},
+	const { locale } = useI18n();
+	const { loggedIn, user } = storeToRefs(useAuthStore());
 
-		computed: {
-			getListLanguages(): Array<{ value: string, label: string }> {
-				return this.listLanguages(this.langFilter);
-			}
-		},
+	const getListLanguages = computed(() => listLanguages(langFilter.value));
 
-		watch: {
-			defaultLanguage(now) {
-				if (now) {
-					this.defaultLang = now;
-				}
-			}
-		},
-
-		methods: {
-			listLanguages(lang: string): Array<{ value: string, label: string }> {
-				return getListLanguagesInLocale((this.$auth.loggedIn && this.$auth.user.language) || this.$i18n.locale).filter(option => option.label.toString()
-					.toLowerCase().includes(lang.toLowerCase()) ||
-					option.value.toString()
-						.toLowerCase().includes(lang.toLowerCase()));
-			},
-			listDefaultLanguagesAvailable() {
-				return getListLanguagesInLocale((this.$auth.loggedIn && this.$auth.user.language) || this.$i18n.locale).filter(value => Object.keys(this.i18n).includes(value.value));
-			},
-			addLang(lang:{label:string, value: string}) {
-				if (Object.keys(this.i18n).length === 0 || lang.value === 'qro') {
-					this.setDefaultLanguage(lang.value);
-				}
-				this.i18n[lang.value] = '';
-				this.selectVisible = false;
-				this.inputToFocus = lang.value;
-			},
-			removeLang(lang:string) {
-				Vue.delete(this.i18n, lang);
-				if (Object.keys(this.i18n).length > 0 && lang === this.defaultLang) {
-					this.setDefaultLanguage(Object.keys(this.i18n)[0]);
-				}
-			},
-			getLanguagesFromCode(code:string) {
-				return getLanguagesInLocaleFromCode(code, (this.$auth.loggedIn && this.$auth.user.language) || this.$i18n.locale);
-			},
-			setValueLanguage(langKey:string, value:string) {
-				this.i18n[langKey] = value;
-				this.$emit('change', this.i18n);
-			},
-			setDefaultLanguage(lang: string) {
-				this.$emit('onDefaultLanguage', lang);
-			}
+	watch([props], ([newProps]) => {
+		if (newProps.defaultLanguage) {
+			defaultLanguage.value = newProps.defaultLanguage;
 		}
+		if (props.value !== i18n.value) i18n.value = props.value;
 	});
+
+	function listLanguages(lang: string): Array<{ value: string, label: string }> {
+		return getListLanguagesInLocale((loggedIn.value && user?.value?.language) || locale.value).filter(option => option.label.toString()
+			.toLowerCase().includes(lang.toLowerCase()) ||
+			option.value.toString()
+				.toLowerCase().includes(lang.toLowerCase()));
+	}
+	function listDefaultLanguagesAvailable() {
+		return getListLanguagesInLocale((loggedIn.value && user?.value?.language) || locale.value).filter(value => Object.keys(i18n.value).includes(value.value));
+	}
+	function addLang(lang:{label:string, value: string}) {
+		if (Object.keys(i18n.value).length === 0 || lang.value === 'qro') {
+			setDefaultLanguage(lang.value);
+		}
+		i18n.value[lang.value] = '';
+		selectVisible.value = false;
+	}
+	function removeLang(lang:string) {
+		delete i18n.value[lang];
+		if (Object.keys(i18n.value).length > 0 && lang === defaultLanguage.value) {
+			setDefaultLanguage(Object.keys(i18n.value)[0]);
+		}
+	}
+	function getLanguagesFromCode(code:string) {
+		return getLanguagesInLocaleFromCode(code, (loggedIn.value && user?.value?.language) || locale.value);
+	}
+	function setValueLanguage(langKey:string, value:string) {
+		i18n.value[langKey] = value;
+		emit('change', i18n.value);
+	}
+	function setDefaultLanguage(lang: string) {
+		emit('onDefaultLanguage', lang);
+	}
 </script>
 
 <style scoped lang="scss">

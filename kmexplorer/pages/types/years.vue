@@ -1,7 +1,10 @@
 <template>
 	<div class="is-ancestor">
-		<loading-nanami v-if="$fetchState.pending" />
-		<div v-if="tags.length > 0" class="tags">
+		<loading-nanami v-if="loading" />
+		<div
+			v-if="tags.length > 0"
+			class="tags"
+		>
 			<tag
 				v-for="tag in tags"
 				:key="tag.name"
@@ -14,82 +17,62 @@
 	</div>
 </template>
 
-<script lang="ts">
-	import Vue from 'vue';
-
-	import LoadingNanami from '~/components/LoadingNanami.vue';
-	import Tag from '~/components/Tag.vue';
+<script setup lang="ts">
+	import { storeToRefs } from 'pinia';
 	import { DBYear } from '%/lib/types/database/kara';
-	import { fakeYearTag } from '~/utils/tools';
 	import { Tag as TagType } from '%/lib/types/tag';
-	import { menuBarStore } from '~/store';
-	import { mapState } from 'vuex';
+	import { useMenubarStore } from '~/store/menubar';
+	import { useLocalStorageStore } from '~/store/localStorage';
 
-	interface VState {
-		years: DBYear[]
+	const loading = ref(true);
+	const years = ref<DBYear[]>([]);
+	const { t } = useI18n();
+
+	const { enabledCollections } = storeToRefs(useLocalStorageStore());
+	const { setSort, setResultsCount } = useMenubarStore();
+
+	setResultsCount(0);
+	setSort('recent');
+
+	const tags = computed((): TagType[] => {
+		const tags: TagType[] = [];
+		for (const year of years.value) {
+			tags.push(fakeYearTag(year.year.toString(), year.karacount));
+		}
+		return tags;
+	});
+
+	watch(() => enabledCollections, () => setPage(), { deep: true });
+
+	fetch();
+
+	async function fetch() {
+		loading.value = true;
+		const res = await useCustomFetch<DBYear[]>('/api/karas/years/', {
+			params: {
+				collections: enabledCollections.value.join(',')
+			}
+		}).catch(_err => {
+			throw createError({ statusCode: 404, message: t('error.not_found_tag') as string });
+		});
+		loading.value = false;
+		if (res) {
+			years.value = res;
+			setResultsCount(res.length);
+		} else {
+			throw createError({ statusCode: 500, message: 'Huh?' });
+		}
 	}
 
-	export default Vue.extend({
-		name: 'ListYears',
-
-		components: {
-			LoadingNanami,
-			Tag
-		},
-
-		data(): VState {
-			return {
-				years: []
-			};
-		},
-
-		async fetch() {
-			const res = await this.$axios
-				.get<DBYear[]>('/api/karas/years/', {
-					params: {
-						collections: menuBarStore.enabledCollections.join(',')
-					}
-				})
-				.catch(_err =>
-					this.$nuxt.error({ statusCode: 404, message: this.$t('error.not_found_tag') as string })
-				);
-			if (res) {
-				this.years = res.data;
-				menuBarStore.setResultsCount(res.data.length);
-			} else {
-				this.$nuxt.error({ statusCode: 500, message: 'Huh?' });
+	async function setPage(): Promise<void> {
+		const res = await useCustomFetch<DBYear[]>('/api/karas/years/', {
+			params: {
+				collections: enabledCollections.value.join(',')
 			}
-		},
-
-		computed: {
-			tags(): TagType[] {
-				const tags: TagType[] = [];
-				for (const year of this.years) {
-					tags.push(fakeYearTag(year.year.toString(), year.karacount));
-				}
-				return tags;
-			},
-			...mapState('menubar', ['enabledCollections'])
-		},
-
-		watch: {
-			enabledCollections() {
-				this.setPage();
-			}
-		},
-
-		methods: {
-			async setPage(): Promise<void> {
-				const res = await this.$axios.get<DBYear[]>('/api/karas/years/', {
-					params: {
-						collections: menuBarStore.enabledCollections.join(',')
-					}
-				});
-				this.years = res.data;
-				menuBarStore.setResultsCount(res.data.length);
-			}
-		}
-	});
+		});
+		years.value = res;
+		setResultsCount(res.length);
+	}
 </script>
 
 <style scoped lang="scss">

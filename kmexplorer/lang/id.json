@@ -120,6 +120,8 @@
 			"lyrics_file_missing": "Berkas lirik menghilang, ini mungkin terjadi jika kamu mengirimkan berkas MKV atau sebuah karaoke tanpa lirik (?).",
 			"songwriters_tooltip": "Komposer, Pengaransemen, dan Penulis Lirik.",
 			"creators_tooltip": "Entitas yang membuat serial. Bisa studio animasi, studio film, atau studio permainan.",
+			"parents": "Induk",
+			"parents_tooltip": "Jika induk ditentukan, karaoke ini akan ditampilkan sebagai alternatif kepada karaoke dipilih di induk. Harap diingat untuk memilih repositori yang bagus sebelum mengisi array ini untuk menghindari menambahkan karaoke dari repositori lain.",	
 			"restart": "Kirim karaoke baru",
 			"i18n_select": "Tambahkan sebuah bahasa",
 			"contact_infos_tooltip": "Masukkan detail kontakmu, sehingga kami bisa berhubungan dengan kamu jika kamu memiliki pertanyaan tentang karaoke ini.",
@@ -191,8 +193,6 @@
 		"community": "Komunitas",
 		"search_users": "Cari pengguna",
 		"discord": "Discord",
-		"discourse": "Discourse",
-		"profile": "Sunting profil kamu",
 		"login": "Masuk",
 		"logout": "Keluar",
 		"connection": "Masuk",
@@ -205,8 +205,8 @@
 		"kara_import": "Kirim karaoke",
 		"account": "Akun",
 		"warnings": "Peringatan",
-		"participate": "Berpartisipasi",
 		"kara_suggest": "Usul karaoke",
+		"anime_list": "Anime saya",
 		"remotes": "Jarak Jauh"
 	},
 	"search": {
@@ -255,7 +255,7 @@
 				},
 				"email": {
 					"label": "Surel",
-					"placeholder": "tes@shelter.moe"
+					"placeholder": "tes{'@'}shelter.moe"
 				}
 			},
 			"title": "Daftar",
@@ -289,6 +289,10 @@
 					"placeholder": "idwiki",
 					"label": "Twitter"
 				},
+				"mastodon": {
+					"label": "Mastodon",
+					"placeholder": "karaokemugen{'@'}shelter.moe"
+				},
 				"flag_sendstats": {
 					"label": "Statistik",
 					"checkbox": "Gunakan permintaan favorit dan karaoke saya untuk statistik"
@@ -315,7 +319,7 @@
 				},
 				"email": {
 					"label": "Surel",
-					"placeholder": "tes@shelter.moe"
+					"placeholder": "tes{'@'}shelter.moe"
 				},
 				"url": {
 					"label": "Situs Web",
@@ -474,7 +478,8 @@
 		"private_favorites": "Favoritmu privat. Klik untuk memperlihatkannya.",
 		"favorites": "Favorit",
 		"edit": "Sunting profil",
-		"favorites_count": "{x} favorit"
+		"favorites_count": "{x} favorit",
+		"anime_list": "Anime saya"
 	},
 	"toast": {
 		"LOG_ERROR": "Kredensial salah.",
@@ -486,7 +491,8 @@
 		"SUBFILE_FORMAT_UNKOWN": "Format takarir tidak diketahui",
 		"CANNOT_EDIT_KARA": "Tidak bisa mengirim suntingan.",
 		"USER_EDITED": "Pengguna berhasil disunting",
-		"FILE_UPLOADED": "Berkas diunggah."
+		"FILE_UPLOADED": "Berkas diunggah.",
+		"TAG_CREATED": "Tanda berhasil dibuat"
 	},
 	"titles": {
 		"home": "Beranda"
@@ -508,7 +514,8 @@
 			"description": "Apa ini?",
 			"random_selection": "Pilih lagu lain secara acak",
 			"send_suggestion": "Kirim Usulan",
-			"purpose": "Berikut adalah beberapa lagu karaoke yang sudah siap untuk diimpor, kamu bisa mencari lagu tertentu atau pencet tombol \"Pilih lagu lain secara acak.\" Kamu bisa mendukung lagu karaoke tersebut dengan memencet \"Ya!\". Jika kamu belum bisa menemukan lagu yang kamu cari, pencet \"Kirim Usulan.\""
+			"purpose": "Berikut adalah beberapa lagu karaoke yang sudah siap untuk diimpor, kamu bisa mencari lagu tertentu atau pencet tombol \"Pilih lagu lain secara acak.\" Kamu bisa mendukung lagu karaoke tersebut dengan memencet \"Ya!\".",
+			"suggestion": "Jika kamu belum bisa menemukan lagu yang kamu cari, pencet \"Kirim Usulan.\""
 		},
 		"modal": {
 			"welcome": {

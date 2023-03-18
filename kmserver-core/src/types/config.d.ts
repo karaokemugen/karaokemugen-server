@@ -8,9 +8,9 @@ export interface Config {
 		JwtSecret?: string,
 		InstanceID?: string,
 	},
-	BaseLicense: {
-		Name: string
-		Link: string
+	BaseLicense?: {
+		Name?: string
+		Link?: string
 	},
 	Karaoke?: {
 		Collections: any
@@ -51,10 +51,10 @@ export interface Config {
 		DiscourseURL?: string
 		MediaLinks: boolean
 		Import: boolean
-		InProgressSongsList: string
+		InProgressSongsList?: string
 		Secure: boolean
-		NuxtOverrides?: any
 		SupportedMedias?: string []
+		AddRepoModalInMenu: boolean
 	},
 	Gitlab?: {
 		Enabled?: boolean,

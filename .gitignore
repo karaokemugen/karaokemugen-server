@@ -41,3 +41,4 @@ kmserver-core/dist/
 !.yarn/sdks
 !.yarn/versions
 .pnp.*
+.next

@@ -4,9 +4,6 @@ App:
 BaseLicense:
   Name: ODbL/CC BY-SA 4.0
   Link: https://gitlab.com/karaokemugen/bases/karaokebase/-/blob/master/LICENSE.md
-SocialNetworks:
-  Discourse: https://discourse.karaokes.moe
-  Discord: https://karaokes.moe/discord
 System:
   Database:
     username: karaokemugen_server
@@ -48,11 +45,13 @@ Stats:
 Suggestions:
   Enabled: true
 KaraExplorer:
-  Path: /base
   LiveURL: https://live.karaokes.moe
   MediaLinks: true
   Import: true
   InProgressSongsList: https://gitlab.com/karaokemugen/bases/karaokebase/-/issues?scope=all&state=opened&label_name[]=Doing
+  AddRepoModalInMenu: false
+  DiscourseURL: https://discourse.karaokes.moe
+  DiscordURL: https://karaokes.moe/discord
 Gitlab:
   Enabled: true
   Token: xxx

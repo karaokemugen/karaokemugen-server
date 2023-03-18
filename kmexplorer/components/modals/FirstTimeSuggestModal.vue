@@ -13,36 +13,34 @@
 				{{ $t('suggestions.modal.welcome.text2') }}
 			</label>
 			<label class="label">
-				<i18n path="suggestions.modal.welcome.text3" tag="em">
+				<i18n-t
+					keypath="suggestions.modal.welcome.text3"
+					tag="em"
+				>
 					<template #discord>
-						<a href="https://karaokes.moe/discord" target="_blank">{{ $t('suggestions.modal.welcome.discord') }}</a>
+						<nuxt-link
+							href="https://karaokes.moe/discord"
+							target="_blank"
+						>{{ $t('suggestions.modal.welcome.discord') }}</nuxt-link>
 					</template>
-				</i18n>
+				</i18n-t>
 			</label>
 		</section>
 	</modal>
 </template>
 
-<script lang="ts">
-	import Vue from 'vue';
-	import Modal from './Modal.vue';
+<script setup lang="ts">
+	import { useLocalStorageStore } from '~/store/localStorage';
 
-	export default Vue.extend({
-		name: 'FirstTimeSuggestModal',
+	defineProps<{
+		active: boolean
+	}>();
 
-		components: {
-			Modal
-		},
+	const emit = defineEmits<{(e: 'close'): void}>();
+	const { setHideSuggestionModal } = useLocalStorageStore();
 
-		props: {
-			active: Boolean
-		},
-
-		methods: {
-			closeModal(): void {
-				window.localStorage.hideSuggestionModal = true;
-				this.$emit('close');
-			}
-		}
-	});
+	function closeModal(): void {
+		setHideSuggestionModal();
+		emit('close');
+	}
 </script>

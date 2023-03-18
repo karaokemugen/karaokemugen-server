@@ -88,12 +88,15 @@
 		"import": {
 			"sections": {
 				"files": "Files",
+				"parents": "Parent Song(s)",
 				"titles": "Title(s)",
 				"identity": "Identity",
 				"categorization": "Categorization",
 				"meta": "Metadata"
 			},
 			"desc": {
+				"parents": "If this song is an alternative version of another one, select its parent(s) to pre-fill this form.",
+				"parents_public": "When a user selects a parent song in the public interface, they'll see all their children / alternative versions.",
 				"titles": "Set all titles the song has in different languages. Usually, there's only one title.",
 				"titles_default_language": "Default title language should be the song's original title. For titles in non-latin languages (chinese, japanese, arabic, korean…), add a \"Romanization\" title and make it default.",
 				"aliases": "If the song is known as something else (abbreviations for example), set them here to help people find it through search. No need to use words already contained in the song title(s)."
@@ -146,6 +149,8 @@
 			"authors_tooltip": "You should add yourself here ;)",
 			"authors_required": "Author of the karaoke is mandatory",
 			"groups_tooltip": "Download groups for this song. The song will be included in these download packs",
+			"parents": "Parents",
+			"parents_tooltip": "If a parent is defined, this karaoke will show as alternative to the selected parent karaoke(s). Please mind to select the good repository before filling this array to avoid adding karaokes from other repositories.",
 			"created_at": "Creation date",
 			"add_success": "Your karaoke has been successfully sent!",
 			"add_success_description": "An issue has been created on our tracker. You can check its progression at {url}",
@@ -208,7 +213,7 @@
 		"database": "Database",
 		"karas": "Songs",
 		"songtypes": "Types",
-		"tags": "Tags",
+		"tags": "Others…",
 		"singergroups": "Bands",
 		"misc": "Miscs",
 		"warnings": "Warnings",
@@ -230,16 +235,15 @@
 		"remotes": "Remotes",
 		"search_users": "Search users",
 		"discord": "Discord",
-		"discourse": "Discourse",
-		"participate": "Participate",
+		"discourse": "Forum",
 		"kara_import": "Submit a karaoke",
 		"kara_suggest": "Suggest a karaoke",
 		"account": "Account",
+		"anime_list": "My animes",
 		"login": "Login",
 		"logout": "Logout",
 		"register": "Register",
 		"connection": "Login",
-		"profile": "Edit your profile",
 		"switch_language": "Switch language"
 	},
 	"profile": {
@@ -248,6 +252,7 @@
 		"edit": "Edit profile",
 		"private": "Your profile is private, only you can see it.",
 		"favorites_count": "{x} favorite | {x} favorites",
+		"anime_list": "My animes",
 		"public_favorites": "Your favorites are public. Click to hide them.",
 		"private_favorites": "Your favorites are private. Click to show them."
 	},
@@ -292,7 +297,7 @@
 				},
 				"password": {
 					"label": "Password",
-					"placeholder": "ActuallyIdolM@sterIsBetter"
+					"placeholder": "ActuallyIdolM{'@'}sterIsBetter"
 				},
 				"forgot_password": {
 					"label": "Forgot password?",
@@ -312,15 +317,15 @@
 				},
 				"password": {
 					"label": "Password",
-					"placeholder": "ActuallyIdolM@sterIsBetter"
+					"placeholder": "ActuallyIdolM{'@'}sterIsBetter"
 				},
 				"password_confirmation": {
 					"label": "Password Confirmation",
-					"placeholder": "ActuallyIdolM@sterIsBetter"
+					"placeholder": "ActuallyIdolM{'@'}sterIsBetter"
 				},
 				"email": {
 					"label": "Email",
-					"placeholder": "test@shelter.moe"
+					"placeholder": "test{'@'}shelter.moe"
 				}
 			},
 			"passwords_mismatch": "Passwords do not match",
@@ -344,15 +349,15 @@
 				},
 				"password": {
 					"label": "Password",
-					"placeholder": "ReallyIPreferIdolM@ster"
+					"placeholder": "ReallyIPreferIdolM{'@'}ster"
 				},
 				"password_confirmation": {
 					"label": "Password confirmation",
-					"placeholder": "ReallyIPreferIdolM@ster"
+					"placeholder": "ReallyIPreferIdolM{'@'}ster"
 				},
 				"email": {
 					"label": "Email",
-					"placeholder": "test@shelter.moe"
+					"placeholder": "test{'@'}shelter.moe"
 				},
 				"url": {
 					"label": "Website",
@@ -372,6 +377,10 @@
 				"twitter": {
 					"label": "Twitter",
 					"placeholder": "KaraokeMugen"
+				},
+				"mastodon": {
+					"label": "Mastodon",
+					"placeholder": "karaokemugen{'@'}shelter.moe"
 				},
 				"instagram": {
 					"label": "Instagram",
@@ -526,7 +535,8 @@
 		"SUBFILE_FORMAT_UNKOWN": "Subfile format unkown",
 		"CANNOT_EDIT_KARA": "Cannot send modification.",
 		"FILE_UPLOADED": "File uploaded.",
-		"USER_EDITED": "User successfully edited"
+		"USER_EDITED": "User successfully edited",
+		"TAG_CREATED": "Tag successfully created"
 	},
 	"roles": {
 		"donator": "Donator",
@@ -543,7 +553,8 @@
 		"header": {
 			"title": "Import suggestions",
 			"description": "What is this?",
-			"purpose": "Here are some karaoke songs that are ready to be imported, you can search for a particular song or press the \"Randomly select other songs\" button. You can endorse a karaoke song by pressing \"Yes!\" If you still can't find the song you're looking for, click \"Send Suggestion\".",
+			"purpose": "Here are some karaoke songs that are ready to be imported, you can search for a particular song or press the \"Randomly select other songs\" button. You can endorse a karaoke song by pressing \"Yes!\".",
+			"suggestion": "If you still can't find the song you're looking for, click \"Send Suggestion\".",
 			"random_selection": "Randomly select other songs",
 			"send_suggestion": "Send suggestion"
 		},
@@ -557,7 +568,7 @@
 				"btn": "OK!"
 			}
 		}
-	  },
+	},
 	"remote": {
 		"code": "Code",
 		"last_ip": "Last ip",

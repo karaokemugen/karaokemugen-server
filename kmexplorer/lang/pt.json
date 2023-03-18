@@ -169,12 +169,10 @@
 		"register": "Registe-se",
 		"switch_language": "Alternar idioma",
 		"discord": "Discord",
-		"discourse": "Discourse",
 		"kara_import": "Envie um karaokê",
 		"kara_suggest": "Sugira um karaokê",
 		"login": "Login",
 		"logout": "Sair",
-		"profile": "Edite seu perfil",
 		"account": "Conta",
 		"random": "Lançar um dado",
 		"database": "Base de dados",
@@ -195,8 +193,7 @@
 		"authors": "Autores",
 		"langs": "Idiomas",
 		"years": "Anos",
-		"community": "Comunidade",
-		"participate": "Participe"
+		"community": "Comunidade"
 	},
 	"profile": {
 		"favorites": "Favoritos",
@@ -318,15 +315,15 @@
 			"fields": {
 				"password": {
 					"label": "Senha",
-					"placeholder": "NaVerdadeIdolM@steréMelhor"
+					"placeholder": "NaVerdadeIdolM{'@'}steréMelhor"
 				},
 				"password_confirmation": {
-					"placeholder": "NaVerdadeIdolM@steréMelhor",
+					"placeholder": "NaVerdadeIdolM{'@'}steréMelhor",
 					"label": "Confirmação de senha"
 				},
 				"email": {
 					"label": "Email",
-					"placeholder": "exemplo@shelter.moe"
+					"placeholder": "exemplo{'@'}shelter.moe"
 				},
 				"username": {
 					"label": "Nome de utilizador"
@@ -382,19 +379,23 @@
 				},
 				"password": {
 					"label": "Senha",
-					"placeholder": "EuPrefiroIdolM@ster"
+					"placeholder": "EuPrefiroIdolM{'@'}ster"
 				},
 				"password_confirmation": {
 					"label": "Confirmação de senha",
-					"placeholder": "EuPrefiroIdolM@ster"
+					"placeholder": "EuPrefiroIdolM{'@'}ster"
 				},
 				"email": {
 					"label": "Email",
-					"placeholder": "exemplo@shelter.moe"
+					"placeholder": "exemplo{'@'}shelter.moe"
 				},
 				"twitter": {
 					"label": "Twitter",
 					"placeholder": "KaraokeMugen"
+				},
+				"mastodon": {
+					"label": "Mastodon",
+					"placeholder": "karaokemugen{'@'}shelter.moe"
 				},
 				"banner": {
 					"label": "Banner",
@@ -431,7 +432,7 @@
 				},
 				"password": {
 					"label": "Senha",
-					"placeholder": "NaVerdadeIdolM@steréMelhor"
+					"placeholder": "NaVerdadeIdolM{'@'}steréMelhor"
 				},
 				"forgot_password": {
 					"label": "Esqueceu-se da senha?",

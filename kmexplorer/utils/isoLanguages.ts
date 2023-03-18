@@ -1,15 +1,15 @@
-import { alpha2ToAlpha3B, getAlpha3BCodes, getName, registerLocale } from '@karaokemugen/i18n-iso-languages';
+import i18nIsoLanguages from '@karaokemugen/i18n-iso-languages';
 import de from '@karaokemugen/i18n-iso-languages/langs/de.json';
 import en from '@karaokemugen/i18n-iso-languages/langs/en.json';
 import fr from '@karaokemugen/i18n-iso-languages/langs/fr.json';
 import id from '@karaokemugen/i18n-iso-languages/langs/id.json';
 import pt from '@karaokemugen/i18n-iso-languages/langs/pt.json';
 
-registerLocale(en);
-registerLocale(fr);
-registerLocale(id);
-registerLocale(de);
-registerLocale(pt);
+i18nIsoLanguages.registerLocale(en);
+i18nIsoLanguages.registerLocale(fr);
+i18nIsoLanguages.registerLocale(id);
+i18nIsoLanguages.registerLocale(de);
+i18nIsoLanguages.registerLocale(pt);
 
 let navigatorLanguage: string;
 if (process.client) {
@@ -60,21 +60,39 @@ export const langWithRomanization = [
 
 export function getListLanguagesInLocale(userLang:string): Array<{ value: string, label: string }> {
 	if (process.client) {
-		const langMap = getAlpha3BCodes();
-		const langs = Object.keys(langMap).map((lang3BCode) => ({
-			value: lang3BCode,
-			label: getName(lang3BCode, userLang) 
-				|| langMap[lang3BCode], // fallback to primary language
-		}));
-		return langs;
+		return getAlpha3BLanguagesLocalized(userLang).map(lang => ({label: lang.name, value: lang.alpha3B}));
 	}
 	return [];
 }
 
 export function getLanguagesInLocaleFromCode(code: string, userLang:string) {
-	return getName(code, userLang);
+	return getLanguageName(code, userLang) || '';
 }
 
 export function getNavigatorLanguageIn3B(): string {
-	return alpha2ToAlpha3B(navigatorLanguage) as string;
+	return i18nIsoLanguages.alpha2ToAlpha3B(navigatorLanguage) || '';
 }
+
+export function getLocaleIn3B(userLang:string): string {
+	return i18nIsoLanguages.alpha2ToAlpha3B(userLang) || '';
+}
+
+export function listLangs(name: string, userLang: string): string[] {
+	return getAlpha3BLanguagesLocalized(userLang)
+		.map(lang => lang.name)
+		.filter(langName => langName.toLowerCase().includes(name.toLowerCase()));
+}
+export function get3BCode(language: string, userLang:string): string {
+	return i18nIsoLanguages.getAlpha3BCode(language, userLang) as string ||
+		i18nIsoLanguages.getAlpha3BCode(language, 'en') as string;
+}
+
+function getAlpha3BLanguagesLocalized(userLang: string): Array<{alpha3B: string, name: string}> {
+	const alpha3BMap = i18nIsoLanguages.getAlpha3BCodes();
+	return Object.keys(alpha3BMap).map(code => ({alpha3B: code,
+		name: getLanguageName(code, userLang) || alpha3BMap[code]
+	}))
+}
+
+const getLanguageName = (alpha2orAlpha3: string, lang: string) => i18nIsoLanguages.getName(alpha2orAlpha3, lang) ||
+	i18nIsoLanguages.getName(alpha2orAlpha3, 'en');

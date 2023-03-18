@@ -1,6 +1,6 @@
 // Tags SQL
 
-export const getAllTags = (filterClauses: string[], typeClauses: string, limitClause: string, offsetClause: string, joinClauses: string, orderClauses: string, stripClause: string, additionalFrom: string[], collectionClause: string[], whereClause: string) => `
+export const selectTags = (filterClauses: string[], typeClauses: string, limitClause: string, offsetClause: string, joinClauses: string, orderClauses: string, stripClause: string, additionalFrom: string[], collectionClause: string[], whereClause: string) => `
 WITH kara_available AS (
 	SELECT k.pk_kid
 	FROM kara k
@@ -37,7 +37,7 @@ FROM tag t
 LEFT JOIN t_count ON t.pk_tid = t_count.fk_tid
 ${joinClauses}
 ${additionalFrom.join('')}
-WHERE 1 = 1
+WHERE TRUE
   ${filterClauses.map(clause => `AND (${clause})`).reduce((a, b) => (`${a} ${b}`), '')}
   ${typeClauses}
   ${stripClause}

@@ -1,7 +1,10 @@
 import { db, paramWords } from '../lib/dao/database';
 import { DBUser } from '../lib/types/database/user';
 import { User } from '../lib/types/user';
+import logger from '../lib/utils/logger';
 import * as sql from './sqls/user';
+
+const service = 'DB';
 
 export async function updateLastLogin(username: string): Promise<string> {
 	const res = await db().query(sql.updateLastLogin, [username]);
@@ -77,4 +80,12 @@ export async function updateUser(user: User): Promise<DBUser> {
 		user.flag_parentsonly,
 		user.login
 	])).rows[0];
+}
+
+export async function deleteInactiveUsers() {
+	// GDPR demands users without activity for 3 years be deleted
+	const inactiveDate = new Date(new Date().setFullYear(new Date().getFullYear() - 3));
+	const res = await db().query(sql.deleteInactiveUsers, [inactiveDate.toISOString()]);
+	const deletedUsers = Array.from(Object.values(res.rows));
+	logger.info(`Daily routine : Removed users due to inactivity : ${deletedUsers.join(', ')}`, { service });
 }

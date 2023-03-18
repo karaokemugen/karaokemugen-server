@@ -1,50 +1,78 @@
 <template>
-	<div class="modal" :class="{'is-active': active}">
-		<form v-if="!modal.image" action="#" @submit.prevent="submitForm">
-			<div class="modal-background" @click="closeModal" />
+	<div
+		class="modal"
+		:class="{'is-active': active}"
+	>
+		<form
+			v-if="!crop_modal"
+			action="#"
+			@submit.prevent="submitForm"
+		>
+			<div
+				class="modal-background"
+				@click="closeModal"
+			/>
 			<div class="modal-card">
 				<header>
 					<div class="modal-card-head">
 						<h1 class="modal-card-title">
 							{{ $t('modal.profile.title') }}
 						</h1>
-						<a class="delete" aria-label="close" @click="closeModal" />
+						<nuxt-link
+							class="delete"
+							aria-label="close"
+							@click="closeModal"
+						/>
 					</div>
 				</header>
 				<section class="modal-card-body">
 					<div class="profile-pic-box">
 						<img
-							v-if="user.avatar_file"
+							v-if="editedUser.avatar_file"
 							alt="Profile Picture"
 							class="img"
-							:src="user.avatar_file.startsWith('data:') ? user.avatar_file : `/avatars/${user.avatar_file}`"
+							:src="editedUser.avatar_file.startsWith('data:') ? editedUser.avatar_file : `${apiUrl}avatars/${editedUser.avatar_file}`"
 						>
 						<div class="data">
-							<span class="login">{{ `${user.login}@${apiHost}` }}</span>
-							<user-badges :roles="user.roles" />
+							<span class="login">{{ `${editedUser.login}@${instanceName}` }}</span>
+							<user-badges :roles="editedUser.roles" />
 							<label
 								for="avatar"
 								class="button"
 							>
-								<input id="avatar" type="file" accept="image/jpg, image/jpeg, image/png, image/gif" @change="openCropModal">
-								<font-awesome-icon :icon="['fas', 'portrait']" :fixed-width="true" />
+								<input
+									id="avatar"
+									type="file"
+									accept="image/jpg, image/jpeg, image/png, image/gif"
+									@change="openCropModal"
+								>
+								<font-awesome-icon
+									:icon="['fas', 'portrait']"
+									:fixed-width="true"
+								/>
 								{{ $t('modal.profile.select_avatar') }}
 							</label>
 						</div>
 					</div>
 					<h2 class="subtitle">
-						<font-awesome-icon :icon="['fas', 'user']" fixed-width /> {{ $t('modal.profile.headers.profile') }}
+						<font-awesome-icon
+							:icon="['fas', 'user']"
+							fixed-width
+						/> {{ $t('modal.profile.headers.profile') }}
 					</h2>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
-							<label for="nickname" class="label">{{ $t('modal.profile.fields.nickname.label') }}</label>
+							<label
+								for="nickname"
+								class="label"
+							>{{ $t('modal.profile.fields.nickname.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
 								<div class="control">
 									<input
 										id="nickname"
-										v-model="user.nickname"
+										v-model="editedUser.nickname"
 										type="text"
 										name="nickname"
 										class="input"
@@ -57,14 +85,17 @@
 					</div>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
-							<label for="email" class="label">{{ $t('modal.profile.fields.email.label') }}</label>
+							<label
+								for="email"
+								class="label"
+							>{{ $t('modal.profile.fields.email.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
 								<div class="control">
 									<input
 										id="email"
-										v-model="user.email"
+										v-model="editedUser.email"
 										type="text"
 										name="email"
 										class="input"
@@ -77,14 +108,17 @@
 					</div>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
-							<label for="url" class="label">{{ $t('modal.profile.fields.url.label') }}</label>
+							<label
+								for="url"
+								class="label"
+							>{{ $t('modal.profile.fields.url.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
 								<div class="control">
 									<input
 										id="url"
-										v-model="user.url"
+										v-model="editedUser.url"
 										type="text"
 										name="url"
 										class="input"
@@ -96,14 +130,17 @@
 					</div>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
-							<label for="bio" class="label">{{ $t('modal.profile.fields.bio.label') }}</label>
+							<label
+								for="bio"
+								class="label"
+							>{{ $t('modal.profile.fields.bio.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
 								<div class="control">
 									<input
 										id="bio"
-										v-model="user.bio"
+										v-model="editedUser.bio"
 										type="text"
 										name="bio"
 										class="input"
@@ -121,28 +158,34 @@
 							<div class="field">
 								<div class="control">
 									<div class="select">
-										<b-autocomplete
+										<o-autocomplete
 											v-model="location"
 											keep-first
 											open-on-focus
 											:data="getListCountries"
-											@select="option => user.location = getCountryCode(option)"
+											@select="(option: string) => editedUser.location = getCountryCode(option, locale)"
 										/>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="field is-horizontal">
+					<div
+						v-if="editedUser.social_networks"
+						class="field is-horizontal"
+					>
 						<div class="field-label is-normal">
-							<label for="discord" class="label">{{ $t('modal.profile.fields.discord.label') }}</label>
+							<label
+								for="discord"
+								class="label"
+							>{{ $t('modal.profile.fields.discord.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
 								<div class="control">
 									<input
 										id="discord"
-										v-model="user.social_networks.discord"
+										v-model="editedUser.social_networks.discord"
 										type="text"
 										name="discord"
 										class="input"
@@ -153,16 +196,22 @@
 							</div>
 						</div>
 					</div>
-					<div class="field is-horizontal">
+					<div
+						v-if="editedUser.social_networks"
+						class="field is-horizontal"
+					>
 						<div class="field-label is-normal">
-							<label for="twitter" class="label">{{ $t('modal.profile.fields.twitter.label') }}</label>
+							<label
+								for="twitter"
+								class="label"
+							>{{ $t('modal.profile.fields.twitter.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
 								<div class="control">
 									<input
 										id="twitter"
-										v-model="user.social_networks.twitter"
+										v-model="editedUser.social_networks.twitter"
 										type="text"
 										name="twitter"
 										class="input"
@@ -173,16 +222,48 @@
 							</div>
 						</div>
 					</div>
-					<div class="field is-horizontal">
+					<div
+						v-if="editedUser.social_networks"
+						class="field is-horizontal"
+					>
 						<div class="field-label is-normal">
-							<label for="instagram" class="label">{{ $t('modal.profile.fields.instagram.label') }}</label>
+							<label
+								for="mastodon"
+								class="label"
+							>{{ $t('modal.profile.fields.mastodon.label') }}</label>
+						</div>
+						<div class="field-body">
+							<div class="field">
+								<div class="control">
+									<input
+										id="mastodon"
+										v-model="editedUser.social_networks.mastodon"
+										type="text"
+										name="mastodon"
+										class="input"			
+										pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
+										:placeholder="$t('modal.profile.fields.mastodon.placeholder')"
+									>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div
+						v-if="editedUser.social_networks"
+						class="field is-horizontal"
+					>
+						<div class="field-label is-normal">
+							<label
+								for="instagram"
+								class="label"
+							>{{ $t('modal.profile.fields.instagram.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
 								<div class="control">
 									<input
 										id="instagram"
-										v-model="user.social_networks.instagram"
+										v-model="editedUser.social_networks.instagram"
 										type="text"
 										name="instagram"
 										class="input"
@@ -193,16 +274,22 @@
 							</div>
 						</div>
 					</div>
-					<div class="field is-horizontal">
+					<div
+						v-if="editedUser.social_networks"
+						class="field is-horizontal"
+					>
 						<div class="field-label is-normal">
-							<label for="twitch" class="label">{{ $t('modal.profile.fields.twitch.label') }}</label>
+							<label
+								for="twitch"
+								class="label"
+							>{{ $t('modal.profile.fields.twitch.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
 								<div class="control">
 									<input
 										id="twitch"
-										v-model="user.social_networks.twitch"
+										v-model="editedUser.social_networks.twitch"
 										type="text"
 										name="twitch"
 										class="input"
@@ -213,16 +300,22 @@
 							</div>
 						</div>
 					</div>
-					<div class="field is-horizontal">
+					<div
+						v-if="editedUser.social_networks"
+						class="field is-horizontal"
+					>
 						<div class="field-label is-normal">
-							<label for="myanimelist" class="label">{{ $t('modal.profile.fields.myanimelist.label') }}</label>
+							<label
+								for="myanimelist"
+								class="label"
+							>{{ $t('modal.profile.fields.myanimelist.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
 								<div class="control">
 									<input
 										id="myanimelist"
-										v-model="user.social_networks.myanimelist"
+										v-model="editedUser.social_networks.myanimelist"
 										type="text"
 										name="myanimelist"
 										class="input"
@@ -233,16 +326,22 @@
 							</div>
 						</div>
 					</div>
-					<div class="field is-horizontal">
+					<div
+						v-if="editedUser.social_networks"
+						class="field is-horizontal"
+					>
 						<div class="field-label is-normal">
-							<label for="anilist" class="label">{{ $t('modal.profile.fields.anilist.label') }}</label>
+							<label
+								for="anilist"
+								class="label"
+							>{{ $t('modal.profile.fields.anilist.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
 								<div class="control">
 									<input
 										id="anilist"
-										v-model="user.social_networks.anilist"
+										v-model="editedUser.social_networks.anilist"
 										type="text"
 										name="anilist"
 										class="input"
@@ -253,16 +352,22 @@
 							</div>
 						</div>
 					</div>
-					<div class="field is-horizontal">
+					<div
+						v-if="editedUser.social_networks"
+						class="field is-horizontal"
+					>
 						<div class="field-label is-normal">
-							<label for="kitsu" class="label">{{ $t('modal.profile.fields.kitsu.label') }}</label>
+							<label
+								for="kitsu"
+								class="label"
+							>{{ $t('modal.profile.fields.kitsu.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
 								<div class="control">
 									<input
 										id="kitsu"
-										v-model="user.social_networks.kitsu"
+										v-model="editedUser.social_networks.kitsu"
 										type="number"
 										name="kitsu"
 										class="input"
@@ -274,13 +379,21 @@
 					</div>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
-							<label for="anime_list_to_fetch" class="label">{{ $t('modal.profile.fields.anime_list_to_fetch.label') }}</label>
+							<label
+								for="anime_list_to_fetch"
+								class="label"
+							>{{ $t('modal.profile.fields.anime_list_to_fetch.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
 								<div class="control">
 									<div class="select">
-										<select id="type" v-model="user.anime_list_to_fetch" name="anime_list_to_fetch" autocomplete="off">
+										<select
+											id="anime_list_to_fetch"
+											v-model="editedUser.anime_list_to_fetch"
+											name="anime_list_to_fetch"
+											autocomplete="off"
+										>
 											<option value="myanimelist">
 												MyAnimeList
 											</option>
@@ -302,37 +415,64 @@
 						</div>
 						<div class="field-body flex-column">
 							<img
-								:src="user.banner.startsWith('data:') ? user.banner:'/banners/' + user.banner"
+								:src="editedUser.banner?.startsWith('data:') ? editedUser.banner: `${apiUrl}banners/${editedUser.banner}`"
 								alt="User banner"
 								class="banner"
 							>
 							<button
 								class="button is-info"
 								:class="{'is-loading': loading}"
-								:disabled="loading || user.banner === 'default.jpg'"
+								:disabled="loading || editedUser.banner === 'default.jpg'"
 								@click.prevent="restoreDefaultBanner"
 							>
-								<font-awesome-icon :icon="['fas', 'history']" fixed-width /> {{ $t('modal.profile.fields.banner.remove') }}
+								<font-awesome-icon
+									:icon="['fas', 'history']"
+									fixed-width
+								/> {{ $t('modal.profile.fields.banner.remove') }}
 							</button>
 							<label
 								for="banner"
 								class="button is-yellow"
-								:disabled="!user.roles.donator && !user.roles.admin"
+								:disabled="!editedUser.roles?.donator && !editedUser.roles?.admin"
 							>
-								<input id="banner" :disabled="!user.roles.donator && !user.roles.admin" type="file" accept="image/jpg, image/jpeg, image/png" @change="openCropModal">
-								<font-awesome-icon :icon="['fas', 'file-import']" :fixed-width="true" />
+								<input
+									id="banner"
+									:disabled="!editedUser.roles?.donator && !editedUser.roles?.admin"
+									type="file"
+									accept="image/jpg, image/jpeg, image/png"
+									@change="openCropModal"
+								>
+								<font-awesome-icon
+									:icon="['fas', 'file-import']"
+									:fixed-width="true"
+								/>
 								{{ $t('modal.profile.fields.banner.upload') }}
 							</label>
-							<div v-if="user.roles.donator" class="has-text-white">
-								<font-awesome-icon :icon="['fas', 'heart']" fixed-width /> {{ $t('modal.profile.fields.banner.donator') }}
+							<div
+								v-if="editedUser.roles?.donator"
+								class="has-text-white"
+							>
+								<font-awesome-icon
+									:icon="['fas', 'heart']"
+									fixed-width
+								/> {{ $t('modal.profile.fields.banner.donator') }}
 							</div>
-							<div v-else class="has-text-white">
-								<font-awesome-icon :icon="['fas', 'search']" fixed-width /> {{ $t('modal.profile.fields.banner.change') }}
+							<div
+								v-else
+								class="has-text-white"
+							>
+								<font-awesome-icon
+									:icon="['fas', 'search']"
+									fixed-width
+								/> {{ $t('modal.profile.fields.banner.change') }}
 							</div>
 						</div>
 					</div>
 					<h2 class="subtitle">
-						<font-awesome-icon :icon="['fas', 'user-lock']" fixed-width /> {{ $t('modal.profile.headers.privacy') }}
+						<font-awesome-icon
+							:icon="['fas', 'user-lock']"
+							fixed-width
+						/> {{ $t('modal.profile.headers.privacy') }}
 					</h2>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
@@ -342,10 +482,13 @@
 							<div class="has-text-white">
 								{{ $t('modal.profile.fields.flag_public.desc') }}
 							</div>
-							<label for="public" class="field">
+							<label
+								for="public"
+								class="field"
+							>
 								<input
 									id="public"
-									v-model="user.flag_public"
+									v-model="editedUser.flag_public"
 									type="checkbox"
 								>
 								{{ $t('modal.profile.fields.flag_public.checkbox') }}
@@ -360,12 +503,15 @@
 							<div class="has-text-white">
 								{{ $t('modal.profile.fields.flag_displayfavorites.desc') }}
 							</div>
-							<label for="favorites" class="field">
+							<label
+								for="favorites"
+								class="field"
+							>
 								<input
 									id="favorites"
-									v-model="user.flag_displayfavorites"
+									v-model="editedUser.flag_displayfavorites"
 									type="checkbox"
-									:disabled="!user.flag_public"
+									:disabled="!editedUser.flag_public"
 								>
 								{{ $t('modal.profile.fields.flag_displayfavorites.checkbox') }}
 							</label>
@@ -382,10 +528,13 @@
 							<div class="has-text-white">
 								{{ $t('modal.stats.refuse_desc') }}
 							</div>
-							<label for="sendstats" class="field">
+							<label
+								for="sendstats"
+								class="field"
+							>
 								<input
 									id="sendstats"
-									v-model="user.flag_sendstats"
+									v-model="editedUser.flag_sendstats"
 									type="checkbox"
 								>
 								{{ $t('modal.profile.fields.flag_sendstats.checkbox') }}
@@ -393,7 +542,10 @@
 						</div>
 					</div>
 					<h2 class="subtitle">
-						<font-awesome-icon :icon="['fas', 'globe']" fixed-width /> {{ $t('modal.profile.headers.lang') }}
+						<font-awesome-icon
+							:icon="['fas', 'globe']"
+							fixed-width
+						/> {{ $t('modal.profile.headers.lang') }}
 					</h2>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal long">
@@ -403,12 +555,12 @@
 							<div class="field">
 								<div class="control">
 									<div class="select">
-										<b-autocomplete
+										<o-autocomplete
 											v-model="main_series_lang_name"
 											keep-first
 											open-on-focus
 											:data="getListLangsMain"
-											@select="option => user.main_series_lang = get3BCode(option)"
+											@select="(option:string) => editedUser.main_series_lang = get3BCode(option, locale)"
 										/>
 									</div>
 								</div>
@@ -425,12 +577,12 @@
 							<div class="field">
 								<div class="control">
 									<div class="select">
-										<b-autocomplete
+										<o-autocomplete
 											v-model="fallback_series_lang_name"
 											keep-first
 											open-on-focus
 											:data="getListLangsFallback"
-											@select="option => user.fallback_series_lang = get3BCode(option)"
+											@select="(option:string) => editedUser.fallback_series_lang = get3BCode(option, locale)"
 										/>
 									</div>
 								</div>
@@ -438,18 +590,24 @@
 						</div>
 					</div>
 					<h2 class="subtitle">
-						<font-awesome-icon :icon="['fas', 'key']" fixed-width /> {{ $t('modal.profile.headers.password') }}
+						<font-awesome-icon
+							:icon="['fas', 'key']"
+							fixed-width
+						/> {{ $t('modal.profile.headers.password') }}
 					</h2>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
-							<label for="password" class="label">{{ $t('modal.profile.fields.password.label') }}</label>
+							<label
+								for="password"
+								class="label"
+							>{{ $t('modal.profile.fields.password.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
 								<div class="control">
 									<input
 										id="password"
-										v-model="user.password"
+										v-model="editedUser.password"
 										type="password"
 										name="password"
 										class="input"
@@ -472,7 +630,7 @@
 								<div class="control">
 									<input
 										id="password_confirmation"
-										v-model="user.password_confirmation"
+										v-model="editedUser.password_confirmation"
 										type="password"
 										name="password_confirmation"
 										class="input"
@@ -509,263 +667,195 @@
 				</footer>
 			</div>
 		</form>
-		<crop-modal :image="image" :active="!!modal.crop" :ratio="modal.crop === 'banner' ? 16/9:1" @close="modal.crop=false" @upload="uploadImage" />
+		<crop-modal
+			:image="image"
+			:active="!!crop_modal"
+			:ratio="crop_modal === 'banner' ? 16/9:1"
+			@close="crop_modal=undefined"
+			@upload="uploadImage"
+		/>
 	</div>
 </template>
 
-<script lang="ts">
-	import Vue from 'vue';
-	import { cloneDeep } from 'lodash';
-	import { getNames, getAlpha3BCode, getName } from '@karaokemugen/i18n-iso-languages';
-	import { getCountries } from '@hotosm/iso-countries-languages';
+<script setup lang="ts">
+	import { storeToRefs } from 'pinia';
+	import _ from 'lodash';
+	import i18nIsoLanguages from '@karaokemugen/i18n-iso-languages';
 
-	import CropModal from './CropModal.vue';
-	import UserBadges from '~/components/UserBadges.vue';
 	import { DBUser } from '%/lib/types/database/user';
-	import { modalStore } from '~/store';
+	import { useModalStore } from '~/store/modal';
+	import { useAuthStore } from '~/store/auth';
 
 	interface DBUserEdit extends DBUser {
 		password_confirmation?: string
 	}
 
-	interface VState {
-		apiHost?: string,
-		user: DBUserEdit,
-		location: string
-		main_series_lang_name: string,
-		fallback_series_lang_name: string,
-		loading: boolean,
-		modal: {
-			crop: false | 'avatar' | 'banner'
+	const props = defineProps<{
+		active: boolean
+	}>();
+
+	const emit = defineEmits<{ (e: 'close'): void }>();
+
+	const { user } = storeToRefs(useAuthStore());
+	const { setToken } = useAuthStore();
+	const { openModal } = useModalStore();
+	const conf = useRuntimeConfig();
+	const instanceName = conf.public.INSTANCE_NAME;
+	const apiUrl = conf.public.API_URL;
+
+	const { locale } = useI18n();
+
+	const location = ref('');
+	const main_series_lang_name = ref('');
+	const fallback_series_lang_name = ref('');
+	const loading = ref(false);
+	const crop_modal = ref<'avatar' | 'banner'>();
+	const image = ref('');
+	const editedUser = ref<DBUserEdit>({
+		login: '',
+		nickname: '',
+		password: '',
+		password_confirmation: '',
+		bio: '',
+		email: '',
+		main_series_lang: '',
+		fallback_series_lang: '',
+		url: '',
+		avatar_file: '',
+		flag_sendstats: undefined,
+		flag_public: undefined,
+		flag_displayfavorites: undefined,
+		banner: 'default.jpg',
+		social_networks: {
+			twitch: '',
+			discord: '',
+			twitter: '',
+			mastodon: '',
+			instagram: ''
 		},
-		image: string
-	}
-
-	export default Vue.extend({
-		name: 'ProfileModal',
-
-		components: {
-			CropModal,
-			UserBadges
-		},
-
-		props: {
-			active: {
-				type: Boolean,
-				required: true
-			}
-		},
-
-		data(): VState {
-			return {
-				apiHost: process.env.API_HOST,
-				user: {
-					login: '',
-					nickname: '',
-					password: '',
-					bio: '',
-					email: '',
-					main_series_lang: '',
-					fallback_series_lang: '',
-					url: '',
-					avatar_file: '',
-					flag_sendstats: undefined,
-					flag_public: undefined,
-					flag_displayfavorites: undefined,
-					banner: 'default.jpg',
-					social_networks: {
-						twitch: '',
-						discord: '',
-						twitter: '',
-						instagram: ''
-					},
-					roles: {
-						user: true
-					}
-				},
-				location: '',
-				main_series_lang_name: '',
-				fallback_series_lang_name: '',
-				loading: false,
-				modal: {
-					crop: false
-				},
-				image: ''
-			};
-		},
-
-		computed: {
-			getListLangsMain(): string[] {
-				return this.listLangs(this.main_series_lang_name || '');
-			},
-			getListLangsFallback(): string[] {
-				return this.listLangs(this.fallback_series_lang_name || '');
-			},
-			storeUser(): DBUserEdit {
-				return this.$store.state.auth.user as unknown as DBUserEdit;
-			},
-			passwordNotEquals(): boolean {
-				return this.user.password !== this.user?.password_confirmation;
-			},
-			getListCountries(): string[] {
-				return this.listCountries(this.location);
-			}
-		},
-
-		watch: {
-			active(now) {
-				if (now) {
-					this.getUser();
-				}
-			}
-		},
-
-		mounted() {
-			this.getUser();
-		},
-
-		methods: {
-			listCountries(name: string): string[] {
-				const listCountries: string[] = [];
-				for (const [_key, value] of Object.entries(getCountries(this.$i18n.locale))) {
-					listCountries.push(value as string);
-				}
-				return listCountries.filter(value =>
-					value.toLowerCase().includes(name.toLowerCase()));
-			},
-			getCountryCode(name:string): string | undefined {
-				for (const [key, value] of Object.entries(getCountries(this.$i18n.locale))) {
-					if (value === name) {
-						return key;
-					}
-				}
-				return undefined;
-			},
-			getCountryName(code:string): string | undefined {
-				for (const [key, value] of Object.entries(getCountries(this.$i18n.locale))) {
-					if (key === code) {
-						return value as string;
-					}
-				}
-				return undefined;
-			},
-			listLangs(name: string): string[] {
-				const listLangs = [];
-				for (const [_key, value] of Object.entries(
-					getNames(this.$i18n.locale)
-				)) {
-					listLangs.push(value);
-				}
-				return listLangs.filter(value =>
-					value.toLowerCase().includes(name.toLowerCase())
-				);
-			},
-			get3BCode(language: string): string {
-				return getAlpha3BCode(
-					language, this.$i18n.locale
-				) as string;
-			},
-			getUser(): void {
-				if (this.storeUser) {
-					this.user = cloneDeep(this.storeUser);
-					if (this.storeUser.location) {
-						this.location = this.getCountryName(this.storeUser.location) as string;
-					}
-					if (this.storeUser.main_series_lang) {
-						this.main_series_lang_name = getName(this.storeUser.main_series_lang, this.$i18n.locale) as string;
-					}
-					if (this.storeUser.fallback_series_lang) {
-						this.fallback_series_lang_name = getName(this.storeUser.fallback_series_lang, this.$i18n.locale) as string;
-					}
-					if (!this.user.social_networks) {
-						this.user.social_networks = {
-							twitch: '',
-							discord: '',
-							twitter: '',
-							instagram: ''
-						};
-					}
-				}
-			},
-			async submitForm(): Promise<void> {
-				if (!this.user.social_networks || (!this.user.social_networks.anilist && !this.user.social_networks.myanimelist && !this.user.social_networks.kitsu)) {
-					this.user.anime_list_to_fetch = undefined;
-				} else if (this.user.social_networks.anilist && !this.user.social_networks.myanimelist && !this.user.social_networks.kitsu) {
-					this.user.anime_list_to_fetch = 'anilist';
-				} else if (!this.user.social_networks.anilist && this.user.social_networks.myanimelist && !this.user.social_networks.kitsu) {
-					this.user.anime_list_to_fetch = 'myanimelist';
-				} else if (!this.user.social_networks.anilist && !this.user.social_networks.myanimelist && this.user.social_networks.kitsu) {
-					this.user.anime_list_to_fetch = 'kitsu';
-				}
-				this.loading = true;
-				await this.$axios.patch('/api/myaccount', {
-					...this.user, avatar_file: undefined, roles: undefined, banner: undefined
-				}).then(async (response) => {
-					// Refresh auth
-					await this.$auth.setUserToken(response.data.data.token);
-					this.closeModal();
-				}).finally(() => {
-					this.loading = false;
-				});
-			},
-			closeModal(): void {
-				this.$emit('close');
-			},
-			openDeleteAccountModal() {
-				modalStore.openModal('deleteAccount');
-				this.closeModal();
-			},
-			openCropModal(e:any) {
-				if (e.target.files?.length > 0) {
-					const reader = new FileReader();
-					reader.onload = (re) => {
-						this.image = re.target?.result as string;
-						this.modal.crop = e.target.id;
-					};
-					reader.readAsDataURL(e.target.files[0]);
-				}
-			},
-			async uploadImage(blob:string): Promise<void> {
-				const type = this.modal.crop;
-				const file = new File(
-					[await (await fetch(blob)).blob()],
-					`${type}${Math.floor(Math.random() * 10000)}.${(/data:([a-z]+)\/([a-z]+)[,;]/.exec(blob) as RegExpMatchArray)[2]}`
-				);
-				if (type === 'avatar') {
-					this.user.avatar_file = blob;
-				} else if (type === 'banner') {
-					this.user.banner = blob;
-				}
-				this.modal.crop = false;
-				const form = new FormData();
-				form.set(`${type}file`, file);
-				this.loading = true;
-				await this.$axios.patch('/api/myaccount', form, {
-					headers: {
-						'Content-Type': 'multipart/form-data'
-					}
-				}).then(async (response) => {
-					// Refresh auth
-					await this.$auth.setUserToken(response.data.data.token);
-				}).finally(() => {
-					this.loading = false;
-				});
-			},
-			restoreDefaultBanner() {
-				if (this.loading) { return; }
-				this.loading = true;
-				this.$axios.$patch('/api/myaccount', {
-					banner: 'default.jpg'
-				}).then(async (response) => {
-					// Refresh auth
-					await this.$auth.setUserToken(response.data.token);
-					this.user.banner = 'default.jpg';
-				}).finally(() => {
-					this.loading = false;
-				});
-			}
+		roles: {
+			user: true
 		}
 	});
+
+	const getListLangsMain = computed(() => listLangs(main_series_lang_name.value || '', locale.value));
+	const getListLangsFallback = computed(() => listLangs(fallback_series_lang_name.value || '', locale.value));
+	const passwordNotEquals = computed(() => editedUser.value.password !== editedUser.value?.password_confirmation);
+	const getListCountries = computed(() => listCountries(location.value, locale.value));
+
+	watch(() => props.active, (now) => {
+		if(now) getUser();
+	});
+
+	getUser();
+
+	function getUser(): void {
+		if (user?.value) {
+			editedUser.value = _.cloneDeep(user?.value);
+			if (user?.value.location) {
+				location.value = geCountriesInLocaleFromCode(user?.value.location, locale.value);
+			}
+			if (user?.value.main_series_lang) {
+				main_series_lang_name.value = i18nIsoLanguages.getName(user?.value.main_series_lang, locale.value) as string;
+			}
+			if (user?.value.fallback_series_lang) {
+				fallback_series_lang_name.value = i18nIsoLanguages.getName(user?.value.fallback_series_lang, locale.value) as string;
+			}
+			if (!editedUser.value.social_networks) {
+				editedUser.value.social_networks = {
+					twitch: '',
+					discord: '',
+					twitter: '',
+					mastodon: '',
+					instagram: ''
+				};
+			}
+		}
+	}
+	async function submitForm(): Promise<void> {
+		if (!editedUser.value.social_networks || (!editedUser.value.social_networks.anilist && !editedUser.value.social_networks.myanimelist && !editedUser.value.social_networks.kitsu)) {
+			editedUser.value.anime_list_to_fetch = undefined;
+		} else if (editedUser.value.social_networks.anilist && !editedUser.value.social_networks.myanimelist && !editedUser.value.social_networks.kitsu) {
+			editedUser.value.anime_list_to_fetch = 'anilist';
+		} else if (!editedUser.value.social_networks.anilist && editedUser.value.social_networks.myanimelist && !editedUser.value.social_networks.kitsu) {
+			editedUser.value.anime_list_to_fetch = 'myanimelist';
+		} else if (!editedUser.value.social_networks.anilist && !editedUser.value.social_networks.myanimelist && editedUser.value.social_networks.kitsu) {
+			editedUser.value.anime_list_to_fetch = 'kitsu';
+		}
+		loading.value = true;
+		await useCustomFetch<{data: {token: string}}>('/api/myaccount', {
+			method: 'PATCH',
+			body: {
+				...editedUser.value, avatar_file: undefined, roles: undefined, banner: undefined
+			}
+		}).then(async (response) => {
+			// Refresh auth
+			await setToken(response.data.token);
+			closeModal();
+		}).finally(() => {
+			loading.value = false;
+		});
+	}
+	function closeModal(): void {
+		emit('close');
+	}
+	function openDeleteAccountModal() {
+		openModal('deleteAccount');
+		closeModal();
+	}
+	function openCropModal(e:any) {
+		if (e.target.files?.length > 0) {
+			const reader = new FileReader();
+			reader.onload = (re) => {
+				image.value = re.target?.result as string;
+				crop_modal.value = e.target.id;
+			};
+			reader.readAsDataURL(e.target.files[0]);
+		}
+	}
+	async function uploadImage(blob:string|undefined): Promise<void> {
+		if (blob) {
+			const type = crop_modal.value;
+			const file = new File(
+				[await (await fetch(blob)).blob()],
+				`${type}${Math.floor(Math.random() * 10000)}.${(/data:([a-z]+)\/([a-z]+)[,;]/.exec(blob) as RegExpMatchArray)[2]}`
+			);
+			if (type === 'avatar') {
+				editedUser.value.avatar_file = blob;
+			} else if (type === 'banner') {
+				editedUser.value.banner = blob;
+			}
+			crop_modal.value = undefined;
+			const form = new FormData();
+			form.set(`${type}file`, file);
+			loading.value = true;
+			await useCustomFetch<{data: {token: string}}>('/api/myaccount', {
+				method: 'PATCH',
+				body: form
+			}).then(async (response) => {
+				// Refresh auth
+				await setToken(response.data.token);
+			}).finally(() => {
+				loading.value = false;
+			});
+		}
+	}
+	function restoreDefaultBanner() {
+		if (loading.value) { return; }
+		loading.value = true;
+		useCustomFetch<{data: {token: string}}>('/api/myaccount', {
+			method: 'PATCH',
+			body: {
+				banner: 'default.jpg'
+			}
+		}).then(async (response) => {
+			// Refresh auth
+			await setToken(response.data.token);
+			editedUser.value.banner = 'default.jpg';
+		}).finally(() => {
+			loading.value = false;
+		});
+	}
 </script>
 
 <style lang="scss" scoped>

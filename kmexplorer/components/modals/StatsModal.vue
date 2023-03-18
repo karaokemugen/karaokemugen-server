@@ -22,39 +22,38 @@
 	</modal>
 </template>
 
-<script lang="ts">
-	import Vue from 'vue';
-	import Modal from './Modal.vue';
+<script setup lang="ts">
+	import { storeToRefs } from 'pinia';
 	import { DBUser } from '~/../kmserver-core/src/lib/types/database/user';
+	import { useAuthStore } from '~/store/auth';
+	import Modal from './Modal.vue';
 
-	export default Vue.extend({
-		name: 'StatsModal',
+	defineProps<{
+		active: boolean
+	}>();
 
-		components: {
-			Modal
-		},
+	const emit = defineEmits<{ (e: 'close'): void }>();
 
-		props: {
-			active: Boolean
-		},
+	const { user } = storeToRefs(useAuthStore());
+	const { setToken } = useAuthStore();
 
-		methods: {
-			async authorizeStats(): Promise<void> {
-				await this.saveUser(true);
-			},
-			async refuseStats(): Promise<void> {
-				await this.saveUser(false);
-			},
-			async saveUser(flag_sendstats: boolean): Promise<void> {
-				const user:DBUser = { ...this.$store.state.auth.user };
-				user.flag_sendstats = flag_sendstats;
-				const response = await this.$axios.put('/api/myaccount', user);
-				await this.$auth.setUserToken(response.data.data.token);
-				this.$emit('close');
-			},
-			closeModal(): void {
-				this.$emit('close');
-			}
-		}
-	});
+	async function authorizeStats(): Promise<void> {
+		await saveUser(true);
+	}
+	async function refuseStats(): Promise<void> {
+		await saveUser(false);
+	}
+	async function saveUser(flag_sendstats: boolean): Promise<void> {
+		const userUpdated:DBUser = { ...user?.value };
+		userUpdated.flag_sendstats = flag_sendstats;
+		const response = await useCustomFetch<{data: {token: string}}>('/api/myaccount', {
+			method: 'PUT',
+			body: userUpdated
+		});
+		await setToken(response.data.token);
+		emit('close');
+	}
+	function closeModal(): void {
+		emit('close');
+	}
 </script>

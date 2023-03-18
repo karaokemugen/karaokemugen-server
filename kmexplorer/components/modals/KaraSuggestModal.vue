@@ -1,21 +1,40 @@
 <template>
-	<div class="modal" :class="{'is-active': active}">
-		<form action="#" @submit.prevent="submitForm">
-			<div class="modal-background" @click.prevent="closeModal" />
+	<div
+		class="modal"
+		:class="{'is-active': active}"
+	>
+		<form
+			action="#"
+			@submit.prevent="submitForm"
+		>
+			<div
+				class="modal-background"
+				@click.prevent="closeModal"
+			/>
 			<div class="modal-card">
 				<header class="modal-card-head">
 					<p class="modal-card-title">
 						{{ $t('modal.suggest.title') }}
 					</p>
-					<button class="delete" aria-label="close" @click="closeModal" />
+					<button
+						class="delete"
+						aria-label="close"
+						@click="closeModal"
+					/>
 				</header>
-				<section v-if="!submitted" class="modal-card-body">
+				<section
+					v-if="!submitted"
+					class="modal-card-body"
+				>
 					<h5 class="title is-5">
 						{{ $t('modal.suggest.subtitle') }}
 					</h5>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
-							<label for="title" class="label">{{ $t('modal.suggest.fields.title.label') }}</label>
+							<label
+								for="title"
+								class="label"
+							>{{ $t('modal.suggest.fields.title.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
@@ -36,7 +55,10 @@
 					</div>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
-							<label for="series" class="label">{{ $t('modal.suggest.fields.series.label') }}</label>
+							<label
+								for="series"
+								class="label"
+							>{{ $t('modal.suggest.fields.series.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
@@ -57,14 +79,26 @@
 					</div>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
-							<label for="type" class="label">{{ $t('modal.suggest.fields.type.label') }}</label>
+							<label
+								for="type"
+								class="label"
+							>{{ $t('modal.suggest.fields.type.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="control">
 								<div class="select">
-									<select id="type" v-model="formData.type" name="type" autocomplete="off">
-										<option v-for="songtype in Object.keys(songtypes)" :key="songtype" :value="songtype">
-											{{ songtypes[songtype][$i18n.locale] || songtypes[songtype]['eng'] || songtype }}
+									<select
+										id="type"
+										v-model="formData.type"
+										name="type"
+										autocomplete="off"
+									>
+										<option
+											v-for="songtype in Object.keys(songtypes)"
+											:key="songtype"
+											:value="songtype"
+										>
+											{{ songtypes[songtype][locale] || songtypes[songtype]['eng'] || songtype }}
 										</option>
 									</select>
 								</div>
@@ -73,7 +107,10 @@
 					</div>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
-							<label for="link" class="label">{{ $t('modal.suggest.fields.link.label') }}</label>
+							<label
+								for="link"
+								class="label"
+							>{{ $t('modal.suggest.fields.link.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
@@ -94,7 +131,10 @@
 					</div>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
-							<label for="name" class="label">{{ $t('modal.suggest.fields.name.label') }}</label>
+							<label
+								for="name"
+								class="label"
+							>{{ $t('modal.suggest.fields.name.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
@@ -114,21 +154,42 @@
 						</div>
 					</div>
 				</section>
-				<section v-else class="modal-card-body">
+				<section
+					v-else
+					class="modal-card-body"
+				>
 					<h5 class="title is-5">
 						{{ $t('modal.suggest.submitted.subtitle') }}
 					</h5>
-					<i18n path="modal.suggest.submitted.text" tag="p">
+					<i18n-t
+						keypath="modal.suggest.submitted.text"
+						tag="p"
+					>
 						<template #here>
-							<a :href="gitlabUrl" target="_blank">{{ $t('modal.suggest.submitted.here') }}</a>
+							<nuxt-link
+								:href="gitlabUrl"
+								target="_blank"
+							>
+								{{ $t('modal.suggest.submitted.here') }}
+							</nuxt-link>
 						</template>
-					</i18n>
+					</i18n-t>
 				</section>
 				<footer class="modal-card-foot">
-					<button v-if="!submitted" class="button is-success" :class="{'is-loading': loading}" type="submit">
+					<button
+						v-if="!submitted"
+						class="button is-success"
+						:class="{'is-loading': loading}"
+						type="submit"
+					>
 						{{ $t('modal.suggest.submit') }}
 					</button>
-					<button v-else class="button is-success" type="button" @click="closeModal">
+					<button
+						v-else
+						class="button is-success"
+						type="button"
+						@click="closeModal"
+					>
 						{{ $t('modal.suggest.submitted.close') }}
 					</button>
 				</footer>
@@ -137,100 +198,86 @@
 	</div>
 </template>
 
-<script lang="ts">
-	import Vue from 'vue';
-	import { mapState } from 'vuex';
+<script setup lang="ts">
+	import { storeToRefs } from 'pinia';
 	import { TagList } from '%/lib/types/tag';
+	import { useAuthStore } from '~/store/auth';
 
-	interface VState {
-		loading: boolean,
-		submitted: boolean,
-		formData: {
-			title: string,
-			serie: string,
-			type: string,
-			link: string,
-			username: string
-		},
-		gitlabUrl: string,
-		songtypes: Record<string, Record<string, string>>
-	}
+	defineProps<{
+		active: boolean
+	}>();
 
-	export default Vue.extend({
-		name: 'KaraSuggest',
+	const loading = ref(false);
+	const submitted = ref(false);
+	const gitlabUrl = ref('');
+	const songtypes = ref<Record<string, Record<string, string>>>({});
+	const formData = ref<{
+		title: string,
+		serie: string,
+		type: string,
+		link: string,
+		username: string
+	}>({
+		title: '',
+		serie: '',
+		type: 'OP',
+		link: '',
+		username: ''
+	});
 
-		props: {
-			active: Boolean
-		},
-
-		data(): VState {
-			return {
-				loading: false,
-				submitted: false,
-				formData: {
-					title: '',
-					serie: '',
-					type: 'OP',
-					link: '',
-					username: ''
-				},
-				gitlabUrl: '',
-				songtypes: {}
-			};
-		},
-
-		async fetch() {
-			const res = await this.$axios.get<TagList>('/api/karas/tags', {
-				params: {
-					stripEmpty: true,
-					type: 3
-				}
-			});
-			if (res) {
-				const songtypes: Record<string, Record<string, string>> = {};
-				for (const songtype of res.data.content) {
-					songtypes[songtype.name] = songtype.i18n as Record<string, string>;
-				}
-				this.songtypes = songtypes;
-			}
-		},
-
-		computed: mapState('menubar', ['tags']),
-
-		mounted() {
-			// Prefill the username field if user is logged in
-			if (this.$auth.loggedIn) {
-				this.formData.username = this.$auth.user.nickname;
-			}
-		},
-
-		methods: {
-			closeModal(): void {
-				this.submitted = false;
-				this.$emit('close');
-			},
-			submitForm() {
-				if (this.formData.title && this.formData.serie && this.formData.link) {
-					this.loading = true;
-					if (!this.formData.username) {
-						this.formData.username = 'Anonymous';
-					}
-					this.$axios.post('/api/karas/suggest', this.formData).then((res) => {
-						this.submitted = true;
-						this.loading = false;
-						this.gitlabUrl = res.data;
-						this.formData = {
-							title: '',
-							serie: '',
-							type: 'OP',
-							link: '',
-							username: ''
-						};
-					});
-				}
-			}
+	const emit = defineEmits<{(e: 'close'): void}>();
+	const { loggedIn, user } = storeToRefs(useAuthStore());
+	const { locale } = useI18n();
+	onMounted(() => {
+		// Prefill the username field if user is logged in
+		if (loggedIn.value && user?.value?.nickname) {
+			formData.value.username = user.value.nickname;
 		}
 	});
+
+	fetch();
+
+	async function fetch() {
+		const res = await useCustomFetch<TagList>('/api/karas/tags', {
+			params: { 
+				stripEmpty: true,
+				type: 3
+			}
+		});
+		if (res) {
+			const songtypesUpdated: Record<string, Record<string, string>> = {};
+			for (const songtype of res.content) {
+				songtypesUpdated[songtype.name] = songtype.i18n as Record<string, string>;
+			}
+			songtypes.value = songtypesUpdated;
+		}
+	}
+
+	function closeModal(): void {
+		submitted.value = false;
+		emit('close');
+	}
+	async function submitForm() {
+		if (formData.value.title && formData.value.serie && formData.value.link) {
+			loading.value = true;
+			if (!formData.value.username) {
+				formData.value.username = 'Anonymous';
+			}
+			gitlabUrl.value = await useCustomFetch<string>('/api/karas/suggest', {
+				method: 'POST',
+				body: formData.value
+			});
+			submitted.value = true;
+			loading.value = false;
+			formData.value = {
+				title: '',
+				serie: '',
+				type: 'OP',
+				link: '',
+				username: ''
+			};
+		}
+	}
 </script>
 
 <style scoped lang="scss">

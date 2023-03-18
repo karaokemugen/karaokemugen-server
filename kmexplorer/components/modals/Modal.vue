@@ -1,12 +1,27 @@
 <template>
-	<div class="modal" :class="{'is-active': active}">
-		<form action="#" @submit.prevent="submitForm">
-			<div class="modal-background" @click="closeModal" />
+	<div
+		class="modal"
+		:class="{'is-active': active}"
+	>
+		<form
+			action="#"
+			@submit.prevent="submitForm"
+		>
+			<div
+				class="modal-background"
+				@click="closeModal"
+			/>
 			<div class="modal-card">
 				<header>
 					<div class="modal-card-head is-flex">
 						{{ modalTitle }}
-						<div><a class="delete" aria-label="close" @click="closeModal" /></div>
+						<div>
+							<nuxt-link
+								class="delete"
+								aria-label="close"
+								@click="closeModal"
+							/>
+						</div>
 					</div>
 				</header>
 				<slot />
@@ -31,32 +46,27 @@
 	</div>
 </template>
 
-<script lang="ts">
-	import Vue from 'vue';
+<script setup lang="ts">
 
-	export default Vue.extend({
-		name: 'Modal',
+	defineProps<{
+		active: boolean,
+		modalTitle: string,
+		submitLabel?: string,
+		cancelLabel: string
+	}>();
 
-		props: {
-			active: Boolean,
-			modalTitle: String,
-			submitLabel: String,
-			cancelLabel: String
-		},
+	const emit = defineEmits<{ (e: 'close' | 'submit' | 'cancel'): void }>();
 
-		methods: {
-			submitForm(): void {
-				this.$emit('submit');
-			},
-			closeModal(): void {
-				this.$emit('close');
-			},
-			cancelModal(): void {
-				this.$emit('cancel');
-				this.$emit('close');
-			}
-		}
-	});
+	function submitForm(): void {
+		emit('submit');
+	}
+	function closeModal(): void {
+		emit('close');
+	}
+	function cancelModal(): void {
+		emit('cancel');
+		emit('close');
+	}
 </script>
 
 <style lang="scss" scoped>

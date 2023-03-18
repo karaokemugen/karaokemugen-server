@@ -1,27 +1,28 @@
+import { readFileSync } from 'node:fs';
+import { join, resolve } from 'node:path';
+
 import { program } from 'commander';
 import detect from 'detect-port';
 import dotenv from 'dotenv';
 import findRemoveSync from 'find-remove';
 import findWorkspaceRoot from 'find-yarn-workspace-root';
-import {readFileSync} from 'node:fs';
-import {join, resolve} from 'node:path';
 import sudoBlock from 'sudo-block';
 import { register } from 'ts-node';
 import logger from 'winston';
 
-import {initDB} from './dao/database';
-import {initFrontend} from './frontend';
-import {getConfig, setConfig} from './lib/utils/config';
-import {asyncCheckOrMkdir} from './lib/utils/files';
+import { initDB } from './dao/database';
+import { initFrontend } from './frontend';
+import { getConfig, setConfig } from './lib/utils/config';
+import { asyncCheckOrMkdir } from './lib/utils/files';
 import { createImagePreviews } from './lib/utils/previews';
 import { initGitRepos } from './services/git';
 import { generate, getAllKaras } from './services/kara';
-import {buildKMExplorer} from './services/kmexplorer';
+import { buildKMExplorer } from './services/kmexplorer';
 import { promoteToken } from './services/remote';
-import {initRepos} from './services/repo';
+import { initRepos } from './services/repo';
 import { addSuggestionsFromFile } from './services/suggestions';
-import {addRoleToUser, changePassword, createUser, initUsers, removeRoleFromUser} from './services/user';
-import {initConfig} from './utils/config';
+import { addRoleToUser, changePassword, createUser, initUsers, removeRoleFromUser } from './services/user';
+import { initConfig } from './utils/config';
 import { initHardsubGeneration } from './utils/hardsubs';
 import { initMailer } from './utils/mailer';
 import sentry from './utils/sentry';
