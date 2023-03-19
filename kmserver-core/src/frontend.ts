@@ -106,8 +106,6 @@ export function initFrontend(listenPort: number) {
 	// KMExplorer
 	if (conf.KaraExplorer.Enabled) {
 		app.use('/previews', express.static(resolvedPath('Previews')));
-
-		startKMExplorer(app);
 	}
 
 	const port = listenPort;
@@ -117,6 +115,10 @@ export function initFrontend(listenPort: number) {
 	if (conf.Remote.Enabled) {
 		remoteSocketController(ws);
 		app.use(vhost(`*.${conf.Remote.BaseHost}`, initRemote()));
+	}
+	// KMExplorer
+	if (conf.KaraExplorer.Enabled) {
+		startKMExplorer(app);
 	}
 	userSubSocketController(ws);
 
