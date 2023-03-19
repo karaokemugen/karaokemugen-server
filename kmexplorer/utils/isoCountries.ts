@@ -16,13 +16,13 @@ export function getListCountriesInLocale(userLang:string) {
 	if (process.client) {
 		const alphaCodes = Object.keys(countries.getAlpha2Codes());
 		for (const alphaCode of alphaCodes) {
-			result.push({ value: alphaCode, label: geCountriesInLocaleFromCode(alphaCode, userLang) });
+			result.push({ value: alphaCode, label: getCountriesInLocaleFromCode(alphaCode, userLang) });
 		}
 	}
 	return result;
 }
 
-export function geCountriesInLocaleFromCode(code: string, userLang:string) {
+export function getCountriesInLocaleFromCode(code: string, userLang:string) {
 	return countries.getName(code, userLang) || '';
 }
 

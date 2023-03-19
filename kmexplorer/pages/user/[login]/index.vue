@@ -67,10 +67,10 @@
 					</div>
 					<template v-if="bio || metadata">
 						<div
-							v-if="metadata && user.social_networks"
+							v-if="metadata"
 							class="metadata"
 						>
-							<div v-if="user.social_networks.twitter">
+							<div v-if="user.social_networks && user.social_networks.twitter">
 								<font-awesome-icon
 									:icon="['fab', 'twitter']"
 									:fixed-width="true"
@@ -82,7 +82,7 @@
 									{{ user.social_networks.twitter }}
 								</nuxt-link>
 							</div>
-							<div v-if="user.social_networks.mastodon">
+							<div v-if="user.social_networks && user.social_networks.mastodon">
 								<font-awesome-icon
 									:icon="['fab', 'mastodon']"
 									:fixed-width="true"
@@ -94,7 +94,7 @@
 									{{ user.social_networks.mastodon }}
 								</nuxt-link>
 							</div>
-							<div v-if="user.social_networks.instagram">
+							<div v-if="user.social_networks && user.social_networks.instagram">
 								<font-awesome-icon
 									:icon="['fab', 'instagram']"
 									:fixed-width="true"
@@ -106,14 +106,14 @@
 									{{ user.social_networks.instagram }}
 								</nuxt-link>
 							</div>
-							<div v-if="user.social_networks.discord">
+							<div v-if="user.social_networks && user.social_networks.discord">
 								<font-awesome-icon
 									:icon="['fab', 'discord']"
 									:fixed-width="true"
 								/>
 								{{ user.social_networks.discord }}
 							</div>
-							<div v-if="user.social_networks.twitch">
+							<div v-if="user.social_networks && user.social_networks.twitch">
 								<font-awesome-icon
 									:icon="['fab', 'twitch']"
 									:fixed-width="true"
@@ -141,8 +141,7 @@
 								<font-awesome-icon
 									:icon="['fas', 'globe']"
 									:fixed-width="true"
-								/>
-								{{ geCountriesInLocaleFromCode(user.location, locale) }}
+								/>{{ getCountriesInLocaleFromCode(user.location, locale) }}
 							</div>
 						</div>
 						<div
@@ -403,6 +402,10 @@
 				border-top: 1px solid gray;
 				> div {
 					padding: 0 1em;
+
+					svg {
+						margin-right: 0.20em;
+					}
 				}
 			}
 			.bio {

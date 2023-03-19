@@ -753,7 +753,7 @@
 		if (user?.value) {
 			editedUser.value = _.cloneDeep(user?.value);
 			if (user?.value.location) {
-				location.value = geCountriesInLocaleFromCode(user?.value.location, locale.value);
+				location.value = getCountriesInLocaleFromCode(user?.value.location, locale.value);
 			}
 			if (user?.value.main_series_lang) {
 				main_series_lang_name.value = i18nIsoLanguages.getName(user?.value.main_series_lang, locale.value) as string;
