@@ -1,8 +1,8 @@
 import i18nIsoLanguages from '@karaokemugen/i18n-iso-languages';
+import de from '@karaokemugen/i18n-iso-languages/langs/de.json';
 import en from '@karaokemugen/i18n-iso-languages/langs/en.json';
 import fr from '@karaokemugen/i18n-iso-languages/langs/fr.json';
 import id from '@karaokemugen/i18n-iso-languages/langs/id.json';
-import de from '@karaokemugen/i18n-iso-languages/langs/de.json';
 import pt from '@karaokemugen/i18n-iso-languages/langs/pt.json';
 
 i18nIsoLanguages.registerLocale(en);
@@ -83,7 +83,7 @@ export function listLangs(name: string, userLang: string): string[] {
 		.filter(langName => langName.toLowerCase().includes(name.toLowerCase()));
 }
 export function get3BCode(language: string, userLang:string): string {
-	return i18nIsoLanguages.getAlpha3BCode(language, userLang) as string || 
+	return i18nIsoLanguages.getAlpha3BCode(language, userLang) as string ||
 		i18nIsoLanguages.getAlpha3BCode(language, 'en') as string;
 }
 
@@ -94,5 +94,5 @@ function getAlpha3BLanguagesLocalized(userLang: string): Array<{alpha3B: string,
 	}))
 }
 
-const getLanguageName = (alpha2orAlpha3: string, lang: string) => i18nIsoLanguages.getName(alpha2orAlpha3, lang) || 
+const getLanguageName = (alpha2orAlpha3: string, lang: string) => i18nIsoLanguages.getName(alpha2orAlpha3, lang) ||
 	i18nIsoLanguages.getName(alpha2orAlpha3, 'en');
