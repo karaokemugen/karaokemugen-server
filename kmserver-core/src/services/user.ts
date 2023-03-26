@@ -20,7 +20,7 @@ import { isLooselyEqual } from '../lib/utils/objectHelpers';
 import { UserList, UserOptions, UserParams } from '../types/user';
 import { adminToken } from '../utils/constants';
 import { sendMail } from '../utils/mailer';
-import sentry from '../utils/sentry';
+import sentry, { NoSentryError } from '../utils/sentry';
 import { refreshAnimeList } from './animeList';
 import { getKara } from './kara';
 import { delPubUser, pubUser } from './userPubSub';
@@ -31,11 +31,11 @@ const passwordResetRequests = new Map();
 
 export async function resetPasswordRequest(username: string) {
 	try {
-		if (!username) throw ('No user provided');
+		if (!username) throw new NoSentryError('No user provided');
 		username = username.toLowerCase();
 		const user = await findUserByName(username, { contact: true });
-		if (!user) throw new Error('User unknown');
-		if (!user.email) throw new Error('User has no configured mail. Ask server admin for a password reset');
+		if (!user) throw new NoSentryError('User unknown');
+		if (!user.email) throw new NoSentryError('User has no configured mail. Ask server admin for a password reset');
 		const requestCode = uuidV4();
 		passwordResetRequests.set(username, {
 			code: requestCode,
@@ -59,10 +59,8 @@ export async function resetPasswordRequest(username: string) {
 			user.email
 		);
 	} catch (err) {
-		if (err.message !== 'User unknown' && err.message !== 'User has no configured mail. Ask server admin for a password reset') {
-			sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
-			sentry.error(err);
-		}
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
 		throw err;
 	}
 }
@@ -70,11 +68,11 @@ export async function resetPasswordRequest(username: string) {
 export async function resetPassword(username: string, requestCode: string) {
 	try {
 		const request = passwordResetRequests.get(username);
-		if (!request) throw new Error('No request');
-		if (request.code !== requestCode) throw new Error('Wrong code');
+		if (!request) throw new NoSentryError('No request');
+		if (request.code !== requestCode) throw new NoSentryError('Wrong code');
 		const user = await findUserByName(username, {contact: true});
-		if (!user) throw new Error('User unknown');
-		if (!user.email) throw new Error('User has no configured mail. Ask server admin for a password reset');
+		if (!user) throw new NoSentryError('User unknown');
+		if (!user.email) throw new NoSentryError('User has no configured mail. Ask server admin for a password reset');
 		const newPassword = randomstring.generate(12);
 		await changePassword(username, newPassword);
 		passwordResetRequests.delete(username);
@@ -95,10 +93,8 @@ export async function resetPassword(username: string, requestCode: string) {
 			user.email
 		);
 	} catch (err) {
-		if (err.message !== 'No request' && err.message !== 'User unknown' && err.message !== 'Wrong code') {
-			sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
-			sentry.error(err);
-		}
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
 		throw err;
 	}
 }

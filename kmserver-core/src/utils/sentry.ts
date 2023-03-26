@@ -7,6 +7,10 @@ const Sentry = new SentryLogger(SentryNode);
 
 export default Sentry;
 
+export class NoSentryError extends Error {
+	noSentry = true;
+}
+
 export class SentryTransport extends Transport {
 	log(info: any, callback: any) {
 		// Testing for precise falseness. If errortracking is undefined or if getconfig doesn't return anything, errors are sent.
