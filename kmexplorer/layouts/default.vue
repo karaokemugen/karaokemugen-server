@@ -1041,7 +1041,7 @@
 			...seo.value,
 			titleTemplate: (titleChunk) => {
 				// If undefined or blank then we don't need the hyphen
-				return titleChunk ? `${titleChunk} - Karaoke Mugen` : 'Karaoke Mugen';
+				return titleChunk && titleChunk != 'kmexplorer' ? `${titleChunk} - Karaoke Mugen` : 'Karaoke Mugen';
 			}
 		};
 	});
