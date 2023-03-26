@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { RequestHandler } from 'express-serve-static-core';
 import multer from 'multer';
 import { resolve } from 'path';
+import { APIMessage } from '../../lib/services/frontend';
 
 import { getConfig } from '../../lib/utils/config';
 import { unescape } from '../../lib/utils/validators';
@@ -62,7 +63,7 @@ export default function userController(router: Router) {
 		.delete(requireAuth, requireValidUser, updateLoginTime, async (req: any, res) => {
 			try {
 				await removeUser(req.authToken.username);
-				res.send('User deleted');
+				res.send(APIMessage('USER_DELETED'));
 			} catch (err) {
 				res.status(500).send(err);
 			}
@@ -71,7 +72,7 @@ export default function userController(router: Router) {
 			req.body.login = unescape(req.body.login.trim());
 			try {
 				await createUser(req.body);
-				res.json({ code: 'USER_CREATED' });
+				res.json(APIMessage('USER_CREATED'));
 			} catch (err) {
 				res.status(500).json(err.code);
 			}
@@ -123,7 +124,7 @@ export default function userController(router: Router) {
 		.delete(requireAuth, requireValidUser, updateLoginTime, async (req: any, res: any) => {
 			try {
 				await removeUser(req.authToken.username);
-				res.status(200).json('USER_DELETED');
+				res.status(200).json(APIMessage('USER_DELETED'));
 			} catch (err) {
 				res.status(500).json(err);
 			}
