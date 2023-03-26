@@ -9,7 +9,7 @@
 			<div class="columns">
 				<div class="column">
 					<nuxt-link
-						v-if="karaokesJsonLink"
+						v-if="karaoke.karafile"
 						:href="jsonUrl"
 						class="button"
 						:download="`${serieSinger.name} - ${karaoke.titles[karaoke?.titles_default_language??0]}.karabundle.json`"
@@ -122,7 +122,7 @@
 		return '';
 	});
 	const jsonUrl = computed(() => {
-		return `${karaokesJsonLink}/${encodeURIComponent(props.karaoke.karafile)}`;
+		return `${apiUrl}downloads/karaokes/${encodeURIComponent(props.karaoke.karafile)}`;
 	});
 	const mediaUrl = computed(() => {
 		return `${apiUrl}downloads/medias/${encodeURIComponent(props.karaoke.mediafile)}`;
