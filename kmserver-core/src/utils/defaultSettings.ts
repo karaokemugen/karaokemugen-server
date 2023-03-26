@@ -104,6 +104,9 @@ The files (.kara, video, .ass and serial if necessary) are present in the follow
 **Series** : $series
 
 
+**Franchises** : $franchises
+
+
 **Type** : $type$order
 
 
@@ -183,6 +186,9 @@ A proposal to modify a karaoke has been sent. You will find all the new files in
 
 
 **Series** : $series
+
+
+**Franchises** : $franchises
 
 
 **Type** : $type$order

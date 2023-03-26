@@ -85,6 +85,9 @@ Gitlab:
         **Series** : $series
 
 
+        **Franchises** : $franchises
+
+
         **Type** : $type$order
 
 
@@ -143,6 +146,9 @@ Gitlab:
 
 
         **Series** : $series
+
+
+        **Franchises** : $franchises
 
 
         **Type** : $type$order

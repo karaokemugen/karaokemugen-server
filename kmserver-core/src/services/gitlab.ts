@@ -30,6 +30,7 @@ export async function gitlabPostNewSuggestion(kid: string, edit?: EditElement) {
 		.replace('$author', kara.authors.map(t => t.name).join(', '))
 		.replace('$title', JSON.stringify(kara.titles))
 		.replace('$series', kara.series.map(t => t.name).join(', '))
+		.replace('$franchises', kara.franchises.map(t => t.name).join(', '))
 		.replace('$type', kara.songtypes.map(t => t.name).join(', '))
 		.replace('$order', (kara.songorder && kara.songorder.toString()) || '')
 		.replace('$lang', kara.langs.map(t => t.name).join(', '))
