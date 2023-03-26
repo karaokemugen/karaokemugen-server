@@ -77,6 +77,7 @@
 					:kids="karaoke?.parents"
 					:with-suggest="false"
 					:with-search="false"
+					:ignore-filter="true"
 				/>
 			</template>
 			<template v-if="karaoke?.children && karaoke.children.length > 0">
@@ -89,6 +90,7 @@
 					:kids="karaoke?.children"
 					:with-suggest="false"
 					:with-search="false"
+					:ignore-filter="true"
 				/>
 			</template>
 			<template v-if="karaoke?.siblings && karaoke.siblings.length > 0">
@@ -101,6 +103,7 @@
 					:kids="karaoke?.siblings"
 					:with-suggest="false"
 					:with-search="false"
+					:ignore-filter="true"
 				/>
 			</template>
 		</div>

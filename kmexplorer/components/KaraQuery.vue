@@ -65,9 +65,11 @@
 		withSuggest?: boolean
 		withSearch?: boolean
 		userAnimeList?: string
+		ignoreFilter?: boolean
 	}>(), {
 		withSuggest: true,
-		withSearch: true
+		withSearch: true,
+		ignoreFilter: false
 	});
 
 	setResultsCount(0);
@@ -192,7 +194,7 @@
 	function reqParams(): KaraRequest {
 		const queries: string[] = [];
 		const tags: string[] = [];
-		if (menuTags.value.length > 0) {
+		if (menuTags.value.length > 0 && !props.ignoreFilter) {
 			for (const tag of menuTags.value) {
 				if (tag.type === 'years') {
 					queries.push(`y:${tag.tag.name}`);
@@ -209,7 +211,7 @@
 		}
 		return {
 			q: queries.join('!') || undefined,
-			filter: search.value || undefined,
+			filter: (!props.ignoreFilter && search.value) || undefined,
 			from: (from.value * 12),
 			size: 12,
 			order: (sort.value as OrderParam) || undefined,
