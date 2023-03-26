@@ -110,6 +110,7 @@
 			"license_link": "Learn more about this license by clicking here.",
 			"add": "Add",
 			"create": "Create",
+			"show_hide": "Show/Hide",
 			"choose_file": "Choose a file",
 			"add_file_media_error": "{name} is not a media file",
 			"add_file_media_not_supported_error": "{name} is not a supported media file, convert it to one of the following formats: {formats}",

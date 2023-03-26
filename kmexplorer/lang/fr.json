@@ -110,6 +110,7 @@
 			"license_link": "Renseignez-vous sur cette licence en cliquant ici.",
 			"add": "Ajout",
 			"create": "Créer",
+			"show_hide": "Montrer / Cacher",
 			"choose_file": "Choisissez un fichier",
 			"add_file_media_error": "{name} n'est pas un fichier média",
 			"add_file_media_not_supported_error": "{name} n'est pas un fichier média supporté, convertissez-le dans un des formats suivants : {formats}",

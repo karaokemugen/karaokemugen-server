@@ -447,12 +447,20 @@
 			<div class="field">
 				<label class="label">{{ t('kara.tagtypes.platforms', karaoke.data.tags.platforms.length) }}</label>
 				<div class="control">
-					<editable-tag-group
-						:checkboxes="true"
-						:tag-type="13"
-						:params="karaoke.data.tags.platforms"
-						@change="(tags) => karaoke.data.tags.platforms = tags"
-					/>
+					<o-collapse :open="false">
+						<template #trigger>
+							<div class="button tag is-small">
+								{{ t('kara.import.show_hide') }}
+							</div>
+						</template>
+						<editable-tag-group
+							class="show-hide"
+							:checkboxes="true"
+							:tag-type="13"
+							:params="karaoke.data.tags.platforms"
+							@change="(tags) => karaoke.data.tags.platforms = tags"
+						/>
+					</o-collapse>
 				</div>
 			</div>
 			<div class="field">
@@ -1045,5 +1053,9 @@
 		border-top: 1px #5e6d6f solid;
 		border-top-left-radius: 0;
 		border-top-right-radius: 0;
+	}
+
+	.show-hide {
+		margin-top: 0.75em;
 	}
 </style>
