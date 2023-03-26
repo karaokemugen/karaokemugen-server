@@ -50,13 +50,6 @@ body.has-navbar-fixed-top, html.has-navbar-fixed-top {
 	color: lighten($grey, 15);
 }
 
-.page-enter-active, .page-leave-active {
-	transition: opacity 100ms;
-}
-.page-enter, .page-leave-to /* .fade-leave-active below version 2.1.8 */ {
-	opacity: 0;
-}
-
 .button.is-static {
 	background-color: $grey-darker;
 }
