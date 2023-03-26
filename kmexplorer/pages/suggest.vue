@@ -64,6 +64,7 @@
 			/>
 		</div>
 		<first-time-suggest-modal
+			v-if="!loading"
 			:active="!hideSuggestionModal"
 			@close="() => setHideSuggestionModal()"
 		/>
