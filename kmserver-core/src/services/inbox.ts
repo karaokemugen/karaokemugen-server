@@ -162,6 +162,7 @@ export async function clearUnusedStagingTags() {
 		}
 	}
 	for (const tagFile of tagFilesToDelete) {
+		logger.info(`Removing unused tag from Staging : ${tagFile}`, { service });
 		await fs.unlink(resolve(tagDir, tagFile));
 	}
 }
