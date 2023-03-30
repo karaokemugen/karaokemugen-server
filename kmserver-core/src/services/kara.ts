@@ -25,7 +25,7 @@ import sentry from '../utils/sentry';
 import { getState } from '../utils/state';
 import { updateGit } from './git';
 import { gitlabPostNewIssue } from './gitlab';
-import { clearOldInboxEntries, clearUnusedStagingTags } from './inbox';
+import { clearOldInboxEntries } from './inbox';
 import { findUserByName } from './user';
 
 const service = 'Kara';
@@ -81,7 +81,7 @@ export async function generate() {
 			promises.push(generateHardsubs(karas));
 			generateHardsubsCache(karas);
 		}
-		if (conf.KaraExplorer.Import) promises.push(clearOldInboxEntries(), clearUnusedStagingTags());
+		if (conf.KaraExplorer.Import) promises.push(clearOldInboxEntries());
 		if (conf.System.Repositories[0].OnUpdateTrigger) promises.push(updateTrigger());
 		await Promise.all(promises);
 	} catch (err) {
