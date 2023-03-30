@@ -960,8 +960,8 @@
 					method: 'PUT',
 					body: {
 						kara: karaokeElem,
-						modifiedMedia: !!mediafile,
-						modifiedLyrics: !!subfile,
+						modifiedMedia: !!mediafile.value,
+						modifiedLyrics: !!subfile.value,
 						contact
 					}
 				}
