@@ -117,7 +117,6 @@ const nuxtConfig = defineNuxtConfig({
 		// Doc: https://v8.i18n.nuxtjs.org/getting-started/setup
 		'@nuxtjs/i18n',
 		// Doc: https://github.com/nuxt-community/sentry-module
-		'@nuxtjs/sentry',
 		'@pinia/nuxt',
 		'@pinia-plugin-persistedstate/nuxt',
 		'@kevinmarrec/nuxt-pwa'

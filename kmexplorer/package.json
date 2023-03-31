@@ -14,7 +14,6 @@
     "@fortawesome/vue-fontawesome": "^3.0.3",
     "@karaokemugen/i18n-iso-languages": "^4.0.3",
     "@nuxtjs/i18n": "8.0.0-beta.10",
-    "@nuxtjs/sentry": "^8.0.0-beta.1",
     "@oruga-ui/oruga-next": "^0.5.10",
     "@oruga-ui/theme-bulma": "^0.2.9",
     "@pinia-plugin-persistedstate/nuxt": "^1.1.1",
