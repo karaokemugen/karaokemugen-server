@@ -2,8 +2,8 @@ import { Router } from 'express';
 import { RequestHandler } from 'express-serve-static-core';
 import multer from 'multer';
 import { resolve } from 'path';
-import { APIMessage } from '../../lib/services/frontend';
 
+import { APIMessage } from '../../lib/services/frontend';
 import { getConfig } from '../../lib/utils/config';
 import { unescape } from '../../lib/utils/validators';
 import { refreshAnimeList } from '../../services/animeList';
