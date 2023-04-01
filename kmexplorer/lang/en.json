@@ -537,7 +537,8 @@
 		"CANNOT_EDIT_KARA": "Cannot send modification.",
 		"FILE_UPLOADED": "File uploaded.",
 		"USER_EDITED": "User successfully edited",
-		"TAG_CREATED": "Tag successfully created"
+		"TAG_CREATED": "Tag successfully created",
+		"USER_DELETED": "User successfully deleted"
 	},
 	"roles": {
 		"donator": "Donator",

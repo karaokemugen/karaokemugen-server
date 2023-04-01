@@ -537,7 +537,8 @@
 		"CANNOT_EDIT_KARA": "Impossible d'envoyer la modification.",
 		"FILE_UPLOADED": "Fichier mis en ligne.",
 		"USER_EDITED": "Utilisateur édité avec succès",
-		"TAG_CREATED": "Tag créé avec succès"
+		"TAG_CREATED": "Tag créé avec succès",
+		"USER_DELETED": "Utilisateur supprimé avec succès"
 	},
 	"roles": {
 		"donator": "Donateur(-ice)",

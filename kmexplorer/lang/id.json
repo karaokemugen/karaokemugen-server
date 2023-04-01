@@ -492,7 +492,8 @@
 		"CANNOT_EDIT_KARA": "Tidak bisa mengirim suntingan.",
 		"USER_EDITED": "Pengguna berhasil disunting",
 		"FILE_UPLOADED": "Berkas diunggah.",
-		"TAG_CREATED": "Tanda berhasil dibuat"
+		"TAG_CREATED": "Tanda berhasil dibuat",
+		"USER_DELETED": "Pengguna berhasil dihapus"
 	},
 	"titles": {
 		"home": "Beranda"
