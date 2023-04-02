@@ -542,7 +542,8 @@
 		"FILE_UPLOADED": "Fichier mis en ligne.",
 		"USER_EDITED": "Utilisateur édité avec succès",
 		"TAG_CREATED": "Tag créé avec succès",
-		"USER_DELETED": "Utilisateur supprimé avec succès"
+		"USER_DELETED": "Utilisateur supprimé avec succès",
+		"PASSWORD_UPDATED": "Mot de passe modifié avec succès"
 	},
 	"roles": {
 		"donator": "Donateur(-ice)",

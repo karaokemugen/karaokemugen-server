@@ -107,7 +107,7 @@ export default function userController(router: Router) {
 		.post(async (req, res) => {
 			try {
 				await resetPassword(req.params.user, req.body.requestCode, req.body.newPassword);
-				res.status(200).json();
+				res.status(200).json(APIMessage('PASSWORD_UPDATED'));
 			} catch (err) {
 				res.status(500).json(err);
 			}

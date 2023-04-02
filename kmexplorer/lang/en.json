@@ -542,7 +542,8 @@
 		"FILE_UPLOADED": "File uploaded.",
 		"USER_EDITED": "User successfully edited",
 		"TAG_CREATED": "Tag successfully created",
-		"USER_DELETED": "User successfully deleted"
+		"USER_DELETED": "User successfully deleted",
+		"PASSWORD_UPDATED": "Password successfully updated"
 	},
 	"roles": {
 		"donator": "Donator",

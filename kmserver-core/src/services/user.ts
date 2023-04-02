@@ -50,7 +50,7 @@ export async function resetPasswordRequest(username: string) {
 
 		Please click the following link to get a new, randomized password sent to your mail account :
 
-		${conf.API.Secure ? 'https://' : 'http://'}${conf.API.Host}/${user.login}/resetPasswordRequest/${requestCode}
+		${conf.API.Secure ? 'https://' : 'http://'}${conf.API.Host}/user/${user.login}/resetPasswordRequest/${requestCode}
 
 		This link will expire in two hours.
 		`,

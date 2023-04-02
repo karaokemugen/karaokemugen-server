@@ -80,11 +80,7 @@
 </template>
 
 <script setup lang="ts">
-	import * as Toast from 'vue-toastification';
 	import { TokenResponseWithRoles } from '~/../kmserver-core/src/lib/types/user';
-
-	// @ts-ignore
-	const useToast = Toast.useToast ?? Toast.default.useToast;
 
 	const loading = ref(false);
 	const login = ref<{
@@ -95,10 +91,7 @@
 		password_confirmation: ''
 	});
 
-	const { t } = useI18n();
 	const { params } = useRoute();
-
-	const toast = useToast();
 
 	function passwordNotEquals() {
 		return (
@@ -122,7 +115,6 @@
 				newPassword : login.value.password
 			}
 		}).then(() => {
-			toast.success(t('modal.login.fields.forgot_password.success'));
 			resetForm();
 		}).finally(() => {
 			loading.value = false;
@@ -139,13 +131,5 @@
 <style lang="scss" scoped>
 	.field-body {
 		flex-grow: 4;
-	}
-
-	.is-active {
-		color: #1dd2af;
-	}
-
-	.control.is-expanded .button {
-		width: 100%;
 	}
 </style>
