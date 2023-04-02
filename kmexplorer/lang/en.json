@@ -288,6 +288,10 @@
 		}
 	},
 	"modal": {
+		"reset_password": {
+			"description": "Enter a new password",
+			"button": "Change password"
+		},
 		"login": {
 			"title": "Login",
 			"subtitle": "Login to view your favorites and edit your profile!",

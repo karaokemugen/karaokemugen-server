@@ -103,11 +103,11 @@ export default function userController(router: Router) {
 				res.status(500).json(err);
 			}
 		});
-	router.route('/users/:user/resetpassword/:requestCode')
-		.get(async (req, res) => {
+	router.route('/users/:user/resetpasswordaction')
+		.post(async (req, res) => {
 			try {
-				const info = await resetPassword(req.params.user, req.params.requestCode);
-				res.status(200).json(info);
+				await resetPassword(req.params.user, req.body.requestCode, req.body.newPassword);
+				res.status(200).json();
 			} catch (err) {
 				res.status(500).json(err);
 			}
