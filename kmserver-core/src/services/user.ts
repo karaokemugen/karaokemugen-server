@@ -5,7 +5,6 @@ import { copy } from 'fs-extra';
 import { verify } from 'jsonwebtoken';
 import { cloneDeep, merge } from 'lodash';
 import { isAbsolute, resolve } from 'path';
-import randomstring from 'randomstring';
 import { v4 as uuidV4 } from 'uuid';
 
 import { createJwtToken } from '../controllers/http/auth';
@@ -51,7 +50,7 @@ export async function resetPasswordRequest(username: string) {
 
 		Please click the following link to get a new, randomized password sent to your mail account :
 
-		${conf.API.Secure ? 'https://' : 'http://'}${conf.API.Host}/api/users/${username}/resetpassword/${requestCode}
+		${conf.API.Secure ? 'https://' : 'http://'}${conf.API.Host}/${user.login}/resetPasswordRequest/${requestCode}
 
 		This link will expire in two hours.
 		`,
@@ -65,7 +64,7 @@ export async function resetPasswordRequest(username: string) {
 	}
 }
 
-export async function resetPassword(username: string, requestCode: string) {
+export async function resetPassword(username: string, requestCode: string, newPassword: string) {
 	try {
 		const request = passwordResetRequests.get(username);
 		if (!request) throw new NoSentryError('No request');
@@ -73,7 +72,6 @@ export async function resetPassword(username: string, requestCode: string) {
 		const user = await findUserByName(username, {contact: true});
 		if (!user) throw new NoSentryError('User unknown');
 		if (!user.email) throw new NoSentryError('User has no configured mail. Ask server admin for a password reset');
-		const newPassword = randomstring.generate(12);
 		await changePassword(username, newPassword);
 		passwordResetRequests.delete(username);
 		sendMail(
@@ -83,11 +81,9 @@ export async function resetPassword(username: string, requestCode: string) {
 
 		You (or someone) requested a password reset for your account at ${getConfig().API.Host}.
 
-		Your password has been reset to the following :
-		${newPassword}
+		Your password has been reset successfully.
 
-		Please login using a Karaoke Mugen Application and change it to something else.
-
+		You should be able to login using your new password now.
 		`,
 			username,
 			user.email

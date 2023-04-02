@@ -288,6 +288,10 @@
 		}
 	},
 	"modal": {
+		"reset_password": {
+			"description": "Indiquez un nouveau mot de passe",
+			"button": "Modifier le mot de passe"
+		},
 		"login": {
 			"title": "Se connecter",
 			"subtitle": "Connectez-vous à votre compte en ligne pour voir vos favoris et éditer votre profil !",
