@@ -2,12 +2,12 @@ import { Router } from 'express';
 import multer from 'multer';
 import {resolve} from 'path';
 
-import { APIMessage, errMessage } from '../../lib/services/frontend';
-import { processUploadedMedia } from '../../lib/services/karaCreation';
-import {getConfig} from '../../lib/utils/config';
-import {createKara, editKara} from '../../services/karaImport';
-import { addTag } from '../../services/tag';
-import { getState } from '../../utils/state';
+import { APIMessage, errMessage } from '../../lib/services/frontend.js';
+import { processUploadedMedia } from '../../lib/services/karaCreation.js';
+import {getConfig} from '../../lib/utils/config.js';
+import {createKara, editKara} from '../../services/karaImport.js';
+import { addTag } from '../../services/tag.js';
+import { getState } from '../../utils/state.js';
 
 export default function KIController(router: Router) {
 	const conf = getConfig();

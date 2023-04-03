@@ -1,15 +1,15 @@
 import { isEqual } from 'lodash';
 import {basename} from 'path';
 
-import { getConfig } from '../lib/utils/config';
-import { tagTypes } from '../lib/utils/constants';
-import { duration } from '../lib/utils/date';
-import HTTP from '../lib/utils/http';
-import logger from '../lib/utils/logger';
-import { EditElement } from '../types/karaImport';
-import sentry from '../utils/sentry';
-import { getKara } from './kara';
-import { findUserByName } from './user';
+import { getConfig } from '../lib/utils/config.js';
+import { tagTypes } from '../lib/utils/constants.js';
+import { duration } from '../lib/utils/date.js';
+import HTTP from '../lib/utils/http.js';
+import logger from '../lib/utils/logger.js';
+import { EditElement } from '../types/karaImport.js';
+import sentry from '../utils/sentry.js';
+import { getKara } from './kara.js';
+import { findUserByName } from './user.js';
 
 const service = 'Gitlab';
 

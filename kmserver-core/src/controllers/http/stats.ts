@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { processStatsPayload} from '../../services/stats';
+import { processStatsPayload} from '../../services/stats.js';
 
 export default function statsController(router: Router) {
 	router.post('/stats', async (req, res) => {

@@ -1,6 +1,6 @@
-import { db } from '../lib/dao/database';
-import { RemoteAccessToken } from '../lib/types/remote';
-import * as sql from './sqls/remote';
+import { db } from '../lib/dao/database.js';
+import { RemoteAccessToken } from '../lib/types/remote.js';
+import * as sql from './sqls/remote.js';
 
 export async function selectRemoteTokens(token?: string): Promise<RemoteAccessToken[]> {
 	const res = await db().query(sql.selectTokens(token), token ? [

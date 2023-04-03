@@ -1,5 +1,5 @@
-import {DBList} from '../lib/types/database/database';
-import {DBUser} from '../lib/types/database/user';
+import {DBList} from '../lib/types/database/database.js';
+import {DBUser} from '../lib/types/database/user.js';
 
 export interface UserOptions {
     password?: boolean,

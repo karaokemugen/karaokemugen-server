@@ -3,14 +3,14 @@ import { RequestHandler } from 'express-serve-static-core';
 import multer from 'multer';
 import { resolve } from 'path';
 
-import { APIMessage } from '../../lib/services/frontend';
-import { getConfig } from '../../lib/utils/config';
-import { unescape } from '../../lib/utils/validators';
-import { refreshAnimeList } from '../../services/animeList';
-import { createUser, editUser, findUserByName, getAllUsers, removeUser, resetPassword, resetPasswordRequest } from '../../services/user';
-import { UserOptions } from '../../types/user';
-import { getState } from '../../utils/state';
-import { optionalAuth, requireAuth, requireValidUser, updateLoginTime } from '../middlewares/auth';
+import { APIMessage } from '../../lib/services/frontend.js';
+import { getConfig } from '../../lib/utils/config.js';
+import { unescape } from '../../lib/utils/validators.js';
+import { refreshAnimeList } from '../../services/animeList.js';
+import { createUser, editUser, findUserByName, getAllUsers, removeUser, resetPassword, resetPasswordRequest } from '../../services/user.js';
+import { UserOptions } from '../../types/user.js';
+import { getState } from '../../utils/state.js';
+import { optionalAuth, requireAuth, requireValidUser, updateLoginTime } from '../middlewares/auth.js';
 
 function editHandler(userFromToken: boolean): RequestHandler {
 	return async (req: any, res) => {

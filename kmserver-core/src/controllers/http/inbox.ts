@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
-import { getInbox, getKaraInbox, markKaraInboxAsDownloaded, removeKaraFromInbox } from '../../services/inbox';
-import {requireAuth, requireMaintainer, requireValidUser, updateLoginTime} from '../middlewares/auth';
+import { getInbox, getKaraInbox, markKaraInboxAsDownloaded, removeKaraFromInbox } from '../../services/inbox.js';
+import {requireAuth, requireMaintainer, requireValidUser, updateLoginTime} from '../middlewares/auth.js';
 
 export default function inboxController(router: Router) {
 	router.route('/inbox/:inid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})')

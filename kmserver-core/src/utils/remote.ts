@@ -1,8 +1,8 @@
 import { promises as fs, watch } from 'fs';
 import { resolve } from 'path';
 
-import logger from '../lib/utils/logger';
-import { resolvedPathRemoteRoot } from './config';
+import logger from '../lib/utils/logger.js';
+import { resolvedPathRemoteRoot } from './config.js';
 
 const service = 'Remote';
 

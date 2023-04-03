@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import {sign} from 'jsonwebtoken';
 
-import { Roles, TokenResponseWithRoles } from '../../lib/types/user';
-import {getConfig} from '../../lib/utils/config';
-import logger from '../../lib/utils/logger';
-import { refreshAnimeList } from '../../services/animeList';
-import {checkPassword, decodeJwtToken, findUserByName, updateUserLastLogin} from '../../services/user';
-import sentry from '../../utils/sentry';
-import { requireAuth, requireValidUser } from '../middlewares/auth';
+import { Roles, TokenResponseWithRoles } from '../../lib/types/user.js';
+import {getConfig} from '../../lib/utils/config.js';
+import logger from '../../lib/utils/logger.js';
+import { refreshAnimeList } from '../../services/animeList.js';
+import {checkPassword, decodeJwtToken, findUserByName, updateUserLastLogin} from '../../services/user.js';
+import sentry from '../../utils/sentry.js';
+import { requireAuth, requireValidUser } from '../middlewares/auth.js';
 
 const loginErr = {
 	code: 'LOG_ERROR',

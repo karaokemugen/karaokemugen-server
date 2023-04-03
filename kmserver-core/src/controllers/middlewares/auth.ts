@@ -1,4 +1,4 @@
-import {decodeJwtToken, findUserByName, updateUserLastLogin} from '../../services/user';
+import {decodeJwtToken, findUserByName, updateUserLastLogin} from '../../services/user.js';
 
 export const requireAuth = (req: any, res: any, next: any) => {
 	if (req.get('authorization')) {

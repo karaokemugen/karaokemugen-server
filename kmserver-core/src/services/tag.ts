@@ -1,14 +1,14 @@
 import { v4 as uuidV4 } from 'uuid';
 
-import {insertTag, selectTags} from '../dao/tag';
-import { updateTagSearchVector } from '../lib/dao/tag';
-import { writeTagFile } from '../lib/dao/tagfile';
-import { DBTag } from '../lib/types/database/tag';
-import { Tag, TagList, TagParams } from '../lib/types/tag';
-import { resolvedPathRepos } from '../lib/utils/config';
-import { sanitizeFile } from '../lib/utils/files';
-import logger from '../lib/utils/logger';
-import sentry from '../utils/sentry';
+import {insertTag, selectTags} from '../dao/tag.js';
+import { updateTagSearchVector } from '../lib/dao/tag.js';
+import { writeTagFile } from '../lib/dao/tagfile.js';
+import { DBTag } from '../lib/types/database/tag.js';
+import { Tag, TagList, TagParams } from '../lib/types/tag.js';
+import { resolvedPathRepos } from '../lib/utils/config.js';
+import { sanitizeFile } from '../lib/utils/files.js';
+import logger from '../lib/utils/logger.js';
+import sentry from '../utils/sentry.js';
 
 const service = 'Tags';
 

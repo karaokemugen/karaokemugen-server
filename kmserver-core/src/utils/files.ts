@@ -1,9 +1,9 @@
 import {promises as fs} from 'fs';
 import {resolve} from 'path';
 
-import {KaraFileV4} from '../lib/types/kara';
-import {resolvedPathRepos} from '../lib/utils/config';
-import {listAllFiles} from '../lib/utils/files';
+import {KaraFileV4} from '../lib/types/kara.js';
+import {resolvedPathRepos} from '../lib/utils/config.js';
+import {listAllFiles} from '../lib/utils/files.js';
 
 export async function findFileByUUID(property: 'kid', uuid: string, repo: string): Promise<[string, KaraFileV4]> {
 	const files = await listAllFiles('Karaokes', repo);

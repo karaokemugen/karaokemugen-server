@@ -1,5 +1,5 @@
-import {db} from '../lib/dao/database';
-import * as sql from './sqls/settings';
+import {db} from '../lib/dao/database.js';
+import * as sql from './sqls/settings.js';
 
 export async function selectSettings() {
 	const res = await db().query(sql.selectSettings);

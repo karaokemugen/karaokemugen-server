@@ -4,7 +4,7 @@ import express, { Express } from 'express';
 import { runCommand } from 'nuxi';
 
 import { handler } from '../../../kmexplorer/.output/server/index.mjs';
-import { getState } from '../utils/state';
+import { getState } from '../utils/state.js';
 
 export async function buildKMExplorer() {
 	await runCommand('build', ['rootDir', resolve(getState().appPath, 'kmexplorer')]);

@@ -1,14 +1,14 @@
 import {pg as yesql} from 'yesql';
 
-import {buildClauses, buildTypeClauses, db} from '../lib/dao/database';
-import { WhereClause } from '../lib/types/database';
-import { DBKara, DBMedia, DBYear } from '../lib/types/database/kara';
-import {KaraFileV4, KaraParams} from '../lib/types/kara';
-import {getConfig} from '../lib/utils/config';
-import {getTagTypeName, tagTypes} from '../lib/utils/constants';
-import logger from '../lib/utils/logger';
-import { DBStats } from '../types/database/kara';
-import * as sql from './sqls/kara';
+import {buildClauses, buildTypeClauses, db} from '../lib/dao/database.js';
+import { WhereClause } from '../lib/types/database.js';
+import { DBKara, DBMedia, DBYear } from '../lib/types/database/kara.js';
+import {KaraFileV4, KaraParams} from '../lib/types/kara.js';
+import {getConfig} from '../lib/utils/config.js';
+import {getTagTypeName, tagTypes} from '../lib/utils/constants.js';
+import logger from '../lib/utils/logger.js';
+import { DBStats } from '../types/database/kara.js';
+import * as sql from './sqls/kara.js';
 
 const service = 'DB';
 

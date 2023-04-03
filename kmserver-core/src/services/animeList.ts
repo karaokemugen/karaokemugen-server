@@ -1,13 +1,13 @@
-import Anilist from 'anilist-node';
+import { Anilist } from 'anilist-node';
 import Kitsu from 'kitsu';
 import malScraper from 'mal-scraper';
 
-import { selectUser, updateUser } from '../dao/user';
-import { KitsuResponseLibraryEntries } from '../lib/types/animeListApi';
-import { myanimelistStatusCompleted, myanimelistStatusWatching } from '../lib/utils/constants';
-import logger from '../lib/utils/logger';
-import sentry from '../utils/sentry';
-import { pubUser } from './userPubSub';
+import { selectUser, updateUser } from '../dao/user.js';
+import { KitsuResponseLibraryEntries } from '../lib/types/animeListApi.js';
+import { myanimelistStatusCompleted, myanimelistStatusWatching } from '../lib/utils/constants.js';
+import logger from '../lib/utils/logger.js';
+import sentry from '../utils/sentry.js';
+import { pubUser } from './userPubSub.js';
 
 const anilist = new Anilist();
 const kitsu = new Kitsu();

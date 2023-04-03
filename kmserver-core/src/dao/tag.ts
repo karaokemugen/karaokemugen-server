@@ -1,12 +1,12 @@
 import { pg as yesql } from 'yesql';
 
-import { db, paramWords } from '../lib/dao/database';
-import { refreshTags } from '../lib/dao/tag';
-import { WhereClause } from '../lib/types/database';
-import { DBTag } from '../lib/types/database/tag';
-import { Tag, TagParams } from '../lib/types/tag';
-import { uuidRegexp } from '../lib/utils/constants';
-import * as sql from './sqls/tag';
+import { db, paramWords } from '../lib/dao/database.js';
+import { refreshTags } from '../lib/dao/tag.js';
+import { WhereClause } from '../lib/types/database.js';
+import { DBTag } from '../lib/types/database/tag.js';
+import { Tag, TagParams } from '../lib/types/tag.js';
+import { uuidRegexp } from '../lib/utils/constants.js';
+import * as sql from './sqls/tag.js';
 
 export async function selectTags(params: TagParams): Promise<DBTag[]> {
 	const filterClauses = params.filter

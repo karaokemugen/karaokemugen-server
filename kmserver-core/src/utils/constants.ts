@@ -1,4 +1,4 @@
-import { JWTTokenWithRoles } from '../lib/types/user';
+import { JWTTokenWithRoles } from '../lib/types/user.js';
 
 export const sentryDSN = 'https://df475c5a360e4e028798b51cdb38795c@o399537.ingest.sentry.io/5258229';
 

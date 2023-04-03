@@ -1,8 +1,8 @@
-import { db, paramWords } from '../lib/dao/database';
-import { DBUser } from '../lib/types/database/user';
-import { User } from '../lib/types/user';
-import logger from '../lib/utils/logger';
-import * as sql from './sqls/user';
+import { db, paramWords } from '../lib/dao/database.js';
+import { DBUser } from '../lib/types/database/user.js';
+import { User } from '../lib/types/user.js';
+import logger from '../lib/utils/logger.js';
+import * as sql from './sqls/user.js';
 
 const service = 'DB';
 

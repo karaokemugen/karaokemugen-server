@@ -5,11 +5,11 @@ import {
 	upsertPlayed,
 	upsertRequests,
 	upsertSessions,
-	wipeInstance} from '../dao/stats';
-import { uuidRegexp } from '../lib/utils/constants';
-import logger from '../lib/utils/logger';
-import { check } from '../lib/utils/validators';
-import sentry from '../utils/sentry';
+	wipeInstance} from '../dao/stats.js';
+import { uuidRegexp } from '../lib/utils/constants.js';
+import logger from '../lib/utils/logger.js';
+import { check } from '../lib/utils/validators.js';
+import sentry from '../utils/sentry.js';
 
 const service = 'Stats';
 
