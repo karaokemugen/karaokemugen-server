@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
-import { getSuggestions, getSuggestionsLanguages, removeSuggestion, updateLike } from '../../services/suggestions';
-import {requireAdmin, requireAuth, requireValidUser} from '../middlewares/auth';
+import { getSuggestions, getSuggestionsLanguages, removeSuggestion, updateLike } from '../../services/suggestions.js';
+import {requireAdmin, requireAuth, requireValidUser} from '../middlewares/auth.js';
 
 export default function suggestionsController(router: Router) {
 	router.route('/suggestions/:id')

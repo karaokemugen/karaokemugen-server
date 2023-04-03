@@ -1,10 +1,10 @@
 import { Socket } from 'socket.io';
 
-import logger from '../lib/utils/logger';
-import { getWS } from '../lib/utils/ws';
-import { adminToken } from '../utils/constants';
-import {getFavorites} from './favorites';
-import { findUserByName } from './user';
+import logger from '../lib/utils/logger.js';
+import { getWS } from '../lib/utils/ws.js';
+import { adminToken } from '../utils/constants.js';
+import {getFavorites} from './favorites.js';
+import { findUserByName } from './user.js';
 
 const service = 'UserPubSub';
 

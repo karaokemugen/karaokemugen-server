@@ -1,6 +1,6 @@
 // This is to store/get settings/data from database
 
-import {selectSettings, upsertSetting} from '../dao/settings';
+import {selectSettings, upsertSetting} from '../dao/settings.js';
 
 export async function getSettings() {
 	const settings = {};

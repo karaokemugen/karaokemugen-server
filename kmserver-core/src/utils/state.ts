@@ -3,7 +3,7 @@ import { readFileSync } from 'fs';
 import { merge } from 'lodash';
 import { resolve } from 'path';
 
-import { State } from '../types/state';
+import { State } from '../types/state.js';
 
 const pjson = JSON.parse(readFileSync(resolve(findWorkspaceRoot(), 'kmserver-core/package.json'), 'utf-8'));
 

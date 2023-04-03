@@ -7,22 +7,22 @@ import { cloneDeep, merge } from 'lodash';
 import { isAbsolute, resolve } from 'path';
 import { v4 as uuidV4 } from 'uuid';
 
-import { createJwtToken } from '../controllers/http/auth';
-import { deleteUser, insertUser, selectAllUsers, selectUser, updateLastLogin, updateUser, updateUserPassword } from '../dao/user';
-import { DBUser } from '../lib/types/database/user';
-import { JWTTokenWithRoles, User } from '../lib/types/user';
-import { getConfig, resolvedPath } from '../lib/utils/config';
-import { asciiRegexp, tagTypes } from '../lib/utils/constants';
-import { detectFileType, fileExists, smartMove } from '../lib/utils/files';
-import logger from '../lib/utils/logger';
-import { isLooselyEqual } from '../lib/utils/objectHelpers';
-import { UserList, UserOptions, UserParams } from '../types/user';
-import { adminToken } from '../utils/constants';
-import { sendMail } from '../utils/mailer';
-import sentry, { NoSentryError } from '../utils/sentry';
-import { refreshAnimeList } from './animeList';
-import { getKara } from './kara';
-import { delPubUser, pubUser } from './userPubSub';
+import { createJwtToken } from '../controllers/http/auth.js';
+import { deleteUser, insertUser, selectAllUsers, selectUser, updateLastLogin, updateUser, updateUserPassword } from '../dao/user.js';
+import { DBUser } from '../lib/types/database/user.js';
+import { JWTTokenWithRoles, User } from '../lib/types/user.js';
+import { getConfig, resolvedPath } from '../lib/utils/config.js';
+import { asciiRegexp, tagTypes } from '../lib/utils/constants.js';
+import { detectFileType, fileExists, smartMove } from '../lib/utils/files.js';
+import logger from '../lib/utils/logger.js';
+import { isLooselyEqual } from '../lib/utils/objectHelpers.js';
+import { UserList, UserOptions, UserParams } from '../types/user.js';
+import { adminToken } from '../utils/constants.js';
+import { sendMail } from '../utils/mailer.js';
+import sentry, { NoSentryError } from '../utils/sentry.js';
+import { refreshAnimeList } from './animeList.js';
+import { getKara } from './kara.js';
+import { delPubUser, pubUser } from './userPubSub.js';
 
 const service = 'User';
 

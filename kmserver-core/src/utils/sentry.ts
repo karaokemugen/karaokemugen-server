@@ -1,7 +1,7 @@
 import * as SentryNode from '@sentry/node';
 import Transport from 'winston-transport';
 
-import SentryLogger from '../lib/utils/sentry';
+import SentryLogger from '../lib/utils/sentry.js';
 
 const Sentry = new SentryLogger(SentryNode);
 

@@ -2,14 +2,14 @@ import { cloneDeep } from 'lodash';
 import {resolve} from 'path';
 import { v4 as uuidV4 } from 'uuid';
 
-import {exit} from '../index';
-import { configureIDs, configureLocale, getConfig, loadConfigFiles, setConfigConstraints } from '../lib/utils/config';
-import {fileRequired} from '../lib/utils/files';
-import logger, { configureLogger } from '../lib/utils/logger';
-import {emit} from '../lib/utils/pubsub';
-import {BinariesConfig, Config} from '../types/config';
-import { configConstraints, defaults } from './defaultSettings';
-import { getState, setState } from './state';
+import {exit} from '../index.js';
+import { configureIDs, configureLocale, getConfig, loadConfigFiles, setConfigConstraints } from '../lib/utils/config.js';
+import {fileRequired} from '../lib/utils/files.js';
+import logger, { configureLogger } from '../lib/utils/logger.js';
+import {emit} from '../lib/utils/pubsub.js';
+import {BinariesConfig, Config} from '../types/config.js';
+import { configConstraints, defaults } from './defaultSettings.js';
+import { getState, setState } from './state.js';
 
 const service = 'Config';
 

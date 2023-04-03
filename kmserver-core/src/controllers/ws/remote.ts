@@ -1,9 +1,9 @@
-import { APIData } from '../../lib/types/api';
-import { RemoteResponse, RemoteSettings } from '../../lib/types/remote';
-import logger from '../../lib/utils/logger';
-import { SocketIOApp } from '../../lib/utils/ws';
-import { proxyBroadcast, startRemote, stopRemote } from '../../services/remote';
-import { getVersion } from '../../utils/remote';
+import { APIData } from '../../lib/types/api.js';
+import { RemoteResponse, RemoteSettings } from '../../lib/types/remote.js';
+import logger from '../../lib/utils/logger.js';
+import { SocketIOApp } from '../../lib/utils/ws.js';
+import { proxyBroadcast, startRemote, stopRemote } from '../../services/remote.js';
+import { getVersion } from '../../utils/remote.js';
 
 const service = 'WSRemote';
 

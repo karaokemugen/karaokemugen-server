@@ -1,9 +1,9 @@
 import fs from 'fs/promises';
 
-import { addLikeToSuggestion, deleteSuggestion, insertSuggestion, selectSuggestions, selectSuggestionsLanguages, updateSuggestionSearchVector } from '../dao/suggestions';
-import logger from '../lib/utils/logger';
-import { Suggestion, SuggestionParams } from '../types/suggestions';
-import sentry from '../utils/sentry';
+import { addLikeToSuggestion, deleteSuggestion, insertSuggestion, selectSuggestions, selectSuggestionsLanguages, updateSuggestionSearchVector } from '../dao/suggestions.js';
+import logger from '../lib/utils/logger.js';
+import { Suggestion, SuggestionParams } from '../types/suggestions.js';
+import sentry from '../utils/sentry.js';
 
 const service = 'Suggestions';
 

@@ -1,9 +1,9 @@
 import nodemailer, { Transporter } from 'nodemailer';
 import { MailOptions } from 'nodemailer/lib/smtp-transport/index.js';
 
-import { getConfig } from '../lib/utils/config';
-import logger from '../lib/utils/logger';
-import sentry from './sentry';
+import { getConfig } from '../lib/utils/config.js';
+import logger from '../lib/utils/logger.js';
+import sentry from './sentry.js';
 
 const service = 'Mailer';
 

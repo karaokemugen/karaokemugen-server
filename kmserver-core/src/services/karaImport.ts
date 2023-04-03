@@ -8,23 +8,23 @@ import { basename, resolve } from 'path';
 import { v4 as UUIDv4 } from 'uuid';
 import logger from 'winston';
 
-import { insertKara } from '../dao/kara';
-import { applyKaraHooks } from '../lib/dao/hook';
-import { extractVideoSubtitles, getDataFromKaraFile, verifyKaraData } from '../lib/dao/karafile';
+import { insertKara } from '../dao/kara.js';
+import { applyKaraHooks } from '../lib/dao/hook.js';
+import { extractVideoSubtitles, getDataFromKaraFile, verifyKaraData } from '../lib/dao/karafile.js';
 import {
 	defineFilename,
 	determineMediaAndLyricsFilenames,
 	processSubfile
-} from '../lib/services/karaCreation';
-import { refreshKarasAfterDBChange, updateTags } from '../lib/services/karaManagement';
-import { EditedKara, KaraFileV4 } from '../lib/types/kara';
-import { getConfig, resolvedPath, resolvedPathRepos } from '../lib/utils/config';
-import { replaceExt, smartMove } from '../lib/utils/files';
-import { EditElement } from '../types/karaImport';
-import sentry from '../utils/sentry';
-import { gitlabPostNewSuggestion } from './gitlab';
-import { addKaraInInbox } from './inbox';
-import { getKara } from './kara';
+} from '../lib/services/karaCreation.js';
+import { refreshKarasAfterDBChange, updateTags } from '../lib/services/karaManagement.js';
+import { EditedKara, KaraFileV4 } from '../lib/types/kara.js';
+import { getConfig, resolvedPath, resolvedPathRepos } from '../lib/utils/config.js';
+import { replaceExt, smartMove } from '../lib/utils/files.js';
+import { EditElement } from '../types/karaImport.js';
+import sentry from '../utils/sentry.js';
+import { gitlabPostNewSuggestion } from './gitlab.js';
+import { addKaraInInbox } from './inbox.js';
+import { getKara } from './kara.js';
 
 const service = 'KaraImport';
 

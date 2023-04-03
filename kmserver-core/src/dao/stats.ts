@@ -1,6 +1,6 @@
-import {db, transaction} from '../lib/dao/database';
-import { Instance, Played, Requested, Session } from '../types/stats';
-import * as sql from './sqls/stats';
+import {db, transaction} from '../lib/dao/database.js';
+import { Instance, Played, Requested, Session } from '../types/stats.js';
+import * as sql from './sqls/stats.js';
 
 export async function upsertInstance(i: Instance) {
 	return db().query(sql.upsertInstance, [

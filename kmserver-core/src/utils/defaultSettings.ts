@@ -1,4 +1,4 @@
-import { Config } from '../types/config';
+import { Config } from '../types/config.js';
 
 // Karaoke Mugen default configuration file
 

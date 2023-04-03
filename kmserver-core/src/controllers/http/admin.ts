@@ -1,8 +1,8 @@
 import { Router } from 'express';
 
-import { generate, updateRepo } from '../../services/kara';
-import { getPublicConfig } from '../../utils/config';
-import {requireAdmin, requireAuth, requireValidUser} from '../middlewares/auth';
+import { generate, updateRepo } from '../../services/kara.js';
+import { getPublicConfig } from '../../utils/config.js';
+import {requireAdmin, requireAuth, requireValidUser} from '../middlewares/auth.js';
 
 export default async function adminController(router: Router) {
 	router.post('/generate', requireAuth, requireValidUser, requireAdmin, async (_, res) => {

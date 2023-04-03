@@ -59,7 +59,7 @@
 	"dependencies": {
 		"@sentry/node": "^7.46.0",
 		"@sentry/tracing": "^7.46.0",
-		"anilist-node": "^1.13.1",
+		"anilist-node": "^1.13.2",
 		"ass-compiler": "^0.1.7",
 		"axios": "^1.3.4",
 		"bcryptjs": "^2.4.3",

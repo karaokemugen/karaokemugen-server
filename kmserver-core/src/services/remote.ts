@@ -12,16 +12,16 @@ import {
 	selectRemoteTokens,
 	updateRemoteToken,
 	updateRemoteTokenCode
-} from '../dao/remote';
-import { APIDataProxied } from '../lib/types/api';
-import { RemoteResponse, RemoteSettings } from '../lib/types/remote';
-import {getConfig} from '../lib/utils/config';
-import { asyncCheckOrMkdir } from '../lib/utils/files';
-import logger from '../lib/utils/logger';
-import { getWS } from '../lib/utils/ws';
-import {resolvedPathRemoteRoot} from '../utils/config';
-import { getVersion, watchRemotes } from '../utils/remote';
-import { getState } from '../utils/state';
+} from '../dao/remote.js';
+import { APIDataProxied } from '../lib/types/api.js';
+import { RemoteResponse, RemoteSettings } from '../lib/types/remote.js';
+import {getConfig} from '../lib/utils/config.js';
+import { asyncCheckOrMkdir } from '../lib/utils/files.js';
+import logger from '../lib/utils/logger.js';
+import { getWS } from '../lib/utils/ws.js';
+import {resolvedPathRemoteRoot} from '../utils/config.js';
+import { getVersion, watchRemotes } from '../utils/remote.js';
+import { getState } from '../utils/state.js';
 
 const service = 'Remote';
 

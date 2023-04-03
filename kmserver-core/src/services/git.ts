@@ -2,11 +2,11 @@ import { execa } from 'execa';
 import {promises as fs} from 'fs';
 import {resolve} from 'path';
 
-import { getConfig } from '../lib/utils/config';
-import logger from '../lib/utils/logger';
-import { computeFileChanges } from '../lib/utils/patch';
-import Sentry from '../utils/sentry';
-import { getState } from '../utils/state';
+import { getConfig } from '../lib/utils/config.js';
+import logger from '../lib/utils/logger.js';
+import { computeFileChanges } from '../lib/utils/patch.js';
+import Sentry from '../utils/sentry.js';
+import { getState } from '../utils/state.js';
 
 const service = 'Git';
 

@@ -1,8 +1,8 @@
 import {pg as yesql} from 'yesql';
 
-import {db, paramWords, transaction} from '../lib/dao/database';
-import { Suggestion, SuggestionParams } from '../types/suggestions';
-import * as sql from './sqls/suggestions';
+import {db, paramWords, transaction} from '../lib/dao/database.js';
+import { Suggestion, SuggestionParams } from '../types/suggestions.js';
+import * as sql from './sqls/suggestions.js';
 
 function buildClauses(words: string) {
 	return {

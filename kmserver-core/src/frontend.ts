@@ -7,28 +7,28 @@ import helmet from 'helmet';
 import { createServer } from 'http';
 import vhost from 'vhost';
 
-import adminController from './controllers/http/admin';
-import authController from './controllers/http/auth';
-import favoritesController from './controllers/http/favorites';
-import inboxController from './controllers/http/inbox';
-import KImportController from './controllers/http/karaImport';
-import KServerController from './controllers/http/karaserv';
-import remoteController from './controllers/http/remote';
-import statsController from './controllers/http/stats';
-import suggestionsController from './controllers/http/suggestions';
-import userController from './controllers/http/user';
-import remoteSocketController from './controllers/ws/remote';
-import userSubSocketController from './controllers/ws/user';
+import adminController from './controllers/http/admin.js';
+import authController from './controllers/http/auth.js';
+import favoritesController from './controllers/http/favorites.js';
+import inboxController from './controllers/http/inbox.js';
+import KImportController from './controllers/http/karaImport.js';
+import KServerController from './controllers/http/karaserv.js';
+import remoteController from './controllers/http/remote.js';
+import statsController from './controllers/http/stats.js';
+import suggestionsController from './controllers/http/suggestions.js';
+import userController from './controllers/http/user.js';
+import remoteSocketController from './controllers/ws/remote.js';
+import userSubSocketController from './controllers/ws/user.js';
 import {
 	getConfig,
 	resolvedPath,
 	resolvedPathRepos
-} from './lib/utils/config';
-import logger from './lib/utils/logger';
-import { initWS } from './lib/utils/ws';
-import { startKMExplorer } from './services/kmexplorer';
-import { initRemote } from './services/remote';
-import { getState } from './utils/state';
+} from './lib/utils/config.js';
+import logger from './lib/utils/logger.js';
+import { initWS } from './lib/utils/ws.js';
+import { startKMExplorer } from './services/kmexplorer.js';
+import { initRemote } from './services/remote.js';
+import { getState } from './utils/state.js';
 
 const service = 'Frontend';
 

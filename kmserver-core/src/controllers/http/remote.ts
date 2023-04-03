@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
-import { getTokens, promoteToken, removeToken } from '../../services/remote';
-import {requireAdmin, requireAuth, requireValidUser, updateLoginTime} from '../middlewares/auth';
+import { getTokens, promoteToken, removeToken } from '../../services/remote.js';
+import {requireAdmin, requireAuth, requireValidUser, updateLoginTime} from '../middlewares/auth.js';
 
 export default function remoteController(router: Router) {
 	router.route('/remote')

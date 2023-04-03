@@ -1,13 +1,13 @@
 import { Router } from 'express';
 
-import {getSettings} from '../../lib/dao/database';
-import { RepositoryManifest } from '../../lib/types/repo';
-import {getConfig} from '../../lib/utils/config';
-import { getGitDiff, getLatestGitCommit } from '../../services/git';
-import { postSuggestionToKaraBase } from '../../services/gitlab';
-import {getAllKaras, getAllMedias, getAllYears, getBaseStats, getHardsubsCache, getKara, newKaraIssue} from '../../services/kara';
-import {getTag, getTags} from '../../services/tag';
-import { optionalAuth } from '../middlewares/auth';
+import {getSettings} from '../../lib/dao/database.js';
+import { RepositoryManifest } from '../../lib/types/repo.js';
+import {getConfig} from '../../lib/utils/config.js';
+import { getGitDiff, getLatestGitCommit } from '../../services/git.js';
+import { postSuggestionToKaraBase } from '../../services/gitlab.js';
+import {getAllKaras, getAllMedias, getAllYears, getBaseStats, getHardsubsCache, getKara, newKaraIssue} from '../../services/kara.js';
+import {getTag, getTags} from '../../services/tag.js';
+import { optionalAuth } from '../middlewares/auth.js';
 
 export default function KSController(router: Router) {
 	router.route('/karas/lastUpdate')

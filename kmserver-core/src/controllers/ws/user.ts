@@ -1,7 +1,7 @@
-import { APIData } from '../../lib/types/api';
-import logger from '../../lib/utils/logger';
-import { SocketIOApp } from '../../lib/utils/ws';
-import { subUser, unsubUser } from '../../services/userPubSub';
+import { APIData } from '../../lib/types/api.js';
+import logger from '../../lib/utils/logger.js';
+import { SocketIOApp } from '../../lib/utils/ws.js';
+import { subUser, unsubUser } from '../../services/userPubSub.js';
 
 const service = 'WSUser';
 

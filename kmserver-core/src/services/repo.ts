@@ -1,4 +1,4 @@
-import { getConfig, setConfig } from '../lib/utils/config';
+import { getConfig, setConfig } from '../lib/utils/config.js';
 
 export function getRepo(repoName: string) {
 	return getConfig().System.Repositories.find(r => r.Name === repoName);

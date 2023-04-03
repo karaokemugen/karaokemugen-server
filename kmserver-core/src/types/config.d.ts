@@ -1,5 +1,5 @@
-import { Repository, RepositoryManifest } from '../lib/types/repo';
-import { RepositoryServer } from './repo';
+import { Repository, RepositoryManifest } from '../lib/types/repo.js';
+import { RepositoryServer } from './repo.js';
 
 type RepositoryWithManifest = Repository & RepositoryManifest & RepositoryServer;
 

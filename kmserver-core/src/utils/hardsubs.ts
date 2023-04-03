@@ -3,13 +3,13 @@ import { promise as fastq } from 'fastq';
 import { promises as fs } from 'fs';
 import { extname, resolve } from 'path';
 
-import { KaraList } from '../lib/types/kara';
-import { getConfig, resolvedPathRepos } from '../lib/utils/config';
-import { createHardsub } from '../lib/utils/ffmpeg';
-import { fileExists, resolveFileInDirs } from '../lib/utils/files';
-import logger, { profile } from '../lib/utils/logger';
-import { generateHardsubsCache, getAllKaras } from '../services/kara';
-import { getState } from './state';
+import { KaraList } from '../lib/types/kara.js';
+import { getConfig, resolvedPathRepos } from '../lib/utils/config.js';
+import { createHardsub } from '../lib/utils/ffmpeg.js';
+import { fileExists, resolveFileInDirs } from '../lib/utils/files.js';
+import logger, { profile } from '../lib/utils/logger.js';
+import { generateHardsubsCache, getAllKaras } from '../services/kara.js';
+import { getState } from './state.js';
 
 const service = 'Hardsubs';
 
