@@ -32,6 +32,8 @@ const appPath = findWorkspaceRoot();
 const dataPath = resolve(appPath, 'app/');
 const resourcePath = appPath;
 
+const acceptedLanguages = ['en', 'fr'];
+
 const pjson = JSON.parse(readFileSync(resolve(appPath, 'kmserver-core/package.json'), 'utf-8'));
 
 const service = 'Launcher';
@@ -186,8 +188,9 @@ async function main() {
 	// Post launch stuff
 
 	if (conf.Hardsub.Enabled) initHardsubGeneration();
-
-	configureLocale();
+	
+	setState({ acceptedLanguages });
+	configureLocale(acceptedLanguages);
 }
 
 function parseArgs() {

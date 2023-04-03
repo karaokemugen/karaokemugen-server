@@ -21,6 +21,7 @@ import { UserList, UserOptions, UserParams } from '../types/user.js';
 import { adminToken } from '../utils/constants.js';
 import { sendMail } from '../utils/mailer.js';
 import sentry, { NoSentryError } from '../utils/sentry.js';
+import { getState } from '../utils/state.js';
 import { refreshAnimeList } from './animeList.js';
 import { getKara } from './kara.js';
 import { delPubUser, pubUser } from './userPubSub.js';
@@ -28,6 +29,11 @@ import { delPubUser, pubUser } from './userPubSub.js';
 const service = 'User';
 
 const passwordResetRequests = new Map();
+
+function getUserLanguage(user: User): string {
+	// Fallback to english if no user language recognized
+	return getState().acceptedLanguages.includes(user.language) ? user.language : 'en';
+}
 
 export async function resetPasswordRequest(username: string) {
 	try {
@@ -42,12 +48,14 @@ export async function resetPasswordRequest(username: string) {
 			date: +(new Date().getTime() / 1000).toFixed(0)
 		});
 		const conf = getConfig();
+		
 		sendMail(
-			i18n.t('MAIL.RESET_PASSWORD_REQUEST.SUBJECT'),
+			i18n.t('MAIL.RESET_PASSWORD_REQUEST.SUBJECT', { lng: getUserLanguage(user) }),
 			i18n.t('MAIL.RESET_PASSWORD_REQUEST.BODY', {
 				username,
 				host: getConfig().API.Host,
-				url: `${conf.API.Secure ? 'https://' : 'http://'}${conf.API.Host}/user/${user.login}/resetPasswordRequest/${requestCode}`
+				url: `${conf.API.Secure ? 'https://' : 'http://'}${conf.API.Host}/user/${user.login}/resetPasswordRequest/${requestCode}`,
+				lng: getUserLanguage(user)
 			}),
 			username,
 			user.email
@@ -69,11 +77,13 @@ export async function resetPassword(username: string, requestCode: string, newPa
 		if (!user.email) throw new NoSentryError('User has no configured mail. Ask server admin for a password reset');
 		await changePassword(username, newPassword);
 		passwordResetRequests.delete(username);
+
 		sendMail(
-			i18n.t('MAIL.RESET_PASSWORD_DONE.SUBJECT'),
+			i18n.t('MAIL.RESET_PASSWORD_DONE.SUBJECT', { lng: getUserLanguage(user) }),
 			i18n.t('MAIL.RESET_PASSWORD_DONE.BODY', {
 				username,
-				host: getConfig().API.Host
+				host: getConfig().API.Host,
+				lng: getUserLanguage(user)
 			}),
 			username,
 			user.email

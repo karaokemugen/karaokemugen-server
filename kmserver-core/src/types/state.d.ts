@@ -9,6 +9,7 @@ export interface State {
 	osHost?: string,
 	wsLogNamespace?: string,
 	isTest?: boolean,
+	acceptedLanguages?: string[],
 	version?: {
 		number?: string,
 		name?: string,
