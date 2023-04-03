@@ -1,4 +1,4 @@
-import { Anilist } from 'anilist-node';
+import Anilist from 'anilist-node';
 import Kitsu from 'kitsu';
 import malScraper from 'mal-scraper';
 
@@ -9,6 +9,7 @@ import logger from '../lib/utils/logger.js';
 import sentry from '../utils/sentry.js';
 import { pubUser } from './userPubSub.js';
 
+// @ts-expect-error
 const anilist = new Anilist();
 const kitsu = new Kitsu();
 const service = 'AnimeList';
