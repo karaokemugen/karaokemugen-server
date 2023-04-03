@@ -12,7 +12,7 @@ import logger from 'winston';
 
 import { initDB } from './dao/database.js';
 import { initFrontend } from './frontend.js';
-import { getConfig, setConfig } from './lib/utils/config.js';
+import { configureLocale, getConfig, setConfig } from './lib/utils/config.js';
 import { asyncCheckOrMkdir } from './lib/utils/files.js';
 import { createImagePreviews } from './lib/utils/previews.js';
 import { initGitRepos } from './services/git.js';
@@ -186,6 +186,8 @@ async function main() {
 	// Post launch stuff
 
 	if (conf.Hardsub.Enabled) initHardsubGeneration();
+
+	configureLocale();
 }
 
 function parseArgs() {

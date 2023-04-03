@@ -2,6 +2,7 @@ import { compare, hash } from 'bcryptjs';
 import { createHash } from 'crypto';
 import { promises as fs } from 'fs';
 import { copy } from 'fs-extra';
+import i18n from 'i18next';
 import { verify } from 'jsonwebtoken';
 import { cloneDeep, merge } from 'lodash';
 import { isAbsolute, resolve } from 'path';
@@ -42,18 +43,12 @@ export async function resetPasswordRequest(username: string) {
 		});
 		const conf = getConfig();
 		sendMail(
-			'Karaoke Mugen Password Reset',
-			`
-		Hello ${username},
-
-		You (or someone) requested a password reset for your account at ${getConfig().API.Host}. If you didn't request this, please ignore this email.
-
-		Please click the following link to get a new, randomized password sent to your mail account :
-
-		${conf.API.Secure ? 'https://' : 'http://'}${conf.API.Host}/user/${user.login}/resetPasswordRequest/${requestCode}
-
-		This link will expire in two hours.
-		`,
+			i18n.t('MAIL.RESET_PASSWORD_REQUEST.SUBJECT'),
+			i18n.t('MAIL.RESET_PASSWORD_REQUEST.BODY', {
+				username,
+				host: getConfig().API.Host,
+				url: `${conf.API.Secure ? 'https://' : 'http://'}${conf.API.Host}/user/${user.login}/resetPasswordRequest/${requestCode}`
+			}),
 			username,
 			user.email
 		);
@@ -75,16 +70,11 @@ export async function resetPassword(username: string, requestCode: string, newPa
 		await changePassword(username, newPassword);
 		passwordResetRequests.delete(username);
 		sendMail(
-			'Karaoke Mugen Password has been reset',
-			`
-		Hello ${username},
-
-		You (or someone) requested a password reset for your account at ${getConfig().API.Host}.
-
-		Your password has been reset successfully.
-
-		You should be able to login using your new password now.
-		`,
+			i18n.t('MAIL.RESET_PASSWORD_DONE.SUBJECT'),
+			i18n.t('MAIL.RESET_PASSWORD_DONE.BODY', {
+				username,
+				host: getConfig().API.Host
+			}),
 			username,
 			user.email
 		);

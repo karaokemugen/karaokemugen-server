@@ -1,0 +1,12 @@
+{
+	"MAIL": {
+		"RESET_PASSWORD_REQUEST": {
+			"SUBJECT": "Karaoke Mugen Password Reset",
+			"BODY": "Hello ${{username}},\n\nYou (or someone) requested a password reset for your account at {{host}}. If you didn't request this, please ignore this email.\n\nPlease click the following link to create a new password :\n\n{{url}}\n\nThis link will expire in two hours."
+		},
+		"RESET_PASSWORD_DONE": {
+			"SUBJECT": "Karaoke Mugen Password has been reset",
+			"BODY": "Hello {{username}},\n\nYour password has been successfully reset at {{host}}.\n\n\n\nYou should be able to login using your new password now."
+		}
+	}
+}
