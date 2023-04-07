@@ -1034,11 +1034,10 @@
 
 
 	useHead(() => {
-		const seo = useLocaleHead({ addDirAttribute: true, addSeoAttributes: true });
-		if (!Array.isArray(seo.value.meta)) { seo.value.meta = []; }
-		seo.value.meta.push({ hid: 'og:url', property: 'og:url', content: `${explorerProtocol}://${explorerHost}/${fullPath}` });
 		return {
-			...seo.value,
+			meta: [
+				{ hid: 'og:url', property: 'og:url', content: `${explorerProtocol}://${explorerHost}/${fullPath}` }
+			],
 			titleTemplate: (titleChunk) => {
 				// If undefined or blank then we don't need the hyphen
 				return titleChunk && titleChunk != 'kmexplorer' ? `${titleChunk} - Karaoke Mugen` : 'Karaoke Mugen';
