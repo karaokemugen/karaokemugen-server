@@ -8,7 +8,7 @@
 	const { setSearch } = useMenubarStore();
 	const { params } = useRoute();
 	
-	onMounted(() =>  {
+	onBeforeMount(() =>  {
 		if (params.query) {
 			setSearch(decodeURIComponent(params.query as string));
 		}
