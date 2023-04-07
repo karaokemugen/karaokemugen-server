@@ -49,7 +49,7 @@ export async function resetPasswordRequest(username: string) {
 		});
 		const conf = getConfig();
 		
-		sendMail(
+		await sendMail(
 			i18n.t('MAIL.RESET_PASSWORD_REQUEST.SUBJECT', { lng: getUserLanguage(user) }),
 			i18n.t('MAIL.RESET_PASSWORD_REQUEST.BODY', {
 				username,
@@ -78,7 +78,7 @@ export async function resetPassword(username: string, requestCode: string, newPa
 		await changePassword(username, newPassword);
 		passwordResetRequests.delete(username);
 
-		sendMail(
+		await sendMail(
 			i18n.t('MAIL.RESET_PASSWORD_DONE.SUBJECT', { lng: getUserLanguage(user) }),
 			i18n.t('MAIL.RESET_PASSWORD_DONE.BODY', {
 				username,

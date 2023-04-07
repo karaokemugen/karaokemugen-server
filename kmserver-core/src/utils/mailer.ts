@@ -27,18 +27,15 @@ export function initMailer() {
 	};
 }
 
-export function sendMail(subject: string, message: string, to: string, toMail: string) {
-	if (transporter) transporter.sendMail({...mailOptions,
-		subject,
-		text: message,
-		to: `"${to}" <${toMail}>`
-	}, (error, info) => {
-		if (error) {
-			logger.debug('Error sending mail', {service, obj: error});
-			sentry.error(error);
-			throw error;
-		} else {
-			logger.debug('Sent mail', {service, obj: info});
+export async function sendMail(subject: string, message: string, to: string, toMail: string) {
+	try {
+		if (transporter) {
+			const info = await transporter.sendMail({ ...mailOptions, subject, text: message, to: `"${to}" <${toMail}>` });
+			logger.debug('Sent mail', { service, obj: info });
 		}
-	});
+	} catch (error) {
+		logger.debug('Error sending mail', { service, obj: error });
+		sentry.error(error);
+		throw error;
+	}
 }
