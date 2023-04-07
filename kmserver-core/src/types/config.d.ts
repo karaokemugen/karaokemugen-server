@@ -68,7 +68,6 @@ export interface Config {
 				Lyrics?: GitlabTemplate
 			}
 		},
-		KaraokesJsonLink?: string
 	},
 	System: {
 		Database: {

@@ -73,7 +73,6 @@
 
 	const conf = useRuntimeConfig();
 	const liveURL = conf.public.LIVE_URL;
-	const karaokesJsonLink = conf.public.KARAOKES_JSON_LINK;
 	const apiUrl = conf.public.API_URL;
 
 	const props = defineProps<{

@@ -49,7 +49,6 @@ const nuxtConfig = defineNuxtConfig({
 			SUGGESTIONS: conf.Suggestions.Enabled,
 			DEFAULT_COLLECTIONS: conf.System.DefaultCollections,
 			GITLAB: conf.Gitlab?.Enabled,
-			KARAOKES_JSON_LINK: conf.Gitlab?.KaraokesJsonLink,
 			ADD_REPO_MODAL_IN_MENU: conf.KaraExplorer.AddRepoModalInMenu,
 			sentry: {
 				disabled: Boolean(process.env.SENTRY_TEST),
