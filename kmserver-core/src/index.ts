@@ -30,7 +30,7 @@ import { getState, setState } from './utils/state.js';
 
 const appPath = findWorkspaceRoot();
 const dataPath = resolve(appPath, 'app/');
-const resourcePath = appPath;
+const resourcePath = resolve(appPath, 'kmserver-core/');
 
 const acceptedLanguages = ['en', 'fr'];
 
@@ -188,7 +188,7 @@ async function main() {
 	// Post launch stuff
 
 	if (conf.Hardsub.Enabled) initHardsubGeneration();
-	
+
 	setState({ acceptedLanguages });
 	configureLocale(acceptedLanguages);
 }
