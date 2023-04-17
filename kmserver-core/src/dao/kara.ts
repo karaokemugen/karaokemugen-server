@@ -88,7 +88,7 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 	}
 	if (params.order === 'playedRecently') {
 		orderClauses = 'ks.played_recently DESC, ';
-		selectClause += 'ks.played_recently,';
+		selectClause += 'ks.played_recently AS played,';
 		groupClause += 'ks.played_recently, ';
 		joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
 	}
@@ -106,7 +106,7 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 	}
 	if (params.order === 'requestedRecently') {
 		orderClauses = 'ks.requested_recently DESC, ';
-		selectClause += 'ks.requested_recently,';
+		selectClause += 'ks.requested_recently AS requested,';
 		groupClause += 'ks.requested_recently, ';
 		joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
 	}
