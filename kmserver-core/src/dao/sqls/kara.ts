@@ -151,11 +151,15 @@ export const selectBaseStats = `SELECT
 (SELECT SUM(duration) FROM kara where repository != 'Staging')::integer AS duration;
 `;
 
+export const deleteKaraStats = 'DELETE FROM kara_stats;';
+
 export const refreshKaraStats = `
 INSERT INTO kara_stats
 SELECT ak.pk_kid AS fk_kid,
  (SELECT COUNT(fk_kid) FROM stats_played WHERE ak.pk_kid = stats_played.fk_kid) AS played,
+ (SELECT COUNT(fk_kid) FROM stats_played WHERE ak.pk_kid = stats_played.fk_kid AND played_at >= current_date - interval '1' year) AS played_recently,
  (SELECT COUNT(fk_kid) FROM stats_requested WHERE ak.pk_kid = stats_requested.fk_kid) AS requested,
+ (SELECT COUNT(fk_kid) FROM stats_requested WHERE ak.pk_kid = stats_requested.fk_kid AND requested_at >= current_date - interval '1' year) AS requested_recently,
  (SELECT COUNT(uf.fk_kid) FROM users_favorites uf LEFT JOIN users u ON u.pk_login = uf.fk_login WHERE ak.pk_kid = uf.fk_kid AND (u.flag_sendstats IS NULL or u.flag_sendstats = TRUE)) AS favorited
 FROM all_karas ak;
 `;

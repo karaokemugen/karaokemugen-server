@@ -268,8 +268,10 @@
 			"kara_count": "Nombre de chansons",
 			"recent": "Par date d'ajout",
 			"most_played": "Plus joués",
+			"most_played_recently": "Plus joués (12 derniers mois)",
 			"most_favorites": "Plus favoris",
 			"most_requested": "Plus demandés",
+			"most_requested_recently": "Plus demandés (12 derniers mois)",
 			"likes": "Le plus de likes",
 			"languages": "Par langues"
 		},

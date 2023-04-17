@@ -86,6 +86,12 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 		groupClause += 'ks.played, ';
 		joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
 	}
+	if (params.order === 'playedRecently') {
+		orderClauses = 'ks.played_recently DESC, ';
+		selectClause += 'ks.played_recently,';
+		groupClause += 'ks.played_recently, ';
+		joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
+	}
 	if (params.order === 'favorited') {
 		orderClauses = 'ks.favorited DESC, ';
 		selectClause += 'ks.favorited,';
@@ -96,6 +102,12 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 		orderClauses = 'ks.requested DESC, ';
 		selectClause += 'ks.requested,';
 		groupClause += 'ks.requested, ';
+		joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
+	}
+	if (params.order === 'requestedRecently') {
+		orderClauses = 'ks.requested_recently DESC, ';
+		selectClause += 'ks.requested_recently,';
+		groupClause += 'ks.requested_recently, ';
 		joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
 	}
 	if (params.from > 0) offsetClause = `OFFSET ${params.from} `;
@@ -182,5 +194,6 @@ export async function selectBaseStats(): Promise<DBStats> {
 
 export async function refreshKaraStats() {
 	logger.info('Refreshing kara stats', {service});
+	await db().query(sql.deleteKaraStats);
 	return db().query(sql.refreshKaraStats);
 }
