@@ -9,7 +9,7 @@ import { v4 as UUIDv4 } from 'uuid';
 import logger from 'winston';
 
 import { insertKara } from '../dao/kara.js';
-import { applyKaraHooks } from '../lib/dao/hook.js';
+import { applyKaraHooks, refreshHooks } from '../lib/dao/hook.js';
 import { extractVideoSubtitles, getDataFromKaraFile, verifyKaraData } from '../lib/dao/karafile.js';
 import {
 	defineFilename,
@@ -48,6 +48,8 @@ async function preflight(kara: KaraFileV4): Promise<KaraFileV4> {
 async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElement): Promise<string> {
 	const conf = getConfig();
 	try {
+		// Refresh hooks at every kara we get.
+		await refreshHooks();
 		await applyKaraHooks(kara);
 		const fileName = await defineFilename(kara);
 		// Move files to their own directory
