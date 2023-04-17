@@ -157,29 +157,29 @@ export const refreshKaraStats = `
 INSERT INTO kara_stats
 SELECT ak.pk_kid AS fk_kid,
  (SELECT 
-	COUNT(fk_kid) 
-	FROM stats_played 
-	LEFT JOIN stats_session ss ON ss.pk_seid = fk_seid AND ss.flag_banned = FALSE
+	COUNT(sp.fk_kid) 
+	FROM stats_played sp
+	LEFT JOIN stats_session ss ON ss.pk_seid = sp.fk_seid AND ss.flag_banned = FALSE
 	WHERE ak.pk_kid = stats_played.fk_kid
  ) AS played,
  (SELECT 
 	COUNT(fk_kid) 
-	FROM stats_played 
-	LEFT JOIN stats_session ss ON ss.pk_seid = fk_seid AND ss.flag_banned = FALSE
+	FROM stats_played sp
+	LEFT JOIN stats_session ss ON ss.pk_seid = sp.fk_seid AND ss.flag_banned = FALSE
 	WHERE 
 		ak.pk_kid = stats_played.fk_kid AND 
 		played_at >= current_date - interval '1' year
  ) AS played_recently,
  (SELECT 
 	COUNT(fk_kid) 
-	FROM stats_requested 
-	LEFT JOIN stats_session ss ON ss.pk_seid = fk_seid AND ss.flag_banned = FALSE
+	FROM stats_requested sr
+	LEFT JOIN stats_session ss ON ss.pk_seid = sr.fk_seid AND ss.flag_banned = FALSE
 	WHERE ak.pk_kid = stats_requested.fk_kid
  ) AS requested,
  (SELECT 
 	COUNT(fk_kid) 
-	FROM stats_requested 
-	LEFT JOIN stats_session ss ON ss.pk_seid = fk_seid AND ss.flag_banned = FALSE
+	FROM stats_requested sr
+	LEFT JOIN stats_session ss ON ss.pk_seid = sr.fk_seid AND ss.flag_banned = FALSE
 	WHERE 
 		ak.pk_kid = stats_requested.fk_kid AND 
 		requested_at >= current_date - interval '1' year
