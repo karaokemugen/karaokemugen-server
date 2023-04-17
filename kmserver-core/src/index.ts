@@ -11,6 +11,7 @@ import { register } from 'ts-node';
 import logger from 'winston';
 
 import { initDB } from './dao/database.js';
+import { updateBanSession } from './dao/stats.js';
 import { initFrontend } from './frontend.js';
 import { configureLocale, getConfig, setConfig } from './lib/utils/config.js';
 import { asyncCheckOrMkdir } from './lib/utils/files.js';
@@ -141,6 +142,16 @@ async function main() {
 		exit(0);
 	}
 
+	if (argv.opts().banSession) {
+		await updateBanSession(argv.opts().banSession[0], true);
+		exit(0);
+	}
+
+	if (argv.opts().unbanSession) {
+		await updateBanSession(argv.opts().banSession[0], false);
+		exit(0);
+	}
+
 	if (argv.opts().createAdmin) {
 		await createUser({
 			login: argv.opts().createAdmin[0],
@@ -207,6 +218,8 @@ function parseArgs() {
 		.option('--sql', 'display SQL queries (in debug)')
 		.option('--debug', 'display debug messages')
 		.option('--staticServe', 'serve static files via NodeJS')
+		.option('--banSession', 'ban a session SEID')
+		.option('--unbanSession', 'ban a session SEID')
 		.option('--createPreviews', 'generate image previews')
 		.option('--createAdmin [user],[password]', 'Create a new admin user', login)
 		.option('--changePassword [user],[password]', 'Change a user password', login)

@@ -1,0 +1,1 @@
+ALTER TABLE stats_session ADD COLUMN flag_banned BOOLEAN DEFAULT false;

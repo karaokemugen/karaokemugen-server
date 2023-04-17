@@ -1,6 +1,8 @@
 import testJSON from 'is-valid-json';
 
+import { refreshKaraStats } from '../dao/kara.js';
 import {
+	updateBanSession,
 	upsertInstance,
 	upsertPlayed,
 	upsertRequests,
@@ -61,4 +63,10 @@ export async function processStatsPayload(payload: any) {
 		sentry.error(err);
 		throw err;
 	}
+}
+
+export async function banSession(seid: string, banned: boolean) {
+	logger.info(`${!banned ? 'De-' : ''}Banning session ${seid}`, { service });
+	await updateBanSession(seid, banned);
+	refreshKaraStats();
 }

@@ -30,6 +30,7 @@ export interface Session {
 	started_at: Date,
 	name: string,
 	ended_at: Date,
+	flag_banned?: boolean,
 }
 
 export interface Requested {

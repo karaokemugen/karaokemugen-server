@@ -55,6 +55,10 @@ export const wipeInstance = `
 DELETE FROM instance WHERE pk_iid = $1
 `;
 
+export const banSession = `
+UPDATE stats_session SET flag_banned = $2 WHERE pk_seid = $1
+`;
+
 export const insertSession = `
 INSERT INTO stats_session(fk_iid, pk_seid, started_at, name, ended_at)
 VALUES(

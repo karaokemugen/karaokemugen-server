@@ -22,6 +22,10 @@ export async function upsertInstance(i: Instance) {
 	]);
 }
 
+export async function updateBanSession(seid: string, banned: boolean) {
+	return db().query(sql.banSession, [seid, banned]);
+}
+
 export async function upsertPlayed(viewcounts: Played[]) {
 	const params = viewcounts.map(v => [
 		v.kid,
