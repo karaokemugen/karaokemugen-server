@@ -128,6 +128,7 @@ async function main() {
 	}
 
 	if (argv.opts().generate) {
+		await initHardsubGeneration();
 		await generate();
 		exit(0);
 	}
