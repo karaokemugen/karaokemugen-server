@@ -14,7 +14,7 @@ import { findUserByName } from './user.js';
 const service = 'Gitlab';
 
 /** Use the appropriate template and post an inbox element to GitLab * */
-export async function gitlabPostNewSuggestion(kid: string, edit?: EditElement) {
+export async function gitlabPostNewKara(kid: string, edit?: EditElement) {
 	const conf = getConfig();
 	const kara = await getKara({
 		q: `k:${kid}`

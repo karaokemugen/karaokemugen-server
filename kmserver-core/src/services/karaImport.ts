@@ -22,7 +22,7 @@ import { getConfig, resolvedPath, resolvedPathRepos } from '../lib/utils/config.
 import { replaceExt, smartMove } from '../lib/utils/files.js';
 import { EditElement } from '../types/karaImport.js';
 import sentry from '../utils/sentry.js';
-import { gitlabPostNewSuggestion } from './gitlab.js';
+import { gitlabPostNewKara } from './gitlab.js';
 import { addKaraInInbox } from './inbox.js';
 import { getKara } from './kara.js';
 
@@ -93,7 +93,7 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 					ignoreCollections: true
 				});
 			}
-			issueURL = await gitlabPostNewSuggestion(karaData.data.kid, edit);
+			issueURL = await gitlabPostNewKara(karaData.data.kid, edit);
 		}
 		addKaraInInbox(kara, contact, issueURL, edit ? edit.kid : undefined);
 		return issueURL;
