@@ -1,12 +1,12 @@
 {
-	"MAIL": {
-		"RESET_PASSWORD_REQUEST": {
-			"SUBJECT": "Réinitialisation du mot de passe Karaoke Mugen",
-			"BODY": "Bonjour ${{username}},\n\nVous (ou quelqu'un) a demandé une réinitialisation de mot de passe pour votre compte sur {{host}}. Si vous n'avez pas demandé cela, veuillez ignorer ce mail.\n\nCliquez sur le lien suivant pour définir un nouveau mot de passe :\n\n{{url}}\n\nCe lien expirera dans deux heures.."
-		},
-		"RESET_PASSWORD_DONE": {
-			"SUBJECT": "Mot de passe Karaoke Mugen réinitialisé",
-			"BODY": "Bonjour {{username}},\n\nVotre mot de passe sur {{host}} a bien été réinitialisé.\n\nVous devriez pouvoir vous connecter avec votre nouveau mot de passe."
-		}
-	}
+    "MAIL": {
+        "RESET_PASSWORD_REQUEST": {
+            "SUBJECT": "Réinitialisation du mot de passe Karaoke Mugen",
+            "BODY": "Bonjour ${{username}},\n\nVous (ou quelqu'un) a demandé une réinitialisation de mot de passe pour votre compte sur {{host}}. Si vous n'avez pas demandé cela, veuillez ignorer ce mail.\n\nCliquez sur le lien suivant pour définir un nouveau mot de passe :\n\n{{url}}\n\nCe lien expirera dans deux heures.."
+        },
+        "RESET_PASSWORD_DONE": {
+            "SUBJECT": "Mot de passe Karaoke Mugen réinitialisé",
+            "BODY": "Bonjour {{username}},\n\nVotre mot de passe sur {{host}} a bien été réinitialisé.\n\n\n\nVous devriez pouvoir vous connecter avec votre nouveau mot de passe."
+        }
+    }
 }
