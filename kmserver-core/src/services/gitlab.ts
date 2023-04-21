@@ -94,6 +94,10 @@ export async function gitlabPostNewIssue(title: string, desc: string, labels: st
 		return res.data.web_url;
 	} catch (err) {
 		logger.error('Unable to post new issue', {obj: err});
+		sentry.addErrorInfo('Issue title', title);
+		sentry.addErrorInfo('Issue body', desc);
+		sentry.addErrorInfo('Issue labels', labels.join(', '));
+		sentry.error(err);
 		throw err;
 	}
 }
