@@ -29,6 +29,7 @@ async function wrappedGenerateHS(payload: [string, string, string, string]) {
 	if (assPath) await fs.copyFile(payload[1], assPath);
 	try {
 		await createHardsub(mediaPath, assPath, outputFile);
+		logger.info(`Hardsub for ${mediaPath} created`, { service });
 		logger.info(`${queue.length()} hardsubs left in queue`, {service});
 	} catch (err) {
 		logger.error(`Error creating hardsub for ${mediaPath} : ${err}`, {service, obj: err});
@@ -121,12 +122,12 @@ async function generateSubchecksum(path: string) {
 	let ass = await fs.readFile(path, {encoding: 'utf-8'}).catch(reason => {
 		if (reason.code === 'ENOENT') {
 			return 'no_ass_file';
-		} 
+		}
 			throw reason;
 	});
 	if (ass === 'no_ass_file') {
 		return ass;
-	} 
+	}
 		ass = ass.replace(/\r/g, '');
 		return createHash('md5').update(ass, 'utf-8').digest('hex');
 }
