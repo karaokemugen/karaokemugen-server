@@ -26,7 +26,7 @@ async function wrappedGenerateHS(payload: [string, string, string, string]) {
 	logger.info(`Creating hardsub for ${mediaPath}`, {service});
 	if (await fileExists(outputFile)) return;
 	const assPath = subPath ? `${kid}.ass` : null;
-	if (assPath) await fs.copyFile(payload[1], assPath);
+	if (subPath) await fs.copyFile(subPath, assPath);
 	try {
 		await createHardsub(mediaPath, assPath, outputFile);
 		logger.info(`Hardsub for ${mediaPath} created`, { service });
