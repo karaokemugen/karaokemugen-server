@@ -94,7 +94,7 @@
 		"langs": "^2.0.0",
 		"lodash": "^4.17.21",
 		"m3u-parser-generator": "^1.2.0",
-		"mal-scraper": "^2.11.4",
+		"mal-scraper": "^2.12.1",
 		"multer": "1.4.5-lts.1",
 		"node-schedule": "^2.1.1",
 		"nodemailer": "^6.9.1",

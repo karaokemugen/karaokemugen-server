@@ -8819,7 +8819,7 @@ __metadata:
     langs: ^2.0.0
     lodash: ^4.17.21
     m3u-parser-generator: ^1.2.0
-    mal-scraper: ^2.11.4
+    mal-scraper: ^2.12.1
     multer: 1.4.5-lts.1
     node-schedule: ^2.1.1
     nodemailer: ^6.9.1
@@ -9582,9 +9582,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mal-scraper@npm:^2.11.4":
-  version: 2.11.4
-  resolution: "mal-scraper@npm:2.11.4"
+"mal-scraper@npm:^2.12.1":
+  version: 2.12.1
+  resolution: "mal-scraper@npm:2.12.1"
   dependencies:
     axios: ^0.21.1
     cheerio: ^1.0.0-rc.3
@@ -9592,7 +9592,7 @@ __metadata:
     match-sorter: ^4.0.2
     request: ^2.88.0
     xml2js: ^0.4.22
-  checksum: 24ad785ef1f4abbfc18e5c4fb129ad92977ca917c01b90abce31d7ba21d4125c92552ef182438de531d1a33b0dd44f39641a5c2b830c40d2b0dbe82b1c7f0e5d
+  checksum: b5309af016c6917ec989d89fe26a46222233a061598848969a18f51a85b646526737324d2db3e796161ec06f06bf5a030dc4d947e3fcfe81fe5e56730321b2fd
   languageName: node
   linkType: hard
 
