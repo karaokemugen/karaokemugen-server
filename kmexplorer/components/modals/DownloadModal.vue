@@ -141,7 +141,7 @@
 		let noLiveDownload = false;
 		for (const tagType in tagTypes) {
 			if (tagType === 'years') { continue; }
-			// @ts-ignore: il est 23h27 <- ceci n'est pas une raison
+			// @ts-ignore
 			for (const tag of props.karaoke[tagType]) {
 				if (tag.noLiveDownload) {
 					noLiveDownload = true;

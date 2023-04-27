@@ -173,7 +173,7 @@
 		if (karaoke.value) {
 			for (const tagType in tagTypes) {
 				if (tagType === 'years') { continue; }
-				// @ts-ignore: il est 23h27 <- ceci n'est pas une raison
+				// @ts-ignore
 				for (const tag of karaoke.value[tagType]) {
 					if (tag.noLiveDownload) {
 						noLiveDownload = true;
@@ -181,7 +181,7 @@
 				}
 			}
 		}
-		return !noLiveDownload && (karaoke.value?.mediafile.endsWith('.mp3') || karaoke.value?.mediafile.endsWith('.mp4'));
+		return !noLiveDownload;
 	});
 
 	function placeForLive() {
