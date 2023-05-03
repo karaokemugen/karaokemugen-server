@@ -127,10 +127,11 @@
 		>
 			<ul>
 				<li
-					v-for="(line, i) in karaoke.lyrics"
+					v-for="(line, i) in rubyfiedLyrics"
 					:key="`lyrics-${i}`"
 				>
-					{{ line.text }}
+					<!-- eslint-disable-next-line vue/no-v-html -->
+					<span v-html="line" />
 				</li>
 			</ul>
 		</div>
@@ -157,6 +158,7 @@
 	import { useMenubarStore } from '~/store/menubar';
 	import { useModalStore } from '~/store/modal';
 	import { useAuthStore } from '~/store/auth';
+	import DOMPurify from 'dompurify';
 
 	const props = defineProps<{
 		karaoke: DBKara
@@ -219,6 +221,42 @@
 			throw new TypeError('The karaoke does not have any series nor singers, wtf?');
 		}
 	});
+	const rubyfiedLyrics = computed(() => 
+		props.karaoke.lyrics?.map(line => {
+			const parsedSyllables = line.fullText?.map(event => event.text
+				.replace('｜', '|')
+				.replace('|!', '|')
+				.replace('|<', '|')) ?? [];
+			const rubifiedArray: Record<'text' | 'ruby', string>[] = [];
+			parsedSyllables.forEach(syl => {
+				if (syl.match(/#\|.*/g)) {
+					const lastElement = rubifiedArray.pop();
+					if (lastElement) {
+						lastElement.ruby += syl.substring(2);
+						rubifiedArray.push(lastElement);
+					}
+				} else if (syl.match(/.*\|.*/g)) {
+					rubifiedArray.push({
+						text: syl.split('|')[0],
+						ruby: syl.split('|')[1]
+					});
+				} else {
+					rubifiedArray.push({
+						text: syl,
+						ruby: ''
+					});
+				}
+			});
+			const lyricsWithRuby = rubifiedArray.map(seq => {
+				if (!seq.ruby) {
+					return seq.text;
+				}
+				return `<ruby>${seq.text}<rp>(</rp><rt>${seq.ruby}</rt><rp>)</rp></ruby>`;
+			}).reduce((a, b) => a + b);
+
+			return DOMPurify.sanitize(lyricsWithRuby, {ALLOWED_TAGS: ['ruby', 'rp', 'rt']});
+		})
+	);
 	const bannerBan = computed(() => {
 		let bannerBan = false;
 		for (const tagType in tagTypes) {
