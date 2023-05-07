@@ -77,7 +77,7 @@ export async function getGitDiff(commit: string, fullFiles = false): Promise<str
 		}
 		return changes;
 	} catch (err) {
-		logger.error(`Unable to get git diff for commit ${commit}`, {service, obj: err});
+		logger.error(`Unable to get git diff for commit ${commit}`, {service});
 		Sentry.error(err);
 		throw err;
 	}
