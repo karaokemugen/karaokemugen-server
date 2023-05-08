@@ -221,7 +221,7 @@
 			throw new TypeError('The karaoke does not have any series nor singers, wtf?');
 		}
 	});
-	const rubyfiedLyrics = computed(() => 
+	const rubyfiedLyrics = computed(() =>
 		props.karaoke.lyrics?.map(line => {
 			const parsedSyllables = line.fullText?.map(event => event.text
 				.replace('｜', '|')
@@ -252,7 +252,7 @@
 					return seq.text;
 				}
 				return `<ruby>${seq.text}<rp>(</rp><rt>${seq.ruby}</rt><rp>)</rp></ruby>`;
-			}).reduce((a, b) => a + b);
+			}).join('');
 
 			return DOMPurify.sanitize(lyricsWithRuby, {ALLOWED_TAGS: ['ruby', 'rp', 'rt']});
 		})
