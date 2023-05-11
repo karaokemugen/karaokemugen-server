@@ -126,7 +126,7 @@
 	const { params } = useRoute();
 	const { t } = useI18n();
 
-	fetch();
+	await fetch();
 
 	async function fetch() {
 		let kid = params.id;

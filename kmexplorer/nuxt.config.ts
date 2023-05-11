@@ -22,7 +22,10 @@ const nuxtConfig = defineNuxtConfig({
 	components: [{ path: '~/components', pathPrefix: false }],
 
 	nitro: {
-		preset: 'node'
+		preset: 'node',
+		prerender: {
+			routes: ['/kara/stops-at-the-affected-area-and-immediately-dissolves-lunatic-udongein/654b0d50-9684-48fb-845b-71caf454526b']
+		}
 	},
 
 	runtimeConfig: {
@@ -88,7 +91,7 @@ const nuxtConfig = defineNuxtConfig({
 			background_color: '#36393f',
 			theme_color: '#375a7f',
 			display: 'standalone'
-		},				
+		},
 		icon: {
 			maskablePadding: 0
 		},
@@ -102,7 +105,7 @@ const nuxtConfig = defineNuxtConfig({
 			]
 		}
 	},
-	
+
 	build: {
 		transpile: [
 			'@fortawesome/fontawesome-svg-core',
@@ -197,7 +200,7 @@ const nuxtConfig = defineNuxtConfig({
 	typescript: {
 		shim: false
 	},
-
+	
 	telemetry: false,
 
 	modulesDir: ['../node_modules/']

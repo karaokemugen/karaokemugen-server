@@ -158,7 +158,7 @@
 	import { useMenubarStore } from '~/store/menubar';
 	import { useModalStore } from '~/store/modal';
 	import { useAuthStore } from '~/store/auth';
-	import DOMPurify from 'dompurify';
+	import DOMPurify from 'isomorphic-dompurify';
 
 	const props = defineProps<{
 		karaoke: DBKara

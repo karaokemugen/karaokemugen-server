@@ -20,8 +20,8 @@
     "@pinia/nuxt": "^0.4.7",
     "bulma": "^0.9.4",
     "bulmaswatch": "^0.8.1",
-    "dompurify": "^3.0.2",
     "i18n-iso-countries": "^7.5.0",
+    "isomorphic-dompurify": "^1.5.0",
     "lodash": "^4.17.21",
     "nuxt-fontawesome": "^0.4.0",
     "pretty-bytes": "6",
@@ -33,7 +33,6 @@
   "devDependencies": {
     "@kevinmarrec/nuxt-pwa": "^0.17.0",
     "@nuxt/eslint-config": "^0.1.1",
-    "@types/dompurify": "^3.0.2",
     "@types/lodash": "^4.14.192",
     "@types/slug": "^5.0.3",
     "@types/uuid": "^9.0.1",
