@@ -226,7 +226,7 @@
 	// Remove protocol if http(s) and trailing slash
 	const url = computed(() => user.value?.url?.replace(/^https?:\/\//i, '').replace(/\/$/, '') || '');
 
-	fetch();
+	await fetch();
 
 	async function fetch() {
 		if (!usersEnabled) {

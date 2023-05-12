@@ -100,7 +100,7 @@
 	watch(enabledCollections, () => setPage(1), { deep: true });
 	watch(tags, (now) => setResultsCount(now.infos.count), { deep: true });
 
-	setPage(1);
+	await setPage(1);
 
 	async function setPage(e: number): Promise<void> {
 		page.value = e;

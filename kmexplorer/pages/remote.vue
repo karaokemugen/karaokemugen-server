@@ -74,7 +74,7 @@
 	const { t } = useI18n();
 	const toast = useToast();
 
-	fetch();
+	await fetch();
 
 	async function fetch() {
 		const res = await useCustomFetch<RemoteAccessToken[]>('/api/remote')

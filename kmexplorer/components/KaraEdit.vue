@@ -751,7 +751,7 @@
 		}
 	}
 
-	getParents();
+	await getParents();
 
 	async function getParents() {
 		if (props.kara?.parents && props.kara?.parents?.length > 0) {

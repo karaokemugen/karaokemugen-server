@@ -44,7 +44,7 @@
 
 	watch(() => enabledCollections, () => setPage(), { deep: true });
 
-	fetch();
+	await fetch();
 
 	async function fetch() {
 		loading.value = true;

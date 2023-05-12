@@ -223,7 +223,7 @@
 
 	watch(search, () => push('/search'));
 
-	fetch();
+	await fetch();
 
 	async function fetch() {
 		const stats = useCustomFetch<Stats>('/api/karas/stats');

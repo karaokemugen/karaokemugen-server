@@ -235,7 +235,7 @@
 		}
 	});
 
-	fetch();
+	await fetch();
 
 	async function fetch() {
 		const res = await useCustomFetch<TagList>('/api/karas/tags', {
