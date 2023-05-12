@@ -40,7 +40,7 @@
 		label: string
 	}>();
 
-	await fetch();
+	fetch();
 
 	async function fetch() {
 		const { content } = await useCustomFetch<{ content: DBTag[] }>('/api/karas/tags', {

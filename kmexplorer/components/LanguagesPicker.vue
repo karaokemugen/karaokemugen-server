@@ -42,7 +42,7 @@
 	const { enabledLanguages } = storeToRefs(useMenubarStore());
 	const { setEnabledLanguages } = useMenubarStore();
 
-	await fetch();
+	fetch();
 
 	async function fetch() {
 		const res = await useCustomFetch<string[]>('/api/suggestions/languages');

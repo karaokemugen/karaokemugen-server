@@ -91,7 +91,7 @@
 		window.removeEventListener('scroll', scrollEvent);
 	});
 
-	await fetch();
+	fetch();
 
 	async function fetch() {
 		const tagExtends: TagExtend[] = [];
