@@ -126,8 +126,6 @@
 	const { params } = useRoute();
 	const { t } = useI18n();
 
-	await fetch();
-
 	async function fetch() {
 		let kid = params.id;
 		if (!kid) {
@@ -183,6 +181,8 @@
 		}
 		return !noLiveDownload;
 	});
+
+	await fetch();
 
 	function placeForLive() {
 		liveOpened.value = true;
