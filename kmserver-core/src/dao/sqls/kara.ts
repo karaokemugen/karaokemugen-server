@@ -24,9 +24,13 @@ export const getAllKaras = (
 	includeStaging: boolean,
 	collectionClauses: string[],
 	withCTE: string[],
-	) => `
+	onlyCount: boolean
+) => `
 WITH ${withCTE.join(', \n')}
 SELECT
+${onlyCount ? `
+  count(ak.pk_kid) AS count`
+: `
   ak.tags AS tags,
   ak.pk_kid AS kid,
   ak.titles AS titles,
@@ -54,15 +58,17 @@ SELECT
   ${selectClause}
   array_remove(array_agg(DISTINCT krc.fk_kid_parent), null) AS parents,
   array_remove(array_agg(DISTINCT krp.fk_kid_child), null) AS children,
-  COALESCE(array_remove((SELECT array_agg(DISTINCT fk_kid_child) FROM kara_relation WHERE fk_kid_parent = ANY (array_remove(array_agg(DISTINCT krc.fk_kid_parent), null))), ak.pk_kid), array[]::uuid[]) AS siblings,
-  count(ak.pk_kid) OVER()::integer AS count
+  COALESCE(array_remove((SELECT array_agg(DISTINCT fk_kid_child) FROM kara_relation WHERE fk_kid_parent = ANY (array_remove(array_agg(DISTINCT krc.fk_kid_parent), null))), ak.pk_kid), array[]::uuid[]) AS siblings`
+}
 FROM all_karas AS ak
+${onlyCount ? '' : `
 LEFT OUTER JOIN kara_relation krp ON krp.fk_kid_parent = ak.pk_kid
 LEFT OUTER JOIN kara_relation krc ON krc.fk_kid_child = ak.pk_kid
 LEFT JOIN kara_subchecksum ksub ON ksub.fk_kid = ak.pk_kid
 LEFT JOIN kara k ON k.pk_kid = ak.pk_kid
 ${joinClause}
-${additionalFrom.join('')}
+${additionalFrom.join('')}`
+}
 WHERE ${includeStaging ? '1 = 1' : 'ak.repository != \'Staging\''}
 	${
 	collectionClauses.length > 0
@@ -71,11 +77,12 @@ WHERE ${includeStaging ? '1 = 1' : 'ak.repository != \'Staging\''}
 	}
 	${filterClauses.map(clause => `AND (${clause})`).reduce((a, b) => (`${a} ${b}`), '')}
 	${whereClauses}
+${onlyCount ? '' : `
 GROUP BY ${groupClause} ak.pk_kid, ak.titles, ak.titles_aliases, ak.titles_default_language, ak.songorder, ak.tags, ak.serie_singergroup_singer_sortable, ak.subfile, ak.year, ak.mediafile, ak.karafile, ak.duration, ak.gain, ak.loudnorm, ak.created_at, ak.modified_at, ak.mediasize, ak.repository, ak.comment, ak.songtypes_sortable, ak.ignore_hooks, ak.titles_sortable, ksub.subchecksum, ak.kitsu_ids, ak.anilist_ids, ak.myanimelist_ids
 ORDER BY ${orderClauses} ak.serie_singergroup_singer_sortable, ak.songtypes_sortable DESC, ak.songorder, ak.titles_sortable
 ${limitClause}
-${offsetClause}
-`;
+${offsetClause}`
+}`;
 
 export const insertKara = `
 INSERT INTO kara(

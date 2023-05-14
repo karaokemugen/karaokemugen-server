@@ -135,9 +135,29 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 		yesqlPayload.additionalFrom,
 		includeStaging,
 		collectionClauses,
-		withCTEs
+		withCTEs,
+		false
+	);
+	const queryCount = sql.getAllKaras(
+		yesqlPayload.sql,
+		orderClauses,
+		limitClause,
+		offsetClause,
+		selectClause,
+		joinClause,
+		groupClause,
+		whereClauses,
+		yesqlPayload.additionalFrom,
+		includeStaging,
+		collectionClauses,
+		withCTEs,
+		true
 	);
 	const res = await db().query(yesql(query)(yesqlPayload.params));
+	const resCount = await db().query(yesql(queryCount)(yesqlPayload.params));
+	if (res.rows[0] != null) {
+		res.rows[0].count = resCount.rows[0].count;
+	}
 	return res.rows.map((row) => {
 		const { tags, ...rowWithoutTags } = row;
 
