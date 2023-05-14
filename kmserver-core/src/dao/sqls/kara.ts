@@ -29,7 +29,7 @@ export const getAllKaras = (
 WITH ${withCTE.join(', \n')}
 SELECT
 ${onlyCount ? `
-  count(ak.pk_kid) AS count`
+  count(ak.pk_kid)::integer AS count`
 : `
   ak.tags AS tags,
   ak.pk_kid AS kid,
