@@ -83,6 +83,66 @@ ${limitClause}
 ${offsetClause}`
 }`;
 
+export const getAllKarasMicro = (
+	orderClauses: string,
+	limitClause: string,
+	offsetClause: string,
+	includeStaging: boolean,
+	collectionClauses: string[],
+	withCTE: string[],
+	onlyCount: boolean
+) => `
+WITH ${withCTE.join(', \n')}
+SELECT
+${onlyCount ? `
+  count(ak.pk_kid)::integer AS count`
+: `
+  ak.tags AS tags,
+  ak.pk_kid AS kid,
+  ak.titles AS titles,
+  ak.titles_aliases AS titles_aliases,
+  ak.titles_default_language as titles_default_language,
+  ak.songorder AS songorder,
+  ak.subfile AS subfile,
+  ak.year AS year,
+  ak.mediafile AS mediafile,
+  ak.karafile AS karafile,
+  ak.duration AS duration,
+  ak.gain AS gain,
+  ak.loudnorm AS loudnorm,
+  ak.created_at AS created_at,
+  ak.modified_at AS modified_at,
+  ak.mediasize AS mediasize,
+  ak.repository AS repository,
+  ak.comment AS comment,
+  ak.ignore_hooks AS ignore_hooks,
+  ak.anilist_ids AS anilist_ids,
+  ak.myanimelist_ids AS myanimelist_ids,
+  ak.kitsu_ids AS kitsu_ids,
+  ksub.subchecksum AS subchecksum,
+  ak.pk_kid || '.' || ak.mediasize::text || '.' || COALESCE(ksub.subchecksum, 'no_ass_file') || '.mp4' AS hardsubbed_mediafile,
+  array_remove(array_agg(DISTINCT krc.fk_kid_parent), null) AS parents,
+  array_remove(array_agg(DISTINCT krp.fk_kid_child), null) AS children,
+  COALESCE(array_remove((SELECT array_agg(DISTINCT fk_kid_child) FROM kara_relation WHERE fk_kid_parent = ANY (array_remove(array_agg(DISTINCT krc.fk_kid_parent), null))), ak.pk_kid), array[]::uuid[]) AS siblings`
+}
+FROM all_karas AS ak
+LEFT OUTER JOIN kara_relation krp ON krp.fk_kid_parent = ak.pk_kid
+LEFT OUTER JOIN kara_relation krc ON krc.fk_kid_child = ak.pk_kid
+LEFT JOIN kara_subchecksum ksub ON ksub.fk_kid = ak.pk_kid
+LEFT JOIN kara k ON k.pk_kid = ak.pk_kid
+WHERE ${includeStaging ? '1 = 1' : 'ak.repository != \'Staging\''}
+	${
+	collectionClauses.length > 0
+		? `AND (${collectionClauses.map(clause => `(${clause})`).join(' OR ')})`
+		: ''
+	}
+${onlyCount ? '' : `
+GROUP BY ak.pk_kid, ak.titles, ak.titles_aliases, ak.titles_default_language, ak.songorder, ak.tags, ak.serie_singergroup_singer_sortable, ak.subfile, ak.year, ak.mediafile, ak.karafile, ak.duration, ak.gain, ak.loudnorm, ak.created_at, ak.modified_at, ak.mediasize, ak.repository, ak.comment, ak.songtypes_sortable, ak.ignore_hooks, ak.titles_sortable, ksub.subchecksum, ak.kitsu_ids, ak.anilist_ids, ak.myanimelist_ids
+ORDER BY ${orderClauses} ak.serie_singergroup_singer_sortable, ak.songtypes_sortable DESC, ak.songorder, ak.titles_sortable
+${limitClause}
+${offsetClause}`
+}`;
+
 export const insertKara = `
 INSERT INTO kara(
 	titles,
