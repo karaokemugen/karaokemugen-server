@@ -153,8 +153,10 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 		withCTEs,
 		true
 	);
-	const res = await db().query(yesql(query)(yesqlPayload.params));
-	const resCount = await db().query(yesql(queryCount)(yesqlPayload.params));
+	const [res, resCount] = await Promise.all([
+		db().query(yesql(query)(yesqlPayload.params)),
+	    db().query(yesql(queryCount)(yesqlPayload.params))
+	]);
 	if (res.rows[0] != null) {
 		res.rows[0].count = resCount.rows[0].count;
 	}
