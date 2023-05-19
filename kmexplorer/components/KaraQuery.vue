@@ -56,6 +56,7 @@
 	const { replace, push } = useRouter();
 
 	const loading = ref(true);
+	const mounted = ref(false);
 	const karaokes = ref<KaraListType>({ infos: { count: 0, from: 0, to: 0 }, i18n: {}, content: [] });
 	const from = ref(-1);
 
@@ -84,10 +85,13 @@
 	watch(karaokes, (karaokes) => setResultsCount(karaokes.infos.count), { deep: true });
 
 	onMounted(() => {
+		mounted.value = true;
 		window.addEventListener('scroll', scrollEvent, { passive: true });
+		fillPage();
 	});
 
 	onUnmounted(() => {
+		mounted.value = false;
 		window.removeEventListener('scroll', scrollEvent);
 	});
 
@@ -177,6 +181,18 @@
 		if (bottomOfWindow) {
 			loadNextPage();
 		}
+	}
+
+	function fillPage() {
+		if (!mounted.value) {
+			return;
+		}
+		setTimeout(async () => {
+			if (document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+				await loadNextPage();
+			}
+			fillPage();
+		}, 0);
 	}
 
 	async function resetList(navigation = false) {
