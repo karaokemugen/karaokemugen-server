@@ -192,7 +192,7 @@
 				await loadNextPage();
 			}
 			fillPage();
-		}, 0);
+		}, 100);
 	}
 
 	async function resetList(navigation = false) {
