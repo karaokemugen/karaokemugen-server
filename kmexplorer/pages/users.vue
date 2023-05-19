@@ -61,6 +61,7 @@
 	const usersEnabled = conf.public.USERS;
 
 	const loading = ref(true);
+	const mounted = ref(false);
 	const from = ref(-1);
 	const users = ref<UserList>({ infos: { count: 0, from: 0, to: 0 }, content: [] });
 
@@ -74,10 +75,13 @@
 	watch(users, (users) => setResultsCount(users.infos.count), { deep: true });
 
 	onMounted(() => {
+		mounted.value = true;
 		window.addEventListener('scroll', scrollEvent, { passive: true });
+		fillPage();
 	});
 
 	onUnmounted(() => {
+		mounted.value = false;
 		window.removeEventListener('scroll', scrollEvent);
 	});
 
@@ -100,7 +104,9 @@
 		const data = await useCustomFetch<UserList>('/api/users', {
 			query: reqParams()
 		});
-		users.value.content.push(...data.content);
+		for (let i = data.infos.from; i < data.infos.to; i++) {
+			users.value.content[i] = data.content[i - data.infos.from];
+		}
 
 		users.value.infos.count = data.infos.count;
 		users.value.infos.to = data.infos.to;
@@ -114,6 +120,19 @@
 			loadNextPage();
 		}
 	}
+
+	function fillPage() {
+		if (!mounted.value) {
+			return;
+		}
+		setTimeout(async () => {
+			if (document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+				await loadNextPage();
+			}
+			fillPage();
+		}, 100);
+	}
+
 
 	async function resetList() {
 		users.value = { infos: { count: 0, to: 0, from: 0 }, content: [] };
