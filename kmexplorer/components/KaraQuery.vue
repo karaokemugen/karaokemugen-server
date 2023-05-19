@@ -162,10 +162,10 @@
 		for (const karaoke of data.content) {
 			sortTypesKara(karaoke);
 		}
-		for (let i = data.infos.from; i < data.infos.to; i++){
+		for (let i = data.infos.from; i < data.infos.to; i++) {
 			karaokes.value.content[i] = data.content[i - data.infos.from];
 		}
-		karaokes.value.i18n = data.i18n;
+		karaokes.value.i18n = { ...karaokes.value.i18n, ...data.i18n };
 		karaokes.value.infos.count = data.infos.count;
 		karaokes.value.infos.to = data.infos.to;
 		loading.value = false;
