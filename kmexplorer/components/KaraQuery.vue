@@ -177,9 +177,12 @@
 	}
 
 	function scrollEvent() {
-		const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight > document.documentElement.offsetHeight - 400;
+		// trigger next page before the end of the page
+		const bottomPosScroll = document.documentElement.scrollTop + window.innerHeight;
+		const minPosToTriggerScroll = 400;
+		const triggerNextPage = document.documentElement.offsetHeight - bottomPosScroll < Math.max(2 * window.innerHeight, minPosToTriggerScroll);
 
-		if (bottomOfWindow) {
+		if (triggerNextPage) {
 			loadNextPage();
 		}
 	}
