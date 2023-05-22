@@ -132,7 +132,9 @@
 		"private_profile": "Dieses Profil ist privat.",
 		"not_found_profile": "Dieser Benutzer konnte nicht gefunden werden",
 		"home": "Zur Startseite zurückkehren",
-		"generic": "Fehler"
+		"generic": "Fehler",
+		"remote": "Fehler beim Laden der remote Liste",
+		"not_found_tag": "Tag nicht gefunden"
 	},
 	"layout": {
 		"explore": "Füge welche hinzu!"
