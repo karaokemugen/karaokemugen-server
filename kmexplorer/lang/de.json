@@ -14,7 +14,24 @@
 		"songwriters": "Songwriter",
 		"creators": "Ersteller",
 		"authors": "Karaoke Autor",
-		"langs": "Sprachen"
+		"langs": "Sprachen",
+		"switch_language": "Sprache wechseln",
+		"tags": "Andere…",
+		"singergroups": "Bands/Gruppen",
+		"years": "Jahre",
+		"discord": "Discord",
+		"franchises": "Franchises",
+		"logout": "Abmelden",
+		"discourse": "Forum",
+		"community": "Community",
+		"kara_import": "Karaoke einreichen",
+		"search_users": "Benutzer suchen",
+		"register": "Registrieren",
+		"connection": "Anmelden",
+		"kara_suggest": "Ein Lied vorschlagen",
+		"random": "Auf gut Glück",
+		"anime_list": "Meine Anime",
+		"add_repository": "Diese Datenbank zur eigenen App hinzufügen"
 	},
 	"kara": {
 		"import": {
@@ -22,7 +39,7 @@
 			"series_tooltip": "TV Serie, Filmtitel, Spieltitel, etc.",
 			"songtypes_required": "Songtyp ist erforderlich",
 			"add_file_success": "{name} Datei erfolgreich hinzugefügt",
-			"in_progress_link": "Liste von Karaoke, die aktuell umgesetzt werden",
+			"in_progress_link": "Liste von Liedern, die aktuell umgesetzt werden",
 			"add_file_media_error": "{name} ist keine Mediendatei",
 			"year_required": "Ausstrahlungsjahr ist erforderlich",
 			"add_file_lyrics_error": "{name} ist keine Untertiteldatei",
@@ -33,13 +50,13 @@
 			"description": "Durch dieses Formular kann ein fertiges Karaoke dem Karaoke Mugen Team übermittelt werden. Da es nach der Übermittlung überprüft wird, erscheint es noch nicht sofort in der Datenbank. Wir bitten um etwas Geduld. Die eingereichten Dateien könnten vor der Integration noch korrigiert werden, falls sie nicht den Richtlinien von KM entsprechen.",
 			"attention": "ACHTUNG:",
 			"documentation_link": "Dokumentation",
-			"license_reminder": "Karaoke wird in der {name} Lizenz veröffentlicht",
+			"license_reminder": "Karaoke wird mit der {name} Lizenz veröffentlicht",
 			"license_link": "Mehr über diese Lizenz erfahren (hier Klicken).",
 			"add": "Hinzufügen",
 			"comment": "Kommentar hinterlassen?",
 			"submit": "Karaoke einreichen",
 			"media_file": "Mediendatei",
-			"lyrics_file_missing": "Die Untertiteldatei fehlt. Dies ist nur zulässig, wenn eine MKV Datei oder ein Karaoke ohne Text gesendet wird (?).",
+			"lyrics_file_missing": "Die Untertiteldatei fehlt. Dies ist nur zulässig, wenn eine MKV Datei oder ein Lied ohne Text gesendet wird (?).",
 			"title": "Titel",
 			"title_required": "Bitte einen Songtitel eingeben",
 			"year": "Ausstrahlungsjahr",
@@ -51,7 +68,37 @@
 			"media_file_edit": "Mediendatei ersetzen",
 			"titles_aliases": "Pseudonyme",
 			"titles_aliases_tooltip": "Kurzformen oder alternative Namen, um besser gefunden zu werden",
-			"add_file_media_not_supported_error": "{name} ist keine unterstützte Mediendatei, bitte zuerst in einen dieser Formate konvertieren: {formats}"
+			"add_file_media_not_supported_error": "{name} ist keine unterstützte Mediendatei, bitte zuerst in einen dieser Formate konvertieren: {formats}",
+			"restart": "Neues Karaoke einreichen",
+			"comment_tooltip": "Wenn Sie eine Nachricht für die Integratoren hinzufügen oder einfach nur Danke sagen möchten, können Sie dies hier tun!",
+			"contact_infos": "Kontaktinformationen",
+			"sections": {
+				"files": "Dateien",
+				"parents": "Übergeordnete(s) Lied(er)",
+				"titles": "Titel",
+				"identity": "Identität",
+				"meta": "Metadaten",
+				"categorization": "Kategorisierung"
+			},
+			"desc": {
+				"parents": "Wenn es sich bei diesem Lied um eine alternative Version eines anderen Liedes handelt, wählen Sie die übergeordnete Version aus, um dieses Formular automatisch vorauszufüllen.",
+				"parents_public": "Wenn ein Benutzer einen übergeordneten Song auf der öffentlichen Seite auswählt, werden alle untergeordneten/alternativen Versionen angezeigt.",
+				"titles": "Alle Titel, die das Lied in verschiedenen Sprachen hat. Normalerweise gibt es nur einen Titel.",
+				"titles_default_language": "Die Standard-Titelsprache sollte der Originaltitel des Liedes sein. Für Titel in nicht-lateinischen Sprachen (Chinesisch, Japanisch, Arabisch, Koreanisch...), muss ein \"Romanisierter\" Titel hinzugefügt und zum Standard gewählt werden.",
+				"aliases": "Wenn das Lied unter einem anderen Namen bekannt ist (z.B. Abkürzungen), kann dieser hier hinzugefügt werden, um später die Suche zu erleichtern. Es ist nicht nötig, Wörter zu verwenden, die bereits im Titel des Liedes enthalten sind."
+			},
+			"show_hide": "Anzeigen/Verbergen",
+			"songwriters_tooltip": "Komponisten, Arrangeure und Textschreiber.",
+			"year_tooltip": "Jahr, in dem die Serie ausgestrahlt oder das Video produziert wurde",
+			"parents": "Übergeordnete Lieder",
+			"default_language": "Standardsprache",
+			"i18n_select": "Sprache hinzufügen",
+			"add_error": "Es ist ein Fehler aufgetreten, Karaoke wurde nicht korrekt übermittelt",
+			"created_at": "Erstellungsdatum",
+			"i18n_delete": "Sprache entfernen",
+			"authors_required": "Autor des Karaokes ist erforderlich",
+			"add_success": "Karaoke wurde erfolgreich versendet!",
+			"collections_required": "Mindestens eine Sammlung muss ausgewählt sein"
 		},
 		"tagtypes": {
 			"platforms": "Plattform | Plattformen",
@@ -69,7 +116,9 @@
 			"misc": "Verschieden",
 			"versions": "Version | Versionen",
 			"creators": "Ersteller | Ersteller",
-			"collections": "Sammlung | Sammlungen"
+			"collections": "Sammlung | Sammlungen",
+			"franchises": "Franchise",
+			"singergroups": "Band | Gruppen"
 		},
 		"songwriters_by": "Komponiert von",
 		"download": "Herunterladen",
@@ -126,7 +175,16 @@
 		"lyrics": {
 			"show": "Text anzeigen",
 			"hide": "Text ausblenden"
-		}
+		},
+		"siblings": "Ähnliche Lieder",
+		"childrens": "Unterstellte Lieder",
+		"stats": {
+			"requested": "{Anzahl} Mal angefordert",
+			"played": "{number} mal abgespielt",
+			"favorited": "Von {number} Benutzern zu den Favoriten hinzugefügt"
+		},
+		"parents": "Übergeordnete Lieder",
+		"singergroups_by": "von der Band"
 	},
 	"error": {
 		"private_profile": "Dieses Profil ist privat.",
@@ -137,6 +195,327 @@
 		"not_found_tag": "Tag nicht gefunden"
 	},
 	"layout": {
-		"explore": "Füge welche hinzu!"
+		"explore": "Füge welche hinzu!",
+		"results": "{count} Ergebnis | {count} Ergebnisse",
+		"slogan": "Dieses Lied ist in der Karaoke Mugen Datenbank verfügbar!",
+		"suggest_open": "Vorschlagen!",
+		"end_favorites": "Das ist das Ende der Favoriten.",
+		"empty": "Wir haben überall gesucht, aber nichts gefunden."
+	},
+	"modal": {
+		"signup": {
+			"fields": {
+				"email": {
+					"label": "E-Mail",
+					"placeholder": "test{'@'}shelter.moe"
+				},
+				"username": {
+					"placeholder": "LoveLiveFan93",
+					"label": "Benutzername"
+				},
+				"password_confirmation": {
+					"label": "Passwort bestätigen",
+					"placeholder": "EigentlichIstIdolM{'@'}sterBesser"
+				},
+				"password": {
+					"label": "Passwort",
+					"placeholder": "EigentlichIstIdolM{'@'}sterBesser"
+				}
+			},
+			"title": "Registrieren",
+			"subtitle": "Anmelden, um Favoriten zu speichern und ein Profil zu erstellen!",
+			"passwords_mismatch": "Passwörter stimmen nicht überein",
+			"submit": "Registrieren"
+		},
+		"profile": {
+			"fields": {
+				"username": {
+					"label": "Benutzername"
+				},
+				"nickname": {
+					"placeholder": "LoveLiveFan93",
+					"label": "Spitzname"
+				},
+				"email": {
+					"label": "E-Mail",
+					"placeholder": "test{'@'}shelter.moe"
+				},
+				"discord": {
+					"label": "Discord",
+					"placeholder": "Karak #1423"
+				},
+				"flag_public": {
+					"checkbox": "Mein Profil öffentlich machen",
+					"label": "Öffentliches Profil"
+				},
+				"flag_displayfavorites": {
+					"checkbox": "Meine Favoriten anzeigen",
+					"label": "Favoriten"
+				},
+				"bio": {
+					"placeholder": "Das ist mein Leben",
+					"label": "Biografie"
+				},
+				"password": {
+					"placeholder": "IchBevorzugeIdolM{'@'}sterWirklich",
+					"label": "Passwort"
+				},
+				"password_confirmation": {
+					"label": "Passwort bestätigen",
+					"placeholder": "IchBevorzugeIdolM{'@'}sterWirklich"
+				},
+				"twitter": {
+					"placeholder": "KaraokeMugen",
+					"label": "Twitter"
+				},
+				"instagram": {
+					"label": "Instagram",
+					"placeholder": "karaokemugen"
+				},
+				"banner": {
+					"upload": "Banner hochladen",
+					"remove": "Auf Standard-Banner zurücksetzen",
+					"label": "Banner"
+				},
+				"twitch": {
+					"label": "Twitch",
+					"placeholder": "KaraokeLive"
+				},
+				"url": {
+					"label": "Webseite",
+					"placeholder": "https://karaokes.moe"
+				},
+				"mastodon": {
+					"label": "Mastodon",
+					"placeholder": "karaokemugen{'@'}shelter.moe"
+				},
+				"location": {
+					"label": "Ort"
+				},
+				"myanimelist": {
+					"label": "MyAnimeList",
+					"placeholder": "karaokemugen"
+				},
+				"anilist": {
+					"label": "AniList",
+					"placeholder": "karaokemugen"
+				},
+				"kitsu": {
+					"label": "Kitsu",
+					"placeholder": "karaokemugen"
+				},
+				"anime_list_to_fetch": {
+					"label": "Abzurufende Anime-Liste"
+				},
+				"flag_sendstats": {
+					"checkbox": "Meine Favoriten und Karaoke-Anfragen für Statistiken verwenden",
+					"label": "Statistiken"
+				},
+				"lang_prefs": {
+					"main_song_name_lang": "Sprachpräferenz für Liedernamen"
+				}
+			},
+			"delete": "Benutzerkonto löschen",
+			"headers": {
+				"profile": "Über",
+				"privacy": "Datenschutz",
+				"lang": "Sprachpräferenzen",
+				"password": "Passwort ändern"
+			},
+			"title": "Profil bearbeiten",
+			"submit": "Speichern",
+			"select_avatar": "Einen Avatar auswählen",
+			"passwords_mismatch": "Passwörter stimmen nicht überein"
+		},
+		"delete_account": {
+			"cancel": "Abbrechen",
+			"add": "Konto löschen"
+		},
+		"download": {
+			"label": "Karaoke herunterladen",
+			"karabundle": "Daten herunterladen (.json)",
+			"media_hardsub": "Download von Medium inkl. Untertiteln (Hardsub .mp4)",
+			"cancel": "Abbrechen",
+			"subtitles": "Liedtext herunterladen (.{format})",
+			"media": "Medium herunterladen (.{format})"
+		},
+		"add_repository": {
+			"download": "Die Anwendung kann hier heruntergeladen werden.",
+			"online": "Online",
+			"add": "Hinzufügen",
+			"cancel": "Abbrechen"
+		},
+		"suggest": {
+			"fields": {
+				"series": {
+					"label": "Serie / Sänger",
+					"placeholder": "Yôjo Senki: Die Saga von Tanya der Bösen"
+				},
+				"name": {
+					"label": "Ihr Name"
+				},
+				"link": {
+					"placeholder": "https://www.youtube.com/watch?v=5VRyiaszGtA",
+					"label": "Link"
+				},
+				"title": {
+					"label": "Titel",
+					"placeholder": "JINGO-DSCHUNGEL"
+				},
+				"type": {
+					"label": "Typ"
+				}
+			},
+			"submitted": {
+				"close": "Schließen",
+				"here": "hier",
+				"subtitle": "Nachricht laut und deutlich gehört!"
+			},
+			"title": "Vorschlagen",
+			"submit": "Senden"
+		},
+		"join_kara": {
+			"error": "Der Code ist ungültig, bitte Eingabe überprüfen.",
+			"add": "Beitreten",
+			"label": "An einer Karaoke-Party teilnehmen",
+			"desc": "Code eingeben, um an einer bestehenden Karaoke-Party teilzunehmen",
+			"cancel": "Abbrechen"
+		},
+		"login": {
+			"fields": {
+				"password": {
+					"label": "Passwort",
+					"placeholder": "EigentlichIstIdolM{'@'}sterBesser"
+				},
+				"forgot_password": {
+					"label": "Passwort vergessen?",
+					"success": "Es wurde eine E-Mail mit einem Link zum Zurücksetzen des Passworts gesendet."
+				},
+				"username": {
+					"label": "Benutzername",
+					"placeholder": "LoveLiveFan93"
+				}
+			},
+			"title": "Anmelden",
+			"submit": "Anmelden"
+		},
+		"crop": {
+			"label": "Avatar zuschneiden",
+			"cancel": "Abbrechen",
+			"add": "Hinzufügen"
+		},
+		"set_banner": {
+			"previous": "Vorheriges Bild",
+			"label": "Banner auswählen",
+			"cancel": "Abbrechen",
+			"set": "Dieses Bild verwenden",
+			"next": "Nächstes Bild"
+		},
+		"stats": {
+			"no": "Nein",
+			"label": "Meine Favoriten und Karaoke-Anfragen für Statistiken verwenden",
+			"yes": "Ja"
+		},
+		"reset_password": {
+			"button": "Passwort ändern",
+			"description": "Neues Passwort eingeben"
+		}
+	},
+	"search": {
+		"next": "Nächste Seite",
+		"sort": {
+			"most_played": "Meistgespielt",
+			"most_requested": "Am häufigsten gewünscht",
+			"kara_count": "Anzahl Lieder",
+			"recent": "Nach Hinzufügungsdatum",
+			"a_z": "Von A bis Z",
+			"most_favorites": "Am meisten Favorisiert",
+			"likes": "Meiste Likes",
+			"languages": "Nach Sprachen",
+			"most_played_recently": "Am häufigsten gespielt (letzte 12 Monate)",
+			"most_requested_recently": "Am häufigsten angefragt (letzte 12 Monate)"
+		},
+		"placeholder": {
+			"kara": "Serien, Sänger, Namen…",
+			"tag": "Tag-Name…"
+		},
+		"previous": "Vorherige Seite",
+		"aria": {
+			"sort": "Sortieren nach",
+			"goto": "Zu Seite {0}",
+			"page": "Seite {0}"
+		},
+		"types": {
+			"suggestions": "Vorschläge",
+			"favorites": "Favoriten des Benutzers",
+			"users": "Benutzer",
+			"karaokes": "Lieder"
+		}
+	},
+	"profile": {
+		"favorites": "Favoriten",
+		"edit": "Profil bearbeiten",
+		"favorites_count": "{x} Favorit | {x} Favoriten",
+		"anime_list": "Meine Anime"
+	},
+	"toast": {
+		"SUBFILE_FORMAT_UNKOWN": "Unbekanntes Untertiteldateiformat",
+		"GENERATED_KARA": "Karaoke erfolgreich eingereicht.",
+		"FILE_UPLOADED": "Datei wurde hochgeladen.",
+		"USER_EDITED": "Benutzer erfolgreich bearbeitet",
+		"PASSWORD_UPDATED": "Passwort erfolgreich aktualisiert",
+		"LOG_ERROR": "Falsche Anmeldeinformationen.",
+		"USER_CREATED": "Benutzer erfolgreich angelegt",
+		"EDITED_KARA": "Die Änderung wurde erfolgreich übermittelt.",
+		"CANNOT_GENERATE_KARA": "Karaoke konnte nicht eingereicht werden.",
+		"CANNOT_EDIT_KARA": "Änderung konnte nicht gesendet werden.",
+		"TAG_CREATED": "Tag erfolgreich erstellt",
+		"USER_DELETED": "Benutzer erfolgreich gelöscht"
+	},
+	"suggestions": {
+		"kara": {
+			"remove": "Entfernen",
+			"ok": "Wurde notiert!",
+			"yes": "Ja!"
+		},
+		"header": {
+			"title": "Import-vorschläge",
+			"random_selection": "Zufällig andere Lieder auswählen",
+			"description": "Was ist das?",
+			"send_suggestion": "Vorschlag senden"
+		},
+		"modal": {
+			"welcome": {
+				"btn": "OK!",
+				"discord": "Discord",
+				"title": "Wo bin ich?"
+			}
+		}
+	},
+	"footer": {
+		"home": "Projekt Startseite",
+		"api_documentation": "API Dokumentation",
+		"software_under_license": "Software unter Lizenz",
+		"translation": "An der Übersetzung beteiligen"
+	},
+	"remote": {
+		"token": "Token",
+		"code": "Code",
+		"last_ip": "Letzte IP",
+		"permanent": "Dauerhaft",
+		"delete_button": "Zeile löschen",
+		"last_use": "Zuletzt gebraucht"
+	},
+	"stats": {
+		"karaokes": "Karaoke",
+		"all_duration": "Gesamtdauer aller Lieder",
+		"last_generation": "Letzte Aktualisierung",
+		"media_size": "Mediengröße"
+	},
+	"roles": {
+		"admin": "Administrator"
+	},
+	"titles": {
+		"home": "Startseite"
 	}
 }
