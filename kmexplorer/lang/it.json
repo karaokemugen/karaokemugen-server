@@ -1,6 +1,25 @@
 {
 	"kara": {
-		"notfound": "Karaoke non trovata"
+		"notfound": "Karaoke non trovata",
+		"tagtypes": {
+			"platforms": "Piattaforma | Piattaforme",
+			"versions": "Versione | Versioni",
+			"groups": "Gruppo | Gruppi",
+			"langs": "Lingua | Lingue",
+			"singergroups": "Gruppo musicale | Gruppi musicali",
+			"series": "Serie",
+			"genres": "Genere | Generi",
+			"families": "Famiglia | Famiglie"
+		},
+		"creators_by": "Creato da",
+		"singers_by": "Cantato da",
+		"songwriters_by": "Composto da",
+		"authors_by": "Karaoke creato da",
+		"singergroups_by": "dal gruppo musicale",
+		"duration": "Durata ",
+		"lyrics": {
+			"hide": "Nascondi testo"
+		}
 	},
 	"menu": {
 		"discord": "Discord"
