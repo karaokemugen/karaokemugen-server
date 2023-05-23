@@ -203,8 +203,11 @@ export async function getKara(params: KaraParams, token?: JWTTokenWithRoles) {
 		}
 		return kara;
 	} catch (err) {
-		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
-		sentry.error(err);
+		// No use to call Sentry if error is one of our error codes.
+		if (!err.code) {
+			sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+			sentry.error(err);
+		}
 		throw err;
 	}
 }
