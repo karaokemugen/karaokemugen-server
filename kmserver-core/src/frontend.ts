@@ -13,6 +13,7 @@ import favoritesController from './controllers/http/favorites.js';
 import inboxController from './controllers/http/inbox.js';
 import KImportController from './controllers/http/karaImport.js';
 import KServerController from './controllers/http/karaserv.js';
+import PMController from './controllers/http/playlistMedias.js';
 import remoteController from './controllers/http/remote.js';
 import statsController from './controllers/http/stats.js';
 import suggestionsController from './controllers/http/suggestions.js';
@@ -134,6 +135,7 @@ function api() {
 	// Adding KaraServ routes
 	KServerController(apiRouter);
 	inboxController(apiRouter);
+	PMController(apiRouter);
 	if (conf.KaraExplorer.Import) KImportController(apiRouter);
 	// Stats
 	if (conf.Stats.Enabled) statsController(apiRouter);
