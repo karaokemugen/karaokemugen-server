@@ -11,7 +11,7 @@ export const useCustomFetch = <T = unknown, R extends NitroFetchRequest = NitroF
 	const auth = useAuthStore();
 	const nuxt = useNuxtApp();
 	return $fetch<T, R>(request, {
-		baseURL: nuxt.$config.API_URL,
+		baseURL: nuxt.$config.public.API_URL,
 		headers: {
 			authorization: auth.token || '',
 			...opts?.headers
