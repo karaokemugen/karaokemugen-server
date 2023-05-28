@@ -80,18 +80,20 @@
 				v-if="menuOpen === 'community'"
 				class="navbar-dropdown"
 			>
-				<nuxt-link
-					v-if="loggedIn && user?.roles?.admin"
-					class="navbar-item"
-					to="/remote"
-					@click="closeMenu"
-				>
-					<font-awesome-icon
-						:icon="['fas', 'house-laptop']"
-						:fixed-width="true"
-					/>
-					{{ $t('menu.remotes') }}
-				</nuxt-link>
+				<client-only>
+					<nuxt-link
+						v-if="loggedIn && user?.roles?.admin"
+						class="navbar-item"
+						to="/remote"
+						@click="closeMenu"
+					>
+						<font-awesome-icon
+							:icon="['fas', 'house-laptop']"
+							:fixed-width="true"
+						/>
+						{{ $t('menu.remotes') }}
+					</nuxt-link>
+				</client-only>
 				<nuxt-link
 					v-if="usersEnabled"
 					class="navbar-item"
@@ -154,85 +156,87 @@
 				</nuxt-link>
 			</div>
 
-			<div
-				v-if="menuOpen === 'account'"
-				class="navbar-dropdown"
-			>
-				<nuxt-link
-					v-if="loggedIn && user"
-					:to="`/user/${user.login}`"
-					class="navbar-item"
-					active-class="is-active"
-					aria-label="Profile"
-					@click="closeMenu"
+			<client-only>
+				<div
+					v-if="menuOpen === 'account'"
+					class="navbar-dropdown"
 				>
-					<font-awesome-icon
-						:icon="['fas', 'user']"
-						:fixed-width="true"
-					/>
-					{{ user.nickname }}
-				</nuxt-link>
-				<nuxt-link
-					v-else-if="usersEnabled"
-					class="navbar-item"
-					aria-label="Login"
-					@click.prevent="() => {
-						openModal('auth');
-						closeMenu();
-					}"
-				>
-					<font-awesome-icon
-						:icon="['fas', 'sign-in-alt']"
-						:fixed-width="true"
-					/>
-					{{ $t('menu.connection') }}
-				</nuxt-link>
-				<nuxt-link
-					v-if="loggedIn"
-					class="navbar-item"
-					aria-label="Logout"
-					@click.prevent="() => {
-						logout();
-						closeMenu();
-					}"
-				>
-					<font-awesome-icon
-						:icon="['fas', 'sign-out-alt']"
-						:fixed-width="true"
-					/>
-					{{ $t('menu.logout') }}
-				</nuxt-link>
-				<div class="navbar-item">
 					<nuxt-link
-						:class="languagesOpen && 'is-active'"
-						@click="() => languagesOpen = !languagesOpen"
+						v-if="loggedIn && user"
+						:to="`/user/${user.login}`"
+						class="navbar-item"
+						active-class="is-active"
+						aria-label="Profile"
+						@click="closeMenu"
 					>
 						<font-awesome-icon
-							:icon="['fas', 'globe']"
+							:icon="['fas', 'user']"
 							:fixed-width="true"
 						/>
-						{{ $t('menu.switch_language') }}
+						{{ user.nickname }}
 					</nuxt-link>
-
-					<div
-						v-if="languagesOpen"
-						class="navbar-dropdown"
+					<nuxt-link
+						v-else-if="usersEnabled"
+						class="navbar-item"
+						aria-label="Login"
+						@click.prevent="() => {
+							openModal('auth');
+							closeMenu();
+						}"
 					>
+						<font-awesome-icon
+							:icon="['fas', 'sign-in-alt']"
+							:fixed-width="true"
+						/>
+						{{ $t('menu.connection') }}
+					</nuxt-link>
+					<nuxt-link
+						v-if="loggedIn"
+						class="navbar-item"
+						aria-label="Logout"
+						@click.prevent="() => {
+							logout();
+							closeMenu();
+						}"
+					>
+						<font-awesome-icon
+							:icon="['fas', 'sign-out-alt']"
+							:fixed-width="true"
+						/>
+						{{ $t('menu.logout') }}
+					</nuxt-link>
+					<div class="navbar-item">
 						<nuxt-link
-							v-for="availableLocale in availableLocales"
-							:key="availableLocale.code"
-							class="navbar-item"
-							href="#"
-							@click.prevent.stop="
-								setLocale(availableLocale.code);
-								editUser(availableLocale.code);
-								closeMenu();"
+							:class="languagesOpen && 'is-active'"
+							@click="() => languagesOpen = !languagesOpen"
 						>
-							{{ availableLocale.name }}
+							<font-awesome-icon
+								:icon="['fas', 'globe']"
+								:fixed-width="true"
+							/>
+							{{ $t('menu.switch_language') }}
 						</nuxt-link>
+
+						<div
+							v-if="languagesOpen"
+							class="navbar-dropdown"
+						>
+							<nuxt-link
+								v-for="availableLocale in availableLocales"
+								:key="availableLocale.code"
+								class="navbar-item"
+								href="#"
+								@click.prevent.stop="
+									setLocale(availableLocale.code);
+									editUser(availableLocale.code);
+									closeMenu();"
+							>
+								{{ availableLocale.name }}
+							</nuxt-link>
+						</div>
 					</div>
 				</div>
-			</div>
+			</client-only>
 
 			<div
 				v-if="menuOpen === 'database'"
@@ -768,17 +772,19 @@
 				</p>
 				<ul class="menu-list">
 					<li>
-						<nuxt-link
-							v-if="loggedIn && user?.roles?.admin"
-							to="/remote"
-							active-class="is-active"
-						>
-							<font-awesome-icon
-								:icon="['fas', 'house-laptop']"
-								:fixed-width="true"
-							/>
-							{{ $t('menu.remotes') }}
-						</nuxt-link>
+						<client-only>
+							<nuxt-link
+								v-if="loggedIn && user?.roles?.admin"
+								to="/remote"
+								active-class="is-active"
+							>
+								<font-awesome-icon
+									:icon="['fas', 'house-laptop']"
+									:fixed-width="true"
+								/>
+								{{ $t('menu.remotes') }}
+							</nuxt-link>
+						</client-only>
 						<nuxt-link
 							v-if="usersEnabled"
 							to="/users"
