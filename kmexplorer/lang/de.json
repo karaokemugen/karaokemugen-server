@@ -67,7 +67,7 @@
 			"langs_required": "Bitte eine Sprache auswählen",
 			"media_file_edit": "Mediendatei ersetzen",
 			"titles_aliases": "Pseudonyme",
-			"titles_aliases_tooltip": "Kurzformen oder alternative Namen, um besser gefunden zu werden",
+			"titles_aliases_tooltip": "Kurzformen oder alternative Namen, um besser gefunden zu werden.",
 			"add_file_media_not_supported_error": "{name} ist keine unterstützte Mediendatei, bitte zuerst in einen dieser Formate konvertieren: {formats}",
 			"restart": "Neues Karaoke einreichen",
 			"comment_tooltip": "Wenn Sie eine Nachricht für die Integratoren hinzufügen oder einfach nur Danke sagen möchten, können Sie dies hier tun!",
