@@ -121,7 +121,7 @@
 			"songwriters_tooltip": "Komposer, Pengaransemen, dan Penulis Lirik.",
 			"creators_tooltip": "Entitas yang membuat serial. Bisa studio animasi, studio film, atau studio permainan.",
 			"parents": "Induk",
-			"parents_tooltip": "Jika induk ditentukan, karaoke ini akan ditampilkan sebagai alternatif kepada karaoke dipilih di induk. Harap diingat untuk memilih repositori yang bagus sebelum mengisi array ini untuk menghindari menambahkan karaoke dari repositori lain.",	
+			"parents_tooltip": "Jika induk ditentukan, karaoke ini akan ditampilkan sebagai alternatif kepada karaoke dipilih di induk. Harap diingat untuk memilih repositori yang bagus sebelum mengisi array ini untuk menghindari menambahkan karaoke dari repositori lain.",
 			"restart": "Kirim karaoke baru",
 			"i18n_select": "Tambahkan sebuah bahasa",
 			"contact_infos_tooltip": "Masukkan detail kontakmu, sehingga kami bisa berhubungan dengan kamu jika kamu memiliki pertanyaan tentang karaoke ini.",
@@ -132,7 +132,11 @@
 			"media_file_edit": "Mengganti berkas media",
 			"add_file_media_not_supported_error": "{name} bukan berkas media yang didukung, konversi ke salah satu dari format berikut: {formats}",
 			"collections_required": "Paling tidak satu koleksi harus dicentang",
-			"default_language": "Bahasa baku"
+			"default_language": "Bahasa baku",
+			"sections": {
+				"categorization": "Kategorisasi",
+				"meta": "Metadata"
+			}
 		},
 		"songwriters_by": "Digubah oleh",
 		"created_at": "Dibuat ",
@@ -359,6 +363,18 @@
 				"lang_prefs": {
 					"main_song_name_lang": "Preferensi tampilan nama lagu",
 					"fallback_song_name_lang": "Preferensi tampilan nama lagu alternatif"
+				},
+				"myanimelist": {
+					"label": "MyAnimeList",
+					"placeholder": "karaokemugen"
+				},
+				"anilist": {
+					"label": "AniList",
+					"placeholder": "karaokemugen"
+				},
+				"kitsu": {
+					"label": "Kitsu",
+					"placeholder": "karaokemugen"
 				}
 			},
 			"passwords_mismatch": "Kata sandi tidak sama",
@@ -516,7 +532,7 @@
 			"random_selection": "Pilih lagu lain secara acak",
 			"send_suggestion": "Kirim Usulan",
 			"purpose": "Berikut adalah beberapa lagu karaoke yang sudah siap untuk diimpor, kamu bisa mencari lagu tertentu atau pencet tombol \"Pilih lagu lain secara acak.\" Kamu bisa mendukung lagu karaoke tersebut dengan memencet \"Ya!\".",
-			"suggestion": "Jika kamu belum bisa menemukan lagu yang kamu cari, pencet \"Kirim Usulan.\""
+			"suggestion": "Jika kamu belum bisa menemukan lagu yang kamu cari, pencet \"Kirim Usulan\"."
 		},
 		"modal": {
 			"welcome": {
