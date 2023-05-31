@@ -13,7 +13,7 @@
 		"series": "Serie",
 		"songwriters": "Songwriter",
 		"creators": "Ersteller",
-		"authors": "Karaoke Autor",
+		"authors": "Autoren",
 		"langs": "Sprachen",
 		"switch_language": "Sprache wechseln",
 		"tags": "Andere…",
@@ -31,7 +31,9 @@
 		"kara_suggest": "Ein Lied vorschlagen",
 		"random": "Auf gut Glück",
 		"anime_list": "Meine Anime",
-		"add_repository": "Diese Datenbank zur eigenen App hinzufügen"
+		"add_repository": "Diese Datenbank zur eigenen App hinzufügen",
+		"database": "Datenbank",
+		"karas": "Lieder"
 	},
 	"kara": {
 		"import": {
@@ -98,7 +100,12 @@
 			"i18n_delete": "Sprache entfernen",
 			"authors_required": "Autor des Karaokes ist erforderlich",
 			"add_success": "Karaoke wurde erfolgreich versendet!",
-			"collections_required": "Mindestens eine Sammlung muss ausgewählt sein"
+			"collections_required": "Mindestens eine Sammlung muss ausgewählt sein",
+			"series_singers_required": "Serien, gesungen von und von der Band können nicht gleichzeitig leer sein.",
+			"franchises_tooltip": "Wenn die Serie Teil einer Franchise ist (wie Gundam, Mario, Zelda, Naruto, etc.), diese hier angeben.",
+			"songorder_tooltip": "Nummer (Reihenfolge) des Openings/Endings. Wenn dies das einzige Opening/Ending der Serie ist, kann das Feld leer gelassen werden.",
+			"singergroups_tooltip": "Wenn die Sänger zu einer Band gehören, können diese hier eingetragen werden. Die Band wird dann beim Abspielen und in den Songlisten anstelle der einzelnen Sänger angezeigt.",
+			"groups_tooltip": "Download-Gruppen für dieses Lied. Das Lied wird in diesen Download-Packs enthalten sein"
 		},
 		"tagtypes": {
 			"platforms": "Plattform | Plattformen",
@@ -107,18 +114,18 @@
 			"langs": "Sprache | Sprachen",
 			"genres": "Genre | Genres",
 			"warnings": "Warnung | Warnungen",
-			"series": "Serie",
+			"series": "Serie | Serien",
 			"songtypes": "Songtyp | Songtypen",
-			"singers": "Singer | Singer",
+			"singers": "Sänger",
 			"songwriters": "Songwriter | Songwriter",
 			"families": "Familie | Familien",
-			"authors": "Karaoke Autor | Karaoke Autor",
+			"authors": "Karaoke Autor | Karaoke Autoren",
 			"misc": "Verschieden",
 			"versions": "Version | Versionen",
 			"creators": "Ersteller | Ersteller",
 			"collections": "Sammlung | Sammlungen",
 			"franchises": "Franchise",
-			"singergroups": "Band | Gruppen"
+			"singergroups": "Band | Bands"
 		},
 		"songwriters_by": "Komponiert von",
 		"download": "Herunterladen",
@@ -140,7 +147,7 @@
 			},
 			"form": {
 				"title": "Ein Problem melden",
-				"subtitle": "Wir geben unser Bestes, einen hochwertigen Karaokekatalog anzubieten, dennoch können manchmal Fehler unterlaufen. Danke für die Mithilfe!",
+				"subtitle": "Wir geben unser Bestes, eine hochwertige Datenbank anzubieten, dennoch können manchmal Fehler passieren. Danke für die Mithilfe!",
 				"type": {
 					"label": "Art des Problems",
 					"media": "Medienproblem",
@@ -191,7 +198,7 @@
 		"not_found_profile": "Dieser Benutzer konnte nicht gefunden werden",
 		"home": "Zur Startseite zurückkehren",
 		"generic": "Fehler",
-		"remote": "Fehler beim Laden der remote Liste",
+		"remote": "Fehler beim Laden der remote-Liste",
 		"not_found_tag": "Tag nicht gefunden"
 	},
 	"layout": {
@@ -496,7 +503,8 @@
 		"home": "Projekt Startseite",
 		"api_documentation": "API Dokumentation",
 		"software_under_license": "Software unter Lizenz",
-		"translation": "An der Übersetzung beteiligen"
+		"translation": "An der Übersetzung beteiligen",
+		"base_under_licence": "Karaoke Datenbank unter Lizenz"
 	},
 	"remote": {
 		"token": "Token",
