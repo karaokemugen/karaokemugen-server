@@ -1,1 +1,12 @@
-{}
+{
+    "MAIL": {
+        "RESET_PASSWORD_REQUEST": {
+            "SUBJECT": "Atur Ulang Kata Sandi Karaoke Mugen",
+            "BODY": "Halo ${{username}},\n\nKamu (atau seseorang) meminta untuk mengatur ulang kata sandi untuk akunmu yang berada di {{host}}. Jika kamu tidak meminta ini, abaikan surel ini.\n\nSilakan klik tautan berikut untuk membuat kata sandi baru:\n\n{{url}}\n\nTautan ini akan kedaluwarsa dalam dua jam."
+        },
+        "RESET_PASSWORD_DONE": {
+            "SUBJECT": "Kata Sandi Karaoke Mugen telah diatur ulang",
+            "BODY": "Halo {{username}},\n\nKata sandi kamu telah berhasil diatur ulang pada {{host}}.\n\n\n\nSekarang kamu bisa masuk menggunakan kata sandi barumu."
+        }
+    }
+}
