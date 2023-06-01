@@ -20,7 +20,8 @@
 			"misc": "Lain-lain",
 			"families": "Keluarga",
 			"warnings": "Peringatan",
-			"collections": "Koleksi"
+			"collections": "Koleksi",
+			"franchises": "Waralaba"
 		},
 		"singers_by": "Dinyanyikan oleh",
 		"creators_by": "Dibuat oleh",
@@ -135,8 +136,22 @@
 			"default_language": "Bahasa baku",
 			"sections": {
 				"categorization": "Kategorisasi",
-				"meta": "Metadata"
-			}
+				"meta": "Metadata",
+				"identity": "Identitas",
+				"files": "Berkas",
+				"parents": "Lagu Induk",
+				"titles": "Judul"
+			},
+			"desc": {
+				"parents": "Jika lagu ini merupakan versi alternatif dari yang lain, pilih induknya.",
+				"parents_public": "Jika pengguna memilih lagu induk di antarmuka publik, mereka akan melihat seluruh versi alternatif atau turunannya.",
+				"titles": "Tulis semua judul lagu dalam bahasa yang berbeda. Biasanya hanya ada satu judul.",
+				"titles_default_language": "Bahasa judul baku seharusnya adalah judul asli lagu. Untuk judul dalam bahasa bukan latin (Tiongkok, Jepang, Arab, Korea, dll.), tambahkan judul \"Romanisasi\" dan jadikan itu sebagai yang baku.",
+				"aliases": "Jika lagu ini dikenal sebagai yang lain (misalnya sebagai singkatan), atur di sini untuk membantu dalam pencarian. Tidak perlu untuk menggunakan kata-kata yang sudah ada di judul lagu."
+			},
+			"romanization_warning": "Judul/tanda ini mengandung bahasa non-Latin. Anda harus menambahkan bahasa \"Abjad Latin (Romanisasi)\"",
+			"show_hide": "Tampilkan/Sembunyikan",
+			"franchises_tooltip": "Jika serial ini merupakan bagian dari waralaba (seperti Gundam, Mario, Zelda, Naruto, dll.) tambahkan di sini."
 		},
 		"songwriters_by": "Digubah oleh",
 		"created_at": "Dibuat ",
@@ -175,7 +190,8 @@
 		"home": "Beranda proyek",
 		"software_under_license": "Perangkat lunak di bawah lisensi",
 		"translation": "Berkontribusi di penerjemahan",
-		"base_under_licence": "Basis data karaoke di bawah lisensi"
+		"base_under_licence": "Basis data karaoke di bawah lisensi",
+		"api_documentation": "Dokumentasi API"
 	},
 	"menu": {
 		"register": "Daftar",
@@ -184,7 +200,7 @@
 		"database": "Basis data",
 		"karas": "Lagu",
 		"songtypes": "Jenis",
-		"tags": "Tanda",
+		"tags": "Lain-lain…",
 		"misc": "Lain-lain",
 		"groups": "Kelompok",
 		"families": "Keluarga",
@@ -211,7 +227,9 @@
 		"warnings": "Peringatan",
 		"kara_suggest": "Usul karaoke",
 		"anime_list": "Anime saya",
-		"remotes": "Jarak Jauh"
+		"remotes": "Jarak Jauh",
+		"franchises": "Waralaba",
+		"discourse": "Forum"
 	},
 	"search": {
 		"aria": {
@@ -231,7 +249,9 @@
 			"recent": "Menurut tanggal ditambahkan",
 			"most_played": "Paling banyak diputar",
 			"a_z": "Dari A ke Z",
-			"languages": "Menurut bahasa"
+			"languages": "Menurut bahasa",
+			"most_played_recently": "Paling banyak diputar (12 bulan terakhir)",
+			"most_requested_recently": "Paling banyak diminta (12 bulan terakhir)"
 		},
 		"next": "Halaman selanjutnya",
 		"previous": "Halaman sebelumnya",
@@ -290,7 +310,7 @@
 		"profile": {
 			"fields": {
 				"twitter": {
-					"placeholder": "idwiki",
+					"placeholder": "KaraokeMugen",
 					"label": "Twitter"
 				},
 				"mastodon": {
@@ -375,6 +395,9 @@
 				"kitsu": {
 					"label": "Kitsu",
 					"placeholder": "karaokemugen"
+				},
+				"anime_list_to_fetch": {
+					"label": "Daftar anime untuk diambil"
 				}
 			},
 			"passwords_mismatch": "Kata sandi tidak sama",
@@ -473,6 +496,10 @@
 			"next": "Gambar selanjutnya",
 			"previous": "Gambar sebelumnya",
 			"one": "Hanya ada satu spanduk untuk karaoke hanya suara."
+		},
+		"reset_password": {
+			"description": "Masukkan kata sandi baru",
+			"button": "Ubah kata sandi"
 		}
 	},
 	"stats": {
@@ -509,7 +536,8 @@
 		"USER_EDITED": "Pengguna berhasil disunting",
 		"FILE_UPLOADED": "Berkas diunggah.",
 		"TAG_CREATED": "Tanda berhasil dibuat",
-		"USER_DELETED": "Pengguna berhasil dihapus"
+		"USER_DELETED": "Pengguna berhasil dihapus",
+		"PASSWORD_UPDATED": "Kata sandi berhasil diperbarui"
 	},
 	"titles": {
 		"home": "Beranda"
@@ -553,6 +581,7 @@
 		"code": "Kode",
 		"permanent": "Permanen",
 		"edit_success": "Jarak jauh sukses disunting",
-		"last_use": "Penggunaan terakhir"
+		"last_use": "Penggunaan terakhir",
+		"last_ip": "IP terakhir"
 	}
 }
