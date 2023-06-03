@@ -64,7 +64,7 @@
 	import { DBTag } from '~/../kmserver-core/src/lib/types/database/tag';
 	import { tagTypes } from '~/assets/constants';
 	import { useLocalStorageStore } from '~/store/localStorage';
-	import { useMenubarStore } from '~/store/menubar';
+	import { sortTypes, useMenubarStore } from '~/store/menubar';
 
 	interface TagsRequest extends TagParams {
 		collections: string
@@ -91,8 +91,12 @@
 	}
 
 	setResultsCount(0);
+	let sortLocal = sort.value;
 	if (!['az', 'karacount'].includes(sort.value)) {
-		setSort('karacount');
+		sortLocal = 'karacount';
+		onBeforeMount(() => {
+			setSort(sortLocal);
+		});
 	}
 
 	watch(sort, () => setPage(1));
@@ -100,13 +104,13 @@
 	watch(enabledCollections, () => setPage(1), { deep: true });
 	watch(tags, (now) => setResultsCount(now.infos.count), { deep: true });
 
-	await setPage(1);
+	await setPage(1, sortLocal);
 
-	async function setPage(e: number): Promise<void> {
+	async function setPage(e: number, sortLocal?: sortTypes): Promise<void> {
 		page.value = e;
 		loading.value = true;
 		const data = await useCustomFetch<TagList>('/api/karas/tags', {
-			params: reqParams()
+			params: reqParams(sortLocal)
 		});
 		data.content = data.content.filter(
 			(tag: DBTag) => tag.karacount && Object.keys(tag.karacount).length > 0
@@ -116,11 +120,11 @@
 		loading.value = false;
 	}
 
-	function reqParams(): TagsRequest {
+	function reqParams(sortLocal?: sortTypes): TagsRequest {
 		return {
 			from: (page.value - 1) * 100,
 			size: 100,
-			order: sort.value as 'az' | 'karacount',
+			order: (sortLocal ?? sort.value) as 'az' | 'karacount',
 			stripEmpty: true,
 			filter: search.value || undefined,
 			collections: enabledCollections.value.join(','),
