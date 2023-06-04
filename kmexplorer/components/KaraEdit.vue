@@ -953,6 +953,9 @@
 				delete karaokeElem.data.tags[tag];
 			}
 		}
+		if(parents.value.length > 0) {
+			karaokeElem.data.parents = parents.value.map(parent => parent.value);
+		}
 		if (params.id) {
 			useCustomFetch<{data : string }>(
 				`/api/karas/${karaokeElem.data.kid}`,
