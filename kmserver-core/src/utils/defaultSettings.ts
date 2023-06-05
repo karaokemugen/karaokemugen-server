@@ -116,6 +116,9 @@ The files (.kara, video, .ass and serial if necessary) are present in the follow
 **Year** : $year
 
 
+**Parents** : $parents
+
+
 **Group(s) of singers** : $singergroup
 
 
@@ -198,6 +201,9 @@ A proposal to modify a karaoke has been sent. You will find all the new files in
 
 
 **Year** : $year
+
+
+**Parents** : $parents
 
 
 **Group(s) of singers** : $singergroup

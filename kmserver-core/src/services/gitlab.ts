@@ -8,7 +8,7 @@ import HTTP from '../lib/utils/http.js';
 import logger from '../lib/utils/logger.js';
 import { EditElement } from '../types/karaImport.js';
 import sentry from '../utils/sentry.js';
-import { getKara } from './kara.js';
+import { getAllKaras, getKara } from './kara.js';
 import { findUserByName } from './user.js';
 
 const service = 'Gitlab';
@@ -19,6 +19,13 @@ export async function gitlabPostNewKara(kid: string, edit?: EditElement) {
 	const kara = await getKara({
 		q: `k:${kid}`
 	});
+	let newParents = [];
+	if (kara.parents.length > 0) {
+		const parents = await getAllKaras({
+			q: `k:${kara.parents.join(',')}`
+		});
+		newParents = parents.content.map(k => k.karafile);
+	}
 	const issueTemplate = edit ? conf.Gitlab.IssueTemplate.Edit : conf.Gitlab.IssueTemplate.Import;
 	const title = (issueTemplate.Title || `Inbox ${edit ? 'edit' : 'creation'}: $kara`)
 		.replace('$kara', basename(kara.karafile, '.kara.json'));
@@ -48,6 +55,7 @@ export async function gitlabPostNewKara(kid: string, edit?: EditElement) {
 		.replace('$versions', kara.versions.map(t => t.name).join(', '))
 		.replace('$warnings', kara.warnings.map(t => t.name).join(', '))
 		.replace('$collections', kara.collections.map(t => t.name).join(', '))
+		.replace('$parents', newParents.join(', '))
 		.replace('$duration', duration(kara.duration));
 		if (edit) {
 			const changes = [];
@@ -63,7 +71,18 @@ export async function gitlabPostNewKara(kid: string, edit?: EditElement) {
 			if (!isEqual(edit.oldKara.titles, kara.titles)) changes.push(`TITLES updated : ${JSON.stringify(edit.oldKara.titles, null, 2)} => ${JSON.stringify(kara.titles, null, 2)}`);
 			if (!isEqual(edit.oldKara.titles_aliases, kara.titles_aliases)) changes.push(`TITLES ALIASES updated : ${JSON.stringify(edit.oldKara.titles_aliases, null, 2)} => ${JSON.stringify(kara.titles_aliases, null, 2)}`);
 			if (!isEqual(edit.oldKara.titles_default_language, kara.titles_default_language)) changes.push(`TITLES DEFAULT LANGUAGE updated : ${edit.oldKara.titles_default_language} => ${kara.titles_default_language}`);
-			if (!isEqual(edit.oldKara.parents, kara.parents)) changes.push(`PARENTS updated : ${edit.oldKara.parents} => ${kara.parents}`);
+			if (!isEqual(edit.oldKara.parents, kara.parents)) {
+				// Fetch parents
+				let oldParents = [];
+				if (edit.oldKara.parents.length > 0) {
+					const karas = await getAllKaras({
+						q: `k:${edit.oldKara.parents.join(',')}`
+					});
+					oldParents = karas.content.map(k => k.karafile);
+				} 
+				
+				changes.push(`PARENTS updated : ${oldParents} => ${newParents}`);
+			}
 			// I know this is unreadable but take some ibuprofen and it'll be fine.
 			for (const tagType of Object.keys(tagTypes)) {
 				if (!isEqual(edit.oldKara[tagType], kara[tagType])) changes.push(`${tagType.toUpperCase()} updated : (${edit.oldKara[tagType]?.map((t: any) => t.name).join(', ')}) => (${kara[tagType]?.map((t: any) => t.name).join(', ')})`);

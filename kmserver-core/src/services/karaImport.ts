@@ -8,7 +8,7 @@ import { basename, resolve } from 'path';
 import { v4 as UUIDv4 } from 'uuid';
 import logger from 'winston';
 
-import { insertKara } from '../dao/kara.js';
+import { insertKara, updateKaraParents } from '../dao/kara.js';
 import { applyKaraHooks, refreshHooks } from '../lib/dao/hook.js';
 import { extractVideoSubtitles, getDataFromKaraFile, verifyKaraData } from '../lib/dao/karafile.js';
 import {
@@ -82,7 +82,7 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		const karaData = await getDataFromKaraFile(karaDest, kara, { media: true, lyrics: true });
 		karaData.meta.karaFile = basename(karaData.meta.karaFile);
 		await insertKara(karaData);
-		await updateTags(karaData.data);
+		await Promise.all([updateKaraParents(karaData.data), updateTags(karaData.data)]);
 		await refreshKarasAfterDBChange('ADD', [karaData.data]);
 		logger.debug('Kara', {service, obj: karaData});
 		let issueURL: string;

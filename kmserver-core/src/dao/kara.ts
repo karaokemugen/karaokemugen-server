@@ -4,7 +4,7 @@ import {pg as yesql} from 'yesql';
 import {buildClauses, buildTypeClauses, db} from '../lib/dao/database.js';
 import { WhereClause } from '../lib/types/database.js';
 import { DBKara, DBMedia, DBYear } from '../lib/types/database/kara.js';
-import {KaraFileV4, KaraParams} from '../lib/types/kara.js';
+import {Kara, KaraFileV4, KaraParams} from '../lib/types/kara.js';
 import {getConfig} from '../lib/utils/config.js';
 import {getTagTypeName, tagTypes} from '../lib/utils/constants.js';
 import logger from '../lib/utils/logger.js';
@@ -254,4 +254,25 @@ export async function refreshKaraStats() {
 	logger.info('Refreshing kara stats', {service});
 	await db().query(sql.deleteKaraStats);
 	return db().query(sql.refreshKaraStats);
+}
+
+export async function selectAllKIDs(kid?: string): Promise<string[]> {
+	const res = await db().query(sql.selectAllKIDs(kid), kid ? [kid] : []);
+	return res.rows.map((k: Kara) => k.kid);
+}
+
+export async function updateKaraParents(kara: Kara) {
+	// First removing all parents for that (child) karaoke
+	await db().query(sql.deleteChildrenKara, [kara.kid]);
+	if (!kara.parents) return;
+	for (const pkid of kara.parents) {
+		const pkara = await selectAllKIDs(pkid);
+		if (!pkara[0]) throw new Error(`Parent kara ${pkid} not in database!`);
+		await db().query(
+			yesql(sql.insertChildrenParentKara)({
+				parent_kid: pkid,
+				child_kid: kara.kid,
+			})
+		);
+	}
 }
