@@ -259,3 +259,22 @@ SELECT ak.pk_kid AS fk_kid,
  ) AS favorited
 FROM all_karas ak;
 `;
+
+export const selectAllKIDs = (singleKID: string) => `
+SELECT pk_kid AS kid
+FROM kara
+${singleKID ? 'WHERE pk_kid = $1' : ''}
+`;
+
+export const deleteChildrenKara = 'DELETE FROM kara_relation WHERE fk_kid_child = $1';
+
+export const insertChildrenParentKara = `
+INSERT INTO kara_relation(
+	fk_kid_parent,
+	fk_kid_child
+)
+VALUES(
+	:parent_kid,
+	:child_kid
+);
+`;
