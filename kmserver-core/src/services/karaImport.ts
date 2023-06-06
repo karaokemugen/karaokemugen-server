@@ -51,11 +51,14 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		// Refresh hooks at every kara we get.
 		await refreshHooks();
 		await applyKaraHooks(kara);
+		logger.debug(`Kara during HeavyLifting: ${JSON.stringify(kara)}`, { service });
 		const fileName = await defineFilename(kara);
 		// Move files to their own directory
 		const filenames = determineMediaAndLyricsFilenames(kara, fileName);
 		const mediaPath = resolve(resolvedPath('Temp'), kara.medias[0].filename);
 		const mediaDest = resolve(resolvedPathRepos('Medias', kara.data.repository)[0], filenames.mediafile);
+		logger.debug(`mediaPath: ${mediaPath}`, { service });
+		logger.debug(`mediaDest: ${mediaDest}`, { service });
 		try {
 			const extractFile = await extractVideoSubtitles(mediaPath, kara.data.kid);
 			if (extractFile) {
@@ -71,6 +74,8 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		if (kara.medias[0].lyrics[0]) {
 			const subPath = resolve(resolvedPath('Temp'), kara.medias[0].lyrics[0].filename);
 			const subDest = resolve(resolvedPathRepos('Lyrics', kara.data.repository)[0], filenames.lyricsfile);
+			logger.debug(`subPath: ${subPath}`, { service });
+			logger.debug(`subDest: ${subDest}`, { service });
 			const ext = await processSubfile(subPath);
 			await smartMove(subPath, subDest, { overwrite: true });
 			kara.medias[0].lyrics[0].filename = replaceExt(filenames.lyricsfile, ext);
