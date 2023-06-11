@@ -220,7 +220,7 @@ export const selectBaseStats = `SELECT
 export const deleteKaraStats = 'DELETE FROM kara_stats;';
 
 export const refreshKaraStats = `
-INSERT INTO kara_stats (fk_kid, played, played_recently, requested, requeted_recently, favorited)
+INSERT INTO kara_stats (fk_kid, played, played_recently, requested, requested_recently, favorited)
 SELECT ak.pk_kid AS fk_kid,
  (SELECT
         COUNT(sp.fk_kid)
