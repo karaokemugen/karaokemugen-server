@@ -81,6 +81,7 @@
 
 <script setup lang="ts">
 	import { TokenResponseWithRoles } from '~/../kmserver-core/src/lib/types/user';
+	import { useModalStore } from '~/store/modal';
 
 	const loading = ref(false);
 	const login = ref<{
@@ -92,6 +93,9 @@
 	});
 
 	const { params } = useRoute();
+	const { closeAll } = useModalStore();
+
+	closeAll();
 
 	function passwordNotEquals() {
 		return (
