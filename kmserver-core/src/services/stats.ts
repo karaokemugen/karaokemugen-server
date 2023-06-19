@@ -1,5 +1,3 @@
-import testJSON from 'is-valid-json';
-
 import { refreshKaraStats } from '../dao/kara.js';
 import {
 	updateBanSession,
@@ -10,7 +8,7 @@ import {
 	wipeInstance} from '../dao/stats.js';
 import { uuidRegexp } from '../lib/utils/constants.js';
 import logger from '../lib/utils/logger.js';
-import { check } from '../lib/utils/validators.js';
+import { check, testJSON } from '../lib/utils/validators.js';
 import sentry from '../utils/sentry.js';
 
 const service = 'Stats';

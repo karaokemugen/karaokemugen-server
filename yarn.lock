@@ -4070,24 +4070,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"better-queue-memory@npm:^1.0.1":
-  version: 1.0.4
-  resolution: "better-queue-memory@npm:1.0.4"
-  checksum: c4d54f73ccbf3bc4b494007b6012ff0698a4690ebdccda29a9d0dcae2ece72e6495efcad90137e2e90c3765479580c02e86859b4a588bebf6f7e317c848676eb
-  languageName: node
-  linkType: hard
-
-"better-queue@npm:^3.8.12":
-  version: 3.8.12
-  resolution: "better-queue@npm:3.8.12"
-  dependencies:
-    better-queue-memory: ^1.0.1
-    node-eta: ^0.9.0
-    uuid: ^9.0.0
-  checksum: f9da94453d2344f22aa4004aacce327af83567d4bbbc4244cc7e24e9fa59894a95975e790153d27d8e690154083f224dbb92817436a2c185a87d72cd7318626b
-  languageName: node
-  linkType: hard
-
 "binary-extensions@npm:^2.0.0":
   version: 2.2.0
   resolution: "binary-extensions@npm:2.2.0"
@@ -8480,13 +8462,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-valid-json@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "is-valid-json@npm:1.0.2"
-  checksum: 395098050916020d0f6be4d896f531d37481091229869da3081950ace5df93961086b36acabeef029fab2c83fb0400ce755050fc97fcb889182ae2b5ebffe66f
-  languageName: node
-  linkType: hard
-
 "is-weakref@npm:^1.0.1, is-weakref@npm:^1.0.2":
   version: 1.0.2
   resolution: "is-weakref@npm:1.0.2"
@@ -8850,13 +8825,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"klaw@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "klaw@npm:4.1.0"
-  checksum: 23fcdd8b837f7d51f0a62bebc4e5f83ee8338083597f33f97ae6aed3305c53220c8bf9f1a81024c11658b2e71022868f3b2ba4c39298af4eaacd38ef1e3a878e
-  languageName: node
-  linkType: hard
-
 "kleur@npm:^3.0.3":
   version: 3.0.3
   resolution: "kleur@npm:3.0.3"
@@ -8942,7 +8910,6 @@ __metadata:
     ass-compiler: ^0.1.8
     axios: ^1.4.0
     bcryptjs: ^2.4.3
-    better-queue: ^3.8.12
     commander: ^10.0.1
     compression: ^1.7.4
     convert-srt-to-ass: ^1.0.3
@@ -8971,14 +8938,12 @@ __metadata:
     helmet: ^6.0.1
     i18next: ^22.5.0
     i18next-fs-backend: ^2.1.2
-    is-valid-json: ^1.0.2
     js-yaml: ^4.1.0
     jsonwebtoken: ^9.0.0
     kar-to-ass: ^1.0.11
     kbp2ass: ^1.0.1
     kfn-to-ass: ^1.1.0
     kitsu: ^10.1.1
-    klaw: ^4.1.0
     langs: ^2.0.0
     lodash: ^4.17.21
     m3u-parser-generator: ^1.2.0
@@ -10403,13 +10368,6 @@ __metadata:
   version: 1.0.0
   resolution: "node-domexception@npm:1.0.0"
   checksum: ee1d37dd2a4eb26a8a92cd6b64dfc29caec72bff5e1ed9aba80c294f57a31ba4895a60fd48347cf17dd6e766da0ae87d75657dfd1f384ebfa60462c2283f5c7f
-  languageName: node
-  linkType: hard
-
-"node-eta@npm:^0.9.0":
-  version: 0.9.0
-  resolution: "node-eta@npm:0.9.0"
-  checksum: aea7831697c056286dca46908d74cca1c8c55471d4bd73b9a917401a624d4aa61adf63c47f37fc2eaad3579b0ed7b91c18e8f85990c565b62014ece7b93c3ed9
   languageName: node
   linkType: hard
 
