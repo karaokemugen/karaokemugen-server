@@ -8825,6 +8825,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"klaw@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "klaw@npm:4.1.0"
+  checksum: 23fcdd8b837f7d51f0a62bebc4e5f83ee8338083597f33f97ae6aed3305c53220c8bf9f1a81024c11658b2e71022868f3b2ba4c39298af4eaacd38ef1e3a878e
+  languageName: node
+  linkType: hard
+
 "kleur@npm:^3.0.3":
   version: 3.0.3
   resolution: "kleur@npm:3.0.3"
@@ -8944,6 +8951,7 @@ __metadata:
     kbp2ass: ^1.0.1
     kfn-to-ass: ^1.1.0
     kitsu: ^10.1.1
+    klaw: ^4.1.0
     langs: ^2.0.0
     lodash: ^4.17.21
     m3u-parser-generator: ^1.2.0
