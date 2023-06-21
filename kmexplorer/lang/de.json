@@ -33,7 +33,9 @@
 		"anime_list": "Meine Anime",
 		"add_repository": "Diese Datenbank zur eigenen App hinzufügen",
 		"database": "Datenbank",
-		"karas": "Lieder"
+		"karas": "Lieder",
+		"account": "Benutzerkonto",
+		"login": "Anmelden"
 	},
 	"kara": {
 		"import": {
@@ -207,7 +209,8 @@
 		"slogan": "Dieses Lied ist in der Karaoke Mugen Datenbank verfügbar!",
 		"suggest_open": "Vorschlagen!",
 		"end_favorites": "Das ist das Ende der Favoriten.",
-		"empty": "Wir haben überall gesucht, aber nichts gefunden."
+		"empty": "Wir haben überall gesucht, aber nichts gefunden.",
+		"loading": "Wird geladen…"
 	},
 	"modal": {
 		"signup": {
@@ -350,7 +353,8 @@
 			"download": "Die Anwendung kann hier heruntergeladen werden.",
 			"online": "Online",
 			"add": "Hinzufügen",
-			"cancel": "Abbrechen"
+			"cancel": "Abbrechen",
+			"button": "Datenbank :"
 		},
 		"suggest": {
 			"fields": {
@@ -359,7 +363,8 @@
 					"placeholder": "Yôjo Senki: Die Saga von Tanya der Bösen"
 				},
 				"name": {
-					"label": "Ihr Name"
+					"label": "Ihr Name",
+					"placeholder": "Magischer anonymer"
 				},
 				"link": {
 					"placeholder": "https://www.youtube.com/watch?v=5VRyiaszGtA",
@@ -444,7 +449,8 @@
 		},
 		"placeholder": {
 			"kara": "Serien, Sänger, Namen…",
-			"tag": "Tag-Name…"
+			"tag": "Tag-Name…",
+			"user": "Benutzername…"
 		},
 		"previous": "Vorherige Seite",
 		"aria": {
@@ -521,9 +527,17 @@
 		"media_size": "Mediengröße"
 	},
 	"roles": {
-		"admin": "Administrator"
+		"admin": "Administrator",
+		"donator": "Spender",
+		"contributor": ""
 	},
 	"titles": {
 		"home": "Startseite"
+	},
+	"duration": {
+		"seconds": "Sekunden",
+		"days": "Tage",
+		"hours": "Stunden",
+		"minutes": "Minuten"
 	}
 }
