@@ -114,7 +114,7 @@ export function hashPassword(password: string) {
 
 export async function findUserByName(username: string, opts: UserOptions = {}) {
 	try {
-		if (!username) throw ('No user provided');
+		if (!username) throw new NoSentryError('No user provided');
 		username = username.toLowerCase();
 		const user = await selectUser('pk_login', username);
 		if (!user) return user;
