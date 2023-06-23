@@ -11,23 +11,23 @@
 			</div>
 
 			<div
-				v-if="total > 1"
+				v-if="tagMaxPage > 1"
 				class="tile is-parent is-12"
 			>
 				<pagination
 					:page="page"
-					:last-page="total"
-					@page="setPage"
+					:last-page="tagMaxPage"
+					@page="p => page = p"
 				/>
 			</div>
 
 			<div class="tile is-parent is-12">
 				<div
-					v-if="tags.content.length > 0"
+					v-if="tagMaxPage > 0"
 					class="tags"
 				>
 					<tag
-						v-for="tag in tags.content"
+						v-for="tag in tags?.content"
 						:key="tag.tid"
 						icon
 						:type="(params.id as string)"
@@ -39,14 +39,14 @@
 			</div>
 
 			<div
-				v-if="total > 1"
+				v-if="tagMaxPage > 1"
 				class="tile is-parent is-12"
 			>
 				<pagination
-					v-if="total > 1"
+					v-if="tagMaxPage > 1"
 					:page="page"
-					:last-page="total"
-					@page="setPage"
+					:last-page="tagMaxPage"
+					@page="p => page = p"
 				/>
 			</div>
 
@@ -64,7 +64,7 @@
 	import { DBTag } from '~/../kmserver-core/src/lib/types/database/tag';
 	import { tagTypes } from '~/assets/constants';
 	import { useLocalStorageStore } from '~/store/localStorage';
-	import { sortTypes, useMenubarStore } from '~/store/menubar';
+	import { useMenubarStore } from '~/store/menubar';
 
 	interface TagsRequest extends TagParams {
 		collections: string
@@ -75,10 +75,8 @@
 	const { enabledCollections } = storeToRefs(useLocalStorageStore());
 	const { fullPath, params } = useRoute();
 
-	const tags = ref({ infos: { count: 0, from: 0, to: 0 }, content: [] } as TagList);
 	const page = ref(1);
-	const loading = ref(true);
-	const total = ref(1);
+	const sortLocal = ref(sort.value as 'az' | 'karacount');
 
 	definePageMeta({
 		validate({ params }) {
@@ -90,45 +88,45 @@
 		setSearch('');
 	}
 
-	setResultsCount(0);
-	let sortLocal = sort.value;
 	if (!['az', 'karacount'].includes(sort.value)) {
-		sortLocal = 'karacount';
+		sortLocal.value = 'karacount';
 		onBeforeMount(() => {
-			setSort(sortLocal);
+			setSort(sortLocal.value);
 		});
 	}
 
-	watch(sort, () => setPage(1));
-	watch(search, () => setPage(1));
-	watch(enabledCollections, () => setPage(1), { deep: true });
-	watch(tags, (now) => setResultsCount(now.infos.count), { deep: true });
-
-	await setPage(1, sortLocal);
-
-	async function setPage(e: number, sortLocal?: sortTypes): Promise<void> {
-		page.value = e;
-		loading.value = true;
-		const data = await useCustomFetch<TagList>('/api/karas/tags', {
-			params: reqParams(sortLocal)
-		});
-		data.content = data.content.filter(
-			(tag: DBTag) => tag.karacount && Object.keys(tag.karacount).length > 0
-		);
-		total.value = data.content.length > 0 ? Math.ceil(data.content[0].count! / 100) : 0;
-		tags.value = data;
-		loading.value = false;
-	}
-
-	function reqParams(sortLocal?: sortTypes): TagsRequest {
+	const reqParams = computed(() => {
 		return {
 			from: (page.value - 1) * 100,
 			size: 100,
-			order: (sortLocal ?? sort.value) as 'az' | 'karacount',
+			order: sortLocal.value as 'az' | 'karacount',
 			stripEmpty: true,
 			filter: search.value || undefined,
 			collections: enabledCollections.value.join(','),
 			type: tagTypes[params.id as string].type as TagTypeNum
-		};
-	}
+		} as TagsRequest;
+	});
+
+	const { data: tags, pending: loading } = await useCustomFetchAsync<TagList, TagList>('/api/karas/tags', {
+		params: reqParams,
+		transform: data => {
+			data.content = data.content.filter(
+				(tag: DBTag) => tag.karacount && Object.keys(tag.karacount).length > 0
+			);
+			return data;
+		},
+		default: () => ({ infos: { count: 0, from: 0, to: 0 }, content: [] })
+	});
+
+	const tagMaxPage = computed(() => {
+		return tags.value.content.length > 0 ? Math.ceil(tags.value.content[0].count! / 100) : 0;
+	});
+	setResultsCount(tags.value.infos.count);
+
+	watch(sort, (now) => ['az', 'karacount'].includes(now) ? sortLocal.value = now as 'az' | 'karacount' : null);
+	watch(sort, () => page.value = 1);
+	watch(search, () => page.value = 1);
+	watch(enabledCollections, () => page.value = 1, { deep: true });
+	watch(tags, (now) => setResultsCount(now!.infos.count), { deep: true });
+
 </script>
