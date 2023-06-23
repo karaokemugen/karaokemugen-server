@@ -189,7 +189,7 @@
 										type="text"
 										name="discord"
 										class="input"
-										pattern="[^@#:`]{2,32}(#[0-9]{4})?"
+										pattern="[^@#:`]{2,32}#[0-9]{4}|[a-z0-9_.]{2,32}"
 										:placeholder="$t('modal.profile.fields.discord.placeholder')"
 									>
 								</div>
