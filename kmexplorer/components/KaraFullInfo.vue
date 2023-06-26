@@ -101,6 +101,7 @@
 		</table>
 		<div class="buttons">
 			<button
+				v-if="rubyfiedLyrics"
 				class="button is-info"
 				@click="toggleLyrics"
 			>
