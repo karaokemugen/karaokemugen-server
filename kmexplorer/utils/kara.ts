@@ -59,8 +59,8 @@ export function convertDBKaraToKaraFile(dbKara?: DBKara): KaraFileV4 {
 				filename: dbKara?.mediafile || '',
 				audiogain: dbKara?.gain as number,
 				loudnorm: dbKara?.loudnorm as string,
-				duration: dbKara?.duration || 0,
 				filesize: dbKara?.mediasize || 0,
+				duration: dbKara?.duration || 0,
 				default: true,
 				lyrics: dbKara?.subfile
 					? [

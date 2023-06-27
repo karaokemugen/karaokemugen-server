@@ -955,7 +955,12 @@
 		}
 		if(parents.value.length > 0) {
 			karaokeElem.data.parents = parents.value.map(parent => parent.value);
+		} else {
+			karaokeElem.data.parents = undefined;
 		}
+		if (!karaokeElem.data.comment) karaokeElem.data.comment = undefined;
+		if (!karaokeElem.data.songorder) karaokeElem.data.songorder = undefined;
+		if (karaokeElem.data.titles_aliases?.length === 0) karaokeElem.data.titles_aliases = undefined;
 		if (params.id) {
 			useCustomFetch<{data : string }>(
 				`/api/karas/${karaokeElem.data.kid}`,
