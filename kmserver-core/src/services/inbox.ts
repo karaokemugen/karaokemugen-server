@@ -89,7 +89,7 @@ export async function addKaraInInbox(kara: KaraFileV4, contact: string, issue?: 
 	try {
 		await insertInbox({
 			inid: uuidV4(),
-			name: kara.medias[0].lyrics[0].filename.slice(0, -4),
+			name: kara.medias[0].filename.slice(0, -4),
 			created_at: new Date(),
 			gitlab_issue: issue,
 			contact,
