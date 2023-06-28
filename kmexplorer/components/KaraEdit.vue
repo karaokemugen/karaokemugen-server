@@ -808,6 +808,9 @@
 	function submitDisabled(): boolean {
 		return Boolean(
 			(!params.id && !mediafile) ||
+				karaoke.value.medias.length === 0 ||
+				karaoke.value.medias[0].filesize === 0 ||
+				!isSupportedMediaFile(karaoke.value.medias[0].filename) ||
 				mediafile_error.value.length > 0 ||
 				subfile_error.value.length > 0 ||
 				!karaoke.value.data.titles ||
