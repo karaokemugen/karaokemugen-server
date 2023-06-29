@@ -47,9 +47,11 @@ process.on('uncaughtException', (exception) => {
 	sentry.error(exception);
 });
 
-process.on('unhandledRejection', (error) => {
-	console.log(error);
-	sentry.error(new Error(JSON.stringify(error, null, 2)));
+process.on('unhandledRejection', (error: any) => {
+	if (error?.message !== '[nuxt] instance unavailable') {
+		console.log(error);
+		sentry.error(new Error(JSON.stringify(error, null, 2)));
+	}
 });
 
 process.once('SIGTERM', () => {
