@@ -27,7 +27,7 @@ export const getAllKaras = (
 	onlyCount: boolean
 ) => `
 ${onlyCount ? `
-SELECT count(*)::integer AS count FROM (`
+SELECT COUNT(*)::integer AS count FROM (`
 : ''}
 WITH ${withCTE.join(', \n')}
 SELECT
@@ -95,7 +95,7 @@ export const getAllKarasMicro = (
 WITH ${withCTE.join(', \n')}
 SELECT
 ${onlyCount ? `
-  count(ak.pk_kid)::integer AS count`
+  COUNT(DISTINCT ak.pk_kid)::integer AS count`
 : `
   ak.tags AS tags,
   ak.pk_kid AS kid,
