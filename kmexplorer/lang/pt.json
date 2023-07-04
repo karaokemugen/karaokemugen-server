@@ -3,7 +3,8 @@
 		"generic": "Erro",
 		"private_profile": "O perfil é privado.",
 		"not_found_profile": "Não é possível encontrar este utilizador",
-		"not_found_tag": "Tag não encontrada"
+		"not_found_tag": "Tag não encontrada",
+		"remote": "Erro ao carregar listas remotas"
 	},
 	"kara": {
 		"tagtypes": {
@@ -178,7 +179,7 @@
 		"database": "Base de dados",
 		"karas": "Canções",
 		"songtypes": "Tipos",
-		"tags": "Etiquetas",
+		"tags": "Outros…",
 		"misc": "Diversos",
 		"groups": "Grupos",
 		"families": "Famílias",
