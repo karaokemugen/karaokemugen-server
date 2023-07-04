@@ -529,8 +529,8 @@
 	},
 	"roles": {
 		"admin": "Administrator",
-		"donator": "Spender",
-		"contributor": ""
+		"donator": "Unterstützer",
+		"contributor": "Beitragende"
 	},
 	"titles": {
 		"home": "Startseite"
