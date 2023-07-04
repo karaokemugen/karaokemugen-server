@@ -107,7 +107,8 @@
 			"franchises_tooltip": "Wenn die Serie Teil einer Franchise ist (wie Gundam, Mario, Zelda, Naruto, etc.), diese hier angeben.",
 			"songorder_tooltip": "Nummer (Reihenfolge) des Openings/Endings. Wenn dies das einzige Opening/Ending der Serie ist, kann das Feld leer gelassen werden.",
 			"singergroups_tooltip": "Wenn die Sänger zu einer Band gehören, können diese hier eingetragen werden. Die Band wird dann beim Abspielen und in den Songlisten anstelle der einzelnen Sänger angezeigt.",
-			"groups_tooltip": "Download-Gruppen für dieses Lied. Das Lied wird in diesen Download-Packs enthalten sein"
+			"groups_tooltip": "Download-Gruppen für dieses Lied. Das Lied wird in diesen Download-Packs enthalten sein",
+			"check_in_progress": "Bitte prüfen Sie die Liste der Karaoke, die derzeit erstellt werden, bevor Sie uns ein Lied schicken. So vermeiden Sie Doppelarbeit, und die Welt wird ein besserer Ort sein."
 		},
 		"tagtypes": {
 			"platforms": "Plattform | Plattformen",
