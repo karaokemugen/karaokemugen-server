@@ -144,7 +144,7 @@
 				"titles": "Judul"
 			},
 			"desc": {
-				"parents": "Jika lagu ini merupakan versi alternatif dari yang lain, pilih induknya.",
+				"parents": "Jika lagu ini adalah versi alternatif dari lagu lain, pilih induknya untuk mengisi formulir ini.",
 				"parents_public": "Jika pengguna memilih lagu induk di antarmuka publik, mereka akan melihat seluruh versi alternatif atau turunannya.",
 				"titles": "Tulis semua judul lagu dalam bahasa yang berbeda. Biasanya hanya ada satu judul.",
 				"titles_default_language": "Bahasa judul baku seharusnya adalah judul asli lagu. Untuk judul dalam bahasa bukan latin (Tiongkok, Jepang, Arab, Korea, dll.), tambahkan judul \"Romanisasi\" dan jadikan itu sebagai yang baku.",
