@@ -14,7 +14,7 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 		: {sql: [], params: {}, additionalFrom: []};
 	const typeClauses = params.type > 0 ? ` AND t.types @> ARRAY[${params.type}]` : '';
 	let stripClause = '';
-	let limitClause = '';
+	const limitClause = '';
 	let offsetClause = '';
 	let joinClauses = '';
 	let orderClause = 'name';
@@ -38,7 +38,10 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 		whereClause = `AND t.pk_tid = '${params.tid}'`;
 	}
 	if (params.from > 0) offsetClause = `OFFSET ${params.from} `;
-	if (params.size > 0) limitClause = `LIMIT ${params.size} `;
+	if (params.size > 0) {
+		// Commenting this since on Erin, postgres' query planner seems to fuck up and not use LIMIT correctly.
+		// limitClause = `LIMIT ${params.size} `;
+	}
 	if (!params.includeStaging) {
 		filterClauses.sql.push('t.repository != \'Staging\'');
 	}
@@ -56,6 +59,11 @@ collectionClauses,
 whereClause
 );
 	const res = await db().query(yesql(query)(filterClauses.params));
+	// FIXME : This should not happen, we should use LIMIT instead, but Erin's query planner isn't cooperative
+	// See https://gitlab.com/karaokemugen/code/karaokemugen-server/-/issues/265
+	if (params.size > 0) { 
+		res.rows = res.rows.slice(0, params.size);
+	}
 	res.rows.forEach((e: any, i: number) => {
 		const karacounts = e.karacount;
 		res.rows[i].karacount = {};
