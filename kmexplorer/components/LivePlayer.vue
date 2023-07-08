@@ -104,6 +104,12 @@
 		}
 	});
 
+	watchEffect(() => {
+		if(liveEmbed.value) {
+			liveEmbed.value.focus();
+		}
+	});
+
 	onMounted(() => {
 		window.addEventListener('keydown', keyEvent);
 		window.addEventListener('resize', resizeEvent);
