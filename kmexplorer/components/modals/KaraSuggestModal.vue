@@ -145,7 +145,6 @@
 										type="text"
 										name="name"
 										class="input"
-										required
 										:placeholder="$t('modal.suggest.fields.name.placeholder')"
 										autocomplete="username"
 									>
