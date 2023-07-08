@@ -285,7 +285,7 @@
 		flex-grow: 2;
 	}
 
-	.field:has(*:required) > .label::before {
+	.field:has(*:required) .label::before {
 		content: '* ';
 		color: red;
 	}
