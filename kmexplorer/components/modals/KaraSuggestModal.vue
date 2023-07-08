@@ -92,6 +92,7 @@
 										v-model="formData.type"
 										name="type"
 										autocomplete="off"
+										required
 									>
 										<option
 											v-for="songtype in Object.keys(songtypes)"
@@ -282,6 +283,11 @@
 <style scoped lang="scss">
 	.field-label {
 		flex-grow: 2;
+	}
+
+	.field:has(*:required) > .label::before {
+		content: '* ';
+		color: red;
 	}
 
 	.select select option {
