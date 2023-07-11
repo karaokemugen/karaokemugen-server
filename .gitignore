@@ -25,6 +25,7 @@ app/
 logs/
 !app/avatars/blank.png
 !app/banners/default.jpg
+!app/banners/cropped.jpg
 
 kmexplorer/.nuxt
 kmexplorer/.output
