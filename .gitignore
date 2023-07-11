@@ -1,7 +1,8 @@
 .DS_Store
 .idea/
 .npmrc
-.vscode
+.vscode/*
+!.vscode/launch.json
 node_modules
 package-lock.json
 npm-debug.log*
@@ -21,9 +22,13 @@ bin/
 localtunnel-server/
 kmexplorer.old/node_modules
 kmexplorer.old/build
-app/
 logs/
+app/*
+!app/avatars
+app/avatars/*
 !app/avatars/blank.png
+!app/banners
+app/banners/*
 !app/banners/default.jpg
 !app/banners/cropped.jpg
 
