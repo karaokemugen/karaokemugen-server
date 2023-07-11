@@ -20,7 +20,7 @@
 			<button
 				v-if="favorite"
 				class="button is-yellow"
-				:class="{'is-loading': loading}"
+				:class="{ 'is-loading': loading }"
 				@click="toggleFavorite"
 			>
 				<font-awesome-icon
@@ -32,7 +32,7 @@
 			<button
 				v-else
 				class="button is-yellow"
-				:class="{'is-loading': loading}"
+				:class="{ 'is-loading': loading }"
 				@click="toggleFavorite"
 			>
 				<font-awesome-icon
@@ -109,7 +109,7 @@
 					:icon="['fas', 'closed-captioning']"
 					:fixed-width="true"
 				/>
-				{{ lyrics ? $t('kara.lyrics.hide'):$t('kara.lyrics.show') }}
+				{{ lyrics ? $t('kara.lyrics.hide') : $t('kara.lyrics.show') }}
 			</button>
 			<nuxt-link
 				class="button is-success"
@@ -171,8 +171,8 @@
 
 	const { t } = useI18n();
 	const { loggedIn } = storeToRefs(useAuthStore());
-	const { download, banner} = storeToRefs(useModalStore());
-	const { openModal, closeModal} = useModalStore();
+	const { download, banner } = storeToRefs(useModalStore());
+	const { openModal, closeModal } = useModalStore();
 	const { search } = storeToRefs(useMenubarStore());
 	const { addTag } = useMenubarStore();
 	const { push } = useRouter();
@@ -255,7 +255,7 @@
 				return `<ruby>${seq.text}<rp>(</rp><rt>${seq.ruby}</rt><rp>)</rp></ruby>`;
 			}).join('');
 
-			return DOMPurify.sanitize(lyricsWithRuby, {ALLOWED_TAGS: ['ruby', 'rp', 'rt']});
+			return DOMPurify.sanitize(lyricsWithRuby, { ALLOWED_TAGS: ['ruby', 'rp', 'rt'] });
 		})
 	);
 	const bannerBan = computed(() => {
@@ -296,21 +296,21 @@
 			{
 				hid: 'twitter:title',
 				name: 'twitter:title',
-				content: t('kara.meta', {
+				content: formatWarnings() + t('kara.meta', {
 					songtitle: props.karaoke.titles_default_language && props.karaoke.titles[props.karaoke.titles_default_language], serieSinger: serieSinger.value.name
 				})
 			},
 			{
 				hid: 'description',
 				name: 'description',
-				content: t('kara.meta', {
+				content: formatWarnings() + t('kara.meta', {
 					songtitle: props.karaoke.titles_default_language && props.karaoke.titles[props.karaoke.titles_default_language], serieSinger: serieSinger.value.name
 				})
 			},
 			{
 				hid: 'og:title',
 				property: 'og:title',
-				content: t('kara.meta', {
+				content: formatWarnings() + t('kara.meta', {
 					songtitle: props.karaoke.titles_default_language && props.karaoke.titles[props.karaoke.titles_default_language], serieSinger: serieSinger.value.name
 				})
 			}
@@ -344,6 +344,12 @@
 			type: 'years'
 		});
 		push(generateNavigation());
+	}
+	function formatWarnings() {
+		if (!props.karaoke?.warnings?.length) {
+			return '';
+		}
+		return '[' + props.karaoke?.warnings?.map(warning => warning.name).join(', ') + '] ';
 	}
 </script>
 

@@ -7,11 +7,9 @@
 			<div
 				ref="leftTile"
 				class="tile is-child"
-				:class="{'is-8': !liveOpened, 'is-5': liveOpened}"
+				:class="{ 'is-8': !liveOpened, 'is-5': liveOpened }"
 			>
-				<kara-full-info
-					:karaoke="karaoke"
-				/>
+				<kara-full-info :karaoke="karaoke" />
 			</div>
 			<div class="tile is-4-desktop-only is-parent is-vertical">
 				<div
@@ -60,9 +58,7 @@
 					</div>
 				</div>
 				<div class="tile is-child">
-					<kara-report
-						:karaoke="karaoke"
-					/>
+					<kara-report :karaoke="karaoke" />
 				</div>
 			</div>
 		</div>
@@ -152,15 +148,15 @@
 			{ hid: 'twitter:player:height', name: 'twitter:player:height', content: '720' },
 			{ hid: 'twitter:player:width', name: 'twitter:player:width', content: '1280' },
 			// @ts-ignore: No. :c
-			{ hid: 'og:image', property: 'og:image', content: `${apiUrl}previews/${karaoke.value?.kid}.${karaoke.value?.mediasize}.25.jpg` },
+			{ hid: 'og:image', property: 'og:image', content: karaoke.value?.warnings?.length ? `${apiUrl}banners/default.jpg` : `${apiUrl}previews/${karaoke.value?.kid}.${karaoke.value?.mediasize}.25.jpg` },
 			// @ts-ignore: rah :O
-			{ hid: 'twitter:image', name: 'twitter:image', content: `${apiUrl}previews/${karaoke.value?.kid}.${karaoke.value?.mediasize}.25.jpg` },
+			{ hid: 'twitter:image', name: 'twitter:image', content: karaoke.value?.warnings?.length ? `${apiUrl}banners/default.jpg` : `${apiUrl}previews/${karaoke.value?.kid}.${karaoke.value?.mediasize}.25.jpg` },
 			// hardsub compatibility for apps that use youtube-dl for direct streaming (without breaking the card view as with og:type video) 
 			// twitter:player:stream assumes a raw stream and is checked before twitter:player https://github.com/ytdl-org/youtube-dl/blob/master/youtube_dl/extractor/generic.py#L3662
 			// @ts-ignore: No. :c
-			{ hid: 'twitter:player:stream', name: 'twitter:player:stream', content: karaoke.value?.hardsubbed_mediafile ? `${apiUrl}hardsubs/${karaoke.value?.hardsubbed_mediafile}` : '' }, 
+			{ hid: 'twitter:player:stream', name: 'twitter:player:stream', content: karaoke.value?.hardsubbed_mediafile ? `${apiUrl}hardsubs/${karaoke.value?.hardsubbed_mediafile}` : '' },
 
-			// The rest of meta tags is handled by KaraFullInfo.vue
+		// The rest of meta tags is handled by KaraFullInfo.vue
 		])
 	});
 
