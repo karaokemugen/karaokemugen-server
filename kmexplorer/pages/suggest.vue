@@ -135,6 +135,10 @@
 		fetchRandomKaras();
 	});
 
+	onUnmounted(() => {
+		setSearch('');
+	});
+
 	async function fetchRandomKaras() {
 		loading.value = true;
 		total.value = 0;
