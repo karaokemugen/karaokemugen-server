@@ -20,6 +20,7 @@ import suggestionsController from './controllers/http/suggestions.js';
 import userController from './controllers/http/user.js';
 import remoteSocketController from './controllers/ws/remote.js';
 import userSubSocketController from './controllers/ws/user.js';
+import { startKMExplorer } from './kmexplorer.js';
 import {
 	getConfig,
 	resolvedPath,
@@ -27,7 +28,6 @@ import {
 } from './lib/utils/config.js';
 import logger from './lib/utils/logger.js';
 import { initWS } from './lib/utils/ws.js';
-import { startKMExplorer } from './services/kmexplorer.js';
 import { initRemote } from './services/remote.js';
 import { getState } from './utils/state.js';
 
