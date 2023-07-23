@@ -62,7 +62,7 @@ export function initFrontend(listenPort: number) {
 				connectSrc: ['\'self\'', 'https:', 'wss:', 'data:'],
 				mediaSrc: ['\'self\'', 'https:', 'data:', 'blob:'],
 				imgSrc: ['\'self\'', 'https:', 'data:', 'blob:'],
-				frameSrc: ['\'self\'', getConfig().KaraExplorer.LiveURL],
+				frameSrc: ['\'self\''],
 				workerSrc: ['\'self\'', 'https://storage.googleapis.com/workbox-cdn/']
 			}
 		}

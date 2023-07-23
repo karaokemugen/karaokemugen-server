@@ -39,7 +39,6 @@
 		"duration": "Durée ",
 		"created_at": "Création ",
 		"download": "Télécharger",
-		"live": "Ouvrir dans un nouvel onglet",
 		"live_unavailable": "Vous ne pouvez pas lire ce karaoké sur votre navigateur. La vidéo est soit dans un format non supporté par les navigateurs ou indisponible pour des raisons légales.",
 		"lyrics": {
 			"show": "Afficher les paroles",
@@ -173,7 +172,13 @@
 		},
 		"siblings": "Karaokés similaires",
 		"childrens": "Karaokés enfants",
-		"parents": "Karaokés parents"
+		"parents": "Karaokés parents",
+		"player": {
+			"next": "Chanson suivante",
+			"theater_mode": "Mode Cinéma",
+			"fullscreen": "Plein écran",
+			"autoplay": "Lecture automatique"
+		}
 	},
 	"layout": {
 		"loading": "Chargement…",
@@ -209,6 +214,7 @@
 		"seconds": "secondes"
 	},
 	"menu": {
+		"play_random_song": "Jouer une chanson au hasard",
 		"add_repository": "Ajouter ce dépôt à votre app",
 		"random": "Lancer les dés",
 		"database": "Base de données",

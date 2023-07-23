@@ -45,7 +45,6 @@ Stats:
 Suggestions:
   Enabled: true
 KaraExplorer:
-  LiveURL: https://live.karaokes.moe
   MediaLinks: true
   Import: true
   InProgressSongsList: changeit_karaokebase/-/issues?scope=all&state=opened&label_name[]=Doing

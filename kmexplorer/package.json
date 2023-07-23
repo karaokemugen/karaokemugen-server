@@ -27,6 +27,7 @@
     "pretty-bytes": "6",
     "slug": "^8.2.3",
     "uuid": "^9.0.0",
+    "video.js": "^8.3.0",
     "vue-advanced-cropper": "^2.8.8",
     "vue-toastification": "2.0.0-rc.5"
   },

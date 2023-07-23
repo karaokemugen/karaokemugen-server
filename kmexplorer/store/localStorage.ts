@@ -5,6 +5,8 @@ export type LocalStorageStoreType = {
 	sendContactInfos: boolean
 	hideSuggestionModal: boolean
 	enabledCollections: string[]
+	playerVolume: number
+	autoplay: boolean
 }
 
 
@@ -14,7 +16,9 @@ export const useLocalStorageStore = defineStore('localStorage', {
 			karas: [],
 			sendContactInfos: false,
 			hideSuggestionModal: false,
-			enabledCollections: useRuntimeConfig().public.DEFAULT_COLLECTIONS
+			enabledCollections: useRuntimeConfig().public.DEFAULT_COLLECTIONS,
+			playerVolume: 1,
+			autoplay: false
 		};
 	},
 	getters: {},
@@ -36,6 +40,12 @@ export const useLocalStorageStore = defineStore('localStorage', {
 		},
 		setSendContactInfos(sendContactInfos: boolean) {
 			this.sendContactInfos = sendContactInfos;
+		},
+		setPlayerVolume(volume: number) {
+			this.playerVolume = volume;
+		},
+		setAutoplay(autoplay: boolean) {
+			this.autoplay = autoplay;
 		}
 	},
 	persist: {

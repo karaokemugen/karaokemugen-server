@@ -33,6 +33,16 @@
 		<h2 class="subtitle">
 			{{ explorerTagline }}
 		</h2>
+		<nuxt-link
+			class="button is-success button-play"
+			@click.prevent="openRandomKara"
+		>
+			<font-awesome-icon
+				:icon="['fas', 'circle-play']"
+				:fixed-width="true"
+			/>
+			{{ $t('menu.play_random_song') }}
+		</nuxt-link>
 		<div class="is-hidden-mobile">
 			<label
 				class="label"
@@ -170,9 +180,11 @@
 
 <script setup lang="ts">
 	import { DBStats } from '%/../src/types/database/kara';
+	import { KaraList as KaraListType } from '%/lib/types/kara';
 	import { storeToRefs } from 'pinia';
 	import prettyBytes from 'pretty-bytes';
 	import duration from '~/assets/date';
+	import { useLocalStorageStore } from '~/store/localStorage';
 	import { useMenubarStore } from '~/store/menubar';
 	import { useModalStore } from '~/store/modal';
 
@@ -201,6 +213,7 @@
 	const explorerHost = conf.public.EXPLORER_HOST;
 	const explorerTagline = conf.public.EXPLORER_TAGLINE;
 
+	const { enabledCollections } = storeToRefs(useLocalStorageStore());
 	const { search } = storeToRefs(useMenubarStore());
 	const { reset } = useMenubarStore();
 	const { openModal } = useModalStore();
@@ -261,6 +274,21 @@
 			} catch (e) {
 				error.value = true;
 			}
+		}
+	}
+
+	async function openRandomKara() {
+		const res = await useCustomFetch<KaraListType>('/api/karas/search', {
+			params: {
+				random: 1,
+				collections: enabledCollections.value.join(',')
+			}
+		});
+		const randomKaraoke = getSlugKidWithoutLiveDownload(res.content[0]);
+		if (randomKaraoke) {
+			push(`/kara/${randomKaraoke}/theater`);
+		} else {
+			openRandomKara();
 		}
 	}
 </script>
@@ -330,5 +358,10 @@
 		> button {
 			margin-bottom: .5em;
 		}
+	}
+
+	.button-play {
+		font-size: 1.5em;
+		margin-bottom: 1em;
 	}
 </style>

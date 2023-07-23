@@ -27,7 +27,6 @@ const nuxtConfig = defineNuxtConfig({
 
 	runtimeConfig: {
 		public: {
-			LIVE_URL: conf.KaraExplorer.LiveURL,
 			KM_IMPORT: conf.KaraExplorer.Import,
 			IN_PROGRESS_SONGS_LIST: conf.KaraExplorer.InProgressSongsList,
 			DISCORD_LINK: conf.KaraExplorer.DiscordURL,
