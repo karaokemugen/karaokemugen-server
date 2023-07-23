@@ -174,9 +174,9 @@
 		"childrens": "Children songs",
 		"parents": "Parent songs",
 		"player": {
-			"next": "Next song",
-			"theater_mode": "Theater mode",
-			"fullscreen": "Fullscreen",
+			"next": "Next song (N)",
+			"theater_mode": "Theater mode (T)",
+			"fullscreen": "Fullscreen (F)",
 			"autoplay": "Autoplay"
 		}
 	},

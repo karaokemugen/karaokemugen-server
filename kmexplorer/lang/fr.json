@@ -174,9 +174,9 @@
 		"childrens": "Karaokés enfants",
 		"parents": "Karaokés parents",
 		"player": {
-			"next": "Chanson suivante",
-			"theater_mode": "Mode Cinéma",
-			"fullscreen": "Plein écran",
+			"next": "Chanson suivante (N)",
+			"theater_mode": "Mode Cinéma (T)",
+			"fullscreen": "Plein écran (F)",
 			"autoplay": "Lecture automatique"
 		}
 	},
