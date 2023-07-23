@@ -35,7 +35,7 @@
 						{{ $t('modal.download.subtitles', {format: subtitlesExtension}) }}
 					</nuxt-link>
 					<nuxt-link
-						v-if="liveURL && live"
+						v-if="live"
 						:href="mediaUrl"
 						class="button"
 						download
@@ -48,7 +48,7 @@
 						{{ $t('modal.download.media', {format: mediaExtension}) }}
 					</nuxt-link>
 					<nuxt-link
-						v-if="liveURL && live"
+						v-if="live"
 						:href="mediaHardsubUrl"
 						class="button"
 						:download="hardsubMediaFileName"
@@ -72,7 +72,6 @@
 	import { tagTypes } from '~/assets/constants';
 
 	const conf = useRuntimeConfig();
-	const liveURL = conf.public.LIVE_URL;
 	const apiUrl = conf.public.API_URL;
 
 	const props = defineProps<{

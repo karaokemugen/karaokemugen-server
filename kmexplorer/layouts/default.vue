@@ -1,6 +1,8 @@
 <template>
 	<div>
-		<nav class="navbar is-primary is-fixed-top">
+		<nav
+			class="navbar is-primary is-fixed-top"
+		>
 			<div class="navbar-brand">
 				<nuxt-link
 					class="navbar-item"
@@ -999,15 +1001,15 @@
 </template>
 
 <script setup lang="ts">
-	import { storeToRefs } from 'pinia';
 	import { KaraList as KaraListType } from '%/lib/types/kara';
+	import { storeToRefs } from 'pinia';
 	import slug from 'slug';
 	import { LocaleObject } from 'vue-i18n-routing';
+	import { TokenResponseWithRoles } from '~/../kmserver-core/src/lib/types/user';
 	import { useAuthStore } from '~/store/auth';
 	import { useLocalStorageStore } from '~/store/localStorage';
 	import { useMenubarStore } from '~/store/menubar';
 	import { useModalStore } from '~/store/modal';
-	import { TokenResponseWithRoles } from '~/../kmserver-core/src/lib/types/user';
 
 	const conf = useRuntimeConfig();
 	const import_enabled = conf.public.KM_IMPORT;
@@ -1023,13 +1025,13 @@
 
 	type TypeMenu = 'community'|'account'|'database';
 
-	const menuOpen = ref<TypeMenu>();
-	const tagsOpen = ref(false);
-	const languagesOpen = ref(false);
-
 	const { params, fullPath, name } = useRoute();
 	const { beforeEach, push } = useRouter();
 	const { locale, locales, setLocale } = useI18n();
+
+	const menuOpen = ref<TypeMenu>();
+	const tagsOpen = ref(false);
+	const languagesOpen = ref(false);
 
 	const { $onAction } = useMenubarStore();
 	const { auth, joinKara, stats, deleteAccount, addRepo, profile } = storeToRefs(useModalStore());
@@ -1037,7 +1039,6 @@
 	const { loggedIn, user } = storeToRefs(useAuthStore());
 	const { logout, login:loginApi } = useAuthStore();
 	const { enabledCollections } = storeToRefs(useLocalStorageStore());
-
 
 	useHead(() => {
 		return {

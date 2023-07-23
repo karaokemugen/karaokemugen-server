@@ -13,7 +13,7 @@
 			</div>
 			<div class="tile is-4-desktop-only is-parent is-vertical">
 				<div
-					v-if="liveURL && live"
+					v-if="live"
 					class="tile is-child"
 				>
 					<live-player
@@ -108,6 +108,7 @@
 
 <script setup lang="ts">
 	import { DBKara } from '%/lib/types/database/kara';
+	import slug from 'slug';
 	import { tagTypes } from '~/assets/constants';
 
 	const karaoke = ref<DBKara>();
@@ -116,20 +117,29 @@
 	const leftTile = ref<HTMLElement>();
 
 	const conf = useRuntimeConfig();
-	const liveURL = conf.public.LIVE_URL;
 	const apiUrl = conf.public.API_URL;
 
-	const { params } = useRoute();
+	const { params, query } = useRoute();
 	const { t } = useI18n();
 
 	async function fetch() {
 		let kid = params.id;
+		let theater = params.theater;
+		if (kid === 'theater') {
+			// Resolve a slug-less url scheme with theater mode (/base/kara/<kid>/theater)
+			theater = kid;
+			kid = null;
+		}
 		if (!kid) {
 			// Resolve a slug-less url scheme (/base/kara/<kid>)
 			kid = params.slug;
 		}
 		try {
 			const res = await useCustomFetch<DBKara>(`/api/karas/${kid}`);
+			const karaSlug = slug(res.titles[res.titles_default_language || 'eng']);
+			if (karaSlug !== params.slug) {
+				navigateTo({ params: { id: kid, slug: karaSlug, theater: theater }, query: query }, { replace: true });
+			}
 			karaoke.value = sortTypesKara(res);
 		} catch (e) {
 			throw createError({ statusCode: 404, message: t('kara.notfound') as string });
@@ -144,7 +154,7 @@
 			{ hid: 'og:type', property: 'og:type', content: 'article' },
 			{ hid: 'og:description', property: 'og:description', content: t('layout.slogan') as string },
 			// @ts-ignore: No. :c
-			{ hid: 'twitter:player', name: 'twitter:player', content: `${liveURL}/?video=${karaoke.value?.kid}` },
+			{ hid: 'twitter:player', name: 'twitter:player', content: `${apiUrl}hardsubs/${karaoke.value?.hardsubbed_mediafile}` },
 			{ hid: 'twitter:player:height', name: 'twitter:player:height', content: '720' },
 			{ hid: 'twitter:player:width', name: 'twitter:player:width', content: '1280' },
 			// @ts-ignore: No. :c

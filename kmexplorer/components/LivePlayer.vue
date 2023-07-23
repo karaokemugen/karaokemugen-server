@@ -1,161 +1,213 @@
 <template>
-	<div
-		class="box"
-	>
-		<iframe
-			v-if="show"
-			ref="liveEmbed"
-			:class="{ live: showTick }"
-			:src="`${liveURL}?video=${karaoke.kid}&autoplay=1`"
-			:style="{ height: size === -1 ? undefined:`${size.toString()}px` }"
-			allowfullscreen
-			title="VideoPlayer"
-			@mouseenter="hover = true"
-			@mouseleave="hover = false"
-		/>
-		<div
-			v-else
-			class="image-container"
-			tabindex="0"
-			aria-keyshortcuts="Ctrl+L"
-			@click="showPlayer"
-			@keydown="showPlayer"
-		>
-			<img
-				:src="`${apiUrl}previews/${karaoke.kid}.${karaoke.mediasize}.25.jpg`"
-				alt="Thumbnail"
+	<div class="box">
+		<div>
+			<Teleport
+				to="body"
+				:disabled="!theaterMode"
 			>
-			<font-awesome-layers>
-				<font-awesome-icon
-					:icon="['fas', 'circle']"
-					size="4x"
-				/>
-				<font-awesome-icon
-					:icon="['fas', 'play']"
-					color="black"
-					size="2x"
-				/>
-			</font-awesome-layers>
+				<div :class="{ 'theater': theaterMode }">
+					<video-component
+						:title="buildKaraTitle(props.karaoke, null, true)"
+						:class="{ 'theater-player': theaterMode }"
+						:options="videoOptions"
+						:fullscreen="fullscreen"
+						:theater-mode="theaterMode"
+						:theatermodechange="changeTheaterMode"
+						:fullscreenchange="changeFullscreen"
+						:play="showPlayer"
+						:next="openRandomKara"
+					/>
+				</div>
+			</Teleport>
 		</div>
-		<nuxt-link
-			:href="`${liveURL}?video=${karaoke.kid}`"
-			target="_blank"
-			class="button is-info"
-			@click="closeLive"
-		>
-			<font-awesome-icon
-				v-if="show"
-				:icon="['fas', 'external-link-alt']"
-				:fixed-width="true"
-			/>
-			<font-awesome-icon
-				v-else
-				:icon="['fas', 'play']"
-				:fixed-width="true"
-			/>
-			{{ $t('kara.live') }}
-		</nuxt-link>
 	</div>
 </template>
 
 <script setup lang="ts">
 	import { DBKara } from '%/lib/types/database/kara';
+	import { KaraList as KaraListType } from '%/lib/types/kara';
+	import { storeToRefs } from 'pinia';
+	import slug from 'slug';
+	import deJson from 'video.js/dist/lang/de.json';
+	import enJson from 'video.js/dist/lang/en.json';
+	import frJson from 'video.js/dist/lang/fr.json';
+	import ptJson from 'video.js/dist/lang/pt-PT.json';
+	import { useAuthStore } from '~/store/auth';
+	import { useLocalStorageStore } from '~/store/localStorage';
 
 	const props = defineProps<{
 		karaoke: DBKara
 		transition: Boolean
 	}>();
 
-	const emit = defineEmits<{(e: 'open'|'close'): void}>();
+	const emit = defineEmits<{ (e: 'open' | 'close'): void }>();
 
-	const show = ref(false);
-	const showTick = ref(false);
-	const size = ref(-1);
-	const hover = ref(false);
-	const scrollY = ref(0);
-	const interval = ref<NodeJS.Timeout>();
-	const liveEmbed = ref<HTMLIFrameElement>();
+	const { params, query } = useRoute();
+	const { push, replace } = useRouter();
+	const { enabledCollections } = storeToRefs(useLocalStorageStore());
+	const { loggedIn, user } = storeToRefs(useAuthStore());
+	const { locale } = useI18n();
 
 	const conf = useRuntimeConfig();
-	const liveURL = conf.public.LIVE_URL;
 	const apiUrl = conf.public.API_URL;
 
-	watch(() => props.transition, (now) => {
-		if (now) {
-			resizeEvent();
-			if (interval.value) {
-				clearInterval(interval.value);
+	const mediaHardsubUrl = computed(() => {
+		return `${apiUrl}hardsubs/${props.karaoke.hardsubbed_mediafile}`;
+	});
+
+	const theaterMode = ref(params.theater === 'theater');
+	const play = ref(theaterMode.value);
+	const fullscreen = ref(false);
+	const videoOptions = computed(() => ({
+		language: (loggedIn.value && user?.value?.language) || locale.value,
+		languages: {
+			pt: ptJson,
+			de: deJson,
+			en: enJson,
+			fr: frJson
+		},
+		autoplay: theaterMode.value || query.autoplay,
+		play: play.value,
+		controls: true,
+		fluid: !theaterMode.value,
+		fill: true,
+		poster: `${apiUrl}previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`,
+		controlBar: {
+			fullscreenToggle: false,
+			skipButtons: {
+				forward: 5,
+				backward: 5
 			}
-		} else {
-			// Reset component
-			show.value = false;
-			showTick.value = false;
-			size.value = -1;
-		}
-	});
+		},
+		userActions: {
+			doubleClick: false
+		},
+		sources: [
+			{
+				src: mediaHardsubUrl.value,
+				type: 'video/mp4'
+			}
+		],
+		experimentalSvgIcons: true
+	}));
 
-	watch(hover, (now) => {
-		if (now && show.value && !window.matchMedia('(hover: none)').matches) {
-			// Lock the vertical scroll to let user set volume in Live
-			scrollY.value = window.scrollY;
-			window.addEventListener('scroll', blockScroll, { passive: true });
-		} else {
-			window.removeEventListener('scroll', blockScroll);
+	watch(theaterMode, (newTheaterMode) => {
+		if (process.client) {
+			if (newTheaterMode) {
+				document.getElementsByTagName('html')[0].classList.add('theater');
+			} else {
+				document.getElementsByTagName('html')[0].classList.remove('theater');
+			}
 		}
-	});
-
-	watchEffect(() => {
-		if(liveEmbed.value) {
-			liveEmbed.value.focus();
-		}
-	});
+	}, { immediate: true });
 
 	onMounted(() => {
 		window.addEventListener('keydown', keyEvent);
-		window.addEventListener('resize', resizeEvent);
+		window.addEventListener('fullscreenchange', updateFullscreen);
+		updateFullscreen();
+		if (query.autoplay) {
+			showPlayer();
+			const kid = props.karaoke.kid;
+			const slugTitle = slug(props.karaoke.titles[props.karaoke.titles_default_language || 'eng']);
+			replace(`/kara/${slugTitle}/${kid}`);
+		}
 	});
 
 	onUnmounted(() => {
 		window.removeEventListener('keydown', keyEvent);
-		window.removeEventListener('resize', resizeEvent);
-		window.removeEventListener('scroll', blockScroll);
+		window.removeEventListener('fullscreenchange', updateFullscreen);
 	});
 
-	function createTransition() {
-		showTick.value = true;
-		interval.value = setInterval(resizeEvent, 100);
+	function updateFullscreen() {
+		fullscreen.value = document.fullscreenElement !== null;
 	}
+
+	async function openRandomKara() {
+		const res = await useCustomFetch<KaraListType>('/api/karas/search', {
+			params: {
+				random: 1,
+				collections: enabledCollections.value.join(',')
+			}
+		});
+
+		const randomKaraoke = getSlugKidWithoutLiveDownload(res.content[0]);
+		if (randomKaraoke) {
+			push(`/kara/${randomKaraoke}${theaterMode.value ? '/theater' : '?autoplay=true'}`);
+		} else {
+			openRandomKara();
+		}
+	}
+
+	async function changeFullscreen() {
+		if (!fullscreen.value) {
+			await window.document.documentElement.requestFullscreen();
+			openTheaterMode();
+		} else {
+			window.document.exitFullscreen();
+			closeTheaterMode(true);
+		}
+	}
+
+	function changeTheaterMode() {
+		if (fullscreen.value) {
+			window.document.exitFullscreen();
+		} else {
+			if (theaterMode.value) {
+				closeTheaterMode();
+			} else {
+				openTheaterMode();
+			}
+		}
+	}
+
+	function openTheaterMode() {
+		theaterMode.value = true;
+		const url = new URL(window.location.href);
+		if (url.pathname.includes('/theater/') || url.pathname.endsWith('/theater')) {
+			url.pathname = url.pathname.replaceAll('/theater', '');
+		}
+		url.pathname += (url.pathname.endsWith('/') ? '' : '/') + 'theater';
+		history.replaceState({}, '', url.href);
+	}
+
+	function closeTheaterMode(force = false) {
+		if (fullscreen.value && !force) {
+			return;
+		}
+		theaterMode.value = false;
+		const url = new URL(window.location.href);
+		if (url.pathname.includes('/theater/') || url.pathname.endsWith('/theater')) {
+			url.pathname = url.pathname.replaceAll('/theater', '');
+		}
+		history.replaceState({}, '', url.href);
+	}
+
 	function showPlayer() {
-		show.value = true;
 		emit('open');
-		setTimeout(createTransition, 25);
+		play.value = true;
 	}
-	function keyEvent(e: KeyboardEvent) { // Fancy shortcut, don't tell anyone! :p
-		if (e.code === 'KeyL' && e.ctrlKey) {
+	function keyEvent(e: KeyboardEvent) {
+		if (e.code === 'Escape') {
 			e.preventDefault();
-			showPlayer();
-			window.removeEventListener('keydown', keyEvent);
+			closeTheaterMode(true);
+		} else if ((e.target as Element).nodeName !== 'INPUT') {
+			if (e.key === 'n') {
+				e.preventDefault();
+				openRandomKara();
+			} else if (e.key === 'f') {
+				e.preventDefault();
+				changeFullscreen();
+			} if (e.key === 't') {
+				e.preventDefault();
+				changeTheaterMode();
+			}
 		}
-	}
-	function resizeEvent() {
-		if (show.value && liveEmbed.value?.scrollWidth) {
-			size.value = liveEmbed.value?.scrollWidth * 0.5625;
-		}
-	}
-	function closeLive() {
-		if (show.value) {
-			emit('close');
-		}
-	}
-	function blockScroll() {
-		window.scrollTo(window.scrollX, scrollY.value);
 	}
 </script>
 
 <style scoped lang="scss">
 	.box > *:first-child, .box img {
 		width: 100%;
-		height: 16rem;
 		transition: height 200ms;
 	}
 
@@ -185,5 +237,20 @@
 
 	.image-container {
 		cursor: pointer;
+	}
+
+	.theater {
+		position: fixed;
+		inset: 0px;
+		width: 100%;
+		height: 100%;
+		background: black;
+		z-index: 2;
+	}
+
+	.theater-player {
+		inset: 0px;
+		width: 100%;
+		height: 100%;
 	}
 </style>

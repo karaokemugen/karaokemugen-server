@@ -71,7 +71,6 @@ export const defaults: Config = {
 		Enabled: true,
 		Host: 'localhost',
 		Tagline: 'Explore! Find! Sing!',
-		LiveURL: 'https://live.karaokes.moe',
 		MediaLinks: true,
 		Import: true,
 		Secure: true,

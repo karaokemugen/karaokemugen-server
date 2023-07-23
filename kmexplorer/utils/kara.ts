@@ -1,6 +1,8 @@
 import { DBKara } from '%/lib/types/database/kara';
 import { KaraFileV4 } from '%/lib/types/kara';
+import slug from 'slug';
 import { v4 as UUIDv4 } from 'uuid';
+import { tagTypes } from '~/assets/constants';
 
 const tagTypesKaraFileV4Order: (
 	'authors'|
@@ -101,4 +103,24 @@ export function convertDBKaraToKaraFile(dbKara?: DBKara): KaraFileV4 {
 		},
 		meta:{}
 	};
+}
+
+export function getSlugKidWithoutLiveDownload(karaoke:DBKara) : string | undefined {
+	//@ts-ignore
+	let noLiveDownload = false;
+	for (const tagType in tagTypes) {
+		if (tagType === 'years') { continue; }
+		// @ts-ignore
+		for (const tag of karaoke[tagType]) {
+			if (tag.noLiveDownload) {
+				noLiveDownload = true;
+			}
+		}
+	}
+
+	if (karaoke.hardsubbed_mediafile && !noLiveDownload) {
+		const kid = karaoke.kid;
+		const slugTitle = slug(karaoke.titles[karaoke.titles_default_language || 'eng']);
+		return `${slugTitle}/${kid}`
+	}
 }

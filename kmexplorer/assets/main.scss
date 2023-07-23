@@ -42,6 +42,15 @@ $footer-padding: 3rem 1.5rem 3rem;
 
 @import 'bulmaswatch/darkly/_overrides';
 
+html.theater,
+html.theater body {
+	overflow: hidden;
+
+	.navbar.is-fixed-top {
+		display: none;
+	}
+}
+
 body.has-navbar-fixed-top, html.has-navbar-fixed-top {
 	padding-top: 5rem;
 }

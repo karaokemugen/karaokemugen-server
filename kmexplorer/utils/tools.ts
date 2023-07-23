@@ -58,7 +58,8 @@ export function getTitleInLocale(titles: any, titles_default_language?:string) {
 
 export function buildKaraTitle(
 	data: DBKara,
-	i18nParam?: any
+	i18nParam?: any,
+	withoutLangs = false
 ): string {
 	const isMulti = data?.langs?.find(e => e.name.includes('mul'));
 	if (data?.langs && isMulti) {
@@ -91,7 +92,7 @@ export function buildKaraTitle(
 	const songorderText = data?.songorder > 0 ? ' ' + data.songorder : '';
 	const versions = sortAndHideTags(data?.versions).map(t => `[${getTagInLocale(t, i18nParam)}]`);
 	const version = versions?.length > 0 ? ` ${versions.join(' ')}` : '';
-	return `${langsText} - ${serieText} - ${songtypeText} ${songorderText} - ${getTitleInLocale(
+	return `${withoutLangs ? '' : `${langsText} - `}${serieText} - ${songtypeText} ${songorderText} - ${getTitleInLocale(
 		data.titles,
 		data.titles_default_language
 	)} ${version}`;

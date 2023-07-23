@@ -46,7 +46,6 @@ export interface Config {
 		Enabled: boolean
 		Host: string
 		Tagline: string
-		LiveURL: string
 		DiscordURL?: string
 		DiscourseURL?: string
 		MediaLinks: boolean

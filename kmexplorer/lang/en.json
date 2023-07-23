@@ -39,7 +39,6 @@
 		"duration": "Duration ",
 		"created_at": "Created ",
 		"download": "Download",
-		"live": "Open in a new tab",
 		"live_unavailable": "You cannot play this karaoke in your browser. Either the video is in an unsupported format in browsers, or it has been disabled for legal reasons.",
 		"lyrics": {
 			"show": "Show lyrics",
@@ -173,7 +172,13 @@
 		},
 		"siblings": "Similar songs",
 		"childrens": "Children songs",
-		"parents": "Parent songs"
+		"parents": "Parent songs",
+		"player": {
+			"next": "Next song",
+			"theater_mode": "Theater mode",
+			"fullscreen": "Fullscreen",
+			"autoplay": "Autoplay"
+		}
 	},
 	"layout": {
 		"loading": "Loading…",
@@ -209,6 +214,7 @@
 		"seconds": "seconds"
 	},
 	"menu": {
+		"play_random_song": "Play random song",
 		"add_repository": "Add this repository to your app",
 		"random": "Launch a dice",
 		"database": "Database",
