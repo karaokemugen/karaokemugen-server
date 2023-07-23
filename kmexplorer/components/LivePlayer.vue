@@ -135,6 +135,7 @@
 
 		const randomKaraoke = getSlugKidWithoutLiveDownload(res.content[0]);
 		if (randomKaraoke) {
+			context = new AudioContext();
 			push(`/kara/${randomKaraoke}${theaterMode.value ? '/theater' : '?autoplay=true'}`);
 		} else {
 			openRandomKara();
