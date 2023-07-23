@@ -4,6 +4,10 @@ export function getRepo(repoName: string) {
 	return getConfig().System.Repositories.find(r => r.Name === repoName);
 }
 
+export function getRepos() {
+	return getConfig().System.Repositories;
+}
+
 export function initRepos() {
 	// Create Staging repo if necessary
 	if (getConfig().System.Repositories.findIndex(r => r.Name === 'Staging' && !r.Online) === -1) {
