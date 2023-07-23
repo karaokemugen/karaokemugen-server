@@ -17,7 +17,7 @@ export const useLocalStorageStore = defineStore('localStorage', {
 			sendContactInfos: false,
 			hideSuggestionModal: false,
 			enabledCollections: useRuntimeConfig().public.DEFAULT_COLLECTIONS,
-			playerVolume: 1,
+			playerVolume: 0.5,
 			autoplay: false
 		};
 	},
