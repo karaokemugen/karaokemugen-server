@@ -43,7 +43,7 @@
 	const theaterButton = ref();
 	const fullscreenButton = ref();
 	const autoplayButton = ref();
-	let source:MediaElementAudioSourceNode;
+	let source: MediaElementAudioSourceNode;
 	let gain_node: GainNode;
 
 	function onended() {
@@ -54,11 +54,11 @@
 		props.context?.close();
 		gain_node.disconnect();
 		source.disconnect();
-		window.removeEventListener('keydown', keyEvent);
 		props.next();
 	}
 
 	onMounted(() => {
+		videojs.getAllPlayers().forEach(oldPlayer => oldPlayer.dispose()); // temporary fix until https://github.com/vuejs/core/issues/4737 is fix
 		window.addEventListener('keydown', keyEvent);
 		player.value = videojs(videoPlayer.value, props.options, () => {
 			if (player.value) {
@@ -245,11 +245,12 @@
 <style>
 .vjs-control-bar {
 	font-size: 15px;
-	
+
 	.vjs-control {
 		width: 3em;
 	}
 }
+
 .vjs-title-bar {
 	font-size: 27px;
 	bottom: 45px;
