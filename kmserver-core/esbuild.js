@@ -4,7 +4,7 @@ import { createRequire, builtinModules } from 'node:module';
 import { readPackageUp } from 'read-pkg-up';
 import replaceAsync from 'string-replace-async';
 import klaw from 'klaw';
-import rimraf from 'rimraf';
+import { rimraf } from 'rimraf';
 import { build } from 'esbuild';
 
 let i = 1;
