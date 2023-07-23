@@ -16,6 +16,8 @@
 						:fullscreenchange="changeFullscreen"
 						:play="showPlayer"
 						:next="openRandomKara"
+						:gain="props.karaoke.gain"
+						:context="context"
 					/>
 				</div>
 			</Teleport>
@@ -50,6 +52,7 @@
 
 	const conf = useRuntimeConfig();
 	const apiUrl = conf.public.API_URL;
+	let context: AudioContext;
 
 	const mediaHardsubUrl = computed(() => {
 		return `${apiUrl}hardsubs/${props.karaoke.hardsubbed_mediafile}`;
@@ -185,6 +188,8 @@
 	function showPlayer() {
 		emit('open');
 		play.value = true;
+		if (!context) context = new AudioContext();
+		if (context?.state !== 'running') context.resume().then(r => r);
 	}
 	function keyEvent(e: KeyboardEvent) {
 		if (e.code === 'Escape') {

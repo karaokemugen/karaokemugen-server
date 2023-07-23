@@ -29,6 +29,8 @@
 		options: any,
 		fullscreen: boolean,
 		theaterMode: boolean,
+		gain: number | undefined,
+		context: AudioContext | undefined,
 		theatermodechange: () => void,
 		fullscreenchange: () => void,
 		play: () => void,
@@ -55,6 +57,13 @@
 		window.addEventListener('keydown', keyEvent);
 		player.value = videojs(videoPlayer.value, props.options, () => {
 			if (player.value) {
+				if (props.gain && props.context) {
+					const gain_node = props.context.createGain();
+					gain_node.gain.value = props.gain;
+					const source = props.context.createMediaElementSource(videoPlayer.value);
+					source.connect(gain_node).connect(props.context.destination);
+				}
+
 				player.value.currentTime(query.time || 0);
 				player.value.volume(playerVolume.value);
 
