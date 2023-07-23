@@ -21,11 +21,11 @@
     "bulma": "^0.9.4",
     "bulmaswatch": "^0.8.1",
     "i18n-iso-countries": "^7.6.0",
-    "isomorphic-dompurify": "^1.6.0",
+    "isomorphic-dompurify": "^1.8.0",
     "lodash": "^4.17.21",
     "nuxt-fontawesome": "^0.4.0",
     "pretty-bytes": "6",
-    "slug": "^8.2.2",
+    "slug": "^8.2.3",
     "uuid": "^9.0.0",
     "vue-advanced-cropper": "^2.8.8",
     "vue-toastification": "2.0.0-rc.5"
@@ -36,8 +36,8 @@
     "@types/lodash": "^4.14.195",
     "@types/slug": "^5.0.3",
     "@types/uuid": "^9.0.2",
-    "eslint": "^8.43.0",
-    "nuxt": "^3.5.3",
-    "sass": "^1.63.6"
+    "eslint": "^8.45.0",
+    "nuxt": "^3.6.5",
+    "sass": "^1.64.1"
   }
 }
