@@ -188,6 +188,11 @@
 	watch(() => props.options.play, (newPlay) => {
 		if (player.value) {
 			if (newPlay) {
+				if (document.pictureInPictureElement) {
+					(document.pictureInPictureElement as HTMLVideoElement).pause();
+					document.exitPictureInPicture();
+					videoPlayer.value.requestPictureInPicture();
+				}
 				player.value.play();
 			} else {
 				player.value.pause();
