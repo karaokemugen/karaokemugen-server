@@ -14,13 +14,14 @@ import { DBUser } from '../lib/types/database/user.js';
 import { JWTTokenWithRoles, User } from '../lib/types/user.js';
 import { getConfig, resolvedPath } from '../lib/utils/config.js';
 import { asciiRegexp, tagTypes } from '../lib/utils/constants.js';
+import { ErrorKM } from '../lib/utils/error.js';
 import { detectFileType, fileExists, smartMove } from '../lib/utils/files.js';
 import logger from '../lib/utils/logger.js';
 import { isLooselyEqual } from '../lib/utils/objectHelpers.js';
 import { UserList, UserOptions, UserParams } from '../types/user.js';
 import { adminToken } from '../utils/constants.js';
 import { sendMail } from '../utils/mailer.js';
-import sentry, { NoSentryError } from '../utils/sentry.js';
+import sentry from '../utils/sentry.js';
 import { getState } from '../utils/state.js';
 import { refreshAnimeList } from './animeList.js';
 import { getKara } from './kara.js';
@@ -37,11 +38,11 @@ function getUserLanguage(user: User): string {
 
 export async function resetPasswordRequest(username: string) {
 	try {
-		if (!username) throw new NoSentryError('No user provided');
+		if (!username) throw new ErrorKM('NO_USER_PROVIDED', 400);
 		username = username.toLowerCase();
 		const user = await findUserByName(username, { contact: true });
-		if (!user) throw new NoSentryError('User unknown');
-		if (!user.email) throw new NoSentryError('User has no configured mail. Ask server admin for a password reset');
+		if (!user) throw new ErrorKM('USER_UNKNOWN', 404);
+		if (!user.email) throw new ErrorKM('USER_NO_MAIL', 500);
 		const requestCode = uuidV4();
 		passwordResetRequests.set(username, {
 			code: requestCode,
@@ -70,11 +71,11 @@ export async function resetPasswordRequest(username: string) {
 export async function resetPassword(username: string, requestCode: string, newPassword: string) {
 	try {
 		const request = passwordResetRequests.get(username);
-		if (!request) throw new NoSentryError('No request');
-		if (request.code !== requestCode) throw new NoSentryError('Wrong code');
+		if (!request) throw new ErrorKM('NO_REQUEST', 400);
+		if (request.code !== requestCode) throw new ErrorKM('WRONG_CODE', 400);
 		const user = await findUserByName(username, {contact: true});
-		if (!user) throw new NoSentryError('User unknown');
-		if (!user.email) throw new NoSentryError('User has no configured mail. Ask server admin for a password reset');
+		if (!user) throw new ErrorKM('USER_UNKNOWN', 404);
+		if (!user.email) throw new ErrorKM('USER_NO_MAIL', 500);
 		await changePassword(username, newPassword);
 		passwordResetRequests.delete(username);
 
@@ -114,7 +115,7 @@ export function hashPassword(password: string) {
 
 export async function findUserByName(username: string, opts: UserOptions = {}) {
 	try {
-		if (!username) throw new NoSentryError('No user provided');
+		if (!username) throw new ErrorKM('NO_USER_PROVIDED', 400, false);
 		username = username.toLowerCase();
 		const user = await selectUser('pk_login', username);
 		if (!user) return user;
@@ -139,20 +140,20 @@ export async function findUserByName(username: string, opts: UserOptions = {}) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
 		logger.error('Error when retrieving an user', { obj: err, service });
-		throw err;
+		throw err instanceof ErrorKM ? err : new ErrorKM('GET_USER_ERROR');
 	}
 }
 
 export async function removeUser(username: string) {
 	try {
-		if (!username) throw ('No user provided');
+		if (!username) throw new ErrorKM('NO_USER_PROVIDED', 400);
 		username = username.toLowerCase();
 		delPubUser(username);
 		return await deleteUser(username);
 	} catch (err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
-		throw err;
+		throw err instanceof ErrorKM ? err : new ErrorKM('REMOVE_USER_ERROR');
 	}
 }
 
@@ -183,7 +184,7 @@ export async function getAllUsers(opts: UserParams = { public: false }) {
 	} catch (err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
-		throw err;
+		throw new ErrorKM('GET_USERS_ERROR');
 	}
 }
 
@@ -219,34 +220,27 @@ export async function createUser(user: User, opts: any = {}) {
 			user: true,
 			admin: opts.admin
 		};
-		if (!asciiRegexp.test(user.login)) throw { code: 'USER_ASCII_CHARACTERS_ONLY' };
-		if (!user.password) throw { code: 'USER_EMPTY_PASSWORD' };
-		if (!user.login) throw { code: 'USER_EMPTY_LOGIN' };
+		if (!asciiRegexp.test(user.login)) throw new ErrorKM('USER_ASCII_CHARACTERS_ONLY', 400, false);
+		if (!user.password) throw new ErrorKM('USER_EMPTY_PASSWORD', 400, false);
+		if (!user.login) throw new ErrorKM('USER_EMPTY_LOGIN', 400, false);
 		user.login = user.login.toLowerCase();
 		verifyNameBans(user);
 		// Check if login or nickname already exists.
 		if (await selectUser('pk_login', user.login) || await selectUser('nickname', user.login)) {
 			logger.error(`User/nickname ${user.login} already exists, cannot create it`, { service });
-			throw { code: 'USER_ALREADY_EXISTS', data: { username: user.login } };
+			throw new ErrorKM('USER_ALREADY_EXISTS', 409, false);
 		}
-		if (user.password.length < 8) throw { code: 'PASSWORD_TOO_SHORT', data: user.password.length };
+		if (user.password.length < 8) throw new ErrorKM('PASSWORD_TOO_SHORT', 400, false);
 		user.password = await hashPasswordbcrypt(user.password);
-		try {
-			await insertUser(user);
-			delete user.password;
-			pubUser(user.login);
-		} catch (err) {
-			logger.error(`Unable to create user ${user.login}`, { service, obj: err });
-			throw ({ code: 'USER_CREATION_ERROR', data: err });
-		}
+		await insertUser(user);
+		delete user.password;
+		pubUser(user.login);
 	} catch (err) {
-		if (err.code !== 'USER_ALREADY_EXISTS') {
-			const args: any = arguments;
-			delete args.user.password;
-			sentry.addErrorInfo('args', JSON.stringify(args, null, 2));
-			sentry.error(new Error(err.err));
-		}
-		throw err;
+		const args: any = arguments;
+		delete args.user.password;
+		sentry.addErrorInfo('args', JSON.stringify(args, null, 2));
+		sentry.error(new Error(err.err));
+		throw err instanceof ErrorKM ? err : new ErrorKM('CREATE_USER_ERROR');
 	}
 }
 
@@ -254,7 +248,8 @@ function verifyNameBans(user: User) {
 	const conf = getConfig();
 	if (conf.Users?.NameBan) for (const ban of conf.Users.NameBan) {
 		const regexp = new RegExp(ban, 'g');
-		if (user.login.match(regexp) || user.nickname.match(regexp)) throw 'Login or nickname contains banned strings';
+		// We obfuscate the error message on purpose.
+		if (user.login.match(regexp) || user.nickname.match(regexp)) throw new ErrorKM('CREATE_USER_ERROR');
 	}
 }
 
@@ -264,7 +259,7 @@ async function replaceAvatar(oldImageFile: string, avatar: Express.Multer.File) 
 		if (fileType !== 'jpg' &&
 			fileType !== 'gif' &&
 			fileType !== 'png') {
-			throw 'Wrong avatar file type';
+			throw new ErrorKM('WRONG_AVATAR_FILE_TYPE', 400, false);
 		}
 		// Construct the name of the new avatar file with its ID and filetype.
 		const newAvatarFile = `${uuidV4()}.${fileType}`;
@@ -279,7 +274,7 @@ async function replaceAvatar(oldImageFile: string, avatar: Express.Multer.File) 
 		logger.error(`Unable to replace avatar ${oldImageFile} with ${avatar.path}`, { service, obj: err });
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
-		throw err;
+		throw err instanceof ErrorKM ? err : new ErrorKM('AVATAR_ERROR');
 	}
 }
 
@@ -292,11 +287,11 @@ async function replaceBanner(preview: string) {
 		fileType = await detectFileType(file);
 		if (fileType !== 'jpg' &&
 			fileType !== 'png') {
-			throw { code: 'INVALID_FILE', data: 'Please input valid banners (jpg, png)' };
+			throw new ErrorKM('WRONG_BANNER_FILE_TYPE', 400, false);
 		}
 	}
 	if (!await fileExists(file)) {
-		throw new Error('The requested preview is not available nor generated.');
+		throw new ErrorKM('BANNER_NOT_GENERATED_YET');
 	} else {
 		const name = customBanner ? `${uuidV4()}.${fileType}` : preview;
 		const target = resolve(resolvedPath('Banners'), name);
@@ -312,7 +307,7 @@ async function replaceBanner(preview: string) {
 			for (const key of Object.keys(tagTypes)) {
 				for (const tag of kara[key]) {
 					if (bans.includes(tag.tid)) {
-						throw { code: 'BANNER_BANNED', data: 'This banner cannot be used' };
+						throw new ErrorKM('BANNER_BANNED', 403, false);
 					}
 				}
 			}
@@ -323,13 +318,8 @@ async function replaceBanner(preview: string) {
 }
 
 export async function changePassword(username: string, password: string) {
-	try {
-		password = await hashPasswordbcrypt(password);
-		return await updateUserPassword(username, password);
-	} catch (err) {
-		sentry.error(err);
-		throw err;
-	}
+	password = await hashPasswordbcrypt(password);
+	return updateUserPassword(username, password);
 }
 
 export async function addRoleToUser(username: string, role: string) {
@@ -346,19 +336,19 @@ export async function removeRoleFromUser(username: string, role: string) {
 
 export async function editUser(username: string, user: User, avatar: Express.Multer.File, token: JWTTokenWithRoles, banner?: Express.Multer.File) {
 	try {
-		if (!username) throw 'No user provided';
+		if (!username) throw new ErrorKM('NO_USER_PROVIDED', 400, false);
 		username = username.toLowerCase();
-		if (token.username.toLowerCase() !== username && token.roles && !token.roles.admin) throw 'Only admins can edit another user';
+		if (token.username.toLowerCase() !== username && token.roles && !token.roles.admin) throw new ErrorKM('CHECK_YOUR_PRIVILEGES', 403, false);
 		const currentUser = await findUserByName(username, { password: true });
-		if (!currentUser) throw 'User unknown';
+		if (!currentUser) throw new ErrorKM('USER_UNKNOWN', 404, false);
 		const mergedUser = merge(cloneDeep(currentUser), cloneDeep(user));
 		verifyNameBans(user);
 		delete mergedUser.password;
-		if (user.roles && !isLooselyEqual(user.roles, currentUser.roles) && token.roles && !token.roles.admin) throw 'Only admins can change a user\'s roles';
+		if (user.roles && !isLooselyEqual(user.roles, currentUser.roles) && token.roles && !token.roles.admin) throw new ErrorKM('CHECK_YOUR_PRIVILEGES', 403, false);
 		// Check if login already exists.
-		if (user.nickname && currentUser.nickname !== user.nickname && await selectUser('nickname', user.nickname)) throw 'Nickname already exists';
+		if (user.nickname && currentUser.nickname !== user.nickname && await selectUser('nickname', user.nickname)) throw new ErrorKM('NICKNAME_ALREADY_USED', 409, false);
 		if (user.password) {
-			if (user.password.length < 8) throw { code: 'PASSWORD_TOO_SHORT', data: user.password.length };
+			if (user.password.length < 8) throw new ErrorKM('PASSWORD_TOO_SHORT', 400, false);
 			const password = await hashPasswordbcrypt(user.password);
 			await updateUserPassword(username, password);
 		}
@@ -366,7 +356,7 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 			if (mergedUser.roles.donator || mergedUser.roles.admin) {
 				mergedUser.banner = await replaceBanner(banner.path);
 			} else {
-				throw { code: 'BANNER_BANNED', data: 'This function is reserved to donators' };
+				throw new ErrorKM('CHECK_YOUR_PRIVILEGES', 403, false);
 			}
 		} else if (user.banner) {
 			mergedUser.banner = await replaceBanner(user.banner);
@@ -398,20 +388,14 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		};
 	} catch (err) {
 		logger.error(`Failed to update ${username}'s profile`, { service, obj: err });
-		if (err !== 'Nickname already exists') {
-			sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
-			sentry.error(new Error(err));
-		}
-		throw err;
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
+		throw err instanceof ErrorKM ? err : new ErrorKM('EDIT_USER_ERROR');
 	}
 }
 
 export async function updateUserLastLogin(username: string) {
-	try {
-		await updateLastLogin(username);
-	} catch (err) {
-		logger.error(`Unable to update login time for ${username}`, { service, obj: err });
-	}
+	await updateLastLogin(username);
 }
 
 export function decodeJwtToken(token: string): JWTTokenWithRoles | false {

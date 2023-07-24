@@ -1,5 +1,6 @@
 import { Router } from 'express';
 
+import { APIMessage } from '../../lib/services/frontend.js';
 import { getPlaylistMedias } from '../../services/playlistMedias.js';
 
 export default function PMController(router: Router) {
@@ -9,7 +10,7 @@ export default function PMController(router: Router) {
 				const playlistMedias = await getPlaylistMedias(req.params.type);
 				res.json(playlistMedias);
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 }

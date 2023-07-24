@@ -1,6 +1,7 @@
 import fs from 'fs/promises';
 
 import { addLikeToSuggestion, deleteSuggestion, insertSuggestion, selectSuggestions, selectSuggestionsLanguages, updateSuggestionSearchVector } from '../dao/suggestions.js';
+import { ErrorKM } from '../lib/utils/error.js';
 import logger from '../lib/utils/logger.js';
 import { Suggestion, SuggestionParams } from '../types/suggestions.js';
 import sentry from '../utils/sentry.js';
@@ -28,7 +29,7 @@ export async function getSuggestions(params: SuggestionParams) {
 	} catch (err) {
 		logger.error('Unable to fetch suggestions', {service, obj: err});
 		sentry.error(err);
-		throw err;
+		throw new ErrorKM('GET_SUGGESTIONS_ERROR');
 	}
 }
 
@@ -39,7 +40,7 @@ export async function getSuggestionsLanguages() {
 	} catch (err) {
 		logger.error('Unable to fetch suggestions languages', {service, obj: err});
 		sentry.error(err);
-		throw err;
+		throw new ErrorKM('GET_SUGGESTION_LANGUAGES_ERROR');
 	}
 }
 
@@ -50,7 +51,7 @@ export async function updateLike(id: number) {
 	} catch (err) {
 		logger.error(`Unable to update like to suggestion ${id}`, {service, obj: err});
 		sentry.error(err);
-		throw err;
+		throw new ErrorKM('UPDATE_SUGGESTION_LIKE_ERROR');
 	}
 }
 
@@ -61,7 +62,7 @@ async function addSuggestion(suggestions: Suggestion[]) {
 	} catch (err) {
 		logger.error('Unable to add suggestion', {service, obj: err});
 		sentry.error(err);
-		throw err;
+		throw new ErrorKM('ADD_SUGGESTION_ERROR');
 	}
 }
 
@@ -88,6 +89,6 @@ export async function removeSuggestion(id: number) {
 	} catch (err) {
 		logger.error(`Unable to remove suggestion ${id}`, {service, obj: err});
 		sentry.error(err);
-		throw err;
+		throw new ErrorKM('REMOVE_SUGGESTION_ERROR');
 	}
 }

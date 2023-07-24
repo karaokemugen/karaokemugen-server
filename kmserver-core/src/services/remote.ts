@@ -21,6 +21,7 @@ import logger from '../lib/utils/logger.js';
 import { getWS } from '../lib/utils/ws.js';
 import {resolvedPathRemoteRoot} from '../utils/config.js';
 import { getVersion, watchRemotes } from '../utils/remote.js';
+import sentry from '../utils/sentry.js';
 import { getState } from '../utils/state.js';
 
 const service = 'Remote';
@@ -146,6 +147,7 @@ function deleteOldRemote() {
 		logger.info('Cleaned up expired tokens', {service});
 	}).catch(err => {
 		logger.warn('Cannot delete old remote tokens (better luck next time)', {service, obj: err});
+		sentry.error(err, 'warning');
 	});
 }
 
@@ -161,6 +163,7 @@ frontend,
 )(req, res, next);
 			} 
 				res.status(500).send('Cannot find KMFrontend required version.');
+				sentry.error(`Unknown KM App version ${remotesVersions.get(req.vhost[0])} when starting remote`);
 		} else {
 			next();
 		}
@@ -178,6 +181,7 @@ resolve(getState().appPath, 'assets/guestAvatars'),
 				res.send(kmfrontend);
 			} else {
 				res.status(500).send('Cannot find KMFrontend required version.');
+				sentry.error(`Unknown KM App version ${remotesVersions.get(req.vhost[0])} when starting remote`);
 			}
 		} else {
 			res.status(410).send('This remote instance is not available.');

@@ -35,7 +35,7 @@ function editHandler(userFromToken: boolean): RequestHandler {
 			);
 			res.status(200).json(userFromToken ? { code: 'USER_EDITED', data: { token: response.token } } : response);
 		} catch (err) {
-			res.status(500).json(err);
+			res.status(err.code || 500).json(APIMessage(err.message));
 		}
 	};
 }
@@ -57,7 +57,7 @@ export default function userController(router: Router) {
 				});
 				res.status(200).json(info);
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		})
 		.delete(requireAuth, requireValidUser, updateLoginTime, async (req: any, res) => {
@@ -65,7 +65,7 @@ export default function userController(router: Router) {
 				await removeUser(req.authToken.username);
 				res.send(APIMessage('USER_DELETED'));
 			} catch (err) {
-				res.status(500).send(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		})
 		.post(async (req, res) => {
@@ -74,7 +74,7 @@ export default function userController(router: Router) {
 				await createUser(req.body);
 				res.json(APIMessage('USER_CREATED'));
 			} catch (err) {
-				res.status(500).json(err.code);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 	router.route('/users/:user')
@@ -90,7 +90,7 @@ export default function userController(router: Router) {
 				if (!info) res.status(404).end();
 				else res.status(200).json(info);
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		})
 		.patch(uploadMiddleware, requireAuth, requireValidUser, updateLoginTime, editHandler(false));
@@ -100,7 +100,7 @@ export default function userController(router: Router) {
 				const info = await resetPasswordRequest(req.params.user);
 				res.status(200).json(info);
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 	router.route('/users/:user/resetpasswordaction')
@@ -109,7 +109,7 @@ export default function userController(router: Router) {
 				await resetPassword(req.params.user, req.body.requestCode, req.body.newPassword);
 				res.status(200).json(APIMessage('PASSWORD_UPDATED'));
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 	router.route('/myaccount')
@@ -118,7 +118,7 @@ export default function userController(router: Router) {
 				const userData = await findUserByName(req.authToken.username, { public: false, contact: true });
 				res.json(userData);
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		})
 		.delete(requireAuth, requireValidUser, updateLoginTime, async (req: any, res: any) => {
@@ -126,7 +126,7 @@ export default function userController(router: Router) {
 				await removeUser(req.authToken.username);
 				res.status(200).json(APIMessage('USER_DELETED'));
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		})
 		.patch(uploadMiddleware, requireAuth, requireValidUser, updateLoginTime, editHandler(true));
@@ -136,7 +136,7 @@ export default function userController(router: Router) {
 				await refreshAnimeList(req.authToken.username.toLowerCase());
 				res.status(200).json();
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 }

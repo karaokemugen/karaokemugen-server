@@ -6,6 +6,7 @@ import { writeTagFile } from '../lib/dao/tagfile.js';
 import { DBTag } from '../lib/types/database/tag.js';
 import { Tag, TagList, TagParams } from '../lib/types/tag.js';
 import { resolvedPathRepos } from '../lib/utils/config.js';
+import { ErrorKM } from '../lib/utils/error.js';
 import { sanitizeFile } from '../lib/utils/files.js';
 import logger from '../lib/utils/logger.js';
 import sentry from '../utils/sentry.js';
@@ -31,7 +32,7 @@ export async function getTags(params: TagParams) {
 		logger.error('Unable to get tags', {service, obj: err});
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
-		throw err;
+		throw new ErrorKM('GET_TAGS_ERROR');
 	}
 }
 
@@ -45,7 +46,7 @@ export async function getTag(tid: string) {
 		logger.error('Unable to get single tag', {service, obj: err});
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
-		throw err;
+		throw new ErrorKM('GET_TAG_ERROR');
 	}
 }
 
@@ -66,6 +67,6 @@ export async function addTag(tag: Tag, opts = {forceRepo: ''}) {
 		logger.error('Unable to add tag', {service, obj: err});
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
-		throw err;
+		throw new Error('ADD_TAG_ERROR');
 	}
 }

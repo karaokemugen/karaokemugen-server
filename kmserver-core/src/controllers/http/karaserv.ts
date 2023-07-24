@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import {getSettings} from '../../lib/dao/database.js';
+import { APIMessage } from '../../lib/services/frontend.js';
 import { RepositoryManifest } from '../../lib/types/repo.js';
 import {getConfig} from '../../lib/utils/config.js';
 import { getGitDiff, getLatestGitCommit } from '../../services/git.js';
@@ -24,7 +25,7 @@ export default function KSController(router: Router) {
 			try {
 				res.json(await getBaseStats());
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 	router.route('/karas/search')
@@ -45,7 +46,7 @@ export default function KSController(router: Router) {
 				}, req.authToken);
 				res.json(karas);
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 	router.route('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})')
@@ -57,7 +58,7 @@ export default function KSController(router: Router) {
 				}, req?.authToken);
 				res.json(kara);
 			} catch (err) {
-				res.status(err.code || 500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 	// Hardsubs helper route
@@ -75,7 +76,7 @@ export default function KSController(router: Router) {
 				const url = await newKaraIssue(req.params.kid, req.body.type, req.body.comment, req.body.username);
 				res.status(200).json(url);
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 	router.route('/karas/tags/:tid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})')
@@ -85,7 +86,7 @@ export default function KSController(router: Router) {
 				if (tag) res.json(tag);
 				res.status(404);
 			} catch (err) {
-				res.status(err.code || 500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 	router.route('/karas/tags')
@@ -103,7 +104,7 @@ export default function KSController(router: Router) {
 				});
 				res.json(tags);
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 	router.route('/karas/medias')
@@ -113,7 +114,7 @@ export default function KSController(router: Router) {
 				const medias = await getAllMedias();
 				res.json(medias);
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		})
 		.post(async (req, res) => {
@@ -121,7 +122,7 @@ export default function KSController(router: Router) {
 				const medias = await getAllMedias(req.body.collections);
 				res.json(medias);
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 	router.route('/karas/years')
@@ -132,7 +133,7 @@ export default function KSController(router: Router) {
 				});
 				res.json(years);
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 	router.route('/karas/suggest')
@@ -142,10 +143,10 @@ export default function KSController(router: Router) {
 					const url = await postSuggestionToKaraBase(req.body.title, req.body.serie, req.body.type, req.body.link, req.body.username,);
 					res.json(url);
 				} else {
-					res.status(403).json('Gitlab is not enabled');
+					res.status(403).json(APIMessage('GITLAB_DISABLED'));
 				}
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 	router.route('/karas/repository')
@@ -164,7 +165,7 @@ export default function KSController(router: Router) {
 				const diff = await getGitDiff(req.query.commit);
 				res.status(200).type('text/plain').send(diff);
 			} catch (err) {
-				res.status(err?.code || 500).send(err.msg);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 	router.route('/karas/repository/diff/full')
@@ -173,7 +174,7 @@ export default function KSController(router: Router) {
 				const diff = await getGitDiff(req.query.commit, true);
 				res.status(200).json(diff);
 			} catch (err) {
-				res.status(err?.code || 500).send(err.msg);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 }

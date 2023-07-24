@@ -1,5 +1,6 @@
 import { Router } from 'express';
 
+import { APIMessage } from '../../lib/services/frontend.js';
 import { processStatsPayload} from '../../services/stats.js';
 
 export default function statsController(router: Router) {
@@ -8,7 +9,7 @@ export default function statsController(router: Router) {
 			await processStatsPayload(req.body);
 			res.status(200).json('Stats payload accepted');
 		} catch (err) {
-			res.status(500).json(`Error while processing stats payload : ${err}`);
+			res.status(err.code || 500).json(APIMessage(err.message));
 		}
 	});
 	// Played songs are usually sent via instance data in POST /stats but this route is usable to add a single played song, for Live for example
@@ -18,7 +19,7 @@ export default function statsController(router: Router) {
 			// await addPlayed(req.body.seid, req.body.kid, req.body.played_at);
 			res.status(200).json();
 		} catch (err) {
-			res.status(500).json(`Error while retrieving played stats : ${err}`);
+			res.status(err.code || 500).json(APIMessage(err.message));
 		}
 	});
 }
