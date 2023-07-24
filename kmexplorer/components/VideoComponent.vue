@@ -52,8 +52,8 @@
 
 	function nextEvent() {
 		props.context?.close();
-		gain_node.disconnect();
-		source.disconnect();
+		gain_node?.disconnect();
+		source?.disconnect();
 		props.next();
 	}
 
