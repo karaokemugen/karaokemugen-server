@@ -1060,7 +1060,7 @@
 			}
 		};
 	});
-	
+
 	const tagType = computed(() => params?.id && (params?.id as string).substring(36));
 	const onKaraTagUserListView = computed(() => ['types-id', 'search-query', 'user-login', 'users', 'suggest'].includes(name as string));
 	const availableLocales = computed(() => locales.value?.filter((i: LocaleObject) => i.code && i.code !== locale.value));
@@ -1077,7 +1077,12 @@
 			});
 		});
 
-		beforeEach((_to: any, _from: any, next: Function) => {
+		beforeEach((to: any, _from: any, next: Function) => {
+			if (to.params.theater) {
+				document.getElementsByTagName('html')[0].classList.add('theater');
+			} else {
+				document.getElementsByTagName('html')[0].classList.remove('theater');
+			}
 			next();
 			// Close all the menus after a navigation
 			closeAll();
