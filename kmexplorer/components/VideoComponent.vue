@@ -244,7 +244,9 @@
 </script>
 <style>
 .vjs-control-bar {
-	font-size: 15px;
+	@media screen and (min-width: 600px) {
+		font-size: 15px;	
+	}
 
 	.vjs-control {
 		width: 3em;

@@ -85,6 +85,7 @@
 		userActions: {
 			doubleClick: false
 		},
+		responsive: true,
 		sources: [
 			{
 				src: mediaHardsubUrl.value,
