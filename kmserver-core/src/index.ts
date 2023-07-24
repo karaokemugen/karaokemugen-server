@@ -102,7 +102,8 @@ async function main() {
 		asyncCheckOrMkdir(resolve(dataPath, paths.Import)),
 		asyncCheckOrMkdir(resolve(dataPath, paths.Temp)),
 		asyncCheckOrMkdir(resolve(dataPath, paths.Previews)),
-		asyncCheckOrMkdir(resolve(dataPath, paths.Avatars))
+		asyncCheckOrMkdir(resolve(dataPath, paths.Avatars)),
+		asyncCheckOrMkdir(resolve(dataPath, paths.Hardsubs))
 	];
 	for (const repo of conf.System.Repositories) {
 		for (const p of Object.keys(repo.Path)) {
