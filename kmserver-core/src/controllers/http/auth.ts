@@ -1,30 +1,18 @@
 import { Router } from 'express';
 import {sign} from 'jsonwebtoken';
 
+import { APIMessage } from '../../lib/services/frontend.js';
 import { Roles, TokenResponseWithRoles } from '../../lib/types/user.js';
 import {getConfig} from '../../lib/utils/config.js';
-import logger from '../../lib/utils/logger.js';
+import { ErrorKM } from '../../lib/utils/error.js';
 import { refreshAnimeList } from '../../services/animeList.js';
 import {checkPassword, decodeJwtToken, findUserByName, updateUserLastLogin} from '../../services/user.js';
-import sentry from '../../utils/sentry.js';
 import { requireAuth, requireValidUser } from '../middlewares/auth.js';
-
-const loginErr = {
-	code: 'LOG_ERROR',
-	message: 'Incorrect credentials',
-	data: undefined
-};
-
-const loginNoUser = {
-	code: 'LOG_ERROR',
-	message: 'No user provided',
-	data: undefined
-};
 
 async function checkLogin(username: string, password: string): Promise<TokenResponseWithRoles> {
 	const user = await findUserByName(username, {password: true});
-	if (!user) throw false;
-	if (!await checkPassword(user, password)) throw false;
+	if (!user) throw new ErrorKM('LOG_ERROR', 401);
+	if (!await checkPassword(user, password)) throw new ErrorKM('LOG_ERROR', 401);
 	return {
 		token: createJwtToken(username, user.roles, user.password_last_modified_at),
 		username,
@@ -40,15 +28,7 @@ export default function authController(router: Router) {
 			refreshAnimeList(req.body.username.toLowerCase()).catch();
 			res.send(token);
 		} catch (err) {
-			if (err === 'No user provided') {
-				res.status(400).send(loginNoUser);
-			} else if (err !== false) {
-				logger.error(`Failed to login ${req.body.username}`, {service: 'User', obj: err});
-				res.status(500);
-				sentry.error(err);
-			} else {
-				res.status(401).send(loginErr);
-			}
+			res.status(err.code || 500).json(APIMessage(err?.message));
 		}
 	});
 

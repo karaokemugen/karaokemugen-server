@@ -4,6 +4,7 @@ import {basename} from 'path';
 import { getConfig } from '../lib/utils/config.js';
 import { tagTypes } from '../lib/utils/constants.js';
 import { duration } from '../lib/utils/date.js';
+import { ErrorKM } from '../lib/utils/error.js';
 import HTTP from '../lib/utils/http.js';
 import logger from '../lib/utils/logger.js';
 import { EditElement } from '../types/karaImport.js';
@@ -140,15 +141,11 @@ export async function postSuggestionToKaraBase(title: string, serie:string, type
 		desc = desc.replace('$serie', serie);
 		desc = desc.replace('$type', type);
 		desc = desc.replace('$link', link);
-		try {
-			return await gitlabPostNewIssue(titleIssue, desc, conf.Suggestion.Labels);
-		} catch (err) {
-			sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
-			sentry.error(err);
-			logger.error('Call to Gitlab API failed', {service, obj: err});
-		}
+		return await gitlabPostNewIssue(titleIssue, desc, conf.Suggestion.Labels);
 	} catch (err) {
 		logger.error('Unable to post new suggestion to gitlab', {service, obj: err});
-		throw err;
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
+		throw new ErrorKM('POST_SUGGESTION_ERROR');
 	}
 }

@@ -233,10 +233,7 @@
 		"USER_ASCII_CHARACTERS_ONLY": "Apenas caracteres alfanuméricos no seu nome de utilizador (pode mudar o seu apelido mais tarde para o que quiser).",
 		"USER_CREATED": "Utilizador criado com sucesso",
 		"GENERATED_KARA": "Karaokê enviado com sucesso.",
-		"EDITED_KARA": "Modificação enviada com sucesso.",
-		"CANNOT_EDIT_KARA": "Não é possível enviar a modificação.",
-		"CANNOT_GENERATE_KARA": "Não é possível enviar o karaokê.",
-		"SUBFILE_FORMAT_UNKOWN": "Formato de subfile desconhecido"
+		"EDITED_KARA": "Modificação enviada com sucesso."
 	},
 	"roles": {
 		"donator": "Doador",

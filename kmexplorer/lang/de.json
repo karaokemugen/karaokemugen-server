@@ -472,7 +472,6 @@
 		"anime_list": "Meine Anime"
 	},
 	"toast": {
-		"SUBFILE_FORMAT_UNKOWN": "Unbekanntes Untertiteldateiformat",
 		"GENERATED_KARA": "Karaoke erfolgreich eingereicht.",
 		"FILE_UPLOADED": "Datei wurde hochgeladen.",
 		"USER_EDITED": "Benutzer erfolgreich bearbeitet",
@@ -480,8 +479,6 @@
 		"LOG_ERROR": "Falsche Anmeldeinformationen.",
 		"USER_CREATED": "Benutzer erfolgreich angelegt",
 		"EDITED_KARA": "Die Änderung wurde erfolgreich übermittelt.",
-		"CANNOT_GENERATE_KARA": "Karaoke konnte nicht eingereicht werden.",
-		"CANNOT_EDIT_KARA": "Änderung konnte nicht gesendet werden.",
 		"TAG_CREATED": "Tag erfolgreich erstellt",
 		"USER_DELETED": "Benutzer erfolgreich gelöscht"
 	},

@@ -3,9 +3,10 @@ import {promises as fs} from 'fs';
 import {resolve} from 'path';
 
 import { getConfig } from '../lib/utils/config.js';
+import { ErrorKM } from '../lib/utils/error.js';
 import logger from '../lib/utils/logger.js';
 import { computeFileChanges } from '../lib/utils/patch.js';
-import Sentry from '../utils/sentry.js';
+import sentry from '../utils/sentry.js';
 import { getState } from '../utils/state.js';
 
 const service = 'Git';
@@ -46,8 +47,8 @@ export async function getLatestGitCommit(): Promise<string> {
 		return commit.replace('\n', '');
 	} catch (err) {
 		logger.error('Unable to get latest commit', {service, obj: err});
-		Sentry.error(err);
-		throw err;
+		sentry.error(err);
+		throw new ErrorKM('LATEST_COMMIT_ERROR');
 	}
 }
 
@@ -57,14 +58,14 @@ export async function updateGit() {
 		await gitPull(resolve(getState().dataPath, repo.BaseDir));
 	} catch (err) {
 		logger.error('Unable to pull git repo', {service, obj: err});
-		Sentry.error(err);
+		sentry.error(err);
 		throw err;
 	}
 }
 
 export async function getGitDiff(commit: string, fullFiles = false): Promise<string | object> {
 	try {
-		if (!commit.match(/[0-9a-f]{40}/)) throw {code: 400, msg: 'Not a git commit'};
+		if (!commit.match(/[0-9a-f]{40}/)) throw {code: 400, message: 'Not a git commit'};
 		const diff = await gitDiff(commit, 'HEAD', resolve(getState().dataPath, getConfig().System.Repositories[0].BaseDir));
 		if (!fullFiles) return diff;
 		// We've been asked for the full files. The fun begins.
@@ -78,8 +79,8 @@ export async function getGitDiff(commit: string, fullFiles = false): Promise<str
 		return changes;
 	} catch (err) {
 		logger.error(`Unable to get git diff for commit ${commit}`, {service});
-		Sentry.error(err);
-		throw err;
+		sentry.error(err);
+		throw new ErrorKM('GIT_DIFF_ERROR');
 	}
 }
 

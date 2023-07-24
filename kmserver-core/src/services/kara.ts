@@ -17,6 +17,7 @@ import { ASSToLyrics } from '../lib/utils/ass.js';
 import { getConfig, resolvedPathRepos } from '../lib/utils/config.js';
 import {uuidRegexp} from '../lib/utils/constants.js';
 import { downloadFile } from '../lib/utils/downloader.js';
+import { ErrorKM } from '../lib/utils/error.js';
 import { resolveFileInDirs } from '../lib/utils/files.js';
 import logger from '../lib/utils/logger.js';
 import { createImagePreviews } from '../lib/utils/previews.js';
@@ -37,8 +38,9 @@ export async function getBaseStats() {
 	try {
 		return await selectBaseStats();
 	} catch (err) {
+		logger.error('Error getting base stats', { service, obj: err });
 		sentry.error(err);
-		throw err;
+		throw new ErrorKM('GET_BASESTATS_ERROR');
 	}
 }
 
@@ -46,8 +48,9 @@ export async function getAllYears(params: {collections: string[]}) {
 	try {
 		return await selectAllYears(params.collections);
 	} catch (err) {
+		logger.error('Error getting years', { service, obj: err });
 		sentry.error(err);
-		throw err;
+		throw new ErrorKM('GET_YEARS_ERROR');
 	}
 }
 
@@ -170,6 +173,7 @@ export async function computeSubchecksums() {
 }
 
 async function checksumASS(lyrics: any[]): Promise<string[]> {
+	// We receive a map so the second item is the DBKara we need.
 	const subfile = await resolveFileInDirs(lyrics[1].subfile, resolvedPathRepos('Lyrics', lyrics[1].repository));
 	let subdata = await fs.readFile(subfile[0], 'utf-8');
 	subdata = subdata.replace(/\r/g, '');
@@ -188,7 +192,7 @@ export async function getKara(params: KaraParams, token?: JWTTokenWithRoles) {
 			username: token?.username.toLowerCase(),
 			ignoreCollections: true
 		}, true);
-		if (!karas[0]) throw {code: 404};
+		if (!karas[0]) throw new ErrorKM('NO_KARA_FOUND', 404, false);
 		const kara = karas[0];
 		kara.lyrics = null;
 		if (kara.subfile) {
@@ -203,12 +207,9 @@ export async function getKara(params: KaraParams, token?: JWTTokenWithRoles) {
 		}
 		return kara;
 	} catch (err) {
-		// No use to call Sentry if error is one of our error codes.
-		if (!err.code) {
-			sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
-			sentry.error(err);
-		}
-		throw err;
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err);
+		throw err instanceof ErrorKM ? err : new ErrorKM('GET_KARA_ERROR');
 	}
 }
 
@@ -219,55 +220,54 @@ export async function getAllKaras(params: KaraParams, token?: JWTTokenWithRoles,
 		if (params.favorites) {
 			const user = await findUserByName(params.favorites);
 			if (user) {
-				if (!user.flag_displayfavorites && user.login !== token?.username) throw {code: 403};
+				if (!user.flag_displayfavorites && user.login !== token?.username) throw new ErrorKM('GET_FAVORITES_FROM_USER_FORBIDDEN_ERROR', 403, false);
 			} else {
-				throw {code: 404};
+				throw new ErrorKM('GET_FAVORITES_FROM_USER_NOT_FOUND_ERROR', 404, false);
 			}
 		}
 		if (params.forceCollections) {
 			for (const collection of params.forceCollections) {
-				if (!uuidRegexp.test(collection)) throw {code: 400};
+				if (!uuidRegexp.test(collection)) throw new ErrorKM('GET_KARA_COLLECTION_FORMAT_ERROR', 400, false);
 			}
 		}
 		const pl = await selectAllKaras(params, includeStaging);
 		return formatKaraList(pl, +params.from, pl[0]?.count || 0);
 	} catch (err) {
-		// Skip Sentry if the error has a code.
-		if (err?.code) throw err;
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		logger.error('Getting karas failed', {service, obj: err});
 		sentry.error(err);
-		throw err;
+		throw err instanceof ErrorKM ? err : new ErrorKM('GET_KARAS_ERROR');
 	}
 }
 
 export async function newKaraIssue(kid: string, type: 'Media' | 'Metadata' | 'Lyrics', comment: string, username: string) {
-	const karas = await selectAllKaras({
-		q: `k:${kid}`,
-		ignoreCollections: true
-	}, true);
-	const kara = karas[0];
-	logger.debug('Kara:', {service: 'GitLab', obj: kara});
-	const serieOrSingergroupOrSinger =
-		(kara.series.length > 0 && kara.series[0].name) ||
-		(kara.singergroups.length > 0 && kara.singergroups[0].name) ||
-		(kara.singers.length > 0 && kara.singers[0].name) || '';
-	const langs = (kara.langs.length > 0 && kara.langs[0].name.toUpperCase()) || '';
-	const songtype = (kara.songtypes.length > 0 && kara.songtypes[0].name) || '';
-	const karaName = `${langs} - ${serieOrSingergroupOrSinger} - ${songtype}${kara.songorder || ''} - ${kara.titles[kara.titles_default_language]}`;
-	const conf = getConfig();
-	const issueTemplate = conf.Gitlab.IssueTemplate.KaraProblem[type];
-	let title = issueTemplate.Title || '$kara';
-	title = title.replace('$kara', karaName);
-	let desc = issueTemplate.Description || '';
-	desc = desc.replace('$username', username)
-		.replace('$comment', comment);
 	try {
+		const karas = await selectAllKaras({
+			q: `k:${kid}`,
+			ignoreCollections: true
+		}, true);
+		const kara = karas[0];
+		if (!kara) throw new ErrorKM('KARA_UNKNOWN', 404, false);
+		logger.debug('Kara:', {service: 'GitLab', obj: kara});
+		const serieOrSingergroupOrSinger =
+			(kara.series.length > 0 && kara.series[0].name) ||
+			(kara.singergroups.length > 0 && kara.singergroups[0].name) ||
+			(kara.singers.length > 0 && kara.singers[0].name) || '';
+		const langs = (kara.langs.length > 0 && kara.langs[0].name.toUpperCase()) || '';
+		const songtype = (kara.songtypes.length > 0 && kara.songtypes[0].name) || '';
+		const karaName = `${langs} - ${serieOrSingergroupOrSinger} - ${songtype}${kara.songorder || ''} - ${kara.titles[kara.titles_default_language]}`;
+		const conf = getConfig();
+		const issueTemplate = conf.Gitlab.IssueTemplate.KaraProblem[type];
+		let title = issueTemplate.Title || '$kara';
+		title = title.replace('$kara', karaName);
+		let desc = issueTemplate.Description || '';
+		desc = desc.replace('$username', username)
+			.replace('$comment', comment);
 		if (conf.Gitlab.Enabled) return await gitlabPostNewIssue(title, desc, issueTemplate.Labels);
 	} catch (err) {
-		logger.error('Call to Gitlab API failed', {service: 'GitLab', obj: err});
+		logger.error(`Unable to create issue for song ${kid}`, {service: 'GitLab', obj: err});
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err, 'warning');
-		throw err;
+		throw err instanceof ErrorKM ? err : new ErrorKM('NEW_KARA_ISSUE_ERROR');
 	}
 }

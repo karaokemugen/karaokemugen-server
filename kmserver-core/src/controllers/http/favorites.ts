@@ -1,5 +1,6 @@
 import { Router } from 'express';
 
+import { APIMessage } from '../../lib/services/frontend.js';
 import { addFavorite, getFavorites, removeFavorite } from '../../services/favorites.js';
 import {requireAuth, requireValidUser, updateLoginTime} from '../middlewares/auth.js';
 
@@ -10,7 +11,7 @@ export default function favoritesController(router: Router) {
 				await addFavorite(req.authToken, req.params.kid);
 				res.status(200).json();
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		})
 		.delete(requireAuth, requireValidUser, updateLoginTime, async (req: any, res) => {
@@ -18,7 +19,7 @@ export default function favoritesController(router: Router) {
 				await removeFavorite(req.authToken, req.params.kid);
 				res.status(200).json();
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 	router.route('/favorites')
@@ -27,7 +28,7 @@ export default function favoritesController(router: Router) {
 				const favorites = await getFavorites(req.authToken);
 				res.status(200).json(favorites);
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 }

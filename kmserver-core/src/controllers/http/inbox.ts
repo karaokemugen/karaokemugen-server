@@ -1,5 +1,6 @@
 import { Router } from 'express';
 
+import { APIMessage } from '../../lib/services/frontend.js';
 import { getInbox, getKaraInbox, markKaraInboxAsDownloaded, removeKaraFromInbox } from '../../services/inbox.js';
 import {requireAuth, requireMaintainer, requireValidUser, updateLoginTime} from '../middlewares/auth.js';
 
@@ -10,7 +11,7 @@ export default function inboxController(router: Router) {
 				const ret = await getKaraInbox(req.params.inid);
 				res.status(200).json(ret);
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		})
 		.delete(requireAuth, requireValidUser, requireMaintainer, updateLoginTime, async (req: any, res) => {
@@ -18,7 +19,7 @@ export default function inboxController(router: Router) {
 				await removeKaraFromInbox(req.params.inid);
 				res.status(200).json();
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 	router.route('/inbox/:inid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/downloaded')
@@ -27,7 +28,7 @@ export default function inboxController(router: Router) {
 				await markKaraInboxAsDownloaded(req.params.inid, req.authToken.username);
 				res.status(200).json();
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 	router.route('/inbox')
@@ -36,7 +37,7 @@ export default function inboxController(router: Router) {
 				const inbox = await getInbox();
 				res.status(200).json(inbox);
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 }

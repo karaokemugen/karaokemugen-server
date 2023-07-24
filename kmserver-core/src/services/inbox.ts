@@ -13,11 +13,12 @@ import { Inbox } from '../lib/types/inbox.js';
 import { KaraFileV4 } from '../lib/types/kara.js';
 import { TagFile } from '../lib/types/tag.js';
 import { getConfig, resolvedPathRepos } from '../lib/utils/config.js';
+import { ErrorKM } from '../lib/utils/error.js';
 import { fileExists } from '../lib/utils/files.js';
 import { closeIssue } from '../lib/utils/gitlab.js';
 import logger from '../lib/utils/logger.js';
 import { findFileByUUID } from '../utils/files.js';
-import Sentry from '../utils/sentry.js';
+import sentry from '../utils/sentry.js';
 import { getKara } from './kara.js';
 import { getTag, getTags } from './tag.js';
 
@@ -64,8 +65,8 @@ export async function getKaraInbox(inid: string): Promise<Inbox> {
 		};
 	} catch (err) {
 		logger.error(`Failed to get inbox item ${inid}`, {service, obj: err});
-		Sentry.error(err);
-		throw err;
+		sentry.error(err);
+		throw new ErrorKM('GET_INBOX_ERROR');
 	}
 }
 
@@ -76,12 +77,12 @@ export function getInbox() {
 export async function markKaraInboxAsDownloaded(inid: string, username: string) {
 	try {
 		const inbox = (await selectInbox(inid))[0];
-		if (!inbox) throw {code: 404};
+		if (!inbox) throw new ErrorKM('INBOX_UNKNOWN_ERROR', 404, false);
 		return await updateInboxDownloaded(username, inid);
 	} catch (err) {
 		logger.error(`Failed to mark inbox item ${inid} as downloaded by ${username}`, {service, obj: err});
-		Sentry.error(err);
-		throw err;
+		sentry.error(err);
+		throw err instanceof ErrorKM ? err : new ErrorKM('MARK_INBOX_DOWNLOADED_ERROR');
 	}
 }
 
@@ -98,18 +99,18 @@ export async function addKaraInInbox(kara: KaraFileV4, contact: string, issue?: 
 		});
 	} catch (err) {
 		logger.error('Unable to create kara in inbox', {service, obj: err});
-		Sentry.error(err);
+		sentry.error(err);
 	}
 }
 
 export async function removeKaraFromInbox(inid: string) {
 	try {
 		const inbox = (await selectInbox(inid))[0];
-		if (!inbox) throw {code: 404};
+		if (!inbox) throw new ErrorKM('INBOX_UNKNOWN_ERROR', 404, false);
 		// Kara might not exist anymore if something went wrong.
 		try {
 			const kara = await getKara({
-				q: `k:${inbox.edited_kid ? inbox.edited_kid : inbox.kid}!r:Staging`
+				q: `k:${inbox.edited_kid || inbox.kid}!r:Staging`
 			});
 			// If kara is not found, it means the song has already been added to the database by kara.moe
 			if (kara) {
@@ -118,6 +119,7 @@ export async function removeKaraFromInbox(inid: string) {
 				refreshKarasAfterDBChange('DELETE', [karaData.data]);
 			}
 		} catch (err) {
+			// Non-fatal.
 			logger.info(`Kara ${inbox.name} is not found, it means the song has already been added to the database by kara.moe`, { service });
 		}
 		if (inbox.karafile) {
@@ -131,14 +133,15 @@ export async function removeKaraFromInbox(inid: string) {
 					fs.unlink(mediaPath)
 				]);
 			} catch (err) {
+				// Non-fatal, files might not exist anymore.
 				logger.warn(`Unable to remove some files after inbox deletion for song ${inbox.name}`, { service });
 			}
 		}
 		await deleteInbox(inid);
 	} catch (err) {
 		logger.error(`Failed to delete inbox item ${inid}`, {service, obj: err});
-		Sentry.error(err);
-		throw err;
+		sentry.error(err);
+		throw new ErrorKM('DELETE_INBOX_ERROR');
 	}
 }
 

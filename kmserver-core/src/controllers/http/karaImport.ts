@@ -2,7 +2,7 @@ import { Router } from 'express';
 import multer from 'multer';
 import {resolve} from 'path';
 
-import { APIMessage, errMessage } from '../../lib/services/frontend.js';
+import { APIMessage } from '../../lib/services/frontend.js';
 import { processUploadedMedia } from '../../lib/services/karaCreation.js';
 import {getConfig} from '../../lib/utils/config.js';
 import {createKara, editKara} from '../../services/karaImport.js';
@@ -18,9 +18,7 @@ export default function KIController(router: Router) {
 			const url = await createKara(req.body.kara, req.body.contact);
 			res.status(200).json(APIMessage('GENERATED_KARA', url || ''));
 		} catch (err) {
-			const code = 'CANNOT_GENERATE_KARA';
-			errMessage(code, err);
-			res.status((typeof err?.code === 'number' && err?.code) || 500).json(APIMessage(err?.msg || code));
+			res.status(err.code || 500).json(APIMessage(err.message));
 		}
 	});
 	router.put('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})', async (req: any, res: any) => {
@@ -28,9 +26,7 @@ export default function KIController(router: Router) {
 			const url = await editKara(req.body, req.body.contact);
 			res.status(200).json(APIMessage('EDITED_KARA', url || ''));
 		} catch (err) {
-			const code = 'CANNOT_EDIT_KARA';
-			errMessage(code, err);
-			res.status((typeof err?.code === 'number' && err?.code) || 500).json(APIMessage(err?.msg || code));
+			res.status(err.code || 500).json(APIMessage(err.message));
 		}
 	});
 	router.post('/karas/importMedia', upload.single('file'), async (req, res) => {
@@ -42,9 +38,7 @@ export default function KIController(router: Router) {
 				res.status(400).json(APIMessage('MISSING_FILE'));
 			}
 		} catch (err) {
-			const code = 'CANNOT_UPLOAD_MEDIA';
-			errMessage(code, err);
-			res.status(err?.code || 500).json(APIMessage(err?.msg || code));
+			res.status(err.code || 500).json(APIMessage(err.message));
 		}
 	});
 	router.post('/karas/importSub', upload.single('file'), async (req, res) => {
@@ -55,9 +49,7 @@ export default function KIController(router: Router) {
 				res.status(400).json(APIMessage('MISSING_FILE'));
 			}
 		} catch (err) {
-			const code = 'CANNOT_UPLOAD_SUBTITLES';
-			errMessage(code, err);
-			res.status(err?.code || 500).json(APIMessage(err?.msg || code));
+			res.status(err.code || 500).json(APIMessage(err.message));
 		}
 	});
 	router.post('/tags/createStaging', async (req, res) => {
@@ -65,9 +57,7 @@ export default function KIController(router: Router) {
 			const tag = await addTag(req.body, {forceRepo: 'Staging'});
 			res.json({ code: 'TAG_CREATED', tag });
 		} catch (err) {
-			const code = 'CANNOT_CREATE_TAG';
-			errMessage(code, err);
-			res.status(err?.code || 500).json(APIMessage(err?.msg || code));
+			res.status(err.code || 500).json(APIMessage(err.message));
 		}
 	});
 }

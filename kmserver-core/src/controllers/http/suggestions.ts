@@ -1,5 +1,6 @@
 import { Router } from 'express';
 
+import { APIMessage } from '../../lib/services/frontend.js';
 import { getSuggestions, getSuggestionsLanguages, removeSuggestion, updateLike } from '../../services/suggestions.js';
 import {requireAdmin, requireAuth, requireValidUser} from '../middlewares/auth.js';
 
@@ -10,7 +11,7 @@ export default function suggestionsController(router: Router) {
 				await updateLike(req.params.id);
 				res.status(200).json();
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		})
 		.delete(requireAuth, requireValidUser, requireAdmin, async (req: any, res) => {
@@ -18,7 +19,7 @@ export default function suggestionsController(router: Router) {
 				await removeSuggestion(req.params.id);
 				res.status(200).json();
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 	router.route('/suggestions/random')
@@ -30,7 +31,7 @@ export default function suggestionsController(router: Router) {
 				});
 				res.status(200).json(suggestions);
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 	router.route('/suggestions')
@@ -45,7 +46,7 @@ export default function suggestionsController(router: Router) {
 				});
 				res.status(200).json(suggestions);
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 	router.route('/suggestions/languages')
@@ -54,7 +55,7 @@ export default function suggestionsController(router: Router) {
 				const suggestions = await getSuggestionsLanguages();
 				res.status(200).json(suggestions);
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 }

@@ -19,6 +19,7 @@ import {
 import { refreshKarasAfterDBChange, updateTags } from '../lib/services/karaManagement.js';
 import { EditedKara, KaraFileV4 } from '../lib/types/kara.js';
 import { getConfig, resolvedPath, resolvedPathRepos } from '../lib/utils/config.js';
+import { ErrorKM } from '../lib/utils/error.js';
 import { replaceExt, smartMove } from '../lib/utils/files.js';
 import { EditElement } from '../types/karaImport.js';
 import sentry from '../utils/sentry.js';
@@ -37,11 +38,11 @@ async function preflight(kara: KaraFileV4): Promise<KaraFileV4> {
 	// No sentry triggered if validation fails
 	try {
 		verifyKaraData(kara);
+		return kara;
 	} catch (err) {
-		throw {code: 400, msg: err};
+		logger.error('Bad import data', { service, obj: {err, kara}});
+		throw new ErrorKM('BAD_IMPORT_DATA_ERROR', 400, false);
 	}
-
-	return kara;
 }
 
 // Common work between edits and creations
@@ -104,43 +105,52 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		return issueURL;
 	} catch (err) {
 		logger.error('Error importing kara', {service, obj: err});
-		if (!err.msg) {
-			sentry.addErrorInfo('Kara', JSON.stringify(kara, null, 2));
-			sentry.error(err);
-		}
+		sentry.addErrorInfo('Kara', JSON.stringify(kara, null, 2));
 		throw err;
 	}
 }
 
 export async function editKara(edit: EditedKara, contact: string): Promise<string> {
-	const conf = getConfig();
-	const onlineRepo = conf.System.Repositories.find(r => r.Name !== 'Staging').Name;
-	const edited_kid = edit.kara.data.kid;
-	const kara = await preflight(edit.kara);
-	// Before the heavy lifting (tm), we should make copies of media and/or lyrics if they were not edited.
-	if (!edit.modifiedLyrics && kara.medias[0].lyrics.length > 0) {
-		await copy(
-			resolve(resolvedPathRepos('Lyrics', onlineRepo)[0], kara.medias[0].lyrics[0].filename),
-			resolve(resolvedPath('Temp'), kara.medias[0].lyrics[0].filename),
-			{ overwrite: true }
-		);
+	try {
+		const conf = getConfig();
+		const onlineRepo = conf.System.Repositories.find(r => r.Name !== 'Staging').Name;
+		const edited_kid = edit.kara.data.kid;
+		const kara = await preflight(edit.kara);
+		// Before the heavy lifting (tm), we should make copies of media and/or lyrics if they were not edited.
+		if (!edit.modifiedLyrics && kara.medias[0].lyrics.length > 0) {
+			await copy(
+				resolve(resolvedPathRepos('Lyrics', onlineRepo)[0], kara.medias[0].lyrics[0].filename),
+				resolve(resolvedPath('Temp'), kara.medias[0].lyrics[0].filename),
+				{ overwrite: true }
+			);
+		}
+		if (!edit.modifiedMedia) {
+			await copy(
+				resolve(resolvedPathRepos('Medias', onlineRepo)[0], kara.medias[0].filename),
+				resolve(resolvedPath('Temp'), kara.medias[0].filename),
+				{ overwrite: true }
+			);
+		}
+		// And now for the fun part
+		return await heavyLifting(kara, contact, {
+			kid: edited_kid,
+			modifiedLyrics: edit.modifiedLyrics,
+			modifiedMedia: edit.modifiedMedia
+		});
+	} catch (err) {
+		logger.error('Error editing kara', { service, obj: err });
+		sentry.error(err);
+		throw err instanceof ErrorKM ? err : new ErrorKM('EDIT_KARA_ERROR');
 	}
-	if (!edit.modifiedMedia) {
-		await copy(
-			resolve(resolvedPathRepos('Medias', onlineRepo)[0], kara.medias[0].filename),
-			resolve(resolvedPath('Temp'), kara.medias[0].filename),
-			{ overwrite: true }
-		);
-	}
-	// And now for the fun part
-	return heavyLifting(kara, contact, {
-		kid: edited_kid,
-		modifiedLyrics: edit.modifiedLyrics,
-		modifiedMedia: edit.modifiedMedia
-	});
 }
 
 export async function createKara(kara: KaraFileV4, contact: string): Promise<string> {
-	kara = await preflight(kara);
-	return heavyLifting(kara, contact);
+	try {
+		kara = await preflight(kara);
+		return await heavyLifting(kara, contact);
+	} catch (err) {
+		logger.error('Error editing kara', { service, obj: err });
+		sentry.error(err);
+		throw err instanceof ErrorKM ? err : new ErrorKM('IMPORT_KARA_ERROR');
+	}
 }

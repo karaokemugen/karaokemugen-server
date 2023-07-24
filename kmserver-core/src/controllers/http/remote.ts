@@ -1,5 +1,6 @@
 import { Router } from 'express';
 
+import { APIMessage } from '../../lib/services/frontend.js';
 import { getTokens, promoteToken, removeToken } from '../../services/remote.js';
 import {requireAdmin, requireAuth, requireValidUser, updateLoginTime} from '../middlewares/auth.js';
 
@@ -10,7 +11,7 @@ export default function remoteController(router: Router) {
 				const ret = await getTokens();
 				res.status(200).json(ret);
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 	router.route('/remote/:token')
@@ -19,7 +20,7 @@ export default function remoteController(router: Router) {
 				await removeToken(req.params.token);
 				res.status(200).json();
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 	router.route('/remote/promote')
@@ -28,7 +29,7 @@ export default function remoteController(router: Router) {
 				await promoteToken(req.body.token, req.body.code);
 				res.status(200).json();
 			} catch (err) {
-				res.status(500).json(err);
+				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
 }
