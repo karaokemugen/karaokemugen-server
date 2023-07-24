@@ -24,6 +24,15 @@
 					</picture>
 					{{ explorerHost }}
 				</nuxt-link>
+				<div
+					class="navbar-item is-hidden-desktop"
+					@click.prevent="openRandomKara"
+				>
+					<font-awesome-icon
+						:icon="['fas', 'dice']"
+						:fixed-width="true"
+					/>
+				</div>
 				<div class="navbar-item has-dropdown is-hidden-desktop">
 					<nuxt-link
 						class="navbar-link"

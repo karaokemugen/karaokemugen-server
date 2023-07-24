@@ -13,16 +13,6 @@
 				<search-edit />
 				<div class="field is-expanded">
 					<collections-picker :label="$t('search.types.karaokes')" />
-					<nuxt-link
-						class="launchDice button"
-						@click.prevent="openRandomKara"
-					>
-						<font-awesome-icon
-							:icon="['fas', 'dice']"
-							:fixed-width="true"
-						/>
-						{{ $t('menu.random') }}
-					</nuxt-link>
 				</div>
 			</div>
 			<kara-list
@@ -140,19 +130,6 @@
 		}
 		// Load the first page
 		await resetList(true);
-	}
-
-	async function openRandomKara() {
-		const res = await useCustomFetch<KaraListType>('/api/karas/search', {
-			params: {
-				random: 1,
-				safeOnly: true,
-				collections: enabledCollections.value.join(',')
-			}
-		});
-		const kid = res.content[0].kid;
-		const slugTitle = slug(res.content[0].titles[res.content[0].titles_default_language || 'eng']);
-		push(`/kara/${slugTitle}/${kid}`);
 	}
 
 	async function loadNextPage(force = false) {
