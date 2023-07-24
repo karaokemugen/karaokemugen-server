@@ -10,7 +10,7 @@
 					:filter="false"
 					:results="false"
 				/>
-				<search-edit />
+				<search-bar-mobile />
 				<div class="field is-expanded">
 					<collections-picker :label="$t('search.types.karaokes')" />
 				</div>
@@ -28,7 +28,6 @@
 <script setup lang="ts">
 	import { KaraList as KaraListType, KaraParams, OrderParam } from '%/lib/types/kara';
 	import { storeToRefs } from 'pinia';
-	import slug from 'slug';
 	import { DBTag } from '~/../kmserver-core/src/lib/types/database/tag';
 	import { tagRegex, tagTypes, tagTypesMap } from '~/assets/constants';
 	import { useLocalStorageStore } from '~/store/localStorage';

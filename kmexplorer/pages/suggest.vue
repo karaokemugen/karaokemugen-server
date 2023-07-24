@@ -7,7 +7,7 @@
 						:filter="false"
 						:results="false"
 					/>
-					<search-edit />
+					<search-bar-mobile />
 					<div class="field is-expanded">
 						<languages-picker :label="$t('search.types.suggestions')" />
 					</div>

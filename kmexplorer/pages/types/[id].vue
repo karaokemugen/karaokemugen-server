@@ -7,7 +7,7 @@
 					:filter="false"
 					:results="false"
 				/>
-				<search-edit />
+				<search-bar-mobile />
 			</div>
 
 			<div
