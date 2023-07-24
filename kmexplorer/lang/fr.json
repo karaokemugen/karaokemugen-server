@@ -544,6 +544,8 @@
 		"USER_CREATED": "Utilisateur créé avec succès",
 		"GENERATED_KARA": "Karaoké envoyé avec succès.",
 		"EDITED_KARA": "Modification envoyée avec succès.",
+		"IMPORT_KARA_ERROR": "Impossible d'envoyer le karaoké.",
+		"EDIT_KARA_ERROR": "Impossible d'envoyer la modification.",
 		"FILE_UPLOADED": "Fichier mis en ligne.",
 		"USER_EDITED": "Utilisateur édité avec succès",
 		"TAG_CREATED": "Tag créé avec succès",
