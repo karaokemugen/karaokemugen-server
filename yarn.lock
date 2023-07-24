@@ -4457,15 +4457,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eiows@npm:^6.6.2":
-  version: 6.6.2
-  resolution: "eiows@npm:6.6.2"
-  dependencies:
-    node-gyp: latest
-  checksum: 477350099d5d493e3f3b720d6f240ea8f92698afa834038e1a1ef602fa626fdda49acf9426a9308f567ccdaf7e43b85a3500a6639cff1afb736a9eeee3b5af69
-  languageName: node
-  linkType: hard
-
 "electron-to-chromium@npm:^1.4.431":
   version: 1.4.468
   resolution: "electron-to-chromium@npm:1.4.468"
@@ -7173,7 +7164,6 @@ __metadata:
     dayjs: ^1.11.9
     detect-port: ^1.5.1
     dotenv: ^16.3.1
-    eiows: ^6.6.2
     esbuild: ^0.18.16
     eslint: ^8.45.0
     eslint-config-airbnb: ^19.0.4

@@ -9,7 +9,7 @@
   "private": true,
   "scripts": {
     "prestart": "node ../util/runMigrations.mjs",
-    "start": "cross-env NODE_ENV=production EIO_WS_ENGINE=eiows node dist/index.js",
+    "start": "cross-env NODE_ENV=production node dist/index.js",
     "watch": "yarn prestart && yarn build && cross-env NODE_ENV=development node dist/index.js",
     "generate": "node dist/index.js --generate",
     "build": "tsc && node esbuild.js",
@@ -69,7 +69,6 @@
     "dayjs": "^1.11.9",
     "detect-port": "^1.5.1",
     "dotenv": "^16.3.1",
-    "eiows": "^6.6.2",
     "execa": "^7.1.1",
     "express": "^4.18.2",
     "express-http-proxy": "^1.6.3",
