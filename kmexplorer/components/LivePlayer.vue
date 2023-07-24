@@ -129,6 +129,7 @@
 		const res = await useCustomFetch<KaraListType>('/api/karas/search', {
 			params: {
 				random: 1,
+				safeOnly: true,
 				collections: enabledCollections.value.join(',')
 			}
 		});

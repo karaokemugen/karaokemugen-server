@@ -229,19 +229,7 @@ export async function getAllKaras(params: KaraParams, token?: JWTTokenWithRoles,
 				if (!uuidRegexp.test(collection)) throw {code: 400};
 			}
 		}
-		const pl = await selectAllKaras({
-			filter: params.filter,
-			from: +params.from,
-			size: +params.size,
-			order: params.order,
-			q: params.q || '',
-			username: token?.username,
-			favorites: params.favorites,
-			random: params.random,
-			ignoreCollections: params.ignoreCollections,
-			userAnimeList: params.userAnimeList,
-			forceCollections: params.forceCollections || []
-		}, includeStaging);
+		const pl = await selectAllKaras(params, includeStaging);
 		return formatKaraList(pl, +params.from, pl[0]?.count || 0);
 	} catch (err) {
 		// Skip Sentry if the error has a code.

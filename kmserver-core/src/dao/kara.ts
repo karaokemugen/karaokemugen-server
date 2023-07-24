@@ -49,7 +49,8 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 	let selectClause = '';
 	let joinClause = '';
 	let groupClause = '';
-	let whereClauses = '';
+	const fromClauses = [];
+	const whereClauses = [];
 	const withCTEs = ['blank AS (SELECT true)'];
 	if (params.username) {
 		selectClause = `
@@ -65,19 +66,24 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 	if (params.favorites) {
 		joinClause += ' LEFT JOIN users_favorites AS fv ON fv.fk_kid = ak.pk_kid';
 		yesqlPayload.params.username_favs = params.favorites;
-		whereClauses = 'AND fv.fk_login = :username_favs';
+		whereClauses.push('AND fv.fk_login = :username_favs');
+	}
+	if (params.safeOnly) {
+		withCTEs.push(`warning_tags AS (SELECT array_agg(pk_tid || '~${tagTypes.warnings}') tid FROM tag t WHERE t.types @> ARRAY[${tagTypes.warnings}])`);
+		fromClauses.push('warning_tags wt');
+		whereClauses.push('AND NOT wt.tid && ak.tid');
 	}
 	if (params.userAnimeList) {
 		withCTEs.push(
 			'anime_list_infos AS (SELECT anime_list_ids, anime_list_to_fetch FROM users where users.pk_login = :username_anime_list)'
 		);
-		whereClauses += ` AND (
+		whereClauses.push(` AND (
 			(SELECT anime_list_to_fetch FROM anime_list_infos) = 'myanimelist' AND myanimelist_ids::int[] && (SELECT anime_list_ids FROM anime_list_infos)
 		OR (
 			SELECT anime_list_to_fetch FROM anime_list_infos) = 'anilist' AND anilist_ids::int[] && (SELECT anime_list_ids FROM anime_list_infos)
 		OR (
 			SELECT anime_list_to_fetch FROM anime_list_infos) = 'kitsu' AND kitsu_ids::int[] && (SELECT anime_list_ids FROM anime_list_infos)
-		)`;
+		)`);
 		yesqlPayload.params.username_anime_list = params.userAnimeList;
 	}
 	if (params.order === 'recent') orderClauses = 'created_at DESC, ';
@@ -124,13 +130,15 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 			if (collection) collectionClauses.push(`'${collection}~${tagTypes.collections}' = ANY(ak.tid)`);
 		}
 	}
+	
+	fromClauses.push('all_karas AS ak');
 	let res: QueryResult<any>;
 	if (
 		yesqlPayload.sql.length === 0 &&
 		selectClause === '' &&
 		joinClause === '' &&
 		groupClause === '' &&
-		whereClauses === '' &&
+		whereClauses.length === 0 &&
 		yesqlPayload.additionalFrom.length === 0
 	) {
 		const query = sql.getAllKarasMicro(
@@ -166,6 +174,7 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 			joinClause,
 			groupClause,
 			whereClauses,
+			fromClauses,
 			yesqlPayload.additionalFrom,
 			includeStaging,
 			collectionClauses,
@@ -181,6 +190,7 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 			joinClause,
 			groupClause,
 			whereClauses,
+			fromClauses,
 			yesqlPayload.additionalFrom,
 			includeStaging,
 			collectionClauses,

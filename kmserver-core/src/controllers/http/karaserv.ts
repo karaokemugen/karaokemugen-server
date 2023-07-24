@@ -39,6 +39,7 @@ export default function KSController(router: Router) {
 					order: req.query.order,
 					random: req.query.random,
 					favorites: req.query.favorites,
+					safeOnly: req.query.safeOnly,
 					userAnimeList: req.query.userAnimeList,
 					forceCollections: req.query.collections?.split(',')
 				}, req.authToken);
