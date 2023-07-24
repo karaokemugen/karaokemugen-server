@@ -29,8 +29,6 @@
 		options: any,
 		fullscreen: boolean,
 		theaterMode: boolean,
-		gain: number | undefined,
-		context: AudioContext | undefined,
 		theatermodechange: () => void,
 		fullscreenchange: () => void,
 		play: () => void,
@@ -43,17 +41,12 @@
 	const theaterButton = ref();
 	const fullscreenButton = ref();
 	const autoplayButton = ref();
-	let source: MediaElementAudioSourceNode;
-	let gain_node: GainNode;
 
 	function onended() {
 		if (autoplay.value) nextEvent();
 	}
 
 	function nextEvent() {
-		props.context?.close();
-		gain_node?.disconnect();
-		source?.disconnect();
 		props.next();
 	}
 
@@ -62,13 +55,6 @@
 		window.addEventListener('keydown', keyEvent);
 		player.value = videojs(videoPlayer.value, props.options, () => {
 			if (player.value) {
-				if (props.gain && props.context && !source) {
-					gain_node = props.context.createGain();
-					gain_node.gain.value = props.gain;
-					source = props.context.createMediaElementSource(videoPlayer.value);
-					source.connect(gain_node).connect(props.context.destination);
-				}
-
 				player.value.currentTime(query.time || 0);
 				player.value.volume(playerVolume.value);
 
@@ -206,14 +192,6 @@
 					(document.pictureInPictureElement as HTMLVideoElement).pause();
 					document.exitPictureInPicture();
 					videoPlayer.value.requestPictureInPicture();
-				}
-				if (props.gain) {
-					let context = props.context;
-					if (!context) context = new AudioContext();
-					gain_node = context.createGain();
-					gain_node.gain.value = props.gain;
-					source = context.createMediaElementSource(videoPlayer.value);
-					source.connect(gain_node).connect(context.destination);
 				}
 				player.value.play();
 			} else {
