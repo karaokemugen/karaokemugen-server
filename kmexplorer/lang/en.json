@@ -274,10 +274,10 @@
 			"kara_count": "Karaoke count",
 			"recent": "By date added",
 			"most_played": "Most played",
-			"most_played_recently": "Most played (last 12 months)",
+			"most_played_recently": "Most played (recently)",
 			"most_favorites": "Most favorites",
 			"most_requested": "Most requested",
-			"most_requested_recently": "Most requested (last 12 months)",
+			"most_requested_recently": "Most requested (recently)",
 			"likes": "Most likes",
 			"languages": "By languages"
 		},
