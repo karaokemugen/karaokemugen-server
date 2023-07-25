@@ -8,6 +8,7 @@
 </template>
   
 <script setup lang="ts">
+	import { isEqual } from 'lodash';
 	import { storeToRefs } from 'pinia';
 	import videojs from 'video.js';
 	import Player from 'video.js/dist/types/player';
@@ -18,7 +19,7 @@
 
 	const { playerVolume, autoplay } = storeToRefs(useLocalStorageStore());
 	const { setPlayerVolume, setAutoplay } = useLocalStorageStore();
-	const { query } = useRoute();
+	const route = useRoute();
 	const { t } = useI18n();
 
 	const toggleOn = '<svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 576 512"><style>svg{fill:#ffffff}</style><path d="M192 64C86 64 0 150 0 256S86 448 192 448H384c106 0 192-86 192-192s-86-192-192-192H192zm94 71 191 121 -190 126 z"/></svg>';
@@ -55,7 +56,7 @@
 		window.addEventListener('keydown', keyEvent);
 		player.value = videojs(videoPlayer.value, props.options, () => {
 			if (player.value) {
-				player.value.currentTime(query.time || 0);
+				player.value.currentTime(route.query.time || 0);
 				player.value.volume(playerVolume.value);
 
 				player.value.on('volumechange', () => {
@@ -188,11 +189,6 @@
 	watch(() => props.options.play, (newPlay) => {
 		if (player.value) {
 			if (newPlay) {
-				if (document.pictureInPictureElement) {
-					(document.pictureInPictureElement as HTMLVideoElement).pause();
-					document.exitPictureInPicture();
-					videoPlayer.value.requestPictureInPicture();
-				}
 				player.value.play();
 			} else {
 				player.value.pause();
@@ -200,7 +196,30 @@
 		}
 	});
 
-	watch(() => [props.theaterMode, props.fullscreen], ([newTheaterMode, newFullscreen]) => {
+	watch(() => props.options.sources, (newSources, oldSources) => {
+		if (isEqual(newSources, oldSources)) { return; }
+		if (player.value) {
+			player.value.src(newSources);
+		}
+	});
+
+	watch(() => props.options.poster, (newPoster) => {
+		if (player.value) {
+			player.value.poster(newPoster);
+		}
+	});
+
+	watch(() => props.options.autoplay, (newAutoplay) => {
+		if (player.value) {
+			player.value.autoplay(newAutoplay);
+		}
+	});
+
+	watch(() => props.title, () => {
+		setTitle();
+	});
+
+	watch(() => [props.theaterMode, props.fullscreen], () => {
 		updateFullscreen();
 		setTitle();
 	});
@@ -223,7 +242,7 @@
 <style>
 .vjs-control-bar {
 	@media screen and (min-width: 600px) {
-		font-size: 15px;	
+		font-size: 15px;
 	}
 
 	.vjs-control {

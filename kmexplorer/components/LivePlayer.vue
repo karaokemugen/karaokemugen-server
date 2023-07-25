@@ -42,7 +42,7 @@
 
 	const emit = defineEmits<{ (e: 'open' | 'close'): void }>();
 
-	const { params, query } = useRoute();
+	const route = useRoute();
 	const { push, replace } = useRouter();
 	const { enabledCollections } = storeToRefs(useLocalStorageStore());
 	const { loggedIn, user } = storeToRefs(useAuthStore());
@@ -55,9 +55,10 @@
 		return `${apiUrl}hardsubs/${props.karaoke.hardsubbed_mediafile}`;
 	});
 
-	const theaterMode = ref(params.theater === 'theater');
+	const theaterMode = ref(route.params.theater === 'theater');
 	const play = ref(theaterMode.value);
 	const fullscreen = ref(false);
+	let loading = false;
 	const videoOptions = computed(() => ({
 		language: (loggedIn.value && user?.value?.language) || locale.value,
 		languages: {
@@ -66,7 +67,7 @@
 			en: enJson,
 			fr: frJson
 		},
-		autoplay: theaterMode.value || query.autoplay,
+		autoplay: theaterMode.value || route.query.autoplay,
 		play: play.value,
 		controls: true,
 		fluid: !theaterMode.value,
@@ -106,7 +107,7 @@
 		window.addEventListener('keydown', keyEvent);
 		window.addEventListener('fullscreenchange', updateFullscreen);
 		updateFullscreen();
-		if (query.autoplay) {
+		if (route.query.autoplay) {
 			showPlayer();
 			const kid = props.karaoke.kid;
 			const slugTitle = slug(props.karaoke.titles[props.karaoke.titles_default_language || 'eng']);
@@ -124,19 +125,27 @@
 	}
 
 	async function openRandomKara() {
-		const res = await useCustomFetch<KaraListType>('/api/karas/search', {
-			params: {
-				random: 1,
-				safeOnly: true,
-				collections: enabledCollections.value.join(',')
-			}
-		});
+		if (loading) {
+			return;
+		}
+		loading = true;
+		try {
+			const res = await useCustomFetch<KaraListType>('/api/karas/search', {
+				params: {
+					random: 1,
+					safeOnly: true,
+					collections: enabledCollections.value.join(',')
+				}
+			});
 
-		const randomKaraoke = getSlugKidWithoutLiveDownload(res.content[0]);
-		if (randomKaraoke) {
-			push(`/kara/${randomKaraoke}${theaterMode.value ? '/theater' : '?autoplay=true'}`);
-		} else {
-			openRandomKara();
+			const randomKaraoke = getSlugKidWithoutLiveDownload(res.content[0]);
+			if (randomKaraoke) {
+				push(`/kara/${randomKaraoke}${theaterMode.value ? '/theater' : '?autoplay=true'}`);
+			} else {
+				await openRandomKara();
+			}
+		} finally {
+			loading = false;
 		}
 	}
 

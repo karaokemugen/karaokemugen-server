@@ -119,12 +119,16 @@
 	const conf = useRuntimeConfig();
 	const apiUrl = conf.public.API_URL;
 
-	const { params, query } = useRoute();
+	const route = useRoute();
 	const { t } = useI18n();
 
+	definePageMeta({
+		key: 'static'
+	});
+
 	async function fetch() {
-		let kid = params.id;
-		let theater = params.theater;
+		let kid = route.params.id;
+		let theater = route.params.theater;
 		if (kid === 'theater') {
 			// Resolve a slug-less url scheme with theater mode (/base/kara/<kid>/theater)
 			theater = kid;
@@ -132,13 +136,13 @@
 		}
 		if (!kid) {
 			// Resolve a slug-less url scheme (/base/kara/<kid>)
-			kid = params.slug;
+			kid = route.params.slug;
 		}
 		try {
 			const res = await useCustomFetch<DBKara>(`/api/karas/${kid}`);
 			const karaSlug = slug(res.titles[res.titles_default_language || 'eng']);
-			if (karaSlug !== params.slug) {
-				navigateTo({ params: { id: kid, slug: karaSlug, theater: theater }, query: query }, { replace: true });
+			if (karaSlug !== route.params.slug) {
+				navigateTo({ params: { id: kid, slug: karaSlug, theater: theater }, query: route.query }, { replace: true });
 			}
 			karaoke.value = sortTypesKara(res);
 		} catch (e) {
@@ -188,6 +192,7 @@
 		return !noLiveDownload;
 	});
 
+	watch(() => [route.query, route.params], fetch);
 	await fetch();
 
 	function placeForLive() {
