@@ -48,6 +48,7 @@
 	}
 
 	function nextEvent() {
+		if (player.value) player.value.autoplay(true);
 		props.next();
 	}
 
@@ -88,6 +89,7 @@
 					}
 					createEl() {
 						const el = videojs.dom.createEl('button');
+						if(player.value) player.value.autoplay(autoplay.value);
 						el.innerHTML = autoplay.value ? toggleOn : toggleOff;
 						el.setAttribute('title', t('kara.player.autoplay'));
 						el.classList.add('vjs-control', 'vjs-button');
@@ -206,12 +208,6 @@
 	watch(() => props.options.poster, (newPoster) => {
 		if (player.value) {
 			player.value.poster(newPoster);
-		}
-	});
-
-	watch(() => props.options.autoplay, (newAutoplay) => {
-		if (player.value) {
-			player.value.autoplay(newAutoplay);
 		}
 	});
 

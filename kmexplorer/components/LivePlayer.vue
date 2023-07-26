@@ -27,7 +27,6 @@
 	import { DBKara } from '%/lib/types/database/kara';
 	import { KaraList as KaraListType } from '%/lib/types/kara';
 	import { storeToRefs } from 'pinia';
-	import slug from 'slug';
 	import deJson from 'video.js/dist/lang/de.json';
 	import enJson from 'video.js/dist/lang/en.json';
 	import frJson from 'video.js/dist/lang/fr.json';
@@ -43,7 +42,7 @@
 	const emit = defineEmits<{ (e: 'open' | 'close'): void }>();
 
 	const route = useRoute();
-	const { push, replace } = useRouter();
+	const { push } = useRouter();
 	const { enabledCollections } = storeToRefs(useLocalStorageStore());
 	const { loggedIn, user } = storeToRefs(useAuthStore());
 	const { locale } = useI18n();
@@ -67,7 +66,7 @@
 			en: enJson,
 			fr: frJson
 		},
-		autoplay: theaterMode.value || route.query.autoplay,
+		autoplay: theaterMode.value,
 		play: play.value,
 		controls: true,
 		fluid: !theaterMode.value,
@@ -107,12 +106,6 @@
 		window.addEventListener('keydown', keyEvent);
 		window.addEventListener('fullscreenchange', updateFullscreen);
 		updateFullscreen();
-		if (route.query.autoplay) {
-			showPlayer();
-			const kid = props.karaoke.kid;
-			const slugTitle = slug(props.karaoke.titles[props.karaoke.titles_default_language || 'eng']);
-			replace(`/kara/${slugTitle}/${kid}`);
-		}
 	});
 
 	onUnmounted(() => {
@@ -140,7 +133,7 @@
 
 			const randomKaraoke = getSlugKidWithoutLiveDownload(res.content[0]);
 			if (randomKaraoke) {
-				push(`/kara/${randomKaraoke}${theaterMode.value ? '/theater' : '?autoplay=true'}`);
+				push(`/kara/${randomKaraoke}${theaterMode.value ? '/theater' : ''}`);
 			} else {
 				await openRandomKara();
 			}
