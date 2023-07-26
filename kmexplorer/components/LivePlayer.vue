@@ -54,8 +54,8 @@
 	const mediaHardsubUrl = computed(() => {
 		return `${apiUrl}hardsubs/${props.karaoke.hardsubbed_mediafile}`;
 	});
+	const theaterMode = computed(() => route.params.theater === 'theater');
 
-	const theaterMode = ref(route.params.theater === 'theater');
 	const play = ref(theaterMode.value);
 	const fullscreen = ref(false);
 	let loading = false;
@@ -172,25 +172,14 @@
 	}
 
 	function openTheaterMode() {
-		theaterMode.value = true;
-		const url = new URL(window.location.href);
-		if (url.pathname.includes('/theater/') || url.pathname.endsWith('/theater')) {
-			url.pathname = url.pathname.replaceAll('/theater', '');
-		}
-		url.pathname += (url.pathname.endsWith('/') ? '' : '/') + 'theater';
-		history.replaceState({}, '', url.href);
+		navigateTo({ params: { theater: 'theater' }, query: route.query }, { replace: true });
 	}
 
 	function closeTheaterMode(force = false) {
 		if (fullscreen.value && !force) {
 			return;
 		}
-		theaterMode.value = false;
-		const url = new URL(window.location.href);
-		if (url.pathname.includes('/theater/') || url.pathname.endsWith('/theater')) {
-			url.pathname = url.pathname.replaceAll('/theater', '');
-		}
-		history.replaceState({}, '', url.href);
+		navigateTo({ params: { theater: '' }, query: route.query }, { replace: true });
 	}
 
 	function showPlayer() {
