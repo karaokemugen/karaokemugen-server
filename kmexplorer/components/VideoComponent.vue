@@ -8,7 +8,7 @@
 </template>
   
 <script setup lang="ts">
-	import { isEqual } from 'lodash';
+	import _ from 'lodash';
 	import { storeToRefs } from 'pinia';
 	import videojs from 'video.js';
 	import Player from 'video.js/dist/types/player';
@@ -197,7 +197,7 @@
 	});
 
 	watch(() => props.options.sources, (newSources, oldSources) => {
-		if (isEqual(newSources, oldSources)) { return; }
+		if (_.isEqual(newSources, oldSources)) { return; }
 		if (player.value) {
 			player.value.src(newSources);
 		}
