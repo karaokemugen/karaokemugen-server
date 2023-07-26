@@ -89,7 +89,7 @@
 					}
 					createEl() {
 						const el = videojs.dom.createEl('button');
-						if(player.value) player.value.autoplay(autoplay.value);
+						if(player.value) player.value.autoplay(props.theaterMode);
 						el.innerHTML = autoplay.value ? toggleOn : toggleOff;
 						el.setAttribute('title', t('kara.player.autoplay'));
 						el.classList.add('vjs-control', 'vjs-button');
