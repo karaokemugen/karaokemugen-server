@@ -127,6 +127,7 @@
 	});
 
 	async function fetch() {
+		const oldKaraSlug = route.params.slug;
 		let kid = route.params.id;
 		let theater = route.params.theater;
 		if (kid === 'theater') {
@@ -136,12 +137,12 @@
 		}
 		if (!kid) {
 			// Resolve a slug-less url scheme (/base/kara/<kid>)
-			kid = route.params.slug;
+			kid = oldKaraSlug;
 		}
 		try {
 			const res = await useCustomFetch<DBKara>(`/api/karas/${kid}`);
 			const karaSlug = slug(res.titles[res.titles_default_language || 'eng']);
-			if (karaSlug !== route.params.slug) {
+			if (karaSlug !== oldKaraSlug) {
 				navigateTo({ params: { id: kid, slug: karaSlug, theater: theater }, query: route.query }, { replace: true });
 			}
 			karaoke.value = sortTypesKara(res);
