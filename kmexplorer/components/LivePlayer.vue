@@ -177,6 +177,9 @@
 		emit('open');
 	}
 	function keyEvent(e: KeyboardEvent) {
+		if (e.shiftKey || e.ctrlKey || e.metaKey || e.altKey) {
+			return;
+		}
 		if (e.code === 'Escape') {
 			e.preventDefault();
 			closeTheaterMode(true);

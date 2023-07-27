@@ -89,7 +89,7 @@
 					}
 					createEl() {
 						const el = videojs.dom.createEl('button');
-						if(player.value) player.value.autoplay(props.theaterMode);
+						if (player.value) player.value.autoplay(props.theaterMode);
 						el.innerHTML = autoplay.value ? toggleOn : toggleOff;
 						el.setAttribute('title', t('kara.player.autoplay'));
 						el.classList.add('vjs-control', 'vjs-button');
@@ -133,6 +133,9 @@
 	});
 
 	function keyEvent(e: KeyboardEvent) {
+		if (e.shiftKey || e.ctrlKey || e.metaKey || e.altKey) {
+			return;
+		}
 		if ((e.target as Element).nodeName !== 'INPUT') {
 			if (e.key === 'm') {
 				e.preventDefault();
