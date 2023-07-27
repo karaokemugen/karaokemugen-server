@@ -55,7 +55,6 @@
 	});
 	const theaterMode = computed(() => route.params.theater === 'theater');
 
-	const play = ref(theaterMode.value);
 	const fullscreen = ref(false);
 	let loading = false;
 	const videoOptions = computed(() => ({
@@ -67,7 +66,6 @@
 			fr: frJson
 		},
 		autoplay: theaterMode.value,
-		play: play.value,
 		controls: true,
 		fluid: !theaterMode.value,
 		fill: true,
@@ -177,7 +175,6 @@
 
 	function showPlayer() {
 		emit('open');
-		play.value = true;
 	}
 	function keyEvent(e: KeyboardEvent) {
 		if (e.code === 'Escape') {

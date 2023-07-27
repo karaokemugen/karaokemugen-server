@@ -188,16 +188,6 @@
 		autoplayButton.value?.el().setAttribute('title', t('kara.player.autoplay'));
 	});
 
-	watch(() => props.options.play, (newPlay) => {
-		if (player.value) {
-			if (newPlay) {
-				player.value.play();
-			} else {
-				player.value.pause();
-			}
-		}
-	});
-
 	watch(() => props.options.sources, (newSources, oldSources) => {
 		if (_.isEqual(newSources, oldSources)) { return; }
 		if (player.value) {
