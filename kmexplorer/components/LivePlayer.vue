@@ -131,13 +131,12 @@
 
 			const randomKaraoke = getSlugKidWithoutLiveDownload(res.content[0]);
 			if (randomKaraoke) {
-				push(`/kara/${randomKaraoke}${theaterMode.value ? '/theater' : ''}`);
-			} else {
-				await openRandomKara();
+				return push(`/kara/${randomKaraoke}${theaterMode.value ? '/theater' : ''}`);
 			}
 		} finally {
 			loading = false;
 		}
+		await openRandomKara();
 	}
 
 	async function changeFullscreen() {
