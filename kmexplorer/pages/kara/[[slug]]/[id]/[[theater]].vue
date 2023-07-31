@@ -121,10 +121,7 @@
 
 	const route = useRoute();
 	const requestURL = useRequestURL();
-	let origin = requestURL.origin;
-	if (process.client) {
-		origin = window.origin;
-	}
+	const origin = process.client ? window.origin : requestURL.origin;
 	const { t } = useI18n();
 
 	definePageMeta({
