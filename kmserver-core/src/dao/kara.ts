@@ -9,6 +9,7 @@ import {getConfig} from '../lib/utils/config.js';
 import {getTagTypeName, tagTypes} from '../lib/utils/constants.js';
 import logger from '../lib/utils/logger.js';
 import { DBStats } from '../types/database/kara.js';
+import { getHardsubsBeingProcessed } from '../utils/hardsubs.js';
 import * as sql from './sqls/kara.js';
 
 const service = 'DB';
@@ -206,7 +207,8 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 			res.rows[0].count = resCount.rows[0].count;
 		}
 	}
-	return res.rows.map((row) => {
+	return res.rows.map(row => {
+		row.hardsub_in_progress = getHardsubsBeingProcessed().includes(row.kid);
 		const { tags, ...rowWithoutTags } = row;
 
 		for (const tagType of Object.keys(tagTypes)) {

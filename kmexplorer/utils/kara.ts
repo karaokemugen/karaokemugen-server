@@ -5,23 +5,23 @@ import { v4 as UUIDv4 } from 'uuid';
 import { tagTypes } from '~/assets/constants';
 
 const tagTypesKaraFileV4Order: (
-	'authors'|
-	'creators'|
-	'families'|
-	'genres'|
-	'groups'|
-	'langs'|
-	'misc'|
-	'origins'|
-	'platforms'|
-	'series'|
-	'singers'|
-	'singergroups'|
-	'songtypes'|
-	'songwriters'|
-	'versions'|
-	'warnings'|
-	'collections'|
+	'authors' |
+	'creators' |
+	'families' |
+	'genres' |
+	'groups' |
+	'langs' |
+	'misc' |
+	'origins' |
+	'platforms' |
+	'series' |
+	'singers' |
+	'singergroups' |
+	'songtypes' |
+	'songwriters' |
+	'versions' |
+	'warnings' |
+	'collections' |
 	'franchises')[] = [
 		'authors',
 		'collections',
@@ -101,11 +101,11 @@ export function convertDBKaraToKaraFile(dbKara?: DBKara): KaraFileV4 {
 			titles_aliases: dbKara?.titles_aliases || [],
 			year: dbKara?.year || new Date().getFullYear()
 		},
-		meta:{}
+		meta: {}
 	};
 }
 
-export function getSlugKidWithoutLiveDownload(karaoke:DBKara) : string | undefined {
+export function getSlugKidWithoutLiveDownload(karaoke: DBKara): string | undefined {
 	//@ts-ignore
 	let noLiveDownload = false;
 	for (const tagType in tagTypes) {
@@ -118,9 +118,9 @@ export function getSlugKidWithoutLiveDownload(karaoke:DBKara) : string | undefin
 		}
 	}
 
-	if (karaoke.hardsubbed_mediafile && !noLiveDownload) {
+	if (karaoke.hardsubbed_mediafile && !karaoke.hardsub_in_progress && !noLiveDownload) {
 		const kid = karaoke.kid;
 		const slugTitle = slug(karaoke.titles[karaoke.titles_default_language || 'eng']);
-		return `${slugTitle}/${kid}`
+		return `${slugTitle}/${kid}`;
 	}
 }
