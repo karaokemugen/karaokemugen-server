@@ -15,6 +15,12 @@ const service = 'Hardsubs';
 
 let queue = null;
 
+const hardsubsBeingProcessed = new Set();
+
+export function getHardsubsBeingProcessed() {
+	return [...hardsubsBeingProcessed] as string[];
+}
+
 export async function initHardsubGeneration() {
 	queue = fastq<never, [string, string, string, string], void>(wrappedGenerateHS, 1);
 	const karas = await getAllKaras({ ignoreCollections: true }, undefined, true);
@@ -29,6 +35,7 @@ async function wrappedGenerateHS(payload: [string, string, string, string]) {
 	if (subPath) await fs.copyFile(subPath, assPath);
 	try {
 		await createHardsub(mediaPath, assPath, outputFile);
+		hardsubsBeingProcessed.delete(kid);
 		logger.info(`Hardsub for ${mediaPath} created`, { service });
 		logger.info(`${queue.length()} hardsubs left in queue`, {service});
 	} catch (err) {
@@ -105,6 +112,7 @@ export async function generateHardsubs(karas: KaraList) {
 						subPath = (await resolveFileInDirs(media.subfile, resolvedPathRepos('Lyrics', media.repository)))[0];
 					}
 					const outputFile = resolve(hardsubDir, hardsubFile);
+					hardsubsBeingProcessed.add(media.kid);
 					queue.push([mediaPath, subPath, outputFile, media.kid]);
 				}
 			} catch (error) {
