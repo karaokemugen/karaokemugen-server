@@ -63,6 +63,7 @@ export function initFrontend(listenPort: number) {
 				mediaSrc: ['\'self\'', 'https:', 'data:', 'blob:'],
 				imgSrc: ['\'self\'', 'https:', 'data:', 'blob:'],
 				frameSrc: ['\'self\''],
+				frameAncestors: ['https:'],
 				workerSrc: ['\'self\'', 'https://storage.googleapis.com/workbox-cdn/']
 			}
 		}
