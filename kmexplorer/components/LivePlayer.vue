@@ -12,6 +12,7 @@
 						:options="videoOptions"
 						:fullscreen="fullscreen"
 						:theater-mode="theaterMode"
+						:is-iframe="isIframe"
 						:theatermodechange="changeTheaterMode"
 						:fullscreenchange="changeFullscreen"
 						:play="showPlayer"
@@ -54,6 +55,7 @@
 		return `${apiUrl}hardsubs/${props.karaoke.hardsubbed_mediafile}`;
 	});
 	const theaterMode = computed(() => route.params.theater === 'theater');
+	const isIframe = ref(false);
 
 	const fullscreen = ref(false);
 	let loading = false;
@@ -104,6 +106,7 @@
 		window.addEventListener('keydown', keyEvent);
 		window.addEventListener('fullscreenchange', updateFullscreen);
 		updateFullscreen();
+		isIframe.value = window.location !== window.parent.location;
 	});
 
 	onUnmounted(() => {
@@ -148,7 +151,7 @@
 	}
 
 	function changeTheaterMode() {
-		if (fullscreen.value) {
+		if (fullscreen.value || isIframe.value) {
 			return;
 		}
 		if (theaterMode.value) {
@@ -159,11 +162,14 @@
 	}
 
 	function openTheaterMode() {
+		if (fullscreen.value) {
+			return;
+		}
 		navigateTo({ params: { theater: 'theater' }, query: route.query }, { replace: true });
 	}
 
 	function closeTheaterMode(force = false) {
-		if (fullscreen.value && !force) {
+		if ((fullscreen.value || isIframe.value) && !force) {
 			return;
 		}
 		navigateTo({ params: { theater: '' }, query: route.query }, { replace: true });

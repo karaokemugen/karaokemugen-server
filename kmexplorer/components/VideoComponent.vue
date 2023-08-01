@@ -30,6 +30,7 @@
 		options: any,
 		fullscreen: boolean,
 		theaterMode: boolean,
+		isIframe: boolean,
 		theatermodechange: () => void,
 		fullscreenchange: () => void,
 		play: () => void,
@@ -219,8 +220,12 @@
 				theaterButton.value.hide();
 				fullscreenButton.value.setIcon('fullscreen-exit');
 			} else if (props.theaterMode) {
-				theaterButton.value.show();
-				theaterButton.value.setIcon('fullscreen-exit');
+				if (!props.isIframe) {
+					theaterButton.value.show();
+					theaterButton.value.setIcon('fullscreen-exit');
+				} else {
+					theaterButton.value.hide();
+				}
 				fullscreenButton.value.setIcon('fullscreen-enter');
 			} else {
 				theaterButton.value.show();
