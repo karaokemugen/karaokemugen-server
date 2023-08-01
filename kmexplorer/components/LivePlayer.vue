@@ -60,6 +60,7 @@
 	const fullscreen = ref(false);
 	let loading = false;
 	const videoOptions = computed(() => ({
+		inactivityTimeout: 3000,
 		language: (loggedIn.value && user?.value?.language) || locale.value,
 		languages: {
 			pt: ptJson,
