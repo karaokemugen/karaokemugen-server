@@ -583,7 +583,7 @@
 		"GITLAB_DISABLED": "Le support Gitlab est désactivé",
 		"SUBFILE_FORMAT_UNKNOWN": "Format de paroles inconnu",
 		"SUBFILE_PROCESS_ERROR": "Erreur d'intégration des paroles",
-		"MEDIA_PROCESS_ERROR": "Erreur d'intégration du média"
+		"UPLOADED_MEDIA_ERROR": "Erreur d'intégration du média"
 	},
 	"roles": {
 		"donator": "Donateur(-ice)",

@@ -583,7 +583,7 @@
 		"GITLAB_DISABLED": "Gitlab support is disabled",
 		"SUBFILE_FORMAT_UNKNOWN": "Unknown lyrics format",
 		"SUBFILE_PROCESS_ERROR": "Error processing lyrics",
-		"MEDIA_PROCESS_ERROR": "Error processing media"
+		"UPLOADED_MEDIA_ERROR": "Error processing media"
 	},
 	"roles": {
 		"donator": "Donator",
