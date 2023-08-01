@@ -239,6 +239,9 @@
 	.vjs-control {
 		width: 3em;
 	}
+	.vjs-time-control {
+		width: 4em;
+	}
 }
 
 .vjs-title-bar {
