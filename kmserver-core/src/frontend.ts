@@ -53,6 +53,9 @@ export function initFrontend(listenPort: number) {
 		else next();
 	});
 	app.use(helmet({
+		crossOriginResourcePolicy: conf.API.Host === 'localhost' ? false : {
+			policy: 'same-origin'
+		},
 		hsts: false,
 		contentSecurityPolicy: {
 			directives: {
