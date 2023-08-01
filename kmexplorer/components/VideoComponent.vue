@@ -216,12 +216,14 @@
 	function updateFullscreen() {
 		if (theaterButton.value && fullscreenButton.value) {
 			if (props.fullscreen) {
-				theaterButton.value.setIcon('square');
+				theaterButton.value.hide();
 				fullscreenButton.value.setIcon('fullscreen-exit');
 			} else if (props.theaterMode) {
+				theaterButton.value.show();
 				theaterButton.value.setIcon('fullscreen-exit');
 				fullscreenButton.value.setIcon('fullscreen-enter');
 			} else {
+				theaterButton.value.show();
 				theaterButton.value.setIcon('square');
 				fullscreenButton.value.setIcon('fullscreen-enter');
 			}

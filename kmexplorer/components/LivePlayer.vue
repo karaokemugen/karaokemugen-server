@@ -3,12 +3,12 @@
 		<div>
 			<Teleport
 				to="body"
-				:disabled="!theaterMode"
+				:disabled="!theaterMode && !fullscreen"
 			>
-				<div :class="{ 'theater': theaterMode }">
+				<div :class="{ 'theater': theaterMode || fullscreen }">
 					<video-component
 						:title="buildKaraTitle(props.karaoke, null, true)"
-						:class="{ 'theater-player': theaterMode }"
+						:class="{ 'theater-player': theaterMode || fullscreen }"
 						:options="videoOptions"
 						:fullscreen="fullscreen"
 						:theater-mode="theaterMode"
@@ -90,7 +90,7 @@
 		experimentalSvgIcons: true
 	}));
 
-	watch(theaterMode, (newTheaterMode) => {
+	watch(() => theaterMode.value || fullscreen.value, (newTheaterMode) => {
 		if (process.client) {
 			if (newTheaterMode) {
 				document.getElementsByTagName('html')[0].classList.add('theater');
@@ -142,22 +142,19 @@
 	async function changeFullscreen() {
 		if (!fullscreen.value) {
 			await window.document.documentElement.requestFullscreen();
-			openTheaterMode();
 		} else {
-			window.document.exitFullscreen();
-			closeTheaterMode(true);
+			await window.document.exitFullscreen();
 		}
 	}
 
 	function changeTheaterMode() {
 		if (fullscreen.value) {
-			window.document.exitFullscreen();
+			return;
+		}
+		if (theaterMode.value) {
+			closeTheaterMode();
 		} else {
-			if (theaterMode.value) {
-				closeTheaterMode();
-			} else {
-				openTheaterMode();
-			}
+			openTheaterMode();
 		}
 	}
 
