@@ -214,6 +214,7 @@
 	const explorerTagline = conf.public.EXPLORER_TAGLINE;
 
 	const { enabledCollections } = storeToRefs(useLocalStorageStore());
+	const { setAutoplay } = useLocalStorageStore();
 	const { search } = storeToRefs(useMenubarStore());
 	const { reset } = useMenubarStore();
 	const { openModal } = useModalStore();
@@ -287,6 +288,7 @@
 		});
 		const randomKaraoke = getSlugKidWithoutLiveDownload(res.content[0]);
 		if (randomKaraoke) {
+			setAutoplay(true);
 			push(`/kara/${randomKaraoke}/theater`);
 		} else {
 			await openRandomKara();
