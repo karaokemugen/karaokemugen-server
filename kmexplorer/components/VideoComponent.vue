@@ -72,6 +72,12 @@
 				});
 				player.value.tech(false).on('dblclick', props.fullscreenchange);
 				player.value.on('play', props.play);
+				player.value.on('timeupdate', () => {
+					if (player.value!.currentTime()! < 2 || player.value!.currentTime()! >= player.value!.duration()! - 4) {
+						player.value!.userActive(true);
+						player.value!.reportUserActivity(null);
+					}
+				});
 
 				setTitle();
 
@@ -244,6 +250,7 @@
 	.vjs-control {
 		width: 3em;
 	}
+
 	.vjs-time-control {
 		width: 4em;
 	}
