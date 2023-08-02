@@ -243,8 +243,12 @@
 </script>
 <style>
 .vjs-control-bar {
-	@media screen and (min-width: 600px) {
+	@media screen and (min-width: 1300px) {
 		font-size: 15px;
+	}
+
+	@media screen and (min-width: 600px) and (max-width: 1300px) {
+		font-size: 12px;
 	}
 
 	.vjs-control {
