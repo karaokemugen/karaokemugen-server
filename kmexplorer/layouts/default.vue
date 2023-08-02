@@ -1091,7 +1091,7 @@
 		});
 
 		beforeEach((to: any, _from: any, next: Function) => {
-			if (to.params.theater) {
+			if (to.params.theater || document.fullscreenElement !== null) {
 				document.getElementsByTagName('html')[0].classList.add('theater');
 			} else {
 				document.getElementsByTagName('html')[0].classList.remove('theater');
