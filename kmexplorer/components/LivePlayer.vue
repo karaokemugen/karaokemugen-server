@@ -69,7 +69,7 @@
 		},
 		autoplay: theaterMode.value,
 		controls: true,
-		fluid: !theaterMode.value,
+		fluid: !theaterMode.value && !fullscreen.value,
 		fill: true,
 		poster: `${apiUrl}previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`,
 		controlBar: {
