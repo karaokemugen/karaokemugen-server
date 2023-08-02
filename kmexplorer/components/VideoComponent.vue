@@ -261,7 +261,17 @@
 	}
 </script>
 <style>
-.vjs-control-bar {
+.video-js.vjs-layout-tiny,
+.video-js.vjs-layout-x-small,
+.video-js.vjs-layout-small,
+.video-js.vjs-layout-medium,
+.video-js.vjs-layout-large,
+.video-js.vjs-layout-x-large,
+.video-js.vjs-layout-huge {
+	.vjs-control-bar {
+		font-size: 15px;
+	}
+
 	.vjs-control {
 		width: 3em;
 	}
@@ -269,30 +279,22 @@
 	.vjs-time-control {
 		width: 4em;
 	}
+
+	.vjs-title-bar {
+		font-size: 27px;
+		bottom: 45px;
+		top: unset;
+		padding: 2em 1.333em 0.666em;
+		background: linear-gradient(360deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 60%, rgba(0, 0, 0, 0) 100%);
+	}
 }
 
+.video-js.vjs-layout-tiny,
+.video-js.vjs-layout-x-small,
 .video-js.vjs-layout-small {
-	.vjs-control-bar {
-		font-size: 15px;
-	}
-
 	.vjs-skip-backward-5,
 	.vjs-skip-forward-5 {
 		display: none;
 	}
-}
-
-.video-js.vjs-layout-medium {
-	.vjs-control-bar {
-		font-size: 12px;
-	}
-}
-
-.vjs-title-bar {
-	font-size: 27px;
-	bottom: 45px;
-	top: unset;
-	padding: 2em 1.333em 0.666em;
-	background: linear-gradient(360deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 60%, rgba(0, 0, 0, 0) 100%);
 }
 </style>
