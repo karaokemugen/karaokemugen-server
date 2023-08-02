@@ -262,20 +262,29 @@
 </script>
 <style>
 .vjs-control-bar {
-	@media screen and (min-width: 1300px) {
-		font-size: 15px;
-	}
-
-	@media screen and (min-width: 600px) and (max-width: 1300px) {
-		font-size: 12px;
-	}
-
 	.vjs-control {
 		width: 3em;
 	}
 
 	.vjs-time-control {
 		width: 4em;
+	}
+}
+
+.video-js.vjs-layout-small {
+	.vjs-control-bar {
+		font-size: 15px;
+	}
+
+	.vjs-skip-backward-5,
+	.vjs-skip-forward-5 {
+		display: none;
+	}
+}
+
+.video-js.vjs-layout-medium {
+	.vjs-control-bar {
+		font-size: 12px;
 	}
 }
 
