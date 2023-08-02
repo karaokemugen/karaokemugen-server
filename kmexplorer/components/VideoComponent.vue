@@ -153,7 +153,7 @@
 			navigateTo({ params: { theater: '' }, query: route.query }, { replace: true });
 		}
 		if ((e.target as Element).nodeName !== 'INPUT') {
-			if (e.key === 'm') {
+			if (e.key.toLowerCase() === 'm') {
 				e.preventDefault();
 				player.value?.muted(!player.value?.muted());
 			} else if (e.key === 'ArrowLeft') {
@@ -179,13 +179,13 @@
 			} if (e.key === ' ') {
 				e.preventDefault();
 				player.value?.paused() ? player.value.play() : player.value?.pause();
-			} if (e.key === 't') {
+			} if (e.key.toLowerCase() === 't') {
 				e.preventDefault();
 				theatermodechangeEvent();
-			} if (e.key === 'n') {
+			} if (e.key.toLowerCase() === 'n') {
 				e.preventDefault();
 				props.next();
-			} else if (e.key === 'f') {
+			} else if (e.key.toLowerCase() === 'f') {
 				e.preventDefault();
 				props.fullscreenchange();
 			}
