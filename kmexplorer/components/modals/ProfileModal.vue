@@ -433,11 +433,11 @@
 							<label
 								for="banner"
 								class="button is-yellow"
-								:disabled="!editedUser.roles?.donator && !editedUser.roles?.admin"
+								:disabled="user && !user.roles?.donator && !user.roles?.admin"
 							>
 								<input
 									id="banner"
-									:disabled="!editedUser.roles?.donator && !editedUser.roles?.admin"
+									:disabled="user && !user.roles?.donator && !user.roles?.admin"
 									type="file"
 									accept="image/jpg, image/jpeg, image/png"
 									@change="openCropModal"
