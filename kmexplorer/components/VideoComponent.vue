@@ -257,6 +257,7 @@
 				fullscreenButton.value.setIcon('fullscreen-enter');
 			}
 		}
+		player.value!.getChild('ControlBar')?.trigger('mouseleave');
 	}
 </script>
 <style>
