@@ -103,14 +103,12 @@
 	}, { immediate: true });
 
 	onMounted(() => {
-		window.addEventListener('keydown', keyEvent);
 		window.addEventListener('fullscreenchange', updateFullscreen);
 		updateFullscreen();
 		isIframe.value = window.location !== window.parent.location;
 	});
 
 	onUnmounted(() => {
-		window.removeEventListener('keydown', keyEvent);
 		window.removeEventListener('fullscreenchange', updateFullscreen);
 	});
 
@@ -168,8 +166,8 @@
 		navigateTo({ params: { theater: 'theater' }, query: route.query }, { replace: true });
 	}
 
-	function closeTheaterMode(force = false) {
-		if ((fullscreen.value || isIframe.value) && !force) {
+	function closeTheaterMode() {
+		if ((fullscreen.value || isIframe.value)) {
 			return;
 		}
 		navigateTo({ params: { theater: '' }, query: route.query }, { replace: true });
@@ -177,26 +175,6 @@
 
 	function showPlayer() {
 		emit('open');
-	}
-	function keyEvent(e: KeyboardEvent) {
-		if (e.shiftKey || e.ctrlKey || e.metaKey || e.altKey) {
-			return;
-		}
-		if (e.code === 'Escape') {
-			e.preventDefault();
-			closeTheaterMode(true);
-		} else if ((e.target as Element).nodeName !== 'INPUT') {
-			if (e.key === 'n') {
-				e.preventDefault();
-				openRandomKara();
-			} else if (e.key === 'f') {
-				e.preventDefault();
-				changeFullscreen();
-			} if (e.key === 't') {
-				e.preventDefault();
-				changeTheaterMode();
-			}
-		}
 	}
 </script>
 

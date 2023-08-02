@@ -53,6 +53,11 @@
 		props.next();
 	}
 
+	function theatermodechangeEvent() {
+		player.value!.getChild('ControlBar')?.trigger('mouseleave');
+		props.theatermodechange();
+	}
+
 	onMounted(() => {
 		videojs.getAllPlayers().forEach(oldPlayer => oldPlayer.dispose()); // temporary fix until https://github.com/vuejs/core/issues/4737 is fix
 		window.addEventListener('keydown', keyEvent);
@@ -115,7 +120,7 @@
 
 				theaterButton.value = player.value!.getChild('ControlBar')!.addChild('button', {
 					controlText: t('kara.player.theater_mode'),
-					clickHandler: props.theatermodechange
+					clickHandler: theatermodechangeEvent
 				});
 
 				fullscreenButton.value = player.value!.getChild('ControlBar')!.addChild('button', {
@@ -142,6 +147,10 @@
 	function keyEvent(e: KeyboardEvent) {
 		if (e.shiftKey || e.ctrlKey || e.metaKey || e.altKey) {
 			return;
+		}
+		if (e.code === 'Escape') {
+			e.preventDefault();
+			navigateTo({ params: { theater: '' }, query: route.query }, { replace: true });
 		}
 		if ((e.target as Element).nodeName !== 'INPUT') {
 			if (e.key === 'm') {
@@ -170,6 +179,15 @@
 			} if (e.key === ' ') {
 				e.preventDefault();
 				player.value?.paused() ? player.value.play() : player.value?.pause();
+			} if (e.key === 't') {
+				e.preventDefault();
+				theatermodechangeEvent();
+			} if (e.key === 'n') {
+				e.preventDefault();
+				props.next();
+			} else if (e.key === 'f') {
+				e.preventDefault();
+				props.fullscreenchange();
 			}
 		}
 	}
