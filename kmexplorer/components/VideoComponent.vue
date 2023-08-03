@@ -260,7 +260,7 @@
 		player.value!.getChild('ControlBar')?.trigger('mouseleave');
 	}
 </script>
-<style>
+<style lang="scss">
 .video-js.vjs-layout-tiny,
 .video-js.vjs-layout-x-small,
 .video-js.vjs-layout-small,
@@ -292,6 +292,7 @@
 .video-js.vjs-layout-tiny,
 .video-js.vjs-layout-x-small,
 .video-js.vjs-layout-small {
+
 	.vjs-skip-backward-5,
 	.vjs-skip-forward-5 {
 		display: none;
