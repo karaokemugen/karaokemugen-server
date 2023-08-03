@@ -36,7 +36,7 @@ dast:
 sast:
   variables:
     SAST_EXCLUDED_PATHS: spec, test, tests, tmp, assets, build, img, util, packages, dist
-    SECRET_DETECTION_EXCLUDED_PATHS: doc, spec, test, tests, .md, node_modules, yarn.lock, kmexplorer/node_modules, dist      
+    SECRET_DETECTION_EXCLUDED_PATHS: doc, spec, test, tests, .md, node_modules, yarn.lock, kmexplorer/node_modules, dist, .yarn
 license_scanning:
   interruptible: true
   stage: scan
