@@ -261,23 +261,17 @@
 	}
 </script>
 <style lang="scss">
-.video-js.vjs-layout-tiny,
-.video-js.vjs-layout-x-small,
-.video-js.vjs-layout-small,
-.video-js.vjs-layout-medium,
-.video-js.vjs-layout-large,
-.video-js.vjs-layout-x-large,
-.video-js.vjs-layout-huge {
+.video-js {
 	.vjs-control-bar {
 		font-size: 15px;
-	}
 
-	.vjs-control {
-		width: 3em;
-	}
+		.vjs-control {
+			width: 3em;
+		}
 
-	.vjs-time-control {
-		width: 4em;
+		.vjs-time-control {
+			width: 4em;
+		}
 	}
 
 	.vjs-title-bar {
@@ -287,25 +281,25 @@
 		padding: 2em 1.333em 0.666em;
 		background: linear-gradient(360deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 60%, rgba(0, 0, 0, 0) 100%);
 	}
-}
 
-.video-js.vjs-layout-medium {
-	.vjs-title-bar {
-		font-size: 20px;
-	}
-}
-
-.video-js.vjs-layout-tiny,
-.video-js.vjs-layout-x-small,
-.video-js.vjs-layout-small {
-
-	.vjs-skip-backward-5,
-	.vjs-skip-forward-5 {
-		display: none;
+	&.vjs-layout-medium {
+		.vjs-title-bar {
+			font-size: 20px;
+		}
 	}
 
-	.vjs-title-bar {
-		font-size: 15px;
+	&.vjs-layout-tiny,
+	&.vjs-layout-x-small,
+	&.vjs-layout-small {
+
+		.vjs-skip-backward-5,
+		.vjs-skip-forward-5 {
+			display: none;
+		}
+
+		.vjs-title-bar {
+			font-size: 15px;
+		}
 	}
 }
 </style>
