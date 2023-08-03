@@ -289,6 +289,12 @@
 	}
 }
 
+.video-js.vjs-layout-medium {
+	.vjs-title-bar {
+		font-size: 20px;
+	}
+}
+
 .video-js.vjs-layout-tiny,
 .video-js.vjs-layout-x-small,
 .video-js.vjs-layout-small {
@@ -296,6 +302,10 @@
 	.vjs-skip-backward-5,
 	.vjs-skip-forward-5 {
 		display: none;
+	}
+
+	.vjs-title-bar {
+		font-size: 15px;
 	}
 }
 </style>
