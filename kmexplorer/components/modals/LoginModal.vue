@@ -361,4 +361,15 @@
 	.control.is-expanded .button {
 		width: 100%;
 	}
+
+	.modal-card-head {
+		padding: 0px;
+
+		.modal-card-title {
+			padding: 20px;
+		}
+		.delete {
+			margin: 20px;
+		}
+	}
 </style>
