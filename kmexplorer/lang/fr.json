@@ -575,7 +575,7 @@
 		"WRONG_AVATAR_FILE_TYPE": "Mauvais type de fichier pour l'avatar",
 		"AVATAR_ERROR": "Erreur d'import du fichier avatar",
 		"WRONG_BANNER_FILE_TYPE": "Mauvais type de fichier pour la bannière",
-		"BANNER_NOT_GENERATED_YET": "Bannière pas encore générée par le serveur",
+		"BANNER_NOT_GENERATED_YET": "Bannière pas encore générée par le serveur !",
 		"BANNER_BANNED": "Cette bannière ne peut pas être utilisée",
 		"PASSWORD_TOO_SHORT": "Mot de passe trop court",
 		"CHECK_YOUR_PRIVILEGES": "Checkez vos privilèges",
