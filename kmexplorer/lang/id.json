@@ -162,7 +162,8 @@
 		},
 		"siblings": "Lagu serupa",
 		"childrens": "Lagu anak",
-		"parents": "Lagu induk"
+		"parents": "Lagu induk",
+		"singergroups_by": "dari klub musik"
 	},
 	"error": {
 		"private_profile": "Profil ini privat.",
@@ -229,7 +230,8 @@
 		"anime_list": "Anime saya",
 		"remotes": "Jarak Jauh",
 		"franchises": "Waralaba",
-		"discourse": "Forum"
+		"discourse": "Forum",
+		"singergroups": "Klub Musik"
 	},
 	"search": {
 		"aria": {
