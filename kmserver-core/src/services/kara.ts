@@ -32,7 +32,7 @@ import { findUserByName } from './user.js';
 const service = 'Kara';
 
 // KID => Filename
-const hardsubsCache: Map<string, string> = new Map();
+let hardsubsCache: Map<string, string> = new Map();
 
 export async function getBaseStats() {
 	try {
@@ -94,10 +94,12 @@ export async function generate() {
 }
 
 export function generateHardsubsCache(karas: KaraList) {
-	hardsubsCache.clear();
+	// Create a second map to fill and replace the real one by this one once done.
+	const newHardsubsCache: Map<string, string> = new Map();
 	for (const kara of karas.content) {
-		hardsubsCache.set(kara.kid, kara.hardsubbed_mediafile);
+		newHardsubsCache.set(kara.kid, kara.hardsubbed_mediafile);
 	}
+	hardsubsCache = newHardsubsCache;
 	logger.info('Hardsubs cache generated', {service});
 }
 
