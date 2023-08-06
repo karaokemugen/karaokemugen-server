@@ -30,6 +30,7 @@ export interface Config {
 	},
 	Hardsub: {
 		Enabled: boolean
+		Url?: string
 	},
   	Users: {
 		Enabled: boolean,

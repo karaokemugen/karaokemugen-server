@@ -12,7 +12,7 @@
 			<div class="image-chooser">
 				<img
 					class="pending-banner"
-					:src="`${apiUrl}previews/${previews[img]}`"
+					:src="`${hardsubUrl}previews/${previews[img]}`"
 					:alt="`Banner #${img + 1}`"
 				>
 				<div class="space-buttons">
@@ -71,7 +71,7 @@
 	const { setToken } = useAuthStore();
 
 	const conf = useRuntimeConfig();
-	const apiUrl = conf.public.API_URL;
+	const hardsubUrl = conf.public.HARDSUB_URL;
 
 	const previews = computed (() => {
 		const arr: string[] = [`${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`];

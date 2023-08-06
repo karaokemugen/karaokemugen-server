@@ -15,6 +15,8 @@ const conf = merge(defaults, load(file)) as Config;
 
 const production = process.env.NODE_ENV === 'production';
 
+const apiUrl = `http${conf.API.Secure ? 's' : ''}://${conf.API.Host}${!conf.API.Port || conf.API.Port === 443 || conf.API.Port === 80 ? '' : `:${conf.API.Port}`}/`;
+
 const nuxtConfig = defineNuxtConfig({
 
 	dev: !production,
@@ -38,7 +40,8 @@ const nuxtConfig = defineNuxtConfig({
 				conf.KaraExplorer.SupportedMedias && conf.KaraExplorer.SupportedMedias?.length > 0
 					? conf.KaraExplorer.SupportedMedias
 					: ([] as string[]).concat(supportedFiles.video, supportedFiles.audio),
-			API_URL: `http${conf.API.Secure ? 's' : ''}://${conf.API.Host}${!conf.API.Port || conf.API.Port === 443 || conf.API.Port === 80 ? '' : `:${conf.API.Port}`}/`,
+			API_URL: apiUrl,
+			HARDSUB_URL: conf.Hardsub.Url ? `${conf.Hardsub.Url}/` : apiUrl, 
 			INSTANCE_NAME: conf.API.Host,
 			EXPLORER_PROTOCOL: `http${conf.KaraExplorer.Secure ? 's' : ''}`,
 			EXPLORER_HOST: conf.KaraExplorer.Host,

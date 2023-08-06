@@ -73,6 +73,7 @@
 
 	const conf = useRuntimeConfig();
 	const apiUrl = conf.public.API_URL;
+	const hardsubUrl = conf.public.HARDSUB_URL;
 
 	const props = defineProps<{
 		active: boolean,
@@ -126,7 +127,7 @@
 		return `${apiUrl}downloads/medias/${encodeURIComponent(props.karaoke.mediafile)}`;
 	});
 	const mediaHardsubUrl = computed(() => {
-		return `${apiUrl}hardsubs/${props.karaoke.hardsubbed_mediafile}`;
+		return `${hardsubUrl}hardsubs/${props.karaoke.hardsubbed_mediafile}`;
 	});
 	const hardsubMediaFileName = computed(() => {
 		const filename = props.karaoke.mediafile.substring(0, props.karaoke.mediafile.lastIndexOf('.')) || props.karaoke.mediafile;

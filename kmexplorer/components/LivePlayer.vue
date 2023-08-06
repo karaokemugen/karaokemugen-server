@@ -49,10 +49,10 @@
 	const { locale } = useI18n();
 
 	const conf = useRuntimeConfig();
-	const apiUrl = conf.public.API_URL;
+	const hardsubUrl = conf.public.HARDSUB_URL;
 
 	const mediaHardsubUrl = computed(() => {
-		return `${apiUrl}hardsubs/${props.karaoke.hardsubbed_mediafile}`;
+		return `${hardsubUrl}hardsubs/${props.karaoke.hardsubbed_mediafile}`;
 	});
 	const theaterMode = computed(() => route.params.theater === 'theater');
 	const isIframe = ref(false);
@@ -71,7 +71,7 @@
 		controls: true,
 		fluid: !theaterMode.value && !fullscreen.value,
 		fill: true,
-		poster: `${apiUrl}previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`,
+		poster: `${hardsubUrl}previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`,
 		controlBar: {
 			fullscreenToggle: false,
 			skipButtons: {

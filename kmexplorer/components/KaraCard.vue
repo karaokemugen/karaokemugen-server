@@ -126,7 +126,7 @@
 	const { loggedIn } = storeToRefs(useAuthStore());
 
 	const conf = useRuntimeConfig();
-	const apiUrl = conf.public.API_URL;
+	const hardsubUrl = conf.public.HARDSUB_URL;
 
 	const activate = ref(false);
 	const loading = ref(false);
@@ -139,10 +139,10 @@
 	});
 	const images = computed((): string[] => {
 		return props.karaoke.mediafile.endsWith('.mp3')
-			? [`${apiUrl}previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`]
+			? [`${hardsubUrl}previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`]
 			: [
-				`${apiUrl}previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`,
-				`${apiUrl}previews/${props.karaoke.kid}.${props.karaoke.mediasize}.33.jpg`,
+				`${hardsubUrl}previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`,
+				`${hardsubUrl}previews/${props.karaoke.kid}.${props.karaoke.mediasize}.33.jpg`,
 			];
 	});
 	const getSlug = computed((): string => {
