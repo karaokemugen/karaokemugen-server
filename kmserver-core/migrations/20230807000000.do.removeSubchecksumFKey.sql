@@ -1,0 +1,1 @@
+ALTER TABLE kara_subchecksum DROP CONSTRAINT kara_subchecksum_fk_kid_fkey;
