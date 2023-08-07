@@ -170,7 +170,7 @@ export async function computeSubchecksums() {
 		stopOnError: false,
 		concurrency: 32
 	});
-	await copyFromData('kara_subchecksum', checksums);
+	await copyFromData('kara_subchecksum', checksums, true);
 	logger.info('Finished computing checksums', {service});
 }
 
