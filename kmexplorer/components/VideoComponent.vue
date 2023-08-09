@@ -86,12 +86,6 @@
 
 				setTitle();
 
-				nextButton.value = player.value!.getChild('ControlBar')!.addChild('button', {
-					controlText: t('kara.player.next'),
-					clickHandler: nextEvent
-				}, 1);
-				nextButton.value.setIcon('next-item');
-
 				const Button = videojs.getComponent('Button');
 
 				//@ts-ignore
@@ -113,10 +107,115 @@
 						setAutoplay(!autoplay.value);
 					}
 				}
-
 				//@ts-ignore
 				videojs.registerComponent('Switch', Switch);
+				const Component = videojs.getComponent('Component');
+
+				//@ts-ignore
+				class TouchOverlay extends Component {
+
+					constructor(player: Player, options: {}) {
+						super(player, options);
+					}
+
+					createEl() {
+						return videojs.dom.createEl('div', {
+							className: 'vjs-touch-overlay',
+							// Touch overlay is not tabbable.
+							tabIndex: -1
+						});
+					}
+				}
+				//@ts-ignore
+				Component.registerComponent('TouchOverlay', TouchOverlay);
+
+				//@ts-ignore
+				class TouchControl extends Component {
+
+					constructor(player: Player, options: {}) {
+						super(player, options);
+
+						//@ts-ignore
+						this.addChild('playToggle', {});
+						//@ts-ignore
+						nextButton.value = this.addChild('button', {
+							className: 'vjs-next-control',
+							controlText: t('kara.player.next'),
+							clickHandler: nextEvent
+						}, 1);
+						nextButton.value.setIcon('next-item');
+					}
+
+					createEl() {
+						return videojs.dom.createEl('div', {
+							className: 'vjs-control-bar vjs-touch-control',
+							// Touch overlay is not tabbable.
+							tabIndex: -1
+						});
+					}
+				}
+				//@ts-ignore
+				Component.registerComponent('TouchControl', TouchControl);
+
 				autoplayButton.value = player.value!.getChild('ControlBar')!.addChild('Switch');
+
+				if (videojs.browser.TOUCH_ENABLED) {
+					let controlBarIdx = player.value.children_.indexOf(player.value.getChild('ControlBar'));
+					const touchOverlay = player.value.addChild('TouchOverlay', {}, controlBarIdx);
+					controlBarIdx++;
+					player.value.addChild('TouchControl', {}, controlBarIdx);
+					let taps: number | null;
+					const handleTaps_ = videojs.fn.debounce(() => {
+						if (taps != null && taps !== 0) {
+							const increment = taps * 5;
+							if (increment !== 0) {
+								player.value!.currentTime(Math.max(0, Math.min(player.value!.duration()!, player.value!.currentTime()! + increment)));
+							}
+						} else {
+							player.value!.tech(false).trigger('tap');
+						}
+						taps = null;
+						touchOverlay.removeClass('skip');
+						touchOverlay.removeClass('reverse');
+					}, 300);
+					//@ts-ignore
+					player.value.tech(false).off('touchstart');
+					player.value.tech(false).on('touchstart', (e: any) => {
+						if (taps == null) {
+							taps = 0;
+						} else {
+							const rect = player.value!.el_.getBoundingClientRect();
+							const x = e.changedTouches[0].clientX - rect.left;
+
+							// Check if double tap is in left or right area
+							if (x < rect.width * 0.4) {
+								taps--;
+							} else if (x > rect.width - (rect.width * 0.4)) {
+								taps++;
+							}
+							if (taps < 0) {
+								touchOverlay.addClass('reverse');
+								touchOverlay.addClass('skip');
+							} else if (taps > 0) {
+								touchOverlay.removeClass('reverse');
+								touchOverlay.addClass('skip');
+							} else {
+								touchOverlay.removeClass('skip');
+								touchOverlay.removeClass('reverse');
+							}
+							const increment = Math.abs(taps * 5);
+							touchOverlay.setAttribute('data-skip-text', `${increment} ${touchOverlay.localize('seconds')}`);
+						}
+						handleTaps_();
+					});
+				} else {
+					nextButton.value = player.value!.getChild('ControlBar')!.addChild('button', {
+						className: 'vjs-next-control',
+						controlText: t('kara.player.next'),
+						clickHandler: nextEvent
+					}, 1);
+					nextButton.value.setIcon('next-item');
+				}
 
 				theaterButton.value = player.value!.getChild('ControlBar')!.addChild('button', {
 					controlText: t('kara.player.theater_mode'),
@@ -291,14 +390,87 @@
 	&.vjs-layout-tiny,
 	&.vjs-layout-x-small,
 	&.vjs-layout-small {
+		.vjs-title-bar {
+			font-size: 15px;
+		}
+	}
+
+	&.vjs-layout-tiny,
+	&.vjs-layout-x-small,
+	&.vjs-layout-small,
+	&.vjs-layout-medium {
 
 		.vjs-skip-backward-5,
 		.vjs-skip-forward-5 {
 			display: none;
 		}
+	}
 
-		.vjs-title-bar {
-			font-size: 15px;
+	&.vjs-touch-enabled {
+		.vjs-control-bar:not(.vjs-touch-control) {
+
+			.vjs-skip-backward-5,
+			.vjs-skip-forward-5,
+			.vjs-play-control,
+			.vjs-next-control {
+				display: none;
+			}
+		}
+
+		.vjs-touch-overlay {
+			pointer-events: none;
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			font-size: 25px;
+
+			&.skip {
+				background-repeat: no-repeat;
+				background-position: 80% center;
+				background-size: 10%;
+				background-image: url('data:image/svg+xml;utf8,<svg fill="%23FFFFFF" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+
+				&:after {
+					content: attr(data-skip-text);
+					position: absolute;
+					top: 60%;
+					left: 70%;
+				}
+			}
+
+			&.skip.reverse {
+				background-position: 20% center;
+				background-image: url('data:image/svg+xml;utf8,<svg fill="%23FFFFFF" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+
+				&:after {
+					right: 70%;
+					left: unset;
+				}
+			}
+		}
+
+		.vjs-touch-control {
+			position: static;
+			background-color: unset;
+			height: 100%;
+
+			.vjs-button {
+				font-size: 30px;
+				display: block;
+				background-color: unset;
+				top: 50%;
+				transform: translate(-50%, -50%);
+				position: absolute;
+				height: 20%;
+
+				&.vjs-play-control {
+					left: 50%;
+				}
+
+				&.vjs-next-control {
+					left: 75%;
+				}
+			}
 		}
 	}
 }
