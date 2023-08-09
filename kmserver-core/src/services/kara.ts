@@ -62,7 +62,6 @@ export async function updateRepo() {
 export async function generate() {
 	try {
 		await generateDatabase({validateOnly: false});
-		refreshKaraStats();
 		const conf = getConfig();
 		// Download master.zip from gitlab to serve it ourselves
 		const repo = conf.System.Repositories[0];
@@ -87,6 +86,7 @@ export async function generate() {
 		if (conf.KaraExplorer.Import) promises.push(clearOldInboxEntries());
 		if (conf.System.Repositories[0].OnUpdateTrigger) promises.push(updateTrigger());
 		await Promise.all(promises);
+		refreshKaraStats();
 	} catch (err) {
 		logger.error('Generation failed', {service, obj: err});
 		sentry.error(err, 'fatal');
