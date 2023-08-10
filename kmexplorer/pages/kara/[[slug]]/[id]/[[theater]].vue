@@ -172,7 +172,7 @@
 			// hardsub compatibility for apps that use youtube-dl for direct streaming (without breaking the card view as with og:type video) 
 			// twitter:player:stream assumes a raw stream and is checked before twitter:player https://github.com/ytdl-org/youtube-dl/blob/master/youtube_dl/extractor/generic.py#L3662
 			// @ts-ignore: No. :c
-			{ hid: 'twitter:player:stream', name: 'twitter:player:stream', content: karaoke.value?.hardsubbed_mediafile ? `${hardsubUrl}hardsubs/${karaoke.value?.hardsubbed_mediafile}` : '' },
+			{ hid: 'twitter:player:stream', name: 'twitter:player:stream', content: karaoke.value?.hardsubbed_mediafile && live ? `${hardsubUrl}hardsubs/${karaoke.value?.hardsubbed_mediafile}` : '' },
 
 		// The rest of meta tags is handled by KaraFullInfo.vue
 		])
