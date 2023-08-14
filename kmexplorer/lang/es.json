@@ -16,7 +16,36 @@
 	"kara": {
 		"tagtypes": {
 			"langs": "Lengua | Lenguas",
-			"collections": "Colección | Colecciones"
-		}
+			"collections": "Colección | Colecciones",
+			"misc": "Misceláneas"
+		},
+		"authors_by": "Karaoke creado por",
+		"download": "Descargar",
+		"lyrics": {
+			"show": "Mostrar letra",
+			"hide": "Ocultar letra"
+		},
+		"singers_by": "Cantada por",
+		"duration": "Duración ",
+		"created_at": "Creado ",
+		"creators_by": "Creado por",
+		"import": {
+			"sections": {
+				"files": "Archivos",
+				"titles": "Título(s)",
+				"parents": "Canción(es) principal(es)"
+			}
+		},
+		"problem": {
+			"form": {
+				"thanks": {
+					"btn": "Cerrar"
+				}
+			}
+		},
+		"favorites": {
+			"add": "Añadir a favoritos"
+		},
+		"singergroups_by": "de la banda de música"
 	}
 }
