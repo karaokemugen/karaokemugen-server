@@ -1,8 +1,6 @@
 <template>
 	<div>
-		<nav
-			class="navbar is-primary is-fixed-top"
-		>
+		<nav class="navbar is-primary is-fixed-top">
 			<div class="navbar-brand">
 				<nuxt-link
 					class="navbar-item"
@@ -194,9 +192,7 @@
 						aria-label="My animes"
 						@click="closeMenu"
 					>
-						<i
-							:className="`icon-${user.anime_list_to_fetch}`"
-						/>
+						<i :className="`icon-${user.anime_list_to_fetch}`" />
 						{{ $t('menu.anime_list') }}
 					</nuxt-link>
 					<nuxt-link
@@ -529,7 +525,7 @@
 					<li>
 						<nuxt-link
 							href="/search"
-							:class="{'is-active': $route.name === 'search-query'}"
+							:class="{ 'is-active': $route.name === 'search-query' }"
 							@click.prevent="pushSearch"
 						>
 							<font-awesome-icon
@@ -543,7 +539,7 @@
 						<nuxt-link
 							to="/types/series"
 							active-class="is-active"
-							:class="{'is-active': tagType === '~1'}"
+							:class="{ 'is-active': tagType === '~1' }"
 						>
 							<font-awesome-icon
 								:icon="['fas', 'tv']"
@@ -556,7 +552,7 @@
 						<nuxt-link
 							to="/types/singers"
 							active-class="is-active"
-							:class="{'is-active': tagType === '~2'}"
+							:class="{ 'is-active': tagType === '~2' }"
 						>
 							<font-awesome-icon
 								:icon="['fas', 'microphone-alt']"
@@ -569,7 +565,7 @@
 						<nuxt-link
 							to="/types/langs"
 							active-class="is-active"
-							:class="{'is-active': tagType === '~5'}"
+							:class="{ 'is-active': tagType === '~5' }"
 						>
 							<font-awesome-icon
 								:icon="['fas', 'language']"
@@ -597,7 +593,7 @@
 								<nuxt-link
 									to="/types/songtypes"
 									active-class="is-active"
-									:class="{'is-active': tagType === '~3'}"
+									:class="{ 'is-active': tagType === '~3' }"
 								>
 									<font-awesome-icon
 										:icon="['fas', 'list']"
@@ -605,12 +601,12 @@
 									/>
 									{{ $t('menu.songtypes') }}
 								</nuxt-link>
-							</li>				
+							</li>
 							<li>
 								<nuxt-link
 									to="/types/songwriters"
 									active-class="is-active"
-									:class="{'is-active': tagType === '~8'}"
+									:class="{ 'is-active': tagType === '~8' }"
 								>
 									<font-awesome-icon
 										:icon="['fas', 'signature']"
@@ -623,7 +619,7 @@
 								<nuxt-link
 									to="/types/creators"
 									active-class="is-active"
-									:class="{'is-active': tagType === '~4'}"
+									:class="{ 'is-active': tagType === '~4' }"
 								>
 									<font-awesome-icon
 										:icon="['fas', 'chalkboard-teacher']"
@@ -636,7 +632,7 @@
 								<nuxt-link
 									to="/types/authors"
 									active-class="is-active"
-									:class="{'is-active': tagType === '~6'}"
+									:class="{ 'is-active': tagType === '~6' }"
 								>
 									<font-awesome-icon
 										:icon="['fas', 'user-secret']"
@@ -649,7 +645,7 @@
 								<nuxt-link
 									to="/types/years"
 									active-class="is-active"
-									:class="{'is-active': $route.params.year}"
+									:class="{ 'is-active': $route.params.year }"
 								>
 									<font-awesome-icon
 										:icon="['fas', 'calendar-alt']"
@@ -662,7 +658,7 @@
 								<nuxt-link
 									to="/types/singergroups"
 									active-class="is-active"
-									:class="{'is-active': tagType === '~17'}"
+									:class="{ 'is-active': tagType === '~17' }"
 								>
 									<font-awesome-icon
 										:icon="['fas', 'people-group']"
@@ -675,7 +671,7 @@
 								<nuxt-link
 									to="/types/misc"
 									active-class="is-active"
-									:class="{'is-active': tagType === '~7'}"
+									:class="{ 'is-active': tagType === '~7' }"
 								>
 									<font-awesome-icon
 										:icon="['fas', 'tags']"
@@ -688,7 +684,7 @@
 								<nuxt-link
 									to="/types/warnings"
 									active-class="is-active"
-									:class="{'is-active': tagType === '~15'}"
+									:class="{ 'is-active': tagType === '~15' }"
 								>
 									<font-awesome-icon
 										:icon="['fas', 'exclamation-triangle']"
@@ -701,7 +697,7 @@
 								<nuxt-link
 									to="/types/groups"
 									active-class="is-active"
-									:class="{'is-active': tagType === '~9'}"
+									:class="{ 'is-active': tagType === '~9' }"
 								>
 									<font-awesome-icon
 										:icon="['fas', 'boxes']"
@@ -714,7 +710,7 @@
 								<nuxt-link
 									to="/types/families"
 									active-class="is-active"
-									:class="{'is-active': tagType === '~10'}"
+									:class="{ 'is-active': tagType === '~10' }"
 								>
 									<font-awesome-icon
 										:icon="['fas', 'photo-video']"
@@ -727,7 +723,7 @@
 								<nuxt-link
 									to="/types/origins"
 									active-class="is-active"
-									:class="{'is-active': tagType === '~11'}"
+									:class="{ 'is-active': tagType === '~11' }"
 								>
 									<font-awesome-icon
 										:icon="['fas', 'project-diagram']"
@@ -740,7 +736,7 @@
 								<nuxt-link
 									to="/types/genres"
 									active-class="is-active"
-									:class="{'is-active': tagType === '~12'}"
+									:class="{ 'is-active': tagType === '~12' }"
 								>
 									<font-awesome-icon
 										:icon="['fas', 'chess']"
@@ -753,7 +749,7 @@
 								<nuxt-link
 									to="/types/platforms"
 									active-class="is-active"
-									:class="{'is-active': tagType === '~13'}"
+									:class="{ 'is-active': tagType === '~13' }"
 								>
 									<font-awesome-icon
 										:icon="['fas', 'laptop']"
@@ -766,7 +762,7 @@
 								<nuxt-link
 									to="/types/versions"
 									active-class="is-active"
-									:class="{'is-active': tagType === '~14'}"
+									:class="{ 'is-active': tagType === '~14' }"
 								>
 									<font-awesome-icon
 										:icon="['fas', 'tachometer-alt']"
@@ -779,7 +775,7 @@
 								<nuxt-link
 									to="/types/franchises"
 									active-class="is-active"
-									:class="{'is-active': tagType === '~18'}"
+									:class="{ 'is-active': tagType === '~18' }"
 								>
 									<font-awesome-icon
 										:icon="['fas', 'sitemap']"
@@ -894,9 +890,7 @@
 								active-class="is-active"
 								aria-label="My animes"
 							>
-								<i
-									:className="`icon-${user.anime_list_to_fetch}`"
-								/>
+								<i :className="`icon-${user.anime_list_to_fetch}`" />
 								{{ $t('menu.anime_list') }}
 							</nuxt-link>
 							<nuxt-link
@@ -959,14 +953,10 @@
 			<div class="columns has-text-centered">
 				<p class="column">
 					Karaoke Mugen Server -
-					<nuxt-link
-						href="https://api.karaokes.moe/server"
-					>
+					<nuxt-link href="https://api.karaokes.moe/server">
 						{{ $t('footer.api_documentation') }}
 					</nuxt-link> -
-					<nuxt-link
-						href="https://gitlab.com/karaokemugen/code/karaokemugen-server"
-					>
+					<nuxt-link href="https://gitlab.com/karaokemugen/code/karaokemugen-server">
 						GIT
 					</nuxt-link> -
 					<nuxt-link href="https://hosted.weblate.org/projects/karaoke-mugen/">
@@ -978,9 +968,7 @@
 				</p>
 				<p class="column">
 					{{ $t('footer.software_under_license') }}
-					<nuxt-link
-						href="https://gitlab.com/karaokemugen/code/karaokemugen-server/-/blob/master/LICENSE.md"
-					>
+					<nuxt-link href="https://gitlab.com/karaokemugen/code/karaokemugen-server/-/blob/master/LICENSE.md">
 						MIT
 					</nuxt-link>
 					<template v-if="base_license_name">
@@ -994,30 +982,30 @@
 		</footer>
 		<LoginModal
 			:active="auth"
-			@close="auth=false"
+			@close="auth = false"
 			@login="login"
 		/>
 		<ProfileModal
 			:active="profile"
-			@close="profile=false"
+			@close="profile = false"
 			@logout="logout"
 		/>
 		<AddRepoModal
 			:active="addRepo"
-			@close="addRepo=false"
+			@close="addRepo = false"
 		/>
 		<DeleteAccountModal
 			:active="deleteAccount"
-			@close="deleteAccount=false"
+			@close="deleteAccount = false"
 			@logout="logout"
 		/>
 		<JoinKaraModal
 			:active="joinKara"
-			@close="joinKara=false"
+			@close="joinKara = false"
 		/>
 		<StatsModal
 			:active="stats"
-			@close="stats=false"
+			@close="stats = false"
 		/>
 	</div>
 </template>
@@ -1045,7 +1033,7 @@
 	const suggestions = conf.public.SUGGESTIONS;
 	const addRepoModalInMenu = conf.public.ADD_REPO_MODAL_IN_MENU;
 
-	type TypeMenu = 'community'|'account'|'database';
+	type TypeMenu = 'community' | 'account' | 'database';
 
 	const { params, fullPath, name } = useRoute();
 	const { beforeEach, push } = useRouter();
@@ -1059,7 +1047,7 @@
 	const { auth, joinKara, stats, deleteAccount, addRepo, profile } = storeToRefs(useModalStore());
 	const { closeAll, openModal } = useModalStore();
 	const { loggedIn, user } = storeToRefs(useAuthStore());
-	const { logout, login:loginApi } = useAuthStore();
+	const { logout, login: loginApi } = useAuthStore();
 	const { enabledCollections } = storeToRefs(useLocalStorageStore());
 
 	useHead(() => {
@@ -1085,7 +1073,7 @@
 					if (!onKaraTagUserListView) {
 						push(generateNavigation());
 					} // Each KaraList view handles a search change itself, either by swapping the route
-					// or by reset the List with new filter
+				// or by reset the List with new filter
 				}
 			});
 		});
@@ -1149,7 +1137,7 @@
 		}
 	}
 
-	function setUsedLocale(availableLocale : string){
+	function setUsedLocale(availableLocale: string) {
 		setLocale(availableLocale);
 		editUser(availableLocale);
 	}
