@@ -18,7 +18,6 @@
 				>
 					<live-player
 						:karaoke="karaoke"
-						:transition="liveTransition"
 						@open="placeForLive"
 						@close="closeLive"
 					/>
