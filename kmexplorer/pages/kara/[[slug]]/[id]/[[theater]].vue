@@ -113,7 +113,6 @@
 
 	const karaoke = ref<DBKara>();
 	const liveOpened = ref(false);
-	const liveTransition = ref(false);
 	const leftTile = ref<HTMLElement>();
 
 	const conf = useRuntimeConfig();
@@ -201,13 +200,8 @@
 
 	function placeForLive() {
 		liveOpened.value = true;
-		leftTile.value?.addEventListener('transitionend', transitionLive, { once: true });
-	}
-	function transitionLive() {
-		liveTransition.value = true;
 	}
 	function closeLive() {
-		liveTransition.value = false;
 		liveOpened.value = false;
 	}
 </script>

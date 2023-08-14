@@ -37,7 +37,6 @@
 
 	const props = defineProps<{
 		karaoke: DBKara
-		transition: Boolean
 	}>();
 
 	const emit = defineEmits<{ (e: 'open' | 'close'): void }>();
