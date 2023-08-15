@@ -41,7 +41,7 @@ const nuxtConfig = defineNuxtConfig({
 					? conf.KaraExplorer.SupportedMedias
 					: ([] as string[]).concat(supportedFiles.video, supportedFiles.audio),
 			API_URL: apiUrl,
-			HARDSUB_URL: conf.Hardsub.Url ? `${conf.Hardsub.Url}/` : apiUrl, 
+			HARDSUB_URL: conf.Hardsub.Url ? `${conf.Hardsub.Url}/` : apiUrl,
 			INSTANCE_NAME: conf.API.Host,
 			EXPLORER_PROTOCOL: `http${conf.KaraExplorer.Secure ? 's' : ''}`,
 			EXPLORER_HOST: conf.KaraExplorer.Host,
@@ -124,8 +124,7 @@ const nuxtConfig = defineNuxtConfig({
 	],
 
 	css: [
-		'assets/main.scss',
-		'@oruga-ui/oruga-next/src/scss/oruga-full-vars.scss'
+		'assets/main.scss'
 	],
 
 	app: {
