@@ -378,7 +378,11 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 
 		const animeListToFetch = user.anime_list_to_fetch;
 		if ((animeListToFetch !== currentUser.anime_list_to_fetch) ||
-			(user.social_networks && user.social_networks[animeListToFetch] !== currentUser.social_networks[animeListToFetch])
+			(
+				user.social_networks &&
+				Object.keys(user.social_networks).length > 0 &&
+				user.social_networks[animeListToFetch] !== currentUser.social_networks[animeListToFetch]
+			)
 		) {
 			refreshAnimeList(username).catch();
 		}
