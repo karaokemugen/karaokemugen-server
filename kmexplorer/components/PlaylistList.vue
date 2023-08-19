@@ -4,7 +4,10 @@
 		:key="pl.plaid"
 		class="my-2"
 	>
-		<nuxt-link :to="`/playlist/${pl.slug}`">
+		<nuxt-link
+			class="link"
+			:to="`/playlist/${pl.slug}`"
+		>
 			<article class="tile is-child notification">
 				<div class="is-flex is-justify-content-space-between">
 					<div class="title">
@@ -121,7 +124,7 @@
 	}
 </script>
 <style scope lang="scss">
-	a {
+	.link {
 		color: white;
 	}
 

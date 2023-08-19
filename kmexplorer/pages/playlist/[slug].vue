@@ -169,6 +169,7 @@
 	import { useAuthStore } from '~/store/auth';
 	import { useModalStore } from '~/store/modal';
 
+	// @ts-ignore
 	const useToast = Toast.useToast ?? Toast.default.useToast;
 
 	const { createEditPlaylist, deletePlaylist } = storeToRefs(useModalStore());
