@@ -24,6 +24,7 @@ export async function removePlaylist(plaid: string, token: JWTTokenWithRoles) {
 		const pl = (await getPlaylists({
 			plaid
 		}, adminToken))[0];
+		token.username = token.username.toLowerCase();
 		if (!pl) throw new ErrorKM('UNKNOWN_PLAYLIST', 404, false); 
 		if (!token.roles.admin && pl.username !== token.username) throw new ErrorKM('CHECK_YOUR_PRIVILEGES', 403, false);
 		
@@ -44,6 +45,7 @@ export async function editPlaylist(plaid: string, playlist: DBPL, token?: JWTTok
 			getPlaylists({}, adminToken),
 			findUserByName(token.username)
 		]);
+		token.username = token.username.toLowerCase();
 		delete playlist.plaid;
 		const pl = pls.find(pla => pla.plaid === plaid);
 		if (!pl) throw new ErrorKM('UNKNOWN_PLAYLIST', 404, false); 
@@ -75,7 +77,7 @@ export async function createPlaylist(pl: DBPL, token: JWTTokenWithRoles) {
 			getPlaylists({}, adminToken),
 			findUserByName(token.username)
 		]);
-
+		token.username = token.username.toLowerCase();
 		// If playlist is to be replaced, let's check if we're allowed to
 		if (pls.find(pla => 
 			pl.plaid === pla.plaid && 
@@ -114,6 +116,7 @@ export async function getPlaylists(params: PLParams, token: JWTTokenWithRoles): 
 	try {
 		const pls = await selectPlaylists(params);
 		// Let's filter lists depending on if we're allowed to see those lists or not
+		if (token) token.username = token.username.toLowerCase();
 		return pls.filter(pl => 
 			pl.flag_visible_online || 
 			token?.roles.admin ||
@@ -131,6 +134,7 @@ export async function addContributorToPlaylist(plaid: string, username: string, 
 		const pl = (await getPlaylists({
 			plaid
 		}, adminToken))[0];
+		token.username = token.username.toLowerCase();
 		if (!pl) throw new ErrorKM('UNKNOWN_PLAYLIST', 404, false); 
 		if (!token.roles.admin && pl.username !== token.username) throw new ErrorKM('CHECK_YOUR_PRIVILEGES', 403, false);
 		if (pl.username === username) throw new ErrorKM('PL_ADD_CONTRIBUTOR_NO_SELF_ERROR', 409, false);
@@ -147,6 +151,7 @@ export async function removeContributorToPlaylist(plaid: string, username: strin
 		const pl = (await getPlaylists({
 			plaid
 		}, adminToken))[0];
+		token.username = token.username.toLowerCase();
 		if (!pl) throw new ErrorKM('UNKNOWN_PLAYLIST', 404, false); 
 		// A user should be able to remove themselves from the playlist
 		if (!token.roles.admin && pl.username !== token.username && !pl.contributors.includes(token.username)) throw new ErrorKM('CHECK_YOUR_PRIVILEGES', 403, false);
@@ -161,6 +166,7 @@ export async function removeContributorToPlaylist(plaid: string, username: strin
 /** Get playlist contents */
 export async function getPlaylistContents(plaid: string, token: JWTTokenWithRoles, filter?: string, lang?: string, from = 0, size = 99999999999) {
 	try {
+		if (token) token.username = token.username.toLowerCase();
 		const plInfo = (await getPlaylists({plaid}, adminToken))[0];
 		if (!plInfo) throw new ErrorKM('UNKNOWN_PLAYLIST', 404, false);
 		if ((!token && !plInfo.flag_visible_online) && token && !token.roles.admin && plInfo.username !== token.username && !plInfo.contributors.includes(token.username)) throw new ErrorKM('CHECK_YOUR_PRIVILEGES', 403, false);
@@ -184,6 +190,7 @@ export async function getPlaylistContents(plaid: string, token: JWTTokenWithRole
 /** Add song to playlist */
 export async function addKaraToPlaylist(kids: string[], plaid: string, token: JWTTokenWithRoles, pos?: number) {
 	try {
+		token.username = token.username.toLowerCase();
 		const [pls, karas] = await Promise.all([
 			getPlaylists({plaid}, token),
 			getAllKaras({
@@ -247,6 +254,7 @@ export async function addKaraToPlaylist(kids: string[], plaid: string, token: JW
 export async function removeKaraFromPlaylist(plc_ids: number[], token: JWTTokenWithRoles) {
 	// If we get a single song, it's a user deleting it (most probably)
 	try {
+		token.username = token.username.toLowerCase();
 		const playlistsNeedingUpdate: Set<string> = new Set();
 		const plcsNeedingDelete: any[] = [];
 		for (const plc_id of plc_ids) {
@@ -295,6 +303,7 @@ export async function removeKaraFromPlaylist(plc_ids: number[], token: JWTTokenW
 /** Edit PLC's properties in a playlist */
 export async function editPLC(plc_ids: number[], params: PLCEditParams, token: JWTTokenWithRoles) {
 	try {
+		token.username = token.username.toLowerCase();
 		const plcData: DBPLC[] = [];
 		for (const plc_id of plc_ids) {
 			plcData.push(await selectPLCMini(plc_id));
@@ -338,6 +347,7 @@ export async function editPLC(plc_ids: number[], params: PLCEditParams, token: J
 /** Export playlist as JSON */
 export async function exportPlaylist(plaid: string, token: JWTTokenWithRoles) {
 	try {
+		if (token) token.username = token.username.toLowerCase();
 		const pl = (await getPlaylists({plaid}, adminToken))[0];
 		if (!pl) throw new ErrorKM('UNKNOWN_PLAYLIST', 404, false);
 		// Auth is optional for exporting playlists
@@ -364,6 +374,7 @@ export async function exportPlaylist(plaid: string, token: JWTTokenWithRoles) {
 }
 
 export async function emptyPlaylist(plaid: string, token: JWTTokenWithRoles) {
+	token.username = token.username.toLowerCase();
 	const pl = (await getPlaylists({ plaid }, adminToken))[0];
 	if (!pl) throw {code: 404, msg: 'Playlist unknown'};
 	if (!token.roles.admin && token.username !== pl.username && !pl.contributors.includes(token.username)) {
@@ -392,6 +403,7 @@ export async function importPlaylist(playlist: PlaylistExport, token: JWTTokenWi
 	// If all tests pass, then add playlist, then add karas
 	// Playlist can end up empty if no karaokes are found in database
 	try {
+		token.username = token.username.toLowerCase();
 		logger.debug('Importing playlist', {service, obj: playlist});
 		const validationErrors = check(playlist, PLImportConstraints);
 		if (validationErrors) {
