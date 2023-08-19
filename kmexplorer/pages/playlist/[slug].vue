@@ -162,12 +162,14 @@
 	import _ from 'lodash';
 	import { storeToRefs } from 'pinia';
 	import dayjs from 'dayjs';
-	import { useToast } from 'vue-toastification';
+	import * as Toast from 'vue-toastification';
 	import { DBPL, DBPLC } from 'kmserver-core/src/lib/types/database/playlist';
 	import { KaraList, KaraList as KaraListType } from '%/lib/types/kara';
 	import { useMenubarStore } from '~/store/menubar';
 	import { useAuthStore } from '~/store/auth';
 	import { useModalStore } from '~/store/modal';
+
+	const useToast = Toast.useToast ?? Toast.default.useToast;
 
 	const { createEditPlaylist, deletePlaylist } = storeToRefs(useModalStore());
 	const { closeModal, openModal } = useModalStore();

@@ -57,9 +57,12 @@
 <script setup lang="ts">
 	import { DBPL } from 'kmserver-core/src/lib/types/database/playlist';
 	import { storeToRefs } from 'pinia';
-	import { useToast } from 'vue-toastification';
+	import * as Toast from 'vue-toastification';
 	import { useAuthStore } from '~/store/auth';
 	import { useModalStore } from '~/store/modal';
+
+	// @ts-ignore
+	const useToast = Toast.useToast ?? Toast.default.useToast;
 
 	const props = defineProps<{
 		kid: string
