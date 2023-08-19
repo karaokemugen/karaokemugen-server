@@ -201,7 +201,7 @@
 		"you": " (é você!)",
 		"edit": "Editar perfil",
 		"private": "O seu perfil é privado, só você o pode ver.",
-		"favorites_count": "{x} favorito | {x} favoritos",
+		"favorites_count": "{count} favorito | {count} favoritos",
 		"public_favorites": "Os seus favoritos são públicos. Clique para os esconder.",
 		"private_favorites": "Os seus favoritos são privados. Clique para os mostrar."
 	},

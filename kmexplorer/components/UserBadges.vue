@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-	import { RoleDetail, roles } from '~/assets/constants';
+	import { RoleDetail, rolesList } from '~/assets/constants';
 	import { Roles } from '%/lib/types/user';
 
 	type Role = RoleDetail & { name: RoleKey, active: boolean };
@@ -41,10 +41,10 @@
 
 	const effectiveRoles  = computed<Role[]>(() => {
 		// Only values that exists in roles table
-		const realRoles = Object.keys(roles) as RoleKey[];
+		const realRoles = Object.keys(rolesList) as RoleKey[];
 		return realRoles.map((r) => {
 			return {
-				...roles[r],
+				...rolesList[r],
 				name: r,
 				active: props.roles && !!props.roles[r]
 			} as Role;

@@ -523,7 +523,7 @@
 		"private_favorites": "Favoritmu privat. Klik untuk memperlihatkannya.",
 		"favorites": "Favorit",
 		"edit": "Sunting profil",
-		"favorites_count": "{x} favorit",
+		"favorites_count": "{count} favorit",
 		"anime_list": "Anime saya"
 	},
 	"toast": {

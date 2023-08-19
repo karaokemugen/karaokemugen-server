@@ -53,7 +53,7 @@
 				collections: enabledCollections.value.join(',')
 			}
 		}).catch(_err => {
-			throw createError({ statusCode: 404, message: t('error.not_found_tag') as string });
+			throw createError({ statusCode: 404, message: t('error.not_found_tag') });
 		});
 		loading.value = false;
 		if (res) {

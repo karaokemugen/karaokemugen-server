@@ -47,6 +47,12 @@
 					:fixed-width="true"
 				/>
 			</button>
+			<add-to-playlist-button
+				:kid="karaoke.kid"
+				:loading="loading"
+				:playlists="playlists"
+				:kara-card="true"
+			/>
 			<div>
 				<nuxt-link
 					:to="`/kara/${getSlug}/${karaoke.kid}`"
@@ -110,6 +116,7 @@
 
 <script setup lang="ts">
 	import { DBKara } from '%/lib/types/database/kara';
+	import { DBPL } from 'kmserver-core/src/lib/types/database/playlist';
 	import { storeToRefs } from 'pinia';
 	import slug from 'slug';
 	import { tagTypes } from '~/assets/constants';
@@ -120,6 +127,7 @@
 	const props = defineProps<{
 		karaoke: DBKara
 		karaokesI18n?: Record<string, Record<string, string>>
+		playlists: DBPL[]
 	}>();
 
 	const { openModal } = useModalStore();

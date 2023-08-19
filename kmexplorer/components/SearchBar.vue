@@ -1,7 +1,7 @@
 <template>
 	<div class="field is-expanded has-addons">
 		<div
-			v-if="results"
+			v-if="results && !route.name.includes('playlist')"
 			class="control"
 		>
 			<collections-picker
@@ -98,7 +98,7 @@
 
 	const canCount = computed(() => ['types-id', 'search-query', 'user-login', 'users', 'types-years'].includes(route.name as string));
 	const canSort = computed(() => ['types-id', 'search-query', 'user-login', 'users', 'types-years'].includes(route.name as string));
-	const canSearch = computed(() => ['types-id', 'search-query', 'user-login', 'users', 'types-years', 'suggest'].includes(route.name as string));
+	const canSearch = computed(() => ['types-id', 'search-query', 'user-login', 'users', 'types-years', 'suggest', 'playlists-community', 'playlist-slug'].includes(route.name as string));
 	const searchLabel = computed((): string => {
 		if (route.name === 'users') {
 			return $t('search.types.users') as string;
@@ -115,6 +115,8 @@
 	const placeholder = computed((): string => {
 		if (route.name === 'users') {
 			return $t('search.placeholder.user') as string;
+		} else if (route.name === 'playlists-community') {
+			return $t('search.placeholder.playlist') as string;
 		} else if (['types-id', 'types-years'].includes(route.name as string)) {
 			return $t('search.placeholder.tag') as string;
 		} else {

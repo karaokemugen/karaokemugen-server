@@ -69,7 +69,6 @@
 <script setup lang="ts">
 	import slug from 'slug';
 	import { DBKara } from '%/lib/types/database/kara';
-	import { tagTypes } from '~/assets/constants';
 
 	const conf = useRuntimeConfig();
 	const apiUrl = conf.public.API_URL;
@@ -136,20 +135,7 @@
 	const subtitlesUrl = computed(() => {
 		return `${apiUrl}downloads/lyrics/${encodeURIComponent(props.karaoke.subfile)}`;
 	});
-	const live = computed(() => {
-		// Loop all tags to find a tag with noLiveDownload
-		let noLiveDownload = false;
-		for (const tagType in tagTypes) {
-			if (tagType === 'years') { continue; }
-			// @ts-ignore
-			for (const tag of props.karaoke[tagType]) {
-				if (tag.noLiveDownload) {
-					noLiveDownload = true;
-				}
-			}
-		}
-		return !noLiveDownload;
-	});
+	const live = computed(() => isPlayable(props.karaoke));
 
 	function closeModal(): void {
 		emit('close');

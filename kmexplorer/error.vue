@@ -29,12 +29,10 @@
 	</div>
 </template>
 
-<script>
-	export default {
-		name: 'Error',
-
-		props: ['error']
-	};
+<script setup lang="ts">
+	defineProps<{
+		error: any
+	}>();
 </script>
 
 <style scoped lang="scss">

@@ -57,6 +57,7 @@ SELECT
   ksub.subchecksum AS subchecksum,
   ak.pk_kid || '.' || ak.mediasize::text || '.' || COALESCE(ksub.subchecksum, 'no_ass_file') || '.mp4' AS hardsubbed_mediafile,
   ${selectClause}
+  array_remove(array_agg(DISTINCT plc.fk_plaid), null) AS playlists,
   array_remove(array_agg(DISTINCT krc.fk_kid_parent), null) AS parents,
   array_remove(array_agg(DISTINCT krp.fk_kid_child), null) AS children,
   COALESCE(array_remove((SELECT array_agg(DISTINCT fk_kid_child) FROM kara_relation WHERE fk_kid_parent = ANY (array_remove(array_agg(DISTINCT krc.fk_kid_parent), null))), ak.pk_kid), array[]::uuid[]) AS siblings
@@ -65,9 +66,10 @@ LEFT OUTER JOIN kara_relation krp ON krp.fk_kid_parent = ak.pk_kid
 LEFT OUTER JOIN kara_relation krc ON krc.fk_kid_child = ak.pk_kid
 LEFT JOIN kara_subchecksum ksub ON ksub.fk_kid = ak.pk_kid
 LEFT JOIN kara k ON k.pk_kid = ak.pk_kid
+LEFT JOIN playlist_content plc ON plc.fk_kid = ak.pk_kid
 ${joinClause}
 ${additionalFrom.join('')}
-WHERE ${includeStaging ? '1 = 1' : 'ak.repository != \'Staging\''}
+WHERE ${includeStaging ? 'TRUE' : 'ak.repository != \'Staging\''}
 	${
 	collectionClauses.length > 0
 		? `AND (${collectionClauses.map(clause => `(${clause})`).join(' OR ')})`

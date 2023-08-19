@@ -468,7 +468,7 @@
 	"profile": {
 		"favorites": "Favoriten",
 		"edit": "Profil bearbeiten",
-		"favorites_count": "{x} Favorit | {x} Favoriten",
+		"favorites_count": "{count} Favorit | {count} Favoriten",
 		"anime_list": "Meine Anime"
 	},
 	"toast": {

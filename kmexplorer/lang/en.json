@@ -3,6 +3,7 @@
 		"generic": "Error",
 		"private_profile": "The profile is private.",
 		"not_found_profile": "Cannot find this user",
+		"not_found_playlist": "Cannot find this playlist",
 		"home": "Go home",
 		"not_found_tag": "Tag not found",
 		"remote": "Error when loading remotes list"
@@ -51,6 +52,12 @@
 		"set_banner": {
 			"btn": "Use as profile banner",
 			"forbidden_label": "You cannot use this karaoke as your profile banner."
+		},
+		"playlists": {
+			"add": "Add to playlist",
+			"create": "Create a new playlist...",
+			"new_playlist_label": "{nickname}'s playlist",
+			"add_success": "The karaoke has been added successfully to the playlist."
 		},
 		"problem": {
 			"title": "An issue with {title}?",
@@ -174,6 +181,7 @@
 		"childrens": "Children songs",
 		"parents": "Parent songs",
 		"player": {
+			"previous": "Previous song (B)",
 			"next": "Next song (N)",
 			"theater_mode": "Theater mode (T)",
 			"fullscreen": "Fullscreen (F)",
@@ -188,6 +196,7 @@
 		"remove_tags": "Did you try removing some of the filter tags from the search?",
 		"end_favorites": "This is the end of favorites.",
 		"end_my_favorites": "This is the end of your favorites.",
+		"end_playlists": "Display {number} more playlists",
 		"explore": "Go add some!",
 		"results": "{count} result | {count} results",
 		"collections": "Karaoke Mugen provides many collections, choose the ones you are interested in.",
@@ -239,6 +248,8 @@
 		"langs": "Languages",
 		"years": "Years",
 		"community": "Community",
+		"playlists": "Playlists",
+		"my_playlists": "My playlists",
 		"remotes": "Remotes",
 		"search_users": "Search users",
 		"discord": "Discord",
@@ -258,7 +269,8 @@
 		"you": " (that's you!)",
 		"edit": "Edit profile",
 		"private": "Your profile is private, only you can see it.",
-		"favorites_count": "{x} favorite | {x} favorites",
+		"favorites_count": "{count} favorite | {count} favorites",
+		"playlists_count": "{count} playlist | {count} playlists",
 		"anime_list": "My animes",
 		"public_favorites": "Your favorites are public. Click to hide them.",
 		"private_favorites": "Your favorites are private. Click to show them."
@@ -267,7 +279,8 @@
 		"placeholder": {
 			"kara": "Series, singers, names…",
 			"user": "Username…",
-			"tag": "Tag name…"
+			"tag": "Tag name…",
+			"playlist": "Name, users…"
 		},
 		"sort": {
 			"a_z": "From A to Z",
@@ -533,6 +546,21 @@
 			"next": "Next image",
 			"previous": "Previous image",
 			"one": "There is only one banner for audio only karaokes."
+		},
+		"create_edit_playlist": {
+			"title_create": "Create a playlist",
+			"title_edit": "Edit the playlist",
+			"name": "Name",
+			"description": "Description",
+			"contributors": "Contributors",
+			"public": "Public",
+			"submit_create": "Save",
+			"submit_edit": "Edit"
+		},
+		"delete_playlist": {
+			"label": "Do you really want to delete the playlist '{name}'?",
+			"add": "Delete the playlist",
+			"cancel": "Cancel"
 		}
 	},
 	"titles": {
@@ -578,12 +606,28 @@
 		"BANNER_NOT_GENERATED_YET": "Banner hasn't been generated yet!",
 		"BANNER_BANNED": "This banner cannot be used",
 		"PASSWORD_TOO_SHORT": "Password too short",
-		"CHECK_YOUR_PRIVILEGES": "Check your privileges",
+		"CHECK_YOUR_PRIVILEGES": "Insufficient rights",
 		"EDIT_USER_ERROR": "Erreur editing profile",
 		"GITLAB_DISABLED": "Gitlab support is disabled",
 		"SUBFILE_FORMAT_UNKNOWN": "Unknown lyrics format",
 		"SUBFILE_PROCESS_ERROR": "Error processing lyrics",
-		"UPLOADED_MEDIA_ERROR": "Error processing media"
+		"UPLOADED_MEDIA_ERROR": "Error processing media",
+		"UNKNOWN_PLAYLIST": "Unknown playlist",
+		"PL_DELETE_ERROR": "Error deleting playlist",
+		"PL_EDIT_ERROR": "Error editing playlist",
+		"PL_CREATE_ERROR": "Error creating the playlist",
+		"PL_GET_ERROR": "Error retrieving playlists",
+		"PL_ADD_CONTRIBUTOR_NO_SELF_ERROR": "Impossible to add yourself as a contributor",
+		"PL_ADD_CONTRIBUTOR_ERROR": "Error adding contributors",
+		"PL_REMOVE_CONTRIBUTOR_ERROR": "Error deleting contributors",
+		"PL_GET_CONTENTS_ERROR": "Error retrieving content from playlist",
+		"UNKNOWN_SONG": "Unknown song",
+		"PL_ADD_SONG_ERROR": "Error adding song to playlist",
+		"INVALID_DATA": "Invalid data",
+		"PL_DELETE_SONG_ERROR": "Error when deleting a song from the playlist",
+		"PL_EDIT_SONG_ERROR": "Error editing playlist contents",
+		"PL_EXPORT_ERROR": "Error exporting playlist",
+		"PL_IMPORT_ERROR": "Error importing playlist"
 	},
 	"roles": {
 		"donator": "Donator",
@@ -626,5 +670,22 @@
 		"edit_success": "Remote edited with success",
 		"edit_error": "Error when edited remote",
 		"delete_error": "Error when deleted remote"
+	},
+	"playlists": {
+		"create": "Create a new playlist",
+		"import": "Import a playlist",
+		"karacount": "{karacount} songs",
+		"duration": "Duration {duration}",
+		"public": "Public",
+		"private": "private",
+		"export": "Export",
+		"edit": "Edit",
+		"delete": "Delete",
+		"share": "Share",
+		"add_karaoke": "Add a karaoke to the playlist",
+		"by_owner": "by {username}",
+		"and_contributors": "(and {contributors})",
+		"and_contributors_more": "(and {contributors}, {count} more)",
+		"share_clipboard": "Playlist link copied in clipboard"
 	}
 }

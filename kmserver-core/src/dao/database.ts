@@ -3,6 +3,7 @@ import { scheduleJob } from 'node-schedule';
 import { connectDB } from '../lib/dao/database.js';
 import {getConfig} from '../lib/utils/config.js';
 import { refreshKaraStats } from './kara.js';
+import { updatePlaylistSearchVector } from './playlist.js';
 import { upsertInstance } from './stats.js';
 import { deleteInactiveUsers } from './user.js';
 
@@ -19,4 +20,5 @@ export async function initDB(log: boolean) {
 	scheduleJob('0 0 0 * * *', deleteInactiveUsers);
 	refreshKaraStats();
 	deleteInactiveUsers();
+	updatePlaylistSearchVector();
 }

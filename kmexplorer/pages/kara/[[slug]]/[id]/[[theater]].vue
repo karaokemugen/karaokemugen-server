@@ -101,18 +101,34 @@
 					:ignore-filter="true"
 				/>
 			</template>
+			<div v-if="playlists.length > 0">
+				<div class="title-box">
+					<h1 class="title with-button">
+						<font-awesome-icon
+							:icon="['fas', 'list']"
+							fixed-width
+						/>
+						{{ $t('profile.playlists_count', playlists.length) }}
+					</h1>
+				</div>
+				<playlist-list
+					:playlists="playlists"
+					:chunk-size="10"
+				/>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 	import { DBKara } from '%/lib/types/database/kara';
+	import { DBPL } from 'kmserver-core/src/lib/types/database/playlist';
 	import slug from 'slug';
-	import { tagTypes } from '~/assets/constants';
 
 	const karaoke = ref<DBKara>();
 	const liveOpened = ref(false);
 	const leftTile = ref<HTMLElement>();
+	const playlists = ref<DBPL[]>([]);
 
 	const conf = useRuntimeConfig();
 	const apiUrl = conf.public.API_URL;
@@ -148,7 +164,7 @@
 			}
 			karaoke.value = sortTypesKara(res);
 		} catch (e) {
-			throw createError({ statusCode: 404, message: t('kara.notfound') as string });
+			throw createError({ statusCode: 404, message: t('kara.notfound') });
 		}
 	}
 
@@ -177,25 +193,19 @@
 	});
 
 	const mp3 = computed(() => karaoke.value?.mediafile.endsWith('.mp3'));
-	const live = computed(() => {
-		// Loop all tags to find a tag with noLiveDownload
-		let noLiveDownload = false;
-		if (karaoke.value) {
-			for (const tagType in tagTypes) {
-				if (tagType === 'years') { continue; }
-				// @ts-ignore
-				for (const tag of karaoke.value[tagType]) {
-					if (tag.noLiveDownload) {
-						noLiveDownload = true;
-					}
-				}
-			}
-		}
-		return !noLiveDownload;
-	});
+	const live = computed(() => karaoke.value && isPlayable(karaoke.value));
 
 	watch(() => [route.query, route.params], fetch);
 	await fetch();
+	getPlaylists();
+
+	async function getPlaylists() {
+		playlists.value = await useCustomFetch<DBPL[]>('/api/playlist', {
+			params: {
+				containsKID: karaoke.value?.kid
+			}
+		});
+	}
 
 	function placeForLive() {
 		liveOpened.value = true;

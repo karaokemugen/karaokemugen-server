@@ -41,6 +41,11 @@
 				/>
 				{{ $t('kara.favorites.add') }}
 			</button>
+			<add-to-playlist-button
+				:kid="karaoke.kid"
+				:loading="loading"
+				:playlists="playlists"
+			/>
 			<button
 				v-if="loggedIn"
 				class="button is-purple is-long"
@@ -155,11 +160,11 @@
 	import { tagTypes } from '~/assets/constants';
 	import { DBKara } from '%/lib/types/database/kara';
 	import { ShortTag } from '~/types/tags';
-	import duration from '~/assets/date';
 	import { useMenubarStore } from '~/store/menubar';
 	import { useModalStore } from '~/store/modal';
 	import { useAuthStore } from '~/store/auth';
 	import DOMPurify from 'isomorphic-dompurify';
+	import { DBPL } from 'kmserver-core/src/lib/types/database/playlist';
 
 	const props = defineProps<{
 		karaoke: DBKara
@@ -168,9 +173,10 @@
 	const favorite = ref(false);
 	const lyrics = ref(false);
 	const loading = ref(false);
+	const playlists = ref<DBPL[]>([]);
 
 	const { t } = useI18n();
-	const { loggedIn } = storeToRefs(useAuthStore());
+	const { loggedIn, user } = storeToRefs(useAuthStore());
 	const { download, banner } = storeToRefs(useModalStore());
 	const { openModal, closeModal } = useModalStore();
 	const { search } = storeToRefs(useMenubarStore());
@@ -274,22 +280,15 @@
 		}
 		return bannerBan;
 	});
-	const durationString = computed(() => {
-		const durationArray = duration(props.karaoke.duration);
-		const returnString = [];
-		if (durationArray[0] !== 0) { returnString.push(`${durationArray[0]} ${t('duration.days')}`); }
-		if (durationArray[1] !== 0) { returnString.push(`${durationArray[1]} ${t('duration.hours')}`); }
-		if (durationArray[2] !== 0) { returnString.push(`${durationArray[2]} ${t('duration.minutes')}`); }
-		if (durationArray[3] !== 0) { returnString.push(`${durationArray[3]} ${t('duration.seconds')}`); }
-		return returnString.join(' ');
-	});
-
+	const durationString = computed(() =>  getDurationString(props.karaoke.duration, t));
 
 	onMounted(() => {
 		if (props.karaoke?.flag_favorites) { favorite.value = true; }
 	});
 
 	watch(search, () => push('/search'));
+
+	getPlaylists();
 
 	useHead({
 		meta: [
@@ -316,6 +315,15 @@
 			}
 		]
 	});
+
+	async function getPlaylists() {
+		playlists.value = await useCustomFetch<DBPL[]>('/api/playlist', {
+			params: {
+				username: user?.value?.login,
+				includeUserAsContributor: true
+			}
+		});
+	}
 
 	async function toggleFavorite() {
 		if (loggedIn.value) {

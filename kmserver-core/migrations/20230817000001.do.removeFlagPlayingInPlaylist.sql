@@ -1,0 +1,1 @@
+ALTER TABLE playlist DROP COLUMN fk_plcid_playing;

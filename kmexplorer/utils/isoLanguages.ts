@@ -91,7 +91,7 @@ function getAlpha3BLanguagesLocalized(userLang: string): Array<{alpha3B: string,
 	const alpha3BMap = i18nIsoLanguages.getAlpha3BCodes();
 	return Object.keys(alpha3BMap).map(code => ({alpha3B: code,
 		name: getLanguageName(code, userLang) || alpha3BMap[code]
-	}))
+	}));
 }
 
 const getLanguageName = (alpha2orAlpha3: string, lang: string) => i18nIsoLanguages.getName(alpha2orAlpha3, lang) ||

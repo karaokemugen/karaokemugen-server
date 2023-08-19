@@ -17,6 +17,7 @@
 			</div>
 			<kara-list
 				:karaokes="karaokes"
+				:playlists="playlists"
 				:loading="loading"
 				:favorites="favorites"
 				:with-suggest="withSuggest"
@@ -27,9 +28,11 @@
 
 <script setup lang="ts">
 	import { KaraList as KaraListType, KaraParams, OrderParam } from '%/lib/types/kara';
+	import { DBPL } from 'kmserver-core/src/lib/types/database/playlist';
 	import { storeToRefs } from 'pinia';
 	import { DBTag } from '~/../kmserver-core/src/lib/types/database/tag';
 	import { tagRegex, tagTypes, tagTypesMap } from '~/assets/constants';
+	import { useAuthStore } from '~/store/auth';
 	import { useLocalStorageStore } from '~/store/localStorage';
 	import { TagExtend, useMenubarStore } from '~/store/menubar';
 
@@ -37,17 +40,19 @@
 		collections: string
 	}
 
+	const { user } = storeToRefs(useAuthStore());
 	const { search, sort, tags: menuTags } = storeToRefs(useMenubarStore());
 	const { setSort, setResultsCount, setTags } = useMenubarStore();
 	const { enabledCollections } = storeToRefs(useLocalStorageStore());
 	const { setEnabledCollections } = useLocalStorageStore();
 	const route = useRoute();
-	const { replace, push } = useRouter();
+	const { replace } = useRouter();
 
 	const loading = ref(true);
 	const mounted = ref(false);
 	const karaokes = ref<KaraListType>({ infos: { count: 0, from: 0, to: 0 }, i18n: {}, content: [] });
 	const from = ref(-1);
+	const playlists = ref<DBPL[]>([]);
 
 	const props = withDefaults(defineProps<{
 		favorites?: string
@@ -85,6 +90,7 @@
 	});
 
 	fetch();
+	getPlaylists();
 
 	async function fetch() {
 		const tagExtends: TagExtend[] = [];
@@ -216,6 +222,15 @@
 			collections: enabledCollections.value.join(','),
 			userAnimeList: props.userAnimeList || undefined
 		};
+	}
+
+	async function getPlaylists() {
+		playlists.value = await useCustomFetch<DBPL[]>('/api/playlist', {
+			params: {
+				username: user?.value?.login,
+				includeUserAsContributor: true
+			}
+		});
 	}
 </script>
 

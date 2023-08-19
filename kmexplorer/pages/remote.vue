@@ -79,7 +79,7 @@
 	async function fetch() {
 		const res = await useCustomFetch<RemoteAccessToken[]>('/api/remote')
 			.catch(_err => {
-				throw createError({ statusCode: 404, message: t('error.remote') as string });
+				throw createError({ statusCode: 404, message: t('error.remote') });
 			});
 		remotesToken.value = res ? res : [];
 	}

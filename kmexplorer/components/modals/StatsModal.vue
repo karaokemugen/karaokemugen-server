@@ -47,7 +47,7 @@
 		const userUpdated:DBUser = { ...user?.value };
 		userUpdated.flag_sendstats = flag_sendstats;
 		const response = await useCustomFetch<{data: {token: string}}>('/api/myaccount', {
-			method: 'PUT',
+			method: 'PATCH',
 			body: userUpdated
 		});
 		await setToken(response.data.token);

@@ -1,6 +1,6 @@
 <template>
 	<loading-nanami
-		v-if="!user.login"
+		v-if="!user?.login"
 		class="tile is-parent is-12"
 	/>
 	<div v-else>
@@ -154,6 +154,21 @@
 				</div>
 			</div>
 		</div>
+		<div v-if="playlists.length > 0">
+			<div class="title-box">
+				<h1 class="title with-button">
+					<font-awesome-icon
+						:icon="['fas', 'list']"
+						fixed-width
+					/>
+					{{ $t('profile.playlists_count', playlists.length) }}
+				</h1>
+			</div>
+			<playlist-list
+				:playlists="playlists"
+				:chunk-size="10"
+			/>
+		</div>
 		<template v-if="(user.flag_displayfavorites && user.favorites_count && user.favorites_count > 0) || viewingSelf">
 			<div class="title-box">
 				<h1 class="title with-button">
@@ -161,7 +176,7 @@
 						:icon="['fas', 'star']"
 						fixed-width
 					/>
-					{{ $t('profile.favorites_count', { x: user.favorites_count }) }}
+					{{ $t('profile.favorites_count', user.favorites_count || 0) }}
 				</h1>
 				<div
 					v-if="viewingSelf"
@@ -175,10 +190,10 @@
 						@click="toggleFavorite"
 					>
 						<font-awesome-icon
-							:icon="['fas', user.flag_displayfavorites ? 'eye':'eye-slash']"
+							:icon="['fas', user.flag_displayfavorites ? 'eye' : 'eye-slash']"
 							fixed-width
 						/>
-						{{ $t(user.flag_displayfavorites ? 'profile.public_favorites': 'profile.private_favorites') }}
+						{{ $t(user.flag_displayfavorites ? 'profile.public_favorites' : 'profile.private_favorites') }}
 					</button>
 				</div>
 			</div>
@@ -194,15 +209,17 @@
 	import { Roles } from '%/lib/types/user';
 	import { useModalStore } from '~/store/modal';
 	import { useAuthStore } from '~/store/auth';
+	import { DBPL } from 'kmserver-core/src/lib/types/database/playlist';
 
 	type RoleKey = keyof Roles;
 
-	const user = ref<DBUser>({});
+	const user = ref<DBUser>();
 	const edit = ref(false);
 	const loading = ref(false);
 	const name = ref<HTMLDivElement>();
+	const playlists = ref<DBPL[]>([]);
 
-	const { loggedIn, user:userConnected } = storeToRefs(useAuthStore());
+	const { loggedIn, user: userConnected } = storeToRefs(useAuthStore());
 	const { openModal } = useModalStore();
 	const { params } = useRoute();
 	const { t, locale } = useI18n();
@@ -227,6 +244,7 @@
 	const url = computed(() => user.value?.url?.replace(/^https?:\/\//i, '').replace(/\/$/, '') || '');
 
 	await fetch();
+	getPlaylists();
 
 	async function fetch() {
 		if (!usersEnabled) {
@@ -235,18 +253,30 @@
 		const url = viewingSelf.value
 			? '/api/myaccount'
 			: `/api/users/${params.login}`;
-		const res  = await useCustomFetch<DBUser>(url).catch(() => {
+		const res = await useCustomFetch<DBUser>(url).catch((err: any) => {
+			if (err?.response?.status === 404) {
+				throw createError({ statusCode: 404, message: t('error.not_found_profile') });
+			}
 			throw createError({ statusCode: 500 });
 		});
 		if (res) {
 			if (!viewingSelf.value && !res.flag_public) {
-				throw createError({ statusCode: 403, message: t('error.private_profile') as string });
+				throw createError({ statusCode: 403, message: t('error.private_profile') });
 			}
 			user.value = res;
 		} else {
-			throw createError({ statusCode: 404, message: t('error.not_found_profile') as string });
+			throw createError({ statusCode: 404, message: t('error.not_found_profile') });
 		}
 	}
+
+	async function getPlaylists() {
+		playlists.value = await useCustomFetch<DBPL[]>('/api/playlist', {
+			params: {
+				username: user?.value?.login
+			}
+		});
+	}
+
 
 	function openEdit() {
 		if (viewingSelf.value) {
@@ -297,7 +327,6 @@
 </script>
 
 <style scoped lang="scss">
-
 	$user-box-radius: 8px;
 
 	.user-box {

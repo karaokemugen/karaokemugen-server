@@ -183,7 +183,6 @@
 	import { KaraList as KaraListType } from '%/lib/types/kara';
 	import { storeToRefs } from 'pinia';
 	import prettyBytes from 'pretty-bytes';
-	import duration from '~/assets/date';
 	import { useLocalStorageStore } from '~/store/localStorage';
 	import { useMenubarStore } from '~/store/menubar';
 	import { useModalStore } from '~/store/modal';
@@ -247,13 +246,7 @@
 			const countUpdated = res[0];
 			if (countUpdated.mediasize) { countUpdated.mediasizeString = prettyBytes(Number(countUpdated.mediasize)); }
 			if (countUpdated.duration) {
-				const durationArray = duration(countUpdated.duration);
-				let returnString = ' ';
-				if (durationArray[0] !== 0) { returnString += `${durationArray[0]} ${t('duration.days')} `; }
-				if (durationArray[1] !== 0) { returnString += `${durationArray[1]} ${t('duration.hours')} `; }
-				if (durationArray[2] !== 0) { returnString += `${durationArray[2]} ${t('duration.minutes')} `; }
-				if (durationArray[3] !== 0) { returnString += `${durationArray[3]} ${t('duration.seconds')} `; }
-				countUpdated.durationString = returnString;
+				countUpdated.durationString = getDurationString(countUpdated.duration, t);
 			}
 			lastGeneration.value = res[1];
 			count.value = countUpdated;

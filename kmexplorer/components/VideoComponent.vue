@@ -30,15 +30,18 @@
 		options: any,
 		fullscreen: boolean,
 		theaterMode: boolean,
+		playlistMode?: boolean
 		isIframe: boolean,
 		theatermodechange: () => void,
 		fullscreenchange: () => void,
 		play: () => void,
 		next: () => void,
+		previous: () => void,
 	}>();
 
 	const videoPlayer = ref();
 	const player = ref<Player>();
+	const previousButton = ref();
 	const nextButton = ref();
 	const theaterButton = ref();
 	const fullscreenButton = ref();
@@ -46,6 +49,10 @@
 
 	function onended() {
 		if (autoplay.value) nextEvent();
+	}
+
+	function previousEvent() {
+		props.previous();
 	}
 
 	function nextEvent() {
@@ -144,6 +151,15 @@
 							clickHandler: nextEvent
 						}, 1);
 						nextButton.value.setIcon('next-item');
+						if (props.playlistMode) {
+							//@ts-ignore
+							previousButton.value = this.addChild('button', {
+								className: 'vjs-previous-control',
+								controlText: t('kara.player.previous'),
+								clickHandler: previousEvent
+							}, 1);
+							previousButton.value.setIcon('previous-item');
+						}
 					}
 
 					createEl() {
@@ -215,6 +231,14 @@
 						clickHandler: nextEvent
 					}, 1);
 					nextButton.value.setIcon('next-item');
+					if (props.playlistMode) {
+						previousButton.value = player.value!.getChild('ControlBar')!.addChild('button', {
+							className: 'vjs-previous-control',
+							controlText: t('kara.player.previous'),
+							clickHandler: previousEvent
+						}, 1);
+						previousButton.value.setIcon('previous-item');
+					}
 				}
 
 				theaterButton.value = player.value!.getChild('ControlBar')!.addChild('button', {
@@ -239,9 +263,8 @@
 		});
 	}
 
-	onUnmounted(() => {
-		window.removeEventListener('keydown', keyEvent);
-	});
+	onBeforeRouteLeave(() => window.removeEventListener('keydown', keyEvent));
+	onUnmounted(() => window.removeEventListener('keydown', keyEvent));
 
 	function keyEvent(e: KeyboardEvent) {
 		if (e.shiftKey || e.ctrlKey || e.metaKey || e.altKey) {
@@ -281,6 +304,9 @@
 			} if (e.key.toLowerCase() === 't') {
 				e.preventDefault();
 				theatermodechangeEvent();
+			} if (e.key.toLowerCase() === 'b') {
+				e.preventDefault();
+				props.previous();
 			} if (e.key.toLowerCase() === 'n') {
 				e.preventDefault();
 				props.next();
@@ -309,7 +335,8 @@
 
 	watch(() => props.options.language, (newLanguage) => {
 		player.value?.language(newLanguage);
-		nextButton.value?.controlText(t('kara.player.next')),
+		nextButton.value?.controlText(t('kara.player.next'));
+		if (props.playlistMode) previousButton.value?.controlText(t('kara.player.previous'));
 		theaterButton.value?.controlText(t('kara.player.theater_mode'));
 		fullscreenButton.value?.controlText(t('kara.player.fullscreen'));
 		autoplayButton.value?.el().setAttribute('title', t('kara.player.autoplay'));
