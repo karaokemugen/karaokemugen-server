@@ -282,20 +282,24 @@
 	}
 
 	function next() {
-		indexPlaying.value = indexPlaying.value + 1;
-		if (karaokes.value.content[indexPlaying.value] && isPlayable(karaokes.value.content[indexPlaying.value])) {
-			playing.value = karaokes.value.content[indexPlaying.value];
-		} else {
-			next();
+		if (indexPlaying.value < karaokes.value.content.length-1) {
+			indexPlaying.value = indexPlaying.value + 1;
+			if (karaokes.value.content[indexPlaying.value] && isPlayable(karaokes.value.content[indexPlaying.value])) {
+				playing.value = karaokes.value.content[indexPlaying.value];
+			} else {
+				next();
+			}
 		}
 	}
 
 	function previous() {
-		indexPlaying.value = indexPlaying.value - 1;
-		if (karaokes.value.content[indexPlaying.value] && isPlayable(karaokes.value.content[indexPlaying.value])) {
-			playing.value = karaokes.value.content[indexPlaying.value];
-		} else {
-			previous();
+		if (indexPlaying.value > 0) {
+			indexPlaying.value = indexPlaying.value - 1;
+			if (karaokes.value.content[indexPlaying.value] && isPlayable(karaokes.value.content[indexPlaying.value])) {
+				playing.value = karaokes.value.content[indexPlaying.value];
+			} else {
+				previous();
+			}
 		}
 	}
 
@@ -390,7 +394,7 @@
 	}
 
 	function isStylePlaying(row: DBPLC) {
-		if (karaokes.value.content[indexPlaying.value].plcid === row.plcid) {
+		if (karaokes.value.content[indexPlaying.value]?.plcid === row.plcid) {
 			if (indexPlaying.value === 0) {
 				return 'playing first';
 			} else {
