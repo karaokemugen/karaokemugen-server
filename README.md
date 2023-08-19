@@ -109,15 +109,15 @@ Run
 yarn start
 ```
 
-This link should work now : http://localhost:1350/base
+This link should work now : http://localhost:1350/
 
-For dev use :
+For frontend dev use, launch also :
 
 ```sh
-yarn start:dev
+yarn watch:kmexplorer
 ```
 
-This link should work now : http://localhost:1351/base
+This link should work now : http://localhost:3000/
 
 ## Translation
 
