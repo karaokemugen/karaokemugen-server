@@ -176,19 +176,22 @@
 	async function submitForm() {
 		if (playlist.value.name) {
 			loading.value = true;
-			const res = await useCustomFetch<DBPL>(`/api/playlist${props.slug ? `/${playlist.value.plaid}` : ''}`, {
-				method: props.slug ? 'PUT' : 'POST',
-				body: playlist.value
-			});
-			loading.value = false;
-			playlist.value = {
-				name: '',
-				description: '',
-				contributors: [],
-				flag_visible: true,
-				flag_visible_online: true
-			};
-			emit('close', res);
+			try {
+				const res = await useCustomFetch<DBPL>(`/api/playlist${props.slug ? `/${playlist.value.plaid}` : ''}`, {
+					method: props.slug ? 'PUT' : 'POST',
+					body: playlist.value
+				});
+				playlist.value = {
+					name: '',
+					description: '',
+					contributors: [],
+					flag_visible: true,
+					flag_visible_online: true
+				};
+				emit('close', res);
+			} finally {
+				loading.value = false;
+			}
 		}
 	}
 </script>
