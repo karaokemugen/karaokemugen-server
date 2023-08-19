@@ -7106,6 +7106,7 @@ __metadata:
     "@types/uuid": ^9.0.2
     bulma: ^0.9.4
     bulmaswatch: ^0.8.1
+    dayjs: ^1.11.9
     eslint: ^8.45.0
     i18n-iso-countries: ^7.6.0
     isomorphic-dompurify: ^1.8.0
@@ -7147,6 +7148,7 @@ __metadata:
     "@types/pg": ^8.10.2
     "@types/pg-copy-streams": ^1.2.2
     "@types/randomstring": ^1.1.8
+    "@types/slug": ^5.0.3
     "@types/source-map-support": ^0.5.6
     "@types/uuid": ^9.0.2
     "@types/vhost": ^3.0.4

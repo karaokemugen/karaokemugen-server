@@ -214,7 +214,7 @@ type RoleDetails = {
 	[role in keyof Roles]: RoleDetail
 }
 
-export const roles: RoleDetails = {
+export const rolesList: RoleDetails = {
 	donator: {
 		icon: 'heart',
 		class: 'is-purple'

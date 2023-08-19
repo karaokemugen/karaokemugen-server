@@ -3,6 +3,7 @@
 		"generic": "Erreur",
 		"private_profile": "Le profil est privé.",
 		"not_found_profile": "Impossible de trouver l'utilisateur",
+		"not_found_playlist": "Impossible de trouver cette liste de lecture",
 		"home": "Aller à l'accueil",
 		"not_found_tag": "Tag non trouvé",
 		"remote": "Erreur au chargement de la liste des remotes"
@@ -51,6 +52,12 @@
 		"set_banner": {
 			"btn": "Utiliser comme bannière de profil",
 			"forbidden_label": "Vous ne pouvez pas utiliser ce karaoké pour définir votre bannière."
+		},
+		"playlists": {
+			"add": "Ajouter à une liste de lecture",
+			"create": "Créer une nouvelle liste de lecture…",
+			"new_playlist_label": "Liste de lecture de {nickname}",
+			"add_success": "Le karaoké a été ajouté avec succès à la liste de lecture."
 		},
 		"problem": {
 			"title": "Un problème avec {title} ?",
@@ -174,6 +181,7 @@
 		"childrens": "Karaokés enfants",
 		"parents": "Karaokés parents",
 		"player": {
+			"previous": "Chanson précédente (B)",
 			"next": "Chanson suivante (N)",
 			"theater_mode": "Mode Cinéma (T)",
 			"fullscreen": "Plein écran (F)",
@@ -188,6 +196,7 @@
 		"remove_tags": "Avez-vous essayé de retirer les tags qui ne vous servent plus ?",
 		"end_favorites": "C'est la fin des favoris.",
 		"end_my_favorites": "C'est la fin de vos favoris.",
+		"end_playlists": "Afficher {number} listes de lecture en plus",
 		"explore": "Allez en ajouter !",
 		"results": "{count} résultat | {count} résultats",
 		"collections": "Karaoke Mugen propose différentes collections, choisissez celles qui vous intéressent.",
@@ -238,6 +247,8 @@
 		"authors": "Auteurs",
 		"langs": "Langues",
 		"years": "Années",
+		"playlists": "Listes de lecture",
+		"my_playlists": "Mes listes de lecture",
 		"community": "Communauté",
 		"remotes": "Remotes",
 		"search_users": "Utilisateurs",
@@ -258,7 +269,8 @@
 		"you": " (c'est vous !)",
 		"edit": "Éditer le profil",
 		"private": "Votre profil est privé, vous êtes le seul à pouvoir le voir.",
-		"favorites_count": "{x} favori | {x} favoris",
+		"favorites_count": "{count} favori | {count} favoris",
+		"playlists_count": "{count} liste de lecture | {count} listes de lecture",
 		"anime_list": "Mes animés",
 		"public_favorites": "Vos favoris sont publics. Cliquez pour cacher vos favoris.",
 		"private_favorites": "Vos favoris sont privés. Cliquez pour partager vos favoris."
@@ -267,7 +279,8 @@
 		"placeholder": {
 			"kara": "Œuvres, chanteurs, noms…",
 			"user": "Nom d'utilisateur…",
-			"tag": "Nom du tag…"
+			"tag": "Nom du tag…",
+			"playlist": "Nom, utilisateurs…"
 		},
 		"sort": {
 			"a_z": "De A à Z",
@@ -533,6 +546,21 @@
 			"next": "Image suivante",
 			"previous": "Image précédente",
 			"one": "Il n'y a qu'une bannière disponible pour les karaokés Audio uniquement."
+		},
+		"create_edit_playlist": {
+			"title_create": "Créer une liste de lecture",
+			"title_edit": "Modifier la liste de lecture",
+			"name": "Nom",
+			"description": "Description",
+			"contributors": "Contributeurs",
+			"public": "Publique",
+			"submit_create": "Sauvegarder",
+			"submit_edit": "Modifier"
+		},
+		"delete_playlist": {
+			"label": "Êtes-vous réellement sûr de vouloir supprimer la liste de lecture '{name}' ?",
+			"add": "Supprimer la liste de lecture",
+			"cancel": "Annuler"
 		}
 	},
 	"titles": {
@@ -555,10 +583,10 @@
 		"REMOVE_FAVORITE_ERROR": "Impossible de retirer cette chanson de vos favoris",
 		"POST_SUGGESTION_ERROR": "Impossible d'envoyer la suggestion",
 		"NO_KARA_FOUND": "Aucune chanson trouvée",
-		"GET_KARA_ERROR": "Erreur de récupération de la chanson",
-		"GET_KARAS_ERROR": "Erreur de récupération des chansons",
-		"GET_BASESTATS_ERROR": "Errer de récupération des statistiques",
-		"GET_YEARS_ERROR": "Erreur de récupération des années",
+		"GET_KARA_ERROR": "Erreur lors de la récupération de la chanson",
+		"GET_KARAS_ERROR": "Erreur lors de la récupération des chansons",
+		"GET_BASESTATS_ERROR": "Errer lors de la récupération des statistiques",
+		"GET_YEARS_ERROR": "Erreur lors de la récupération des années",
 		"GET_FAVORITES_FROM_USER_FORBIDDEN_ERROR": "Les favoris de cet utilisateur ne sont pas publics",
 		"GET_FAVORITES_FROM_USER_NOT_FOUND_ERROR": "Aucun utilisateur trouvé",
 		"NEW_KARA_ISSUE_ERROR": "Impossible d'envoyer votre rapport",
@@ -578,12 +606,28 @@
 		"BANNER_NOT_GENERATED_YET": "Bannière pas encore générée par le serveur !",
 		"BANNER_BANNED": "Cette bannière ne peut pas être utilisée",
 		"PASSWORD_TOO_SHORT": "Mot de passe trop court",
-		"CHECK_YOUR_PRIVILEGES": "Checkez vos privilèges",
+		"CHECK_YOUR_PRIVILEGES": "Droits insuffisants",
 		"EDIT_USER_ERROR": "Erreur de modification du profil",
 		"GITLAB_DISABLED": "Le support Gitlab est désactivé",
 		"SUBFILE_FORMAT_UNKNOWN": "Format de paroles inconnu",
 		"SUBFILE_PROCESS_ERROR": "Erreur d'intégration des paroles",
-		"UPLOADED_MEDIA_ERROR": "Erreur d'intégration du média"
+		"UPLOADED_MEDIA_ERROR": "Erreur d'intégration du média",
+		"UNKNOWN_PLAYLIST": "Liste de lecture inconnue",
+		"PL_DELETE_ERROR": "Erreur lors de la suppression de la liste de lecture",
+		"PL_EDIT_ERROR": "Erreur lors de l'édition de la liste de lecture",
+		"PL_CREATE_ERROR": "Erreur lors de la création de la liste de lecture",
+		"PL_GET_ERROR": "Erreur lors de la récupération des listes de lecture",
+		"PL_ADD_CONTRIBUTOR_NO_SELF_ERROR": "Impossible de s'ajouter en tant que contributeur",
+		"PL_ADD_CONTRIBUTOR_ERROR": "Erreur lors de l'ajout de contributeurs",
+		"PL_REMOVE_CONTRIBUTOR_ERROR": "Erreur lors de la suppression de contributeurs",
+		"PL_GET_CONTENTS_ERROR": "Erreur lors de la récupération du contenu de la liste de lecture",
+		"UNKNOWN_SONG": "Chanson inconnue",
+		"PL_ADD_SONG_ERROR": "Erreur lors de l'ajout de chanson à la liste de lecture",
+		"INVALID_DATA": "Données invalides",
+		"PL_DELETE_SONG_ERROR": "Erreur lors de la suppression d'une chanson à la liste de lecture",
+		"PL_EDIT_SONG_ERROR": "Erreur lors de l'édition du contenu de la liste de lecture",
+		"PL_EXPORT_ERROR": "Erreur lors de l'export de la liste de lecture",
+		"PL_IMPORT_ERROR": "Erreur lors de l'import de la liste de lecture"
 	},
 	"roles": {
 		"donator": "Donateur(-ice)",
@@ -626,5 +670,22 @@
 		"edit_success": "Edition du remote avec succès",
 		"edit_error": "Erreur lors de l'edition du remote",
 		"delete_error": "Erreur lors de la suppression de la ligne"
+	},
+	"playlists": {
+		"create": "Créer une nouvelle liste de lecture",
+		"import": "Importer une liste de lecture",
+		"karacount": "{karacount} chansons",
+		"duration": "Durée {duration}",
+		"public": "Publique",
+		"private": "Privée",
+		"export": "Exporter",
+		"edit": "Modifier",
+		"delete": "Supprimer",
+		"share": "Partager",
+		"add_karaoke": "Ajouter un karaoké à la liste de lecture",
+		"by_owner": "par {username}",
+		"and_contributors": "(et {contributors})",
+		"and_contributors_more": "(et {contributors}, {count} de plus)",
+		"share_clipboard": "Lien de la liste de lecture copié dans le presse-papier"
 	}
 }

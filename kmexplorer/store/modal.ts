@@ -1,7 +1,17 @@
 import { defineStore } from 'pinia';
 import { useAuthStore } from './auth';
 
-export type ModalType = 'auth' | 'profile' | 'addRepo' | 'deleteAccount' | 'joinKara' | 'stats' | 'karaSuggest' | 'download' | 'banner';
+export type ModalType = 'auth' |
+	'profile' |
+	'addRepo' |
+	'deleteAccount' |
+	'joinKara' |
+	'stats' |
+	'karaSuggest' |
+	'download' |
+	'banner' |
+	'createEditPlaylist' |
+	'deletePlaylist';
 
 export type modalStoreType = {
 	auth: boolean;
@@ -13,6 +23,8 @@ export type modalStoreType = {
 	karaSuggest: boolean;
 	download: boolean;
 	banner: boolean;
+	createEditPlaylist: boolean;
+	deletePlaylist: boolean;
 }
 
 export const useModalStore = defineStore('modal', {
@@ -27,6 +39,8 @@ export const useModalStore = defineStore('modal', {
 			karaSuggest: false,
 			download: false,
 			banner: false,
+			createEditPlaylist: false,
+			deletePlaylist: false,
 			stats : authStore.loggedIn && authStore.user?.flag_sendstats === null
 		};
 	},
@@ -47,6 +61,8 @@ export const useModalStore = defineStore('modal', {
 			this.karaSuggest = false;
 			this.download = false;
 			this.banner = false;
+			this.createEditPlaylist = false;
+			this.deletePlaylist = false;
 		}
 	},
 	persist: true

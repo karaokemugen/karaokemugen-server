@@ -6,9 +6,11 @@ import i18n from 'i18next';
 import { verify } from 'jsonwebtoken';
 import { cloneDeep, merge } from 'lodash';
 import { isAbsolute, resolve } from 'path';
+import randomstring from 'randomstring';
 import { v4 as uuidV4 } from 'uuid';
 
 import { createJwtToken } from '../controllers/http/auth.js';
+import { updatePlaylistSearchVector } from '../dao/playlist.js';
 import { deleteUser, insertUser, selectAllUsers, selectUser, updateLastLogin, updateUser, updateUserPassword } from '../dao/user.js';
 import { DBUser } from '../lib/types/database/user.js';
 import { JWTTokenWithRoles, User } from '../lib/types/user.js';
@@ -98,6 +100,14 @@ export async function resetPassword(username: string, requestCode: string, newPa
 
 export async function initUsers() {
 	setInterval(cleanupPasswordResetRequests, 60 * 1000);
+	if (!await findUserByName('admin')) {
+		await createUser({
+			login: 'admin',
+			password: randomstring.generate(8)
+		}, {
+			admin: true
+		});
+	}
 }
 
 function cleanupPasswordResetRequests() {
@@ -118,7 +128,7 @@ export async function findUserByName(username: string, opts: UserOptions = {}) {
 		if (!username) throw new ErrorKM('NO_USER_PROVIDED', 400, false);
 		username = username.toLowerCase();
 		const user = await selectUser('pk_login', username);
-		if (!user) return user;
+		if (!user) return null;
 		user.password_last_modified_at = new Date(user.password_last_modified_at);
 		if (opts.public) {
 			// This is not the user requesting his own data, but the public, we check if his flag_public is set.
@@ -385,6 +395,9 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 			)
 		) {
 			refreshAnimeList(username).catch();
+		}
+		if (user.nickname !== currentUser.nickname) {
+			updatePlaylistSearchVector(username);
 		}
 		return {
 			user: updatedUser,

@@ -74,7 +74,7 @@
 			const data = await useCustomFetch<DBKara>(`/api/karas/${route.params.id}`);
 			kara.value = data;
 		} catch (e) {
-			throw createError({ statusCode: 404, message: t('kara.notfound') as string });
+			throw createError({ statusCode: 404, message: t('kara.notfound') });
 		}
 	}
 </script>

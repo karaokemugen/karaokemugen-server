@@ -12,11 +12,13 @@
 						:options="videoOptions"
 						:fullscreen="fullscreen"
 						:theater-mode="theaterMode"
+						:playlist-mode="playlistMode"
 						:is-iframe="isIframe"
 						:theatermodechange="changeTheaterMode"
 						:fullscreenchange="changeFullscreen"
 						:play="showPlayer"
-						:next="openRandomKara"
+						:next="next"
+						:previous="previous"
 					/>
 				</div>
 			</Teleport>
@@ -37,9 +39,10 @@
 
 	const props = defineProps<{
 		karaoke: DBKara
+		playlistMode?: boolean
 	}>();
 
-	const emit = defineEmits<{ (e: 'open' | 'close'): void }>();
+	const emit = defineEmits<{ (e?: 'open' | 'close' | 'next' | 'previous'): void }>();
 
 	const route = useRoute();
 	const { push } = useRouter();
@@ -113,6 +116,14 @@
 
 	function updateFullscreen() {
 		fullscreen.value = document.fullscreenElement !== null;
+	}
+
+	function next() {
+		props.playlistMode ? emit('next') : openRandomKara();
+	}
+
+	function previous() {
+		emit('previous');
 	}
 
 	async function openRandomKara() {

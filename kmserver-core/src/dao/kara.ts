@@ -4,6 +4,7 @@ import {pg as yesql} from 'yesql';
 import {buildClauses, buildTypeClauses, db} from '../lib/dao/database.js';
 import { WhereClause } from '../lib/types/database.js';
 import { DBKara, DBMedia, DBYear } from '../lib/types/database/kara.js';
+import { DBPLC } from '../lib/types/database/playlist.js';
 import {Kara, KaraFileV4, KaraParams} from '../lib/types/kara.js';
 import {getConfig} from '../lib/utils/config.js';
 import {getTagTypeName, tagTypes} from '../lib/utils/constants.js';
@@ -207,24 +208,26 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 			res.rows[0].count = resCount.rows[0].count;
 		}
 	}
-	return res.rows.map(row => {
-		row.hardsub_in_progress = getHardsubsBeingProcessed().includes(row.kid);
-		const { tags, ...rowWithoutTags } = row;
+	return res.rows.map(row => makeKaraPretty(row));
+}
 
-		for (const tagType of Object.keys(tagTypes)) {
-			rowWithoutTags[tagType] = [];
-		}
-		if (tags == null) {
-			return rowWithoutTags;
-		}
-		for (const tag of tags) {
-			if (tag?.type_in_kara == null) continue;
-			const type = getTagTypeName(tag.type_in_kara);
-			if (type == null) continue;
-			rowWithoutTags[type].push(tag);
-		}
+export function makeKaraPretty(row: any): DBKara | DBPLC {
+	row.hardsub_in_progress = getHardsubsBeingProcessed().includes(row.kid);
+	const { tags, ...rowWithoutTags } = row;
+
+	for (const tagType of Object.keys(tagTypes)) {
+		rowWithoutTags[tagType] = [];
+	}
+	if (tags == null) {
 		return rowWithoutTags;
-	});
+	}
+	for (const tag of tags) {
+		if (tag?.type_in_kara == null) continue;
+		const type = getTagTypeName(tag.type_in_kara);
+		if (type == null) continue;
+		rowWithoutTags[type].push(tag);
+	}
+	return rowWithoutTags;
 }
 
 export async function insertKara(kara: KaraFileV4) {

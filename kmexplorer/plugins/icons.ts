@@ -72,7 +72,10 @@ import {
 	faHouseLaptop,
 	faPeopleGroup,
 	faSitemap,
-	faCirclePlay
+	faCirclePlay,
+	faDownload,
+	faShare,
+	faListCheck
 } from '@fortawesome/free-solid-svg-icons';
 import {
 	faTwitter,
@@ -164,6 +167,9 @@ library.add(
 	faLayerGroup,
 	faPeopleGroup,
 	faCirclePlay,
+	faDownload,
+	faShare,
+	faListCheck,
 	faSitemap);
 
 export default defineNuxtPlugin((nuxtApp) => {

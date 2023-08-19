@@ -13,6 +13,7 @@
 				<kara-card
 					v-if="karaokes.content[(n-1)*3+n2-1]"
 					:karaoke="karaokes.content[(n-1)*3+n2-1]"
+					:playlists="playlists"
 					:karaokes-i18n="karaokes.i18n"
 				/>
 			</div>
@@ -68,9 +69,11 @@
 	import { storeToRefs } from 'pinia';
 	import { KaraList } from '%/lib/types/kara';
 	import { useAuthStore } from '~/store/auth';
+	import { DBPL } from 'kmserver-core/src/lib/types/database/playlist';
 
 	const props = withDefaults(defineProps<{
 		karaokes: KaraList
+		playlists: DBPL[]
 		loading: Boolean
 		favorites: string
 		withSuggest: boolean

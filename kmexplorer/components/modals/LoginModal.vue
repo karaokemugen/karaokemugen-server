@@ -316,8 +316,8 @@
 		await useCustomFetch<TokenResponseWithRoles>('/api/auth/login', {
 			method: 'POST',
 			body: login.value
-		}).then((result) => {
-			loginApi(result);
+		}).then(async (result) => {
+			await loginApi(result);
 			emit('login');
 			closeModal();
 		}).finally(() => {

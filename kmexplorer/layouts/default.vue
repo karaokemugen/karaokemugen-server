@@ -89,6 +89,18 @@
 				v-if="menuOpen === 'community'"
 				class="navbar-dropdown"
 			>
+				<nuxt-link
+					v-if="usersEnabled"
+					class="navbar-item"
+					to="/playlists/community"
+					@click="closeMenu"
+				>
+					<font-awesome-icon
+						:icon="['fas', 'list']"
+						:fixed-width="true"
+					/>
+					{{ $t('menu.playlists') }}
+				</nuxt-link>
 				<client-only>
 					<nuxt-link
 						v-if="loggedIn && user?.roles?.admin"
@@ -183,6 +195,20 @@
 							:fixed-width="true"
 						/>
 						{{ user.nickname }}
+					</nuxt-link>
+					<nuxt-link
+						v-if="loggedIn && user"
+						class="navbar-item"
+						active-class="is-active"
+						aria-label="My playlists"
+						to="/playlists"
+						@click="closeMenu"
+					>
+						<font-awesome-icon
+							:icon="['fas', 'list-check']"
+							:fixed-width="true"
+						/>
+						{{ $t('menu.my_playlists') }}
 					</nuxt-link>
 					<nuxt-link
 						v-if="loggedIn && user && user.anime_list_to_fetch"
@@ -792,6 +818,17 @@
 				</p>
 				<ul class="menu-list">
 					<li>
+						<nuxt-link
+							v-if="usersEnabled"
+							to="/playlists/community"
+							active-class="is-active"
+						>
+							<font-awesome-icon
+								:icon="['fas', 'list']"
+								:fixed-width="true"
+							/>
+							{{ $t('menu.playlists') }}
+						</nuxt-link>
 						<client-only>
 							<nuxt-link
 								v-if="loggedIn && user?.roles?.admin"
@@ -883,6 +920,17 @@
 									:fixed-width="true"
 								/>
 								{{ user.nickname }}
+							</nuxt-link>
+							<nuxt-link
+								v-if="loggedIn && user"
+								to="/playlists"
+								active-class="is-active"
+							>
+								<font-awesome-icon
+									:icon="['fas', 'list-check']"
+									:fixed-width="true"
+								/>
+								{{ $t('menu.my_playlists') }}
 							</nuxt-link>
 							<nuxt-link
 								v-if="loggedIn && user && user.anime_list_to_fetch"
@@ -1007,6 +1055,7 @@
 			:active="stats"
 			@close="stats = false"
 		/>
+		<a id="downloadAnchorElem" />
 	</div>
 </template>
 

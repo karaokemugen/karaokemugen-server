@@ -20,7 +20,7 @@
 						}}
 					</nuxt-link>
 					<div>
-						{{ $t('profile.favorites_count', { x: user.favorites_count }) }}
+						{{ $t('profile.favorites_count', user.favorites_count || 0) }}
 					</div>
 				</div>
 			</div>

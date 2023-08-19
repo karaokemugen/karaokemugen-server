@@ -20,6 +20,7 @@
     "@pinia/nuxt": "0.4.11",
     "bulma": "^0.9.4",
     "bulmaswatch": "^0.8.1",
+    "dayjs": "^1.11.9",
     "i18n-iso-countries": "^7.6.0",
     "isomorphic-dompurify": "^1.8.0",
     "lodash": "^4.17.21",

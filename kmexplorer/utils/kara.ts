@@ -1,5 +1,6 @@
 import { DBKara } from '%/lib/types/database/kara';
 import { KaraFileV4 } from '%/lib/types/kara';
+import { DBPLC } from 'kmserver-core/src/lib/types/database/playlist';
 import slug from 'slug';
 import { v4 as UUIDv4 } from 'uuid';
 import { tagTypes } from '~/assets/constants';
@@ -106,21 +107,23 @@ export function convertDBKaraToKaraFile(dbKara?: DBKara): KaraFileV4 {
 }
 
 export function getSlugKidWithoutLiveDownload(karaoke: DBKara): string | undefined {
-	//@ts-ignore
-	let noLiveDownload = false;
-	for (const tagType in tagTypes) {
-		if (tagType === 'years') { continue; }
-		// @ts-ignore
-		for (const tag of karaoke[tagType]) {
-			if (tag.noLiveDownload) {
-				noLiveDownload = true;
-			}
-		}
-	}
-
-	if (karaoke.hardsubbed_mediafile && !karaoke.hardsub_in_progress && !noLiveDownload) {
+	if (karaoke.hardsubbed_mediafile && !karaoke.hardsub_in_progress && isPlayable(karaoke)) {
 		const kid = karaoke.kid;
 		const slugTitle = slug(karaoke.titles[karaoke.titles_default_language || 'eng']);
 		return `${slugTitle}/${kid}`;
 	}
 }
+
+export function isPlayable(karaoke:DBPLC|DBKara) {
+	let noLiveDownload = false;
+	for (const tagType in tagTypes) {
+		if (tagType === 'years') { continue; }
+		for (const tag of (karaoke as any)[tagType]) {
+			if (tag.noLiveDownload) {
+				noLiveDownload = true;
+			}
+		}
+	}
+	return !noLiveDownload;
+}
+
