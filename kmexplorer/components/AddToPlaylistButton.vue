@@ -1,57 +1,59 @@
 <template>
-	<o-dropdown
-		v-if="loggedIn"
-		aria-role="list"
-		class="mr-2"
-		scrollable
-	>
-		<template #trigger>
-			<button
-				class="button has-background-info"
-				:class="{ 'is-loading': loading, 'inline': karaCard }"
-				:title="$t(karaCard ? 'kara.playlists.add' : '')"
+	<div>
+		<o-dropdown
+			v-if="loggedIn"
+			aria-role="list"
+			class="mr-2"
+			scrollable
+		>
+			<template #trigger>
+				<button
+					class="button has-background-info"
+					:class="{ 'is-loading': loading, 'inline': karaCard }"
+					:title="$t(karaCard ? 'kara.playlists.add' : '')"
+				>
+					<font-awesome-icon
+						fixed-width
+						:icon="['fas', 'list']"
+					/>
+					{{ $t(karaCard ? '' : 'kara.playlists.add') }}
+				</button>
+			</template>
+			<o-dropdown-item
+				v-if="playlists.length === 0"
+				key="newplaylist"
+				value="newplaylist"
+				aria-role="listitem"
+				item-active-class="active-class"
+				@click="() => addToPlaylist('newplaylist')"
 			>
-				<font-awesome-icon
-					fixed-width
-					:icon="['fas', 'list']"
-				/>
-				{{ $t(karaCard ? '' : 'kara.playlists.add') }}
-			</button>
-		</template>
-		<o-dropdown-item
-			v-if="playlists.length === 0"
-			key="newplaylist"
-			value="newplaylist"
-			aria-role="listitem"
-			item-active-class="active-class"
-			@click="() => addToPlaylist('newplaylist')"
+				{{ $t('kara.playlists.create') }}
+			</o-dropdown-item>
+			<o-dropdown-item
+				v-for="pl in playlists"
+				:key="pl.plaid"
+				:value="pl.plaid"
+				aria-role="listitem"
+				item-active-class="active-class"
+				@click="() => addToPlaylist(pl.plaid)"
+			>
+				{{ pl.name }}
+			</o-dropdown-item>
+		</o-dropdown>
+		<button
+			v-else-if="!loggedIn && !karaCard"
+			class="button has-background-info"
+			:class="{ 'is-loading': loading }"
+			:title="$t('kara.playlists.add')"
+			@click="() => openModal('auth')"
 		>
-			{{ $t('kara.playlists.create') }}
-		</o-dropdown-item>
-		<o-dropdown-item
-			v-for="pl in playlists"
-			:key="pl.plaid"
-			:value="pl.plaid"
-			aria-role="listitem"
-			item-active-class="active-class"
-			@click="() => addToPlaylist(pl.plaid)"
-		>
-			{{ pl.name }}
-		</o-dropdown-item>
-	</o-dropdown>
-	<button
-		v-else-if="!loggedIn && !karaCard"
-		class="button has-background-info"
-		:class="{ 'is-loading': loading }"
-		:title="$t('kara.playlists.add')"
-		@click="() => openModal('auth')"
-	>
-		<font-awesome-icon
-			fixed-width
-			:icon="['fas', 'list']"
-		/>
-		{{ $t('kara.playlists.add') }}
-	</button>
+			<font-awesome-icon
+				fixed-width
+				:icon="['fas', 'list']"
+			/>
+			{{ $t('kara.playlists.add') }}
+		</button>
+	</div>
 </template>
 
 <script setup lang="ts">
