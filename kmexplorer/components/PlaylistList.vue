@@ -5,72 +5,15 @@
 		class="my-2"
 	>
 		<nuxt-link
-			class="link"
+			class="link box"
 			:to="`/playlist/${pl.slug}`"
 		>
-			<article class="tile is-child notification">
-				<div class="is-flex is-justify-content-space-between">
-					<div class="title">
-						{{ pl.name }}
-						<div class="subtitle">
-							{{ pl.description }}
-						</div>
-					</div>
-					<div class="title is-flex is-flex-direction-column is-align-items-end">
-						<div>{{ $t('playlists.by_owner', { username: pl.username }) }}</div>
-						<div
-							v-if="pl.contributors && pl.contributors?.length > 0"
-							class="subtitle"
-						>
-							{{ pl.contributors.length > 3 ?
-								$t('playlists.and_contributors_more', {
-									contributors: pl.contributors?.slice(0, 3).join(', '),
-									count: pl.contributors.length - 3
-								}) :
-								$t('playlists.and_contributors', { contributors: pl.contributors?.slice(0, 3).join(', ') })
-							}}
-						</div>
-					</div>
-				</div>
-				<div class="is-flex is-justify-content-space-between">
-					<div class="subtitle">
-						<font-awesome-icon :icon="['fas', pl.flag_visible_online ? 'globe' : 'lock']" />
-						{{ pl.flag_visible_online ? $t('playlists.public') : $t('playlists.private') }}
-						-
-						{{ $t('playlists.karacount', { karacount: pl.karacount }) }}
-						-
-						{{ $t('playlists.duration', { duration: !pl.duration ? '0h' : getDurationString(pl.duration, $t) }) }}
-					</div>
-					<div
-						v-if="withButtons"
-						class="buttons"
-					>
-						<button
-							v-if="pl.username === user?.login"
-							class="button"
-							@click.prevent="() => emit('edit', pl)"
-						>
-							<font-awesome-icon :icon="['fas', 'pen']" />
-							<span>{{ $t('playlists.edit') }}</span>
-						</button>
-						<button
-							class="button"
-							@click.prevent="() => exportPlaylist(pl)"
-						>
-							<font-awesome-icon :icon="['fas', 'download']" />
-							<span>{{ $t('playlists.export') }}</span>
-						</button>
-						<button
-							v-if="pl.username === user?.login"
-							class="button"
-							@click.prevent="() => emit('delete', pl)"
-						>
-							<font-awesome-icon :icon="['fas', 'trash']" />
-							<span>{{ $t('playlists.delete') }}</span>
-						</button>
-					</div>
-				</div>
-			</article>
+			<playlist-card
+				:playlist="pl"
+				:with-buttons="withButtons"
+				@delete="() => emit('delete', pl)"
+				@edit="() => emit('edit', pl)"
+			/>
 		</nuxt-link>
 	</div>
 	<div v-if="maxIndexPlaylists < playlists.length">
@@ -92,12 +35,7 @@
 </template>
 
 <script setup lang="ts">
-	import { storeToRefs } from 'pinia';
-	import dayjs from 'dayjs';
 	import { DBPL } from 'kmserver-core/src/lib/types/database/playlist';
-	import { useAuthStore } from '~/store/auth';
-
-	const { user } = storeToRefs(useAuthStore());
 
 	const props = defineProps<{
 		playlists: DBPL[]
@@ -108,25 +46,8 @@
 	const emit = defineEmits<{ (e: 'delete' | 'edit', playlist: DBPL): void }>();
 
 	const maxIndexPlaylists = ref(props.chunkSize);
-
-	async function exportPlaylist(pl: DBPL) {
-		const exportFile = await useCustomFetch(`/api/playlist/${pl.plaid}/export`);
-		const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(exportFile, null, 4));
-		const dlAnchorElem = document.getElementById('downloadAnchorElem');
-		if (dlAnchorElem) {
-			dlAnchorElem.setAttribute('href', dataStr);
-			dlAnchorElem.setAttribute(
-				'download',
-				`KaraMugen_${pl.name}_${dayjs(new Date()).format('YYYY-MM-DD_HH-mm-ss')}.kmplaylist`
-			);
-			dlAnchorElem.click();
-		}
-	}
 </script>
 <style scope lang="scss">
-	.link {
-		color: white;
-	}
 
 	.title.is-4.with-img {
 		display: flex;

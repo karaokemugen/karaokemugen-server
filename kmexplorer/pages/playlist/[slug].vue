@@ -1,43 +1,12 @@
 <template>
 	<div>
 		<div v-if="playlist">
-			<div class="title is-hidden-desktop">
-				{{ playlist.name }}
-				<div class="subtitle">
-					{{ playlist.description }}
-				</div>
-			</div>
-			<div class="buttons is-hidden-desktop">
-				<button
-					v-if="playlist.username === user?.login"
-					class="button"
-					@click="() => openModal('createEditPlaylist')"
-				>
-					<font-awesome-icon :icon="['fas', 'pen']" />
-					<span>{{ $t('playlists.edit') }}</span>
-				</button>
-				<button
-					class="button"
-					@click="exportPlaylist"
-				>
-					<font-awesome-icon :icon="['fas', 'download']" />
-					<span>{{ $t('playlists.export') }}</span>
-				</button>
-				<button
-					class="button"
-					@click="shareLink"
-				>
-					<font-awesome-icon :icon="['fas', 'share']" />
-					<span>{{ $t('playlists.share') }}</span>
-				</button>
-				<button
-					v-if="playlist.username === user?.login"
-					class="button"
-					@click="() => openModal('deletePlaylist')"
-				>
-					<font-awesome-icon :icon="['fas', 'trash']" />
-					<span>{{ $t('playlists.delete') }}</span>
-				</button>
+			<div class="is-hidden-desktop mb-5">
+				<playlist-card
+					:playlist="playlist"
+					:with-buttons="true"
+					:playlist-page="true"
+				/>
 			</div>
 			<label
 				v-if="loggedIn && user && (user.login === playlist.username || playlist.contributors?.includes(user.login))"
@@ -61,43 +30,13 @@
 						@next="next"
 						@previous="previous"
 					/>
-					<div class="title is-hidden-touch">
-						{{ playlist?.name }}
-						<div class="subtitle">
-							{{ playlist.description }}
-						</div>
-					</div>
-					<div class="buttons is-hidden-touch">
-						<button
-							v-if="playlist.username === user?.login"
-							class="button"
-							@click="() => openModal('createEditPlaylist')"
-						>
-							<font-awesome-icon :icon="['fas', 'pen']" />
-							<span>{{ $t('playlists.edit') }}</span>
-						</button>
-						<button
-							class="button"
-							@click="exportPlaylist"
-						>
-							<font-awesome-icon :icon="['fas', 'download']" />
-							<span>{{ $t('playlists.export') }}</span>
-						</button>
-						<button
-							class="button"
-							@click="shareLink"
-						>
-							<font-awesome-icon :icon="['fas', 'share']" />
-							<span>{{ $t('playlists.share') }}</span>
-						</button>
-						<button
-							v-if="playlist.username === user?.login"
-							class="button"
-							@click="() => openModal('deletePlaylist')"
-						>
-							<font-awesome-icon :icon="['fas', 'trash']" />
-							<span>{{ $t('playlists.delete') }}</span>
-						</button>
+					<div class="is-hidden-touch mb-5">
+						<playlist-card
+							:playlist="playlist"
+							:with-buttons="true"
+							:playlist-page="true"
+							@edit="() => openModal('createEditPlaylist')"
+						/>
 					</div>
 					<label
 						v-if="loggedIn && user && (user.login === playlist.username || playlist.contributors?.includes(user.login))"
@@ -161,16 +100,12 @@
 <script setup lang="ts">
 	import _ from 'lodash';
 	import { storeToRefs } from 'pinia';
-	import dayjs from 'dayjs';
-	import * as Toast from 'vue-toastification';
 	import { DBPL, DBPLC } from 'kmserver-core/src/lib/types/database/playlist';
 	import { KaraList, KaraList as KaraListType } from '%/lib/types/kara';
 	import { useMenubarStore } from '~/store/menubar';
 	import { useAuthStore } from '~/store/auth';
 	import { useModalStore } from '~/store/modal';
 
-	// @ts-ignore
-	const useToast = Toast.useToast ?? Toast.default.useToast;
 
 	const { createEditPlaylist, deletePlaylist } = storeToRefs(useModalStore());
 	const { closeModal, openModal } = useModalStore();
@@ -178,13 +113,11 @@
 	const { setResultsCount } = useMenubarStore();
 	const { replace, push } = useRouter();
 	const { t } = useI18n();
-	const toast = useToast();
 
 	const loading = ref(true);
 	const karaokes = ref<KaraListType<DBPLC>>({ infos: { count: 0, from: 0, to: 0 }, i18n: {}, content: [] });
 	const playlist = ref<DBPL>();
 	const { params } = useRoute();
-	const { href } = useRequestURL();
 	const { loggedIn, user } = storeToRefs(useAuthStore());
 	const playing = ref<DBPLC>();
 	const indexPlaying = ref(0);
@@ -222,15 +155,6 @@
 			playlist.value = playlists[0];
 		} else if (process.client) {
 			showError(createError({ statusCode: 404, message: t('error.not_found_playlist') }));
-		}
-	}
-
-	function shareLink() {
-		if (window.navigator.share) {
-			window.navigator.share({ url: href });
-		} else if (window.navigator.clipboard) {
-			navigator.clipboard.writeText(href);
-			toast.success(t('playlists.share_clipboard'));
 		}
 	}
 
@@ -282,7 +206,7 @@
 	}
 
 	function next() {
-		if (indexPlaying.value < karaokes.value.content.length-1) {
+		if (indexPlaying.value < karaokes.value.content.length - 1) {
 			indexPlaying.value = indexPlaying.value + 1;
 			if (karaokes.value.content[indexPlaying.value] && isPlayable(karaokes.value.content[indexPlaying.value])) {
 				playing.value = karaokes.value.content[indexPlaying.value];
@@ -363,20 +287,6 @@
 			} else {
 				next();
 			}
-		}
-	}
-
-	async function exportPlaylist() {
-		const exportFile = await useCustomFetch(`/api/playlist/${playlist.value?.plaid}/export`);
-		const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(exportFile, null, 4));
-		const dlAnchorElem = document.getElementById('downloadAnchorElem');
-		if (dlAnchorElem) {
-			dlAnchorElem.setAttribute('href', dataStr);
-			dlAnchorElem.setAttribute(
-				'download',
-				`KaraMugen_${playlist.value?.name}_${dayjs(new Date()).format('YYYY-MM-DD_HH-mm-ss')}.kmplaylist`
-			);
-			dlAnchorElem.click();
 		}
 	}
 
