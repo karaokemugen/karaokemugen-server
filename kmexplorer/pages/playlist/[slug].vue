@@ -404,7 +404,7 @@
 	}
 
 </script>
-<style lang="scss">
+<style scoped lang="scss">
 	@media screen and (max-width: 1024px) {
 		.tile.is-parent {
 			flex-direction: column;
