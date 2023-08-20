@@ -439,6 +439,7 @@
 			.vjs-skip-backward-5,
 			.vjs-skip-forward-5,
 			.vjs-play-control,
+			.vjs-previous-control,
 			.vjs-next-control {
 				display: none;
 			}
@@ -490,6 +491,10 @@
 				transform: translate(-50%, -50%);
 				position: absolute;
 				height: 20%;
+
+				&.vjs-previous-control {
+					left: 25%;
+				}
 
 				&.vjs-play-control {
 					left: 50%;

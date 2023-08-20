@@ -132,11 +132,6 @@
 	.box {
 		height: 100%;
 		display: flex;
-
-		@media screen and (max-width: 700px) {
-			flex-wrap: wrap;
-		}
-
 		align-content: flex-start;
 		padding: 0;
 
@@ -152,9 +147,9 @@
 
 	.button {
 		margin: 1.5em;
-
-		&.delete-button {
-			margin-left: auto;
+		margin-left: auto;
+		@media screen and (max-width: 768px) {
+			margin-right: 0.5em;
 		}
 	}
 

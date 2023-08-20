@@ -431,4 +431,13 @@
 			overflow: auto;
 		}
 	}
+
+	td {
+		text-align: left !important;
+		display: block !important;
+	}
+
+	td:before {
+		padding-right: 0 !important;
+	}
 </style>
