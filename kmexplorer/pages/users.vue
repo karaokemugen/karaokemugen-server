@@ -6,7 +6,7 @@
 				:filter="false"
 				:results="false"
 			/>
-			<search-bar-mobile />
+			<sort-select />
 		</div>
 		<div
 			v-for="n in Math.ceil(users.content.length / 2)"

@@ -7,7 +7,7 @@
 					:filter="false"
 					:results="false"
 				/>
-				<search-bar-mobile />
+				<sort-select />
 			</div>
 
 			<div
