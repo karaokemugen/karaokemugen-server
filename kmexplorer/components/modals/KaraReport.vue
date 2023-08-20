@@ -209,6 +209,10 @@
 		username: ''
 	});
 
+	watch(() => props.karaoke, (now, old) => {
+		if(now.kid !== old.kid) submitted.value = false;
+	});
+
 	const title = computed(() => getTitleInLocale(props.karaoke.titles, props.karaoke.titles_default_language));
 
 	function toggleModal(type?: ProblemsType) {
