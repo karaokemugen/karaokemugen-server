@@ -60,7 +60,7 @@
 				</button>
 				<button
 					class="button"
-					@click="shareLink"
+					@click.prevent="shareLink"
 				>
 					<font-awesome-icon :icon="['fas', 'share']" />
 					<span>{{ $t('playlists.share') }}</span>
