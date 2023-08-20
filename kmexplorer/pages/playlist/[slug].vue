@@ -2,6 +2,11 @@
 	<div>
 		<div v-if="playlist">
 			<div class="is-hidden-desktop mb-5">
+				<search-bar
+					class="buttons mb-5"
+					:filter="false"
+					:results="false"
+				/>
 				<playlist-card
 					:playlist="playlist"
 					:with-buttons="true"

@@ -1,5 +1,10 @@
 <template>
 	<div class="tile is-parent is-vertical">
+		<search-bar
+			class="buttons is-hidden-desktop"
+			:filter="false"
+			:results="false"
+		/>
 		<div
 			v-if="loggedIn && !loading"
 			class="buttons"
