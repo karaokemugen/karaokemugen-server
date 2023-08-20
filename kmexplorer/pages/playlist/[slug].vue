@@ -413,7 +413,7 @@
 
 	@media screen and (min-width: 769px) {
 		.player {
-			margin-right: 0.75rem
+			margin-right: 0.75rem;
 		}
 	}
 

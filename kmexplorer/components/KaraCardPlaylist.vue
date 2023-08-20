@@ -164,11 +164,9 @@
 	}
 
 	.images {
-		display: inline-block;
-		position: relative;
+		flex: 0 0 9em;
 		margin-right: 1em;
 		margin-top: 0.5em;
-		width: 9em;
 
 		img {
 			width: 100%;
