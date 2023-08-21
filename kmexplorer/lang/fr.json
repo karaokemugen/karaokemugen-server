@@ -561,6 +561,11 @@
 			"label": "Êtes-vous réellement sûr de vouloir supprimer la liste de lecture '{name}' ?",
 			"add": "Supprimer la liste de lecture",
 			"cancel": "Annuler"
+		},
+		"add_duplicate_in_playlist": {
+			"label": "Le karaoké se trouve déjà dans la liste de lecture '{name}'.",
+			"add": "Ajouter quand même",
+			"cancel": "Annuler"
 		}
 	},
 	"titles": {

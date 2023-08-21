@@ -11,7 +11,8 @@ export type ModalType = 'auth' |
 	'download' |
 	'banner' |
 	'createEditPlaylist' |
-	'deletePlaylist';
+	'deletePlaylist' |
+	'addDuplicateInPlaylist';
 
 export type modalStoreType = {
 	auth: boolean;
@@ -25,6 +26,7 @@ export type modalStoreType = {
 	banner: boolean;
 	createEditPlaylist: boolean;
 	deletePlaylist: boolean;
+	addDuplicateInPlaylist: boolean;
 }
 
 export const useModalStore = defineStore('modal', {
@@ -41,6 +43,7 @@ export const useModalStore = defineStore('modal', {
 			banner: false,
 			createEditPlaylist: false,
 			deletePlaylist: false,
+			addDuplicateInPlaylist: false,
 			stats : authStore.loggedIn && authStore.user?.flag_sendstats === null
 		};
 	},
@@ -63,6 +66,7 @@ export const useModalStore = defineStore('modal', {
 			this.banner = false;
 			this.createEditPlaylist = false;
 			this.deletePlaylist = false;
+			this.addDuplicateInPlaylist = false;
 		}
 	},
 	persist: true

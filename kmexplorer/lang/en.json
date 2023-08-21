@@ -561,6 +561,11 @@
 			"label": "Do you really want to delete the playlist '{name}'?",
 			"add": "Delete the playlist",
 			"cancel": "Cancel"
+		},
+		"add_duplicate_in_playlist": {
+			"label": "The karaoke is already in the playlist '{name}'.",
+			"add": "Add anyway",
+			"cancel": "Cancel"
 		}
 	},
 	"titles": {

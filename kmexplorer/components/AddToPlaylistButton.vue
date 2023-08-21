@@ -25,7 +25,7 @@
 				value="newplaylist"
 				aria-role="listitem"
 				item-active-class="active-class"
-				@click="() => addToPlaylist('newplaylist')"
+				@click="() => addToPlaylist()"
 			>
 				{{ $t('kara.playlists.create') }}
 			</o-dropdown-item>
@@ -35,7 +35,7 @@
 				:value="pl.plaid"
 				aria-role="listitem"
 				item-active-class="active-class"
-				@click="() => addToPlaylist(pl.plaid)"
+				@click="() => addToPlaylist(pl)"
 			>
 				{{ pl.name }}
 			</o-dropdown-item>
@@ -54,6 +54,11 @@
 			{{ $t('kara.playlists.add') }}
 		</button>
 	</div>
+	<add-duplicate-in-playlist-modal
+		:active="addDuplicateInPlaylist && !!playlistSelected"
+		:playlist="playlistSelected"
+		@close="callApi"
+	/>
 </template>
 
 <script setup lang="ts">
@@ -70,17 +75,22 @@
 		kid: string
 		loading: boolean
 		playlists: DBPL[]
+		plaidsWithKid?: string[]
 		karaCard?: boolean
 	}>();
 
+	const { addDuplicateInPlaylist } = storeToRefs(useModalStore());
 	const { openModal } = useModalStore();
 	const { loggedIn, user } = storeToRefs(useAuthStore());
 	const { t } = useI18n();
 	const toast = useToast();
 
-	async function addToPlaylist(param?: string) {
+	const playlistSelected = ref<DBPL>();
+
+	async function addToPlaylist(param?: DBPL) {
 		let plaid;
-		if (param === 'newplaylist') {
+		let isAlreadyInPlaylist = false;
+		if (!param) {
 			const res = await useCustomFetch<DBPL>('/api/playlist', {
 				method: 'POST',
 				body: {
@@ -89,20 +99,38 @@
 					flag_visible_online: true
 				}
 			});
-			plaid = res.plaid;
+			plaid = res.plaid as string;
 		} else {
-			plaid = param;
+			plaid = param.plaid as string;
+			if (props.plaidsWithKid) {
+				isAlreadyInPlaylist = props.plaidsWithKid.includes(plaid);
+			} else {
+				const playlists = await useCustomFetch<DBPL[]>('/api/playlist', {
+					params: {
+						containsKID: props.kid,
+						slug: param.slug
+					}
+				});
+				isAlreadyInPlaylist = playlists.length > 0;
+			}
 		}
+		if (isAlreadyInPlaylist) {
+			playlistSelected.value = param;
+			openModal('addDuplicateInPlaylist');
+		} else {
+			callApi(plaid);
+		}
+	}
 
-		if (plaid) {
-			await useCustomFetch(`/api/playlist/${plaid}`, {
-				method: 'POST',
-				body: {
-					kids: [props.kid]
-				}
-			});
-			toast.success(t('kara.playlists.add_success'));
-		}
+	async function callApi(plaid?: string) {
+		openModal('addDuplicateInPlaylist');
+		await useCustomFetch(`/api/playlist/${plaid}`, {
+			method: 'POST',
+			body: {
+				kids: [props.kid]
+			}
+		});
+		toast.success(t('kara.playlists.add_success'));
 	}
 </script>
 <style scoped lang="scss">
