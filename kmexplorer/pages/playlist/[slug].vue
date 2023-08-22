@@ -319,6 +319,15 @@
 	}
 
 </script>
+<style lang="scss">
+	.playing {
+		background-color: #4b5253;
+
+		&.first td:first-child {
+			border-top-left-radius: 0.4em;
+		}
+	}
+</style>
 <style scoped lang="scss">
 	@media screen and (max-width: 1024px) {
 		.tile.is-parent {
@@ -329,14 +338,6 @@
 	@media screen and (min-width: 769px) {
 		.player {
 			margin-right: 0.75rem;
-		}
-	}
-
-	.playing {
-		background-color: #4b5253;
-
-		&.first td:first-child {
-			border-top-left-radius: 0.4em;
 		}
 	}
 
