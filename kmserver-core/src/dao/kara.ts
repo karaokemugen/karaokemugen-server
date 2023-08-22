@@ -242,7 +242,6 @@ export async function insertKara(kara: KaraFileV4) {
 			year: kara.data.year,
 			songorder: kara.data.songorder || null,
 			duration: kara.medias[0].duration,
-			gain: kara.medias[0].audiogain,
 			loudnorm: kara.medias[0].loudnorm,
 			modified_at: kara.data.modified_at,
 			created_at: kara.data.created_at,

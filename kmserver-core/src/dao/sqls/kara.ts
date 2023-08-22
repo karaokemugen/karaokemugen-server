@@ -43,7 +43,6 @@ SELECT
   ak.mediafile AS mediafile,
   ak.karafile AS karafile,
   ak.duration AS duration,
-  ak.gain AS gain,
   ak.loudnorm AS loudnorm,
   ak.created_at AS created_at,
   ak.modified_at AS modified_at,
@@ -77,7 +76,7 @@ WHERE ${includeStaging ? 'TRUE' : 'ak.repository != \'Staging\''}
 	}
 	${filterClauses.map(clause => `AND (${clause})`).reduce((a, b) => (`${a} ${b}`), '')}
 	${whereClauses.join(' ')}
-GROUP BY ${groupClause} ak.pk_kid, ak.titles, ak.titles_aliases, ak.titles_default_language, ak.songorder, ak.tags, ak.serie_singergroup_singer_sortable, ak.subfile, ak.year, ak.mediafile, ak.karafile, ak.duration, ak.gain, ak.loudnorm, ak.created_at, ak.modified_at, ak.mediasize, ak.repository, ak.comment, ak.songtypes_sortable, ak.ignore_hooks, ak.titles_sortable, ksub.subchecksum, ak.kitsu_ids, ak.anilist_ids, ak.myanimelist_ids
+GROUP BY ${groupClause} ak.pk_kid, ak.titles, ak.titles_aliases, ak.titles_default_language, ak.songorder, ak.tags, ak.serie_singergroup_singer_sortable, ak.subfile, ak.year, ak.mediafile, ak.karafile, ak.duration, ak.loudnorm, ak.created_at, ak.modified_at, ak.mediasize, ak.repository, ak.comment, ak.songtypes_sortable, ak.ignore_hooks, ak.titles_sortable, ksub.subchecksum, ak.kitsu_ids, ak.anilist_ids, ak.myanimelist_ids
 ${onlyCount ? `
 ) res_to_count`
 : `
@@ -111,7 +110,6 @@ ${onlyCount ? `
   ak.mediafile AS mediafile,
   ak.karafile AS karafile,
   ak.duration AS duration,
-  ak.gain AS gain,
   ak.loudnorm AS loudnorm,
   ak.created_at AS created_at,
   ak.modified_at AS modified_at,
@@ -140,7 +138,7 @@ WHERE ${includeStaging ? '1 = 1' : 'ak.repository != \'Staging\''}
 		: ''
 	}
 ${onlyCount ? '' : `
-GROUP BY ak.pk_kid, ak.titles, ak.titles_aliases, ak.titles_default_language, ak.songorder, ak.tags, ak.serie_singergroup_singer_sortable, ak.subfile, ak.year, ak.mediafile, ak.karafile, ak.duration, ak.gain, ak.loudnorm, ak.created_at, ak.modified_at, ak.mediasize, ak.repository, ak.comment, ak.songtypes_sortable, ak.ignore_hooks, ak.titles_sortable, ksub.subchecksum, ak.kitsu_ids, ak.anilist_ids, ak.myanimelist_ids
+GROUP BY ak.pk_kid, ak.titles, ak.titles_aliases, ak.titles_default_language, ak.songorder, ak.tags, ak.serie_singergroup_singer_sortable, ak.subfile, ak.year, ak.mediafile, ak.karafile, ak.duration, ak.loudnorm, ak.created_at, ak.modified_at, ak.mediasize, ak.repository, ak.comment, ak.songtypes_sortable, ak.ignore_hooks, ak.titles_sortable, ksub.subchecksum, ak.kitsu_ids, ak.anilist_ids, ak.myanimelist_ids
 ORDER BY ${orderClauses} ak.serie_singergroup_singer_sortable, ak.songtypes_sortable DESC, ak.songorder, ak.titles_sortable
 ${limitClause}
 ${offsetClause}`
@@ -156,7 +154,6 @@ INSERT INTO kara(
 	mediafile,
 	subfile,
 	duration,
-	gain,
 	loudnorm,
 	modified_at,
 	created_at,
@@ -177,7 +174,6 @@ VALUES(
 	:mediafile,
 	:subfile,
 	:duration,
-	:gain,
 	:loudnorm,
 	:modified_at,
 	:created_at,

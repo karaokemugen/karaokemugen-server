@@ -60,7 +60,6 @@ export function convertDBKaraToKaraFile(dbKara?: DBKara): KaraFileV4 {
 			{
 				version: mediaVersion,
 				filename: dbKara?.mediafile || '',
-				audiogain: dbKara?.gain as number,
 				loudnorm: dbKara?.loudnorm as string,
 				filesize: dbKara?.mediasize || 0,
 				duration: dbKara?.duration || 0,
