@@ -24,7 +24,7 @@ import { initRepos } from './services/repo.js';
 import { addSuggestionsFromFile } from './services/suggestions.js';
 import { addRoleToUser, changePassword, createUser, initUsers, removeRoleFromUser } from './services/user.js';
 import { initConfig } from './utils/config.js';
-import { generateHardsubs, initHardsubGeneration } from './utils/hardsubs.js';
+import { generateHardsubs, hardsubsDone, initHardsubGeneration } from './utils/hardsubs.js';
 import { initMailer } from './utils/mailer.js';
 import sentry from './utils/sentry.js';
 import { getState, setState } from './utils/state.js';
@@ -136,8 +136,9 @@ async function main() {
 	}
 
 	if (argv.opts().processHardsubs) {
-		await initHardsubGeneration();
+		await initHardsubGeneration(true);
 		await generateHardsubs(await getAllKaras({}));
+		await hardsubsDone();
 		exit(0);
 	}
 

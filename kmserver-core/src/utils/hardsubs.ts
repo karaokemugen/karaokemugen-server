@@ -8,6 +8,7 @@ import { getConfig, resolvedPathRepos } from '../lib/utils/config.js';
 import { createHardsub } from '../lib/utils/ffmpeg.js';
 import { fileExists, resolveFileInDirs } from '../lib/utils/files.js';
 import logger, { profile } from '../lib/utils/logger.js';
+import { emit, once } from '../lib/utils/pubsub.js';
 import { generateHardsubsCache, getAllKaras } from '../services/kara.js';
 import { getState } from './state.js';
 
@@ -21,10 +22,21 @@ export function getHardsubsBeingProcessed() {
 	return [...hardsubsBeingProcessed] as string[];
 }
 
-export async function initHardsubGeneration() {
+export function hardsubsDone() {
+	return new Promise<void>(done => {
+		once('hardsubsQueueDrained', () => {
+			done();
+		}).setMaxListeners(30);
+	});
+}
+
+export async function initHardsubGeneration(drainEvent = false) {
 	queue = fastq<never, [string, string, string, string], void>(wrappedGenerateHS, 1);
 	const karas = await getAllKaras({ ignoreCollections: true }, undefined, true);
 	generateHardsubsCache(karas);
+	if (drainEvent) queue.drain = () => {
+		emit('hardsubsQueueDrained');
+	};
 }
 
 async function wrappedGenerateHS(payload: [string, string, string, string]) {
