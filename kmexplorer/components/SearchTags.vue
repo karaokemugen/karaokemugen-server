@@ -29,7 +29,7 @@
 	function getNavbarHeight() {
 		if (process.client) {
 			const element = document.getElementsByClassName('navbar is-primary is-fixed-top')[0] as HTMLElement;
-			document.documentElement.style.setProperty('--maxh', `${element.offsetHeight}px`);
+			document.documentElement.style.setProperty('--maxh', `calc(${element.offsetHeight}px - 4.7rem)`);
 		}
 	}
 </script>
