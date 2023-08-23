@@ -24,7 +24,7 @@ import { initRepos } from './services/repo.js';
 import { addSuggestionsFromFile } from './services/suggestions.js';
 import { addRoleToUser, changePassword, createUser, initUsers, removeRoleFromUser } from './services/user.js';
 import { initConfig } from './utils/config.js';
-import { initHardsubGeneration } from './utils/hardsubs.js';
+import { generateHardsubs, initHardsubGeneration } from './utils/hardsubs.js';
 import { initMailer } from './utils/mailer.js';
 import sentry from './utils/sentry.js';
 import { getState, setState } from './utils/state.js';
@@ -136,6 +136,10 @@ async function main() {
 		exit(0);
 	}
 
+	if (argv.opts().processHardsubs) {
+		await generateHardsubs(await getAllKaras({}));
+	}
+
 	if (argv.opts().addUserRole) {
 		await addRoleToUser(argv.opts().addUserRole[0], argv.opts().addUserRole[1]);
 		exit(0);
@@ -219,6 +223,7 @@ function parseArgs() {
 		.version(pjson.version)
 		.option('--port [port]', 'specify which port to listen to', 'port')
 		.option('--generate', 'generate karaoke database')
+		.option('--processHardsubs', 'process any missing hardsubs')
 		.option('--sql', 'display SQL queries (in debug)')
 		.option('--debug', 'display debug messages')
 		.option('--staticServe', 'serve static files via NodeJS')
