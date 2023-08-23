@@ -131,13 +131,13 @@ async function main() {
 	}
 
 	if (argv.opts().generate) {
-		await initHardsubGeneration();
-		await generate();
+		await generate(false);
 		exit(0);
 	}
 
 	if (argv.opts().processHardsubs) {
 		await generateHardsubs(await getAllKaras({}));
+		exit(0);
 	}
 
 	if (argv.opts().addUserRole) {

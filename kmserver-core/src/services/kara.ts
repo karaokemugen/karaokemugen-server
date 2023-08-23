@@ -59,7 +59,7 @@ export async function updateRepo() {
 	await generate();
 }
 
-export async function generate() {
+export async function generate(hardsubs = true) {
 	try {
 		await generateDatabase({validateOnly: false});
 		const conf = getConfig();
@@ -79,7 +79,7 @@ export async function generate() {
 		createBaseDumps();
 		const karas = await getAllKaras({ ignoreCollections: true }, undefined, true);
 		const promises = [createImagePreviews(karas, 'full', 1280)];
-		if (conf.Hardsub.Enabled) {
+		if (hardsubs && conf.Hardsub.Enabled) {
 			promises.push(generateHardsubs(karas));
 			generateHardsubsCache(karas);
 		}
