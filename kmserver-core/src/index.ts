@@ -136,6 +136,7 @@ async function main() {
 	}
 
 	if (argv.opts().processHardsubs) {
+		await initHardsubGeneration();
 		await generateHardsubs(await getAllKaras({}));
 		exit(0);
 	}
