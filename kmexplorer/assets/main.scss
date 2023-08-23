@@ -111,6 +111,10 @@ body.has-navbar-fixed-top, html.has-navbar-fixed-top {
 	}
 }
 
+.columns {
+	margin-top: calc(var(--maxh, 0px) - 4rem)
+}
+
 @media (min-width: $desktop) {
 	.container.is-fluid.main {
 		margin-left: 210px;

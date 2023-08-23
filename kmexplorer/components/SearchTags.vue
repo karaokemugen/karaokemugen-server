@@ -19,6 +19,19 @@
 
 	const { removeTag } = useMenubarStore();
 	const { tags } = storeToRefs(useMenubarStore());
+
+	watch(tags, () => {
+		nextTick(() => {
+			getNavbarHeight();
+		});
+	}, { deep: true });
+
+	function getNavbarHeight() {
+		if (process.client) {
+			const element = document.getElementsByClassName('navbar is-primary is-fixed-top')[0] as HTMLElement;
+			document.documentElement.style.setProperty('--maxh', `${element.offsetHeight}px`);
+		}
+	}
 </script>
 
 <style scoped lang="scss">
