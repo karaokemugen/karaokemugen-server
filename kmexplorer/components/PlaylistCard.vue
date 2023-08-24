@@ -9,7 +9,7 @@
 					{{ playlist.description }}
 				</div>
 			</div>
-			<div class="title is-flex is-flex-direction-column is-align-items-end">
+			<div class="title playlist-owner">
 				<div>{{ $t('playlists.by_owner', { username: playlist.username }) }}</div>
 				<div
 					v-if="playlist.contributors && playlist.contributors?.length > 0"
@@ -127,3 +127,11 @@
 	}
 
 </script>
+<style scoped lang="scss">
+.playlist-owner {
+	display: flex;
+	flex-direction: column;
+	align-items: end;
+	min-width: 6em;
+}
+</style>
