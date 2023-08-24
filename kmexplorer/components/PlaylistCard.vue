@@ -134,4 +134,15 @@
 	align-items: end;
 	min-width: 6em;
 }
+
+@media screen and (max-width: 768px) {
+	.is-flex {
+		flex-direction: column;
+	}
+
+	.playlist-owner {
+		align-items: start;
+		margin-bottom: 0.5em;
+	}
+}
 </style>
