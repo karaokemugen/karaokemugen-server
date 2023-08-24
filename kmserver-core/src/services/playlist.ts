@@ -41,10 +41,7 @@ export async function removePlaylist(plaid: string, token: JWTTokenWithRoles) {
 /** Edit playlist properties */
 export async function editPlaylist(plaid: string, playlist: DBPL, token?: JWTTokenWithRoles) {
 	try {
-		const [pls, user] = await Promise.all([
-			getPlaylists({}, adminToken),
-			findUserByName(token.username)
-		]);
+		const pls = await getPlaylists({}, adminToken);
 		token.username = token.username.toLowerCase();
 		delete playlist.plaid;
 		const pl = pls.find(pla => pla.plaid === plaid);
@@ -54,8 +51,7 @@ export async function editPlaylist(plaid: string, playlist: DBPL, token?: JWTTok
 		logger.debug(`Editing playlist ${plaid}`, {service, obj: playlist});
 		const newPlaylist = {
 			...pl,
-			...playlist,
-			nickname: user.nickname,
+			...playlist
 		};
 		newPlaylist.slug = findUniqueSlug(pls.filter(pla => pla.plaid !== pl.plaid).map(pl2 => pl2.slug), newPlaylist.name);
 		await updatePlaylist(newPlaylist);
@@ -73,10 +69,7 @@ export async function editPlaylist(plaid: string, playlist: DBPL, token?: JWTTok
 /** Create new playlist */
 export async function createPlaylist(pl: DBPL, token: JWTTokenWithRoles) {
 	try {
-		const [pls, user] = await Promise.all([
-			getPlaylists({}, adminToken),
-			findUserByName(token.username)
-		]);
+		const pls = await getPlaylists({}, adminToken);
 		token.username = token.username.toLowerCase();
 		// If playlist is to be replaced, let's check if we're allowed to
 		if (pls.find(pla => 
@@ -94,7 +87,6 @@ export async function createPlaylist(pl: DBPL, token: JWTTokenWithRoles) {
 			// Forcing username provided by function.
 			// The person creating the playlist should be the owner.
 			username: token.username,
-			nickname: user.nickname,
 			name: pl.name,
 			description: pl.description,
 			// Defaults

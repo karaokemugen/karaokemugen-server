@@ -12,14 +12,16 @@ SELECT
 	p.flag_visible,
 	flag_visible_online,
 	p.fk_login AS username,
+	u.nickname AS nickname,
 	array_remove(array_agg(DISTINCT pco.fk_login), null) AS contributors
 FROM playlist p
 LEFT JOIN playlist_contributor pco ON pco.fk_plaid = p.pk_plaid
+LEFT JOIN users u ON u.pk_login = p.fk_login
 ${joinClauses.join('\n')}
 ${additionalFrom}
 WHERE ${whereClauses.join(' \n AND ')}
 ${filterClauses.map(clause => ` AND (${clause})`).reduce((a, b) => (`${a} ${b}`), '')}
-GROUP BY p.pk_plaid
+GROUP BY p.pk_plaid, u.nickname
 ORDER BY p.name
 `;
 
@@ -34,8 +36,10 @@ UPDATE playlist SET
 	slug = :slug,
 	flag_visible = :flag_visible,
 	flag_visible_online = :flag_visible_online,
-	search_vector = to_tsvector(:name) || to_tsvector(:description) || to_tsvector(:nickname)
-WHERE pk_plaid = :plaid;
+	search_vector = to_tsvector(:name) || to_tsvector(:description) || to_tsvector(u.nickname)
+FROM users u
+WHERE pk_plaid = :plaid
+  AND u.pk_login = playlist.fk_login
 `;
 
 export const createPlaylist = `
@@ -52,7 +56,6 @@ INSERT INTO playlist(
 	flag_visible,
 	flag_visible_online,
 	fk_login,
-	fk_nickname,
 	search_vector
 )
 VALUES(
@@ -68,8 +71,7 @@ VALUES(
 	:flag_visible,
 	:flag_visible_online,
 	:username,
-	:nickname,
-	to_tsvector(:name) || to_tsvector(:description) || to_tsvector(:nickname)
+	to_tsvector(:name) || to_tsvector(:description) || to_tsvector((SELECT nickname FROM users WHERE pk_login = :username))
 )
 `;
 
@@ -257,7 +259,12 @@ INSERT INTO playlist_content(
 `;
 
 export const updatePlaylistSearchVector = (username: string) => `
-UPDATE playlist SET search_vector = to_tsvector(name) || to_tsvector(description) || to_tsvector(fk_nickname)
-WHERE true
+UPDATE playlist 
+SET search_vector = 
+	to_tsvector(name) || 
+	to_tsvector(description) || 
+	to_tsvector(u.nickname)
+FROM users u
+WHERE u.pk_login = playlist.fk_login
 ${username ? ' AND fk_login = $1' : ''}
 `;

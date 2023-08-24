@@ -688,7 +688,7 @@
 		"delete": "Delete",
 		"share": "Share",
 		"add_karaoke": "Add a karaoke to the playlist",
-		"by_owner": "by {username}",
+		"by_owner": "by {nickname}",
 		"and_contributors": "(and {contributors})",
 		"and_contributors_more": "(and {contributors}, {count} more)",
 		"share_clipboard": "Playlist link copied in clipboard"

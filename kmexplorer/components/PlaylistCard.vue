@@ -10,7 +10,7 @@
 				</div>
 			</div>
 			<div class="title playlist-owner">
-				<div>{{ $t('playlists.by_owner', { username: playlist.username }) }}</div>
+				<div>{{ $t('playlists.by_owner', { nickname: playlist.nickname }) }}</div>
 				<div
 					v-if="playlist.contributors && playlist.contributors?.length > 0"
 					class="subtitle"

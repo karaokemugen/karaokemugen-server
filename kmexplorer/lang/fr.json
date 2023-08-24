@@ -688,7 +688,7 @@
 		"delete": "Supprimer",
 		"share": "Partager",
 		"add_karaoke": "Ajouter un karaoké à la liste de lecture",
-		"by_owner": "par {username}",
+		"by_owner": "par {nickname}",
 		"and_contributors": "(et {contributors})",
 		"and_contributors_more": "(et {contributors}, {count} de plus)",
 		"share_clipboard": "Lien de la liste de lecture copié dans le presse-papier"
