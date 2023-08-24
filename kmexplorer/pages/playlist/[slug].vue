@@ -143,7 +143,7 @@
 
 	setResultsCount(0);
 
-	watch(search, loadNextPage);
+	watch(search, resetList);
 	watch(karaokes, (karaokes) => setResultsCount(karaokes.infos.count), { deep: true });
 
 	onMounted(() => {
@@ -202,6 +202,15 @@
 			});
 			await loadNextPage();
 		}
+	}
+
+	async function resetList() {
+		karaokes.value = { infos: { count: 0, to: 0, from: 0 }, i18n: {}, content: [] };
+		currentPage.value = 1;
+		updateQueryParams();
+		await loadNextPage();
+		indexPlaying.value = 0;
+		playing.value = karaokes.value.content[0];
 	}
 
 	async function onPageChange(p: number) {
