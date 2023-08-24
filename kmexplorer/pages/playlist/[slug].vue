@@ -122,7 +122,7 @@
 	const loading = ref(true);
 	const karaokes = ref<KaraListType<DBPLC>>({ infos: { count: 0, from: 0, to: 0 }, i18n: {}, content: [] });
 	const playlist = ref<DBPL>();
-	const { params } = useRoute();
+	const { params, query } = useRoute();
 	const { loggedIn, user } = storeToRefs(useAuthStore());
 	const playing = ref<DBPLC>();
 	const indexPlaying = ref(0);
@@ -207,7 +207,14 @@
 		}
 		karaokes.value = data;
 		loading.value = false;
-		if (karaokes.value.content.length > 0) playing.value = karaokes.value.content[0];
+		if (karaokes.value.content.length > 0) {
+			if (query.index && query.index < karaokes.value.content.length) {
+				indexPlaying.value = query.index;
+				playing.value = karaokes.value.content[query.index];
+			} else {
+				playing.value = karaokes.value.content[0];
+			}
+		}
 	}
 
 	function next() {
@@ -215,6 +222,7 @@
 			indexPlaying.value = indexPlaying.value + 1;
 			if (karaokes.value.content[indexPlaying.value] && isPlayable(karaokes.value.content[indexPlaying.value])) {
 				playing.value = karaokes.value.content[indexPlaying.value];
+				updateQueryParams();
 			} else {
 				next();
 			}
@@ -226,6 +234,7 @@
 			indexPlaying.value = indexPlaying.value - 1;
 			if (karaokes.value.content[indexPlaying.value] && isPlayable(karaokes.value.content[indexPlaying.value])) {
 				playing.value = karaokes.value.content[indexPlaying.value];
+				updateQueryParams();
 			} else {
 				previous();
 			}
@@ -235,6 +244,11 @@
 	function updatePlayer(karaoke: DBPLC) {
 		indexPlaying.value = karaokes.value.content.findIndex(n => karaoke.plcid === n.plcid);
 		playing.value = karaoke;
+		updateQueryParams();
+	}
+
+	function updateQueryParams() {
+		push(`/playlist/${playlist.value?.slug}?index=${indexPlaying.value}`);
 	}
 
 	function dragstart(payload: any) {
