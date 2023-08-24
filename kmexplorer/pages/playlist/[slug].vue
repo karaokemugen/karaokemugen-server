@@ -141,6 +141,7 @@
 	const karaSearch = ref<{ label: string; value: string }[]>([]);
 
 	const debouncedGetAsyncData = ref();
+	const debouncedPageChange = ref();
 
 	setResultsCount(0);
 
@@ -156,6 +157,7 @@
 
 	onMounted(() => {
 		debouncedGetAsyncData.value = _.debounce(getAsyncData, 500, { leading: true, trailing: true, maxWait: 750 });
+		debouncedPageChange.value = _.debounce(getAsyncAfterPageChange, 500);
 	});
 
 	if (process.client) {
@@ -222,8 +224,14 @@
 	}
 
 	async function onPageChange(p: number) {
-		karaokes.value.infos.from = (p - 1) * chunkSize;
-		updateQueryParams();
+		if (!loading.value) {
+			karaokes.value.infos.from = (p - 1) * chunkSize;
+			updateQueryParams();
+			debouncedPageChange.value();
+		}
+	}
+
+	async function getAsyncAfterPageChange() {
 		await loadNextPage();
 		indexPlaying.value = 0;
 		playing.value = karaokes.value.content[0];
