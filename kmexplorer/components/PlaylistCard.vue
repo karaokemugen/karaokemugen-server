@@ -131,7 +131,7 @@
 .playlist-owner {
 	display: flex;
 	flex-direction: column;
-	align-items: end;
+	align-items: flex-end;
 	min-width: 6em;
 }
 

@@ -63,7 +63,14 @@
 						:draggable="loggedIn && user && (user.login === playlist.username || playlist.contributors?.includes(user.login))"
 						:show-header="false"
 						:narrowed="true"
+						:paginated="karaokes.infos.count > chunkSize"
+						:backend-pagination="true"
+						pagination-position="both"
+						:per-page="chunkSize"
+						:total="karaokes.infos.count"
+						:current-page="currentPage"
 						:row-class="isStylePlaying"
+						@page-change="onPageChange"
 						@dragstart="dragstart"
 						@drop="drop"
 						@dragover="dragover"
@@ -111,19 +118,21 @@
 	import { useAuthStore } from '~/store/auth';
 	import { useModalStore } from '~/store/modal';
 
+	const chunkSize = 300;
 
 	const { createEditPlaylist, deletePlaylist } = storeToRefs(useModalStore());
 	const { closeModal, openModal } = useModalStore();
 	const { search } = storeToRefs(useMenubarStore());
 	const { setResultsCount } = useMenubarStore();
+	const { loggedIn, user } = storeToRefs(useAuthStore());
 	const { replace, push } = useRouter();
+	const { params, query } = useRoute();
 	const { t } = useI18n();
 
+	const currentPage = ref(Number(query.page) || 1);
 	const loading = ref(true);
-	const karaokes = ref<KaraListType<DBPLC>>({ infos: { count: 0, from: 0, to: 0 }, i18n: {}, content: [] });
+	const karaokes = ref<KaraListType<DBPLC>>({ infos: { count: 0, from: query.page ? (query.page - 1) * chunkSize : 0, to: 0 }, i18n: {}, content: [] });
 	const playlist = ref<DBPL>();
-	const { params, query } = useRoute();
-	const { loggedIn, user } = storeToRefs(useAuthStore());
 	const playing = ref<DBPLC>();
 	const indexPlaying = ref(0);
 	const draggingRow = ref<DBPLC>();
@@ -195,11 +204,21 @@
 		}
 	}
 
+	async function onPageChange(p: number) {
+		karaokes.value.infos.from = (p - 1) * chunkSize;
+		updateQueryParams();
+		await loadNextPage();
+		indexPlaying.value = 0;
+		playing.value = karaokes.value.content[0];
+	}
+
 	async function loadNextPage() {
 		loading.value = true;
 		const data = await useCustomFetch<KaraListType<DBPLC>>(`/api/playlist/${playlist.value?.plaid}`, {
 			query: {
-				filter: search.value || undefined
+				filter: search.value || undefined,
+				from: karaokes.value.infos.from,
+				size: chunkSize,
 			}
 		});
 		for (const karaoke of data.content) {
@@ -217,7 +236,13 @@
 		}
 	}
 
-	function next() {
+	async function next() {
+		if (indexPlaying.value === 299 && karaokes.value.infos.count > karaokes.value.infos.from + chunkSize) {
+			karaokes.value.infos.from = karaokes.value.infos.from + chunkSize;
+			currentPage.value = currentPage.value + 1;
+			await loadNextPage();
+			indexPlaying.value = -1;
+		}
 		if (indexPlaying.value < karaokes.value.content.length - 1) {
 			indexPlaying.value = indexPlaying.value + 1;
 			if (karaokes.value.content[indexPlaying.value] && isPlayable(karaokes.value.content[indexPlaying.value])) {
@@ -229,7 +254,13 @@
 		}
 	}
 
-	function previous() {
+	async function previous() {
+		if (indexPlaying.value === 0 && karaokes.value.infos.from > 0) {
+			karaokes.value.infos.from = karaokes.value.infos.from - chunkSize;
+			currentPage.value = currentPage.value - 1;
+			await loadNextPage();
+			indexPlaying.value = 300;
+		}
 		if (indexPlaying.value > 0) {
 			indexPlaying.value = indexPlaying.value - 1;
 			if (karaokes.value.content[indexPlaying.value] && isPlayable(karaokes.value.content[indexPlaying.value])) {
@@ -248,7 +279,9 @@
 	}
 
 	function updateQueryParams() {
-		push(`/playlist/${playlist.value?.slug}?index=${indexPlaying.value}`);
+		let page = '';
+		if (karaokes.value.infos.from > 0) page = `&page=${(karaokes.value.infos.from + chunkSize) / chunkSize}`;
+		push(`/playlist/${playlist.value?.slug}?index=${indexPlaying.value}${page}`);
 	}
 
 	function dragstart(payload: any) {
@@ -340,6 +373,10 @@
 		&.first td:first-child {
 			border-top-left-radius: 0.4em;
 		}
+	}
+
+	.level {
+		padding-right: 1em;
 	}
 </style>
 <style scoped lang="scss">

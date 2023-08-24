@@ -75,7 +75,9 @@ import {
 	faCirclePlay,
 	faDownload,
 	faShare,
-	faListCheck
+	faListCheck,
+	faAngleLeft,
+	faAngleRight
 } from '@fortawesome/free-solid-svg-icons';
 import {
 	faTwitter,
@@ -170,6 +172,8 @@ library.add(
 	faDownload,
 	faShare,
 	faListCheck,
+	faAngleLeft,
+	faAngleRight,
 	faSitemap);
 
 export default defineNuxtPlugin((nuxtApp) => {
