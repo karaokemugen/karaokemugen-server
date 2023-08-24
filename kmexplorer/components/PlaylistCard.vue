@@ -52,6 +52,7 @@
 					<span>{{ $t('playlists.edit') }}</span>
 				</button>
 				<button
+					v-if="playlistPage"
 					class="button"
 					@click.prevent="exportPlaylist"
 				>
@@ -59,6 +60,7 @@
 					<span>{{ $t('playlists.export') }}</span>
 				</button>
 				<button
+					v-if="playlistPage"
 					class="button"
 					@click.prevent="shareLink"
 				>
