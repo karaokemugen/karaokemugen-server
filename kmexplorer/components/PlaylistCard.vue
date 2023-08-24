@@ -10,18 +10,40 @@
 				</div>
 			</div>
 			<div class="title playlist-owner">
-				<div>{{ $t('playlists.by_owner', { nickname: playlist.nickname }) }}</div>
+				<div>
+					<i18n-t
+						keypath="playlists.by_owner"
+					>
+						<template #nickname>
+							<nuxt-link :to="`/user/${playlist.username}`">
+								{{ playlist.nickname }}
+							</nuxt-link>
+						</template>
+					</i18n-t>
+				</div>
 				<div
 					v-if="playlist.contributors && playlist.contributors?.length > 0"
 					class="subtitle"
 				>
-					{{ playlist.contributors.length > 3 ?
-						$t('playlists.and_contributors_more', {
-							contributors: playlist.contributors?.slice(0, 3).join(', '),
-							count: playlist.contributors.length - 3
-						}) :
-						$t('playlists.and_contributors', { contributors: playlist.contributors?.slice(0, 3).join(', ') })
-					}}
+					<div>
+						<i18n-t
+							:keypath="playlist.contributors.length > 3 ? 'playlists.and_contributors_more' : 'playlists.and_contributors'"
+						>
+							<template #contributors>
+								<span
+									v-for="(contributor, index) in playlist.contributors.slice(0, 3)"
+									:key="contributor"
+								>
+									<nuxt-link :to="`/user/${contributor}`">
+										{{ contributor }}
+									</nuxt-link>{{ index === 2 ? '' : ', ' }}
+								</span>
+							</template>
+							<template #count>
+								<span> {{  playlist.contributors.length - 3 }}</span>
+							</template>
+						</i18n-t>
+					</div>
 				</div>
 			</div>
 		</div>
