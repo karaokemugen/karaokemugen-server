@@ -9,7 +9,7 @@
   "private": true,
   "scripts": {
     "prestart": "node ../util/runMigrations.mjs",
-    "start": "cross-env NODE_ENV=production node dist/index.js",
+    "start": "yarn build && cross-env NODE_ENV=production node dist/index.js",
     "watch": "yarn prestart && yarn build && cross-env NODE_ENV=development node dist/index.js",
     "generate": "node dist/index.js --generate",
     "build": "tsc && node esbuild.js",
