@@ -128,6 +128,7 @@
 	const { replace, push } = useRouter();
 	const { params, query } = useRoute();
 	const { t } = useI18n();
+	const route = useRoute();
 
 	const currentPage = ref(Number(query.page) || 1);
 	const loading = ref(true);
@@ -145,6 +146,13 @@
 
 	watch(search, resetList);
 	watch(karaokes, (karaokes) => setResultsCount(karaokes.infos.count), { deep: true });
+	watch(() => route.query.page, async (now) => {
+		const page = Number(now) || 1;
+		if (page !== currentPage.value) {
+			currentPage.value = page;
+			await onPageChange(page);
+		}
+	});
 
 	onMounted(() => {
 		debouncedGetAsyncData.value = _.debounce(getAsyncData, 500, { leading: true, trailing: true, maxWait: 750 });
