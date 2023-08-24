@@ -69,7 +69,7 @@
 			en: enJson,
 			fr: frJson
 		},
-		autoplay: theaterMode.value,
+		autoplay: theaterMode.value || props.playlistMode,
 		controls: true,
 		fluid: !theaterMode.value && !fullscreen.value,
 		fill: true,
