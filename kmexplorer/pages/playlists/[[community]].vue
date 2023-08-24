@@ -6,18 +6,22 @@
 			:results="false"
 		/>
 		<div
-			v-if="loggedIn && !loading"
+			v-if="!loading"
 			class="buttons"
 		>
 			<button
 				class="button"
-				@click="() => openModal('createEditPlaylist')"
+				@click="() => loggedIn ? openModal('createEditPlaylist') : openModal('auth')"
 			>
 				<font-awesome-icon :icon="['fas', 'plus']" />
 				<span>{{ $t('playlists.create') }}</span>
 			</button>
-			<button class="button">
+			<button
+				class="button"
+				@click="() => !loggedIn && openModal('auth')"
+			>
 				<input
+					v-if="loggedIn"
 					class="file-input"
 					type="file"
 					name="importplaylist"
