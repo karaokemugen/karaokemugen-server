@@ -40,6 +40,7 @@
 							:playlist="playlist"
 							:with-buttons="true"
 							:playlist-page="true"
+							@delete="() => openModal('deletePlaylist')"
 							@edit="() => openModal('createEditPlaylist')"
 						/>
 					</div>
