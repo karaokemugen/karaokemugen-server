@@ -155,6 +155,16 @@
 		}
 	});
 
+	watch(() => route.query.index, async (now) => {
+		const index = Number(now) || 0;
+		if (index !== indexPlaying.value) {
+			if (karaokes.value.content[index] && isPlayable(karaokes.value.content[index])) {
+				indexPlaying.value = index;
+				playing.value = karaokes.value.content[index];
+			}
+		}
+	});
+
 	const canEditPlaylist = computed(() =>
 		loggedIn?.value &&
 		user?.value &&
