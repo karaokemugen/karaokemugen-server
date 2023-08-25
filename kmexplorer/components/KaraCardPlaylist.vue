@@ -186,6 +186,7 @@
 			margin-top: 1.3em;
 			position: absolute;
 			display: none;
+			z-index: 1;
 		}
 
 		&:hover {
