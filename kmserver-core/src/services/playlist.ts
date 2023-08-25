@@ -74,7 +74,7 @@ export async function createPlaylist(pl: DBPL, token: JWTTokenWithRoles) {
 		// If playlist is to be replaced, let's check if we're allowed to
 		if (pls.find(pla => 
 			pl.plaid === pla.plaid && 
-			(token.username === pl.username || pl.contributors.includes(token.username)))) {
+			(token.username === pl.username || pl.contributors.find(c => c.username === token.username)))) {
 			const epl = await editPlaylist(pl.plaid, pl, token);
 			emitWS('playlistsUpdated');
 			return epl;
@@ -113,7 +113,7 @@ export async function getPlaylists(params: PLParams, token: JWTTokenWithRoles): 
 			pl.flag_visible_online || 
 			token?.roles.admin ||
 			pl.username === token?.username || 
-			pl.contributors.includes(token?.username));
+			pl.contributors.find(c => token?.username === c.username));
 	} catch (err) {
 		logger.error(`Error getting playlists : ${err}`, { service });
 		sentry.error(err);
@@ -146,7 +146,7 @@ export async function removeContributorToPlaylist(plaid: string, username: strin
 		token.username = token.username.toLowerCase();
 		if (!pl) throw new ErrorKM('UNKNOWN_PLAYLIST', 404, false); 
 		// A user should be able to remove themselves from the playlist
-		if (!token.roles.admin && pl.username !== token.username && !pl.contributors.includes(token.username)) throw new ErrorKM('CHECK_YOUR_PRIVILEGES', 403, false);
+		if (!token.roles.admin && pl.username !== token.username && !pl.contributors.find(c => c.username === token.username)) throw new ErrorKM('CHECK_YOUR_PRIVILEGES', 403, false);
 		await deleteContributor(plaid, username);
 	} catch (err) {
 		logger.error(`Error removing contributors from playlist ${plaid} : ${err}`, { service });
@@ -161,7 +161,7 @@ export async function getPlaylistContents(plaid: string, token: JWTTokenWithRole
 		if (token) token.username = token.username.toLowerCase();
 		const plInfo = (await getPlaylists({plaid}, adminToken))[0];
 		if (!plInfo) throw new ErrorKM('UNKNOWN_PLAYLIST', 404, false);
-		if ((!token && !plInfo.flag_visible_online) && token && !token.roles.admin && plInfo.username !== token.username && !plInfo.contributors.includes(token.username)) throw new ErrorKM('CHECK_YOUR_PRIVILEGES', 403, false);
+		if ((!token && !plInfo.flag_visible_online) && token && !token.roles.admin && plInfo.username !== token.username && !plInfo.contributors.find(c => c.username === token.username)) throw new ErrorKM('CHECK_YOUR_PRIVILEGES', 403, false);
 		const pl = await selectPlaylistContents({
 			plaid,
 			username: token?.username.toLowerCase() || null,
@@ -198,7 +198,7 @@ export async function addKaraToPlaylist(kids: string[], plaid: string, token: JW
 
 		logger.debug(`Adding ${kids.length} karaokes to playlist ${pl.name || 'unknown'} by ${token.username}...`, { service });
 
-		if (token.username !== pl.username && !pl.contributors.includes(token.username)) {
+		if (token.username !== pl.username && !pl.contributors.find(c => c.username === token.username)) {
 			throw new ErrorKM('CHECK_YOUR_PRIVILEGES', 403, false); 
 		}
 		// Everything's daijokay, user is allowed to add a song.
@@ -254,7 +254,7 @@ export async function removeKaraFromPlaylist(plc_ids: number[], token: JWTTokenW
 			const plcData = await selectPLCMini(plc_id);
 			if (!plcData) throw new ErrorKM('UNKNOWN_SONG', 404, false);
 			const playlist = (await selectPlaylists({plaid: plcData.plaid}))[0];
-			if (!token.roles.admin && playlist.username !== token.username.toLowerCase() && !playlist.contributors.includes(token.username)) throw new ErrorKM('CHECK_YOUR_PRIVILEGES', 403, false);
+			if (!token.roles.admin && playlist.username !== token.username.toLowerCase() && !playlist.contributors.find(c => c.username === token.username)) throw new ErrorKM('CHECK_YOUR_PRIVILEGES', 403, false);
 			playlistsNeedingUpdate.add(plcData.plaid);
 			plcsNeedingDelete.push({
 				id: plc_id,
@@ -307,7 +307,7 @@ export async function editPLC(plc_ids: number[], params: PLCEditParams, token: J
 		for (const plc of plcData) {
 			if (!PLMap.has(plc.plaid)) {
 				const pl = (await getPlaylists({plaid: plc.plaid}, token))[0];
-				if (!token.roles.admin && token.username !== pl.username && !pl.contributors.includes(token.username)) {
+				if (!token.roles.admin && token.username !== pl.username && !pl.contributors.find(c => c.username === token.username)) {
 					throw new ErrorKM('CHECK_YOUR_PRIVILEGES', 403, false);
 				}
 				PLMap.set(plc.plaid, pl);
@@ -343,7 +343,7 @@ export async function exportPlaylist(plaid: string, token: JWTTokenWithRoles) {
 		const pl = (await getPlaylists({plaid}, adminToken))[0];
 		if (!pl) throw new ErrorKM('UNKNOWN_PLAYLIST', 404, false);
 		// Auth is optional for exporting playlists
-		if ((!token && !pl.flag_visible_online) && token && token.roles.admin && token.username !== pl.username && !pl.contributors.includes(token.username)) {
+		if ((!token && !pl.flag_visible_online) && token && token.roles.admin && token.username !== pl.username && !pl.contributors.find(c => c.username === token.username)) {
 			throw new ErrorKM('CHECK_YOUR_PRIVILEGES', 403, false);
 		}
 		logger.debug(`Exporting playlist ${plaid}`, { service });
@@ -369,7 +369,7 @@ export async function emptyPlaylist(plaid: string, token: JWTTokenWithRoles) {
 	token.username = token.username.toLowerCase();
 	const pl = (await getPlaylists({ plaid }, adminToken))[0];
 	if (!pl) throw {code: 404, msg: 'Playlist unknown'};
-	if (!token.roles.admin && token.username !== pl.username && !pl.contributors.includes(token.username)) {
+	if (!token.roles.admin && token.username !== pl.username && !pl.contributors.find(c => c.username === token.username)) {
 		throw new ErrorKM('CHECK_YOUR_PRIVILEGES', 403, false);
 	}
 	try {

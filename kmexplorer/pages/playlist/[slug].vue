@@ -14,7 +14,7 @@
 				/>
 			</div>
 			<label
-				v-if="loggedIn && user && (user.login === playlist.username || playlist.contributors?.includes(user.login))"
+				v-if="canEditPlaylist"
 				class="is-hidden-desktop"
 			>
 				{{ $t('playlists.add_karaoke') }}
@@ -44,7 +44,7 @@
 						/>
 					</div>
 					<label
-						v-if="loggedIn && user && (user.login === playlist.username || playlist.contributors?.includes(user.login))"
+						v-if="canEditPlaylist"
 						class="is-hidden-touch"
 					>
 						{{ $t('playlists.add_karaoke') }}
@@ -60,7 +60,7 @@
 				<div class="tile is-vertical table-parent">
 					<o-table
 						:data="karaokes.content"
-						:draggable="loggedIn && user && (user.login === playlist.username || playlist.contributors?.includes(user.login))"
+						:draggable="canEditPlaylist"
 						:show-header="false"
 						:narrowed="true"
 						:paginated="karaokes.infos.count > chunkSize"
@@ -154,6 +154,13 @@
 			await onPageChange(page);
 		}
 	});
+
+	const canEditPlaylist = computed(() =>
+		loggedIn?.value &&
+		user?.value &&
+		playlist?.value &&
+		(user.value.login === playlist.value.username || playlist.value.contributors?.map(c => user.value?.login === c.username))
+	);
 
 	onMounted(() => {
 		debouncedGetAsyncData.value = _.debounce(getAsyncData, 500, { leading: true, trailing: true, maxWait: 750 });
