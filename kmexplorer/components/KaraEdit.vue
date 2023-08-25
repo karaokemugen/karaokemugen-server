@@ -875,7 +875,6 @@
 						karaoke.value.medias = [{
 							version: determineVersion(karaoke.value.data.titles, karaoke.value.data.titles_default_language),
 							filename: result.filename,
-							audiogain: result.gain,
 							loudnorm: result.loudnorm,
 							filesize: Number(result.size),
 							duration: result.duration,
