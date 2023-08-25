@@ -97,7 +97,7 @@
 
 	const tags = computed((): TagExtend[] => {
 		const tags: TagExtend[] = [];
-		for (const tagType of ['langs', 'series', 'singers', 'singergroups']) {
+		for (const tagType of ['langs', 'series', 'singers', 'singergroups', 'warnings']) {
 			let i = 0;
 			// @ts-ignore
 			if (props.karaoke[tagType] && props.karaoke[tagType].length !== 0) {
