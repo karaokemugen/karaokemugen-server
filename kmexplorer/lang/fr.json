@@ -632,7 +632,10 @@
 		"PL_DELETE_SONG_ERROR": "Erreur lors de la suppression d'une chanson à la liste de lecture",
 		"PL_EDIT_SONG_ERROR": "Erreur lors de l'édition du contenu de la liste de lecture",
 		"PL_EXPORT_ERROR": "Erreur lors de l'export de la liste de lecture",
-		"PL_IMPORT_ERROR": "Erreur lors de l'import de la liste de lecture"
+		"PL_IMPORT_ERROR": "Erreur lors de l'import de la liste de lecture",
+		"PL_SHARE_ERROR": "Erreur lors du partage de la liste de lecture",
+		"PL_SHARE_CLIPBOARD_SUCCESS": "Lien de la liste de lecture copié dans le presse-papier",
+		"PL_SHARE_CLIPBOARD_FAIL": "Lien de la liste de lecture n'a pas pu être copié dans le presse-papier"
 	},
 	"roles": {
 		"donator": "Donateur(-ice)",
@@ -690,7 +693,6 @@
 		"add_karaoke": "Ajouter un karaoké à la liste de lecture",
 		"by_owner": "par {nickname}",
 		"and_contributors": "(et {contributors})",
-		"and_contributors_more": "(et {contributors}, {count} de plus)",
-		"share_clipboard": "Lien de la liste de lecture copié dans le presse-papier"
+		"and_contributors_more": "(et {contributors}, {count} de plus)"
 	}
 }
