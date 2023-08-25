@@ -141,10 +141,18 @@
 
 	function shareLink() {
 		if (window.navigator.share) {
-			window.navigator.share({ url: href });
+			try {
+				window.navigator.share({ url: href });
+			} catch (e) {
+				toast.error(t('toast.PL_SHARE_ERROR'));
+			}
 		} else if (window.navigator.clipboard) {
-			navigator.clipboard.writeText(href);
-			toast.success(t('playlists.share_clipboard'));
+			try {
+				window.navigator.clipboard.writeText(href);
+				toast.success(t('toast.PL_SHARE_CLIPBOARD_SUCCESS'));
+			} catch (e) {
+				toast.error(t('toast.PL_SHARE_CLIPBOARD_FAIL'));
+			}
 		}
 	}
 
