@@ -32,15 +32,15 @@
 							<template #contributors>
 								<span
 									v-for="(contributor, index) in playlist.contributors.slice(0, 3)"
-									:key="contributor"
+									:key="contributor.username"
 								>
-									<nuxt-link :to="`/user/${contributor}`">
-										{{ contributor }}
-									</nuxt-link>{{ index === 2 ? '' : ', ' }}
+									<nuxt-link :to="`/user/${contributor.username}`">
+										{{ contributor.nickname }}
+									</nuxt-link>{{ index === 2 || index === playlist.contributors.length - 1 ? '' : ', ' }}
 								</span>
 							</template>
 							<template #count>
-								<span> {{  playlist.contributors.length - 3 }}</span>
+								<span> {{ playlist.contributors.length - 3 }}</span>
 							</template>
 						</i18n-t>
 					</div>

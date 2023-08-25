@@ -40,7 +40,7 @@
 			/>
 		</div>
 		<button
-			v-if="loggedIn && user && (user.login === playlist.username || playlist.contributors?.includes(user.login))"
+			v-if="canEditPlaylist"
 			class="button delete-button"
 			@click="() => $emit('deleteKaraokes', [karaoke.plcid])"
 		>
@@ -73,6 +73,12 @@
 
 	const conf = useRuntimeConfig();
 	const hardsubUrl = conf.public.HARDSUB_URL;
+
+	const canEditPlaylist = computed(() =>
+		loggedIn?.value &&
+		user?.value &&
+		(user.value.login === props.playlist.username || props.playlist.contributors?.find(c => user.value?.login === c.username))
+	);
 
 	const title = computed((): string => {
 		return getTitleInLocale(props.karaoke.titles, props.karaoke.titles_default_language);

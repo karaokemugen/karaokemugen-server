@@ -25,7 +25,7 @@
 			v-model="currentVal"
 			keep-first
 			open-on-focus
-			:data="availableUsers.filter(u => !props.params.includes(u.login) && u.login !== user?.login)"
+			:data="availableUsers.filter(u => !props.params.find(user => user.username === u.login) && u.login !== user?.login)"
 			:loading="isFetching"
 			:custom-formatter="(user: User) => user.nickname"
 			:clear-on-select="true"
@@ -41,15 +41,16 @@
 	import { User } from 'kmserver-core/src/lib/types/user';
 	import { UserList } from 'kmserver-core/src/types/user';
 	import { useAuthStore } from '~/store/auth';
+	import { Contributors } from 'kmserver-core/src/lib/types/database/playlist';
 
 	const props = defineProps<{
-		params: string[]
+		params: Contributors[]
 		plaid: string
 	}>();
 
 	const { user } = storeToRefs(useAuthStore());
 
-	const emit = defineEmits<{ (e: 'change', value: string[]): void }>();
+	const emit = defineEmits<{ (e: 'change', value: Contributors[]): void }>();
 
 	const availableUsers = ref<User[]>([]);
 	const values = ref<User[]>([]);
@@ -78,13 +79,13 @@
 		if (props.params.length > 0) {
 			const users: User[] = [];
 			for (const u of props.params) {
-				const userFound = availableUsers.value.find(val => val.login === u);
+				const userFound = availableUsers.value.find(val => val.login === u.username);
 				if (userFound) {
 					users.push(userFound);
 				} else {
-					const data = await useCustomFetch<User>(`/api/users/${u}`);
+					const data = await useCustomFetch<User>(`/api/users/${u.username}`);
 					if (!data) {
-						throw new TypeError(`User ${u} unknown`);
+						throw new TypeError(`User ${u.username} unknown`);
 					}
 					users.push(data);
 				}
@@ -129,7 +130,13 @@
 			const valuesUpdated: User[] = values.value;
 			valuesUpdated.push(option);
 			values.value = valuesUpdated;
-			emit('change', values.value.map((t: User) => t.login));
+			emit('change', values.value.map((user: User) => {
+				return {
+					username: user.login,
+					nickname: user.nickname,
+					avatar_file: user.avatar_file
+				} as Contributors;
+			}));
 		}
 	}
 	async function deleteValue(option: User) {
@@ -140,7 +147,13 @@
 			loading.value = false;
 		});
 		values.value = values.value.filter((user: User) => user.login !== option.login);
-		emit('change', values.value.map((user: User) => user.login));
+		emit('change', values.value.map((user: User) => {
+			return {
+				username: user.login,
+				nickname: user.nickname,
+				avatar_file: user.avatar_file
+			} as Contributors;
+		}));
 	}
 </script>
 

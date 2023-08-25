@@ -1,4 +1,11 @@
 export const selectPlaylists = (joinClauses: string[], whereClauses: string[], filterClauses: string[], additionalFrom: string) => `
+WITH all_users AS (
+	SELECT 
+		pk_login AS username,
+		nickname,
+		avatar_file
+	FROM users
+)
 SELECT
 	pk_plaid AS plaid,
 	name,
@@ -13,7 +20,11 @@ SELECT
 	flag_visible_online,
 	p.fk_login AS username,
 	u.nickname AS nickname,
-	array_remove(array_agg(DISTINCT pco.fk_login), null) AS contributors
+	u.avatar_file AS avatar_file,
+	(SELECT coalesce(array_to_json(array_agg(row_to_json(contribs))), '[]')::jsonb
+		FROM (
+	SELECT * FROM all_users WHERE all_users.username = ANY((array_remove(array_agg(DISTINCT pco.fk_login), null))
+	)) AS contribs) AS contributors
 FROM playlist p
 LEFT JOIN playlist_contributor pco ON pco.fk_plaid = p.pk_plaid
 LEFT JOIN users u ON u.pk_login = p.fk_login
@@ -21,7 +32,7 @@ ${joinClauses.join('\n')}
 ${additionalFrom}
 WHERE ${whereClauses.join(' \n AND ')}
 ${filterClauses.map(clause => ` AND (${clause})`).reduce((a, b) => (`${a} ${b}`), '')}
-GROUP BY p.pk_plaid, u.nickname
+GROUP BY p.pk_plaid, u.nickname, u.avatar_file
 ORDER BY p.name
 `;
 
