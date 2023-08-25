@@ -169,7 +169,7 @@
 		loggedIn?.value &&
 		user?.value &&
 		playlist?.value &&
-		(user.value.login === playlist.value.username || playlist.value.contributors?.map(c => user.value?.login === c.username))
+		(user.value.login === playlist.value.username || playlist.value.contributors?.find(c => user.value?.login === c.username))
 	);
 
 	onMounted(() => {
