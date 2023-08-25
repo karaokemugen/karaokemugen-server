@@ -33,7 +33,7 @@ ${additionalFrom}
 WHERE ${whereClauses.join(' \n AND ')}
 ${filterClauses.map(clause => ` AND (${clause})`).reduce((a, b) => (`${a} ${b}`), '')}
 GROUP BY p.pk_plaid, u.nickname, u.avatar_file
-ORDER BY p.name
+ORDER BY lower(p.name)
 `;
 
 export const deletePlaylist = `
