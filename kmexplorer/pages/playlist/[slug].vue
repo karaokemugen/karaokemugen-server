@@ -61,7 +61,7 @@
 				<div class="tile is-vertical table-parent">
 					<o-table
 						:data="karaokes.content"
-						:draggable="canEditPlaylist"
+						:draggable="!search && canEditPlaylist"
 						:show-header="false"
 						:narrowed="true"
 						:paginated="karaokes.infos.count > chunkSize"
