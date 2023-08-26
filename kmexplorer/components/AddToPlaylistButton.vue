@@ -75,7 +75,6 @@
 		kid: string
 		loading: boolean
 		playlists: DBPL[]
-		plaidsWithKid?: string[]
 		karaCard?: boolean
 	}>();
 
@@ -102,17 +101,13 @@
 			plaid = res.plaid as string;
 		} else {
 			plaid = param.plaid as string;
-			if (props.plaidsWithKid) {
-				isAlreadyInPlaylist = props.plaidsWithKid.includes(plaid);
-			} else {
-				const playlists = await useCustomFetch<DBPL[]>('/api/playlist', {
-					params: {
-						containsKID: props.kid,
-						slug: param.slug
-					}
-				});
-				isAlreadyInPlaylist = playlists.length > 0;
-			}
+			const playlists = await useCustomFetch<DBPL[]>('/api/playlist', {
+				params: {
+					containsKID: props.kid,
+					slug: param.slug
+				}
+			});
+			isAlreadyInPlaylist = playlists.length > 0;
 		}
 		if (isAlreadyInPlaylist) {
 			playlistSelected.value = param;
