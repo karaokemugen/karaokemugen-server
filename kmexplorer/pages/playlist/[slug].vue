@@ -124,7 +124,7 @@
 	const { createEditPlaylist, deletePlaylist } = storeToRefs(useModalStore());
 	const { closeModal, openModal } = useModalStore();
 	const { search } = storeToRefs(useMenubarStore());
-	const { setResultsCount } = useMenubarStore();
+	const { setResultsCount, setSearch } = useMenubarStore();
 	const { loggedIn, user } = storeToRefs(useAuthStore());
 	const { replace, push } = useRouter();
 	const { params, query } = useRoute();
@@ -174,8 +174,13 @@
 	);
 
 	onMounted(() => {
+		setSearch('');
 		debouncedGetAsyncData.value = _.debounce(getAsyncData, 500, { leading: true, trailing: true, maxWait: 750 });
 		debouncedPageChange.value = _.debounce(getAsyncAfterPageChange, 500);
+	});
+
+	onUnmounted(() => {
+		setSearch('');
 	});
 
 	if (process.client) {

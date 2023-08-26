@@ -70,6 +70,7 @@
 	const { closeModal, openModal } = useModalStore();
 	const { loggedIn, user } = storeToRefs(useAuthStore());
 	const { search } = storeToRefs(useMenubarStore());
+	const { setSearch } = useMenubarStore();
 	const { params } = useRoute();
 	const { replace } = useRouter();
 
@@ -82,6 +83,14 @@
 	if (!loggedIn.value && !params.community) {
 		replace('/playlists/community');
 	}
+
+	onMounted(() => {
+		setSearch('');
+	});
+
+	onUnmounted(() => {
+		setSearch('');
+	});
 
 	async function fetch() {
 		loading.value = true;
