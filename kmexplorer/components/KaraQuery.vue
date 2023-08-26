@@ -40,7 +40,7 @@
 		collections: string
 	}
 
-	const { user } = storeToRefs(useAuthStore());
+	const { user, loggedIn } = storeToRefs(useAuthStore());
 	const { search, sort, tags: menuTags } = storeToRefs(useMenubarStore());
 	const { setSort, setResultsCount, setTags } = useMenubarStore();
 	const { enabledCollections } = storeToRefs(useLocalStorageStore());
@@ -77,6 +77,7 @@
 	watch(menuTags, () => resetList(true), { deep: true });
 	watch(enabledCollections, () => resetList(true), { deep: true });
 	watch(karaokes, (karaokes) => setResultsCount(karaokes.infos.count), { deep: true });
+	watch(loggedIn, getPlaylists);
 
 	onMounted(() => {
 		mounted.value = true;
@@ -225,12 +226,12 @@
 	}
 
 	async function getPlaylists() {
-		playlists.value = await useCustomFetch<DBPL[]>('/api/playlist', {
+		playlists.value = loggedIn.value ? await useCustomFetch<DBPL[]>('/api/playlist', {
 			params: {
 				username: user?.value?.login,
 				includeUserAsContributor: true
 			}
-		});
+		}) : [];
 	}
 </script>
 

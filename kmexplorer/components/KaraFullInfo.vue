@@ -168,7 +168,6 @@
 
 	const props = defineProps<{
 		karaoke: DBKara
-		plaidsWithKid: string[]
 	}>();
 
 	const favorite = ref(false);
@@ -288,6 +287,7 @@
 	});
 
 	watch(search, () => push('/search'));
+	watch(loggedIn, getPlaylists);
 
 	getPlaylists();
 
@@ -318,12 +318,12 @@
 	});
 
 	async function getPlaylists() {
-		playlists.value = await useCustomFetch<DBPL[]>('/api/playlist', {
+		playlists.value = loggedIn.value ? await useCustomFetch<DBPL[]>('/api/playlist', {
 			params: {
 				username: user?.value?.login,
 				includeUserAsContributor: true
 			}
-		});
+		}) : [];
 	}
 
 	async function toggleFavorite() {
