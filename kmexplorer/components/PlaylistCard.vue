@@ -58,7 +58,7 @@
 				{{ $t('playlists.karacount', { karacount: playlist.karacount }) }}
 				-
 				{{ $t('playlists.duration', {
-					duration: !playlist.duration ? '0h' : getDurationString(playlist.duration, $t, false)
+					duration: !playlist.duration ? `0 ${t('duration.hours')}` : getDurationString(playlist.duration, $t, false)
 				}) }}
 			</div>
 			<div
