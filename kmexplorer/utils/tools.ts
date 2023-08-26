@@ -180,13 +180,13 @@ export function generateNavigation() {
 	return navigation;
 }
 
-export function getDurationString(duration: number, t: any) {
+export function getDurationString(duration: number, t: any, withSecondes = true) {
 	const durationArray = getArrayDuration(duration);
 	const returnString = [];
 	if (durationArray[0] !== 0) { returnString.push(`${durationArray[0]} ${t('duration.days')}`); }
 	if (durationArray[1] !== 0) { returnString.push(`${durationArray[1]} ${t('duration.hours')}`); }
 	if (durationArray[2] !== 0) { returnString.push(`${durationArray[2]} ${t('duration.minutes')}`); }
-	if (durationArray[3] !== 0) { returnString.push(`${durationArray[3]} ${t('duration.seconds')}`); }
+	if (durationArray[3] !== 0 && withSecondes) { returnString.push(`${durationArray[3]} ${t('duration.seconds')}`); }
 	return returnString.join(' ');
 }
 
