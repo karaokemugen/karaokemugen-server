@@ -90,6 +90,7 @@
 		window.removeEventListener('scroll', scrollEvent);
 	});
 
+	watch(props, fetch, { deep: true });
 	fetch();
 	getPlaylists();
 
