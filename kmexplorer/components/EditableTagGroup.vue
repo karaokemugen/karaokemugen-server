@@ -58,7 +58,7 @@
 					>
 						<button
 							class="button"
-							:class="{'is-loading': loading}"
+							:class="{ 'is-loading': loading }"
 							:disabled="currentVal.length === 0"
 							@click="newValue"
 						>
@@ -87,7 +87,7 @@
 		noCreate: false
 	});
 
-	const emit = defineEmits<{(e: 'change', value: string[]): void}>();
+	const emit = defineEmits<{ (e: 'change', value: string[]): void }>();
 
 	const availableTags = ref<DBTag[]>([]);
 	const values = ref<DBTag[]>([]);
@@ -141,7 +141,8 @@
 			query: {
 				type,
 				filter,
-				includeStaging: true
+				includeStaging: true,
+				size: 1000
 			}
 		});
 		return content;
@@ -162,7 +163,6 @@
 			});
 	}
 	function localizedName(tag: DBTag) {
-		
 		if (tag.i18n) {
 			return tag.i18n[getLocaleIn3B(locale.value)] || tag.i18n.eng || tag.name;
 		} else {
