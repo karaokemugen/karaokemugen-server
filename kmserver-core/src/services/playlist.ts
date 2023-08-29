@@ -6,6 +6,7 @@ import { PLImportConstraints } from '../lib/services/playlist.js';
 import { DBPL, DBPLC, PLCInsert } from '../lib/types/database/playlist.js';
 import { PlaylistExport, PLCEditParams, PLParams } from '../lib/types/playlist.js';
 import { JWTTokenWithRoles, User } from '../lib/types/user.js';
+import { getConfig } from '../lib/utils/config.js';
 import { ErrorKM } from '../lib/utils/error.js';
 import logger from '../lib/utils/logger.js';
 import { findUniqueSlug } from '../lib/utils/slug.js';
@@ -357,6 +358,7 @@ export async function exportPlaylist(plaid: string, token: JWTTokenWithRoles) {
 		};
 		playlist.PlaylistInformation = plExport;
 		playlist.PlaylistContents = plContents.content as any;
+		playlist.Server = getConfig().API.Host;
 		return playlist;
 	} catch (err) {
 		logger.error(`Error exporting playlist ${plaid} : ${err}`, { service });

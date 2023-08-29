@@ -17,7 +17,6 @@ export default function PLController(router: Router) {
 		})
 		.get(optionalAuth, async (req: any, res) => {
 			try {
-				req.query.public = true;
 				const pls = await getPlaylists(req.query, req.authToken);
 				res.json(pls);
 			} catch (err) {
@@ -96,7 +95,7 @@ export default function PLController(router: Router) {
 		})
 		.post(requireAuth, requireValidUser, async (req: any, res) => {
 			try {
-				await addKaraToPlaylist(req.body.kids, req.params.plaid, req.authToken);
+				await addKaraToPlaylist(req.body.kids, req.params.plaid, req.authToken, req.body.pos);
 				res.json();
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));
