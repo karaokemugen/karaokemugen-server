@@ -8,7 +8,7 @@
 			<button class="button">
 				<font-awesome-icon
 					fixed-width
-					:icon="['fas', active ? 'chevron-up':'chevron-down']"
+					:icon="['fas', active ? 'chevron-up' : 'chevron-down']"
 				/>
 				{{ label }}
 			</button>
@@ -27,11 +27,10 @@
 </template>
 
 <script setup lang="ts">
-	import { storeToRefs } from 'pinia';
 	import { DBTag } from '%/lib/types/database/tag';
+	import { TagList } from '%/lib/types/tag';
+	import { storeToRefs } from 'pinia';
 	import { useLocalStorageStore } from '~/store/localStorage';
-
-	const collections = ref<DBTag[]>([]);
 
 	const { enabledCollections } = storeToRefs(useLocalStorageStore());
 	const { setEnabledCollections } = useLocalStorageStore();
@@ -40,16 +39,15 @@
 		label: string
 	}>();
 
-	fetch();
-
-	async function fetch() {
-		const { content } = await useCustomFetch<{ content: DBTag[] }>('/api/karas/tags', {
-			query: {
-				type: 16
-			}
-		});
-		collections.value = content;
-	}
+	const { data: collections } = await useCustomFetchAsync('/api/karas/tags', {
+		query: {
+			type: 16
+		},
+		transform: (data: TagList) => {
+			return data.content;
+		},
+		default: () => [] as DBTag[]
+	});
 
 	const enabledCollectionsModel = computed({
 		get(): string[] {
