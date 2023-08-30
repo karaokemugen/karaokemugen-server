@@ -164,7 +164,7 @@
 	import { useModalStore } from '~/store/modal';
 	import { useAuthStore } from '~/store/auth';
 	import DOMPurify from 'isomorphic-dompurify';
-	import { DBPL } from 'kmserver-core/src/lib/types/database/playlist';
+	import { DBPL } from 'kmserver-core/src/types/database/playlist';
 
 	const props = defineProps<{
 		karaoke: DBKara

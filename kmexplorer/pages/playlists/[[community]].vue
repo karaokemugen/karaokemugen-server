@@ -61,7 +61,7 @@
 
 <script setup lang="ts">
 	import { storeToRefs } from 'pinia';
-	import { DBPL } from 'kmserver-core/src/lib/types/database/playlist';
+	import { DBPL } from 'kmserver-core/src/types/database/playlist';
 	import { useModalStore } from '~/store/modal';
 	import { useAuthStore } from '~/store/auth';
 	import { useMenubarStore } from '~/store/menubar';

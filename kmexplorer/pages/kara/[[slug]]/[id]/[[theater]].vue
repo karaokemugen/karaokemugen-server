@@ -122,7 +122,7 @@
 
 <script setup lang="ts">
 	import { DBKara } from '%/lib/types/database/kara';
-	import { DBPL } from 'kmserver-core/src/lib/types/database/playlist';
+	import { DBPL } from 'kmserver-core/src/types/database/playlist';
 	import slug from 'slug';
 
 	const karaoke = ref<DBKara>();

@@ -2,9 +2,10 @@ import { pg as yesql } from 'yesql';
 
 import { buildClauses, db, transaction } from '../lib/dao/database.js';
 import { WhereClause } from '../lib/types/database.js';
-import { DBPL, DBPLC, DBPLCBase, PLCInsert } from '../lib/types/database/playlist.js';
+import { DBPLC, DBPLCBase, PLCInsert } from '../lib/types/database/playlist.js';
 import { PLCParams, PLParams } from '../lib/types/playlist.js';
 import logger from '../lib/utils/logger.js';
+import { DBPL } from '../types/database/playlist.js';
 import { makeKaraPretty } from './kara.js';
 import * as sql from './sqls/playlist.js';
 

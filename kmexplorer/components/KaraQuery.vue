@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
 	import { KaraList as KaraListType, KaraParams, OrderParam } from '%/lib/types/kara';
-	import { DBPL } from 'kmserver-core/src/lib/types/database/playlist';
+	import { DBPL } from 'kmserver-core/src/types/database/playlist';
 	import { storeToRefs } from 'pinia';
 	import { DBTag } from '~/../kmserver-core/src/lib/types/database/tag';
 	import { tagRegex, tagTypes, tagTypesMap } from '~/assets/constants';

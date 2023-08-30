@@ -116,7 +116,7 @@
 
 <script setup lang="ts">
 	import { DBKara } from '%/lib/types/database/kara';
-	import { DBPL } from 'kmserver-core/src/lib/types/database/playlist';
+	import { DBPL } from 'kmserver-core/src/types/database/playlist';
 	import { storeToRefs } from 'pinia';
 	import slug from 'slug';
 	import { tagTypes } from '~/assets/constants';

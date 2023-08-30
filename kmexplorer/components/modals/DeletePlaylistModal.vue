@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-	import { DBPL } from 'kmserver-core/src/lib/types/database/playlist';
+	import { DBPL } from 'kmserver-core/src/types/database/playlist';
 	import { useModalStore } from '~/store/modal';
 
 	const props = defineProps<{

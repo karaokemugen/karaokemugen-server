@@ -51,7 +51,7 @@
 
 <script setup lang="ts">
 	import { storeToRefs } from 'pinia';
-	import { DBPL } from 'kmserver-core/src/lib/types/database/playlist';
+	import { DBPL } from 'kmserver-core/src/types/database/playlist';
 	import { DBPLC } from 'kmserver-core/src/lib/types/database/playlist';
 	import slug from 'slug';
 	import { tagTypes } from '~/assets/constants';

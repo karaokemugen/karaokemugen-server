@@ -69,7 +69,7 @@
 	import { storeToRefs } from 'pinia';
 	import { KaraList } from '%/lib/types/kara';
 	import { useAuthStore } from '~/store/auth';
-	import { DBPL } from 'kmserver-core/src/lib/types/database/playlist';
+	import { DBPL } from 'kmserver-core/src/types/database/playlist';
 
 	const props = withDefaults(defineProps<{
 		karaokes: KaraList
