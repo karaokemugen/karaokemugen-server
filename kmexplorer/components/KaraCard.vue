@@ -318,6 +318,7 @@
 		height: min-content;
 		padding: 1rem;
 		text-align: center;
+		margin-top: .5rem;
 		.nb {
 			display: block;
 			font-size: 2.5rem;
