@@ -104,8 +104,8 @@
 					to="/search"
 					class="km-home--stats--link"
 				>
-					<strong>{{ count.karas > 0 ? `${count.karas} ` : '- ' }}</strong>
-					<span>{{ $t("stats.karaokes", count.karas) }}</span>
+					<strong>{{ count ? `${count.karas} ` : '- ' }}</strong>
+					<span>{{ $t("stats.karaokes", count?.karas ?? 0) }}</span>
 				</nuxt-link>
 			</li>
 			<li>
@@ -113,8 +113,8 @@
 					to="/types/series"
 					class="km-home--stats--link"
 				>
-					<strong>{{ count.series > 0 ? `${count.series} ` : '- ' }}</strong>
-					<span>{{ $t("kara.tagtypes.series", count.series) }}</span>
+					<strong>{{ count ? `${count.series} ` : '- ' }}</strong>
+					<span>{{ $t("kara.tagtypes.series", count?.series ?? 0) }}</span>
 				</nuxt-link>
 			</li>
 			<li>
@@ -122,8 +122,8 @@
 					to="/types/singers"
 					class="km-home--stats--link"
 				>
-					<strong>{{ count.singers > 0 ? `${count.singers} ` : '- ' }}</strong>
-					<span>{{ $t("kara.tagtypes.singers", count.singers) }}</span>
+					<strong>{{ count ? `${count.singers} ` : '- ' }}</strong>
+					<span>{{ $t("kara.tagtypes.singers", count?.singers ?? 0) }}</span>
 				</nuxt-link>
 			</li>
 			<li>
@@ -131,8 +131,8 @@
 					to="/types/creators"
 					class="km-home--stats--link"
 				>
-					<strong>{{ count.creators > 0 ? `${count.creators} ` : '- ' }}</strong>
-					<span>{{ $t("kara.tagtypes.creators", count.creators) }}</span>
+					<strong>{{ count ? `${count.creators} ` : '- ' }}</strong>
+					<span>{{ $t("kara.tagtypes.creators", count?.creators ?? 0) }}</span>
 				</nuxt-link>
 			</li>
 			<li>
@@ -140,8 +140,8 @@
 					to="/types/langs"
 					class="km-home--stats--link"
 				>
-					<strong>{{ count.languages > 0 ? `${count.languages} ` : '- ' }}</strong>
-					<span>{{ $t("kara.tagtypes.langs", count.languages) }}</span>
+					<strong>{{ count ? `${count.languages} ` : '- ' }}</strong>
+					<span>{{ $t("kara.tagtypes.langs", count?.languages ?? 0) }}</span>
 				</nuxt-link>
 			</li>
 			<li>
@@ -149,8 +149,8 @@
 					to="/types/authors"
 					class="km-home--stats--link"
 				>
-					<strong>{{ count.authors > 0 ? `${count.authors} ` : '- ' }}</strong>
-					<span>{{ $t("kara.tagtypes.authors", count.authors) }}</span>
+					<strong>{{ count ? `${count.authors} ` : '- ' }}</strong>
+					<span>{{ $t("kara.tagtypes.authors", count?.authors ?? 0) }}</span>
 				</nuxt-link>
 			</li>
 			<li>
@@ -158,21 +158,21 @@
 					to="/types/songwriters"
 					class="km-home--stats--link"
 				>
-					<strong>{{ count.songwriters > 0 ? `${count.songwriters} ` : '- ' }}</strong>
-					<span>{{ $t("kara.tagtypes.songwriters", count.songwriters) }}</span>
+					<strong>{{ count ? `${count.songwriters} ` : '- ' }}</strong>
+					<span>{{ $t("kara.tagtypes.songwriters", count?.songwriters ?? 0) }}</span>
 				</nuxt-link>
 			</li>
 			<li>
 				<span>{{ $t("stats.media_size") }}</span> :
-				<strong>{{ count.mediasizeString ? count.mediasizeString : '-' }}</strong>
+				<strong>{{ count ? prettyBytes(Number(count.mediasize)) : '-' }}</strong>
 			</li>
 			<li class="km-home--stats--wide">
 				<span>{{ $t("stats.last_generation") }}</span> :
 				<strong>{{ lastGeneration ? new Date(lastGeneration).toLocaleString() : '-' }}</strong>
 			</li>
 			<li class="km-home--stats--wide">
-				<span>{{ $t("stats.all_duration") }} :</span>
-				<strong>{{ count.durationString ? count.durationString : '-' }}</strong>
+				<span>{{ $t("stats.all_duration") }}</span> :
+				<strong>{{ count ? getDurationString(count.duration, t) : '-' }}</strong>
 			</li>
 		</ul>
 	</div>
@@ -187,25 +187,8 @@
 	import { useMenubarStore } from '~/store/menubar';
 	import { useModalStore } from '~/store/modal';
 
-	export interface Stats extends DBStats {
-		mediasizeString?: string,
-		durationString?: string
-	}
-
 	const token = ref('');
 	const error = ref(false);
-	const lastGeneration = ref<Date | string>('-');
-	const count = ref<Stats>({
-		singers: 0,
-		creators: 0,
-		languages: 0,
-		authors: 0,
-		songwriters: 0,
-		series: 0,
-		karas: 0,
-		duration: 0,
-		mediasize: 0
-	});
 
 	const conf = useRuntimeConfig();
 	const explorerProtocol = conf.public.EXPLORER_PROTOCOL;
@@ -236,22 +219,8 @@
 
 	watch(search, () => push('/search'));
 
-	await fetch();
-
-	async function fetch() {
-		const stats = useCustomFetch<Stats>('/api/karas/stats');
-		const lastGen = useCustomFetch<Date>('/api/karas/lastUpdate');
-		const res = await Promise.all([stats, lastGen]);
-		if (res[0] && res[1]) {
-			const countUpdated = res[0];
-			if (countUpdated.mediasize) { countUpdated.mediasizeString = prettyBytes(Number(countUpdated.mediasize)); }
-			if (countUpdated.duration) {
-				countUpdated.durationString = getDurationString(countUpdated.duration, t);
-			}
-			lastGeneration.value = res[1];
-			count.value = countUpdated;
-		}
-	}
+	const { data: count } = await useCustomFetchAsync<DBStats>('/api/karas/stats');
+	const { data: lastGeneration } = await useCustomFetchAsync<string>('/api/karas/lastUpdate');
 
 	async function joinKara(): Promise<void> {
 		if (token.value) {
