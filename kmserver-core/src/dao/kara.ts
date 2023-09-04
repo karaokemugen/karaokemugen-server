@@ -266,8 +266,13 @@ export async function selectBaseStats(): Promise<DBStats> {
 
 export async function refreshKaraStats() {
 	logger.info('Refreshing kara stats', {service});
-	await db().query(sql.deleteKaraStats);
-	return db().query(sql.refreshKaraStats);
+	await db().query(`DROP TABLE IF EXISTS kara_stats_new;
+	CREATE TABLE kara_stats_new AS ${sql.refreshKaraStats};
+	DROP TABLE IF EXISTS kara_stats;
+	ALTER TABLE kara_stats_new RENAME TO kara_stats;
+	`);
+	// Re-creating indexes is done asynchronously
+	db().query(sql.createKaraStatsIndexes);
 }
 
 export async function selectAllKIDs(kid?: string): Promise<string[]> {

@@ -219,44 +219,57 @@ export const selectBaseStats = `SELECT
 export const deleteKaraStats = 'DELETE FROM kara_stats;';
 
 export const refreshKaraStats = `
-INSERT INTO kara_stats (fk_kid, played, played_recently, requested, requested_recently, favorited)
+WITH all_sessions AS (SELECT * FROM stats_session),
+	all_played AS (SELECT * FROM stats_played),
+	all_requested AS (SELECT * FROM stats_requested),
+	all_favorites AS (SELECT * FROM users_favorites),
+	all_users AS (SELECT * FROM users)
 SELECT ak.pk_kid AS fk_kid,
  (SELECT
         COUNT(sp.fk_kid)
-        FROM stats_played sp
-        LEFT JOIN stats_session ss ON ss.pk_seid = sp.fk_seid AND ss.flag_banned = FALSE
+        FROM all_played sp
+        LEFT JOIN all_sessions ss ON ss.pk_seid = sp.fk_seid AND ss.flag_banned = FALSE
         WHERE ak.pk_kid = sp.fk_kid
  ) AS played,
  (SELECT
         COUNT(sp.fk_kid)
-        FROM stats_played sp
-        LEFT JOIN stats_session ss ON ss.pk_seid = sp.fk_seid AND ss.flag_banned = FALSE
+        FROM all_played sp
+        LEFT JOIN all_sessions ss ON ss.pk_seid = sp.fk_seid AND ss.flag_banned = FALSE
         WHERE
             ak.pk_kid = sp.fk_kid AND
             played_at >= current_date - interval '1' year
  ) AS played_recently,
  (SELECT
         COUNT(sr.fk_kid)
-        FROM stats_requested sr
-        LEFT JOIN stats_session ss ON ss.pk_seid = sr.fk_seid AND ss.flag_banned = FALSE
+        FROM all_requested sr
+        LEFT JOIN all_sessions ss ON ss.pk_seid = sr.fk_seid AND ss.flag_banned = FALSE
         WHERE ak.pk_kid = sr.fk_kid
  ) AS requested,
  (SELECT
         COUNT(sr.fk_kid)
-        FROM stats_requested sr
-        LEFT JOIN stats_session ss ON ss.pk_seid = sr.fk_seid AND ss.flag_banned = FALSE
+        FROM all_requested sr
+        LEFT JOIN all_sessions ss ON ss.pk_seid = sr.fk_seid AND ss.flag_banned = FALSE
         WHERE
         	ak.pk_kid = sr.fk_kid AND
             requested_at >= current_date - interval '1' year
  ) AS requested_recently,
  (SELECT
         COUNT(uf.fk_kid)
-        FROM users_favorites uf
-        LEFT JOIN users u ON u.pk_login = uf.fk_login
+        FROM all_favorites uf
+        LEFT JOIN all_users u ON u.pk_login = uf.fk_login
         WHERE ak.pk_kid = uf.fk_kid AND
         (u.flag_sendstats IS NULL OR u.flag_sendstats = TRUE)
  ) AS favorited
 FROM all_karas ak;
+`;
+
+export const createKaraStatsIndexes = `
+CREATE INDEX idx_kara_stats_kid ON kara_stats(kid);
+CREATE INDEX idx_kara_stats_played ON kara_stats(played);
+CREATE INDEX idx_kara_stats_requested ON kara_stats(requested);
+CREATE INDEX idx_kara_stats_played_recently ON kara_stats(played_recently);
+CREATE INDEX idx_kara_stats_requested_recently ON kara_stats(requested_recently);
+CREATE INDEX idx_kara_stats_favorited ON kara_stats(favorited);
 `;
 
 export const selectAllKIDs = (singleKID: string) => `
