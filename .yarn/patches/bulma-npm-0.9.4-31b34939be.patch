@@ -1,0 +1,32 @@
+diff --git a/sass/utilities/functions.sass b/sass/utilities/functions.sass
+index eeea6f2111079dd99efb7801a51432c0ec5324c8..dfc59c12f4d3633924266d3503d380c5e48da9d0 100644
+--- a/sass/utilities/functions.sass
++++ b/sass/utilities/functions.sass
+@@ -1,3 +1,5 @@
++@use "sass:math"
++
+ @function mergeColorMaps($bulma-colors, $custom-colors)
+   // We return at least Bulma's hard-coded colors
+   $merged-colors: $bulma-colors
+@@ -116,20 +118,4 @@
+ // Custom divide function by @mdo from https://github.com/twbs/bootstrap/pull/34245
+ // Replaces old slash division deprecated in Dart Sass
+ @function divide($dividend, $divisor, $precision: 10)
+-  $sign: if($dividend > 0 and $divisor > 0, 1, -1)
+-  $dividend: abs($dividend)
+-  $divisor: abs($divisor)
+-  $quotient: 0
+-  $remainder: $dividend
+-  @if $dividend == 0
+-    @return 0
+-  @if $divisor == 0
+-    @error "Cannot divide by 0"
+-  @if $divisor == 1
+-    @return $dividend
+-  @while $remainder >= $divisor
+-    $quotient: $quotient + 1
+-    $remainder: $remainder - $divisor
+-  @if $remainder > 0 and $precision > 0
+-    $remainder: divide($remainder * 10, $divisor, $precision - 1) * .1
+-  @return ($quotient + $remainder) * $sign
++  @return math.div($dividend, $divisor)

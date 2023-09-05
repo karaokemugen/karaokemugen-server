@@ -3305,10 +3305,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bulma@npm:0.9.4, bulma@npm:^0.9.4":
+"bulma@npm:0.9.4":
   version: 0.9.4
   resolution: "bulma@npm:0.9.4"
   checksum: bc0ab8c203deb0ae200fab5b38547ad4bc8ed1e3abcf6f4ac8a2229af46540419bbcb78c9d2e80f3ddda8825d64fa186ed8775674656cdcabe5544be4d0f3d85
+  languageName: node
+  linkType: hard
+
+"bulma@patch:bulma@npm%3A0.9.4#./.yarn/patches/bulma-npm-0.9.4-31b34939be.patch::locator=karaokemugen-server%40workspace%3A.":
+  version: 0.9.4
+  resolution: "bulma@patch:bulma@npm%3A0.9.4#./.yarn/patches/bulma-npm-0.9.4-31b34939be.patch::version=0.9.4&hash=41217e&locator=karaokemugen-server%40workspace%3A."
+  checksum: 3f415f3f543341a79f5425759fc46d9cf8fa90546e4cce93ac7efc37dca026174f608923ccd5955e442e77111441126670efb2918f1925f4d3097ae5e04a55c2
   languageName: node
   linkType: hard
 
