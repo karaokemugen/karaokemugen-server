@@ -100,21 +100,23 @@
 
 					constructor(player: Player, options = {}) {
 						super(player, options);
+
+						if (player) player.autoplay(props.theaterMode);
+						//@ts-ignore
+						this.setIcon('next-item'); // create the skeleton of the icon
+						this.overrideIcon();
+						//@ts-ignore
+						this.controlText(t('kara.player.autoplay'));
 					}
 
-					createEl() {
-						const el = videojs.dom.createEl('button');
-						if (player.value) player.value.autoplay(props.theaterMode);
-						el.innerHTML = autoplay.value ? toggleOn : toggleOff;
-						el.setAttribute('title', t('kara.player.autoplay'));
-						el.classList.add('vjs-control', 'vjs-button');
-						return el;
+					overrideIcon() {
+						//@ts-ignore
+						this.el().getElementsByClassName('vjs-icon-placeholder')[0].children[0].outerHTML = autoplay.value ? toggleOn : toggleOff;
 					}
 
 					handleClick() {
-						//@ts-ignore
-						this.el().innerHTML = autoplay.value ? toggleOff : toggleOn;
 						setAutoplay(!autoplay.value);
+						this.overrideIcon();
 					}
 				}
 				//@ts-ignore
