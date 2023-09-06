@@ -97,9 +97,11 @@
 
 				//@ts-ignore
 				class Switch extends Button {
-					constructor(options = {}) {
-						super(player.value, options);
+
+					constructor(player: Player, options = {}) {
+						super(player, options);
 					}
+
 					createEl() {
 						const el = videojs.dom.createEl('button');
 						if (player.value) player.value.autoplay(props.theaterMode);
@@ -108,6 +110,7 @@
 						el.classList.add('vjs-control', 'vjs-button');
 						return el;
 					}
+
 					handleClick() {
 						//@ts-ignore
 						this.el().innerHTML = autoplay.value ? toggleOff : toggleOn;
@@ -173,7 +176,9 @@
 				//@ts-ignore
 				Component.registerComponent('TouchControl', TouchControl);
 
-				autoplayButton.value = player.value!.getChild('ControlBar')!.addChild('Switch');
+				autoplayButton.value = player.value!.getChild('ControlBar')!.addChild('Switch', {
+					className: 'vjs-autoplay-control',
+				});
 
 				if (videojs.browser.TOUCH_ENABLED) {
 					let controlBarIdx = player.value.children_.indexOf(player.value.getChild('ControlBar'));
@@ -242,11 +247,13 @@
 				}
 
 				theaterButton.value = player.value!.getChild('ControlBar')!.addChild('button', {
+					className: 'vjs-theater-control',
 					controlText: t('kara.player.theater_mode'),
 					clickHandler: theatermodechangeEvent
 				});
 
 				fullscreenButton.value = player.value!.getChild('ControlBar')!.addChild('button', {
+					className: 'vjs-fullscreen-control',
 					controlText: t('kara.player.fullscreen'),
 					clickHandler: props.fullscreenchange
 				});
@@ -505,6 +512,13 @@
 				}
 			}
 		}
+	}
+
+	.vjs-next-control,
+	.vjs-previous-control,
+	.vjs-autoplay-control,
+	.vjs-theater-control {
+		cursor: pointer;
 	}
 }
 </style>
