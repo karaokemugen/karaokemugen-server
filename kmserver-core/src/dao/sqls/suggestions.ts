@@ -10,7 +10,7 @@ FROM suggestions
 ${additionalFrom.join('')}
 WHERE 1 = 1
   ${filterClauses.map(clause => `AND (${clause})`).reduce((a, b) => (`${a} ${b}`), '')}
-ORDER BY ${orderClauses}
+ORDER BY ${orderClauses}, id ASC
 ${limitClause}
 ${offsetClause}
 `;
