@@ -264,7 +264,7 @@ FROM all_karas ak;
 `;
 
 export const createKaraStatsIndexes = `
-CREATE INDEX idx_kara_stats_kid ON kara_stats(kid);
+CREATE INDEX idx_kara_stats_kid ON kara_stats(fk_kid);
 CREATE INDEX idx_kara_stats_played ON kara_stats(played);
 CREATE INDEX idx_kara_stats_requested ON kara_stats(requested);
 CREATE INDEX idx_kara_stats_played_recently ON kara_stats(played_recently);
