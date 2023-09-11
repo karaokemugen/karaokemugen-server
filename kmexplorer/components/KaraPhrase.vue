@@ -58,7 +58,7 @@
 			};
 		} else if (props.karaoke.singergroups[0]) {
 			return {
-				name: getTagInLocale(props.karaoke.singergroups[0]),
+				name: getTagInLocale(props.karaoke.singergroups[0], props.karaokesI18n),
 				slug: slug(props.karaoke.singergroups[0].name),
 				type: 'singergroups',
 				tag: props.karaoke.singergroups[0]
