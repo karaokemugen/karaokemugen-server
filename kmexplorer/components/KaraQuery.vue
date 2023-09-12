@@ -29,6 +29,7 @@
 <script setup lang="ts">
 	import { KaraList as KaraListType, KaraParams, OrderParam } from '%/lib/types/kara';
 	import { DBPL } from 'kmserver-core/src/types/database/playlist';
+	import _ from 'lodash';
 	import { storeToRefs } from 'pinia';
 	import { DBTag } from '~/../kmserver-core/src/lib/types/database/tag';
 	import { tagRegex, tagTypes, tagTypesMap } from '~/assets/constants';
@@ -50,7 +51,7 @@
 
 	const loading = ref(true);
 	const mounted = ref(false);
-	const karaokes = ref<KaraListType>({ infos: { count: 0, from: 0, to: 0 }, i18n: {}, content: [] });
+	const karaokes = ref<KaraListType>({ infos: { count: 0, from: 0, to: 0 }, i18n: {}, avatars: {}, content: [] });
 	const from = ref(-1);
 	const playlists = ref<DBPL[]>([]);
 
@@ -154,8 +155,11 @@
 		for (let i = data.infos.from; i < data.infos.to; i++) {
 			karaokes.value.content[i] = data.content[i - data.infos.from];
 		}
-		// @ts-ignore
-		Object.assign(karaokes.value.i18n, data.i18n);
+		for (const [id, i18n] of Object.entries(data.i18n)) {
+			if (!_.isEqual(i18n, karaokes.value.i18n[id])) {
+				karaokes.value.i18n[id] = i18n;
+			}
+		}
 		karaokes.value.infos.count = data.infos.count;
 		karaokes.value.infos.to = data.infos.to;
 		loading.value = false;
@@ -185,7 +189,7 @@
 	}
 
 	async function resetList(navigation = false) {
-		karaokes.value = { infos: { count: 0, to: 0, from: 0 }, i18n: {}, content: [] };
+		karaokes.value = { infos: { count: 0, to: 0, from: 0 }, i18n: {}, avatars: {}, content: [] };
 		from.value = -1;
 		await loadNextPage(true);
 		if (route.name === 'search-query' && navigation && !props.favorites &&
