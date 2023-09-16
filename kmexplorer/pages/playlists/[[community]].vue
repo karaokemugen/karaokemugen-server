@@ -60,17 +60,18 @@
 </template>
 
 <script setup lang="ts">
-	import { storeToRefs } from 'pinia';
+	import { OrderParam } from 'kmserver-core/src/lib/types/playlist';
 	import { DBPL } from 'kmserver-core/src/types/database/playlist';
-	import { useModalStore } from '~/store/modal';
+	import { storeToRefs } from 'pinia';
 	import { useAuthStore } from '~/store/auth';
 	import { useMenubarStore } from '~/store/menubar';
+	import { useModalStore } from '~/store/modal';
 
 	const { createEditPlaylist, deletePlaylist } = storeToRefs(useModalStore());
 	const { closeModal, openModal } = useModalStore();
 	const { loggedIn, user } = storeToRefs(useAuthStore());
-	const { search } = storeToRefs(useMenubarStore());
-	const { setSearch } = useMenubarStore();
+	const { search, sort } = storeToRefs(useMenubarStore());
+	const { setSearch, setResultsCount, setSort } = useMenubarStore();
 	const { params } = useRoute();
 	const { replace } = useRouter();
 
@@ -78,32 +79,41 @@
 	const selectedPlaylist = ref<DBPL>();
 	const loading = ref(true);
 
+	watch(sort, fetch);
 	watch(search, fetch);
 
 	if (!loggedIn.value && !params.community) {
 		replace('/playlists/community');
 	}
 
+	setResultsCount(0);
+	setSort('az');
 	onMounted(() => {
 		setSearch('');
 	});
 
 	onUnmounted(() => {
 		setSearch('');
+		setSort('recent');
 	});
 
 	async function fetch() {
 		loading.value = true;
 		playlists.value = await useCustomFetch<DBPL[]>('/api/playlist', {
 			params: params?.community === 'community' ? {
-				filter: search.value
+				filter: search.value,
+				order: (sort.value as OrderParam) || undefined,
+				reverseOrder: ['karacount', 'recent', 'duration'].includes(sort.value) ? true : undefined
 			} :
 				{
 					username: user?.value?.login,
 					includeUserAsContributor: true,
-					filter: search.value
+					filter: search.value,
+					order: (sort.value as OrderParam) || undefined,
+					reverseOrder: ['karacount', 'recent', 'duration'].includes(sort.value) ? true : undefined
 				}
 		});
+		setResultsCount(playlists.value.length);
 		loading.value = false;
 	}
 

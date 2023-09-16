@@ -17,7 +17,19 @@ export default function PLController(router: Router) {
 		})
 		.get(optionalAuth, async (req: any, res) => {
 			try {
-				const pls = await getPlaylists(req.query, req.authToken);
+				const pls = await getPlaylists(
+					{
+						username: req.query.username,
+						plaid: req.query.plaid,
+						slug: req.query.slug,
+						containsKID: req.query.containsKID,
+						includeUserAsContributor: Boolean(req.query.includeUserAsContributor),
+						filter: req.query.filter,
+						order: req.query.order,
+						reverseOrder: Boolean(req.query.reverseOrder),
+					},
+					req.authToken
+				);
 				res.json(pls);
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));

@@ -1,4 +1,4 @@
-export const selectPlaylists = (joinClauses: string[], whereClauses: string[], filterClauses: string[], additionalFrom: string) => `
+export const selectPlaylists = (joinClauses: string[], whereClauses: string[], filterClauses: string[], additionalFrom: string, orderClause: string) => `
 WITH all_users AS (
 	SELECT 
 		pk_login AS username,
@@ -32,7 +32,7 @@ ${additionalFrom}
 WHERE ${whereClauses.join(' \n AND ')}
 ${filterClauses.map(clause => ` AND (${clause})`).reduce((a, b) => (`${a} ${b}`), '')}
 GROUP BY p.pk_plaid, u.nickname, u.avatar_file
-ORDER BY lower(p.name)
+ORDER BY ${orderClause}
 `;
 
 export const deletePlaylist = `

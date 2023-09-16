@@ -15,7 +15,7 @@
 		</div>
 		<div
 			class="control is-expanded"
-			:class="{'has-icons-left': icon}"
+			:class="{ 'has-icons-left': icon }"
 		>
 			<input
 				v-model="search"
@@ -36,7 +36,7 @@
 			class="control"
 		>
 			<button class="button is-static">
-				{{ $t('layout.results', {count: resultsCount}) }}
+				{{ $t('layout.results', { count: resultsCount }) }}
 			</button>
 		</div>
 		<div
@@ -59,6 +59,12 @@
 					<template v-else-if="route.name === 'suggest'">
 						<option value="likes">{{ $t('search.sort.likes') }}</option>
 						<option value="language">{{ $t('search.sort.languages') }}</option>
+					</template>
+					<template v-else-if="route.name === 'playlists-community'">
+						<option value="recent">{{ $t('search.sort.recent') }}</option>
+						<option value="karacount">{{ $t('search.sort.kara_count') }}</option>
+						<option value="duration">{{ $t('search.sort.duration') }}</option>
+						<option value="username">{{ $t('search.sort.username') }}</option>
 					</template>
 					<template v-else>
 						<option value="recent">{{ $t('search.sort.recent') }}</option>
@@ -96,8 +102,8 @@
 		icon: true
 	});
 
-	const canCount = computed(() => ['types-id', 'search-query', 'user-login', 'users', 'types-years'].includes(route.name as string));
-	const canSort = computed(() => ['types-id', 'search-query', 'user-login', 'users', 'types-years'].includes(route.name as string));
+	const canCount = computed(() => ['types-id', 'search-query', 'user-login', 'users', 'types-years', 'playlists-community'].includes(route.name as string));
+	const canSort = computed(() => ['types-id', 'search-query', 'user-login', 'users', 'types-years', 'playlists-community'].includes(route.name as string));
 	const canSearch = computed(() => ['types-id', 'search-query', 'user-login', 'users', 'types-years', 'suggest', 'playlists-community', 'playlist-slug'].includes(route.name as string));
 	const searchLabel = computed((): string => {
 		if (route.name === 'users') {

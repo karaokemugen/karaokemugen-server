@@ -292,7 +292,9 @@
 			"most_requested": "Plus demandés",
 			"most_requested_recently": "Plus demandés (récents)",
 			"likes": "Le plus de likes",
-			"languages": "Par langues"
+			"languages": "Par langues",
+			"duration": "Par durées",
+			"username": "Par noms d'utilisateur"
 		},
 		"next": "Page suivante",
 		"previous": "Page précédente",
