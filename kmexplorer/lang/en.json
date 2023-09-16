@@ -292,7 +292,9 @@
 			"most_requested": "Most requested",
 			"most_requested_recently": "Most requested (recently)",
 			"likes": "Most likes",
-			"languages": "By languages"
+			"languages": "By languages",
+			"duration": "By durations",
+			"username": "By usernames"
 		},
 		"next": "Next page",
 		"previous": "Previous page",
@@ -590,7 +592,7 @@
 		"NO_KARA_FOUND": "No song found",
 		"GET_KARA_ERROR": "Error getting song",
 		"GET_KARAS_ERROR": "Error getting song list",
-		"GET_BASESTATS_ERROR": "Error getting stats",		
+		"GET_BASESTATS_ERROR": "Error getting stats",
 		"GET_YEARS_ERROR": "Error getting year list",
 		"GET_FAVORITES_FROM_USER_FORBIDDEN_ERROR": "This user's favorites aren't public",
 		"GET_FAVORITES_FROM_USER_NOT_FOUND_ERROR": "No user found",

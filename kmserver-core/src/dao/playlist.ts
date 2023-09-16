@@ -78,13 +78,21 @@ export async function selectPLCMini(plcid: number) {
 export async function selectPlaylists(params: PLParams): Promise<DBPL[]> {
 	const filterClauses: WhereClause = params.filter
 		? buildClauses(params.filter, null, null, 'playlists')
-		: {sql: [], params: {}, additionalFrom: []};
+		: { sql: [], params: {}, additionalFrom: [] };
 	const yesqlPayload = {
 		sql: [...filterClauses.sql],
-		params: {...filterClauses.params}
+		params: { ...filterClauses.params }
 	};
 	const whereClauses = ['TRUE'];
 	const joinClauses = [];
+	let orderClause = 'lower(name)';
+	if (params.order === 'recent') orderClause = 'created_at';
+	if (params.order === 'karacount') orderClause = 'karacount';
+	if (params.order === 'duration') orderClause = 'duration';
+	if (params.order === 'username') orderClause = 'username';
+
+	orderClause = `${orderClause} ${params.reverseOrder ? 'DESC' : ''}`;
+
 	if (params.username) {
 		params.includeUserAsContributor
 			? whereClauses.push(` (p.fk_login = '${params.username}' OR pco.fk_login = '${params.username}') `)
@@ -100,7 +108,7 @@ export async function selectPlaylists(params: PLParams): Promise<DBPL[]> {
 		joinClauses.push('LEFT JOIN playlist_content pc ON pc.fk_plaid = p.pk_plaid');
 		whereClauses.push(` pc.fk_kid = '${params.containsKID}'`);
 	}
-	const query = sql.selectPlaylists(joinClauses, whereClauses, filterClauses.sql, filterClauses.additionalFrom.join(''));
+	const query = sql.selectPlaylists(joinClauses, whereClauses, filterClauses.sql, filterClauses.additionalFrom.join(''), orderClause);
 	const res = await db().query(
 		yesql(query)(yesqlPayload.params)
 	);
