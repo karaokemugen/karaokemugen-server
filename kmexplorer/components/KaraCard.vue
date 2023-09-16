@@ -75,7 +75,7 @@
 					:key="`${karaoke.kid}-${tag.tag.tid}~${tagTypes[tag.type].type}`"
 					:type="tag.type"
 					:tag="tag.tag"
-					:i18n="karaokesI18n"
+					:i18n="karaokesI18n && karaokesI18n[tag.tag.tid]"
 					:staticheight="false"
 					icon
 				/>

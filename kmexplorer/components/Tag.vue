@@ -35,7 +35,7 @@
 		tag: DBTag,
 		icon?: boolean
 		type: string
-		i18n?: Record<string, Record<string, string>>
+		i18n?: Record<string, string>
 		nolink?: boolean
 		staticheight?: boolean
 		showkaracount?: boolean
@@ -58,7 +58,7 @@
 			// Put i18n in tag directly
 			if (props.i18n) {
 				const tag = { ...props.tag };
-				tag.i18n = props.i18n[tag.tid];
+				tag.i18n = props.i18n;
 				payload.tag = tag;
 			}
 			addTag(payload);

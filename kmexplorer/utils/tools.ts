@@ -7,11 +7,11 @@ import { useLocalStorageStore } from '~/store/localStorage';
 import { useAuthStore } from '~/store/auth';
 import { storeToRefs } from 'pinia';
 
-export function getPropertyInLanguage(prop: 'i18n', tag: DBKaraTag | DBTag, mainLanguage: string, fallbackLanguage: string, i18nParam?: any): string
+export function getPropertyInLanguage(prop: 'i18n', tag: DBKaraTag | DBTag, mainLanguage: string, fallbackLanguage: string, i18nParam?: Record<string, string>): string
 export function getPropertyInLanguage(prop: 'description', tag: DBTag, mainLanguage: string, fallbackLanguage: string): string
-export function getPropertyInLanguage(prop: 'description' | 'i18n', tag: DBKaraTag | DBTag, mainLanguage: string, fallbackLanguage: string, i18nParam?: any): string {
+export function getPropertyInLanguage(prop: 'description' | 'i18n', tag: DBKaraTag | DBTag, mainLanguage: string, fallbackLanguage: string, i18nParam?: Record<string, string>): string {
 	// @ts-ignore: The overload will prevent DBKaraTag (without description) being passed to get descriptions
-	const i18n = (i18nParam && i18nParam[tag.tid]) ? i18nParam[tag.tid] : tag[prop];
+	const i18n = i18nParam ? i18nParam : tag[prop];
 	if (i18n) {
 		return i18n[mainLanguage]
 			? i18n[mainLanguage]
@@ -24,7 +24,7 @@ export function getPropertyInLanguage(prop: 'description' | 'i18n', tag: DBKaraT
 	}
 }
 
-export function getTagInLocale(tag: DBKaraTag | DBTag, i18nParam?: any) {
+export function getTagInLocale(tag: DBKaraTag | DBTag, i18nParam?: Record<string, string>) {
 	const { user } = storeToRefs(useAuthStore());
 	if (user?.value && user?.value.main_series_lang && user?.value.fallback_series_lang) {
 		return getPropertyInLanguage('i18n', tag, user?.value.main_series_lang, user?.value.fallback_series_lang, i18nParam);
@@ -58,7 +58,7 @@ export function getTitleInLocale(titles: any, titles_default_language?:string) {
 
 export function buildKaraTitle(
 	data: DBKara,
-	i18nParam?: any,
+	i18nParam?: Record<string, Record<string, string>>,
 	withoutLangs = false
 ): string {
 	const isMulti = data?.langs?.find(e => e.name.includes('mul'));
@@ -69,17 +69,17 @@ export function buildKaraTitle(
 		data?.series?.length > 0
 			? data.series
 				.slice(0, 3)
-				.map(e => getTagInLocale(e, i18nParam))
+				.map(e => getTagInLocale(e, i18nParam && i18nParam[e.tid]))
 				.join(', ') + (data.series.length > 3 ? '...' : '')
 			: data?.singergroups?.length > 0
 				? data.singergroups
 					.slice(0, 3)
-					.map(e => getTagInLocale(e, i18nParam))
+					.map(e => getTagInLocale(e, i18nParam && i18nParam[e.tid]))
 					.join(', ') + (data.singergroups.length > 3 ? '...' : '')
 				: data?.singers?.length > 0
 					? data.singers
 						.slice(0, 3)
-						.map(e => getTagInLocale(e, i18nParam))
+						.map(e => getTagInLocale(e, i18nParam && i18nParam[e.tid]))
 						.join(', ') + (data.singers.length > 3 ? '...' : '')
 					: ''; // wtf?
 	const langsText = data?.langs
@@ -90,7 +90,7 @@ export function buildKaraTitle(
 		.map(e => (e.short ? +e.short : e.name))
 		.join(' ');
 	const songorderText = data?.songorder > 0 ? ' ' + data.songorder : '';
-	const versions = sortAndHideTags(data?.versions).map(t => `[${getTagInLocale(t, i18nParam)}]`);
+	const versions = sortAndHideTags(data?.versions).map(t => `[${getTagInLocale(t, i18nParam && i18nParam[t.tid])}]`);
 	const version = versions?.length > 0 ? ` ${versions.join(' ')}` : '';
 	return `${withoutLangs ? '' : `${langsText} - `}${serieText} - ${songtypeText} ${songorderText} - ${getTitleInLocale(
 		data.titles,

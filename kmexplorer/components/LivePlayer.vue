@@ -7,7 +7,7 @@
 			>
 				<div :class="{ 'theater': theaterMode || fullscreen }">
 					<video-component
-						:title="buildKaraTitle(props.karaoke, null, true)"
+						:title="buildKaraTitle(props.karaoke, undefined, true)"
 						:class="{ 'theater-player': theaterMode || fullscreen }"
 						:options="videoOptions"
 						:fullscreen="fullscreen"
