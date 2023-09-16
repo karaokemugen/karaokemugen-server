@@ -46,3 +46,9 @@ export interface Payload {
 	favorites: Favorite[],
 	requests: Request[]
 }
+
+export interface PlayedCacheItem {
+	fromIP?: string;
+	fromUser?: string;
+	timestamp?: Date;
+}

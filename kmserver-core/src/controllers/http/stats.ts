@@ -1,7 +1,8 @@
 import { Router } from 'express';
 
 import { APIMessage } from '../../lib/services/frontend.js';
-import { processStatsPayload} from '../../services/stats.js';
+import { addPlayed, processStatsPayload} from '../../services/stats.js';
+import { optionalAuth } from '../middlewares/auth.js';
 
 export default function statsController(router: Router) {
 	router.post('/stats', async (req, res) => {
@@ -12,11 +13,10 @@ export default function statsController(router: Router) {
 			res.status(err.code || 500).json(APIMessage(err.message));
 		}
 	});
-	// Played songs are usually sent via instance data in POST /stats but this route is usable to add a single played song, for Live for example
-	router.post('/stats/played', async (_req: any, res) => {
+	router.route('/stats/kara/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/played')
+	.post(optionalAuth, async (req: any, res) => {
 		try {
-			// Removing this for now since it can be used to tamper with stats 
-			// await addPlayed(req.body.seid, req.body.kid, req.body.played_at);
+			await addPlayed(req.params.kid, req.ip, req.authToken);
 			res.status(200).json();
 		} catch (err) {
 			res.status(err.code || 500).json(APIMessage(err.message));

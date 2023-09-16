@@ -19,6 +19,7 @@
 						:play="showPlayer"
 						:next="next"
 						:previous="previous"
+						@send-played="sendPlayed"
 					/>
 				</div>
 			</Teleport>
@@ -36,6 +37,7 @@
 	import ptJson from 'video.js/dist/lang/pt-PT.json';
 	import { useAuthStore } from '~/store/auth';
 	import { useLocalStorageStore } from '~/store/localStorage';
+	import { getSlugKidWithoutLiveDownload } from '~/utils/kara';
 
 	const props = defineProps<{
 		karaoke: DBKara
@@ -185,6 +187,10 @@
 
 	function showPlayer() {
 		emit('open');
+	}
+
+	function sendPlayed() {
+		useCustomFetch(`api/stats/kara/${props.karaoke.kid}/played`, {method: 'POST'});
 	}
 </script>
 

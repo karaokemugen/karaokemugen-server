@@ -6,9 +6,11 @@ import {
 	upsertRequests,
 	upsertSessions,
 	wipeInstance} from '../dao/stats.js';
+import { JWTTokenWithRoles } from '../lib/types/user.js';
 import { uuidRegexp } from '../lib/utils/constants.js';
 import logger from '../lib/utils/logger.js';
 import { check, testJSON } from '../lib/utils/validators.js';
+import { PlayedCacheItem } from '../types/stats.js';
 import sentry from '../utils/sentry.js';
 
 const service = 'Stats';
@@ -22,18 +24,36 @@ const payloadConstraints = {
 	sessions: {sessionValidator: true}
 };
 
-export async function addPlayed(seid: string, kid: string, played_at: string) {
+const playedCache: Map<string, PlayedCacheItem[]> = new Map();
+
+export async function addPlayed(kid: string, ip: string, userToken?: JWTTokenWithRoles) {
+	let played = playedCache.get(kid);
 	try {
-		const date = new Date(played_at);
+		if (!played) played = [];
+		// Wipe entries older than one hour ago
+		const date = new Date();
+		played = played.filter(p => date.getTime() - p.timestamp.getTime() < (1000 * 60 * 60));
+		
+		if (userToken && played.find(p => p.fromUser === userToken.username)) return;
+		if (played.find(p => p.fromIP === ip && p.fromUser === userToken?.username)) return;
+		
+		played.push({
+			fromIP: ip,
+			fromUser: userToken?.username,
+			timestamp: date
+		});
 		await upsertPlayed([{
 			kid,
-			seid,
+			seid: 'ffffffff-ffff-ffff-ffff-ffffffffffff',
 			played_at: date
 		}]);
 	} catch (err) {
+		logger.error(`Unable to add played stat for ${kid}`, { service });
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
 		throw err;
+	} finally {
+		playedCache.set(kid, played);
 	}
 }
 
