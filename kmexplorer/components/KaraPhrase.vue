@@ -51,21 +51,21 @@
 	const serieSinger = computed<ShortTag>(() => {
 		if (props.karaoke.series[0]) {
 			return {
-				name: getTagInLocale(props.karaoke.series[0], props.karaokesI18n),
+				name: getTagInLocale(props.karaoke.series[0], props.karaokesI18n && props.karaokesI18n[props.karaoke.series[0].tid]),
 				slug: slug(props.karaoke.series[0].name),
 				type: 'series',
 				tag: props.karaoke.series[0]
 			};
 		} else if (props.karaoke.singergroups[0]) {
 			return {
-				name: getTagInLocale(props.karaoke.singergroups[0], props.karaokesI18n),
+				name: getTagInLocale(props.karaoke.singergroups[0], props.karaokesI18n && props.karaokesI18n[props.karaoke.singergroups[0].tid]),
 				slug: slug(props.karaoke.singergroups[0].name),
 				type: 'singergroups',
 				tag: props.karaoke.singergroups[0]
 			};
 		} else if (props.karaoke.singers[0]) {
 			return {
-				name: getTagInLocale(props.karaoke.singers[0], props.karaokesI18n),
+				name: getTagInLocale(props.karaoke.singers[0], props.karaokesI18n && props.karaokesI18n[props.karaoke.singers[0].tid]),
 				slug: slug(props.karaoke.singers[0].name),
 				type: 'singers',
 				tag: props.karaoke.singers[0]
@@ -77,7 +77,7 @@
 	const songtype = computed<ShortTag>(() => {
 		return {
 			slug: slug(props.karaoke.songtypes[0].name),
-			name: getTagInLocale(props.karaoke.songtypes[0], props.karaokesI18n),
+			name: getTagInLocale(props.karaoke.songtypes[0], props.karaokesI18n && props.karaokesI18n[props.karaoke.songtypes[0].tid]),
 			type: 'songtypes',
 			tag: props.karaoke.songtypes[0]
 		};
@@ -86,7 +86,7 @@
 		const tab = [];
 		for (const version of props.karaoke.versions) {
 			tab.push({
-				name: getTagInLocale(version, props.karaokesI18n),
+				name: getTagInLocale(version, props.karaokesI18n && props.karaokesI18n[version.tid]),
 				slug: slug(version.name),
 				type: 'versions',
 				tag: version
