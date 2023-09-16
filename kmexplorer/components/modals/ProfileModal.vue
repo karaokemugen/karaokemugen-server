@@ -4,7 +4,7 @@
 		:class="{'is-active': active}"
 	>
 		<form
-			v-if="!crop_modal"
+			v-if="!crop_modal && user"
 			action="#"
 			@submit.prevent="submitForm"
 		>
@@ -433,11 +433,11 @@
 							<label
 								for="banner"
 								class="button is-yellow"
-								:disabled="user && !user.roles?.donator && !user.roles?.admin"
+								:disabled="!user.roles?.donator && !user.roles?.admin ? true: undefined"
 							>
 								<input
 									id="banner"
-									:disabled="user && !user.roles?.donator && !user.roles?.admin"
+									:disabled="!user.roles?.donator && !user.roles?.admin"
 									type="file"
 									accept="image/jpg, image/jpeg, image/png"
 									@change="openCropModal"
