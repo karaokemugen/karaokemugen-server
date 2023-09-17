@@ -55,7 +55,7 @@
 		},
 		"playlists": {
 			"add": "Add to playlist",
-			"create": "Create a new playlist...",
+			"create": "Create a new playlist…",
 			"new_playlist_label": "{nickname}'s playlist",
 			"add_success": "The karaoke has been added successfully to the playlist."
 		},
