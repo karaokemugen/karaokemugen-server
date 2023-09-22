@@ -61,10 +61,6 @@ export function buildKaraTitle(
 	i18nParam?: Record<string, Record<string, string>>,
 	withoutLangs = false
 ): string {
-	const isMulti = data?.langs?.find(e => e.name.includes('mul'));
-	if (data?.langs && isMulti) {
-		data.langs = [isMulti];
-	}
 	const serieText =
 		data?.series?.length > 0
 			? data.series
