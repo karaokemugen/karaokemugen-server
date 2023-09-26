@@ -30,7 +30,8 @@ export async function getKaraInbox(inid: string): Promise<Inbox> {
 		const onlineRepo = conf.System.Repositories.find(r => r.Name !== 'Staging').Name;
 		const inbox = (await selectInbox(inid))[0];
 		const karaPath = resolve(resolvedPathRepos('Karaokes', 'Staging')[0], inbox.karafile);
-		const subPath = resolve(resolvedPathRepos('Lyrics', 'Staging')[0], inbox.subfile);
+		let subPath: string;
+		if (inbox.subfile) subPath = resolve(resolvedPathRepos('Lyrics', 'Staging')[0], inbox.subfile);
 		const karaData: KaraFileV4 = JSON.parse(await fs.readFile(karaPath, 'utf-8'));
 		karaData.data.repository = onlineRepo;
 		if (inbox.fix) {
@@ -40,10 +41,13 @@ export async function getKaraInbox(inid: string): Promise<Inbox> {
 			data: karaData,
 			file: inbox.karafile
 		};
-		const lyrics: MetaFile = {
-			data: await fs.readFile(subPath, 'utf-8'),
-			file: inbox.subfile
-		};
+		let lyrics: MetaFile;
+		if (inbox.subfile) {
+			lyrics = {
+				data: await fs.readFile(subPath, 'utf-8'),
+				file: inbox.subfile
+			};
+		}
 		const extra_tids = inbox.tags.filter(t => t.repository === 'Staging').map(t => t.tid);
 		const extra_tags: TagMetaFile[] = await Promise.all(extra_tids.map(async tid => {
 			const tag = await getTag(tid);
