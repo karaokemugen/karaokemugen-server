@@ -26,7 +26,7 @@ import sentry from '../utils/sentry.js';
 import { getState } from '../utils/state.js';
 import { updateGit } from './git.js';
 import { gitlabPostNewIssue } from './gitlab.js';
-import { clearOldInboxEntries } from './inbox.js';
+import { clearOldInboxEntries, removeProcessedInboxes } from './inbox.js';
 import { findUserByName } from './user.js';
 
 const service = 'Kara';
@@ -61,6 +61,7 @@ export async function updateRepo() {
 
 export async function generate(hardsubs = true) {
 	try {
+		await removeProcessedInboxes();
 		await generateDatabase({validateOnly: false});
 		const conf = getConfig();
 		// Download master.zip from gitlab to serve it ourselves

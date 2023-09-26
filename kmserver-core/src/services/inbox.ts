@@ -7,6 +7,7 @@ import { deleteKara } from '../dao/kara.js';
 import {clearStagingTags} from '../dao/tag.js';
 import { formatKaraV4 } from '../lib/dao/karafile.js';
 import { getDataFromTagFile } from '../lib/dao/tagfile.js';
+import { readAllKaras } from '../lib/services/generation.js';
 import { refreshKarasAfterDBChange } from '../lib/services/karaManagement.js';
 import {KaraMetaFile, MetaFile, TagMetaFile} from '../lib/types/downloads.js';
 import { Inbox } from '../lib/types/inbox.js';
@@ -14,7 +15,7 @@ import { KaraFileV4 } from '../lib/types/kara.js';
 import { TagFile } from '../lib/types/tag.js';
 import { getConfig, resolvedPathRepos } from '../lib/utils/config.js';
 import { ErrorKM } from '../lib/utils/error.js';
-import { fileExists } from '../lib/utils/files.js';
+import { fileExists, listAllFiles } from '../lib/utils/files.js';
 import { closeIssue } from '../lib/utils/gitlab.js';
 import logger from '../lib/utils/logger.js';
 import { findFileByUUID } from '../utils/files.js';
@@ -104,6 +105,20 @@ export async function addKaraInInbox(kara: KaraFileV4, contact: string, issue?: 
 	} catch (err) {
 		logger.error('Unable to create kara in inbox', {service, obj: err});
 		sentry.error(err);
+	}
+}
+
+export async function removeProcessedInboxes() {
+	logger.info('Removing possible processed inbox items if they are present in main repository', { service });
+	const inbox = await getInbox();
+	// Get a list of KIDs from the main repository (not including Staging then)
+	const karaFiles = await listAllFiles('Karaokes', getConfig().System.Repositories[0].Name);
+	const karas = await readAllKaras(karaFiles, false);
+	const kids = new Set(karas.map(k => k.data.kid));
+	for (const inboxItem of inbox) {
+		if (kids.has(inboxItem.kid)) {
+			await removeKaraFromInbox(inboxItem.inid);
+		}
 	}
 }
 
