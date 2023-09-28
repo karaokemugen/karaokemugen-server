@@ -9,7 +9,6 @@ image: takkatakka/lftp
 include:
   - template: Security/SAST.gitlab-ci.yml
   - template: Security/Secret-Detection.gitlab-ci.yml
-  - template: Security/License-Scanning.gitlab-ci.yml
   - template: DAST.gitlab-ci.yml
 
 stages:
@@ -37,14 +36,6 @@ sast:
   variables:
     SAST_EXCLUDED_PATHS: spec, test, tests, tmp, assets, build, img, util, packages, dist
     SECRET_DETECTION_EXCLUDED_PATHS: doc, spec, test, tests, .md, node_modules, yarn.lock, kmexplorer/node_modules, dist, .yarn
-license_scanning:
-  interruptible: true
-  stage: scan
-  tags: 
-    - $RUNNER_LINUX
-  rules:
-    - if: $CI_COMMIT_BRANCH == "dev"
-    - when: never
 semgrep-sast:
   interruptible: true
   stage: scan
