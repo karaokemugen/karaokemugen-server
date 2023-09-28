@@ -1,9 +1,9 @@
 {
 	"compilerOptions": {
 		"target": "ESNext",
-		"module": "es2022",
+		"module": "Node16",
 		// Search under node_modules for non-relative imports.
-		"moduleResolution": "node16",
+		"moduleResolution": "Node16",
 		// Process & infer types from .js files.
 		"allowJs": false,
 		// Don't emit; allow esbuild to transform files.
