@@ -143,14 +143,15 @@ export async function removeKaraFromInbox(inid: string) {
 		}
 		if (inbox.karafile) {
 			const karaPath = resolve(resolvedPathRepos('Karaokes', 'Staging')[0], inbox.karafile);
-			const subPath = resolve(resolvedPathRepos('Lyrics', 'Staging')[0], inbox.subfile);
+			let subPath: string;
+			if (inbox.subfile) subPath = resolve(resolvedPathRepos('Lyrics', 'Staging')[0], inbox.subfile);
 			const mediaPath = resolve(resolvedPathRepos('Medias', 'Staging')[0], inbox.mediafile);
 			try {
 				await Promise.all([
-					fs.unlink(karaPath),
-					fs.unlink(subPath),
+					fs.unlink(karaPath),					
 					fs.unlink(mediaPath)
 				]);
+				if (subPath) await fs.unlink(subPath);
 			} catch (err) {
 				// Non-fatal, files might not exist anymore.
 				logger.warn(`Unable to remove some files after inbox deletion for song ${inbox.name}`, { service });
