@@ -1,11 +1,9 @@
 import { defineStore } from 'pinia';
-import { Tag } from '%/lib/types/tag';
 import { DBTag } from '%/lib/types/database/tag';
-import { DBKaraTag } from '%/lib/types/database/kara';
 
 export interface TagExtend {
-	type: string,
-	tag: Tag | DBTag | DBKaraTag
+	type: string;
+	tag: DBTag;
 }
 
 export type sortTypes = 'az' | 'karacount' | 'recent' | 'played' | 'favorited' | 'requested' | 'likes' | 'language';
