@@ -1,1 +1,0 @@
-ALTER TABLE kara_subchecksum ADD CONSTRAINT kara_subchecksum_fk_kid_fkey FOREIGN KEY fk_kid REFERENCES kara(pk_kid) ON DELETE CASCADE;

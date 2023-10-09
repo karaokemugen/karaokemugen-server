@@ -1,2 +1,0 @@
-UPDATE users SET type = 2 WHERE type = 0;
-ALTER TABLE users ALTER COLUMN type TYPE INTEGER;

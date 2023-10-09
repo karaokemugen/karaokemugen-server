@@ -1,1 +1,0 @@
-DROP VIEW all_karas;

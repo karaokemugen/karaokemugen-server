@@ -1,1 +1,0 @@
---INSERT INTO axel(setting) VALUES('lazy');
