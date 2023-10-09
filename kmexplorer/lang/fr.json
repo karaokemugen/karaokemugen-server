@@ -169,7 +169,7 @@
 			"default_language": "Langue par défaut",
 			"send_contact_infos": "Partager mes informations de contact avec les mainteneurs de la base",
 			"contact_infos": "Informations de contact",
-			"contact_infos_tooltip": "Indiquez vos données de contact, nous pourrons ainsi venir vers vous si vous avez des questions au sujet du karaoké.",
+			"contact_infos_tooltip": "Indiquez vos données de contact, nous pourrons ainsi venir vers vous si nous avons des questions au sujet du karaoké.",
 			"auto_send_contact_infos": "Si vous vous connectez, vous pouvez cocher une case sur le formulaire pour partager automatiquement vos informations de contact avec les mainteneurs de la base."
 		},
 		"stats": {
@@ -200,7 +200,7 @@
 		"explore": "Allez en ajouter !",
 		"results": "{count} résultat | {count} résultats",
 		"collections": "Karaoke Mugen propose différentes collections, choisissez celles qui vous intéressent.",
-		"slogan": "Ce son est disponible sur la base Karaoke Mugen !",
+		"slogan": "Venez chanter sur cette chanson avec Karaoke Mugen !",
 		"end_users": "Vous avez atteint la fin des utilisateurs (bravo !)."
 	},
 	"footer": {

@@ -1,7 +1,7 @@
 {
 	"error": {
 		"generic": "Error",
-		"private_profile": "The profile is private.",
+		"private_profile": "Profile is private.",
 		"not_found_profile": "Cannot find this user",
 		"not_found_playlist": "Cannot find this playlist",
 		"home": "Go home",
@@ -40,7 +40,7 @@
 		"duration": "Duration ",
 		"created_at": "Created ",
 		"download": "Download",
-		"live_unavailable": "You cannot play this karaoke in your browser. Either the video is in an unsupported format in browsers, or it has been disabled for legal reasons.",
+		"live_unavailable": "You cannot play this karaoke in your browser. Either the video is in an unsupported format for browsers, or it has been disabled for legal reasons.",
 		"lyrics": {
 			"show": "Show lyrics",
 			"hide": "Hide lyrics"
@@ -55,9 +55,9 @@
 		},
 		"playlists": {
 			"add": "Add to playlist",
-			"create": "Create a new playlist…",
+			"create": "Create new playlist…",
 			"new_playlist_label": "{nickname}'s playlist",
-			"add_success": "The karaoke has been added successfully to the playlist."
+			"add_success": "Karaoke successfully added to playlist."
 		},
 		"problem": {
 			"title": "An issue with {title}?",
@@ -68,8 +68,8 @@
 				"lyrics": "Lyrics issue"
 			},
 			"form": {
-				"title": "Report an issue",
-				"subtitle": "We do our best to have a high-quality database, but sometimes some issues are there. Thanks for help!",
+				"title": "Report a problem",
+				"subtitle": "We do our best to have a high-quality database, but sometimes some issues are still there. Thanks for your help!",
 				"type": {
 					"label": "Problem type",
 					"media": "Media issue",
@@ -78,7 +78,7 @@
 				},
 				"comment": {
 					"label": "Comment",
-					"placeholder": "After 2 minutes, the lyrics is not synchronised."
+					"placeholder": "After 2 minutes, the lyrics aren't synchronised anymore."
 				},
 				"username": {
 					"label": "Your name",
@@ -86,7 +86,7 @@
 				},
 				"submit": "Submit",
 				"thanks": {
-					"text": "Thanks! We will address this issue as soon as possible: {url}",
+					"text": "Thanks! We will fix this issue as soon as possible: {url}",
 					"btn": "Close"
 				}
 			}
@@ -107,7 +107,7 @@
 				"titles_default_language": "Default title language should be the song's original title. For titles in non-latin languages (chinese, japanese, arabic, korean…), add a \"Romanization\" title and make it default.",
 				"aliases": "If the song is known as something else (abbreviations for example), set them here to help people find it through search. No need to use words already contained in the song title(s)."
 			},
-			"description": "This form allows you to submit a karaoke to the Karaoke Mugen team. It will not be immediately integrated in the karaoke database because it requires a validation. Please be patient. Your karaoke may be modified if it doesn't comply to KM's rules.",
+			"description": "This form allows you to submit a karaoke to the Karaoke Mugen team. It will not be immediately integrated in the karaoke database because it requires a validation. Please be patient. Your karaoke may be modified if it doesn't comply to the team rules.",
 			"attention": "ATTENTION:",
 			"check_in_progress": "Please check the list of karaokes currently being made before sending us a song. This'll avoid duplicate work, and the world will thus be a better place.",
 			"documentation_link": "Documentation",
@@ -123,7 +123,7 @@
 			"add_file_lyrics_error": "{name} is not a subtitle file",
 			"add_file_success": "{name} file added successfully",
 			"comment": "Leave a comment?",
-			"comment_tooltip": "If you want to add a message for the integrators or just say thanks, say it here!",
+			"comment_tooltip": "If you want to add a message for the maintainers or just say thanks, say it here!",
 			"submit": "Send karaoke",
 			"media_file": "Media file",
 			"media_file_edit": "Replace media file",
@@ -131,16 +131,16 @@
 			"media_file_tooltip": "Supported file formats: {formats}",
 			"lyrics_file": "Lyrics file",
 			"lyrics_file_tooltip": "Supported file formats: {formats}",
-			"lyrics_file_missing": "The lyrics file is missing, this is appropriate only if you are sending an MKV file or a karaoke without lyrics (?).",
+			"lyrics_file_missing": "The lyrics file is missing, this is appropriate only if you are sending an MKV file or a karaoke without lyrics (yes).",
 			"title": "Title",
 			"title_required": "Please enter a title",
-			"title_tooltip": "If you don't know, put the name of the series here as well. In the case of an alternative version, name your title as: 'My title ~ Disco vers.' for example",
+			"title_tooltip": "If you don't know, put the series' name here as well. In the case of an alternative version, name your title as: 'My title ~ Disco vers.' for example",
 			"titles_aliases": "Aliases",
 			"titles_aliases_tooltip": "Short names or alternative names, used for search.",
 			"series_tooltip": "TV series, movie title, video game title, etc.",
-			"series_singers_required": "Series, Sung by and From the music band cannot be empty in the same time.",
-			"franchises_tooltip": "If the series is part of a franchise (like Gundam, Mario, Zelda, Naruto, etc.) indicate it here.",
-			"songtypes_required": "Song type is mandatory",
+			"series_singers_required": "Series, Sung by and From the music band cannot be empty at the same time.",
+			"franchises_tooltip": "If the series is part of a franchise (like Gundam, Mario, Zelda, Naruto, etc.) enter it here.",
+			"songtypes_required": "Song type is required",
 			"collections_required": "At least one collection must be checked",
 			"songorder": "Song order",
 			"songorder_invalid": "Song order is invalid",
@@ -148,16 +148,16 @@
 			"langs_required": "Please choose a language",
 			"year": "Broadcast year",
 			"year_tooltip": "Year when the series was broadcasted or the video was produced",
-			"year_required": "Broadcast year is mandatory",
+			"year_required": "Broadcast year is required",
 			"year_invalid": "Broadcast year is invalid",
 			"singergroups_tooltip": "If the singers belong to a music band, put them in here. The band will be displayed in the player and song lists instead of individual singers.",
 			"songwriters_tooltip": "Composers, Arrangers and Lyricists.",
 			"creators_tooltip": "Entity that created the series. Can be animation studio, movie studio, or game studio.",
 			"authors_tooltip": "You should add yourself here ;)",
-			"authors_required": "Author of the karaoke is mandatory",
+			"authors_required": "Author of the karaoke is required",
 			"groups_tooltip": "Download groups for this song. The song will be included in these download packs",
 			"parents": "Parents",
-			"parents_tooltip": "If a parent is defined, this karaoke will show as alternative to the selected parent karaoke(s). Please mind to select the good repository before filling this array to avoid adding karaokes from other repositories.",
+			"parents_tooltip": "If a parent is defined, this karaoke will show as alternative to the selected parent karaoke(s).",
 			"created_at": "Creation date",
 			"add_success": "Your karaoke has been successfully sent!",
 			"add_success_description": "An issue has been created on our tracker. You can check its progression at {url}",
@@ -165,12 +165,12 @@
 			"restart": "Submit new karaoke",
 			"i18n_select": "Add a language",
 			"i18n_delete": "Remove language",
-			"romanization_warning": "This title/tag contains a non-Latin alphabet language. You must add the language “Latin Alphabet (Romanization)” in addition",
+			"romanization_warning": "This title/tag contains a non-Latin alphabet language. You must add the language “Latin Alphabet (Romanization)” as well",
 			"default_language": "Default language",
-			"send_contact_infos": "Share my contact information with the maintainers of the database",
+			"send_contact_infos": "Share my contact information with database maintainers",
 			"contact_infos": "Contact information",
-			"contact_infos_tooltip": "Enter your contact details, so we can come to you if you have any questions about the karaoke.",
-			"auto_send_contact_infos": "If you log in, you can check a box on the form to automatically share your contact information with the maintainers of the database."
+			"contact_infos_tooltip": "Enter your contact details, so we can come to you if we have any questions about the karaoke.",
+			"auto_send_contact_infos": "If you log in, you can check a box on the form to automatically share your contact information with database maintainers."
 		},
 		"stats": {
 			"favorited": "Added to favorites by {number} users",
@@ -192,7 +192,7 @@
 		"loading": "Loading…",
 		"empty": "We looked everywhere, we didn't find anything.",
 		"suggest": "Can't find what you're looking for?",
-		"suggest_open": "Suggest us!",
+		"suggest_open": "Suggest us a song!",
 		"remove_tags": "Did you try removing some of the filter tags from the search?",
 		"end_favorites": "This is the end of favorites.",
 		"end_my_favorites": "This is the end of your favorites.",
@@ -200,13 +200,13 @@
 		"explore": "Go add some!",
 		"results": "{count} result | {count} results",
 		"collections": "Karaoke Mugen provides many collections, choose the ones you are interested in.",
-		"slogan": "This song is available on the Karaoke Mugen songbase!",
+		"slogan": "Come sing this song with Karaoke Mugen!",
 		"end_users": "You've reached the end of the user list (congratulations!)."
 	},
 	"footer": {
 		"home": "Project home",
 		"api_documentation": "API Documentation",
-		"translation": "Participate in the translation",
+		"translation": "Contribute to translations",
 		"software_under_license": "Software under license",
 		"base_under_licence": "Karaoke base under license"
 	},
@@ -214,7 +214,7 @@
 		"karaokes": "Karaoke | Karaokes",
 		"all_duration": "Duration of all karaokes",
 		"last_generation": "Last update",
-		"media_size": "Media Size"
+		"media_size": "Medias size"
 	},
 	"duration": {
 		"days": "days",
@@ -283,9 +283,9 @@
 			"playlist": "Name, users…"
 		},
 		"sort": {
-			"a_z": "From A to Z",
+			"a_z": "Alphabetical",
 			"kara_count": "Karaoke count",
-			"recent": "By date added",
+			"recent": "By added date",
 			"most_played": "Most played",
 			"most_played_recently": "Most played (recently)",
 			"most_favorites": "Most favorites",
@@ -328,7 +328,7 @@
 					"placeholder": "ActuallyIdolM{'@'}sterIsBetter"
 				},
 				"forgot_password": {
-					"label": "Forgot password?",
+					"label": "Forgot your password?",
 					"error": "Could not reset your password: contact the the server's administrator your account belongs to.",
 					"success": "An email has been sent with a link to reset your password."
 				}
@@ -336,7 +336,7 @@
 			"submit": "Login"
 		},
 		"signup": {
-			"title": "Signup",
+			"title": "Sign up",
 			"subtitle": "Register to save your favorites and create your profile!",
 			"fields": {
 				"username": {
@@ -357,7 +357,7 @@
 				}
 			},
 			"passwords_mismatch": "Passwords do not match",
-			"submit": "Signup"
+			"submit": "Sign up"
 		},
 		"profile": {
 			"title": "Edit profile",
@@ -448,11 +448,11 @@
 				"flag_displayfavorites": {
 					"label": "Favorites",
 					"checkbox": "Show my favorites",
-					"desc": "Along with showing your public profile, you can showcase your favorites (therefore your taste) to everyone eyes. This option is disabled by default, you can check it if you want. To show your favorites, your profile must be public in the first place."
+					"desc": "Along with showing your public profile, you can showcase your favorites (therefore your taste) to everyone. This option is disabled by default. To show your favorites, your profile must be public in the first place."
 				},
 				"flag_sendstats": {
 					"label": "Stats",
-					"checkbox": "Use my favorites and karaokes requests for stats"
+					"checkbox": "Use my favorites and karaoke requests for stats"
 				},
 				"lang_prefs": {
 					"main_song_name_lang": "Song name display preference",
@@ -476,12 +476,12 @@
 		},
 		"delete_account": {
 			"label": "Do you really want to delete your account?",
-			"add": "Delete the account",
+			"add": "Delete account",
 			"cancel": "Cancel"
 		},
 		"suggest": {
 			"title": "Suggestion",
-			"subtitle": "You couldn't find what you've searched for? You can still fill a suggestion.",
+			"subtitle": "You couldn't find what you've searched for? You can submit a suggestion.",
 			"fields": {
 				"title": {
 					"label": "Title",
@@ -512,7 +512,7 @@
 			}
 		},
 		"download": {
-			"label": "Download the karaoke",
+			"label": "Download karaoke",
 			"cancel": "Cancel",
 			"karabundle": "Download data (.json)",
 			"subtitles": "Download lyrics (.{format})",
@@ -526,10 +526,10 @@
 		},
 		"join_kara": {
 			"label": "Join a karaoke party",
-			"desc": "Enter a code to join a existing karaoke party",
+			"desc": "Enter a code to join an existing karaoke party",
 			"add": "Join",
 			"cancel": "Cancel",
-			"help": "Enter the session code (generally it's 4 letters) or the karaoke URL.",
+			"help": "Enter the session code (usually 4 letters) or the karaoke URL.",
 			"error": "The code is invalid, please check what you typed."
 		},
 		"stats": {
@@ -550,8 +550,8 @@
 			"one": "There is only one banner for audio only karaokes."
 		},
 		"create_edit_playlist": {
-			"title_create": "Create a playlist",
-			"title_edit": "Edit the playlist",
+			"title_create": "Create playlist",
+			"title_edit": "Edit playlist",
 			"name": "Name",
 			"description": "Description",
 			"contributors": "Contributors",
@@ -560,8 +560,8 @@
 			"submit_edit": "Edit"
 		},
 		"delete_playlist": {
-			"label": "Do you really want to delete the playlist '{name}'?",
-			"add": "Delete the playlist",
+			"label": "Do you really want to delete playlist '{name}'?",
+			"add": "Delete playlist",
 			"cancel": "Cancel"
 		},
 		"add_duplicate_in_playlist": {
@@ -654,7 +654,7 @@
 		"header": {
 			"title": "Import suggestions",
 			"description": "What is this?",
-			"purpose": "Here are some karaoke songs that are ready to be imported, you can search for a particular song or press the \"Randomly select other songs\" button. You can endorse a karaoke song by pressing \"Yes!\".",
+			"purpose": "Here are some karaoke songs that are ready to be imported. You can search for a particular song or press the \"Randomly select other songs\" button. You can endorse a karaoke song by pressing \"Yes!\".",
 			"suggestion": "If you still can't find the song you're looking for, click \"Send Suggestion\".",
 			"random_selection": "Randomly select other songs",
 			"send_suggestion": "Send suggestion"
@@ -662,8 +662,8 @@
 		"modal": {
 			"welcome": {
 				"title": "Where am I?",
-				"text": "There's a lot of other karaokes databases: ones for UltraStar, Karawin or Karafun softwares. So here are some titles which are already available, with their lyrics synchronized, but has we can't integrate immediately everything, we'd like to know your priorities!",
-				"text2": "You can either search something, or let the random do the job. In both cases, we'd be grateful for the time you spend enhancing our databases. Thank you!",
+				"text": "There are a lot of other karaoke databases: ones for UltraStar, Karawin or Karafun software for example. So here are some already available titles with their lyrics synchronized. We can't integrate immediately everything, so we'd like to know your priorities!",
+				"text2": "You can either search something, or let randomness do the job. In both cases, we'd be grateful for the time you spend enhancing our databases. Thank you!",
 				"text3": "If you want to ask for help, come and see us on {discord}. We're listening your suggestions and critics.",
 				"discord": "Discord",
 				"btn": "OK!"
@@ -678,12 +678,12 @@
 		"token": "Token",
 		"delete_button": "Delete line",
 		"edit_success": "Remote edited with success",
-		"edit_error": "Error when edited remote",
-		"delete_error": "Error when deleted remote"
+		"edit_error": "Error when editing remote",
+		"delete_error": "Error when deleting remote"
 	},
 	"playlists": {
-		"create": "Create a new playlist",
-		"import": "Import a playlist",
+		"create": "Create new playlist",
+		"import": "Import playlist",
 		"karacount": "{karacount} songs",
 		"duration": "Duration {duration}",
 		"public": "Public",
@@ -692,7 +692,7 @@
 		"edit": "Edit",
 		"delete": "Delete",
 		"share": "Share",
-		"add_karaoke": "Add a karaoke to the playlist",
+		"add_karaoke": "Add a karaoke to playlist",
 		"by_owner": "by {nickname}",
 		"and_contributors": "(and {contributors})",
 		"and_contributors_more": "(and {contributors}, {count} more)"
