@@ -410,6 +410,10 @@
 					"label": "Mastodon",
 					"placeholder": "karaokemugen{'@'}shelter.moe"
 				},
+				"bluesky": {
+					"placeholder": "karaokemugen.bsky.social",
+					"label": "Bluesky"
+				},				
 				"instagram": {
 					"label": "Instagram",
 					"placeholder": "karaokemugen"

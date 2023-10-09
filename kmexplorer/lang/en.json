@@ -406,6 +406,10 @@
 					"label": "Twitter",
 					"placeholder": "KaraokeMugen"
 				},
+				"bluesky": {
+					"placeholder": "karaokemugen.bsky.social",
+					"label": "Bluesky"
+				},				
 				"mastodon": {
 					"label": "Mastodon",
 					"placeholder": "karaokemugen{'@'}shelter.moe"

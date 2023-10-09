@@ -152,7 +152,7 @@ library.add(
 	faUsers,
 	faTwitter,
 	faMastodon,
-	faInstagram,
+	faInstagram,	
 	faDiscord,
 	faDiscourse,
 	faTwitch,

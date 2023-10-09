@@ -94,6 +94,18 @@
 									{{ user.social_networks.mastodon }}
 								</nuxt-link>
 							</div>
+							<div v-if="user.social_networks && user.social_networks.bluesky">
+								<font-awesome-icon
+									:icon="['fab', 'bluesky']"
+									:fixed-width="true"
+								/>
+								<nuxt-link
+									:href="`https://bsky.app/profile/${user.social_networks.bluesky}/`"
+									target="_blank"
+								>
+									{{ user.social_networks.bluesky }}
+								</nuxt-link>
+							</div>
 							<div v-if="user.social_networks && user.social_networks.instagram">
 								<font-awesome-icon
 									:icon="['fab', 'instagram']"
@@ -235,6 +247,7 @@
 		user.value?.social_networks?.instagram ||
 		user.value?.social_networks?.twitter ||
 		user.value?.social_networks?.mastodon ||
+		user.value?.social_networks?.bluesky ||
 		user.value?.social_networks?.twitch ||
 		user.value?.url ||
 		user.value?.location

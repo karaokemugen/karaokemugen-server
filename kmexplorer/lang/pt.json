@@ -395,6 +395,10 @@
 					"label": "Mastodon",
 					"placeholder": "karaokemugen{'@'}shelter.moe"
 				},
+				"bluesky": {
+					"placeholder": "karaokemugen.bsky.social",
+					"label": "Bluesky"
+				},				
 				"banner": {
 					"label": "Banner",
 					"remove": "Redefinir para o banner padrão",
