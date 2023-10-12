@@ -64,7 +64,6 @@ FROM ${fromClauses.join(', ')}
 LEFT OUTER JOIN kara_relation krp ON krp.fk_kid_parent = ak.pk_kid
 LEFT OUTER JOIN kara_relation krc ON krc.fk_kid_child = ak.pk_kid
 LEFT JOIN kara_subchecksum ksub ON ksub.fk_kid = ak.pk_kid
-LEFT JOIN kara k ON k.pk_kid = ak.pk_kid
 LEFT JOIN playlist_content plc ON plc.fk_kid = ak.pk_kid
 ${joinClause}
 ${additionalFrom.join('')}
