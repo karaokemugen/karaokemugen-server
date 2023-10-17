@@ -444,6 +444,8 @@ export async function importPlaylist(playlist: PlaylistExport, token: JWTTokenWi
 		// Validations done. First creating playlist.
 		// This should attempt to create a playlist or edit an existing one
 		const pl = await createPlaylist(playlist.PlaylistInformation, token);
+		// We need to empty the playlist first.
+		await truncatePlaylist(playlist.PlaylistInformation.plaid);
 		await insertKaraIntoPlaylist(playlist.PlaylistContents);
 		await Promise.all([
 			updatePlaylistKaraCount(pl.plaid),
