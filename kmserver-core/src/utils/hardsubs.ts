@@ -31,7 +31,7 @@ export function hardsubsDone() {
 }
 
 export async function initHardsubGeneration(drainEvent = false) {
-	queue = fastq<never, [string, string, string, string], void>(wrappedGenerateHS, 1);
+	queue = fastq<never, [string, string, string, string, string], void>(wrappedGenerateHS, 1);
 	const karas = await getAllKaras({ ignoreCollections: true }, undefined, true);
 	generateHardsubsCache(karas);
 	if (drainEvent) queue.drain = () => {
@@ -39,14 +39,14 @@ export async function initHardsubGeneration(drainEvent = false) {
 	};
 }
 
-async function wrappedGenerateHS(payload: [string, string, string, string]) {
-	const [mediaPath, subPath, outputFile, kid] = payload;
+async function wrappedGenerateHS(payload: [string, string, string, string, string]) {
+	const [mediaPath, subPath, outputFile, kid, loudnorm] = payload;
 	logger.info(`Creating hardsub for ${mediaPath}`, {service});
 	if (await fileExists(outputFile)) return;
 	const assPath = subPath ? `${kid}.ass` : null;
 	if (subPath) await fs.copyFile(subPath, assPath);
 	try {
-		await createHardsub(mediaPath, assPath, outputFile);
+		await createHardsub(mediaPath, assPath, outputFile, loudnorm);
 		hardsubsBeingProcessed.delete(kid);
 		logger.info(`Hardsub for ${mediaPath} created`, { service });
 		logger.info(`${queue.length()} hardsubs left in queue`, {service});
@@ -66,7 +66,8 @@ export async function generateHardsubs(karas: KaraList) {
 		mediasize: number,
 		subfile: string,
 		repository: string,
-		subchecksum: string
+		subchecksum: string,
+		loudnorm: string
 	}
 	const mediaMap = new Map<string, HardsubInfo>();
 	const mediaWithInfosSet = new Set();
@@ -78,6 +79,7 @@ export async function generateHardsubs(karas: KaraList) {
 			subfile: k.subfile,
 			repository: k.repository,
 			subchecksum: null,
+			loudnorm: k.loudnorm
 		});
 	}
 	for (const media of mediaMap.values()) {
@@ -125,7 +127,7 @@ export async function generateHardsubs(karas: KaraList) {
 					}
 					const outputFile = resolve(hardsubDir, hardsubFile);
 					hardsubsBeingProcessed.add(media.kid);
-					queue.push([mediaPath, subPath, outputFile, media.kid]);
+					queue.push([mediaPath, subPath, outputFile, media.kid, media.loudnorm]);
 				}
 			} catch (error) {
 				logger.error(`Error when creating hardsub for ${media.mediafile}: ${error}`, {service});
