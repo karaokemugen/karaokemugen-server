@@ -40,14 +40,13 @@
 			</button>
 		</div>
 		<div
-			v-if="filter"
+			v-if="filter && canSort"
 			class="control"
 		>
 			<span class="select">
 				<select
-					v-model="sort"
+					v-model="sortModel"
 					:aria-label="$t('search.aria.sort')"
-					:disabled="!canSort"
 				>
 					<option
 						value="az"
@@ -82,10 +81,10 @@
 
 <script setup lang="ts">
 	import { storeToRefs } from 'pinia';
-	import { useMenubarStore } from '~/store/menubar';
+	import { useMenubarStore, sortTypes } from '~/store/menubar';
 
 	const { sort, resultsCount, search: menuSearch } = storeToRefs(useMenubarStore());
-	const { setSearch } = useMenubarStore();
+	const { setSearch, setSort } = useMenubarStore();
 	const route = useRoute();
 	const { push } = useRouter();
 	const $t = useI18n().t;
@@ -102,9 +101,9 @@
 		icon: true
 	});
 
-	const canCount = computed(() => ['types-id', 'search-query', 'user-login', 'user-login-animelist', 'users', 'types-years', 'suggest', 'playlists-community'].includes(route.name as string));
-	const canSort = computed(() => ['types-id', 'search-query', 'user-login', 'user-login-animelist', 'users', 'types-years', 'suggest', 'playlists-community'].includes(route.name as string));
-	const canSearch = computed(() => ['types-id', 'search-query', 'user-login', 'user-login-animelist', 'users', 'types-years', 'suggest', 'playlists-community', 'playlist-slug'].includes(route.name as string));
+	const canCount = computed(() => ['types-id', 'types-years', 'search-query', 'user-login', 'user-login-animelist', 'users', 'suggest', 'playlists-community'].includes(route.name as string));
+	const canSort = computed(() => ['types-id', 'types-years', 'search-query', 'user-login', 'user-login-animelist', 'users', 'suggest', 'playlists-community'].includes(route.name as string));
+	const canSearch = computed(() => ['types-id', 'types-years', 'search-query', 'user-login', 'user-login-animelist', 'users', 'suggest', 'playlists-community', 'playlist-slug'].includes(route.name as string));
 	const searchLabel = computed((): string => {
 		if (route.name === 'users') {
 			return $t('search.types.users') as string;
@@ -131,6 +130,15 @@
 	});
 
 	watch(menuSearch, (now) => search.value = now, { immediate: true });
+
+	const sortModel = computed({
+		get(): sortTypes {
+			return sort.value[route.name];
+		},
+		set(collecs: sortTypes) {
+			setSort(collecs);
+		}
+	});
 
 	function triggerSearch() {
 		setSearch(search.value);

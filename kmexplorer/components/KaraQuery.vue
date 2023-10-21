@@ -43,7 +43,7 @@
 
 	const { user, loggedIn } = storeToRefs(useAuthStore());
 	const { search, sort, tags: menuTags } = storeToRefs(useMenubarStore());
-	const { setSort, setResultsCount, setTags } = useMenubarStore();
+	const { setResultsCount, setTags } = useMenubarStore();
 	const { enabledCollections } = storeToRefs(useLocalStorageStore());
 	const { setEnabledCollections } = useLocalStorageStore();
 	const route = useRoute();
@@ -69,11 +69,8 @@
 	});
 
 	setResultsCount(0);
-	if (sort.value === 'karacount' || (route.name !== 'suggest' && ['likes', 'language'].includes(sort.value))) {
-		setSort('recent');
-	}
 
-	watch(sort, () => resetList());
+	watch(sort, () => resetList(), { deep: true });
 	watch(search, () => resetList(true));
 	watch(menuTags, () => resetList(true), { deep: true });
 	watch(enabledCollections, () => resetList(true), { deep: true });
@@ -223,7 +220,7 @@
 			filter: (!props.ignoreFilter && search.value) || undefined,
 			from: (from.value * 12),
 			size: 12,
-			order: (sort.value as OrderParam) || undefined,
+			order: (sort.value[route.name] as OrderParam) || undefined,
 			favorites: props.favorites || undefined,
 			collections: enabledCollections.value.join(','),
 			userAnimeList: props.userAnimeList || undefined

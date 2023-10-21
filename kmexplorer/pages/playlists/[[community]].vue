@@ -71,46 +71,44 @@
 	const { closeModal, openModal } = useModalStore();
 	const { loggedIn, user } = storeToRefs(useAuthStore());
 	const { search, sort } = storeToRefs(useMenubarStore());
-	const { setSearch, setResultsCount, setSort } = useMenubarStore();
-	const { params } = useRoute();
+	const { setSearch, setResultsCount } = useMenubarStore();
+	const route = useRoute();
 	const { replace } = useRouter();
 
 	const playlists = ref<DBPL[]>([]);
 	const selectedPlaylist = ref<DBPL>();
 	const loading = ref(true);
 
-	watch(sort, fetch);
+	watch(sort, fetch, { deep: true });
 	watch(search, fetch);
 
-	if (!loggedIn.value && !params.community) {
+	if (!loggedIn.value && !route.params.community) {
 		replace('/playlists/community');
 	}
 
 	setResultsCount(0);
-	setSort('az');
 	onMounted(() => {
 		setSearch('');
 	});
 
 	onUnmounted(() => {
 		setSearch('');
-		setSort('recent');
 	});
 
 	async function fetch() {
 		loading.value = true;
 		playlists.value = await useCustomFetch<DBPL[]>('/api/playlist', {
-			params: params?.community === 'community' ? {
+			params: route.params?.community === 'community' ? {
 				filter: search.value,
-				order: (sort.value as OrderParam) || undefined,
-				reverseOrder: ['karacount', 'recent', 'duration'].includes(sort.value) ? true : undefined
+				order: (sort.value[route.name] as OrderParam) || undefined,
+				reverseOrder: ['karacount', 'recent', 'duration'].includes(sort.value[route.name]) ? true : undefined
 			} :
 				{
 					username: user?.value?.login,
 					includeUserAsContributor: true,
 					filter: search.value,
-					order: (sort.value as OrderParam) || undefined,
-					reverseOrder: ['karacount', 'recent', 'duration'].includes(sort.value) ? true : undefined
+					order: (sort.value[route.name] as OrderParam) || undefined,
+					reverseOrder: ['karacount', 'recent', 'duration'].includes(sort.value[route.name]) ? true : undefined
 				}
 		});
 		setResultsCount(playlists.value.length);
