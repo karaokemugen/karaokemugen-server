@@ -187,7 +187,7 @@
 </template>
 
 <script setup lang="ts">
-	import { DBKara } from '%/lib/types/database/kara';
+	import type { DBKara } from '%/lib/types/database/kara';
 
 	type ProblemsType = 'Media' | 'Metadata' | 'Lyrics';
 

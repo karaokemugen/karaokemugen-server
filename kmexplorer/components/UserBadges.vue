@@ -24,8 +24,9 @@
 </template>
 
 <script setup lang="ts">
-	import { RoleDetail, rolesList } from '~/assets/constants';
-	import { Roles } from '%/lib/types/user';
+	import type { RoleDetail } from '~/assets/constants';
+	import { rolesList } from '~/assets/constants';
+	import type { Roles } from '%/lib/types/user';
 
 	type Role = RoleDetail & { name: RoleKey, active: boolean };
 	type RoleKey = keyof Roles;

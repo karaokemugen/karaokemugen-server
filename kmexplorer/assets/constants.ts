@@ -1,4 +1,4 @@
-import { Roles } from '%/lib/types/user';
+import type { Roles } from '%/lib/types/user';
 
 export interface tagType {
 	icon: string,

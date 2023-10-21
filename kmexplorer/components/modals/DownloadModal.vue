@@ -68,7 +68,7 @@
 
 <script setup lang="ts">
 	import slug from 'slug';
-	import { DBKara } from '%/lib/types/database/kara';
+	import type { DBKara } from '%/lib/types/database/kara';
 
 	const conf = useRuntimeConfig();
 	const apiUrl = conf.public.API_URL;

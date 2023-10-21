@@ -11,8 +11,8 @@
 	import _ from 'lodash';
 	import { storeToRefs } from 'pinia';
 	import videojs from 'video.js';
-	import Player from 'video.js/dist/types/player';
-	import TitleBar from 'video.js/dist/types/title-bar';
+	import type Player from 'video.js/dist/types/player';
+	import type TitleBar from 'video.js/dist/types/title-bar';
 
 	import 'video.js/dist/video-js.css';
 	import { useLocalStorageStore } from '~/store/localStorage';

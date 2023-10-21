@@ -19,8 +19,8 @@
 
 <script setup lang="ts">
 	import { storeToRefs } from 'pinia';
-	import { DBYear } from '%/lib/types/database/kara';
-	import { Tag as TagType } from '%/lib/types/tag';
+	import type { DBYear } from '%/lib/types/database/kara';
+	import type { Tag as TagType } from '%/lib/types/tag';
 	import { useMenubarStore } from '~/store/menubar';
 	import { useLocalStorageStore } from '~/store/localStorage';
 

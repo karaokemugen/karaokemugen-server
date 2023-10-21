@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { DBTag } from '%/lib/types/database/tag';
+import type { DBTag } from '%/lib/types/database/tag';
 
 export interface TagExtend {
 	type: string;

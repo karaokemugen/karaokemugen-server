@@ -51,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-	import { DBKara } from '%/lib/types/database/kara';
+	import type { DBKara } from '%/lib/types/database/kara';
 
 	const config = useRuntimeConfig();
 	const route = useRoute();

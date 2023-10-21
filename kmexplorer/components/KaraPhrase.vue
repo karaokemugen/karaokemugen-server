@@ -35,8 +35,8 @@
 
 <script setup lang="ts">
 	import slug from 'slug';
-	import { ShortTag } from '~/types/tags';
-	import { DBKara } from '%/lib/types/database/kara';
+	import type { ShortTag } from '~/types/tags';
+	import type { DBKara } from '%/lib/types/database/kara';
 	import { useMenubarStore } from '~/store/menubar';
 
 	const props = defineProps<{

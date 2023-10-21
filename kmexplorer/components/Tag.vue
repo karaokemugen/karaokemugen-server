@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-	import { DBTag } from '%/lib/types/database/tag';
+	import type { DBTag } from '%/lib/types/database/tag';
 	import { tagTypes } from '~/assets/constants';
 	import { useMenubarStore } from '~/store/menubar';
 

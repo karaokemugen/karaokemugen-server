@@ -28,8 +28,8 @@
 </template>
 
 <script setup lang="ts">
-	import { DBKara } from '%/lib/types/database/kara';
-	import { KaraList as KaraListType } from '%/lib/types/kara';
+	import type { DBKara } from '%/lib/types/database/kara';
+	import type { KaraList as KaraListType } from '%/lib/types/kara';
 	import { storeToRefs } from 'pinia';
 	import deJson from 'video.js/dist/lang/de.json';
 	import enJson from 'video.js/dist/lang/en.json';

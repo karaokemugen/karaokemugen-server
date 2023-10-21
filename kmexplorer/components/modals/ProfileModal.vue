@@ -708,7 +708,7 @@
 	import _ from 'lodash';
 	import i18nIsoLanguages from '@karaokemugen/i18n-iso-languages';
 
-	import { DBUser } from '%/lib/types/database/user';
+	import type { DBUser } from '%/lib/types/database/user';
 	import { useModalStore } from '~/store/modal';
 	import { useAuthStore } from '~/store/auth';
 

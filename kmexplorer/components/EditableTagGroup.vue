@@ -74,8 +74,8 @@
 
 <script setup lang="ts">
 	import _ from 'lodash';
-	import { DBTag } from '%/lib/types/database/tag';
-	import { KaraTag } from '%/lib/types/kara';
+	import type { DBTag } from '%/lib/types/database/tag';
+	import type { KaraTag } from '%/lib/types/kara';
 
 	const props = withDefaults(defineProps<{
 		checkboxes?: boolean

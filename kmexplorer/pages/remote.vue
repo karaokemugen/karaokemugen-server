@@ -63,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-	import { RemoteAccessToken } from '%/lib/types/remote';
+	import type { RemoteAccessToken } from '%/lib/types/remote';
 	import * as Toast from 'vue-toastification';
 
 	// @ts-ignore

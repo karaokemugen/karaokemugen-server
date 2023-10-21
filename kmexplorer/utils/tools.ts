@@ -1,6 +1,6 @@
 import { getNavigatorLanguageIn3B } from './isoLanguages';
-import { DBTag } from '%/lib/types/database/tag';
-import { DBKara, DBKaraTag } from '%/lib/types/database/kara';
+import type { DBTag } from '%/lib/types/database/tag';
+import type { DBKara, DBKaraTag } from '%/lib/types/database/kara';
 import { useMenubarStore } from '~/store/menubar';
 import { tagTypes } from '~/assets/constants';
 import { useLocalStorageStore } from '~/store/localStorage';

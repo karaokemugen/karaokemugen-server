@@ -46,7 +46,7 @@
 <script setup lang="ts">
 	import { storeToRefs } from 'pinia';
 	import _ from 'lodash';
-	import { UserList } from '%/types/user';
+	import type { UserList } from '%/types/user';
 	import { useMenubarStore } from '~/store/menubar';
 
 	interface UsersRequest {

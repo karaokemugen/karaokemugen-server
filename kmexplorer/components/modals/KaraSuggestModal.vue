@@ -200,7 +200,7 @@
 
 <script setup lang="ts">
 	import { storeToRefs } from 'pinia';
-	import { TagList } from '%/lib/types/tag';
+	import type { TagList } from '%/lib/types/tag';
 	import { useAuthStore } from '~/store/auth';
 
 	defineProps<{

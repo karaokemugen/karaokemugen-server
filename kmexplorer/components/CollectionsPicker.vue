@@ -27,8 +27,8 @@
 </template>
 
 <script setup lang="ts">
-	import { DBTag } from '%/lib/types/database/tag';
-	import { TagList } from '%/lib/types/tag';
+	import type { DBTag } from '%/lib/types/database/tag';
+	import type { TagList } from '%/lib/types/tag';
 	import { storeToRefs } from 'pinia';
 	import { useLocalStorageStore } from '~/store/localStorage';
 

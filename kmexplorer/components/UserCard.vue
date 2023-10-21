@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 	import { storeToRefs } from 'pinia';
-	import { DBUser } from '%/lib/types/database/user';
+	import type { DBUser } from '%/lib/types/database/user';
 	import { useAuthStore } from '~/store/auth';
 
 	const props = defineProps<{

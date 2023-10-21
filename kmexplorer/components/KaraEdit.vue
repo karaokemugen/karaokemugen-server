@@ -684,8 +684,8 @@
 <script setup lang="ts">
 	import _ from 'lodash';
 
-	import { KaraList, MediaInfo } from '%/lib/types/kara';
-	import { DBKara } from '%/lib/types/database/kara';
+	import type { KaraList, MediaInfo } from '%/lib/types/kara';
+	import type { DBKara } from '%/lib/types/database/kara';
 	import { useAuthStore } from '~/store/auth';
 	import { useLocalStorageStore } from '~/store/localStorage';
 	import { storeToRefs } from 'pinia';
