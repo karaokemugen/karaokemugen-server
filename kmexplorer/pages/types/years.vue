@@ -29,10 +29,9 @@
 	const { t } = useI18n();
 
 	const { enabledCollections } = storeToRefs(useLocalStorageStore());
-	const { setSort, setResultsCount } = useMenubarStore();
+	const { setResultsCount } = useMenubarStore();
 
 	setResultsCount(0);
-	setSort('recent');
 
 	const tags = computed((): TagType[] => {
 		const tags: TagType[] = [];

@@ -27,7 +27,7 @@
 					</h2>
 					<button
 						class="button is-primary"
-						:class="{'is-loading': loading}"
+						:class="{ 'is-loading': loading }"
 						@click="fetchRandomKaras"
 					>
 						<span class="icon"><font-awesome-icon :icon="['fas', 'dice']" /></span>
@@ -103,7 +103,7 @@
 	});
 
 	const { search, sort, enabledLanguages } = storeToRefs(useMenubarStore());
-	const { setSearch, setSort } = useMenubarStore();
+	const { setSearch } = useMenubarStore();
 	const { hideSuggestionModal } = storeToRefs(useLocalStorageStore());
 	const { setHideSuggestionModal, openHideSuggestionModal } = useLocalStorageStore();
 	const { karaSuggest } = storeToRefs(useModalStore());
@@ -116,27 +116,18 @@
 
 	watch(enabledLanguages, () => setPage(1));
 	watch(search, () => setPage(1));
-	watch(sort, () => setPage(1));
+	watch(sort, () => setPage(1), { deep: true });
 
 	onMounted(() => {
-
 		setSearch('');
-		setSort('likes');
 		if (typeof query.q === 'string') {
 			setSearch(query.q);
-		}
-		if (typeof query.sort === 'string') {
-			setSort(query.sort as sortTypes);
 		}
 		if (typeof query.page === 'string') {
 			page.value = parseInt(query.page);
 		}
 
 		fetchRandomKaras();
-	});
-
-	onUnmounted(() => {
-		setSearch('');
 	});
 
 	async function fetchRandomKaras() {

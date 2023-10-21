@@ -56,7 +56,7 @@
 	}
 
 	const { search } = storeToRefs(useMenubarStore());
-	const { setSearch, setResultsCount, setSort } = useMenubarStore();
+	const { setSearch, setResultsCount } = useMenubarStore();
 	const conf = useRuntimeConfig();
 	const usersEnabled = conf.public.USERS;
 
@@ -67,7 +67,6 @@
 
 	setResultsCount(0);
 	setSearch('');
-	setSort('az');
 
 	const fullyLoaded = computed(() => users.value.infos.to === users.value.infos.count);
 
