@@ -62,10 +62,10 @@
 				payload.tag = tag;
 			}
 			addTag(payload);
-			if (['kara-slug-id', 'types-id'].includes(route.name as string)) {
+			if (['kara-slug-id', 'types-id', 'types-years'].includes(route.name as string)) {
 				setSearch('');
 			}
-			if (!['search-query', 'user-login'].includes(route.name as string)) {
+			if (!['search-query', 'user-login', 'user-login-animelist'].includes(route.name as string)) {
 				push(generateNavigation());
 			}
 		}
