@@ -66,7 +66,7 @@
 						<option value="duration">{{ $t('search.sort.duration') }}</option>
 						<option value="username">{{ $t('search.sort.username') }}</option>
 					</template>
-					<template v-else-if="route.name === 'search-query' || route.name == 'user-login'">
+					<template v-else-if="['search-query', 'user-login', 'user-login-animelist'].includes(route.name)">
 						<option value="recent">{{ $t('search.sort.recent') }}</option>
 						<option value="played">{{ $t('search.sort.most_played') }}</option>
 						<option value="playedRecently">{{ $t('search.sort.most_played_recently') }}</option>
@@ -102,9 +102,9 @@
 		icon: true
 	});
 
-	const canCount = computed(() => ['types-id', 'search-query', 'user-login', 'users', 'types-years', 'playlists-community'].includes(route.name as string));
-	const canSort = computed(() => ['types-id', 'search-query', 'user-login', 'users', 'types-years', 'playlists-community'].includes(route.name as string));
-	const canSearch = computed(() => ['types-id', 'search-query', 'user-login', 'users', 'types-years', 'suggest', 'playlists-community', 'playlist-slug'].includes(route.name as string));
+	const canCount = computed(() => ['types-id', 'search-query', 'user-login', 'user-login-animelist', 'users', 'types-years', 'playlists-community'].includes(route.name as string));
+	const canSort = computed(() => ['types-id', 'search-query', 'user-login', 'user-login-animelist', 'users', 'types-years', 'playlists-community'].includes(route.name as string));
+	const canSearch = computed(() => ['types-id', 'search-query', 'user-login', 'user-login-animelist', 'users', 'types-years', 'suggest', 'playlists-community', 'playlist-slug'].includes(route.name as string));
 	const searchLabel = computed((): string => {
 		if (route.name === 'users') {
 			return $t('search.types.users') as string;
