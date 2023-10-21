@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 	import { storeToRefs } from 'pinia';
-	import { DBUser } from '~/../kmserver-core/src/lib/types/database/user';
+	import type { DBUser } from '~/../kmserver-core/src/lib/types/database/user';
 	import { useAuthStore } from '~/store/auth';
 	import Modal from './Modal.vue';
 

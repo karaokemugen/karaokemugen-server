@@ -115,13 +115,13 @@
 </template>
 
 <script setup lang="ts">
-	import { DBKara } from '%/lib/types/database/kara';
-	import { DBPL } from 'kmserver-core/src/types/database/playlist';
+	import type { DBKara } from '%/lib/types/database/kara';
+	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
 	import { storeToRefs } from 'pinia';
 	import slug from 'slug';
 	import { tagTypes } from '~/assets/constants';
 	import { useAuthStore } from '~/store/auth';
-	import { TagExtend } from '~/store/menubar';
+	import type { TagExtend } from '~/store/menubar';
 	import { useModalStore } from '~/store/modal';
 
 	const props = defineProps<{

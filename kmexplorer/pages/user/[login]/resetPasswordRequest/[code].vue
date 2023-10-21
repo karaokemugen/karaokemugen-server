@@ -80,7 +80,7 @@
 </template>
 
 <script setup lang="ts">
-	import { TokenResponseWithRoles } from '~/../kmserver-core/src/lib/types/user';
+	import type { TokenResponseWithRoles } from '~/../kmserver-core/src/lib/types/user';
 	import { useModalStore } from '~/store/modal';
 
 	const loading = ref(false);

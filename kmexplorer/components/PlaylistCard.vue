@@ -106,7 +106,7 @@
 	import { storeToRefs } from 'pinia';
 	import dayjs from 'dayjs';
 	import * as Toast from 'vue-toastification';
-	import { DBPL } from 'kmserver-core/src/types/database/playlist';
+	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
 	import { useAuthStore } from '~/store/auth';
 
 	// @ts-ignore

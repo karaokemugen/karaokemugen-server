@@ -27,15 +27,16 @@
 </template>
 
 <script setup lang="ts">
-	import { KaraList as KaraListType, KaraParams, OrderParam } from '%/lib/types/kara';
-	import { DBPL } from 'kmserver-core/src/types/database/playlist';
+	import type { KaraList as KaraListType, KaraParams, OrderParam } from '%/lib/types/kara';
+	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
 	import _ from 'lodash';
 	import { storeToRefs } from 'pinia';
-	import { DBTag } from '~/../kmserver-core/src/lib/types/database/tag';
+	import type { DBTag } from '~/../kmserver-core/src/lib/types/database/tag';
 	import { tagRegex, tagTypes, tagTypesMap } from '~/assets/constants';
 	import { useAuthStore } from '~/store/auth';
 	import { useLocalStorageStore } from '~/store/localStorage';
-	import { TagExtend, useMenubarStore } from '~/store/menubar';
+	import type { TagExtend } from '~/store/menubar';
+	import { useMenubarStore } from '~/store/menubar';
 
 	interface KaraRequest extends KaraParams {
 		collections: string

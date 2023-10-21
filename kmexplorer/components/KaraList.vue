@@ -67,9 +67,9 @@
 
 <script setup lang="ts">
 	import { storeToRefs } from 'pinia';
-	import { KaraList } from '%/lib/types/kara';
+	import type { KaraList } from '%/lib/types/kara';
 	import { useAuthStore } from '~/store/auth';
-	import { DBPL } from 'kmserver-core/src/types/database/playlist';
+	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
 
 	const props = withDefaults(defineProps<{
 		karaokes: KaraList

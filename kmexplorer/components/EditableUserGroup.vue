@@ -38,10 +38,10 @@
 <script setup lang="ts">
 	import _ from 'lodash';
 	import { storeToRefs } from 'pinia';
-	import { User } from 'kmserver-core/src/lib/types/user';
-	import { UserList } from 'kmserver-core/src/types/user';
+	import type { User } from 'kmserver-core/src/lib/types/user';
+	import type { UserList } from 'kmserver-core/src/types/user';
 	import { useAuthStore } from '~/store/auth';
-	import { Contributors } from 'kmserver-core/src/lib/types/database/playlist';
+	import type { Contributors } from 'kmserver-core/src/lib/types/database/playlist';
 
 	const props = defineProps<{
 		params: Contributors[]

@@ -1,6 +1,6 @@
-import { DBKara } from '%/lib/types/database/kara';
-import { KaraFileV4 } from '%/lib/types/kara';
-import { DBPLC } from 'kmserver-core/src/lib/types/database/playlist';
+import type { DBKara } from '%/lib/types/database/kara';
+import type { KaraFileV4 } from '%/lib/types/kara';
+import type { DBPLC } from 'kmserver-core/src/lib/types/database/playlist';
 import slug from 'slug';
 import { v4 as UUIDv4 } from 'uuid';
 import { tagTypes } from '~/assets/constants';

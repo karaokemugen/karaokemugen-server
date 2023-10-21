@@ -62,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-	import { DBPL } from 'kmserver-core/src/types/database/playlist';
+	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
 	import { storeToRefs } from 'pinia';
 	import * as Toast from 'vue-toastification';
 	import { useAuthStore } from '~/store/auth';

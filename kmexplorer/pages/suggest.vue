@@ -78,10 +78,10 @@
 
 <script setup lang="ts">
 	import { storeToRefs } from 'pinia';
-	import { sortTypes, useMenubarStore } from '~/store/menubar';
+	import { useMenubarStore } from '~/store/menubar';
 	import { useModalStore } from '~/store/modal';
 	import { useLocalStorageStore } from '~/store/localStorage';
-	import { Suggestion } from '~/../kmserver-core/src/types/suggestions';
+	import type { Suggestion } from '~/../kmserver-core/src/types/suggestions';
 
 	type SuggestList = {
 		content: Suggestion[]

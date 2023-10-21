@@ -51,7 +51,7 @@
 	import { storeToRefs } from 'pinia';
 	import { useLocalStorageStore } from '~/store/localStorage';
 	import { useAuthStore } from '~/store/auth';
-	import { Suggestion } from '~/../kmserver-core/src/types/suggestions';
+	import type { Suggestion } from '~/../kmserver-core/src/types/suggestions';
 
 	const props = defineProps<{
 		kara: Suggestion

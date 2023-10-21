@@ -4,7 +4,7 @@ import { resolve } from 'node:path';
 import { load } from 'js-yaml';
 import merge from 'lodash/merge';
 
-import { Config } from 'kmserver-core/src/types/config';
+import type { Config } from 'kmserver-core/src/types/config';
 import { defineNuxtConfig } from 'nuxt/config';
 import { supportedFiles } from '../kmserver-core/src/lib/utils/constants';
 import { sentryDSN } from '../kmserver-core/src/utils/constants';

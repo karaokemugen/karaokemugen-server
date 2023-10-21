@@ -1060,11 +1060,11 @@
 </template>
 
 <script setup lang="ts">
-	import { KaraList as KaraListType } from '%/lib/types/kara';
+	import type { KaraList as KaraListType } from '%/lib/types/kara';
 	import { storeToRefs } from 'pinia';
 	import slug from 'slug';
-	import { LocaleObject } from 'vue-i18n-routing';
-	import { TokenResponseWithRoles } from '~/../kmserver-core/src/lib/types/user';
+	import type { LocaleObject } from 'vue-i18n-routing';
+	import type { TokenResponseWithRoles } from '~/../kmserver-core/src/lib/types/user';
 	import { useAuthStore } from '~/store/auth';
 	import { useLocalStorageStore } from '~/store/localStorage';
 	import { useMenubarStore } from '~/store/menubar';

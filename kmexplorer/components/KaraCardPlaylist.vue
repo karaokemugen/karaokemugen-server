@@ -51,12 +51,12 @@
 
 <script setup lang="ts">
 	import { storeToRefs } from 'pinia';
-	import { DBPL } from 'kmserver-core/src/types/database/playlist';
-	import { DBPLC } from 'kmserver-core/src/lib/types/database/playlist';
+	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
+	import type { DBPLC } from 'kmserver-core/src/lib/types/database/playlist';
 	import slug from 'slug';
 	import { tagTypes } from '~/assets/constants';
 	import { useAuthStore } from '~/store/auth';
-	import { TagExtend } from '~/store/menubar';
+	import type { TagExtend } from '~/store/menubar';
 
 	const props = defineProps<{
 		karaoke: DBPLC

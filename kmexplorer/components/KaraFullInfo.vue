@@ -158,13 +158,13 @@
 	import slug from 'slug';
 	import { storeToRefs } from 'pinia';
 	import { tagTypes } from '~/assets/constants';
-	import { DBKara } from '%/lib/types/database/kara';
-	import { ShortTag } from '~/types/tags';
+	import type { DBKara } from '%/lib/types/database/kara';
+	import type { ShortTag } from '~/types/tags';
 	import { useMenubarStore } from '~/store/menubar';
 	import { useModalStore } from '~/store/modal';
 	import { useAuthStore } from '~/store/auth';
 	import DOMPurify from 'isomorphic-dompurify';
-	import { DBPL } from 'kmserver-core/src/types/database/playlist';
+	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
 
 	const props = defineProps<{
 		karaoke: DBKara

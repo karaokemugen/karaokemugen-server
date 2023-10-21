@@ -217,11 +217,11 @@
 <script setup lang="ts">
 	import { storeToRefs } from 'pinia';
 
-	import { DBUser } from '%/lib/types/database/user';
-	import { Roles } from '%/lib/types/user';
+	import type { DBUser } from '%/lib/types/database/user';
+	import type { Roles } from '%/lib/types/user';
 	import { useModalStore } from '~/store/modal';
 	import { useAuthStore } from '~/store/auth';
-	import { DBPL } from 'kmserver-core/src/types/database/playlist';
+	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
 
 	type RoleKey = keyof Roles;
 

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
-import { DBUser } from '~/../kmserver-core/src/lib/types/database/user';
-import { TokenResponseWithRoles } from '~/../kmserver-core/src/lib/types/user';
+import type { DBUser } from '~/../kmserver-core/src/lib/types/database/user';
+import type { TokenResponseWithRoles } from '~/../kmserver-core/src/lib/types/user';
 
 export const useAuthStore = defineStore('auth', {
 	state: (): { loggedIn: boolean, token?: string, user?: DBUser } => {

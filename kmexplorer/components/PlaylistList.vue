@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-	import { DBPL } from 'kmserver-core/src/types/database/playlist';
+	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
 
 	const props = defineProps<{
 		playlists: DBPL[]

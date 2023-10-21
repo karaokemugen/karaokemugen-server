@@ -81,7 +81,8 @@
 
 <script setup lang="ts">
 	import { storeToRefs } from 'pinia';
-	import { useMenubarStore, sortTypes } from '~/store/menubar';
+	import { useMenubarStore } from '~/store/menubar';
+	import type { sortTypes } from '~/store/menubar';
 
 	const { sort, resultsCount, search: menuSearch } = storeToRefs(useMenubarStore());
 	const { setSearch, setSort } = useMenubarStore();

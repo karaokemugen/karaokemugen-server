@@ -60,8 +60,8 @@
 </template>
 
 <script setup lang="ts">
-	import { OrderParam } from 'kmserver-core/src/lib/types/playlist';
-	import { DBPL } from 'kmserver-core/src/types/database/playlist';
+	import type { OrderParam } from 'kmserver-core/src/lib/types/playlist';
+	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
 	import { storeToRefs } from 'pinia';
 	import { useAuthStore } from '~/store/auth';
 	import { useMenubarStore } from '~/store/menubar';
