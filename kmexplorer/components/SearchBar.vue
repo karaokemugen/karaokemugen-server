@@ -102,8 +102,8 @@
 		icon: true
 	});
 
-	const canCount = computed(() => ['types-id', 'search-query', 'user-login', 'user-login-animelist', 'users', 'types-years', 'playlists-community'].includes(route.name as string));
-	const canSort = computed(() => ['types-id', 'search-query', 'user-login', 'user-login-animelist', 'users', 'types-years', 'playlists-community'].includes(route.name as string));
+	const canCount = computed(() => ['types-id', 'search-query', 'user-login', 'user-login-animelist', 'users', 'types-years', 'suggest', 'playlists-community'].includes(route.name as string));
+	const canSort = computed(() => ['types-id', 'search-query', 'user-login', 'user-login-animelist', 'users', 'types-years', 'suggest', 'playlists-community'].includes(route.name as string));
 	const canSearch = computed(() => ['types-id', 'search-query', 'user-login', 'user-login-animelist', 'users', 'types-years', 'suggest', 'playlists-community', 'playlist-slug'].includes(route.name as string));
 	const searchLabel = computed((): string => {
 		if (route.name === 'users') {
