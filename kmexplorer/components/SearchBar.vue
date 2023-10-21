@@ -53,7 +53,7 @@
 						value="az"
 						selected
 					>{{ $t('search.sort.a_z') }}</option>
-					<template v-if="route.name === 'types-id'">
+					<template v-if="route.name === 'types-id' || route.name === 'types-years'">
 						<option value="karacount">{{ $t('search.sort.kara_count') }}</option>
 					</template>
 					<template v-else-if="route.name === 'suggest'">
@@ -66,7 +66,7 @@
 						<option value="duration">{{ $t('search.sort.duration') }}</option>
 						<option value="username">{{ $t('search.sort.username') }}</option>
 					</template>
-					<template v-else>
+					<template v-else-if="route.name === 'search-query' || route.name == 'user-login'">
 						<option value="recent">{{ $t('search.sort.recent') }}</option>
 						<option value="played">{{ $t('search.sort.most_played') }}</option>
 						<option value="playedRecently">{{ $t('search.sort.most_played_recently') }}</option>
