@@ -283,7 +283,7 @@
 			"playlist": "Name, users…"
 		},
 		"sort": {
-			"a_z": "Alphabetical",
+			"a_z": "A-Z",
 			"kara_count": "Karaoke count",
 			"recent": "By added date",
 			"most_played": "Most played",
@@ -409,7 +409,7 @@
 				"bluesky": {
 					"placeholder": "karaokemugen.bsky.social",
 					"label": "Bluesky"
-				},				
+				},
 				"mastodon": {
 					"label": "Mastodon",
 					"placeholder": "karaokemugen{'@'}shelter.moe"
