@@ -131,7 +131,7 @@
 			"media_file_tooltip": "Formats de fichier acceptés : {formats}",
 			"lyrics_file": "Fichier de sous-titres",
 			"lyrics_file_tooltip": "Format de fichier accepté : {formats}",
-			"lyrics_file_missing": "Le fichier de sous-titres est manquant, cela est approprié que si vous envoyez un mkv ou que votre karaoké n'a pas de paroles (?).",
+			"lyrics_file_missing": "Le fichier de sous-titres est manquant, cela est approprié que si vous envoyez un mkv ou que votre karaoké n'a pas de paroles (oui).",
 			"title": "Titre",
 			"title_required": "Le titre est obligatoire",
 			"title_tooltip": "Si vous ne le connaissez pas, mettez le nom de l'œuvre. Dans le cas d'une version alternative, nommez votre titre ainsi : 'Mon titre ~ Disco vers.' par exemple",
@@ -157,7 +157,7 @@
 			"authors_required": "L'auteur du karaoké est obligatoire",
 			"groups_tooltip": "Groupes de téléchargement pour ce morceau. Le morceau sera ajouté dans ces paquets pour le téléchargement",
 			"parents": "Parents",
-			"parents_tooltip": "Si un parent est défini, ce karaoké apparaîtra comme une alternative au(x) kara(s) parent(s) renseigné(s). Veillez à définir le dépôt avant de remplir ce tableau pour éviter d'ajouter des karaokés d'autres dépôts.",
+			"parents_tooltip": "Si un parent est défini, ce karaoké apparaîtra comme une alternative au(x) kara(s) parent(s) renseigné(s).",
 			"created_at": "Date de création",
 			"add_success": "Votre karaoké est envoyé !",
 			"add_success_description": "Un ticket a été crée sur notre outil de suivi. Vous pouvez consulter l'avancement de l'intégration de votre karaoké : {url}",
@@ -165,7 +165,7 @@
 			"restart": "Soumettre un nouveau karaoké",
 			"i18n_select": "Ajouter une langue",
 			"i18n_delete": "Supprimer la langue",
-			"romanization_warning": "Ce titre/tag contient une langue en alphabet non latin. Vous devez ajouter la langue “Alphabet Latin (Romanisation)” en plus",
+			"romanization_warning": "Ce titre/tag contient une langue en alphabet non latin. Vous devez aussi ajouter la langue “Alphabet Latin (Romanisation)”",
 			"default_language": "Langue par défaut",
 			"send_contact_infos": "Partager mes informations de contact avec les mainteneurs de la base",
 			"contact_infos": "Informations de contact",
@@ -192,7 +192,7 @@
 		"loading": "Chargement…",
 		"empty": "On a cherché très loin, on a rien trouvé.",
 		"suggest": "Vous ne trouvez pas ?",
-		"suggest_open": "Suggérez-le nous !",
+		"suggest_open": "Suggérez nous une chanson !",
 		"remove_tags": "Avez-vous essayé de retirer les tags qui ne vous servent plus ?",
 		"end_favorites": "C'est la fin des favoris.",
 		"end_my_favorites": "C'est la fin de vos favoris.",
@@ -413,7 +413,7 @@
 				"bluesky": {
 					"placeholder": "karaokemugen.bsky.social",
 					"label": "Bluesky"
-				},				
+				},
 				"instagram": {
 					"label": "Instagram",
 					"placeholder": "karaokemugen"
@@ -452,7 +452,7 @@
 				"flag_displayfavorites": {
 					"label": "Favoris",
 					"checkbox": "Afficher mes favoris",
-					"desc": "En plus de montrer votre profil public, vous pouvez exposer vos favoris (et ainsi vos goûts) aux yeux de tous. Cette option est désactivée par défaut, à vous de l'activer si vous voulez. Pour afficher vos favoris, votre profil doit être public au préalable."
+					"desc": "En plus de montrer votre profil public, vous pouvez exposer vos favoris (et ainsi vos goûts) à tous. Cette option est désactivée par défaut. Pour afficher vos favoris, votre profil doit être public au préalable."
 				},
 				"flag_sendstats": {
 					"label": "Statistiques",
@@ -485,7 +485,7 @@
 		},
 		"suggest": {
 			"title": "Suggestion",
-			"subtitle": "Vous n'avez pas trouvé votre bonheur ? Vous pouvez quand même nous formuler une recommandation.",
+			"subtitle": "Vous n'avez pas trouvé votre bonheur ? Vous pouvez nous formuler une recommandation.",
 			"fields": {
 				"title": {
 					"label": "Titre",
@@ -658,7 +658,7 @@
 		"header": {
 			"title": "Suggestions d'import",
 			"description": "Qu'est-ce que c'est ?",
-			"purpose": "Voici des karaokés qui sont prêts à être importés, vous pouvez chercher une chanson en particulier ou appuyer sur le bouton “Choisir aléatoirement d'autres chansons”. Vous pouvez soutenir un karaoké en appuyant sur “Oui !”.",
+			"purpose": "Voici des karaokés qui sont prêts à être importés. Vous pouvez chercher une chanson en particulier ou appuyer sur le bouton “Choisir aléatoirement d'autres chansons”. Vous pouvez soutenir un karaoké en appuyant sur “Oui !”.",
 			"suggestion": "Si vous ne trouvez toujours pas la chanson que vous cherchez, cliquez sur “Envoyer une suggestion”.",
 			"random_selection": "Choisir aléatoirement d'autres chansons",
 			"send_suggestion": "Envoyer une suggestion"
@@ -666,7 +666,7 @@
 		"modal": {
 			"welcome": {
 				"title": "Où suis-je donc ?",
-				"text": "Il y a de nombreuses autres bases de karaokés à travers le monde : notamment celles se concentrant sur la réalisation de karaokés d'UltraStar, Karawin ou Karafun. Voici donc, des karaokés qui sont déjà disponibles, avec leurs paroles correctement synchronisées, mais comme on ne peut pas tout faire, on aimerait bien connaître vos priorités !",
+				"text": "Il y a de nombreuses autres bases de karaokés à travers le monde : notamment celles se concentrant sur la réalisation de karaokés d'UltraStar, Karawin ou Karafun. Voici donc, des karaokés qui sont déjà disponibles, avec leurs paroles correctement synchronisées. Comme on ne peut pas tout faire, on aimerait bien connaître vos priorités !",
 				"text2": "Vous pouvez soit effectuer une recherche, soit laisser le hasard vous présenter ce qu'il trouve pour vous. Dans les deux cas, nous vous serons reconnaissants du temps que vous passez pour améliorer nos bases. Merci !",
 				"text3": "Si vous souhaitez nous demander de l'aide, pensez à venir nous voir sur {discord}. Nous sommes à l'écoute de vos suggestions ou critiques.",
 				"discord": "Discord",
@@ -682,8 +682,8 @@
 		"token": "Token",
 		"delete_button": "Supprimer la ligne",
 		"edit_success": "Edition du remote avec succès",
-		"edit_error": "Erreur lors de l'edition du remote",
-		"delete_error": "Erreur lors de la suppression de la ligne"
+		"edit_error": "Erreur lors de l’édition de l'accès à distance",
+		"delete_error": "Erreur lors de la suppression de l'accès à distance"
 	},
 	"playlists": {
 		"create": "Créer une nouvelle liste de lecture",
