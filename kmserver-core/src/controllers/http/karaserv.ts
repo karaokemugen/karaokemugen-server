@@ -5,8 +5,8 @@ import { APIMessage } from '../../lib/services/frontend.js';
 import { RepositoryManifest } from '../../lib/types/repo.js';
 import {getConfig} from '../../lib/utils/config.js';
 import { getGitDiff, getLatestGitCommit } from '../../services/git.js';
-import { postSuggestionToKaraBase } from '../../services/gitlab.js';
-import {getAllKaras, getAllMedias, getAllYears, getBaseStats, getHardsubsCache, getKara, newKaraIssue} from '../../services/kara.js';
+import { createKaraIssue, createSuggestionIssue } from '../../services/gitlab.js';
+import {getAllKaras, getAllMedias, getAllYears, getBaseStats, getHardsubsCache, getKara} from '../../services/kara.js';
 import {getTag, getTags} from '../../services/tag.js';
 import { optionalAuth } from '../middlewares/auth.js';
 
@@ -73,7 +73,7 @@ export default function KSController(router: Router) {
 	router.route('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/problem')
 		.post(async (req: any, res) => {
 			try {
-				const url = await newKaraIssue(req.params.kid, req.body.type, req.body.comment, req.body.username);
+				const url = await createKaraIssue(req.params.kid, req.body.type, req.body.comment, req.body.username);
 				res.status(200).json(url);
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));
@@ -140,7 +140,7 @@ export default function KSController(router: Router) {
 		.post(async (req, res) => {
 			try {
 				if (getConfig().Gitlab.Enabled) {
-					const url = await postSuggestionToKaraBase(req.body.title, req.body.serie, req.body.type, req.body.link, req.body.username,);
+					const url = await createSuggestionIssue(req.body.title, req.body.serie, req.body.type, req.body.link, req.body.username,);
 					res.json(url);
 				} else {
 					res.status(403).json(APIMessage('GITLAB_DISABLED'));

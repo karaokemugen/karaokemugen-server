@@ -1,6 +1,7 @@
 import { isEqual } from 'lodash';
 import {basename} from 'path';
 
+import { selectAllKaras } from '../dao/kara.js';
 import { getConfig } from '../lib/utils/config.js';
 import { tagTypes } from '../lib/utils/constants.js';
 import { duration } from '../lib/utils/date.js';
@@ -15,7 +16,7 @@ import { findUserByName } from './user.js';
 const service = 'Gitlab';
 
 /** Use the appropriate template and post an inbox element to GitLab * */
-export async function gitlabPostNewKara(kid: string, edit?: EditElement) {
+export async function createInboxIssue(kid: string, edit?: EditElement) {
 	const conf = getConfig();
 	const kara = await getKara({
 		q: `k:${kid}`
@@ -90,11 +91,11 @@ export async function gitlabPostNewKara(kid: string, edit?: EditElement) {
 			}
 			desc += changes.map(c => `- ${c}`).join('\n');
 		}
-	return gitlabPostNewIssue(title, desc, issueTemplate.Labels);
+	return gitlabCreateIssue(title, desc, issueTemplate.Labels);
 }
 
 /** Posts a new issue to gitlab and return its URL */
-export async function gitlabPostNewIssue(title: string, desc: string, labels: string[]): Promise<string> {
+async function gitlabCreateIssue(title: string, desc: string, labels: string[]): Promise<string> {
 	try {
 		const conf = getConfig();
 		if (!labels) labels = [];
@@ -123,7 +124,7 @@ export async function gitlabPostNewIssue(title: string, desc: string, labels: st
 	}
 }
 
-export async function postSuggestionToKaraBase(title: string, serie:string, type:string, link:string, username: string): Promise<string> {
+export async function createSuggestionIssue(title: string, serie:string, type:string, link:string, username: string): Promise<string> {
 	try {
 		const conf = getConfig().Gitlab.IssueTemplate;
 		let titleIssue = conf?.Suggestion?.Title
@@ -141,11 +142,43 @@ export async function postSuggestionToKaraBase(title: string, serie:string, type
 		desc = desc.replace('$serie', serie);
 		desc = desc.replace('$type', type);
 		desc = desc.replace('$link', link);
-		return await gitlabPostNewIssue(titleIssue, desc, conf.Suggestion.Labels);
+		return await gitlabCreateIssue(titleIssue, desc, conf.Suggestion.Labels);
 	} catch (err) {
 		logger.error('Unable to post new suggestion to gitlab', {service, obj: err});
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
 		throw new ErrorKM('POST_SUGGESTION_ERROR');
+	}
+}
+
+export async function createKaraIssue(kid: string, type: 'Media' | 'Metadata' | 'Lyrics', comment: string, username: string) {
+	try {
+		const karas = await selectAllKaras({
+			q: `k:${kid}`,
+			ignoreCollections: true
+		}, true);
+		const kara = karas[0];
+		if (!kara) throw new ErrorKM('KARA_UNKNOWN', 404, false);
+		logger.debug('Kara:', {service: 'GitLab', obj: kara});
+		const serieOrSingergroupOrSinger =
+			(kara.series.length > 0 && kara.series[0].name) ||
+			(kara.singergroups.length > 0 && kara.singergroups[0].name) ||
+			(kara.singers.length > 0 && kara.singers[0].name) || '';
+		const langs = (kara.langs.length > 0 && kara.langs[0].name.toUpperCase()) || '';
+		const songtype = (kara.songtypes.length > 0 && kara.songtypes[0].name) || '';
+		const karaName = `${langs} - ${serieOrSingergroupOrSinger} - ${songtype}${kara.songorder || ''} - ${kara.titles[kara.titles_default_language]}`;
+		const conf = getConfig();
+		const issueTemplate = conf.Gitlab.IssueTemplate.KaraProblem[type];
+		let title = issueTemplate.Title || '$kara';
+		title = title.replace('$kara', karaName);
+		let desc = issueTemplate.Description || '';
+		desc = desc.replace('$username', username)
+			.replace('$comment', comment);
+		if (conf.Gitlab.Enabled) return await gitlabCreateIssue(title, desc, issueTemplate.Labels);
+	} catch (err) {
+		logger.error(`Unable to create issue for song ${kid}`, {service: 'GitLab', obj: err});
+		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
+		sentry.error(err, 'warning');
+		throw err instanceof ErrorKM ? err : new ErrorKM('NEW_KARA_ISSUE_ERROR');
 	}
 }

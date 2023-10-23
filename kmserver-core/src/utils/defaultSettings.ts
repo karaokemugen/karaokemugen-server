@@ -236,6 +236,9 @@ A proposal to modify a karaoke has been sent. You will find all the new files in
 # Media issue
 
 
+**Kara URL** : $url
+
+
 **Issue author** : $username
 
 
@@ -248,6 +251,9 @@ A proposal to modify a karaoke has been sent. You will find all the new files in
 # Metadata issue
 
 
+**Kara URL** : $url
+
+
 **Issue author** : $username
 
 
@@ -258,6 +264,9 @@ A proposal to modify a karaoke has been sent. You will find all the new files in
 					Labels: ['lyrics', 'incident'],
 					Description: `
 # Lyrics issue
+
+
+**Kara URL** : $url
 
 
 **Issue author** : $username

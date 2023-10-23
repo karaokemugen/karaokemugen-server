@@ -25,7 +25,6 @@ import { generateHardsubs } from '../utils/hardsubs.js';
 import sentry from '../utils/sentry.js';
 import { getState } from '../utils/state.js';
 import { updateGit } from './git.js';
-import { gitlabPostNewIssue } from './gitlab.js';
 import { clearOldInboxEntries, removeProcessedInboxes } from './inbox.js';
 import { findUserByName } from './user.js';
 
@@ -240,37 +239,5 @@ export async function getAllKaras(params: KaraParams, token?: JWTTokenWithRoles,
 		logger.error('Getting karas failed', {service, obj: err});
 		sentry.error(err);
 		throw err instanceof ErrorKM ? err : new ErrorKM('GET_KARAS_ERROR');
-	}
-}
-
-export async function newKaraIssue(kid: string, type: 'Media' | 'Metadata' | 'Lyrics', comment: string, username: string) {
-	try {
-		const karas = await selectAllKaras({
-			q: `k:${kid}`,
-			ignoreCollections: true
-		}, true);
-		const kara = karas[0];
-		if (!kara) throw new ErrorKM('KARA_UNKNOWN', 404, false);
-		logger.debug('Kara:', {service: 'GitLab', obj: kara});
-		const serieOrSingergroupOrSinger =
-			(kara.series.length > 0 && kara.series[0].name) ||
-			(kara.singergroups.length > 0 && kara.singergroups[0].name) ||
-			(kara.singers.length > 0 && kara.singers[0].name) || '';
-		const langs = (kara.langs.length > 0 && kara.langs[0].name.toUpperCase()) || '';
-		const songtype = (kara.songtypes.length > 0 && kara.songtypes[0].name) || '';
-		const karaName = `${langs} - ${serieOrSingergroupOrSinger} - ${songtype}${kara.songorder || ''} - ${kara.titles[kara.titles_default_language]}`;
-		const conf = getConfig();
-		const issueTemplate = conf.Gitlab.IssueTemplate.KaraProblem[type];
-		let title = issueTemplate.Title || '$kara';
-		title = title.replace('$kara', karaName);
-		let desc = issueTemplate.Description || '';
-		desc = desc.replace('$username', username)
-			.replace('$comment', comment);
-		if (conf.Gitlab.Enabled) return await gitlabPostNewIssue(title, desc, issueTemplate.Labels);
-	} catch (err) {
-		logger.error(`Unable to create issue for song ${kid}`, {service: 'GitLab', obj: err});
-		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
-		sentry.error(err, 'warning');
-		throw err instanceof ErrorKM ? err : new ErrorKM('NEW_KARA_ISSUE_ERROR');
 	}
 }
