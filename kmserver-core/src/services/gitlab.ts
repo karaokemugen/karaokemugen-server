@@ -173,7 +173,8 @@ export async function createKaraIssue(kid: string, type: 'Media' | 'Metadata' | 
 		title = title.replace('$kara', karaName);
 		let desc = issueTemplate.Description || '';
 		desc = desc.replace('$username', username)
-			.replace('$comment', comment);
+			.replace('$comment', comment)
+			.replace('$url', `https://${getConfig().KaraExplorer.Host}/kara/xxx/${kid}`);
 		if (conf.Gitlab.Enabled) return await gitlabCreateIssue(title, desc, issueTemplate.Labels);
 	} catch (err) {
 		logger.error(`Unable to create issue for song ${kid}`, {service: 'GitLab', obj: err});
