@@ -63,7 +63,7 @@ export default function KSController(router: Router) {
 		});
 	// Hardsubs helper route
 	// This is to simplify queries to get hardsubs simply by their KIDs
-	router.route('/kara/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/hardsub')
+	router.route('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/hardsub')
 		.get((req, res) => {
 			const hardsubbedMediafile = getHardsubsCache().get(req.params.kid);
 			hardsubbedMediafile
