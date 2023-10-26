@@ -196,12 +196,13 @@
 		"singergroups_by": "von der Band"
 	},
 	"error": {
-		"private_profile": "Dieses Profil ist privat.",
+		"private_profile": "Profil ist privat.",
 		"not_found_profile": "Dieser Benutzer konnte nicht gefunden werden",
 		"home": "Zur Startseite zurückkehren",
 		"generic": "Fehler",
 		"remote": "Fehler beim Laden der remote-Liste",
-		"not_found_tag": "Tag nicht gefunden"
+		"not_found_tag": "Tag nicht gefunden",
+		"not_found_playlist": "Diese Playlist konnte nicht gefunden werden"
 	},
 	"layout": {
 		"explore": "Füge welche hinzu!",
@@ -281,7 +282,7 @@
 				"bluesky": {
 					"placeholder": "karaokemugen.bsky.social",
 					"label": "Bluesky"
-				},				
+				},
 				"instagram": {
 					"label": "Instagram",
 					"placeholder": "karaokemugen"
