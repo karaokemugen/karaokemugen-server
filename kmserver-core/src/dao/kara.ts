@@ -24,12 +24,14 @@ export async function selectAllMedias(collections?: string[]): Promise<DBMedia[]
 	return res.rows;
 }
 
-export async function selectAllYears(collections: string[]): Promise<DBYear[]> {
+export async function selectAllYears(params: { order: 'recent' | 'karacount', collections: string[] }): Promise<DBYear[]> {
+	let orderClauses = 'year DESC';
+	if (params.order === 'karacount') orderClauses = `karacount DESC, ${orderClauses}`;
 	const collectionsClauses = [];
-	if (collections) for (const collection of collections) {
+	if (params.collections) for (const collection of params.collections) {
 		collectionsClauses.push(`'${collection}~${tagTypes.collections}' = ANY(ak.tid)`);
 	}
-	const res = await db().query(sql.getYears(collectionsClauses));
+	const res = await db().query(sql.getYears(orderClauses, collectionsClauses));
 	return res.rows;
 }
 

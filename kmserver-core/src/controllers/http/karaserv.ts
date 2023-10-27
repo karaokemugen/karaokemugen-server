@@ -129,6 +129,7 @@ export default function KSController(router: Router) {
 		.get(async (req, res) => {
 			try {
 				const years = await getAllYears({
+					order: req.query.order as 'recent' | 'karacount',
 					collections: typeof req.query.collections === 'string' ? req.query.collections?.split(',') : undefined
 				});
 				res.json(years);

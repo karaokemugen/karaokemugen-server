@@ -43,9 +43,9 @@ export async function getBaseStats() {
 	}
 }
 
-export async function getAllYears(params: {collections: string[]}) {
+export async function getAllYears(params: { order: 'recent' | 'karacount', collections: string[] }) {
 	try {
-		return await selectAllYears(params.collections);
+		return await selectAllYears(params);
 	} catch (err) {
 		logger.error('Error getting years', { service, obj: err });
 		sentry.error(err);

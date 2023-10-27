@@ -18,18 +18,20 @@
 </template>
 
 <script setup lang="ts">
-	import { storeToRefs } from 'pinia';
 	import type { DBYear } from '%/lib/types/database/kara';
 	import type { Tag as TagType } from '%/lib/types/tag';
-	import { useMenubarStore } from '~/store/menubar';
+	import { storeToRefs } from 'pinia';
 	import { useLocalStorageStore } from '~/store/localStorage';
+	import { useMenubarStore } from '~/store/menubar';
 
 	const loading = ref(true);
 	const years = ref<DBYear[]>([]);
 	const { t } = useI18n();
 
-	const { enabledCollections } = storeToRefs(useLocalStorageStore());
+	const { sort } = storeToRefs(useMenubarStore());
 	const { setResultsCount } = useMenubarStore();
+	const { enabledCollections } = storeToRefs(useLocalStorageStore());
+	const route = useRoute();
 
 	setResultsCount(0);
 
@@ -42,6 +44,7 @@
 	});
 
 	watch(() => enabledCollections, () => setPage(), { deep: true });
+	watch(() => sort, () => setPage(), { deep: true });
 
 	await fetch();
 
@@ -49,6 +52,7 @@
 		loading.value = true;
 		const res = await useCustomFetch<DBYear[]>('/api/karas/years/', {
 			params: {
+				order: sort.value[route.name] as 'recent' | 'karacount',
 				collections: enabledCollections.value.join(',')
 			}
 		}).catch(_err => {
@@ -66,6 +70,7 @@
 	async function setPage(): Promise<void> {
 		const res = await useCustomFetch<DBYear[]>('/api/karas/years/', {
 			params: {
+				order: sort.value[route.name] as 'recent' | 'karacount',
 				collections: enabledCollections.value.join(',')
 			}
 		});

@@ -48,24 +48,36 @@
 					v-model="sortModel"
 					:aria-label="$t('search.aria.sort')"
 				>
-					<option
-						value="az"
-						selected
-					>{{ $t('search.sort.a_z') }}</option>
 					<template v-if="route.name === 'types-id' || route.name === 'types-years'">
+						<option
+							value="recent"
+							selected
+						>{{ $t('search.sort.recent') }}</option>
 						<option value="karacount">{{ $t('search.sort.kara_count') }}</option>
 					</template>
 					<template v-else-if="route.name === 'suggest'">
+						<option
+							value="az"
+							selected
+						>{{ $t('search.sort.a_z') }}</option>
 						<option value="likes">{{ $t('search.sort.likes') }}</option>
 						<option value="language">{{ $t('search.sort.languages') }}</option>
 					</template>
 					<template v-else-if="route.name === 'playlists-community'">
+						<option
+							value="az"
+							selected
+						>{{ $t('search.sort.a_z') }}</option>
 						<option value="recent">{{ $t('search.sort.recent') }}</option>
 						<option value="karacount">{{ $t('search.sort.kara_count') }}</option>
 						<option value="duration">{{ $t('search.sort.duration') }}</option>
 						<option value="username">{{ $t('search.sort.username') }}</option>
 					</template>
 					<template v-else-if="['search-query', 'user-login', 'user-login-animelist'].includes(route.name)">
+						<option
+							value="az"
+							selected
+						>{{ $t('search.sort.a_z') }}</option>
 						<option value="recent">{{ $t('search.sort.recent') }}</option>
 						<option value="played">{{ $t('search.sort.most_played') }}</option>
 						<option value="playedRecently">{{ $t('search.sort.most_played_recently') }}</option>

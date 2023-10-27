@@ -191,7 +191,7 @@ export const deleteKara = `
 DELETE FROM kara WHERE pk_kid = ANY ($1);
 `;
 
-export const getYears = (collectionClauses: string[]) => `
+export const getYears = (orderClauses: string, collectionClauses: string[]) => `
 SELECT DISTINCT
 	k.year,
 	COUNT(k2.pk_kid)::integer AS karacount
@@ -201,7 +201,7 @@ LEFT JOIN all_karas ak ON k2.pk_kid = ak.pk_kid
 WHERE true
 ${collectionClauses.length > 0 ? `AND (${collectionClauses.map(clause => `(${clause})`).join(' OR ')})` : ''}
 GROUP BY k.year
-ORDER BY year;
+ORDER BY ${orderClauses};
 `;
 
 export const selectBaseStats = `SELECT
