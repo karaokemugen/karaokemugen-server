@@ -48,7 +48,14 @@
 					v-model="sortModel"
 					:aria-label="$t('search.aria.sort')"
 				>
-					<template v-if="route.name === 'types-id' || route.name === 'types-years'">
+					<template v-if="route.name === 'types-id'">
+						<option
+							value="az"
+							selected
+						>{{ $t('search.sort.a_z') }}</option>
+						<option value="karacount">{{ $t('search.sort.kara_count') }}</option>
+					</template>
+					<template v-if="route.name === 'types-years'">
 						<option
 							value="recent"
 							selected
