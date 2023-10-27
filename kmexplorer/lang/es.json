@@ -7,7 +7,11 @@
 		"anime_list": "Mis animes"
 	},
 	"error": {
-		"generic": "Error"
+		"generic": "Error",
+		"private_profile": "Este perfil es privado.",
+		"home": "Ir a home",
+		"not_found_profile": "No se pudo encontrar a este usuario",
+		"not_found_playlist": "No se pudo encontrar esta lista de reproducción"
 	},
 	"toast": {
 		"TAG_CREATED": "Etiqueta creada con éxito",
