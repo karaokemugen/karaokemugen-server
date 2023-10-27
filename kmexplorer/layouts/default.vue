@@ -1177,7 +1177,7 @@
 	}
 	function editUser(language: string) {
 		if (user?.value) {
-			const userEdited = { ...user?.value };
+			const userEdited = { ...user?.value, avatar_file: undefined, roles: undefined, banner: undefined };
 			userEdited.language = language;
 			useCustomFetch('/api/myaccount', {
 				method: 'PATCH',
