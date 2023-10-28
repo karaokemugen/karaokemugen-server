@@ -1,17 +1,65 @@
 {
 	"menu": {
 		"discord": "Discord",
-		"anime_list": "Mis animes"
+		"anime_list": "Mis animes",
+		"series": "Serie",
+		"creators": "Creadores/as",
+		"add_repository": "Agregar este repositorio a tu app",
+		"misc": "Etiquetas misceláneas",
+		"login": "Conectarse",
+		"kara_import": "Enviar un karaoke",
+		"account": "Cuenta",
+		"singergroups": "Bandas",
+		"versions": "Versiones",
+		"songwriters": "Escritores/as",
+		"my_playlists": "Mis listas de reproducción",
+		"random": "Tirar el dado",
+		"tags": "Otras…",
+		"songtypes": "Tipos",
+		"logout": "Desconectarse",
+		"playlists": "Listas de reproducción",
+		"karas": "Canciones",
+		"connection": "Conectarse",
+		"singers": "Cantantes",
+		"groups": "Grupos",
+		"database": "Base de datos",
+		"origins": "Origenes",
+		"franchises": "Franquicias",
+		"families": "Familias",
+		"warnings": "Alertas",
+		"search_users": "Buscar usuarios",
+		"genres": "Géneros",
+		"switch_language": "Cambiar idioma",
+		"platforms": "Plataformas",
+		"community": "Comunidad",
+		"play_random_song": "Reproducir una canción al azar",
+		"years": "Años",
+		"register": "Registrarse",
+		"authors": "Autores/as",
+		"remotes": "Remotos",
+		"discourse": "Foro",
+		"langs": "Idiomas",
+		"kara_suggest": "Sugerír un karaoke"
 	},
 	"profile": {
-		"anime_list": "Mis animes"
+		"anime_list": "Mis animes",
+		"favorites": "Favoritos",
+		"favorites_count": "{count} favorito | {count} favoritos",
+		"playlists_count": "{count} lista de reproducción | {count} listas de reproducción",
+		"you": " (eres tú!)",
+		"private": "Tu perfil es privato, solo tú puedes verlo.",
+		"public_favorites": "Tus favoritos son públicos. Haz click para esconderlos.",
+		"edit": "Editar perfil",
+		"private_favorites": "Tus favoritos son privados. Haz click para mostrarlos."
 	},
 	"error": {
 		"generic": "Error",
 		"private_profile": "Este perfil es privado.",
 		"home": "Ir a home",
 		"not_found_profile": "No se pudo encontrar a este usuario",
-		"not_found_playlist": "No se pudo encontrar esta lista de reproducción"
+		"not_found_playlist": "No se pudo encontrar esta lista de reproducción",
+		"not_found_tag": "No se ha encontrado esta etiqueta",
+		"remote": "Error al cargar listas remotas"
 	},
 	"toast": {
 		"TAG_CREATED": "Etiqueta creada con éxito",
@@ -19,9 +67,24 @@
 	},
 	"kara": {
 		"tagtypes": {
-			"langs": "Lengua | Lenguas",
+			"langs": "Idioma | Idiomas",
 			"collections": "Colección | Colecciones",
-			"misc": "Misceláneas"
+			"misc": "Misceláneas",
+			"authors": "Autor de karaokes | Autores de karaokes",
+			"versions": "Version | Versiones",
+			"genres": "Género | Géneros",
+			"songtypes": "Tipo de cancion | Tipos de cancion",
+			"creators": "Creador/a | Creadores",
+			"singers": "Cantante | Cantantes",
+			"platforms": "Plataforma | Plataformas",
+			"singergroups": "Banda | Bandas",
+			"songwriters": "Autor | Autores",
+			"warnings": "Alerta | Alertas",
+			"origins": "Origen | Origenes",
+			"groups": "Grupo | Grupos",
+			"franchises": "Franquicia | Franquicias",
+			"families": "Familia | Familias",
+			"series": "Serie"
 		},
 		"authors_by": "Karaoke creado por",
 		"download": "Descargar",
@@ -32,24 +95,86 @@
 		"singers_by": "Cantada por",
 		"duration": "Duración ",
 		"created_at": "Creado ",
-		"creators_by": "Creado por",
+		"creators_by": "Creada por",
 		"import": {
 			"sections": {
 				"files": "Archivos",
 				"titles": "Título(s)",
-				"parents": "Canción(es) principal(es)"
+				"parents": "Canción(es) principal(es)",
+				"identity": "Identidad",
+				"categorization": "Categorización",
+				"meta": "Metadatos"
 			}
 		},
 		"problem": {
 			"form": {
 				"thanks": {
-					"btn": "Cerrar"
+					"btn": "Cerrar",
+					"text": "Gracias! Arreglaremos este problema lo antes posible: {url}"
+				},
+				"subtitle": "Hacemos nuestro mejor esfuerzo por tener una base de datos de alta calidad, pero algunas veces pueden haber problemas. Muchas gracias por tu ayuda!",
+				"username": {
+					"label": "Tu nombre",
+					"placeholder": "SoyMeticuloso"
+				},
+				"type": {
+					"metadata": "Problema de los metadatos",
+					"media": "Problema de media",
+					"lyrics": "Problema de letra",
+					"label": "Tipo de problema"
+				},
+				"submit": "Enviar",
+				"title": "Reportar un problema",
+				"comment": {
+					"placeholder": "Despues del minuto 2, la letra deja de estar sinconizada.",
+					"label": "Comentario"
 				}
+			},
+			"title": "¿Problemas con {title}?",
+			"btn": {
+				"metadata": "Problema con los metadatos",
+				"media": "Problema con la media",
+				"lyrics": "Problema con la letra",
+				"edit": "Sugerir una modificación"
 			}
 		},
 		"favorites": {
-			"add": "Añadir a favoritos"
+			"add": "Añadir a favoritos",
+			"remove": "Remover de favoritos"
 		},
-		"singergroups_by": "de la banda de música"
+		"singergroups_by": "de la banda de música",
+		"playlists": {
+			"add": "Añadir a lista de reproducción",
+			"new_playlist_label": "Lista de reproducción de {nickname}",
+			"add_success": "Karaoke añadido exitosamente a la lista de reproducción.",
+			"create": "Crear nueva lista de reproducción…"
+		},
+		"meta": "{songtitle} por {serieSinger}",
+		"notfound": "No se ha encontrado este karaoke",
+		"set_banner": {
+			"btn": "Usar como banner de perfil",
+			"forbidden_label": "No se puede usar este karaoke como tu banner de perfil."
+		},
+		"live_unavailable": "Este karaoke no puede ser reproducido en tu explorador. El formato del mismo no es soportado por exploradores, ó se ha deshabilitado por razones legales.",
+		"phrase": "{songtype} de {series}",
+		"songwriters_by": "Compuesta por"
+	},
+	"duration": {
+		"minutes": "minutos",
+		"hours": "horas",
+		"seconds": "segundos",
+		"days": "días"
+	},
+	"search": {
+		"placeholder": {
+			"kara": "Serie, cantantes, nombres…",
+			"tag": "Nombre de etiqueta…",
+			"user": "Nombre de usuario…",
+			"playlist": "Nombre, usuarios…"
+		},
+		"sort": {
+			"kara_count": "Cantidad de karaokes",
+			"a_z": "A-Z"
+		}
 	}
 }
