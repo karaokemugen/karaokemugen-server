@@ -6,11 +6,7 @@
 				class="tile is-parent is-12 is-hidden-desktop"
 			>
 				<search-tags />
-				<search-bar
-					:filter="false"
-					:results="false"
-				/>
-				<sort-select />
+				<search-bar />
 				<div class="field is-expanded">
 					<collections-picker :label="$t('search.types.karaokes')" />
 				</div>

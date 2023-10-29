@@ -3,11 +3,7 @@
 		<section>
 			<div class="hero-body">
 				<div class="tile is-parent is-12 is-hidden-desktop">
-					<search-bar
-						:filter="false"
-						:results="false"
-					/>
-					<sort-select />
+					<search-bar />
 					<div class="field is-expanded">
 						<languages-picker :label="$t('search.types.suggestions')" />
 					</div>

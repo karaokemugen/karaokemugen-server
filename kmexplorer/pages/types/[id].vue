@@ -3,11 +3,7 @@
 		<div class="tile is-vertical">
 			<div class="tile is-parent is-12 is-hidden-desktop">
 				<search-tags />
-				<search-bar
-					:filter="false"
-					:results="false"
-				/>
-				<sort-select />
+				<search-bar />
 			</div>
 
 			<div

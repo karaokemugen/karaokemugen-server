@@ -2,7 +2,7 @@
 	<div class="field is-expanded has-addons">
 		<div
 			v-if="results && !route.name.includes('playlist')"
-			class="control"
+			class="control is-hidden-touch"
 		>
 			<collections-picker
 				v-if="route.name !== 'suggest'"
@@ -33,78 +33,38 @@
 		</div>
 		<div
 			v-if="results && resultsCount > 0 && canCount"
-			class="control"
+			class="control is-hidden-touch"
 		>
 			<button class="button is-static">
 				{{ $t('layout.results', { count: resultsCount }) }}
 			</button>
 		</div>
+		<sort-select
+			:filter="filter"
+			class="is-hidden-touch"
+		/>
+	</div>
+	<div class="field is-expanded has-addons is-hidden-desktop">
 		<div
-			v-if="filter && canSort"
-			class="control"
+			v-if="results && resultsCount > 0 && canCount"
+			class="control is-expanded"
 		>
-			<span class="select">
-				<select
-					v-model="sortModel"
-					:aria-label="$t('search.aria.sort')"
-				>
-					<template v-if="route.name === 'types-id'">
-						<option
-							value="az"
-							selected
-						>{{ $t('search.sort.a_z') }}</option>
-						<option value="karacount">{{ $t('search.sort.kara_count') }}</option>
-					</template>
-					<template v-if="route.name === 'types-years'">
-						<option
-							value="recent"
-							selected
-						>{{ $t('search.sort.recent') }}</option>
-						<option value="karacount">{{ $t('search.sort.kara_count') }}</option>
-					</template>
-					<template v-else-if="route.name === 'suggest'">
-						<option
-							value="az"
-							selected
-						>{{ $t('search.sort.a_z') }}</option>
-						<option value="likes">{{ $t('search.sort.likes') }}</option>
-						<option value="language">{{ $t('search.sort.languages') }}</option>
-					</template>
-					<template v-else-if="route.name === 'playlists-community'">
-						<option
-							value="az"
-							selected
-						>{{ $t('search.sort.a_z') }}</option>
-						<option value="recent">{{ $t('search.sort.recent') }}</option>
-						<option value="karacount">{{ $t('search.sort.kara_count') }}</option>
-						<option value="duration">{{ $t('search.sort.duration') }}</option>
-						<option value="username">{{ $t('search.sort.username') }}</option>
-					</template>
-					<template v-else-if="['search-query', 'user-login', 'user-login-animelist'].includes(route.name)">
-						<option
-							value="az"
-							selected
-						>{{ $t('search.sort.a_z') }}</option>
-						<option value="recent">{{ $t('search.sort.recent') }}</option>
-						<option value="played">{{ $t('search.sort.most_played') }}</option>
-						<option value="playedRecently">{{ $t('search.sort.most_played_recently') }}</option>
-						<option value="favorited">{{ $t('search.sort.most_favorites') }}</option>
-						<option value="requested">{{ $t('search.sort.most_requested') }}</option>
-						<option value="requestedRecently">{{ $t('search.sort.most_requested_recently') }}</option>
-					</template>
-				</select>
-			</span>
+			<button class="button is-static">
+				{{ $t('layout.results', {count: resultsCount}) }}
+			</button>
 		</div>
+		<sort-select
+			:filter="filter"
+		/>
 	</div>
 </template>
 
 <script setup lang="ts">
 	import { storeToRefs } from 'pinia';
 	import { useMenubarStore } from '~/store/menubar';
-	import type { sortTypes } from '~/store/menubar';
 
-	const { sort, resultsCount, search: menuSearch } = storeToRefs(useMenubarStore());
-	const { setSearch, setSort } = useMenubarStore();
+	const { resultsCount, search: menuSearch } = storeToRefs(useMenubarStore());
+	const { setSearch } = useMenubarStore();
 	const route = useRoute();
 	const { push } = useRouter();
 	const $t = useI18n().t;
@@ -122,7 +82,6 @@
 	});
 
 	const canCount = computed(() => ['types-id', 'types-years', 'search-query', 'user-login', 'user-login-animelist', 'users', 'suggest', 'playlists-community'].includes(route.name as string));
-	const canSort = computed(() => ['types-id', 'types-years', 'search-query', 'user-login', 'user-login-animelist', 'users', 'suggest', 'playlists-community'].includes(route.name as string));
 	const canSearch = computed(() => ['types-id', 'types-years', 'search-query', 'user-login', 'user-login-animelist', 'users', 'suggest', 'playlists-community', 'playlist-slug'].includes(route.name as string));
 	const searchLabel = computed((): string => {
 		if (route.name === 'users') {
@@ -151,15 +110,6 @@
 
 	watch(menuSearch, (now) => search.value = now, { immediate: true });
 
-	const sortModel = computed({
-		get(): sortTypes {
-			return sort.value[route.name];
-		},
-		set(collecs: sortTypes) {
-			setSort(collecs);
-		}
-	});
-
 	function triggerSearch() {
 		setSearch(search.value);
 		if (!canSearch.value) {
@@ -177,11 +127,8 @@
 			color: #dbdee0;
 		}
 
-		.select select[disabled] {
-			color: #849496;
-			border-color: unset;
-			box-shadow: unset;
-			background-color: #36393f;
+		&.is-hidden-desktop .button.is-static {
+			width: 100%;
 		}
 	}
 	.search-icon {

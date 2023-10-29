@@ -1,10 +1,8 @@
 <template>
 	<div class="tile is-parent is-vertical">
-		<search-bar
-			class="buttons is-hidden-desktop"
-			:filter="false"
-			:results="false"
-		/>
+		<div class="buttons is-hidden-desktop">
+			<search-bar />
+		</div>
 		<div
 			v-if="!loading"
 			class="buttons"
