@@ -127,6 +127,20 @@
 					/>
 					{{ $t('menu.search_users') }}
 				</nuxt-link>
+				<client-only>
+					<nuxt-link
+						v-if="loggedIn && user?.roles?.admin"
+						class="navbar-item"
+						to="/bans"
+						@click="closeMenu"
+					>
+						<font-awesome-icon
+							:icon="['fas', 'ban']"
+							:fixed-width="true"
+						/>
+						{{ $t('menu.bans') }}
+					</nuxt-link>
+				</client-only>
 				<nuxt-link
 					v-if="discordLink"
 					:href="discordLink"
@@ -853,6 +867,19 @@
 							/>
 							{{ $t('menu.search_users') }}
 						</nuxt-link>
+						<client-only>
+							<nuxt-link
+								v-if="loggedIn && user?.roles?.admin"
+								to="/bans"
+								active-class="is-active"
+							>
+								<font-awesome-icon
+									:icon="['fas', 'ban']"
+									:fixed-width="true"
+								/>
+								{{ $t('menu.bans') }}
+							</nuxt-link>
+						</client-only>
 						<nuxt-link
 							v-if="discordLink"
 							:href="discordLink"

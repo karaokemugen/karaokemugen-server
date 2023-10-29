@@ -76,6 +76,7 @@ import {
 	faDownload,
 	faShare,
 	faListCheck,
+	faBan,
 	faAngleLeft,
 	faAngleRight
 } from '@fortawesome/free-solid-svg-icons';
@@ -172,6 +173,7 @@ library.add(
 	faDownload,
 	faShare,
 	faListCheck,
+	faBan,
 	faAngleLeft,
 	faAngleRight,
 	faSitemap);

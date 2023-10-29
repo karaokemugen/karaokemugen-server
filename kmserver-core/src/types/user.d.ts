@@ -17,3 +17,12 @@ export interface UserParams {
 export interface UserList extends DBList {
 	content: DBUser[]
 }
+
+export type BanType = 'email' | 'nickname' | 'username';
+
+export interface Ban {
+	type: BanType;
+	value: string;
+	banned_at?: Date;
+	reason?: string;
+}

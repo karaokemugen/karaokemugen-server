@@ -160,7 +160,7 @@
 
 <style scoped lang="scss">
 	.select select option {
-		color: white;
+		color: #dbdee0;
 	}
 
 	.label {

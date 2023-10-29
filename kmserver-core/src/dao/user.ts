@@ -2,6 +2,7 @@ import { db, paramWords } from '../lib/dao/database.js';
 import { DBUser } from '../lib/types/database/user.js';
 import { User } from '../lib/types/user.js';
 import logger from '../lib/utils/logger.js';
+import { Ban, BanType } from '../types/user.js';
 import * as sql from './sqls/user.js';
 
 const service = 'DB';
@@ -88,4 +89,22 @@ export async function deleteInactiveUsers() {
 	const res = await db().query(sql.deleteInactiveUsers, [inactiveDate.toISOString()]);
 	const deletedUsers = Array.from(Object.values(res.rows));
 	logger.info(`Daily routine : Removed users due to inactivity : ${deletedUsers.join(', ')}`, { service });
+}
+
+export async function insertBan(ban: Ban) {
+	await db().query(sql.insertBan, [
+		ban.type,
+		ban.value,
+		ban.banned_at || new Date(),
+		ban.reason
+	]);
+}
+
+export async function deleteBan(ban: Ban) {
+	await db().query(sql.deleteBan, [ban.type, ban.value]);
+}
+
+export async function selectBans(type?: BanType) {
+	const res = await db().query(sql.selectBans(type));
+	return res.rows;
 }

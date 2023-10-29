@@ -101,3 +101,17 @@ DELETE FROM users
 WHERE last_login_at < $1
 RETURNING pk_login
 `;
+
+export const insertBan = `
+INSERT INTO bans(type, value, banned_at, reason) VALUES($1, $2, $3, $4) ON CONFLICT DO NOTHING;
+`;
+
+export const deleteBan = `
+DELETE FROM bans WHERE type = $1 AND value = $2
+`;
+
+export const selectBans = (type: string) => `
+SELECT type, value, banned_at, reason 
+FROM bans
+${type ? ` WHERE type = '${type}'` : ''}
+`;

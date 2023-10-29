@@ -242,6 +242,6 @@
 	}
 
 	.select select option {
-		color: white;
+		color: #dbdee0;
 	}
 </style>
