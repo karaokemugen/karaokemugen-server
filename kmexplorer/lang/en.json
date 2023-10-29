@@ -6,7 +6,8 @@
 		"not_found_playlist": "Cannot find this playlist",
 		"home": "Go home",
 		"not_found_tag": "Tag not found",
-		"remote": "Error when loading remotes list"
+		"remote": "Error when loading remotes list",
+		"bans": "Error when loading bans list"
 	},
 	"kara": {
 		"phrase": "{songtype} from {series}",
@@ -251,6 +252,7 @@
 		"playlists": "Playlists",
 		"my_playlists": "My playlists",
 		"remotes": "Remotes",
+		"bans": "Bans",
 		"search_users": "Search users",
 		"discord": "Discord",
 		"discourse": "Forum",
@@ -700,5 +702,14 @@
 		"by_owner": "by {nickname}",
 		"and_contributors": "(and {contributors})",
 		"and_contributors_more": "(and {contributors}, {count} more)"
+	},
+	"bans": {
+		"add": "Add new ban",
+		"type": "Type",
+		"value": "Value",
+		"banned_at": "Banned at",
+		"reason": "Reason",
+		"submit": "Add",
+		"delete": "Remove"
 	}
 }

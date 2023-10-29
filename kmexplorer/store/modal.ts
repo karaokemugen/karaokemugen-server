@@ -12,7 +12,8 @@ export type ModalType = 'auth' |
 	'banner' |
 	'createEditPlaylist' |
 	'deletePlaylist' |
-	'addDuplicateInPlaylist';
+	'addDuplicateInPlaylist' |
+	'addBans';
 
 export type modalStoreType = {
 	auth: boolean;
@@ -27,6 +28,7 @@ export type modalStoreType = {
 	createEditPlaylist: boolean;
 	deletePlaylist: boolean;
 	addDuplicateInPlaylist: boolean;
+	addBans: boolean;
 }
 
 export const useModalStore = defineStore('modal', {
@@ -44,6 +46,7 @@ export const useModalStore = defineStore('modal', {
 			createEditPlaylist: false,
 			deletePlaylist: false,
 			addDuplicateInPlaylist: false,
+			addBans: false,
 			stats : authStore.loggedIn && authStore.user?.flag_sendstats === null
 		};
 	},
@@ -67,6 +70,7 @@ export const useModalStore = defineStore('modal', {
 			this.createEditPlaylist = false;
 			this.deletePlaylist = false;
 			this.addDuplicateInPlaylist = false;
+			this.addBans = false;
 		}
 	},
 	persist: true

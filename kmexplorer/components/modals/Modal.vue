@@ -34,6 +34,7 @@
 						{{ submitLabel }}
 					</button>
 					<button
+						v-if="cancelLabel"
 						type="button"
 						class="button"
 						@click="cancelModal"
@@ -52,7 +53,7 @@
 		active: boolean,
 		modalTitle: string,
 		submitLabel?: string,
-		cancelLabel: string
+		cancelLabel?: string
 	}>();
 
 	const emit = defineEmits<{ (e: 'close' | 'submit' | 'cancel'): void }>();

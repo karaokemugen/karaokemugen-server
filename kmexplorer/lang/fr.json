@@ -6,7 +6,8 @@
 		"not_found_playlist": "Impossible de trouver cette liste de lecture",
 		"home": "Aller à l'accueil",
 		"not_found_tag": "Tag non trouvé",
-		"remote": "Erreur au chargement de la liste des remotes"
+		"remote": "Erreur au chargement de la liste des remotes",
+		"bans": "Erreur au chargement de la liste des exclusions"
 	},
 	"kara": {
 		"phrase": "{songtype} de {series}",
@@ -251,6 +252,7 @@
 		"my_playlists": "Mes listes de lecture",
 		"community": "Communauté",
 		"remotes": "Remotes",
+		"bans": "Exclusions",
 		"search_users": "Utilisateurs",
 		"discord": "Discord",
 		"discourse": "Forum",
@@ -700,5 +702,14 @@
 		"by_owner": "par {nickname}",
 		"and_contributors": "(et {contributors})",
 		"and_contributors_more": "(et {contributors}, {count} de plus)"
+	},
+	"bans": {
+		"add": "Ajouter une nouvelle exclusion",
+		"type": "Type",
+		"value": "Valeur",
+		"banned_at": "Banni le",
+		"reason": "Raison",
+		"submit": "Ajouter",
+		"delete": "Supprimer"
 	}
 }

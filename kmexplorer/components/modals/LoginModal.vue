@@ -301,28 +301,27 @@
 		);
 	}
 	async function submitForm() {
-		loading.value = true;
-		if (mode.value === 'signup') {
-			const signup = { ...login.value };
-			signup.login = login.value.username;
-			signup.language = locale.value;
-			await useCustomFetch('/api/users', {
+		try {
+			loading.value = true;
+			if (mode.value === 'signup') {
+				const signup = { ...login.value };
+				signup.login = login.value.username;
+				signup.language = locale.value;
+				await useCustomFetch('/api/users', {
+					method: 'POST',
+					body: signup
+				});
+			}
+			const result = await useCustomFetch<TokenResponseWithRoles>('/api/auth/login', {
 				method: 'POST',
-				body: signup
-			}).catch(() => {
-				loading.value = false;
+				body: login.value
 			});
-		}
-		await useCustomFetch<TokenResponseWithRoles>('/api/auth/login', {
-			method: 'POST',
-			body: login.value
-		}).then(async (result) => {
 			await loginApi(result);
 			emit('login');
 			closeModal();
-		}).finally(() => {
+		} finally {
 			loading.value = false;
-		});
+		}
 	}
 	async function callForgetPasswordApi () {
 		if (login.value) {

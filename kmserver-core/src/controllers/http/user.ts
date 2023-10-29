@@ -7,10 +7,10 @@ import { APIMessage } from '../../lib/services/frontend.js';
 import { getConfig } from '../../lib/utils/config.js';
 import { unescape } from '../../lib/utils/validators.js';
 import { refreshAnimeList } from '../../services/animeList.js';
-import { createUser, editUser, findUserByName, getAllUsers, removeUser, resetPassword, resetPasswordRequest } from '../../services/user.js';
-import { UserOptions } from '../../types/user.js';
+import { addBan, createUser, editUser, findUserByName, getAllUsers, getBans, removeBan, removeUser, resetPassword, resetPasswordRequest } from '../../services/user.js';
+import { BanType, UserOptions } from '../../types/user.js';
 import { getState } from '../../utils/state.js';
-import { optionalAuth, requireAuth, requireValidUser, updateLoginTime } from '../middlewares/auth.js';
+import { optionalAuth, requireAdmin, requireAuth, requireValidUser, updateLoginTime } from '../middlewares/auth.js';
 
 function editHandler(userFromToken: boolean): RequestHandler {
 	return async (req: any, res) => {
@@ -46,6 +46,31 @@ export default function userController(router: Router) {
 	const upload = multer({ dest: resolve(getState().dataPath, conf.System.Path.Temp) });
 	const uploadMiddleware = upload.fields([{ name: 'avatarfile', maxCount: 1 }, { name: 'bannerfile', maxCount: 1 }]);
 
+	router.route('/bans')
+		.get(requireAuth, requireValidUser, requireAdmin, async (req, res) => {
+			try {
+				const info = await getBans(req.query.type as BanType);
+				res.status(200).json(info);
+			} catch (err) {
+				res.status(500).json(err);
+			}
+		})
+		.delete(requireAuth, requireValidUser, requireAdmin, async (req, res) => {
+			try {
+				await removeBan(req.body);
+				res.status(200).json();
+			} catch (err) {
+				res.status(500).json(err);
+			}
+		})
+		.post(requireAuth, requireValidUser, requireAdmin, async (req, res) => {
+			try {
+				await addBan(req.body);
+				res.status(200).json();
+			} catch (err) {
+				res.status(500).json(err);
+			}
+		});
 	router.route('/users')
 		.get(async (req, res) => {
 			try {

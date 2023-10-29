@@ -11,7 +11,7 @@ import { v4 as uuidV4 } from 'uuid';
 
 import { createJwtToken } from '../controllers/http/auth.js';
 import { updatePlaylistSearchVector } from '../dao/playlist.js';
-import { deleteUser, insertUser, selectAllUsers, selectUser, updateLastLogin, updateUser, updateUserPassword } from '../dao/user.js';
+import { deleteBan, deleteUser, insertBan, insertUser, selectAllUsers, selectBans, selectUser, updateLastLogin, updateUser, updateUserPassword } from '../dao/user.js';
 import { DBUser } from '../lib/types/database/user.js';
 import { JWTTokenWithRoles, User } from '../lib/types/user.js';
 import { getConfig, resolvedPath } from '../lib/utils/config.js';
@@ -20,7 +20,7 @@ import { ErrorKM } from '../lib/utils/error.js';
 import { detectFileType, fileExists, smartMove } from '../lib/utils/files.js';
 import logger from '../lib/utils/logger.js';
 import { isLooselyEqual } from '../lib/utils/objectHelpers.js';
-import { UserList, UserOptions, UserParams } from '../types/user.js';
+import { Ban, BanType, UserList, UserOptions, UserParams } from '../types/user.js';
 import { adminToken } from '../utils/constants.js';
 import { sendMail } from '../utils/mailer.js';
 import sentry from '../utils/sentry.js';
@@ -218,6 +218,29 @@ export async function checkPassword(user: User, password: string) {
 	return compare(password, user.password);
 }
 
+async function checkForBans(user: User): Promise<boolean> {
+	const banned = await selectBans();
+	const bannedNicknames = banned.filter(b => b.type === 'nickname').map(b => b.value);
+	const bannedEMails = banned.filter(b => b.type === 'email').map(b => b.value);
+	const bannedUsernames = banned.filter(b => b.type === 'username').map(b => b.value);
+	if (bannedUsernames.includes(user.login)) return true;
+	if (bannedEMails.includes(user.email)) return true;
+	if (bannedNicknames.includes(user.nickname)) return true;
+	return false;
+}
+
+export async function addBan(ban: Ban) {
+	await insertBan(ban);
+}
+
+export async function removeBan(ban: Ban) {
+	await deleteBan(ban);
+}
+
+export async function getBans(type?: BanType) {
+	return selectBans(type);
+}
+
 export async function createUser(user: User, opts: any = {}) {
 	try {
 		user.nickname = user.nickname || user.login;
@@ -235,7 +258,6 @@ export async function createUser(user: User, opts: any = {}) {
 		if (!user.password) throw new ErrorKM('USER_EMPTY_PASSWORD', 400, false);
 		if (!user.login) throw new ErrorKM('USER_EMPTY_LOGIN', 400, false);
 		user.login = user.login.toLowerCase();
-		verifyNameBans(user);
 		// Check if login or nickname already exists.
 		if (await selectUser('pk_login', user.login) || await selectUser('nickname', user.login)) {
 			logger.error(`User/nickname ${user.login} already exists, cannot create it`, { service });
@@ -243,24 +265,16 @@ export async function createUser(user: User, opts: any = {}) {
 		}
 		if (user.password.length < 8) throw new ErrorKM('PASSWORD_TOO_SHORT', 400, false);
 		user.password = await hashPasswordbcrypt(user.password);
+		if (await checkForBans(user)) throw new ErrorKM('CREATE_USER_ERROR', 403, false);
 		await insertUser(user);
 		delete user.password;
 		pubUser(user.login);
 	} catch (err) {
 		const args: any = arguments;
-		delete args.user.password;
+		delete args[0].password;
 		sentry.addErrorInfo('args', JSON.stringify(args, null, 2));
 		sentry.error(new Error(err.err));
 		throw err instanceof ErrorKM ? err : new ErrorKM('CREATE_USER_ERROR');
-	}
-}
-
-function verifyNameBans(user: User) {
-	const conf = getConfig();
-	if (conf.Users?.NameBan) for (const ban of conf.Users.NameBan) {
-		const regexp = new RegExp(ban, 'g');
-		// We obfuscate the error message on purpose.
-		if (user.login.match(regexp) || user.nickname.match(regexp)) throw new ErrorKM('CREATE_USER_ERROR');
 	}
 }
 
@@ -353,9 +367,9 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		const currentUser = await findUserByName(username, { password: true });
 		if (!currentUser) throw new ErrorKM('USER_UNKNOWN', 404, false);
 		const mergedUser = merge(cloneDeep(currentUser), cloneDeep(user));
-		verifyNameBans(user);
 		delete mergedUser.password;
 		if (user.roles && !isLooselyEqual(user.roles, currentUser.roles) && token.roles && !token.roles.admin) throw new ErrorKM('CHECK_YOUR_PRIVILEGES', 403, false);
+		if (await checkForBans(mergedUser)) throw new ErrorKM('EDIT_USER_ERROR', 403, false);
 		// Check if login already exists.
 		if (user.nickname && currentUser.nickname !== user.nickname && await selectUser('nickname', user.nickname)) throw new ErrorKM('NICKNAME_ALREADY_USED', 409, false);
 		if (user.password) {
