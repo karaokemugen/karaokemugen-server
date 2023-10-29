@@ -46,7 +46,6 @@
 	const { search, sort, tags: menuTags } = storeToRefs(useMenubarStore());
 	const { setResultsCount, setTags } = useMenubarStore();
 	const { enabledCollections } = storeToRefs(useLocalStorageStore());
-	const { setEnabledCollections } = useLocalStorageStore();
 	const route = useRoute();
 	const { replace } = useRouter();
 
@@ -130,9 +129,6 @@
 				}
 			}
 			setTags(tagExtends);
-		}
-		if (typeof route.query.collections === 'string') {
-			setEnabledCollections(decodeURIComponent(route.query.collections).split(':'));
 		}
 		// Load the first page
 		await resetList(true);
@@ -223,7 +219,10 @@
 			size: 12,
 			order: (sort.value[route.name] as OrderParam) || undefined,
 			favorites: props.favorites || undefined,
-			collections: enabledCollections.value.join(','),
+			collections:
+				typeof route.query.collections === 'string'
+					? decodeURIComponent(route.query.collections).replace(':', ',')
+					: enabledCollections.value.join(','),
 			userAnimeList: props.userAnimeList || undefined
 		};
 	}
