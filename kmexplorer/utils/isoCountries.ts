@@ -4,12 +4,14 @@ import frCountries from 'i18n-iso-countries/langs/fr.json';
 import idCountries from 'i18n-iso-countries/langs/id.json';
 import deCountries from 'i18n-iso-countries/langs/de.json';
 import ptCountries from 'i18n-iso-countries/langs/pt.json';
+import esCountries from 'i18n-iso-countries/langs/es.json';
 
 countries.registerLocale(enCountries);
 countries.registerLocale(frCountries);
 countries.registerLocale(idCountries);
 countries.registerLocale(deCountries);
 countries.registerLocale(ptCountries);
+countries.registerLocale(esCountries);
 
 export function getListCountriesInLocale(userLang:string) {
 	const result = [];

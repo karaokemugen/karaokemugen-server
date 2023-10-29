@@ -178,6 +178,12 @@ const nuxtConfig = defineNuxtConfig({
 				file: 'id.json'
 			},
 			{
+				code: 'es',
+				name: 'Español',
+				iso: 'es',
+				file: 'es.json'
+			},
+			{
 				code: 'pt',
 				name: 'Português',
 				iso: 'pt',

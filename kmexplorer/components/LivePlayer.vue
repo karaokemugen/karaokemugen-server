@@ -35,6 +35,7 @@
 	import enJson from 'video.js/dist/lang/en.json';
 	import frJson from 'video.js/dist/lang/fr.json';
 	import ptJson from 'video.js/dist/lang/pt-PT.json';
+	import esJson from 'video.js/dist/lang/es.json';
 	import { useAuthStore } from '~/store/auth';
 	import { useLocalStorageStore } from '~/store/localStorage';
 	import { getSlugKidWithoutLiveDownload } from '~/utils/kara';
@@ -69,7 +70,8 @@
 			pt: ptJson,
 			de: deJson,
 			en: enJson,
-			fr: frJson
+			fr: frJson,
+			es: esJson
 		},
 		autoplay: theaterMode.value || props.playlistMode,
 		controls: true,
