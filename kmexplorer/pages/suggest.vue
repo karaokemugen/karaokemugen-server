@@ -112,7 +112,7 @@
 	const conf = useRuntimeConfig();
 	const gitlab = conf.public.GITLAB;
 
-	const { query } = useRoute();
+	const route = useRoute();
 
 	watch(enabledLanguages, () => setPage(1));
 	watch(search, () => setPage(1));
@@ -120,11 +120,11 @@
 
 	onMounted(() => {
 		setSearch('');
-		if (typeof query.q === 'string') {
-			setSearch(query.q);
+		if (typeof route.query.q === 'string') {
+			setSearch(route.query.q);
 		}
-		if (typeof query.page === 'string') {
-			page.value = parseInt(query.page);
+		if (typeof route.query.page === 'string') {
+			page.value = parseInt(route.query.page);
 		}
 
 		fetchRandomKaras();
@@ -149,7 +149,7 @@
 				filter: search.value ? search.value : undefined,
 				size: numberKaraokesByPage,
 				from: (page - 1) * numberKaraokesByPage,
-				order: sort.value,
+				order: sort.value[route.name],
 				'languages[]': enabledLanguages.value
 			}
 		});
