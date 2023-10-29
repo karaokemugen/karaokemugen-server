@@ -92,6 +92,7 @@ export async function resetPassword(username: string, requestCode: string, newPa
 			user.email
 		);
 	} catch (err) {
+		arguments[2] = undefined;
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
 		throw err;
