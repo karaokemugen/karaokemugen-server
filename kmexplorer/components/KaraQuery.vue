@@ -217,7 +217,7 @@
 			favorites: props.favorites || undefined,
 			collections:
 				typeof route.query.collections === 'string'
-					? decodeURIComponent(route.query.collections).replace(':', ',')
+					? decodeURIComponent(route.query.collections).replaceAll(':', ',')
 					: enabledCollections.value.join(','),
 			userAnimeList: props.userAnimeList || undefined
 		};
