@@ -39,7 +39,7 @@
 		previous: () => void,
 	}>();
 
-	const emit = defineEmits<{(e: 'send-played'): void}>();
+	const emit = defineEmits<{ (e: 'send-played'): void }>();
 
 	const videoPlayer = ref();
 	const player = ref<Player>();
@@ -96,15 +96,15 @@
 				});
 				player.value.setInterval(() => {
 					// No need to do log timeWatched if you can't send anymmore
-					if(!canSendPlayData.value) {
+					if (!canSendPlayData.value) {
 						return;
 					}
 					// Not sure if this is sufficent to say that video is playing (maybe it's buffering?)
-					if(!player.value?.paused()) {
+					if (!player.value?.paused()) {
 						timeWatched.value += 0.1;
 					}
 					// Check if user watched 30 secs or 75% of video (same definition of View as Peertube)
-					if(timeWatched.value > 30 || timeWatched.value > 0.75 * player.value?.duration()!) {
+					if (timeWatched.value > 30 || timeWatched.value > 0.75 * player.value?.duration()!) {
 						emit('send-played');
 						canSendPlayData.value = false;
 					}
@@ -425,7 +425,18 @@
 		}
 
 		.vjs-time-control {
-			width: 4em;
+			width: auto;
+			display: block;
+
+			&.vjs-remaining-time {
+				display: none;
+			}
+
+			&.vjs-time-divider {
+				min-width: 0;
+				width: 0;
+				padding: 0;
+			}
 		}
 	}
 
@@ -449,6 +460,10 @@
 		.vjs-title-bar {
 			font-size: 15px;
 		}
+
+		.vjs-time-control {
+			display: none;
+		}
 	}
 
 	&.vjs-layout-tiny,
@@ -457,7 +472,9 @@
 	&.vjs-layout-medium {
 
 		.vjs-skip-backward-5,
-		.vjs-skip-forward-5 {
+		.vjs-skip-forward-5,
+		.vjs-time-divider,
+		.vjs-duration {
 			display: none;
 		}
 	}
