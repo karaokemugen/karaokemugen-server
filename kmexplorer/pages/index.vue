@@ -172,7 +172,7 @@
 			</li>
 			<li class="km-home--stats--wide">
 				<span>{{ $t("stats.all_duration") }}</span> :
-				<strong>{{ count ? getDurationString(count.duration, t) : '-' }}</strong>
+				<strong>{{ count && count.duration ? getDurationString(count.duration, t) : '-' }}</strong>
 			</li>
 		</ul>
 	</div>
