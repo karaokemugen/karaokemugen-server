@@ -43,7 +43,7 @@ async function gitConfig(gitDir: string) {
 
 export async function getLatestGitCommit(): Promise<string> {
 	try {
-		const commit = await fs.readFile(resolve(getState().dataPath, getConfig().System.Repositories[0].BaseDir, '.git/refs/heads/master'), 'utf-8');
+		const commit = await fs.readFile(resolve(getState().dataPath, getConfig().System.Repositories[0].BaseDir, `.git/refs/heads/${getConfig().System.Repositories[0].Git?.Branch || 'master'}`), 'utf-8');
 		return commit.replace('\n', '');
 	} catch (err) {
 		logger.error('Unable to get latest commit', {service, obj: err});
