@@ -127,8 +127,8 @@ async function createFileBaseDump() {
 	const repo = getConfig().System.Repositories[0];
 	const kdir = resolvedPathRepos('Karaokes', repo.Name)[0];
 	const tdir = resolvedPathRepos('Tags', repo.Name)[0];
-	const karaFiles = await fs.readdir(kdir);
-	const tagFiles = await fs.readdir(tdir);
+	const karaFiles = (await fs.readdir(kdir)).filter(filename => filename.toLowerCase().endsWith('.json'));
+	const tagFiles = (await fs.readdir(tdir)).filter(filename => filename.toLowerCase().endsWith('.json'));
 	const dump = {
 		Karaokes: [],
 		Tags: [],
