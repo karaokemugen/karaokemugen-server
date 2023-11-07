@@ -102,7 +102,8 @@ async function gitlabCreateIssue(title: string, desc: string, labels: string[]):
 		const params = {
 			id: `${conf.System.Repositories[0].Git.ProjectID}`,
 			title,
-			description: desc,
+			// Tildes are often found in japanese names and can cause strikeout text in markdown once rendered.
+			description: desc.replaceAll('~', '\\~'),
 			labels: labels.join(',')
 		};
 		const url = new URL(conf.System.Repositories[0].Git.URL);
