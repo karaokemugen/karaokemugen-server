@@ -21,6 +21,7 @@ import { EditedKara, KaraFileV4 } from '../lib/types/kara.js';
 import { getConfig, resolvedPath, resolvedPathRepos } from '../lib/utils/config.js';
 import { ErrorKM } from '../lib/utils/error.js';
 import { replaceExt, smartMove } from '../lib/utils/files.js';
+import { removeControlCharsInObject } from '../lib/utils/objectHelpers.js';
 import { EditElement } from '../types/karaImport.js';
 import sentry from '../utils/sentry.js';
 import { createInboxIssue } from './gitlab.js';
@@ -32,6 +33,7 @@ const service = 'KaraImport';
 // Preflight checks before any import operation
 async function preflight(kara: KaraFileV4): Promise<KaraFileV4> {
 	// Force values for new karaokes to avoid main repo pollution
+	kara = removeControlCharsInObject(kara);
 	kara.data.repository = 'Staging';
 	kara.data.kid = UUIDv4();
 	// Validation here, processing stuff later
