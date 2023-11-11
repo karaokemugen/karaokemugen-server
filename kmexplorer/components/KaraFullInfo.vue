@@ -106,7 +106,7 @@
 		</table>
 		<div class="buttons">
 			<button
-				v-if="rubyfiedLyrics"
+				v-if="rubyfiedLyrics && live"
 				class="button is-info"
 				@click="toggleLyrics"
 			>
@@ -186,6 +186,7 @@
 	const conf = useRuntimeConfig();
 	const bannerBanValue = conf.public.BANNER_BAN;
 
+	const live = computed(() => isPlayable(props.karaoke));
 	const title = computed(() => getTitleInLocale(props.karaoke.titles, props.karaoke.titles_default_language));
 	const tagTypesSorted = computed(() => {
 		const tagTypesUpdated = { ...tagTypes };
