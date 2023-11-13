@@ -6,6 +6,7 @@ import { tagTypes } from '~/assets/constants';
 import { useLocalStorageStore } from '~/store/localStorage';
 import { useAuthStore } from '~/store/auth';
 import { storeToRefs } from 'pinia';
+import slug from 'slug';
 
 export function getPropertyInLanguage(prop: 'i18n', tag: DBKaraTag | DBTag, mainLanguage: string, fallbackLanguage: string, i18nParam?: Record<string, string>): string
 export function getPropertyInLanguage(prop: 'description', tag: DBTag, mainLanguage: string, fallbackLanguage: string): string
@@ -62,22 +63,27 @@ export function buildKaraTitle(
 	withoutLangs = false
 ): string {
 	const serieText =
-		data?.series?.length > 0
-			? data.series
-				.slice(0, 3)
-				.map(e => getTagInLocale(e, i18nParam && i18nParam[e.tid]))
-				.join(', ') + (data.series.length > 3 ? '...' : '')
-			: data?.singergroups?.length > 0
-				? data.singergroups
+			data.from_display_type && data[data.from_display_type]
+				? data[data.from_display_type]
 					.slice(0, 3)
 					.map(e => getTagInLocale(e, i18nParam && i18nParam[e.tid]))
-					.join(', ') + (data.singergroups.length > 3 ? '...' : '')
-				: data?.singers?.length > 0
-					? data.singers
+					.join(', ') + (data[data.from_display_type].length > 3 ? '...' : '')
+				: data?.series?.length > 0
+					? data.series
 						.slice(0, 3)
 						.map(e => getTagInLocale(e, i18nParam && i18nParam[e.tid]))
-						.join(', ') + (data.singers.length > 3 ? '...' : '')
-					: ''; // wtf?
+						.join(', ') + (data.series.length > 3 ? '...' : '')
+					: data?.singergroups?.length > 0
+						? data.singergroups
+							.slice(0, 3)
+							.map(e => getTagInLocale(e, i18nParam && i18nParam[e.tid]))
+							.join(', ') + (data.singergroups.length > 3 ? '...' : '')
+						: data?.singers?.length > 0
+							? data.singers
+								.slice(0, 3)
+								.map(e => getTagInLocale(e, i18nParam && i18nParam[e.tid]))
+								.join(', ') + (data.singers.length > 3 ? '...' : '')
+							: ''; // wtf?
 	const langsText = data?.langs
 		?.map(e => e.name)
 		.join(', ')
@@ -211,4 +217,39 @@ function getArrayDuration(duration: any) {
 	// what's left is seconds
 	const seconds = duration % 60; // in theory the modulus is not required
 	return [days, hours, minutes, seconds];
+}
+
+export function getSerieOrSingerGroupsOrSingers(karaoke: DBKara, karaokesI18n?: Record<string, Record<string, string>>) {
+	if (karaoke.from_display_type && karaoke[karaoke.from_display_type] && karaoke[karaoke.from_display_type].length > 0) {
+		return {
+			name: getTagInLocale(karaoke[karaoke.from_display_type][0], karaokesI18n && karaokesI18n[karaoke[karaoke.from_display_type][0].tid]),
+			slug: slug(karaoke[karaoke.from_display_type][0].name),
+			type: karaoke.from_display_type,
+			tag: karaoke[karaoke.from_display_type][0]
+		};
+	}
+	if (karaoke.series[0]) {
+		return {
+			name: getTagInLocale(karaoke.series[0], karaokesI18n && karaokesI18n[karaoke.series[0].tid]),
+			slug: slug(karaoke.series[0].name),
+			type: 'series',
+			tag: karaoke.series[0]
+		};
+	} else if (karaoke.singergroups[0]) {
+		return {
+			name: getTagInLocale(karaoke.singergroups[0], karaokesI18n && karaokesI18n[karaoke.singergroups[0].tid]),
+			slug: slug(karaoke.singergroups[0].name),
+			type: 'singergroups',
+			tag: karaoke.singergroups[0]
+		};
+	} else if (karaoke.singers[0]) {
+		return {
+			name: getTagInLocale(karaoke.singers[0], karaokesI18n && karaokesI18n[karaoke.singers[0].tid]),
+			slug: slug(karaoke.singers[0].name),
+			type: 'singers',
+			tag: karaoke.singers[0]
+		};
+	} else { // You never know~
+		throw new TypeError('The karaoke does not have any series nor singers, wtf?');
+	}
 }

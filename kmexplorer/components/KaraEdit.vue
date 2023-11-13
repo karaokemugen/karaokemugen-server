@@ -532,6 +532,35 @@
 				<div class="field">
 					<label
 						class="label"
+						:title="t('kara.import.from_display_type_tooltip')"
+					>
+						{{ t('kara.import.from_display_type') }}
+						<font-awesome-icon
+							:icon="['fas', 'question-circle']"
+							:fixed-width="true"
+						/>
+					</label>
+					<div class="control select">
+						<select
+							id="from_display_type"
+							v-model="karaoke.data.from_display_type"
+							:required="true"
+							name="from_display_type"
+							autocomplete="off"
+						>
+							<option
+								v-for="tagType in Object.keys(tagTypes).concat(undefined)"
+								:key="tagType"
+								:value="tagType"
+							>
+								{{ t(tagType ? `kara.tagtypes.${tagType}` : 'kara.tagtypes.default') }}
+							</option>
+						</select>
+					</div>
+				</div>
+				<div class="field">
+					<label
+						class="label"
 						:title="t('kara.import.authors_tooltip')"
 					>
 						{{ t('kara.authors_by') }}
@@ -689,6 +718,7 @@
 	import { useAuthStore } from '~/store/auth';
 	import { useLocalStorageStore } from '~/store/localStorage';
 	import { storeToRefs } from 'pinia';
+	import { tagTypes } from '~/assets/constants';
 
 	const props = defineProps<{
 		kara?: DBKara
@@ -1014,6 +1044,10 @@
 </script>
 
 <style scoped lang="scss">
+	.select select option {
+		color: #dbdee0;
+	}
+
 	.tags {
 		margin-top: 0.5rem;
 		display: unset;

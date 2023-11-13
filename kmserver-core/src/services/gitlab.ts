@@ -2,6 +2,7 @@ import { isEqual } from 'lodash';
 import {basename} from 'path';
 
 import { selectAllKaras } from '../dao/kara.js';
+import { getSongSeriesSingers } from '../lib/services/kara.js';
 import { getConfig } from '../lib/utils/config.js';
 import { tagTypes } from '../lib/utils/constants.js';
 import { duration } from '../lib/utils/date.js';
@@ -58,7 +59,8 @@ export async function createInboxIssue(kid: string, edit?: EditElement) {
 		.replace('$warnings', kara.warnings.map(t => t.name).join(', '))
 		.replace('$collections', kara.collections.map(t => t.name).join(', '))
 		.replace('$parents', newParents.join(', '))
-		.replace('$duration', duration(kara.duration));
+		.replace('$duration', duration(kara.duration))
+		.replace('$fromDisplayType', kara.from_display_type);
 		if (edit) {
 			const changes = [];
 			desc += `
@@ -68,6 +70,7 @@ export async function createInboxIssue(kid: string, edit?: EditElement) {
 `;
 			if (edit.modifiedLyrics) changes.push('LYRICS updated');
 			if (edit.modifiedMedia) changes.push('MEDIA updated');
+			if (edit.oldKara.from_display_type !== kara.from_display_type) changes.push('FROM DISPLAY TYPE updated');
 			if (!isEqual(edit.oldKara.year, kara.year)) changes.push(`YEAR updated : ${edit.oldKara.year} => ${kara.year}`);
 			if (!isEqual(edit.oldKara.songorder, kara.songorder)) changes.push(`SONGORDER updated : ${edit.oldKara.songorder} => ${kara.songorder}`);
 			if (!isEqual(edit.oldKara.titles, kara.titles)) changes.push(`TITLES updated : ${JSON.stringify(edit.oldKara.titles, null, 2)} => ${JSON.stringify(kara.titles, null, 2)}`);
@@ -161,10 +164,7 @@ export async function createKaraIssue(kid: string, type: 'Media' | 'Metadata' | 
 		const kara = karas[0];
 		if (!kara) throw new ErrorKM('KARA_UNKNOWN', 404, false);
 		logger.debug('Kara:', {service: 'GitLab', obj: kara});
-		const serieOrSingergroupOrSinger =
-			(kara.series.length > 0 && kara.series[0].name) ||
-			(kara.singergroups.length > 0 && kara.singergroups[0].name) ||
-			(kara.singers.length > 0 && kara.singers[0].name) || '';
+		const serieOrSingergroupOrSinger = getSongSeriesSingers(kara);
 		const langs = (kara.langs.length > 0 && kara.langs[0].name.toUpperCase()) || '';
 		const songtype = (kara.songtypes.length > 0 && kara.songtypes[0].name) || '';
 		const karaName = `${langs} - ${serieOrSingergroupOrSinger} - ${songtype}${kara.songorder || ''} - ${kara.titles[kara.titles_default_language]}`;

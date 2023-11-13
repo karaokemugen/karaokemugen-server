@@ -31,7 +31,9 @@
 			"warnings": "Warning | Warnings",
 			"collections": "Collection | Collections",
 			"singergroups": "Groupe de musique | Groupes de musique",
-			"franchises": "Franchise | Franchises"
+			"franchises": "Franchise | Franchises",
+			"years": "Année | Années",
+			"DEFAULT": "Par Défaut"
 		},
 		"singers_by": "Chanté par",
 		"songwriters_by": "Composé par",
@@ -171,7 +173,9 @@
 			"send_contact_infos": "Partager mes informations de contact avec les mainteneurs de la base",
 			"contact_infos": "Informations de contact",
 			"contact_infos_tooltip": "Indiquez vos données de contact, nous pourrons ainsi venir vers vous si nous avons des questions au sujet du karaoké.",
-			"auto_send_contact_infos": "Si vous vous connectez, vous pouvez cocher une case sur le formulaire pour partager automatiquement vos informations de contact avec les mainteneurs de la base."
+			"auto_send_contact_infos": "Si vous vous connectez, vous pouvez cocher une case sur le formulaire pour partager automatiquement vos informations de contact avec les mainteneurs de la base.",
+			"from_display_type": "Affichage du tag de la provenance de la chanson",
+			"from_display_type_tooltip": "Choissisez le type de tag utilisé lors de l'affichage de la chanson"
 		},
 		"stats": {
 			"favorited": "Ajouté aux favoris par {number} utilisateurs",

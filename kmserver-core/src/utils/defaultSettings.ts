@@ -82,10 +82,7 @@ export const defaults: Config = {
 				Title: '[Inbox] $kara',
 				Labels: ['To Add'],
 				Description: `
-A new karaoke has been sent to the Karaoke Mugen team inbox. Please integrate it as soon as possible if it meets the required quality criteria.
-
-
-The files (.kara, video, .ass and serial if necessary) are present in the following location of your FTP account: kmpublic/inbox
+A new karaoke has been sent to the inbox. 
 
 
 # Karaoke data
@@ -139,6 +136,9 @@ The files (.kara, video, .ass and serial if necessary) are present in the follow
 **Duration** : $duration
 
 
+**From Display Type** : $fromDisplayType
+
+
 **Comment** : $comment`
 			},
 			Suggestion: {
@@ -166,7 +166,7 @@ The files (.kara, video, .ass and serial if necessary) are present in the follow
 				Title: '[Correction] $kara',
 				Labels: ['To Add'],
 				Description: `
-A proposal to modify a karaoke has been sent. You will find all the new files in the inbox.
+Someone suggested a karaoke edit. You will find all the new files in the inbox.
 
 
 # Karaoke data
@@ -224,6 +224,9 @@ A proposal to modify a karaoke has been sent. You will find all the new files in
 
 
 **Duration** : $duration
+
+
+**From Display Type** : $fromDisplayType
 
 
 **Comment** : $comment`
