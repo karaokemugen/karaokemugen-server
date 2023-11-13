@@ -31,7 +31,9 @@
 			"warnings": "Warning | Warnings",
 			"collections": "Collection | Collections",
 			"singergroups": "Band | Bands",
-			"franchises": "Franchise | Franchises"
+			"franchises": "Franchise | Franchises",
+			"years": "Year | Years",
+			"default": "Par Défaut"
 		},
 		"singers_by": "Sung by",
 		"songwriters_by": "Composed by",
@@ -171,7 +173,9 @@
 			"send_contact_infos": "Share my contact information with database maintainers",
 			"contact_infos": "Contact information",
 			"contact_infos_tooltip": "Enter your contact details, so we can come to you if we have any questions about the karaoke.",
-			"auto_send_contact_infos": "If you log in, you can check a box on the form to automatically share your contact information with database maintainers."
+			"auto_send_contact_infos": "If you log in, you can check a box on the form to automatically share your contact information with database maintainers.",
+			"from_display_type": "From tag type display",
+			"from_display_type_tooltip": "Select tag type to used when displaying the song"
 		},
 		"stats": {
 			"favorited": "Added to favorites by {number} users",

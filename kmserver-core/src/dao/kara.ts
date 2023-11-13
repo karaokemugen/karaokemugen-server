@@ -253,6 +253,7 @@ export async function insertKara(kara: KaraFileV4) {
 			download_status: 'DOWNLOADED',
 			comment: kara.data.comment,
 			ignoreHooks: kara.data.ignoreHooks || false,
+			from_display_type: kara.data.from_display_type,
 		})
 	);
 }

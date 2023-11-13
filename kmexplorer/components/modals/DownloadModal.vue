@@ -81,32 +81,7 @@
 
 	const emit = defineEmits<{(e: 'close'): void}>();
 
-	const serieSinger = computed(() => {
-		if (props.karaoke.series[0]) {
-			return {
-				name: getTagInLocale(props.karaoke.series[0]),
-				slug: slug(props.karaoke.series[0].name),
-				type: 'series',
-				tag: props.karaoke.series[0]
-			};
-		} else if (props.karaoke.singergroups[0]) {
-			return {
-				name: getTagInLocale(props.karaoke.singergroups[0]),
-				slug: slug(props.karaoke.singergroups[0].name),
-				type: 'singergroups',
-				tag: props.karaoke.singergroups[0]
-			};
-		} else if (props.karaoke.singers[0]) {
-			return {
-				name: getTagInLocale(props.karaoke.singers[0]),
-				slug: slug(props.karaoke.singers[0].name),
-				type: 'singers',
-				tag: props.karaoke.singers[0]
-			};
-		} else { // You never know~
-			throw new TypeError('The karaoke does not have any series nor singers, wtf?');
-		}
-	});
+	const serieSinger = computed(() => getSerieOrSingerGroupsOrSingers(props.karaoke));
 	
 	const mediaExtension = computed(() => {
 		const mediafile = props.karaoke.mediafile.split('.');
