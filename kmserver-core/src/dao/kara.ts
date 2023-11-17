@@ -133,15 +133,21 @@ function prepareKaraQuery(params: KaraParams) {
 			if (collection) q.collectionClauses.push(`'${collection}~${tagTypes.collections}' = ANY(ak.tid)`);
 		}
 	}
-	
+
 	q.fromClauses.push('all_karas AS ak');
 	return q;
 }
 
 export async function selectAllKaras(params: KaraParams, includeStaging = false): Promise<DBKara[]> {
 	const q = prepareKaraQuery(params);
-	// If no parameters are given, we return a mini version of the query
-	const query = sql.getAllKaras(
+	const optimizeCount = q.sql.length === 0 &&
+		q.selectClause === '' &&
+		q.joinClause === '' &&
+		q.groupClause === '' &&
+		q.whereClauses.length === 0 &&
+		q.additionalFrom.length === 0;
+
+	const query = (count: boolean) => sql.getAllKaras(
 		q.sql,
 		q.orderClauses,
 		q.limitClause,
@@ -157,29 +163,12 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 		q.withCTEs,
 		params.forPlayer,
 		getHardsubsBeingProcessed(),
-		false
-	);
-	const queryCount = sql.getAllKaras(
-		q.sql,
-		q.orderClauses,
-		q.limitClause,
-		q.offsetClause,
-		q.selectClause,
-		q.joinClause,
-		q.groupClause,
-		q.whereClauses,
-		q.fromClauses,
-		q.additionalFrom,
-		includeStaging,
-		q.collectionClauses,
-		q.withCTEs,
-		params.forPlayer,
-		getHardsubsBeingProcessed(),
-		true
+		count,
+		optimizeCount
 	);
 	const [res, resCount] = await Promise.all([
-		db().query(yesql(query)(q.params)),
-		db().query(yesql(queryCount)(q.params))
+		db().query(yesql(query(false))(q.params)),
+		db().query(yesql(query(true))(q.params))
 	]);
 	if (res.rows[0] != null) {
 		res.rows[0].count = resCount.rows[0].count;
