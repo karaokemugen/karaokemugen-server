@@ -60,7 +60,7 @@ export async function createInboxIssue(kid: string, edit?: EditElement) {
 		.replace('$collections', kara.collections.map(t => t.name).join(', '))
 		.replace('$parents', newParents.join(', '))
 		.replace('$duration', duration(kara.duration))
-		.replace('$fromDisplayType', kara.from_display_type);
+		.replace('$fromDisplayType', kara.from_display_type || '');
 		if (edit) {
 			const changes = [];
 			desc += `
