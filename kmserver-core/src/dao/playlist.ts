@@ -179,3 +179,9 @@ export async function updatePlaylistSearchVector(username?: string) {
 	if (username) params.push(username);
 	await db().query(sql.updatePlaylistSearchVector(username), params);
 }
+
+export function replacePlaylist(playlist: DBPLC[]) {
+	let newpos = 0;
+	const karaList = playlist.map(kara => [(newpos += 1), kara.plcid]);
+	return transaction({ sql: sql.updatePLCSetPos, params: karaList });
+}
