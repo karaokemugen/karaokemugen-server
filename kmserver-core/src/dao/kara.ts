@@ -1,4 +1,3 @@
-import { QueryResult } from 'pg';
 import {pg as yesql} from 'yesql';
 
 import {buildClauses, buildTypeClauses, db} from '../lib/dao/database.js';
@@ -35,192 +34,169 @@ export async function selectAllYears(params: { order: 'recent' | 'karacount', co
 	return res.rows;
 }
 
-export async function selectAllKaras(params: KaraParams, includeStaging = false): Promise<DBKara[]> {
+function prepareKaraQuery(params: KaraParams) {
 	const filterClauses: WhereClause = params.filter
 		? buildClauses(params.filter)
 		: {sql: [], params: {}, additionalFrom: []};
 	const typeClauses = params.q
 		? buildTypeClauses(params.q, params.order)
 		: {sql: [], params: {}, additionalFrom: []};
-	const yesqlPayload = {
+	const q = {
 		sql: [...filterClauses.sql, ...typeClauses.sql],
 		params: {...filterClauses.params, ...typeClauses.params},
-		additionalFrom: [...filterClauses.additionalFrom, ...typeClauses.additionalFrom]
+		additionalFrom: [...filterClauses.additionalFrom, ...typeClauses.additionalFrom],
+		orderClauses: '',
+		limitClause: '',
+		offsetClause: '',
+		selectClause: '',
+		joinClause: '',
+		groupClause: '',
+		fromClauses: [],
+		whereClauses: [],
+		withCTEs: ['blank AS (SELECT true)'],
+		collectionClauses: []
 	};
-	let orderClauses = '';
-	let limitClause = '';
-	let offsetClause = '';
-	let selectClause = '';
-	let joinClause = '';
-	let groupClause = '';
-	const fromClauses = [];
-	const whereClauses = [];
-	const withCTEs = ['blank AS (SELECT true)'];
 	if (params.username) {
-		selectClause = `
+		q.selectClause = `
 			(CASE WHEN f.fk_kid IS NULL
 				THEN FALSE
 				ELSE TRUE
 			END) as flag_favorites,
 			`;
-		joinClause = 'LEFT OUTER JOIN users_favorites AS f ON f.fk_login = :username AND f.fk_kid = ak.pk_kid';
-		groupClause = 'f.fk_kid, ';
-		yesqlPayload.params.username = params.username;
+		q.joinClause = 'LEFT OUTER JOIN users_favorites AS f ON f.fk_login = :username AND f.fk_kid = ak.pk_kid';
+		q.groupClause = 'f.fk_kid, ';
+		q.params.username = params.username;
 	}
 	if (params.favorites) {
-		joinClause += ' LEFT JOIN users_favorites AS fv ON fv.fk_kid = ak.pk_kid';
-		yesqlPayload.params.username_favs = params.favorites;
-		whereClauses.push('AND fv.fk_login = :username_favs');
+		q.joinClause += ' LEFT JOIN users_favorites AS fv ON fv.fk_kid = ak.pk_kid';
+		q.params.username_favs = params.favorites;
+		q.whereClauses.push('AND fv.fk_login = :username_favs');
 	}
 	if (params.safeOnly) {
-		withCTEs.push(`warning_tags AS (SELECT array_agg(pk_tid || '~${tagTypes.warnings}') tid FROM tag t WHERE t.types @> ARRAY[${tagTypes.warnings}])`);
-		fromClauses.push('warning_tags wt');
-		whereClauses.push('AND NOT wt.tid && ak.tid');
+		q.withCTEs.push(`warning_tags AS (SELECT array_agg(pk_tid || '~${tagTypes.warnings}') tid FROM tag t WHERE t.types @> ARRAY[${tagTypes.warnings}])`);
+		q.fromClauses.push('warning_tags wt');
+		q.whereClauses.push('AND NOT wt.tid && ak.tid');
 	}
 	if (params.userAnimeList) {
-		withCTEs.push(
+		q.withCTEs.push(
 			'anime_list_infos AS (SELECT anime_list_ids, anime_list_to_fetch FROM users where users.pk_login = :username_anime_list)'
 		);
-		whereClauses.push(` AND (
+		q.whereClauses.push(` AND (
 			(SELECT anime_list_to_fetch FROM anime_list_infos) = 'myanimelist' AND myanimelist_ids::int[] && (SELECT anime_list_ids FROM anime_list_infos)
 		OR (
 			SELECT anime_list_to_fetch FROM anime_list_infos) = 'anilist' AND anilist_ids::int[] && (SELECT anime_list_ids FROM anime_list_infos)
 		OR (
 			SELECT anime_list_to_fetch FROM anime_list_infos) = 'kitsu' AND kitsu_ids::int[] && (SELECT anime_list_ids FROM anime_list_infos)
 		)`);
-		yesqlPayload.params.username_anime_list = params.userAnimeList;
+		q.params.username_anime_list = params.userAnimeList;
 	}
-	if (params.order === 'recent') orderClauses = 'created_at DESC, ';
+	if (params.order === 'recent') q.orderClauses = 'created_at DESC, ';
 	if (params.order === 'played') {
-		orderClauses = 'ks.played DESC, ';
-		selectClause += 'ks.played,';
-		groupClause += 'ks.played, ';
-		joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
+		q.orderClauses = 'ks.played DESC, ';
+		q.selectClause += 'ks.played,';
+		q.groupClause += 'ks.played, ';
+		q.joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
 	}
 	if (params.order === 'playedRecently') {
-		orderClauses = 'ks.played_recently DESC, ';
-		selectClause += 'ks.played_recently AS played,';
-		groupClause += 'ks.played_recently, ';
-		joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
+		q.orderClauses = 'ks.played_recently DESC, ';
+		q.selectClause += 'ks.played_recently AS played,';
+		q.groupClause += 'ks.played_recently, ';
+		q.joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
 	}
 	if (params.order === 'favorited') {
-		orderClauses = 'ks.favorited DESC, ';
-		selectClause += 'ks.favorited,';
-		groupClause += 'ks.favorited, ';
-		joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
+		q.orderClauses = 'ks.favorited DESC, ';
+		q.selectClause += 'ks.favorited,';
+		q.groupClause += 'ks.favorited, ';
+		q.joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
 	}
 	if (params.order === 'requested') {
-		orderClauses = 'ks.requested DESC, ';
-		selectClause += 'ks.requested,';
-		groupClause += 'ks.requested, ';
-		joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
+		q.orderClauses = 'ks.requested DESC, ';
+		q.selectClause += 'ks.requested,';
+		q.groupClause += 'ks.requested, ';
+		q.joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
 	}
 	if (params.order === 'requestedRecently') {
-		orderClauses = 'ks.requested_recently DESC, ';
-		selectClause += 'ks.requested_recently AS requested,';
-		groupClause += 'ks.requested_recently, ';
-		joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
+		q.orderClauses = 'ks.requested_recently DESC, ';
+		q.selectClause += 'ks.requested_recently AS requested,';
+		q.groupClause += 'ks.requested_recently, ';
+		q.joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
 	}
-	if (params.from > 0) offsetClause = `OFFSET ${params.from} `;
-	if (params.size > 0) limitClause = `LIMIT ${params.size} `;
+	if (params.from > 0) q.offsetClause = `OFFSET ${params.from} `;
+	if (params.size > 0) q.limitClause = `LIMIT ${params.size} `;
 	// If we're asking for random songs, here we modify the query to get them.
 	if (params.random > 0) {
-		orderClauses = `RANDOM(), ${orderClauses}`;
-		limitClause = `LIMIT ${params.random}`;
+		q.orderClauses = `RANDOM(), ${q.orderClauses}`;
+		q.limitClause = `LIMIT ${params.random}`;
 	}
-	const collectionClauses = [];
 	if (!params.ignoreCollections) {
 		for (const collection of (params.forceCollections || getConfig().System.DefaultCollections)) {
-			if (collection) collectionClauses.push(`'${collection}~${tagTypes.collections}' = ANY(ak.tid)`);
+			if (collection) q.collectionClauses.push(`'${collection}~${tagTypes.collections}' = ANY(ak.tid)`);
 		}
 	}
 	
-	fromClauses.push('all_karas AS ak');
-	let res: QueryResult<any>;
-	if (
-		yesqlPayload.sql.length === 0 &&
-		selectClause === '' &&
-		joinClause === '' &&
-		groupClause === '' &&
-		whereClauses.length === 0 &&
-		yesqlPayload.additionalFrom.length === 0
-	) {
-		const query = sql.getAllKarasMicro(
-			orderClauses,
-			limitClause,
-			offsetClause,
-			includeStaging,
-			collectionClauses,
-			withCTEs,
-			false
-		);
-		const queryCount = sql.getAllKarasMicro(
-			orderClauses,
-			limitClause,
-			offsetClause,
-			includeStaging,
-			collectionClauses,
-			withCTEs,
-			true
-		);
-		res = await db().query(yesql(query)(yesqlPayload.params));
-		const resCount = await db().query(yesql(queryCount)(yesqlPayload.params));
-		if (res.rows[0] != null) {
-			res.rows[0].count = resCount.rows[0].count;
-		}
-	} else {
-		const query = sql.getAllKaras(
-			yesqlPayload.sql,
-			orderClauses,
-			limitClause,
-			offsetClause,
-			selectClause,
-			joinClause,
-			groupClause,
-			whereClauses,
-			fromClauses,
-			yesqlPayload.additionalFrom,
-			includeStaging,
-			collectionClauses,
-			withCTEs,
-			false
-		);
-		const queryCount = sql.getAllKaras(
-			yesqlPayload.sql,
-			orderClauses,
-			limitClause,
-			offsetClause,
-			selectClause,
-			joinClause,
-			groupClause,
-			whereClauses,
-			fromClauses,
-			yesqlPayload.additionalFrom,
-			includeStaging,
-			collectionClauses,
-			withCTEs,
-			true
-		);
-		const [res2, resCount] = await Promise.all([
-			db().query(yesql(query)(yesqlPayload.params)),
-			db().query(yesql(queryCount)(yesqlPayload.params))
-		]);
-		res = res2;
-		if (res.rows[0] != null) {
-			res.rows[0].count = resCount.rows[0].count;
-		}
-	}
-	return res.rows.map(row => makeKaraPretty(row));
+	q.fromClauses.push('all_karas AS ak');
+	return q;
 }
 
-export function makeKaraPretty(row: any): DBKara | DBPLC {
-	row.hardsub_in_progress = getHardsubsBeingProcessed().includes(row.kid);
-	const { tags, ...rowWithoutTags } = row;
+export async function selectAllKaras(params: KaraParams, includeStaging = false): Promise<DBKara[]> {
+	const q = prepareKaraQuery(params);
+	// If no parameters are given, we return a mini version of the query
+	const query = sql.getAllKaras(
+		q.sql,
+		q.orderClauses,
+		q.limitClause,
+		q.offsetClause,
+		q.selectClause,
+		q.joinClause,
+		q.groupClause,
+		q.whereClauses,
+		q.fromClauses,
+		q.additionalFrom,
+		includeStaging,
+		q.collectionClauses,
+		q.withCTEs,
+		params.forPlayer,
+		getHardsubsBeingProcessed(),
+		false
+	);
+	const queryCount = sql.getAllKaras(
+		q.sql,
+		q.orderClauses,
+		q.limitClause,
+		q.offsetClause,
+		q.selectClause,
+		q.joinClause,
+		q.groupClause,
+		q.whereClauses,
+		q.fromClauses,
+		q.additionalFrom,
+		includeStaging,
+		q.collectionClauses,
+		q.withCTEs,
+		params.forPlayer,
+		getHardsubsBeingProcessed(),
+		true
+	);
+	const [res, resCount] = await Promise.all([
+		db().query(yesql(query)(q.params)),
+		db().query(yesql(queryCount)(q.params))
+	]);
+	if (res.rows[0] != null) {
+		res.rows[0].count = resCount.rows[0].count;
+	}
+	return res.rows.map(row => makeKaraPretty(row, params.forPlayer));
+}
 
+export function makeKaraPretty(row: any, forPlayer = false): DBKara | DBPLC {
+	const { tags, ...rowWithoutTags } = row;
+	delete row.dummy;
 	for (const tagType of Object.keys(tagTypes)) {
 		rowWithoutTags[tagType] = [];
 	}
 	if (tags == null) {
+		if (forPlayer) {
+			return row;
+		}
 		return rowWithoutTags;
 	}
 	for (const tag of tags) {

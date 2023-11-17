@@ -42,6 +42,7 @@ export default function KSController(router: Router) {
 					favorites: req.query.favorites,
 					safeOnly: req.query.safeOnly,
 					userAnimeList: req.query.userAnimeList,
+					forPlayer: req.query.forPlayer,
 					forceCollections: req.query.collections?.split(',')
 				}, req.authToken);
 				res.json(karas);
