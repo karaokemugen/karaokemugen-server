@@ -38,7 +38,7 @@
 	import esJson from 'video.js/dist/lang/es.json';
 	import { useAuthStore } from '~/store/auth';
 	import { useLocalStorageStore } from '~/store/localStorage';
-	import { getSlugKidWithoutLiveDownload } from '~/utils/kara';
+	import slug from 'slug';
 
 	const props = defineProps<{
 		karaoke: DBKara
@@ -139,19 +139,18 @@
 			const res = await useCustomFetch<KaraListType>('/api/karas/search', {
 				params: {
 					random: 1,
+					forPlayer: true,
 					safeOnly: true,
 					collections: enabledCollections.value.join(',')
 				}
 			});
 
-			const randomKaraoke = getSlugKidWithoutLiveDownload(res.content[0]);
-			if (randomKaraoke) {
-				return push(`/kara/${randomKaraoke}${theaterMode.value ? '/theater' : ''}`);
-			}
+			const kid = res.content[0].kid;
+			const slugTitle = slug(res.content[0].titles[res.content[0].titles_default_language || 'eng']);
+			return push(`/kara/${slugTitle}/${kid}${theaterMode.value ? '/theater' : ''}`);
 		} finally {
 			loading = false;
 		}
-		await openRandomKara();
 	}
 
 	async function changeFullscreen() {

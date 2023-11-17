@@ -105,14 +105,6 @@ export function convertDBKaraToKaraFile(dbKara?: DBKara): KaraFileV4 {
 	};
 }
 
-export function getSlugKidWithoutLiveDownload(karaoke: DBKara): string | undefined {
-	if (karaoke.hardsubbed_mediafile && !karaoke.hardsub_in_progress && isPlayable(karaoke)) {
-		const kid = karaoke.kid;
-		const slugTitle = slug(karaoke.titles[karaoke.titles_default_language || 'eng']);
-		return `${slugTitle}/${kid}`;
-	}
-}
-
 export function isPlayable(karaoke:DBPLC|DBKara) {
 	let noLiveDownload = false;
 	for (const tagType in tagTypes) {

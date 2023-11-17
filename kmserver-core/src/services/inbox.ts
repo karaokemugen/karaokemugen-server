@@ -148,7 +148,7 @@ export async function removeKaraFromInbox(inid: string) {
 			const mediaPath = resolve(resolvedPathRepos('Medias', 'Staging')[0], inbox.mediafile);
 			try {
 				await Promise.all([
-					fs.unlink(karaPath),					
+					fs.unlink(karaPath),
 					fs.unlink(mediaPath)
 				]);
 				if (subPath) await fs.unlink(subPath);

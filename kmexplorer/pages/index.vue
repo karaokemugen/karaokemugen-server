@@ -183,6 +183,7 @@
 	import type { KaraList as KaraListType } from '%/lib/types/kara';
 	import { storeToRefs } from 'pinia';
 	import prettyBytes from 'pretty-bytes';
+	import slug from 'slug';
 	import { useLocalStorageStore } from '~/store/localStorage';
 	import { useMenubarStore } from '~/store/menubar';
 	import { useModalStore } from '~/store/modal';
@@ -244,17 +245,15 @@
 		const res = await useCustomFetch<KaraListType>('/api/karas/search', {
 			params: {
 				random: 1,
+				forPlayer: true,
 				safeOnly: true,
 				collections: enabledCollections.value.join(',')
 			}
 		});
-		const randomKaraoke = getSlugKidWithoutLiveDownload(res.content[0]);
-		if (randomKaraoke) {
-			setAutoplay(true);
-			push(`/kara/${randomKaraoke}/theater`);
-		} else {
-			await openRandomKara();
-		}
+		const kid = res.content[0].kid;
+		const slugTitle = slug(res.content[0].titles[res.content[0].titles_default_language || 'eng']);
+		setAutoplay(true);
+		push(`/kara/${slugTitle}/${kid}/theater`);
 	}
 </script>
 
