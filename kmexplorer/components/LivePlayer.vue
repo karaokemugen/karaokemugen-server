@@ -83,6 +83,9 @@
 			skipButtons: {
 				forward: 5,
 				backward: 5
+			},
+			volumePanel: {
+				inline: false
 			}
 		},
 		userActions: {
