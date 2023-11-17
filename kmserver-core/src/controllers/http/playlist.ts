@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import { APIMessage } from '../../lib/services/frontend.js';
-import { addContributorToPlaylist, addKaraToPlaylist, createPlaylist, editPlaylist, editPLC, emptyPlaylist, exportPlaylist, getPlaylistContents, getPlaylists, importPlaylist, removeContributorToPlaylist, removeKaraFromPlaylist, removePlaylist } from '../../services/playlist.js';
+import { addContributorToPlaylist, addKaraToPlaylist, createPlaylist, editPlaylist, editPLC, emptyPlaylist, exportPlaylist, getPlaylistContents, getPlaylists, importPlaylist, removeContributorToPlaylist, removeKaraFromPlaylist, removePlaylist, shufflePlaylist } from '../../services/playlist.js';
 import { optionalAuth, requireAuth, requireValidUser } from '../middlewares/auth.js';
 import { getLang } from '../middlewares/lang.js';
 
@@ -58,6 +58,15 @@ export default function PLController(router: Router) {
 			try {
 				const pl = await exportPlaylist(req.params.plaid, req.authToken);
 				res.json(pl);
+			} catch (err) {
+				res.status(err.code || 500).json(APIMessage(err.message));
+			}
+		});
+	router.route('/playlist/:plaid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/shuffle')
+		.get(requireAuth, requireValidUser, getLang, async (req: any, res) => {
+			try {
+				await shufflePlaylist(req.params.plaid, req.authToken);
+				res.json();
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}

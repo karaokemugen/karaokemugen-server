@@ -42,6 +42,7 @@
 							:playlist-page="true"
 							@delete="() => openModal('deletePlaylist')"
 							@edit="() => openModal('createEditPlaylist')"
+							@shuffle="shufflePlaylist"
 						/>
 					</div>
 					<label
@@ -414,6 +415,10 @@
 		}
 	}
 
+	async function shufflePlaylist() {
+		await useCustomFetch(`/api/playlist/${playlist.value?.plaid}/shuffle`);
+		fetch();
+	}
 </script>
 <style lang="scss">
 	.playing {

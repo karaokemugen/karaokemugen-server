@@ -647,7 +647,8 @@
 		"PL_IMPORT_ERROR": "Error importing playlist",
 		"PL_SHARE_ERROR": "Error sharing playlist",
 		"PL_SHARE_CLIPBOARD_SUCCESS": "Playlist link copied in clipboard",
-		"PL_SHARE_CLIPBOARD_FAIL": "Couldn't write playlist link to clipboard"
+		"PL_SHARE_CLIPBOARD_FAIL": "Couldn't write playlist link to clipboard",
+		"PL_SHUFFLE_ERROR":  "Error shuffling playlist"
 	},
 	"roles": {
 		"donator": "Donator",
@@ -699,6 +700,7 @@
 		"public": "Public",
 		"private": "private",
 		"export": "Export",
+		"shuffle": "Shuffle",
 		"edit": "Edit",
 		"delete": "Delete",
 		"share": "Share",

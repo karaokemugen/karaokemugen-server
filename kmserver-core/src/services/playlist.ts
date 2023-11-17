@@ -1,6 +1,7 @@
+import { shuffle } from 'lodash';
 import {v4 as uuidV4} from 'uuid';
 
-import { deleteContributor, deleteKaraFromPlaylist, deletePlaylist, getMaxPosInPlaylist, insertContributor, insertKaraIntoPlaylist, insertPlaylist, reorderPlaylist, selectPlaylistContents, selectPlaylists, selectPLCMini, setPos, shiftPosInPlaylist, truncatePlaylist, updatePlaylist, updatePlaylistDuration, updatePlaylistKaraCount, updatePlaylistLastEditTime, updatePLC } from '../dao/playlist.js';
+import { deleteContributor, deleteKaraFromPlaylist, deletePlaylist, getMaxPosInPlaylist, insertContributor, insertKaraIntoPlaylist, insertPlaylist, reorderPlaylist, replacePlaylist, selectPlaylistContents, selectPlaylists, selectPLCMini, setPos, shiftPosInPlaylist, truncatePlaylist, updatePlaylist, updatePlaylistDuration, updatePlaylistKaraCount, updatePlaylistLastEditTime, updatePLC } from '../dao/playlist.js';
 import { formatKaraList } from '../lib/services/kara.js';
 import { PLImportConstraints } from '../lib/services/playlist.js';
 import { DBPLC, PLCInsert } from '../lib/types/database/playlist.js';
@@ -335,6 +336,25 @@ export async function editPLC(plc_ids: number[], params: PLCEditParams, token: J
 		logger.error(`Error editing songs in playlist : ${err}`, { service });
 		sentry.error(err);
 		throw err instanceof ErrorKM ? err : new ErrorKM('PL_EDIT_SONG_ERROR');
+	}
+}
+
+export async function shufflePlaylist(plaid: string, token: JWTTokenWithRoles) {
+	try {
+		token.username = token.username.toLowerCase();
+		const pl = (await getPlaylists({
+			plaid
+		}, token))[0];
+		if (!pl) throw new ErrorKM('UNKNOWN_PLAYLIST', 404, false); 
+		if (!token.roles.admin && pl.username !== token.username) throw new ErrorKM('CHECK_YOUR_PRIVILEGES', 403, false);
+		const plcs = await getPlaylistContents(plaid, token);
+		plcs.content = shuffle(plcs.content);
+		await replacePlaylist(plcs.content as DBPLC[]);
+		emitWS('playlistContentsUpdated', plaid);
+	} catch (err) {
+		logger.error(`Error shuffling playlist ${plaid} : ${err}`, { service });
+		sentry.error(err);
+		throw err instanceof ErrorKM ? err : new ErrorKM('PL_SHUFFLE_ERROR');
 	}
 }
 

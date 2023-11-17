@@ -74,6 +74,14 @@
 					<span>{{ $t('playlists.edit') }}</span>
 				</button>
 				<button
+					v-if="playlistPage && playlist.username === user?.login"
+					class="button"
+					@click.prevent="() => emit('shuffle', playlist)"
+				>
+					<font-awesome-icon :icon="['fas', 'shuffle']" />
+					<span>{{ $t('playlists.shuffle') }}</span>
+				</button>
+				<button
 					v-if="playlistPage"
 					class="button"
 					@click.prevent="exportPlaylist"
@@ -123,7 +131,7 @@
 		playlistPage?: boolean
 	}>();
 
-	const emit = defineEmits<{ (e: 'delete' | 'edit', playlist: DBPL): void }>();
+	const emit = defineEmits<{ (e: 'delete' | 'edit' | 'shuffle', playlist: DBPL): void }>();
 
 	async function exportPlaylist() {
 		const exportFile = await useCustomFetch(`/api/playlist/${props.playlist.plaid}/export`);
