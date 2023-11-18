@@ -79,7 +79,8 @@ import {
 	faBan,
 	faAngleLeft,
 	faAngleRight,
-	faShuffle
+	faShuffle,
+	faCopy
 } from '@fortawesome/free-solid-svg-icons';
 import {
 	faTwitter,
@@ -178,6 +179,7 @@ library.add(
 	faAngleLeft,
 	faAngleRight,
 	faShuffle,
+	faCopy,
 	faSitemap);
 
 export default defineNuxtPlugin((nuxtApp) => {

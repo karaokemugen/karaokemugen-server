@@ -92,6 +92,14 @@
 				<button
 					v-if="playlistPage"
 					class="button"
+					@click.prevent="copyPlaylist"
+				>
+					<font-awesome-icon :icon="['fas', 'copy']" />
+					<span>{{ $t('playlists.copy') }}</span>
+				</button>
+				<button
+					v-if="playlistPage"
+					class="button"
 					@click.prevent="shareLink"
 				>
 					<font-awesome-icon :icon="['fas', 'share']" />
@@ -112,9 +120,11 @@
 
 <script setup lang="ts">
 	import { storeToRefs } from 'pinia';
+	import { v4 as UUIDv4 } from 'uuid';
 	import dayjs from 'dayjs';
 	import * as Toast from 'vue-toastification';
 	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
+	import type { PlaylistExport } from '%/lib/types/playlist';
 	import { useAuthStore } from '~/store/auth';
 
 	// @ts-ignore
@@ -122,6 +132,7 @@
 
 	const { user } = storeToRefs(useAuthStore());
 	const { href } = useRequestURL();
+	const { push } = useRouter();
 	const { t } = useI18n();
 	const toast = useToast();
 
@@ -162,6 +173,30 @@
 				toast.error(t('toast.PL_SHARE_CLIPBOARD_FAIL'));
 			}
 		}
+	}
+
+	async function copyPlaylist() {
+		const exportFile = await useCustomFetch<PlaylistExport>(`/api/playlist/${props.playlist?.plaid}/export`);
+		const plaid = UUIDv4();
+		exportFile.PlaylistContents?.forEach(plc => plc.plaid = plaid);
+		exportFile.PlaylistInformation = {
+			name: t('playlists.copy_of', {
+				playlist: exportFile.PlaylistInformation?.name
+			}),
+			flag_visible: true,
+			flag_visible_online: false,
+			created_at: new Date(),
+			modified_at: new Date(),
+			plaid: plaid
+		};
+		const res = await useCustomFetch<{plaid: string}>('/api/playlist/import', {
+			method: 'POST',
+			body: {
+				pl: exportFile
+			}
+		});
+		const playlists = await useCustomFetch<DBPL[]>('/api/playlist', { params: { plaid: res.plaid }});
+		push(`/playlist/${playlists[0].slug}`);
 	}
 
 </script>
