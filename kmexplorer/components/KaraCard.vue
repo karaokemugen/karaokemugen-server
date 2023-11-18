@@ -52,6 +52,7 @@
 				:loading="loading"
 				:playlists="playlists"
 				:kara-card="true"
+				@update-playlist="() => emit('update-playlist')"
 			/>
 			<div>
 				<nuxt-link
@@ -129,6 +130,8 @@
 		karaokesI18n?: Record<string, Record<string, string>>
 		playlists: DBPL[]
 	}>();
+
+	const emit = defineEmits<{ (e: 'update-playlist'): void }>();
 
 	const { openModal } = useModalStore();
 	const { loggedIn } = storeToRefs(useAuthStore());

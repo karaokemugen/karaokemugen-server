@@ -15,6 +15,7 @@
 					:karaoke="karaokes.content[(n-1)*3+n2-1]"
 					:playlists="playlists"
 					:karaokes-i18n="karaokes.i18n"
+					@update-playlist="() => emit('update-playlist')"
 				/>
 			</div>
 		</div>
@@ -81,6 +82,8 @@
 		favorites: '',
 		withSuggest: true
 	});
+
+	const emit = defineEmits<{ (e: 'update-playlist'): void }>();
 
 	const { user } = storeToRefs(useAuthStore());
 

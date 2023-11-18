@@ -45,6 +45,7 @@
 				:kid="karaoke.kid"
 				:loading="loading"
 				:playlists="playlists"
+				@update-playlist="getPlaylists"
 			/>
 			<button
 				v-if="loggedIn"

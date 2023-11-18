@@ -78,6 +78,8 @@
 		karaCard?: boolean
 	}>();
 
+	const emit = defineEmits<{ (e: 'update-playlist'): void }>();
+
 	const { addDuplicateInPlaylist } = storeToRefs(useModalStore());
 	const { openModal } = useModalStore();
 	const { loggedIn, user } = storeToRefs(useAuthStore());
@@ -99,6 +101,7 @@
 				}
 			});
 			plaid = res.plaid as string;
+			emit('update-playlist');
 		} else {
 			plaid = param.plaid as string;
 			const playlists = await useCustomFetch<DBPL[]>('/api/playlist', {

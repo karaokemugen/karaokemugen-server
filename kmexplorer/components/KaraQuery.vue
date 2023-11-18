@@ -17,6 +17,7 @@
 				:loading="loading"
 				:favorites="favorites"
 				:with-suggest="withSuggest"
+				@update-playlist="getPlaylists"
 			/>
 		</div>
 	</div>
