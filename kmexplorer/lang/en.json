@@ -190,7 +190,8 @@
 			"next": "Next song (N)",
 			"theater_mode": "Theater mode (T)",
 			"fullscreen": "Fullscreen (F)",
-			"autoplay": "Autoplay"
+			"autoplay": "Autoplay",
+			"loop": "Loop"
 		}
 	},
 	"layout": {
@@ -706,6 +707,7 @@
 		"edit": "Edit",
 		"delete": "Delete",
 		"share": "Share",
+		"repeat": "Repeat",
 		"add_karaoke": "Add a karaoke to playlist",
 		"by_owner": "by {nickname}",
 		"and_contributors": "(and {contributors})",
