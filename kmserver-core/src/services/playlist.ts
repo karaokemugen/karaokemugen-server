@@ -461,11 +461,10 @@ export async function importPlaylist(playlist: PlaylistExport, token: JWTTokenWi
 			logger.error('Imported playlist has no items', { service });
 			throw new ErrorKM('INVALID_DATA', 400, false);
 		}
-		// Validations done. First creating playlist.
-		// This should attempt to create a playlist or edit an existing one
-		const pl = await createPlaylist(playlist.PlaylistInformation, token);
 		// We need to empty the playlist first.
 		await truncatePlaylist(playlist.PlaylistInformation.plaid);
+		// This should attempt to create a playlist or edit an existing one
+		const pl = await createPlaylist(playlist.PlaylistInformation, token);
 		await insertKaraIntoPlaylist(playlist.PlaylistContents);
 		await Promise.all([
 			updatePlaylistKaraCount(pl.plaid),
