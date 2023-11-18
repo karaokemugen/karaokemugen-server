@@ -172,7 +172,7 @@ export async function removeKaraFromInbox(inid: string) {
 export async function clearUnusedStagingTags() {
 	logger.debug('Clearing old inbox tags', {service});
 	const tagFilesToDelete = await clearStagingTags();
-	const tags = await getTags({});
+	const tags = await getTags({ includeStaging: true });
 	// List tags in staging
 	const tagDir = resolvedPathRepos('Tags', 'Staging')[0];
 	const tagFiles = await fs.readdir(tagDir);

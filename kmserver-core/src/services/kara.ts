@@ -25,7 +25,7 @@ import { generateHardsubs } from '../utils/hardsubs.js';
 import sentry from '../utils/sentry.js';
 import { getState } from '../utils/state.js';
 import { updateGit } from './git.js';
-import { clearOldInboxEntries, removeProcessedInboxes } from './inbox.js';
+import { clearOldInboxEntries, clearUnusedStagingTags, removeProcessedInboxes } from './inbox.js';
 import { findUserByName } from './user.js';
 
 const service = 'Kara';
@@ -83,7 +83,7 @@ export async function generate(hardsubs = true) {
 			promises.push(generateHardsubs(karas));
 			generateHardsubsCache(karas);
 		}
-		if (conf.KaraExplorer.Import) promises.push(clearOldInboxEntries());
+		if (conf.KaraExplorer.Import) promises.push(clearOldInboxEntries(), clearUnusedStagingTags());
 		if (conf.System.Repositories[0].OnUpdateTrigger) promises.push(updateTrigger());
 		await Promise.all(promises);
 		refreshKaraStats();
