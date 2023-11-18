@@ -701,6 +701,8 @@
 		"private": "Privée",
 		"export": "Exporter",
 		"shuffle": "Mélanger",
+		"copy": "Copier",
+		"copy_of": "Copie de {playlist}",
 		"edit": "Modifier",
 		"delete": "Supprimer",
 		"share": "Partager",

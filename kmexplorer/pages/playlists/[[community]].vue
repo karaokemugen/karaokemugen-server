@@ -141,7 +141,7 @@
 			const file = e.target.files[0];
 			const fr = new FileReader();
 			fr.onload = async () => {
-				await useCustomFetch<DBPL[]>('/api/playlist/import', {
+				await useCustomFetch('/api/playlist/import', {
 					method: 'POST',
 					body: {
 						pl: JSON.parse(fr.result as string)
