@@ -24,7 +24,7 @@
 
 	const toggleOn = '<svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 576 512"><style>svg{fill:#ffffff}</style><path d="M192 64C86 64 0 150 0 256S86 448 192 448H384c106 0 192-86 192-192s-86-192-192-192H192zm94 71 191 121 -190 126 z"/></svg>';
 	const toggleOff = '<svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 576 512"><style>svg{fill:#ffffff}</style><path d="M384 128c70.7 0 128 57.3 128 128s-57.3 128-128 128H192c-70.7 0-128-57.3-128-128s57.3-128 128-128H384zM576 256c0-106-86-192-192-192H192C86 64 0 150 0 256S86 448 192 448H384c106 0 192-86 192-192zm-380 90 0 -180L160 166l-0 180zm70 0 0 -180 -36 -0 0 180z"/></svg>';
-
+	
 	const props = defineProps<{
 		title: string,
 		options: any,
@@ -48,6 +48,7 @@
 	const theaterButton = ref();
 	const fullscreenButton = ref();
 	const autoplayButton = ref();
+	const loopButton = ref();
 	const timeWatched = ref(0);
 	const canSendPlayData = ref(true);
 
@@ -139,6 +140,26 @@
 				}
 				//@ts-ignore
 				videojs.registerComponent('Switch', Switch);
+
+				//@ts-ignore
+				class Loop extends Button {
+
+					constructor(player: Player, options = {}) {
+						super(player, options);
+
+						//@ts-ignore
+						this.setIcon('repeat');
+						//@ts-ignore
+						this.controlText(t('kara.player.loop'));
+					}
+
+					handleClick() {
+						player.value?.loop(!player.value.loop());
+						(document.getElementsByClassName('vjs-loop-control')[0] as HTMLButtonElement).style.color = player.value?.loop() ? '#1dd2af' :  '';
+					}
+				}
+				//@ts-ignore
+				videojs.registerComponent('Loop', Loop);
 				const Component = videojs.getComponent('Component');
 
 				//@ts-ignore
@@ -198,6 +219,10 @@
 
 				autoplayButton.value = player.value!.getChild('ControlBar')!.addChild('Switch', {
 					className: 'vjs-autoplay-control',
+				});
+
+				loopButton.value = player.value!.getChild('ControlBar')!.addChild('Loop', {
+					className: 'vjs-loop-control',
 				});
 
 				if (videojs.browser.TOUCH_ENABLED) {
@@ -367,6 +392,7 @@
 		theaterButton.value?.controlText(t('kara.player.theater_mode'));
 		fullscreenButton.value?.controlText(t('kara.player.fullscreen'));
 		autoplayButton.value?.el().setAttribute('title', t('kara.player.autoplay'));
+		loopButton.value?.el().setAttribute('title', t('kara.player.loop'));
 	});
 
 	watch(() => props.options.sources, (newSources, oldSources) => {
@@ -556,8 +582,19 @@
 	.vjs-next-control,
 	.vjs-previous-control,
 	.vjs-autoplay-control,
+	.vjs-loop-control,
 	.vjs-theater-control {
 		cursor: pointer;
+	}
+
+	.vjs-loop-control {
+		&:before {
+			content: "1";
+			position: absolute;
+			padding-left: 0.8em;
+			font-size: 0.8em;
+			line-height: 2em;
+		}
 	}
 }
 </style>

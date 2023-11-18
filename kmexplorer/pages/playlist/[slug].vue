@@ -40,9 +40,11 @@
 							:playlist="playlist"
 							:with-buttons="true"
 							:playlist-page="true"
+							:repeat="repeat"
 							@delete="() => openModal('deletePlaylist')"
 							@edit="() => openModal('createEditPlaylist')"
 							@shuffle="shufflePlaylist"
+							@repeat="repeat = !repeat"
 						/>
 					</div>
 					<label
@@ -142,6 +144,7 @@
 	const draggingRow = ref<DBPLC>();
 	const draggingRowIndex = ref<number>(0);
 	const karaSearch = ref<{ label: string; value: string }[]>([]);
+	const repeat = ref(false);
 
 	const debouncedGetAsyncData = ref();
 	const debouncedPageChange = ref();
@@ -301,6 +304,9 @@
 			} else {
 				next();
 			}
+		} else if (repeat.value) {
+			indexPlaying.value = 0;
+			playing.value = karaokes.value.content[0];
 		}
 	}
 

@@ -190,7 +190,8 @@
 			"next": "Chanson suivante (N)",
 			"theater_mode": "Mode Cinéma (T)",
 			"fullscreen": "Plein écran (F)",
-			"autoplay": "Lecture automatique"
+			"autoplay": "Lecture automatique",
+			"loop": "Lire en boucle"
 		}
 	},
 	"layout": {
@@ -706,6 +707,7 @@
 		"edit": "Modifier",
 		"delete": "Supprimer",
 		"share": "Partager",
+		"repeat": "Répéter",
 		"add_karaoke": "Ajouter un karaoké à la liste de lecture",
 		"by_owner": "par {nickname}",
 		"and_contributors": "(et {contributors})",

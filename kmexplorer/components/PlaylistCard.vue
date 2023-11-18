@@ -83,6 +83,14 @@
 				</button>
 				<button
 					v-if="playlistPage"
+					:class="`button ${repeat ? 'is-repeat' : ''}`"
+					@click.prevent="() => emit('repeat', playlist)"
+				>
+					<font-awesome-icon :icon="['fas', 'repeat']" />
+					<span>{{ $t('playlists.repeat') }}</span>
+				</button>
+				<button
+					v-if="playlistPage"
 					class="button"
 					@click.prevent="exportPlaylist"
 				>
@@ -140,9 +148,10 @@
 		playlist: DBPL
 		withButtons?: boolean
 		playlistPage?: boolean
+		repeat?: boolean
 	}>();
 
-	const emit = defineEmits<{ (e: 'delete' | 'edit' | 'shuffle', playlist: DBPL): void }>();
+	const emit = defineEmits<{ (e: 'delete' | 'edit' | 'shuffle' | 'repeat', playlist: DBPL): void }>();
 
 	async function exportPlaylist() {
 		const exportFile = await useCustomFetch(`/api/playlist/${props.playlist.plaid}/export`);
@@ -206,6 +215,10 @@
 	flex-direction: column;
 	align-items: flex-end;
 	min-width: 6em;
+}
+
+.is-repeat {
+	color: #1dd2af;
 }
 
 @media screen and (max-width: 768px) {
