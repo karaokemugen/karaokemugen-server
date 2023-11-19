@@ -1,8 +1,9 @@
 <template>
 	<nuxt-link
 		:class="[tagTypes[type].class, staticheight ? '':'no-static-height']"
+		:to="handleLink(false)"
 		class="tag is-medium"
-		@click.prevent="handleLink"
+		@click.left.prevent.capture="handleLink"
 	>
 		<font-awesome-icon
 			v-if="icon"
@@ -28,6 +29,7 @@
 	import { useMenubarStore } from '~/store/menubar';
 
 	const { addTag, setSearch } = useMenubarStore();
+	const { tags } = storeToRefs(useMenubarStore());
 	const route = useRoute();
 	const { push } = useRouter();
 
@@ -51,7 +53,7 @@
 
 	const localizedName= computed((): string => getTagInLocale(props.tag, props.i18n));
 
-	function handleLink() {
+	function handleLink(pushToLink = true) {
 		if (!props.nolink && props.type !== 'collections') { // Collections are not clickable
 			// If no tags are present, redirect the user to the KaraList view with this tag.
 			const payload = { tag: props.tag, type: props.type };
@@ -61,13 +63,24 @@
 				tag.i18n = props.i18n;
 				payload.tag = tag;
 			}
-			addTag(payload);
+			if (pushToLink) addTag(payload);
+			let search = undefined;
 			if (['kara-slug-id', 'types-id', 'types-years'].includes(route.name as string)) {
-				setSearch('');
+				if (pushToLink) {
+					setSearch('');
+				} else {
+					search = '';
+				}
 			}
+			let path ='search-query' === route.name ? '/search/': route.path;
 			if (!['search-query', 'user-login', 'user-login-animelist'].includes(route.name as string)) {
-				push(generateNavigation());
+				if (pushToLink) {
+					return push(generateNavigation());
+				} else {
+					path = undefined;
+				}
 			}
+			return generateNavigation(search, [...tags.value, payload], path);
 		}
 	}
 </script>
