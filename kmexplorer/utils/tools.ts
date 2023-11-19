@@ -1,7 +1,7 @@
 import { getNavigatorLanguageIn3B } from './isoLanguages';
 import type { DBTag } from '%/lib/types/database/tag';
 import type { DBKara, DBKaraTag } from '%/lib/types/database/kara';
-import { useMenubarStore } from '~/store/menubar';
+import { useMenubarStore, type TagExtend } from '~/store/menubar';
 import { tagTypes } from '~/assets/constants';
 import { useLocalStorageStore } from '~/store/localStorage';
 import { useAuthStore } from '~/store/auth';
@@ -157,16 +157,14 @@ export function sortTypesKara(karaoke: DBKara): DBKara {
 	return karaoke;
 }
 
-export function generateNavigation() {
-	const { search, tags } = storeToRefs(useMenubarStore());
-	const { enabledCollections } = storeToRefs(useLocalStorageStore());
+export function generateNavigation(search = useMenubarStore().search, tags = useMenubarStore().tags, page = '/search/', enabledCollections = useLocalStorageStore().enabledCollections) {
 	const navigation = {
-		path: `/search/${encodeURIComponent(search.value)}`,
-		query: { collections: encodeURIComponent(enabledCollections.value?.join(':')) } as { collections: string, q?: string }
+		path: `${page}${encodeURIComponent(search)}`,
+		query: { collections: encodeURIComponent(enabledCollections?.join(':')) } as { collections: string, q?: string }
 	};
 	const criterias: string[] = [];
 	const tagsUpdated: string[] = [];
-	for (const tag of tags.value) {
+	for (const tag of unqiueTag(tags)) {
 		if (tag.type === 'years') {
 			criterias.push(`y:${tag.tag.name}`);
 		} else {
@@ -180,6 +178,17 @@ export function generateNavigation() {
 		navigation.query.q = criterias.join('!');
 	}
 	return navigation;
+}
+
+function unqiueTag(tags: TagExtend[]) {
+	const tids = new Set();
+	return tags.filter(tag => {
+		if (tids.has(tag.tag.tid)) {
+			return false;
+		}
+		tids.add(tag.tag.tid);
+		return true;
+	});
 }
 
 export function getDurationString(duration: number, t: any, withSecondes = true) {
