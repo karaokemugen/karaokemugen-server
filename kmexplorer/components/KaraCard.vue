@@ -181,17 +181,22 @@
 			for (const tag of props.karaoke[tagType]) {
 				// Removing all tags mentioned in the karaphrase
 				if (!(
+					(props.karaoke.from_display_type === tagType && i === 0) ||
 					// Remove the first series
-					(tagType === 'series' && i === 0) ||
+					(tagType === 'series' && i === 0 &&
+						!props.karaoke.from_display_type) ||
 					// Remove the first songtype
 					(tagType === 'songtypes' && i === 0) ||
 					// Remove the first singergroups if the karaoke has no series
-					(tagType === 'singergroups' && i === 0 && props.karaoke.series.length === 0) ||
+					(tagType === 'singergroups' && i === 0 &&
+						props.karaoke.series.length === 0 &&
+						!props.karaoke.from_display_type) ||
 					// Remove the first singer if the karaoke has no singergroups and no series
 					(tagType === 'singers' &&
 						i === 0 &&
 						props.karaoke.singergroups.length === 0 &&
-						props.karaoke.series.length === 0) ||
+						props.karaoke.series.length === 0 &&
+						!props.karaoke.from_display_type) ||
 					// Remove the next tags to avoid overflow
 					i > 1
 				)) {
