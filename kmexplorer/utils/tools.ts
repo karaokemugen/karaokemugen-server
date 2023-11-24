@@ -164,7 +164,7 @@ export function generateNavigation(search = useMenubarStore().search, tags = use
 	};
 	const criterias: string[] = [];
 	const tagsUpdated: string[] = [];
-	for (const tag of unqiueTag(tags)) {
+	for (const tag of uniqueTag(tags)) {
 		if (tag.type === 'years') {
 			criterias.push(`y:${tag.tag.name}`);
 		} else {
@@ -180,7 +180,7 @@ export function generateNavigation(search = useMenubarStore().search, tags = use
 	return navigation;
 }
 
-function unqiueTag(tags: TagExtend[]) {
+function uniqueTag(tags: TagExtend[]) {
 	const tids = new Set();
 	return tags.filter(tag => {
 		if (tids.has(tag.tag.tid)) {

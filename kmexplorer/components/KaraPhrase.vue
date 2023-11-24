@@ -5,7 +5,8 @@
 	>
 		<template #songtype>
 			<nuxt-link
-				@click.prevent="handleLink(songtype)"
+				:to="handleLink(songtype, false)"
+				@click.left.prevent.capture="handleLink(songtype)"
 			>
 				{{ songtype.name }}<template v-if="karaoke.songorder">
 					{{ " " + karaoke.songorder }}
@@ -17,7 +18,8 @@
 					:key="version.tag.tid"
 				>
 					<nuxt-link
-						@click.prevent="handleLink(version)"
+						:to="handleLink(version, false)"
+						@click.left.prevent.capture="handleLink(version)"
 					>{{ version.name }}</nuxt-link>
 					<template v-if="index+1 < versions.length">, </template>
 				</template>)
@@ -25,7 +27,8 @@
 		</template>
 		<template #series>
 			<nuxt-link
-				@click.prevent="handleLink(serieSinger)"
+				:to="handleLink(serieSinger, false)"
+				@click.left.prevent.capture="handleLink(serieSinger)"
 			>
 				{{ serieSinger.name }}
 			</nuxt-link>
@@ -71,16 +74,23 @@
 		return tab;
 	});
 
-	function handleLink(tag: ShortTag) {
+	function handleLink(tag: ShortTag, pushToLink = true) {
 		if (props.karaokesI18n && props.karaokesI18n[tag.tag.tid]) {
 			const tagUpdated = { ...tag.tag };
 			tagUpdated.i18n = props.karaokesI18n[tag.tag.tid];
 			tag.tag = tagUpdated;
 		}
-		addTag({
-			type: tag.type,
-			tag: tag.tag
-		});
-		push(generateNavigation());
+		if (pushToLink) {
+			addTag({
+				type: tag.type,
+				tag: tag.tag
+			});
+			push(generateNavigation());
+		} else {
+			return generateNavigation('', [{
+				type: tag.type,
+				tag: tag.tag
+			}]);
+		}
 	}
 </script>
