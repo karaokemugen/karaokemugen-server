@@ -812,7 +812,7 @@
 		await useCustomFetch<{data: {token: string}}>('/api/myaccount', {
 			method: 'PATCH',
 			body: {
-				...editedUser.value, avatar_file: undefined, roles: undefined, banner: undefined
+				...editedUser.value, avatar_file: undefined, roles: undefined, banner: undefined, password_confirmation: undefined
 			}
 		}).then(async (response) => {
 			// Refresh auth

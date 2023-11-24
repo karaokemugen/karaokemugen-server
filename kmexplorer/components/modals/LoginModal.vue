@@ -304,7 +304,7 @@
 		try {
 			loading.value = true;
 			if (mode.value === 'signup') {
-				const signup = { ...login.value };
+				const signup = { ...login.value, password_confirmation: undefined };
 				signup.login = login.value.username;
 				signup.language = locale.value;
 				await useCustomFetch('/api/users', {
@@ -314,7 +314,7 @@
 			}
 			const result = await useCustomFetch<TokenResponseWithRoles>('/api/auth/login', {
 				method: 'POST',
-				body: login.value
+				body: { ...login.value, password_confirmation: undefined }
 			});
 			await loginApi(result);
 			emit('login');
