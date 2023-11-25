@@ -474,6 +474,18 @@
 		background: linear-gradient(360deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 60%, rgba(0, 0, 0, 0) 100%);
 	}
 
+	.vjs-volume-panel {
+
+		&.vjs-hover .vjs-volume-control.vjs-volume-vertical,
+		&:active .vjs-volume-control.vjs-volume-vertical,
+		&:focus .vjs-volume-control.vjs-volume-vertical,
+		.vjs-volume-control:active.vjs-volume-vertical,
+		&.vjs-hover .vjs-mute-control~.vjs-volume-control.vjs-volume-vertical,
+		.vjs-volume-control.vjs-slider-active.vjs-volume-vertical {
+			left: -3em;
+		}
+	}
+
 	&.vjs-layout-medium {
 		.vjs-title-bar {
 			font-size: 20px;
