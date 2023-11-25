@@ -32,7 +32,8 @@
 			"collections": "Collection | Collections",
 			"singergroups": "Groupe de musique | Groupes de musique",
 			"franchises": "Franchise | Franchises",
-			"years": "Année | Années"
+			"years": "Année | Années",
+			"default": "Par Défaut"
 		},
 		"singers_by": "Chanté par",
 		"songwriters_by": "Composé par",
