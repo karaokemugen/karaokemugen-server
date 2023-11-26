@@ -10,7 +10,7 @@ import logger from 'winston';
 
 import { insertKara, updateKaraParents } from '../dao/kara.js';
 import { applyKaraHooks, refreshHooks } from '../lib/dao/hook.js';
-import { extractVideoSubtitles, getDataFromKaraFile, verifyKaraData } from '../lib/dao/karafile.js';
+import { extractVideoSubtitles, getDataFromKaraFile, trimKaraData, verifyKaraData } from '../lib/dao/karafile.js';
 import {
 	defineFilename,
 	determineMediaAndLyricsFilenames,
@@ -112,21 +112,22 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 	}
 }
 
-export async function editKara(edit: EditedKara, contact: string): Promise<string> {
+export async function editKara(editedKara: EditedKara, contact: string): Promise<string> {
 	try {
+		let kara = trimKaraData(editedKara.kara);
 		const conf = getConfig();
 		const onlineRepo = conf.System.Repositories.find(r => r.Name !== 'Staging').Name;
-		const edited_kid = edit.kara.data.kid;
-		const kara = await preflight(edit.kara);
+		const edited_kid = kara.data.kid;
+		kara = await preflight(kara);
 		// Before the heavy lifting (tm), we should make copies of media and/or lyrics if they were not edited.
-		if (!edit.modifiedLyrics && kara.medias[0].lyrics.length > 0) {
+		if (!editedKara.modifiedLyrics && kara.medias[0].lyrics.length > 0) {
 			await copy(
 				resolve(resolvedPathRepos('Lyrics', onlineRepo)[0], kara.medias[0].lyrics[0].filename),
 				resolve(resolvedPath('Temp'), kara.medias[0].lyrics[0].filename),
 				{ overwrite: true }
 			);
 		}
-		if (!edit.modifiedMedia) {
+		if (!editedKara.modifiedMedia) {
 			await copy(
 				resolve(resolvedPathRepos('Medias', onlineRepo)[0], kara.medias[0].filename),
 				resolve(resolvedPath('Temp'), kara.medias[0].filename),
@@ -136,8 +137,8 @@ export async function editKara(edit: EditedKara, contact: string): Promise<strin
 		// And now for the fun part
 		return await heavyLifting(kara, contact, {
 			kid: edited_kid,
-			modifiedLyrics: edit.modifiedLyrics,
-			modifiedMedia: edit.modifiedMedia
+			modifiedLyrics: editedKara.modifiedLyrics,
+			modifiedMedia: editedKara.modifiedMedia
 		});
 	} catch (err) {
 		logger.error('Error editing kara', { service, obj: err });
@@ -146,8 +147,9 @@ export async function editKara(edit: EditedKara, contact: string): Promise<strin
 	}
 }
 
-export async function createKara(kara: KaraFileV4, contact: string): Promise<string> {
+export async function createKara(editedKara: KaraFileV4, contact: string): Promise<string> {
 	try {
+		let kara = trimKaraData(editedKara);
 		kara = await preflight(kara);
 		return await heavyLifting(kara, contact);
 	} catch (err) {
