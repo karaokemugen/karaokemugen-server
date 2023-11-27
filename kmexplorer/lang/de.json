@@ -122,7 +122,9 @@
 			"title_tooltip": "Falls unbekannt, trage hier ebenfalls den Serien-Namen ein. Für den Fall einer alternativen Version, benenne den Titel wie z.B. 'My title ~ Disco vers.'",
 			"parents_tooltip": "Wenn ein übergeordnetes Karaoke definiert ist, wird dieses Karaoke als Alternative zu den ausgewählten übergeordneten Karaokes angezeigt.",
 			"creators_tooltip": "Eintrag, wer die Serie erstellt hat. Dies kann ein Animations-, Film- oder Entwickerstudio sein.",
-			"send_contact_infos": "Teile meine Kontaktinformation den Datenbank-Managern mit"
+			"send_contact_infos": "Teile meine Kontaktinformation den Datenbank-Managern mit",
+			"from_display_type": "Von der Tag-Typ-Anzeige",
+			"from_display_type_tooltip": "Wähle den Tag-Typ aus, der beim Anzeigen des Songs verwendet werden soll"
 		},
 		"tagtypes": {
 			"platforms": "Plattform | Plattformen",
@@ -142,7 +144,9 @@
 			"creators": "Ersteller | Ersteller",
 			"collections": "Sammlung | Sammlungen",
 			"franchises": "Franchise",
-			"singergroups": "Band | Bands"
+			"singergroups": "Band | Bands",
+			"default": "Als Standard",
+			"years": "Jahr | Jahre"
 		},
 		"songwriters_by": "Komponiert von",
 		"download": "Herunterladen",
@@ -219,7 +223,8 @@
 			"next": "Nächster Song (N)",
 			"autoplay": "Automatische Wiedergabe",
 			"theater_mode": "Theater Modus (T)",
-			"fullscreen": "Vollbild (F)"
+			"fullscreen": "Vollbild (F)",
+			"loop": "Schleife"
 		}
 	},
 	"error": {
@@ -621,7 +626,8 @@
 		"PL_ADD_CONTRIBUTOR_ERROR": "Fehler beim hinzufügen des Mitwirkendens",
 		"GET_KARA_ERROR": "Fehler beim abrufen des Songs",
 		"NEW_KARA_ISSUE_ERROR": "Problem kann nicht erstellt werden",
-		"BANNER_BANNED": "Dieses Banner kann nicht benutzt werden"
+		"BANNER_BANNED": "Dieses Banner kann nicht benutzt werden",
+		"PL_SHUFFLE_ERROR": "Fehler beim Mischen der Playlist"
 	},
 	"suggestions": {
 		"kara": {
@@ -701,7 +707,11 @@
 		"by_owner": "von {nickname}",
 		"create": "Erstelle eine neue Playlist",
 		"private": "Privat",
-		"import": "Importiere Playlist"
+		"import": "Importiere Playlist",
+		"copy_of": "Kopie von {playlist}",
+		"copy": "Kopieren",
+		"shuffle": "Mischen",
+		"repeat": "Wiederholen"
 	},
 	"bans": {
 		"submit": "Hinzufügen",
