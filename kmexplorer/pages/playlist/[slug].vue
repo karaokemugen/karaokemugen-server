@@ -248,7 +248,9 @@
 		updateQueryParams();
 		await loadNextPage();
 		indexPlaying.value = 0;
-		playing.value = karaokes.value.content[0];
+		if (karaokes.value.content[0] && isPlayable(karaokes.value.content[0])) {
+			playing.value = karaokes.value.content[0];
+		}
 	}
 
 	async function onPageChange(p: number) {
@@ -262,7 +264,9 @@
 	async function getAsyncAfterPageChange() {
 		await loadNextPage();
 		indexPlaying.value = 0;
-		playing.value = karaokes.value.content[0];
+		if (karaokes.value.content[0] && isPlayable(karaokes.value.content[0])) {
+			playing.value = karaokes.value.content[0];
+		}
 	}
 
 	async function loadNextPage() {
@@ -280,10 +284,10 @@
 		karaokes.value = data;
 		loading.value = false;
 		if (karaokes.value.content.length > 0) {
-			if (query.index && query.index < karaokes.value.content.length) {
+			if (query.index && query.index < karaokes.value.content.length && isPlayable(karaokes.value.content[query.index])) {
 				indexPlaying.value = query.index;
 				playing.value = karaokes.value.content[query.index];
-			} else {
+			} else if (isPlayable(karaokes.value.content[0])) {
 				playing.value = karaokes.value.content[0];
 			}
 		}
@@ -330,7 +334,9 @@
 
 	function updatePlayer(karaoke: DBPLC) {
 		indexPlaying.value = karaokes.value.content.findIndex(n => karaoke.plcid === n.plcid);
-		playing.value = karaoke;
+		if (karaoke && isPlayable(karaoke)) {
+			playing.value = karaoke;
+		}
 		updateQueryParams();
 	}
 
