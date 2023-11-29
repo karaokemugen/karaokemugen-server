@@ -70,7 +70,7 @@
 
 	const { t } = useI18n();
 
-	await fetch();
+	fetch();
 
 	async function fetch() {
 		const res = await useCustomFetch<Ban[]>('/api/bans')
