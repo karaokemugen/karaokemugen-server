@@ -18,9 +18,9 @@ export const useAuthStore = defineStore('auth', {
 		},
 		async login(tokenResponse: TokenResponseWithRoles) {
 			if (tokenResponse.token) this.token = tokenResponse.token;
-			this.user = { roles: tokenResponse.roles, nickname: tokenResponse.username };
+			const userTemp = { roles: tokenResponse.roles, nickname: tokenResponse.username };
 			const res = await useCustomFetch<DBUser>('/api/myaccount');
-			this.user = { ...this.user, ...res};
+			this.user = { ...userTemp, ...res};
 			this.loggedIn = true;
 		},
 		logout() {
