@@ -5,6 +5,7 @@
 			field="token"
 			:label="$t('remote.token')"
 			searchable
+			position="centered"
 		>
 			{{ props.row.token }}
 		</o-table-column>
@@ -13,12 +14,12 @@
 			field="code"
 			:label="$t('remote.code')"
 			searchable
+			position="centered"
 		>
 			<input
 				v-model="props.row.code"
 				class="input"
 				type="text"
-				@keydown.enter="promoteToken(props.row)"
 			>
 		</o-table-column>
 		<o-table-column
@@ -26,6 +27,7 @@
 			field="last_ip"
 			:label="$t('remote.last_ip')"
 			searchable
+			position="centered"
 		>
 			{{ props.row.last_ip }}
 		</o-table-column>
@@ -34,6 +36,7 @@
 			field="last_use"
 			:label="$t('remote.last_use')"
 			searchable
+			position="centered"
 		>
 			{{ props.row.last_use }}
 		</o-table-column>
@@ -42,22 +45,28 @@
 			field="permanent"
 			:label="$t('remote.permanent')"
 			searchable
+			position="centered"
 			:custom-search="searchPermanent"
 		>
-			<input
-				type="checkbox"
-				disabled
-				:checked="props.row.permanent"
-			>
+			{{ props.row.permanent ? $t('remote.yes') : $t('remote.no') }}
 		</o-table-column>
 		<o-table-column v-slot="props">
-			<button
-				class="button"
-				@click="removeToken(props.row.token)"
-			>
-				<font-awesome-icon :icon="['fas', 'trash']" />
-				<span>{{ $t('remote.delete_button') }}</span>
-			</button>
+			<div class="buttons">
+				<button
+					class="button"
+					@click="promoteToken(props.row)"
+				>
+					<font-awesome-icon :icon="['fas', 'edit']" />
+					<span>{{ $t('remote.edit_button') }}</span>
+				</button>
+				<button
+					class="button"
+					@click="removeToken(props.row.token)"
+				>
+					<font-awesome-icon :icon="['fas', 'trash']" />
+					<span>{{ $t('remote.delete_button') }}</span>
+				</button>
+			</div>
 		</o-table-column>
 	</o-table>
 </template>
@@ -111,9 +120,9 @@
 	}
 	function searchPermanent(remote: RemoteAccessToken, input: string) {
 		let inputBool: Boolean | undefined;
-		if (input === 'true') {
+		if (input.toLowerCase() === t('remote.yes').toLowerCase()) {
 			inputBool = true;
-		} else if (input === 'false') {
+		} else if (input.toLowerCase() === t('remote.no').toLowerCase()) {
 			inputBool = false;
 		}
 		return inputBool === undefined || remote.permanent === inputBool;

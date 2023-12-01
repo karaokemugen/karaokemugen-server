@@ -500,6 +500,8 @@
 		"delete_button": "Eliminar linha",
 		"edit_success": "Editado remotamente com sucesso",
 		"edit_error": "Erro ao editar remotamente",
-		"delete_error": "Erro ao eliminar remotamente"
+		"delete_error": "Erro ao eliminar remotamente",
+		"yes": "Sim",
+		"no": "Não"
 	}
 }

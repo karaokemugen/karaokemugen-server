@@ -688,10 +688,13 @@
 		"last_use": "Dernière utilisation",
 		"permanent": "Permanent",
 		"token": "Token",
+		"edit_button": "Editer la ligne",
 		"delete_button": "Supprimer la ligne",
 		"edit_success": "Edition du remote avec succès",
 		"edit_error": "Erreur lors de l'édition de l'accès à distance",
-		"delete_error": "Erreur lors de la suppression de l'accès à distance"
+		"delete_error": "Erreur lors de la suppression de l'accès à distance",
+		"yes": "Oui",
+		"no": "Non"
 	},
 	"playlists": {
 		"create": "Créer une nouvelle liste de lecture",

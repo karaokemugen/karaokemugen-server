@@ -585,6 +585,8 @@
 		"permanent": "Permanen",
 		"edit_success": "Jarak jauh sukses disunting",
 		"last_use": "Penggunaan terakhir",
-		"last_ip": "IP terakhir"
+		"last_ip": "IP terakhir",
+		"yes": "Ya",
+		"no": "Tidak"
 	}
 }

@@ -688,10 +688,13 @@
 		"last_use": "Last use",
 		"permanent": "Permanent",
 		"token": "Token",
+		"edit_button": "Edit line",
 		"delete_button": "Delete line",
 		"edit_success": "Remote edited with success",
 		"edit_error": "Error when editing remote",
-		"delete_error": "Error when deleting remote"
+		"delete_error": "Error when deleting remote",
+		"yes": "Yes",
+		"no": "No"
 	},
 	"playlists": {
 		"create": "Create new playlist",

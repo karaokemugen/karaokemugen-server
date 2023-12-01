@@ -81,6 +81,7 @@ import {
 	faAngleRight,
 	faShuffle,
 	faCopy,
+	faArrowUp,
 	faRepeat
 } from '@fortawesome/free-solid-svg-icons';
 import {
@@ -182,6 +183,7 @@ library.add(
 	faShuffle,
 	faCopy,
 	faRepeat,
+	faArrowUp,
 	faSitemap);
 
 export default defineNuxtPlugin((nuxtApp) => {

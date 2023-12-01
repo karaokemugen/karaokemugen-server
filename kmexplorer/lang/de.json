@@ -670,7 +670,9 @@
 		"last_use": "Zuletzt gebraucht",
 		"edit_error": "Fehler beim editieren der Remote",
 		"delete_error": "Fehler beim löschen der Remote",
-		"edit_success": "Remote erfolgreich editiert"
+		"edit_success": "Remote erfolgreich editiert",
+		"no": "Nein",
+		"yes": "Ja"
 	},
 	"stats": {
 		"karaokes": "Karaoke",
