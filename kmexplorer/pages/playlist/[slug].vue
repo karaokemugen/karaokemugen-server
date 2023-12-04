@@ -178,15 +178,14 @@
 		(user.value.login === playlist.value.username || playlist.value.contributors?.find(c => user.value?.login === c.username))
 	);
 
+	onBeforeMount(() => setSearch(''));
+
 	onMounted(() => {
-		setSearch('');
 		debouncedGetAsyncData.value = _.debounce(getAsyncData, 500, { leading: true, trailing: true, maxWait: 750 });
 		debouncedPageChange.value = _.debounce(getAsyncAfterPageChange, 500);
 	});
 
-	onUnmounted(() => {
-		setSearch('');
-	});
+	onUnmounted(() => setSearch(''));
 
 	if (process.client) {
 		await fetch();
