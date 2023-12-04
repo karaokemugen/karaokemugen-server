@@ -1,4 +1,4 @@
-export const selectPlaylists = (joinClauses: string[], whereClauses: string[], filterClauses: string[], additionalFrom: string, orderClause: string) => `
+export const selectPlaylists = (joinClauses: string[], whereClauses: string[], filterClauses: string[], additionalFrom: string, orderClause: string, selectClauses: string[], groupClauses: string[]) => `
 WITH all_users AS (
 	SELECT 
 		pk_login AS username,
@@ -17,9 +17,11 @@ SELECT
 	modified_at,
 	p.flag_visible,
 	flag_visible_online,
+	${selectClauses.join(', \n')}
 	p.fk_login AS username,
 	u.nickname AS nickname,
 	u.avatar_file AS avatar_file,
+	COALESCE(ps.favorited, 0) AS favorited,
 	(SELECT coalesce(array_to_json(array_agg(row_to_json(contribs))), '[]')::jsonb
 		FROM (
 	SELECT * FROM all_users WHERE all_users.username = ANY((array_remove(array_agg(DISTINCT pco.fk_login), null))
@@ -27,11 +29,12 @@ SELECT
 FROM playlist p
 LEFT JOIN playlist_contributor pco ON pco.fk_plaid = p.pk_plaid
 LEFT JOIN users u ON u.pk_login = p.fk_login
+LEFT OUTER JOIN playlist_stats ps ON ps.fk_plaid = p.pk_plaid
 ${joinClauses.join('\n')}
 ${additionalFrom}
 WHERE ${whereClauses.join(' \n AND ')}
 ${filterClauses.map(clause => ` AND (${clause})`).reduce((a, b) => (`${a} ${b}`), '')}
-GROUP BY p.pk_plaid, u.nickname, u.avatar_file
+GROUP BY ${groupClauses.join(', ')}${groupClauses.length > 0 ? ',' : ''} p.pk_plaid, u.nickname, u.avatar_file, ps.favorited
 ORDER BY ${orderClause}
 `;
 
@@ -275,4 +278,35 @@ SET search_vector =
 FROM users u
 WHERE u.pk_login = playlist.fk_login
 ${username ? ' AND fk_login = $1' : ''}
+`;
+
+export const deleteFavoritePlaylist = `
+DELETE FROM users_playlist_favorites 
+WHERE fk_login = $1 AND fk_plaid = $2
+`;
+
+export const insertFavoritePlaylist = `
+INSERT INTO users_playlist_favorites VALUES(
+	$1,
+	$2
+) ON CONFLICT(fk_login, fk_plaid) DO NOTHING
+`;
+
+export const refreshPlaylistStats = `
+WITH all_favorites AS (SELECT * FROM users_playlist_favorites),
+	all_users AS (SELECT * FROM users)
+SELECT p.pk_plaid AS fk_plaid,
+ (SELECT
+        COUNT(uf.fk_plaid)
+        FROM all_favorites uf
+        LEFT JOIN all_users u ON u.pk_login = uf.fk_login
+        WHERE p.pk_plaid = uf.fk_plaid AND
+        (u.flag_sendstats IS NULL OR u.flag_sendstats = TRUE)
+ ) AS favorited
+FROM playlist p;
+`;
+
+export const createPlaylistStatsIndexes = `
+CREATE INDEX idx_playlist_stats_plaid ON playlist_stats(fk_plaid);
+CREATE INDEX idx_playlist_stats_favorited ON playlist_stats(favorited);
 `;

@@ -255,7 +255,6 @@
 		"years": "Years",
 		"community": "Community",
 		"playlists": "Playlists",
-		"my_playlists": "My playlists",
 		"remotes": "Remotes",
 		"bans": "Bans",
 		"search_users": "Search users",
@@ -714,7 +713,10 @@
 		"add_karaoke": "Add a karaoke to playlist",
 		"by_owner": "by {nickname}",
 		"and_contributors": "(and {contributors})",
-		"and_contributors_more": "(and {contributors}, {count} more)"
+		"and_contributors_more": "(and {contributors}, {count} more)",
+		"my_playlists": "My playlists",
+		"community": "Community",
+		"favorites": "Favorites"
 	},
 	"bans": {
 		"add": "Add new ban",

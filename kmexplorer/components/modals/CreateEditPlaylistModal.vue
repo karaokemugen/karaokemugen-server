@@ -163,7 +163,7 @@
 	async function getPlaylist() {
 		const playlists = await useCustomFetch<DBPL[]>('/api/playlist', {
 			params: {
-				username: user?.value?.login,
+				byUsername: user?.value?.login,
 				slug: props.slug
 			}
 		});

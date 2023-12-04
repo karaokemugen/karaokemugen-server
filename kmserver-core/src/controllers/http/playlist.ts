@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import { APIMessage } from '../../lib/services/frontend.js';
-import { addContributorToPlaylist, addKaraToPlaylist, createPlaylist, editPlaylist, editPLC, emptyPlaylist, exportPlaylist, getPlaylistContents, getPlaylists, importPlaylist, removeContributorToPlaylist, removeKaraFromPlaylist, removePlaylist, shufflePlaylist } from '../../services/playlist.js';
+import { addContributorToPlaylist, addKaraToPlaylist, addPlaylistToFavorites, createPlaylist, editPlaylist, editPLC, emptyPlaylist, exportPlaylist, getPlaylistContents, getPlaylists, importPlaylist, removeContributorToPlaylist, removeKaraFromPlaylist, removePlaylist, removePlaylistFromFavorites, shufflePlaylist } from '../../services/playlist.js';
 import { optionalAuth, requireAuth, requireValidUser } from '../middlewares/auth.js';
 import { getLang } from '../middlewares/lang.js';
 
@@ -19,13 +19,14 @@ export default function PLController(router: Router) {
 			try {
 				const pls = await getPlaylists(
 					{
-						username: req.query.username,
 						plaid: req.query.plaid,
 						slug: req.query.slug,
 						containsKID: req.query.containsKID,
+						byUsername: req.query.byUsername,
 						includeUserAsContributor: Boolean(req.query.includeUserAsContributor),
 						filter: req.query.filter,
 						order: req.query.order,
+						favorites: req.query.favorites,
 						reverseOrder: Boolean(req.query.reverseOrder),
 					},
 					req.authToken
@@ -75,6 +76,23 @@ export default function PLController(router: Router) {
 		.post(requireAuth, requireValidUser, getLang, async (req: any, res) => {
 			try {
 				await emptyPlaylist(req.params.plaid, req.authToken);
+				res.json();
+			} catch (err) {
+				res.status(err.code || 500).json(APIMessage(err.message));
+			}
+		});
+	router.route('/playlist/:plaid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/favorite')
+		.post(requireAuth, requireValidUser, getLang, async (req: any, res) => {
+			try {
+				await addPlaylistToFavorites(req.params.plaid, req.authToken);
+				res.json();
+			} catch (err) {
+				res.status(err.code || 500).json(APIMessage(err.message));
+			}
+		})
+		.delete(requireAuth, requireValidUser, getLang, async (req: any, res) => {
+			try {
+				await removePlaylistFromFavorites(req.params.plaid, req.authToken);
 				res.json();
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));

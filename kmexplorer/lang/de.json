@@ -36,7 +36,6 @@
 		"karas": "Lieder",
 		"account": "Benutzerkonto",
 		"login": "Anmelden",
-		"my_playlists": "Meine Playlisten",
 		"playlists": "Playlisten",
 		"bans": "Sperrungen",
 		"play_random_song": "Spiele einen zufälligen Song",
@@ -713,7 +712,8 @@
 		"copy_of": "Kopie von {playlist}",
 		"copy": "Kopieren",
 		"shuffle": "Mischen",
-		"repeat": "Wiederholen"
+		"repeat": "Wiederholen",
+		"my_playlists": "Meine Playlisten"
 	},
 	"bans": {
 		"submit": "Hinzufügen",

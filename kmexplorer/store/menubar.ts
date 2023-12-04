@@ -30,7 +30,7 @@ export const useMenubarStore = defineStore('menubar', {
 				'user-login-animelist': 'recent',
 				'users': 'az',
 				'suggest': 'likes',
-				'playlists-community': 'az'
+				'playlists': 'az'
 			},
 			resultsCount: 0,
 			enabledLanguages: []
@@ -80,7 +80,7 @@ export const useMenubarStore = defineStore('menubar', {
 				'user-login-animelist': 'recent',
 				'users': 'az',
 				'suggest': 'likes',
-				'playlists-community': 'az'
+				'playlists': 'az'
 			};
 		}
 	},

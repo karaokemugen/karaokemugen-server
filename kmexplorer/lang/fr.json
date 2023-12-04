@@ -254,7 +254,6 @@
 		"langs": "Langues",
 		"years": "Années",
 		"playlists": "Listes de lecture",
-		"my_playlists": "Mes listes de lecture",
 		"community": "Communauté",
 		"remotes": "Remotes",
 		"bans": "Exclusions",
@@ -714,7 +713,10 @@
 		"add_karaoke": "Ajouter un karaoké à la liste de lecture",
 		"by_owner": "par {nickname}",
 		"and_contributors": "(et {contributors})",
-		"and_contributors_more": "(et {contributors}, {count} de plus)"
+		"and_contributors_more": "(et {contributors}, {count} de plus)",
+		"my_playlists": "Mes listes",
+		"community": "Communauté",
+		"favorites": "Favoris"
 	},
 	"bans": {
 		"add": "Ajouter une nouvelle exclusion",

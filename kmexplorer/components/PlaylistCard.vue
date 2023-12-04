@@ -66,6 +66,13 @@
 				class="buttons"
 			>
 				<button
+					:class="`button ${favorite ? 'favorite' : ''}`"
+					@click.prevent="favoritePlaylist"
+				>
+					<font-awesome-icon :icon="['fas', 'star']" />
+					<span>{{ $t('playlists.favorites') }}</span>
+				</button>
+				<button
 					v-if="playlist.username === user?.login"
 					class="button"
 					@click.prevent="() => emit('edit', playlist)"
@@ -153,6 +160,8 @@
 
 	const emit = defineEmits<{ (e: 'delete' | 'edit' | 'shuffle' | 'repeat', playlist: DBPL): void }>();
 
+	const favorite = ref(props.playlist.flag_favorites);
+
 	async function exportPlaylist() {
 		const exportFile = await useCustomFetch(`/api/playlist/${props.playlist.plaid}/export`);
 		const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(exportFile, null, 4));
@@ -208,6 +217,13 @@
 		push(`/playlist/${playlists[0].slug}`);
 	}
 
+
+	async function favoritePlaylist() {
+		await useCustomFetch(`/api/playlist/${props.playlist.plaid}/favorite`, {
+			method: favorite.value ? 'DELETE' : 'POST'
+		});
+		favorite.value = !favorite.value;
+	}
 </script>
 <style scoped lang="scss">
 .playlist-owner {
@@ -219,6 +235,10 @@
 
 .is-repeat {
 	color: #1dd2af;
+}
+
+.button.favorite {
+	color: #c6a600;
 }
 
 @media screen and (max-width: 768px) {

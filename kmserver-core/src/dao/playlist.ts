@@ -85,18 +85,45 @@ export async function selectPlaylists(params: PLParams): Promise<DBPL[]> {
 	};
 	const whereClauses = ['TRUE'];
 	const joinClauses = [];
-	let orderClause = 'lower(name)';
-	if (params.order === 'recent') orderClause = 'created_at';
-	if (params.order === 'karacount') orderClause = 'karacount';
-	if (params.order === 'duration') orderClause = 'duration';
-	if (params.order === 'username') orderClause = 'username';
+	let primaryOrderClause = '';
+	let orderClause = '';
+	const selectClauses = [];
+	const groupClauses = [];
+	if (params.order === 'recent') primaryOrderClause = 'created_at';
+	if (params.order === 'karacount') primaryOrderClause = 'karacount';
+	if (params.order === 'duration') primaryOrderClause = 'duration';
+	if (params.order === 'username') primaryOrderClause = 'username';
+	if (params.order === 'favorited') primaryOrderClause = 'ps.favorited';
 
-	orderClause = `${orderClause} ${params.reverseOrder ? 'DESC' : ''}`;
+	// If order is specified it goes first, DESC or not
+	// Secondary order is always playlist name
+	// If no order specified, default is name.
+	if (primaryOrderClause) {
+		orderClause = `${primaryOrderClause} ${params.reverseOrder ? 'DESC' : ''}, lower(name)`;
+	} else {
+		orderClause = `lower(name) ${params.reverseOrder ? 'DESC' : ''}`;
+	}
 
-	if (params.username) {
+	if (params.byUsername) {
 		params.includeUserAsContributor
-			? whereClauses.push(` (p.fk_login = '${params.username}' OR pco.fk_login = '${params.username}') `)
-			: whereClauses.push(` p.fk_login = '${params.username}' `);
+			? whereClauses.push(` (p.fk_login = '${params.byUsername}' OR pco.fk_login = '${params.byUsername}') `)
+			: whereClauses.push(` p.fk_login = '${params.byUsername}' `);
+	}
+	if (params.username) {
+		selectClauses.push(`
+			(CASE WHEN f.fk_plaid IS NULL
+				THEN FALSE
+				ELSE TRUE
+			END) as flag_favorites,
+		`);
+		joinClauses.push('LEFT OUTER JOIN users_playlist_favorites AS f ON f.fk_login = :username AND f.fk_plaid = p.pk_plaid');
+		groupClauses.push('f.fk_plaid');
+		yesqlPayload.params.username = params.username;
+	}
+	if (params.favorites) {
+		joinClauses.push('LEFT JOIN users_playlist_favorites AS fv ON fv.fk_plaid = p.pk_plaid');
+		yesqlPayload.params.username_favs = params.favorites;
+		whereClauses.push(' fv.fk_login = :username_favs');
 	}
 	if (params.plaid) {
 		whereClauses.push(` p.pk_plaid = '${params.plaid}' `);
@@ -108,7 +135,7 @@ export async function selectPlaylists(params: PLParams): Promise<DBPL[]> {
 		joinClauses.push('LEFT JOIN playlist_content pc ON pc.fk_plaid = p.pk_plaid');
 		whereClauses.push(` pc.fk_kid = '${params.containsKID}'`);
 	}
-	const query = sql.selectPlaylists(joinClauses, whereClauses, filterClauses.sql, filterClauses.additionalFrom.join(''), orderClause);
+	const query = sql.selectPlaylists(joinClauses, whereClauses, filterClauses.sql, filterClauses.additionalFrom.join(''), orderClause, selectClauses, groupClauses);
 	const res = await db().query(
 		yesql(query)(yesqlPayload.params)
 	);
@@ -184,4 +211,23 @@ export function replacePlaylist(playlist: DBPLC[]) {
 	let newpos = 0;
 	const karaList = playlist.map(kara => [(newpos += 1), kara.plcid]);
 	return transaction({ sql: sql.updatePLCSetPos, params: karaList });
+}
+
+export async function insertPlaylistToFavorites(username: string, plaid: string) {
+	await db().query(sql.insertFavoritePlaylist, [username, plaid]);
+}
+
+export async function deletePlaylistFromFavorites(username: string, plaid: string) {
+	await db().query(sql.deleteFavoritePlaylist, [username, plaid]);
+}
+
+export async function refreshPlaylistStats() {
+	logger.info('Refreshing playlist stats', {service});
+	await db().query(`DROP TABLE IF EXISTS playlist_stats_new;
+	CREATE TABLE playlist_stats_new AS ${sql.refreshPlaylistStats};
+	DROP TABLE IF EXISTS playlist_stats;
+	ALTER TABLE playlist_stats_new RENAME TO playlist_stats;
+	`);
+	// Re-creating indexes is done asynchronously
+	db().query(sql.createPlaylistStatsIndexes);
 }

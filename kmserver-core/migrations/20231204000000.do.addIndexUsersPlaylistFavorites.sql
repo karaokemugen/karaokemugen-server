@@ -1,0 +1,4 @@
+DROP INDEX idx_users_playlist_favorites_user;
+DROP INDEX idx_users_playlist_favorites_playlist;
+
+CREATE UNIQUE INDEX idx_users_playlist_favorites_login_plaid ON users_playlist_favorites (fk_login, fk_plaid);
