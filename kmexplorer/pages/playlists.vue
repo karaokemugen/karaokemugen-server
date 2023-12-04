@@ -116,13 +116,10 @@
 	watch(playlistType, fetch);
 
 	setResultsCount(0);
-	onMounted(() => {
-		setSearch('');
-	});
 
-	onUnmounted(() => {
-		setSearch('');
-	});
+	onBeforeMount(() => setSearch(''));
+
+	onUnmounted(() => setSearch(''));
 
 	async function fetch() {
 		loading.value = true;

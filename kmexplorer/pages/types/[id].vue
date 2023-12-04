@@ -83,6 +83,10 @@
 		setSearch('');
 	}
 
+	onBeforeMount(() => setSearch(''));
+
+	onUnmounted(() => setSearch(''));
+
 	const reqParams = computed(() => {
 		return {
 			from: (page.value - 1) * 100,

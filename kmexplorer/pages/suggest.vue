@@ -114,7 +114,7 @@
 	watch(search, () => setPage(1));
 	watch(sort, () => setPage(1), { deep: true });
 
-	onMounted(() => {
+	onBeforeMount(() => {
 		setSearch('');
 		if (typeof route.query.q === 'string') {
 			setSearch(route.query.q);
@@ -125,6 +125,8 @@
 
 		fetchRandomKaras();
 	});
+
+	onBeforeUnmount(() => setSearch(''));
 
 	async function fetchRandomKaras() {
 		loading.value = true;

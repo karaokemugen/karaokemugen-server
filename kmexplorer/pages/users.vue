@@ -62,12 +62,13 @@
 	const users = ref<UserList>({ infos: { count: 0, from: 0, to: 0 }, content: [] });
 
 	setResultsCount(0);
-	setSearch('');
 
 	const fullyLoaded = computed(() => users.value.infos.to === users.value.infos.count);
 
 	watch(search, () => resetList());
 	watch(users, (users) => setResultsCount(users.infos.count), { deep: true });
+
+	onBeforeMount(() => setSearch(''));
 
 	onMounted(() => {
 		mounted.value = true;
@@ -77,6 +78,7 @@
 
 	onUnmounted(() => {
 		mounted.value = false;
+		setSearch('');
 		window.removeEventListener('scroll', scrollEvent);
 	});
 
