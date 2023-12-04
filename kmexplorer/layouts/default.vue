@@ -92,7 +92,7 @@
 				<nuxt-link
 					v-if="usersEnabled"
 					class="navbar-item"
-					to="/playlists/community"
+					to="/playlists"
 					@click="closeMenu"
 				>
 					<font-awesome-icon
@@ -209,20 +209,6 @@
 							:fixed-width="true"
 						/>
 						{{ user.nickname }}
-					</nuxt-link>
-					<nuxt-link
-						v-if="loggedIn && user"
-						class="navbar-item"
-						active-class="is-active"
-						aria-label="My playlists"
-						to="/playlists"
-						@click="closeMenu"
-					>
-						<font-awesome-icon
-							:icon="['fas', 'list-check']"
-							:fixed-width="true"
-						/>
-						{{ $t('menu.my_playlists') }}
 					</nuxt-link>
 					<nuxt-link
 						v-if="loggedIn && user && user.anime_list_to_fetch"
@@ -834,7 +820,7 @@
 					<li>
 						<nuxt-link
 							v-if="usersEnabled"
-							to="/playlists/community"
+							to="/playlists"
 							active-class="is-active"
 						>
 							<font-awesome-icon
@@ -947,17 +933,6 @@
 									:fixed-width="true"
 								/>
 								{{ user.nickname }}
-							</nuxt-link>
-							<nuxt-link
-								v-if="loggedIn && user"
-								to="/playlists"
-								active-class="is-active"
-							>
-								<font-awesome-icon
-									:icon="['fas', 'list-check']"
-									:fixed-width="true"
-								/>
-								{{ $t('menu.my_playlists') }}
 							</nuxt-link>
 							<nuxt-link
 								v-if="loggedIn && user && user.anime_list_to_fetch"

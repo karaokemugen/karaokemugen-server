@@ -214,7 +214,7 @@ export const selectBaseStats = `SELECT
 (SELECT SUM(duration) FROM kara where repository != 'Staging')::integer AS duration;
 `;
 
-export const deleteKaraStats = 'DELETE FROM kara_stats;';
+export const deleteKaraStats = 'DELETE FROM kara_stats';
 
 export const refreshKaraStats = `
 WITH all_sessions AS (SELECT * FROM stats_session),

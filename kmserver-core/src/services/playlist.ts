@@ -1,7 +1,7 @@
 import { shuffle } from 'lodash';
 import {v4 as uuidV4} from 'uuid';
 
-import { deleteContributor, deleteKaraFromPlaylist, deletePlaylist, getMaxPosInPlaylist, insertContributor, insertKaraIntoPlaylist, insertPlaylist, reorderPlaylist, replacePlaylist, selectPlaylistContents, selectPlaylists, selectPLCMini, setPos, shiftPosInPlaylist, truncatePlaylist, updatePlaylist, updatePlaylistDuration, updatePlaylistKaraCount, updatePlaylistLastEditTime, updatePLC } from '../dao/playlist.js';
+import { deleteContributor, deleteKaraFromPlaylist, deletePlaylist, deletePlaylistFromFavorites, getMaxPosInPlaylist, insertContributor, insertKaraIntoPlaylist, insertPlaylist, insertPlaylistToFavorites, refreshPlaylistStats, reorderPlaylist, replacePlaylist, selectPlaylistContents, selectPlaylists, selectPLCMini, setPos, shiftPosInPlaylist, truncatePlaylist, updatePlaylist, updatePlaylistDuration, updatePlaylistKaraCount, updatePlaylistLastEditTime, updatePLC } from '../dao/playlist.js';
 import { formatKaraList } from '../lib/services/kara.js';
 import { PLImportConstraints } from '../lib/services/playlist.js';
 import { DBPLC, PLCInsert } from '../lib/types/database/playlist.js';
@@ -109,9 +109,19 @@ export async function createPlaylist(pl: DBPL, token: JWTTokenWithRoles) {
 /** Get playlists */
 export async function getPlaylists(params: PLParams, token: JWTTokenWithRoles): Promise<DBPL[]> {
 	try {
+		if (params.favorites) {
+			const user = await findUserByName(params.favorites);
+			if (user) {
+				if (!user.flag_displayfavorites && user.login !== token?.username) throw new ErrorKM('GET_FAVORITES_FROM_USER_FORBIDDEN_ERROR', 403, false);
+			} else {
+				throw new ErrorKM('GET_FAVORITES_FROM_USER_NOT_FOUND_ERROR', 404, false);
+			}
+		}
+		if (token) {
+			params.username = token.username.toLowerCase();
+		}
 		const pls = await selectPlaylists(params);
 		// Let's filter lists depending on if we're allowed to see those lists or not
-		if (token) token.username = token.username.toLowerCase();
 		return pls.filter(pl => 
 			pl.flag_visible_online || 
 			token?.roles.admin ||
@@ -389,13 +399,13 @@ export async function exportPlaylist(plaid: string, token: JWTTokenWithRoles) {
 }
 
 export async function emptyPlaylist(plaid: string, token: JWTTokenWithRoles) {
-	token.username = token.username.toLowerCase();
-	const pl = (await getPlaylists({ plaid }, adminToken))[0];
-	if (!pl) throw {code: 404, msg: 'Playlist unknown'};
-	if (!token.roles.admin && token.username !== pl.username && !pl.contributors.find(c => c.username === token.username)) {
-		throw new ErrorKM('CHECK_YOUR_PRIVILEGES', 403, false);
-	}
 	try {
+		token.username = token.username.toLowerCase();
+		const pl = (await getPlaylists({ plaid }, adminToken))[0];
+		if (!pl) throw new ErrorKM('UNKNOWN_PLAYLIST', 404, false);
+		if (!token.roles.admin && token.username !== pl.username && !pl.contributors.find(c => c.username === token.username)) {
+			throw new ErrorKM('CHECK_YOUR_PRIVILEGES', 403, false);
+		}
 		logger.debug(`Emptying playlist ${pl.name}`, {service: 'Playlist'});
 		await truncatePlaylist(plaid);
 		await Promise.all([
@@ -406,10 +416,9 @@ export async function emptyPlaylist(plaid: string, token: JWTTokenWithRoles) {
 		// If our playlist is the public one, the frontend should reset all buttons on the song library so it shows + for everything all over again.
 		emitWS('playlistContentsUpdated', plaid);
 	} catch (err) {
-		throw {
-			message: err,
-			data: pl.name
-		};
+		logger.error(`Error emptying playlist ${plaid} : ${err}`, { service });
+		sentry.error(err);
+		throw err instanceof ErrorKM ? err : new ErrorKM('PL_EMPTY_ERROR');
 	}
 }
 
@@ -478,5 +487,37 @@ export async function importPlaylist(playlist: PlaylistExport, token: JWTTokenWi
 		logger.error(`Error importing playlist : ${err}`, { service });
 		sentry.error(err);
 		throw err instanceof ErrorKM ? err : new ErrorKM('PL_IMPORT_ERROR');
+	}
+}
+
+export async function addPlaylistToFavorites(plaid: string, token: JWTTokenWithRoles) {
+	try {
+		const pl = (await getPlaylists({plaid}, token))[0];
+		if (!pl) throw new ErrorKM('UNKNOWN_PLAYLIST', 404, false);
+		await insertPlaylistToFavorites(token.username, plaid);
+		// For now stats are refreshed every time a user does something. We'll move that to a cronjob later
+		refreshPlaylistStats().then(() => {
+			emitWS('playlistInfoUpdated', plaid);
+		});
+	} catch (err) {
+		logger.error(`Error adding playlist ${plaid} to favorites for ${token.username}: ${err}`, { service });
+		sentry.error(err);
+		throw err instanceof ErrorKM ? err : new ErrorKM('PL_ADD_TO_FAVORITES_ERROR');
+	}
+}
+
+export async function removePlaylistFromFavorites(plaid: string, token: JWTTokenWithRoles) {
+	try {
+		const pl = (await getPlaylists({plaid}, token))[0];
+		if (!pl) throw new ErrorKM('UNKNOWN_PLAYLIST', 404, false);
+		await deletePlaylistFromFavorites(token.username, plaid);
+		// For now stats are refreshed every time a user does something. We'll move that to a cronjob later
+		refreshPlaylistStats().then(() => {
+			emitWS('playlistInfoUpdated', plaid);
+		});
+	} catch (err) {
+		logger.error(`Error adding playlist ${plaid} to favorites for ${token.username}: ${err}`, { service });
+		sentry.error(err);
+		throw err instanceof ErrorKM ? err : new ErrorKM('PL_ADD_TO_FAVORITES_ERROR');
 	}
 }

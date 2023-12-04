@@ -4,6 +4,40 @@
 			<search-bar />
 		</div>
 		<div
+			v-if="loggedIn"
+			class="tabs is-fullwidth is-small"
+		>
+			<ul>
+				<li 
+					:onclick="() => playlistType = 'community'"
+					:class="{'is-active': playlistType === 'community'}"
+				>
+					<a>
+						<span class="icon"><font-awesome-icon :icon="['fas', 'globe']" /></span>
+						<span>{{ $t('playlists.community') }}</span>
+					</a>
+				</li>
+				<li
+					:onclick="() => playlistType = 'favorites'"
+					:class="{'is-active': playlistType === 'favorites'}"
+				>
+					<a>
+						<span class="icon"><font-awesome-icon :icon="['fas', 'star']" /></span>
+						<span>{{ $t('playlists.favorites') }}</span>
+					</a>
+				</li>
+				<li
+					:onclick="() => playlistType = 'personal'"
+					:class="{'is-active': playlistType === 'personal'}"
+				>
+					<a>
+						<span class="icon"><font-awesome-icon :icon="['fas', 'user']" /></span>
+						<span>{{ $t('playlists.my_playlists') }}</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div
 			v-if="!loading"
 			class="buttons"
 		>
@@ -58,7 +92,7 @@
 </template>
 
 <script setup lang="ts">
-	import type { OrderParam } from 'kmserver-core/src/lib/types/playlist';
+	import type { OrderParam, PLParams } from 'kmserver-core/src/lib/types/playlist';
 	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
 	import { storeToRefs } from 'pinia';
 	import { useAuthStore } from '~/store/auth';
@@ -71,18 +105,15 @@
 	const { search, sort } = storeToRefs(useMenubarStore());
 	const { setSearch, setResultsCount } = useMenubarStore();
 	const route = useRoute();
-	const { replace } = useRouter();
 
 	const playlists = ref<DBPL[]>([]);
 	const selectedPlaylist = ref<DBPL>();
 	const loading = ref(true);
+	const playlistType = ref<'community' | 'favorites' | 'personal'>('community');
 
 	watch(sort, fetch, { deep: true });
 	watch(search, fetch);
-
-	if (!loggedIn.value && !route.params.community) {
-		replace('/playlists/community');
-	}
+	watch(playlistType, fetch);
 
 	setResultsCount(0);
 	onMounted(() => {
@@ -95,20 +126,25 @@
 
 	async function fetch() {
 		loading.value = true;
-		playlists.value = await useCustomFetch<DBPL[]>('/api/playlist', {
-			params: route.params?.community === 'community' ? {
-				filter: search.value,
-				order: (sort.value[route.name] as OrderParam) || undefined,
-				reverseOrder: ['karacount', 'recent', 'duration'].includes(sort.value[route.name]) ? true : undefined
-			} :
-				{
-					username: user?.value?.login,
-					includeUserAsContributor: true,
-					filter: search.value,
-					order: (sort.value[route.name] as OrderParam) || undefined,
-					reverseOrder: ['karacount', 'recent', 'duration'].includes(sort.value[route.name]) ? true : undefined
-				}
-		});
+		let params: PLParams = {
+			filter: search.value,
+			order: (sort.value[route.name] as OrderParam) || undefined,
+			reverseOrder: ['karacount', 'recent', 'duration'].includes(sort.value[route.name]) ? true : undefined
+		};
+		if (playlistType.value === 'personal') {
+			params = {
+				...params,
+				byUsername: user?.value?.login,
+				includeUserAsContributor: true,
+			};
+		} else if (playlistType.value === 'favorites') {
+			params = {
+				...params,
+				favorites: user?.value?.login,
+			};
+		}
+
+		playlists.value = await useCustomFetch<DBPL[]>('/api/playlist', { params });
 		setResultsCount(playlists.value.length);
 		loading.value = false;
 	}
@@ -156,3 +192,21 @@
 	fetch();
 
 </script>
+
+<style scoped lang="scss">
+	.tabs {
+		font-size: 1.5rem;
+	}
+
+	@media (max-width: 1024px) {
+		.tabs {
+			font-size: 1.25rem;
+		}
+	}
+	
+	@media (max-width: 768px) {
+		.tabs {
+			font-size: 0.85em;
+		}
+	}
+</style>

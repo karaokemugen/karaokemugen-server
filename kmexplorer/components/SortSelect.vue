@@ -30,7 +30,7 @@
 					<option value="likes">{{ $t('search.sort.likes') }}</option>
 					<option value="language">{{ $t('search.sort.languages') }}</option>
 				</template>
-				<template v-else-if="route.name === 'playlists-community'">
+				<template v-else-if="route.name === 'playlists'">
 					<option
 						value="az"
 						selected
@@ -80,7 +80,7 @@
 		}
 	});
 
-	const canSort = computed(() => ['types-id', 'types-years', 'search-query', 'user-login', 'user-login-animelist', 'users', 'suggest', 'playlists-community'].includes(route.name as string));
+	const canSort = computed(() => ['types-id', 'types-years', 'search-query', 'user-login', 'user-login-animelist', 'users', 'suggest', 'playlists'].includes(route.name as string));
 </script>
 
 <style scoped lang="scss">
