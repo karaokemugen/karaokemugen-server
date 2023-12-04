@@ -70,7 +70,7 @@
 	watch(sort, () => resetList(), { deep: true });
 	watch(search, () => resetList(true));
 	watch(menuTags, () => resetList(true), { deep: true });
-	watch(enabledCollections, () => resetList(true), { deep: true });
+	watch(enabledCollections, () => resetList(true, false), { deep: true });
 	watch(karaokes, (karaokes) => setResultsCount(karaokes.infos.count), { deep: true });
 	watch(loggedIn, getPlaylists);
 
@@ -131,14 +131,14 @@
 		await resetList(true);
 	}
 
-	async function loadNextPage(force = false) {
+	async function loadNextPage(force = false, acceptQueryCollection = true) {
 		if (!force && (karaokes.value.infos.to === karaokes.value.infos.count || loading.value)) {
 			return;
 		}
 		from.value++;
 		loading.value = true;
 		const data = await useCustomFetch<KaraListType>('/api/karas/search', {
-			query: reqParams()
+			query: reqParams(acceptQueryCollection)
 		});
 		for (const karaoke of data.content) {
 			sortTypesKara(karaoke);
@@ -179,10 +179,10 @@
 		}, 100);
 	}
 
-	async function resetList(navigation = false) {
+	async function resetList(navigation = false, acceptQueryCollection = true) {
 		karaokes.value = { infos: { count: 0, to: 0, from: 0 }, i18n: {}, avatars: {}, content: [] };
 		from.value = -1;
-		await loadNextPage(true);
+		await loadNextPage(true, acceptQueryCollection);
 		if (route.name === 'search-query' && navigation && !props.favorites &&
 			(route.params.query !== (search.value || undefined) ||
 				decodeURIComponent(route.query.collections as string) !== enabledCollections.value.join(':') ||
@@ -191,7 +191,7 @@
 		}
 	}
 
-	function reqParams(): KaraRequest {
+	function reqParams(acceptQueryCollection = true): KaraRequest {
 		const queries: string[] = [];
 		const tags: string[] = [];
 		if (menuTags.value.length > 0 && !props.ignoreFilter) {
@@ -217,7 +217,7 @@
 			order: (sort.value[route.name] as OrderParam) || undefined,
 			favorites: props.favorites || undefined,
 			collections:
-				typeof route.query.collections === 'string'
+				typeof route.query.collections === 'string' && acceptQueryCollection
 					? decodeURIComponent(route.query.collections).replaceAll(':', ',')
 					: enabledCollections.value.join(','),
 			userAnimeList: props.userAnimeList || undefined
