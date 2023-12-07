@@ -24,7 +24,7 @@ export async function selectAllMedias(collections?: string[]): Promise<DBMedia[]
 }
 
 export async function selectAllYears(params: { order: 'recent' | 'karacount', collections: string[] }): Promise<DBYear[]> {
-	let orderClauses = 'year DESC';
+	let orderClauses = 'year';
 	if (params.order === 'karacount') orderClauses = `karacount DESC, ${orderClauses}`;
 	const collectionsClauses = [];
 	if (params.collections) for (const collection of params.collections) {
