@@ -53,7 +53,7 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 	try {
 		// Refresh hooks at every kara we get.
 		await refreshHooks();
-		await applyKaraHooks(kara);
+		await applyKaraHooks(kara, true);
 		logger.debug(`Kara during HeavyLifting: ${JSON.stringify(kara)}`, { service });
 		const fileName = await defineFilename(kara);
 		// Move files to their own directory
