@@ -13,14 +13,14 @@ export async function updateLastLogin(username: string): Promise<string> {
 }
 
 export async function selectUser(searchType: string, value: any): Promise<DBUser> {
-	const query = sql.selectUser(false, `WHERE ${searchType} = $1`);
+	const query = sql.selectUser(false, `${searchType} = $1`);
 	const res = await db().query(query, [value]);
 	return res.rows[0];
 }
 
-export async function selectAllUsers(filter?: string, from?: number, size?: number, order = false): Promise<DBUser[]> {
+export async function selectAllUsers(filter?: string, from?: number, size?: number, publicOnly = false, order = false): Promise<DBUser[]> {
 	const res = await db().query(
-		sql.selectUser(!!filter, '', (size) ? `LIMIT ${size} OFFSET ${from || 0}` : '', order),
+		sql.selectUser(!!filter, publicOnly ? 'flag_public' : '', (size) ? `LIMIT ${size} OFFSET ${from || 0}` : '', order),
 		filter ? [paramWords(filter).join(' & ')] : []
 	);
 	return res.rows;
