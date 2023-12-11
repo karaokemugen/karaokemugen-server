@@ -202,8 +202,7 @@
 			"add": "Añadir a lista de reproducción",
 			"new_playlist_label": "Lista de reproducción de {nickname}",
 			"add_success": "Karaoke añadido exitosamente a la lista de reproducción.",
-			"create": "Crear nueva lista de reproducción…",
-			"my_playlists": "Mis listas de reproducción"
+			"create": "Crear nueva lista de reproducción…"
 		},
 		"meta": "{songtitle} por {serieSinger}",
 		"notfound": "No se ha encontrado este karaoke",
