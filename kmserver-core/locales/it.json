@@ -1,1 +1,12 @@
-{}
+{
+    "MAIL": {
+        "RESET_PASSWORD_REQUEST": {
+            "BODY": "Ciao, ${{username}},\n\nÈ stata richiesta (da te o da qualcun altro) la reimpostazione della password del tuo account su {{host}}. Se non sei stato tu, ti preghiamo di ignorare questa mail.\n\nTi preghiamo di cliccare il seguente link per impostare una nuova password:\n\n{{url}}\n\nQuesto link scadrà tra 2 ore.",
+            "SUBJECT": "Reimposta la password di Karaoke Mugen"
+        },
+        "RESET_PASSWORD_DONE": {
+            "SUBJECT": "La password di Karaoke Mugen è stata reimpostata",
+            "BODY": "Ciao, {{username}},\n\nLa tua password è stata reimpostata correttamente su {{host}}.\n\n\n\nOra dovresti poter accedere utilizzando la tua nuova password."
+        }
+    }
+}
