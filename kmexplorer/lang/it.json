@@ -1,32 +1,730 @@
 {
 	"kara": {
-		"notfound": "Karaoke non trovata",
+		"notfound": "Karaoke non trovato",
 		"tagtypes": {
 			"platforms": "Piattaforma | Piattaforme",
 			"versions": "Versione | Versioni",
 			"groups": "Gruppo | Gruppi",
 			"langs": "Lingua | Lingue",
-			"singergroups": "Gruppo musicale | Gruppi musicali",
+			"singergroups": "Band | Band",
 			"series": "Serie",
 			"genres": "Genere | Generi",
-			"families": "Famiglia | Famiglie"
+			"families": "Famiglia | Famiglie",
+			"default": "Predefinito",
+			"authors": "Autore del karaoke | Autori del karaoke",
+			"songtypes": "Tipo di brano | Tipi di brano",
+			"creators": "Creatore | Creatori",
+			"singers": "Cantante | Cantanti",
+			"songwriters": "Cantautore | Cantautori",
+			"warnings": "Avvertenza | Avvertenze",
+			"years": "Anno | Anni",
+			"origins": "Origine | Origini",
+			"franchises": "Franchise | Franchise",
+			"misc": "Altro",
+			"collections": "Collezione | Collezioni"
 		},
 		"creators_by": "Creato da",
 		"singers_by": "Cantato da",
 		"songwriters_by": "Composto da",
 		"authors_by": "Karaoke creato da",
-		"singergroups_by": "dal gruppo musicale",
+		"singergroups_by": "dalla band musicale",
 		"duration": "Durata ",
 		"lyrics": {
-			"hide": "Nascondi testo"
-		}
+			"hide": "Nascondi il testo",
+			"show": "Mostra il testo"
+		},
+		"stats": {
+			"played": "Riprodotto {number} volte",
+			"requested": "Richiesto {number} volte",
+			"favorited": "Aggiunto ai preferiti da {number} utenti"
+		},
+		"import": {
+			"authors_tooltip": "Dovresti inserire il tuo nome qui ;)",
+			"singergroups_tooltip": "Se i cantanti appartengono ad una band, inseriscili qui. La band verrà visualizzata al posto del singolo cantante nel lettore e nella playlist.",
+			"langs_required": "Si prega di selezionare una lingua",
+			"sections": {
+				"files": "File",
+				"identity": "Identità",
+				"parents": "Brano principale",
+				"categorization": "Categoria",
+				"meta": "Metadata",
+				"titles": "Titolo/i"
+			},
+			"desc": {
+				"parents_public": "Quando un utente seleziona un brano principale nell'interfaccia pubblica, vedrà tutte le sue varianti.",
+				"titles_default_language": "La lingua predefinita del titolo dovrebbe essere quella del titolo originale. Per titoli in lingue non latine (cinese, giapponese, arabo, coreano…), aggiungi un titolo \"romanizzato\" e impostalo come predefinito.",
+				"titles": "Imposta tutti i titoli del brano in diverse lingue. Di solito esiste un solo titolo.",
+				"parents": "Se questo brano è una variante di un altro brano, inserisci quello principale.",
+				"aliases": "Se il brano è conosciuto con un altro nome (ad esempio il titolo abbreviato), impostalo qui per aiutare gli utenti a trovarlo tramite la ricerca. Non c'è bisogno di utilizzare parole già contenute nel titolo del brano."
+			},
+			"media_file_tooltip": "Formati supportati: {formats}",
+			"title": "Titolo",
+			"add_file_media_not_supported_error": "{name} non è un file multimediale supportato, convertilo ad uno dei seguenti formati: {formats}",
+			"titles_aliases_tooltip": "Nomi abbreviati o alternativi, usati durante la ricerca.",
+			"lyrics_file": "File del testo",
+			"media_file_edit": "Sostituisci il file multimediale",
+			"from_display_type": "Visualizza tipo di tag",
+			"lyrics_file_missing": "Manca il file del testo, il che va bene solo se stai inviando un file MKV o un karaoke senza testo (esatto).",
+			"authors_required": "È necessario inserire l'autore del karaoke",
+			"romanization_warning": "Questo titolo/tag contiene un alfabeto non latino. Devi aggiungere anche la lingua \"Alfabeto Latino (Romanizzazione)\"",
+			"songwriters_tooltip": "Compositori, arrangiatori e cantautori.",
+			"series_singers_required": "Serie, Cantato da e Dalla band musicale non possono essere tutti vuoti.",
+			"add_success_description": "Un ticket è stato aggiunto al nostro tracker. Puoi controllarne i progressi su {url}",
+			"i18n_delete": "Rimuovi lingua",
+			"songorder_tooltip": "Numero della opening/ending. Se questa è l'unica opening/ending della serie, lascia vuoto.",
+			"year_required": "È necessario l'anno di trasmissione",
+			"add_success": "Il tuo karaoke è stato inviato correttamente!",
+			"show_hide": "Mostra/Nascondi",
+			"default_language": "Lingua predefinita",
+			"auto_send_contact_infos": "Se accedi, puoi spuntare una casella nel modulo per condividere automaticamente le tue informazioni di contatto con i mantenitori del database.",
+			"i18n_select": "Aggiungi una lingua",
+			"add_file_media_error": "{name} non è un file multimediale",
+			"add_error": "Si è verificato un errore, il karaoke non è stato inviato correttamente.",
+			"check_in_progress": "Si prega di controllare la lista dei karaoke attualmente in lavorazione prima di inviarci un brano. Così facendo si evitano doppi lavori e il mondo sarà un posto migliore.",
+			"year_tooltip": "Anno in cui la serie è stata trasmessa o il video è stato prodotto",
+			"create": "Crea",
+			"year": "Anno di trasmissione",
+			"add_file_lyrics_error": "{name} non è un file di sottotitoli",
+			"songorder": "Ordine dei brani",
+			"collections_required": "Almeno una collezione deve avere la spunta",
+			"submit": "Invia karaoke",
+			"contact_infos": "Informazioni di contatto",
+			"year_invalid": "L'anno di trasmissione non è valido",
+			"contact_infos_tooltip": "Inserisci i tuoi dati, così possiamo contattarti in caso di domande riguardanti il karaoke.",
+			"parents": "Brano principale",
+			"comment_tooltip": "Se vuoi inviare un messaggio ai mantenitori o semplicemente ringraziarli, fallo qui!",
+			"songorder_invalid": "L'ordine dei brani non è valido",
+			"series_tooltip": "Serie TV, film, videogioco, ecc...",
+			"comment": "Vuoi lasciare un commento?",
+			"title_tooltip": "Se non sei sicuro, inserisci anche il nome della serie. Se si tratta di una versione alternativa, specificalo nel titolo, ad esempio: \"Il mio titolo ~ Ver. Disco\"",
+			"attention": "ATTENZIONE:",
+			"title_required": "Si prega di inserire un titolo",
+			"license_link": "Clicca qui per maggiori informazioni riguardo questa licenza.",
+			"created_at": "Data creazione",
+			"documentation_link": "Documentazione",
+			"lyrics_file_tooltip": "Formati supportati: {formats}",
+			"choose_file": "Scegli un file",
+			"add_file_success": "Il file {name} è stato aggiunto correttamente",
+			"license_reminder": "Il tuo karaoke sarà pubblicato con licenza {name}",
+			"description": "Questo modulo ti permette di inviare un karaoke al team di Karaoke Mugen. Non verrà integrato subito al database perché è necessario convalidarlo. Si prega di essere pazienti. Il tuo karaoke potrebbe ricevere modifiche se non rispetta il regolamento del team.",
+			"restart": "Invia un nuovo karaoke",
+			"titles_aliases": "Alias",
+			"parents_tooltip": "Se un brano principale è definito, questo karaoke verrà mostrato come variante della versione principale selezionata.",
+			"from_display_type_tooltip": "Seleziona il tipo di tag da utilizzare quando il brano è visualizzato",
+			"in_progress_link": "Lista dei karaoke in lavorazione",
+			"songtypes_required": "È necessario il tipo di brano",
+			"franchises_tooltip": "Se la serie fa parte di un franchise (come Gundam, Mario, Zelda, Naruto, ecc...), inseriscilo qui.",
+			"creators_tooltip": "Entità che ha creato la serie. Può essere uno studio di animazione, studio cinematografico o casa produttrice videoludica.",
+			"send_contact_infos": "Condividi le mie informazioni di contatto con i mantenitori del database",
+			"media_file_required": "È necessario il file multimediale",
+			"groups_tooltip": "Gruppi di download per questo brano. Il brano sarà incluso in questi pacchetti",
+			"media_file": "File multimediale",
+			"add": "Aggiungi"
+		},
+		"download": "Scarica",
+		"problem": {
+			"form": {
+				"subtitle": "Facciamo del nostro meglio per mantenere un database di qualità, ma a volte possono verificarsi dei problemi. Grazie dell'aiuto!",
+				"username": {
+					"label": "Il tuo nome",
+					"placeholder": "IoSonoMeticoloso"
+				},
+				"thanks": {
+					"btn": "Chiudi",
+					"text": "Grazie! Risolveremo il problema al più presto: {url}"
+				},
+				"type": {
+					"metadata": "Problema del metadata",
+					"media": "Problema del file multimediale",
+					"lyrics": "Problema del testo",
+					"label": "Tipo del problema"
+				},
+				"submit": "Invia",
+				"title": "Segnala un problema",
+				"comment": {
+					"placeholder": "Dopo 2 minuti, il testo non è più sincronizzato.",
+					"label": "Commento"
+				}
+			},
+			"title": "Problemi con {title}?",
+			"btn": {
+				"metadata": "Problema del metadata",
+				"media": "Problema del file multimediale",
+				"lyrics": "Problema del testo",
+				"edit": "Suggerisci una modifica"
+			}
+		},
+		"playlists": {
+			"add": "Aggiungi alla playlist",
+			"new_playlist_label": "Playlist di {nickname}",
+			"add_success": "Karaoke aggiunto correttamente alla playlist.",
+			"create": "Crea una nuova playlist…"
+		},
+		"meta": "{songtitle} di {serieSinger}",
+		"siblings": "Brani simili",
+		"player": {
+			"previous": "Brano precedente (B)",
+			"loop": "Ciclo infinito",
+			"next": "Prossimo brano (N)",
+			"autoplay": "Riproduzione automatica",
+			"theater_mode": "Modalità cinema (T)",
+			"fullscreen": "Schermo intero (F)"
+		},
+		"childrens": "Varianti",
+		"favorites": {
+			"remove": "Rimuovi dai preferiti",
+			"add": "Aggiungi ai preferiti"
+		},
+		"set_banner": {
+			"btn": "Usa come banner del profilo",
+			"forbidden_label": "Non puoi usare questo karaoke come banner del profilo."
+		},
+		"live_unavailable": "Non puoi riprodurre questo karaoke nel tuo browser. Il formato del video potrebbe essere non supportato dal browser o è stato disabilitato per motivi legali.",
+		"created_at": "Creato ",
+		"parents": "Brano principale",
+		"phrase": "{songtype} di {series}"
 	},
 	"menu": {
-		"discord": "Discord"
+		"discord": "Discord",
+		"series": "Serie",
+		"creators": "Creatori",
+		"add_repository": "Aggiungi l'archivio alla tua app",
+		"misc": "Altre tag",
+		"login": "Accedi",
+		"kara_import": "Invia un karaoke",
+		"account": "Account",
+		"singergroups": "Band",
+		"versions": "Versioni",
+		"songwriters": "Cantautori",
+		"anime_list": "I miei anime",
+		"random": "Lancia i dadi",
+		"tags": "Altri…",
+		"songtypes": "Tipi",
+		"logout": "Esci",
+		"playlists": "Playlist",
+		"karas": "Brani",
+		"bans": "Ban",
+		"connection": "Accedi",
+		"singers": "Cantanti",
+		"groups": "Gruppi",
+		"database": "Database",
+		"origins": "Origini",
+		"franchises": "Franchise",
+		"families": "Famiglie",
+		"warnings": "Avvertenze",
+		"search_users": "Cerca utenti",
+		"genres": "Generi",
+		"switch_language": "Cambia la lingua",
+		"platforms": "Piattaforme",
+		"community": "Community",
+		"play_random_song": "Riproduci un brano casuale",
+		"years": "Anni",
+		"register": "Registrati",
+		"authors": "Autori",
+		"remotes": "Remoti",
+		"discourse": "Forum",
+		"langs": "Lingue",
+		"kara_suggest": "Suggerisci un karaoke"
 	},
 	"error": {
-		"not_found_profile": "Impossibile trovare utente",
+		"not_found_profile": "Impossibile trovare questo utente",
 		"generic": "Errore",
-		"private_profile": "Profilo è privato."
+		"private_profile": "Il profilo è privato.",
+		"not_found_tag": "Tag non trovata",
+		"home": "Vai alla home",
+		"remote": "Errore durante il caricamento della lista remota",
+		"not_found_playlist": "Impossibile trovare questa playlist",
+		"bans": "Errore durante il caricamento della lista ban"
+	},
+	"toast": {
+		"CREATE_USER_ERROR": "Errore durante la creazione utente",
+		"GET_KARAS_ERROR": "Errore durante il recupero della lista brani",
+		"USER_CREATED": "Utente creato correttamente",
+		"GET_BASESTATS_ERROR": "Errore durante il recupero delle statistiche",
+		"PL_SHARE_CLIPBOARD_SUCCESS": "Link alla playlist copiato negli appunti",
+		"PL_ADD_CONTRIBUTOR_NO_SELF_ERROR": "Non puoi aggiungere te stesso come collaboratore",
+		"NO_KARA_FOUND": "Non è stato trovato alcun brano",
+		"ADD_SUGGESTION_ERROR": "Impossibile inviare il suggerimento",
+		"GET_FAVORITES_FROM_USER_NOT_FOUND_ERROR": "Non è stato trovato alcun utente",
+		"GENERATED_KARA": "Karaoke inviato correttamente.",
+		"TAG_CREATED": "Tag creata correttamente",
+		"PL_IMPORT_ERROR": "Errore durante l'importazione della playlist",
+		"USER_DELETED": "Utente eliminato correttamente",
+		"GET_USER_ERROR": "Errore durante il recupero dell'utente",
+		"UNKNOWN_PLAYLIST": "Playlist sconosciuta",
+		"ADD_FAVORITE_ERROR": "Impossibile aggiungere questo brano ai tuoi preferiti",
+		"BAD_IMPORT_DATA_ERROR": "Errore del formato dati",
+		"PL_REMOVE_CONTRIBUTOR_ERROR": "Errore durante l'eliminazione dei collaboratori",
+		"USER_ASCII_CHARACTERS_ONLY": "Si prega di utilizzare solo caratteri alfanumerici nel nome utente (puoi impostare il soprannome che preferisci più tardi).",
+		"GET_USERS_ERROR": "Errore durante il recupero della lista utenti",
+		"WRONG_BANNER_FILE_TYPE": "Formato del file banner incompatibile",
+		"GET_FAVORITES_FROM_USER_FORBIDDEN_ERROR": "I preferiti di questo utente non sono pubblici",
+		"REMOVE_FAVORITE_ERROR": "Impossibile rimuovere questo brano dai tuoi preferiti",
+		"USER_EDITED": "Utente modificato correttamente",
+		"WRONG_AVATAR_FILE_TYPE": "Formato dell'avatar incompatibile",
+		"PL_GET_ERROR": "Errore durante il recupero della playlist",
+		"SUBFILE_PROCESS_ERROR": "Errore durante la processazione del testo",
+		"PL_GET_CONTENTS_ERROR": "Errore durante il recupero dei contenuti della playlist",
+		"LOG_ERROR": "Credenziali errate.",
+		"PL_EDIT_SONG_ERROR": "Errore durante la modifica dei contenuti della playlist",
+		"PL_EXPORT_ERROR": "Errore durante l'esportazione della playlist",
+		"SUBFILE_FORMAT_UNKNOWN": "Formato del testo sconosciuto",
+		"UPLOADED_MEDIA_ERROR": "Errore durante la processazione del file multimediale",
+		"PL_ADD_SONG_ERROR": "Errore durante l'aggiunta del brano alla playlist",
+		"GET_SUGGESTIONS_LANGUAGES_ERROR": "Impossibile recuperare le lingue dei suggerimenti",
+		"PL_SHARE_CLIPBOARD_FAIL": "Non è stato possibile copiare il link alla playlist negli appunti",
+		"INVALID_DATA": "Dati non validi",
+		"PL_CREATE_ERROR": "Errore durante la creazione della playlist",
+		"REMOVE_SUGGESTION_ERROR": "Impossibile rimuovere il suggerimento",
+		"EDIT_USER_ERROR": "Errore durante la modifica del profilo",
+		"PL_DELETE_ERROR": "Errore durante l'eliminazione della playlist",
+		"GET_SUGGESTIONS_ERROR": "Impossibile recuperare i suggerimenti",
+		"GITLAB_DISABLED": "Il supporto Gitlab è disabilitato",
+		"EDITED_KARA": "Modifica inviata correttamente.",
+		"PASSWORD_UPDATED": "Password aggiornata correttamente",
+		"PL_EDIT_ERROR": "Errore durante la modifica della playlist",
+		"PASSWORD_TOO_SHORT": "Password troppo corta",
+		"AVATAR_ERROR": "Errore durante il caricamento del file avatar",
+		"POST_SUGGESTION_ERROR": "Impossibile inviare il suggerimento",
+		"PL_SHARE_ERROR": "Errore durante la condivisione della playlist",
+		"IMPORT_KARA_ERROR": "Impossibile inviare il karaoke.",
+		"PL_DELETE_SONG_ERROR": "Errore durante l'eliminazione del brano dalla playlist",
+		"GET_TAGS_ERROR": "Errore durante il recupero delle tag",
+		"EDIT_KARA_ERROR": "Impossibile inviare la modifica.",
+		"PL_SHUFFLE_ERROR": "Errore durante la mescolazione della playlist",
+		"FILE_UPLOADED": "File caricato.",
+		"UPDATE_SUGGESTION_LIKE_ERROR": "Impossibile votare questo brano",
+		"UNKNOWN_SONG": "Brano sconosciuto",
+		"GET_YEARS_ERROR": "Errore durante il recupero della lista anni",
+		"CHECK_YOUR_PRIVILEGES": "Permessi insufficienti",
+		"BANNER_NOT_GENERATED_YET": "Il banner non è ancora stato generato!",
+		"PL_ADD_CONTRIBUTOR_ERROR": "Errore durante l'aggiunta dei collaboratori",
+		"GET_KARA_ERROR": "Errore durante il recupero del brano",
+		"NEW_KARA_ISSUE_ERROR": "Impossibile creare il ticket",
+		"BANNER_BANNED": "Questo banner non può essere usato"
+	},
+	"modal": {
+		"suggest": {
+			"submitted": {
+				"subtitle": "Messaggio sentito forte e chiaro!",
+				"text": "Abbiamo ricevuto il tuo suggerimento, puoi controllarne lo stato cliccando {here}.",
+				"here": "qui",
+				"close": "Chiudi"
+			},
+			"fields": {
+				"series": {
+					"label": "Serie/Cantante",
+					"placeholder": "Yôjo Senki: Saga of Tanya the Evil"
+				},
+				"link": {
+					"label": "Link",
+					"placeholder": "https://www.youtube.com/watch?v=5VRyiaszGtA"
+				},
+				"title": {
+					"label": "Titolo",
+					"placeholder": "JINGO JUNGLE"
+				},
+				"name": {
+					"placeholder": "Anonimo magico",
+					"label": "Il tuo nome"
+				},
+				"type": {
+					"label": "Tipo"
+				}
+			},
+			"subtitle": "Non hai trovato quello che cercavi? Puoi inviare un suggerimento.",
+			"title": "Suggerimento",
+			"submit": "Invia"
+		},
+		"signup": {
+			"fields": {
+				"email": {
+					"label": "Email",
+					"placeholder": "test{'@'}shelter.moe"
+				},
+				"password_confirmation": {
+					"label": "Conferma password",
+					"placeholder": "InRealtàÈMeglioIdolM{'@'}ster"
+				},
+				"password": {
+					"label": "Password",
+					"placeholder": "InRealtàÈMeglioIdolM{'@'}ster"
+				},
+				"username": {
+					"label": "Nome utente",
+					"placeholder": "LoveLiveFan93"
+				}
+			},
+			"submit": "Registrati",
+			"passwords_mismatch": "Le password non corrispondono",
+			"title": "Registrati",
+			"subtitle": "Registrati per creare il tuo profilo e salvare i tuoi preferiti!"
+		},
+		"profile": {
+			"fields": {
+				"email": {
+					"label": "Email",
+					"placeholder": "test{'@'}shelter.moe"
+				},
+				"nickname": {
+					"placeholder": "LoveLiveFan93",
+					"label": "Soprannome"
+				},
+				"banner": {
+					"change": "Per cambiare il tuo banner, vai nella pagina di un karaoke e clicca il tasto \"Usa come banner del profilo\". I banner personalizzati sono riservati ai donatori.",
+					"remove": "Reimposta il banner predefinito",
+					"label": "Banner",
+					"upload": "Carica un banner",
+					"donator": "Grazie del supporto, sei meraviglioso! Puoi caricare un banner personalizzato o usarne uno di un karaoke a scelta."
+				},
+				"twitch": {
+					"label": "Twitch",
+					"placeholder": "KaraokeLive"
+				},
+				"flag_public": {
+					"desc": "Di base, il tuo account è visibile alla ricerca utenti e mostra tutte le informazioni soprastanti ad eccezione dell'indirizzo e-mail. Se togli la spunta da questo riquadro, il tuo account non sarà più disponibile nei risultati della ricerca (sarai l'unico che potrà vederlo, una volta effettuato l'accesso).",
+					"checkbox": "Rendi pubblico il mio profilo",
+					"label": "Profilo pubblico"
+				},
+				"instagram": {
+					"label": "Instagram",
+					"placeholder": "karaokemugen"
+				},
+				"anilist": {
+					"placeholder": "karaokemugen",
+					"label": "AniList"
+				},
+				"password": {
+					"placeholder": "PreferiscoDavveroIdolM{'@'}ster",
+					"label": "Password"
+				},
+				"url": {
+					"placeholder": "https://karaokes.moe",
+					"label": "Sito Web"
+				},
+				"bio": {
+					"label": "Biografia",
+					"placeholder": "La storia della mia vita"
+				},
+				"lang_prefs": {
+					"main_song_name_lang": "Preferenza di visualizzazione dei nomi dei brani",
+					"fallback_song_name_lang": "Preferenza di visualizzazione dei nomi dei brani di riserva"
+				},
+				"discord": {
+					"label": "Discord",
+					"placeholder": "Karak#1423"
+				},
+				"flag_displayfavorites": {
+					"label": "Preferiti",
+					"checkbox": "Mostra i miei preferiti",
+					"desc": "Oltre a mostrare il tuo profilo pubblico, puoi mostrare i tuoi preferiti (quindi i tuoi gusti) a tutti. Quest'opzione è disabilitata di base. Per mostrare i tuoi preferiti, il tuo profilo deve prima essere pubblico."
+				},
+				"bluesky": {
+					"label": "Bluesky",
+					"placeholder": "karaokemugen.bsky.social"
+				},
+				"flag_sendstats": {
+					"checkbox": "Utilizza i miei preferiti e le mie richieste karaoke per le statistiche",
+					"label": "Statistiche"
+				},
+				"mastodon": {
+					"placeholder": "karaokemugen{'@'}shelter.moe",
+					"label": "Mastodon"
+				},
+				"myanimelist": {
+					"label": "MyAnimeList",
+					"placeholder": "karaokemugen"
+				},
+				"kitsu": {
+					"placeholder": "karaokemugen",
+					"label": "Kitsu"
+				},
+				"twitter": {
+					"label": "Twitter",
+					"placeholder": "KaraokeMugen"
+				},
+				"password_confirmation": {
+					"label": "Conferma password",
+					"placeholder": "PreferiscoDavveroIdolM{'@'}ster"
+				},
+				"username": {
+					"label": "Nome utente"
+				},
+				"location": {
+					"label": "Località"
+				},
+				"anime_list_to_fetch": {
+					"label": "Lista anime da recuperare"
+				}
+			},
+			"headers": {
+				"password": "Cambia password",
+				"profile": "A proposito",
+				"lang": "Lingue preferite",
+				"privacy": "Privacy"
+			},
+			"select_avatar": "Seleziona un avatar",
+			"delete": "Elimina l'account",
+			"title": "Modifica profilo",
+			"submit": "Salva",
+			"passwords_mismatch": "Le password non corrispondono"
+		},
+		"join_kara": {
+			"label": "Unisciti ad una festa karaoke",
+			"add": "Unisciti",
+			"help": "Inserisci il codice della sessione (di solito 4 lettere) o l'URL del karaoke.",
+			"cancel": "Annulla",
+			"error": "Il codice non è valido, controlla meglio.",
+			"desc": "Inserisci un codice per unirti ad una festa karaoke"
+		},
+		"create_edit_playlist": {
+			"description": "Descrizione",
+			"title_edit": "Modifica la playlist",
+			"contributors": "Collaboratori",
+			"title_create": "Crea playlist",
+			"public": "Pubblica",
+			"name": "Nome",
+			"submit_edit": "Modifica",
+			"submit_create": "Salva"
+		},
+		"delete_account": {
+			"cancel": "Annulla",
+			"label": "Vuoi davvero eliminare il tuo account?",
+			"add": "Elimina account"
+		},
+		"add_duplicate_in_playlist": {
+			"add": "Aggiungi comunque",
+			"cancel": "Annulla",
+			"label": "Il karaoke è già nella playlist \"{name}\"."
+		},
+		"login": {
+			"fields": {
+				"forgot_password": {
+					"error": "Non è stato possibile reimpostare la password: contatta l'amministratore del server del tuo account.",
+					"success": "Ti è stata inviata una mail con un link per reimpostare la tua password.",
+					"label": "Hai dimenticato la password?"
+				},
+				"username": {
+					"label": "Nome utente",
+					"placeholder": "LoveLiveFan93"
+				},
+				"password": {
+					"label": "Password",
+					"placeholder": "InRealtàÈMeglioIdolM{'@'}ster"
+				}
+			},
+			"title": "Accedi",
+			"subtitle": "Accedi per visualizzare i tuoi preferiti e modificare il tuo profilo!",
+			"submit": "Accedi"
+		},
+		"reset_password": {
+			"button": "Cambia password",
+			"description": "Inserisci una nuova password"
+		},
+		"set_banner": {
+			"one": "C'è solo un banner per i karaoke solo-audio.",
+			"label": "Scegli un banner",
+			"next": "Prossima immagine",
+			"previous": "Immagine precedente",
+			"catch": "Personalizza il tuo profilo con un meraviglioso banner! Esplora i banner e conferma la tua scelta.",
+			"set": "Usa questa immagine",
+			"cancel": "Annulla"
+		},
+		"add_repository": {
+			"label": "Aggiungi questo archivio alla tua app Karaoke Mugen!",
+			"desc": "Puoi aggiungere questo archivio alla tua app Karaoke Mugen cliccando il tasto sottostante. Se Karaoke Mugen non è installato nel tuo computer, questo tasto non avrà effetto.",
+			"download": "L'applicazione può essere scaricata qui.",
+			"online": "Online",
+			"add": "Aggiungi",
+			"cancel": "Annulla",
+			"button": "Archivio:",
+			"manual": "Per aggiungere manualmente questo archivio, apri la tua app Karaoke Mugen, aggiungi l'archivio {repository} e spunta la casella \"{online}\"."
+		},
+		"download": {
+			"media": "Scarica file multimediale (.{format})",
+			"karabundle": "Scarica dati (.json)",
+			"label": "Scarica karaoke",
+			"cancel": "Annulla",
+			"subtitles": "Scarica testo (.{format})",
+			"media_hardsub": "Scarica file multimediale con sottotitoli inclusi (hardsub .mp4)"
+		},
+		"crop": {
+			"cancel": "Annulla",
+			"label": "Ritaglia avatar",
+			"add": "Aggiungi"
+		},
+		"stats": {
+			"label": "Utilizza i miei preferiti e le mie richieste karaoke per le statistiche",
+			"change": "Puoi cambiare opzione in qualsiasi momento sul tuo profilo. Acconsenti all'utilizzo delle tue statistiche?",
+			"refuse_desc": "Se non vuoi partecipare, nonostante l'anonimato, a queste statistiche, si prega di farcelo sapere. Se rifiuti, i tuoi dati verranno ignorati e non saranno inviati dall'app di Karaoke Mugen.",
+			"no": "No",
+			"yes": "Sì",
+			"desc": "Utilizziamo i tuoi preferiti e le tue richieste karaoke per creare statistiche sul consumo (ad esempio per definire i karaoke più richiesti)."
+		},
+		"delete_playlist": {
+			"add": "Elimina la playlist",
+			"label": "Vuoi davvero eliminare la playlist \"{name}\"?",
+			"cancel": "Annulla"
+		}
+	},
+	"playlists": {
+		"copy_of": "Copia di {playlist}",
+		"and_contributors_more": "(e {contributors}, {count} altri)",
+		"duration": "Durata {duration}",
+		"delete": "Elimina",
+		"share": "Condividi",
+		"favorites": "Preferiti",
+		"copy": "Copia",
+		"my_playlists": "Le mie playlist",
+		"shuffle": "Mescola",
+		"community": "Community",
+		"repeat": "Ripeti",
+		"karacount": "{karacount} brani",
+		"public": "Pubblica",
+		"export": "Esporta",
+		"edit": "Modifica",
+		"and_contributors": "(e {contributors})",
+		"add_karaoke": "Aggiungi un karaoke alla playlist",
+		"by_owner": "da {nickname}",
+		"create": "Crea una nuova playlist",
+		"private": "Privata",
+		"import": "Importa una playlist"
+	},
+	"duration": {
+		"minutes": "minuti",
+		"hours": "ore",
+		"seconds": "secondi",
+		"days": "giorni"
+	},
+	"search": {
+		"sort": {
+			"most_played_recently": "Più riprodotti (di recente)",
+			"likes": "Più amati",
+			"kara_count": "Numero di karaoke",
+			"most_requested_recently": "Più richiesti (di recente)",
+			"username": "Per nomi utente",
+			"languages": "Per lingue",
+			"recent": "Per data di aggiunta",
+			"most_favorites": "Più preferiti",
+			"most_played": "Più riprodotti",
+			"most_requested": "Più richiesti",
+			"a_z": "A-Z",
+			"duration": "Per durata"
+		},
+		"aria": {
+			"goto": "Vai alla pagina {0}",
+			"page": "Pagina {0}",
+			"sort": "Ordina per"
+		},
+		"placeholder": {
+			"kara": "Serie, cantanti, nomi…",
+			"tag": "Nome tag…",
+			"user": "Nome utente…",
+			"playlist": "Nome, utenti…"
+		},
+		"types": {
+			"karaokes": "Brani",
+			"suggestions": "Suggerimenti",
+			"users": "Utenti",
+			"favorites": "Preferiti dell'utente"
+		},
+		"previous": "Pagina precedente",
+		"next": "Prossima pagina"
+	},
+	"layout": {
+		"explore": "Aggiungine un po'!",
+		"end_favorites": "Questa è la fine dei preferiti.",
+		"loading": "Caricamento in corso…",
+		"suggest": "Non trovi quello che stai cercando?",
+		"collections": "Karaoke Mugen mette a disposizione molte collezioni, seleziona quelle che ti interessano.",
+		"slogan": "Vieni a cantare questo brano con Karaoke Mugen!",
+		"end_playlists": "Visualizza altre {number} playlist",
+		"end_users": "Hai raggiunto la fine della lista utenti (complimenti!).",
+		"empty": "Abbiamo cercato ovunque, non abbiamo trovato nulla.",
+		"results": "{count} risultato | {count} risultati",
+		"end_my_favorites": "Questa è la fine dei tuoi preferiti.",
+		"suggest_open": "Suggeriscici un brano!",
+		"remove_tags": "Hai provato a rimuovere alcune tag dai filtri dalla ricerca?"
+	},
+	"suggestions": {
+		"header": {
+			"random_selection": "Seleziona casualmente altri brani",
+			"title": "Importa suggerimenti",
+			"purpose": "Ecco alcuni brani karaoke pronti ad essere importati. Puoi cercare un brano in particolare o premere il tasto \"Seleziona casualmente altri brani\". Puoi approvare un brano karaoke premendo \"Sì!\".",
+			"suggestion": "Se comunque non trovi il brano che stai cercando, clicca \"Invia Suggerimento\".",
+			"send_suggestion": "Invia suggerimento",
+			"description": "Cos'è?"
+		},
+		"kara": {
+			"remove": "Rimuovi",
+			"ok": "Va bene!",
+			"yes": "Sì!"
+		},
+		"modal": {
+			"welcome": {
+				"title": "Dove sono?",
+				"text2": "Puoi cercare qualcosa o lasciare tutto al caso. In entrambi i casi, ti saremo grati per il tempo speso a migliorare i nostri database. Grazie!",
+				"btn": "OK!",
+				"discord": "Discord",
+				"text3": "Se ti serve una mano, vieni a trovarci su {discord}. Ascolteremo i tuoi suggerimenti e le tue critiche.",
+				"text": "Ci sono molti altri database di karaoke, ad esempio quelli dei software: UltraStar, Karawin o Karafun. Ecco dunque alcuni titoli disponibili con il testo già sincronizzato. Non possiamo integrare tutto subito, quindi vorremmo sapere le tue priorità!"
+			}
+		}
+	},
+	"remote": {
+		"yes": "Sì",
+		"permanent": "Permanente",
+		"delete_button": "Elimina stringa",
+		"code": "Codice",
+		"edit_error": "Errore durante la modifica del remoto",
+		"token": "Token",
+		"last_ip": "Ultimo IP",
+		"edit_button": "Modifica stringa",
+		"delete_error": "Errore durante l'eliminazione del remoto",
+		"edit_success": "Remoto modificato con successo",
+		"no": "No",
+		"last_use": "Ultimo utilizzo"
+	},
+	"bans": {
+		"submit": "Aggiungi",
+		"type": "Tipo",
+		"add": "Aggiungi un nuovo ban",
+		"reason": "Motivo",
+		"banned_at": "Bandito alle",
+		"delete": "Rimuovi",
+		"value": "Valore"
+	},
+	"footer": {
+		"software_under_license": "Software con licenza",
+		"api_documentation": "Documentazione API",
+		"base_under_licence": "Base del karaoke con licenza",
+		"translation": "Contribuisci alla traduzione",
+		"home": "Home del progetto"
+	},
+	"profile": {
+		"favorites": "Preferiti",
+		"anime_list": "I miei anime",
+		"favorites_count": "{count} preferito | {count} preferiti",
+		"playlists_count": "{count} playlist | {count} playlist",
+		"you": " (sei tu!)",
+		"private": "Il tuo profilo è privato, solo tu puoi vederlo.",
+		"public_favorites": "I tuoi preferiti sono pubblici. Clicca per nasconderli.",
+		"edit": "Modifica profilo",
+		"private_favorites": "I tuoi preferiti sono privati. Clicca per mostrarli."
+	},
+	"roles": {
+		"admin": "Amministratore",
+		"maintainer": "Mantenitore",
+		"donator": "Donatore",
+		"contributor": "Collaboratore"
+	},
+	"titles": {
+		"home": "Home"
+	},
+	"stats": {
+		"karaokes": "Karaoke | Karaoke",
+		"all_duration": "Durata di tutti i karaoke",
+		"last_generation": "Ultimo aggiornamento",
+		"media_size": "Dimensione dei file multimediali"
 	}
 }
