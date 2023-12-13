@@ -101,7 +101,12 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 					ignoreCollections: true
 				});
 			}
-			issueURL = await createInboxIssue(karaData.data.kid, edit);
+			try {
+				issueURL = await createInboxIssue(karaData.data.kid, edit)
+			} catch (err) {
+				logger.error(`Unable to post to Gitlab a new inbox issue: ${err}`, { service, obj: err });
+				// Non fatal.
+			}
 		}
 		addKaraInInbox(kara, contact, issueURL, edit ? edit.kid : undefined);
 		return issueURL;
