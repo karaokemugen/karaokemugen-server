@@ -67,7 +67,7 @@ SELECT COUNT(*)::integer AS count FROM (`
 WITH ${withCTE.join(', \n')}
 SELECT
 ${onlyCount && optimizeCount ? `
-  COUNT(ak.pk_kid)::integer AS count`
+  COUNT(DISTINCT ak.pk_kid)::integer AS count`
 : `
   ak.pk_kid AS kid,  
   ak.titles AS titles,
