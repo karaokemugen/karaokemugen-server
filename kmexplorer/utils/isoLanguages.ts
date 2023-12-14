@@ -5,6 +5,7 @@ import fr from '@karaokemugen/i18n-iso-languages/langs/fr.json';
 import id from '@karaokemugen/i18n-iso-languages/langs/id.json';
 import pt from '@karaokemugen/i18n-iso-languages/langs/pt.json';
 import es from '@karaokemugen/i18n-iso-languages/langs/es.json';
+import it from '@karaokemugen/i18n-iso-languages/langs/it.json';
 
 i18nIsoLanguages.registerLocale(en);
 i18nIsoLanguages.registerLocale(fr);
@@ -12,6 +13,7 @@ i18nIsoLanguages.registerLocale(id);
 i18nIsoLanguages.registerLocale(de);
 i18nIsoLanguages.registerLocale(pt);
 i18nIsoLanguages.registerLocale(es);
+i18nIsoLanguages.registerLocale(it);
 
 let navigatorLanguage: string;
 if (process.client) {
