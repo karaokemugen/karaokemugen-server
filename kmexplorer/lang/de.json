@@ -713,7 +713,9 @@
 		"copy": "Kopieren",
 		"shuffle": "Mischen",
 		"repeat": "Wiederholen",
-		"my_playlists": "Meine Playlisten"
+		"my_playlists": "Meine Playlisten",
+		"favorites": "Favoriten",
+		"community": "Community"
 	},
 	"bans": {
 		"submit": "Hinzufügen",
