@@ -119,7 +119,7 @@ async function gitlabCreateIssue(title: string, desc: string, labels: string[]):
 		});
 		return res.data.web_url;
 	} catch (err) {
-		logger.error('Unable to post new issue', {obj: err});
+		logger.error('Unable to post new issue', {service, obj: err?.response?.data?.message?.error || err});
 		sentry.addErrorInfo('Issue title', title);
 		sentry.addErrorInfo('Issue body', desc);
 		sentry.addErrorInfo('Issue labels', labels.join(', '));
@@ -178,7 +178,7 @@ export async function createKaraIssue(kid: string, type: 'Media' | 'Metadata' | 
 			.replace('$url', `https://${getConfig().KaraExplorer.Host}/kara/xxx/${kid}`);
 		if (conf.Gitlab.Enabled) return await gitlabCreateIssue(title, desc, issueTemplate.Labels);
 	} catch (err) {
-		logger.error(`Unable to create issue for song ${kid}`, {service: 'GitLab', obj: err});
+		logger.error(`Unable to create issue for song ${kid}`, {service, obj: err});
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err, 'warning');
 		throw err instanceof ErrorKM ? err : new ErrorKM('NEW_KARA_ISSUE_ERROR');
