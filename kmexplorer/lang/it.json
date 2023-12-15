@@ -11,7 +11,7 @@
 			"genres": "Genere | Generi",
 			"families": "Famiglia | Famiglie",
 			"default": "Predefinito",
-			"authors": "Autore del karaoke | Autori del karaoke",
+			"authors": "Autore di karaoke | Autori di karaoke",
 			"songtypes": "Tipo di brano | Tipi di brano",
 			"creators": "Creatore | Creatori",
 			"singers": "Cantante | Cantanti",
@@ -224,7 +224,7 @@
 		"remotes": "Remoti",
 		"discourse": "Forum",
 		"langs": "Lingue",
-		"kara_suggest": "Suggerisci un karaoke"
+		"kara_suggest": "Consiglia un karaoke"
 	},
 	"error": {
 		"not_found_profile": "Impossibile trovare questo utente",
@@ -459,7 +459,7 @@
 			},
 			"headers": {
 				"password": "Cambia password",
-				"profile": "A proposito",
+				"profile": "Informazioni",
 				"lang": "Lingue preferite",
 				"privacy": "Privacy"
 			},
