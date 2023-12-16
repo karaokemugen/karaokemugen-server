@@ -53,7 +53,7 @@ SELECT
 	count(pk_login) OVER()::integer AS count
 FROM users
 WHERE
-	${where || ''} AND
+	${where || 'TRUE'} AND
 	${filter ? 'to_tsvector(\'public.unaccent_conf\', concat(pk_login, \' \', nickname)) @@ to_tsquery(\'public.unaccent_conf\', $1)' : 'true'}
 GROUP BY pk_login, nickname, password, roles, avatar_file, bio, url, email, location, flag_sendstats, main_series_lang, fallback_series_lang, password_last_modified_at, last_login_at, social_networks, flag_public, flag_displayfavorites, banner, language
 ${order ? 'ORDER BY pk_login asc' : ''}
