@@ -72,10 +72,10 @@ export default function userController(router: Router) {
 			}
 		});
 	router.route('/users')
-		.get(async (req, res) => {
+		.get(optionalAuth, async (req: any, res) => {
 			try {
 				const info = await getAllUsers({
-					public: true,
+					public: !req.authToken?.roles?.admin,
 					filter: req.query.filter as string,
 					from: +req.query.from,
 					size: +req.query.size
