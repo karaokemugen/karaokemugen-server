@@ -273,7 +273,7 @@
 			throw createError({ statusCode: 500 });
 		});
 		if (res) {
-			if (!viewingSelf.value && !res.flag_public) {
+			if (!viewingSelf.value && !res.flag_public && !(loggedIn.value && userConnected?.value?.roles?.admin)) {
 				throw createError({ statusCode: 403, message: t('error.private_profile') });
 			}
 			user.value = res;
