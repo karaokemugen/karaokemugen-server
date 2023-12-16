@@ -726,5 +726,8 @@
 		"all_duration": "Durata di tutti i karaoke",
 		"last_generation": "Ultimo aggiornamento",
 		"media_size": "Dimensione dei file multimediali"
+	},
+	"languages": {
+		"qro": "Alfabeto Latino (Romanizzazione)"
 	}
 }

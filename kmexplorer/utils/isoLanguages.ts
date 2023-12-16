@@ -1,11 +1,11 @@
-import i18nIsoLanguages from '@karaokemugen/i18n-iso-languages';
-import de from '@karaokemugen/i18n-iso-languages/langs/de.json';
-import en from '@karaokemugen/i18n-iso-languages/langs/en.json';
-import fr from '@karaokemugen/i18n-iso-languages/langs/fr.json';
-import id from '@karaokemugen/i18n-iso-languages/langs/id.json';
-import pt from '@karaokemugen/i18n-iso-languages/langs/pt.json';
-import es from '@karaokemugen/i18n-iso-languages/langs/es.json';
-import it from '@karaokemugen/i18n-iso-languages/langs/it.json';
+import i18nIsoLanguages from '@cospired/i18n-iso-languages';
+import de from '@cospired/i18n-iso-languages/langs/de.json';
+import en from '@cospired/i18n-iso-languages/langs/en.json';
+import fr from '@cospired/i18n-iso-languages/langs/fr.json';
+import id from '@cospired/i18n-iso-languages/langs/id.json';
+import pt from '@cospired/i18n-iso-languages/langs/pt.json';
+import es from '@cospired/i18n-iso-languages/langs/es.json';
+import it from '@cospired/i18n-iso-languages/langs/it.json';
 
 i18nIsoLanguages.registerLocale(en);
 i18nIsoLanguages.registerLocale(fr);
@@ -87,16 +87,24 @@ export function listLangs(name: string, userLang: string): string[] {
 		.filter(langName => langName.toLowerCase().includes(name.toLowerCase()));
 }
 export function get3BCode(language: string, userLang:string): string {
+	const nuxt = useNuxtApp();
+	if (language === nuxt.$i18n.t('languages.qro')) return 'qro';
 	return i18nIsoLanguages.getAlpha3BCode(language, userLang) as string ||
 		i18nIsoLanguages.getAlpha3BCode(language, 'en') as string;
 }
 
 function getAlpha3BLanguagesLocalized(userLang: string): Array<{alpha3B: string, name: string}> {
+	const nuxt = useNuxtApp();
 	const alpha3BMap = i18nIsoLanguages.getAlpha3BCodes();
-	return Object.keys(alpha3BMap).map(code => ({alpha3B: code,
+	const result = Object.keys(alpha3BMap).map(code => ({alpha3B: code,
 		name: getLanguageName(code, userLang) || alpha3BMap[code]
 	}));
+	result.push({ alpha3B: 'qro', name: nuxt.$i18n.t('languages.qro') });
+	return result;
 }
 
-const getLanguageName = (alpha2orAlpha3: string, lang: string) => i18nIsoLanguages.getName(alpha2orAlpha3, lang) ||
-	i18nIsoLanguages.getName(alpha2orAlpha3, 'en');
+function getLanguageName(alpha2orAlpha3: string, lang: string) {
+	const nuxt = useNuxtApp();
+	if (alpha2orAlpha3 === 'qr' || alpha2orAlpha3 === 'qro') return nuxt.$i18n.t('languages.qro');
+	return i18nIsoLanguages.getName(alpha2orAlpha3, lang) || i18nIsoLanguages.getName(alpha2orAlpha3, 'en');
+}

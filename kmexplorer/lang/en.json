@@ -726,5 +726,8 @@
 		"reason": "Reason",
 		"submit": "Add",
 		"delete": "Remove"
+	},
+	"languages": {
+		"qro": "Latin Alphabet (Romanization)"
 	}
 }

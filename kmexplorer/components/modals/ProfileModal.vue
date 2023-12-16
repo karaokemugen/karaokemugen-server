@@ -706,7 +706,6 @@
 <script setup lang="ts">
 	import { storeToRefs } from 'pinia';
 	import _ from 'lodash';
-	import i18nIsoLanguages from '@karaokemugen/i18n-iso-languages';
 
 	import type { DBUser } from '%/lib/types/database/user';
 	import { useModalStore } from '~/store/modal';
@@ -782,10 +781,10 @@
 				location.value = getCountriesInLocaleFromCode(user?.value.location, locale.value);
 			}
 			if (user?.value.main_series_lang) {
-				main_series_lang_name.value = i18nIsoLanguages.getName(user?.value.main_series_lang, locale.value) as string;
+				main_series_lang_name.value = getLanguagesInLocaleFromCode(user?.value.main_series_lang, locale.value) as string;
 			}
 			if (user?.value.fallback_series_lang) {
-				fallback_series_lang_name.value = i18nIsoLanguages.getName(user?.value.fallback_series_lang, locale.value) as string;
+				fallback_series_lang_name.value = getLanguagesInLocaleFromCode(user?.value.fallback_series_lang, locale.value) as string;
 			}
 			if (!editedUser.value.social_networks) {
 				editedUser.value.social_networks = {

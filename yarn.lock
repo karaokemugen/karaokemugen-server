@@ -728,6 +728,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@cospired/i18n-iso-languages@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "@cospired/i18n-iso-languages@npm:4.1.0"
+  checksum: 6b3d13323e863ee87dde793dfdc13367de90a7df90c1e5ef9c19f193cd65f49cfc3aecfa3fc21ee02a30e7faa36180ce5853010984bb478953673441293e0a5d
+  languageName: node
+  linkType: hard
+
 "@cspotcode/source-map-support@npm:^0.8.0":
   version: 0.8.1
   resolution: "@cspotcode/source-map-support@npm:0.8.1"
@@ -1603,13 +1610,6 @@ __metadata:
     "@jridgewell/resolve-uri": 3.1.0
     "@jridgewell/sourcemap-codec": 1.4.14
   checksum: 0572669f855260808c16fe8f78f5f1b4356463b11d3f2c7c0b5580c8ba1cbf4ae53efe9f627595830856e57dbac2325ac17eb0c3dd0ec42102e6f227cc289c02
-  languageName: node
-  linkType: hard
-
-"@karaokemugen/i18n-iso-languages@npm:^4.0.3":
-  version: 4.0.3
-  resolution: "@karaokemugen/i18n-iso-languages@npm:4.0.3"
-  checksum: 2436ea369e12cfbfcfc3b5186c4502ad1a813aa1ad746f60ac75304ae9a105711ce10830a872c4f0e9ec2179777e9c8dff44455b62ba1bc01b98c150b3d4510e
   languageName: node
   linkType: hard
 
@@ -8950,11 +8950,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "kmexplorer@workspace:kmexplorer"
   dependencies:
+    "@cospired/i18n-iso-languages": ^4.1.0
     "@fortawesome/fontawesome-svg-core": ^6.4.2
     "@fortawesome/free-brands-svg-icons": ^6.4.2
     "@fortawesome/free-solid-svg-icons": ^6.4.2
     "@fortawesome/vue-fontawesome": ^3.0.3
-    "@karaokemugen/i18n-iso-languages": ^4.0.3
     "@kevinmarrec/nuxt-pwa": ^0.17.0
     "@nuxt/eslint-config": ^0.2.0
     "@nuxtjs/i18n": 8.0.0-beta.10

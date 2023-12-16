@@ -588,5 +588,8 @@
 		"last_ip": "IP terakhir",
 		"yes": "Ya",
 		"no": "Tidak"
+	},
+	"languages": {
+		"qro": "Alfabet Latin (Romanisasi)"
 	}
 }

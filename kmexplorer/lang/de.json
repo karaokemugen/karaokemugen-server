@@ -726,5 +726,8 @@
 		"banned_at": "Gebannt am",
 		"delete": "Entfernen",
 		"value": "Wert"
+	},
+	"languages": {
+		"qro": "Lateinisches Alphabet (Romanisierung)"
 	}
 }

@@ -503,5 +503,8 @@
 		"delete_error": "Erro ao eliminar remotamente",
 		"yes": "Sim",
 		"no": "Não"
+	},
+	"languages": {
+		"qro": "Alfabeto latino (romanização)"
 	}
 }
