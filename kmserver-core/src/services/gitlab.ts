@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash';
+import { cloneDeep, isEqual } from 'lodash';
 import {basename} from 'path';
 
 import { selectAllKaras } from '../dao/kara.js';
@@ -19,7 +19,7 @@ const service = 'Gitlab';
 /** Use the appropriate template and post an inbox element to GitLab * */
 export async function createInboxIssue(kid: string, edit?: EditElement) {
 	const conf = getConfig();
-	const kara = await getKara({
+	let kara = await getKara({
 		q: `k:${kid}`
 	});
 	let newParents = [];
@@ -30,6 +30,15 @@ export async function createInboxIssue(kid: string, edit?: EditElement) {
 		newParents = parents.content.map(k => k.karafile);
 	}
 	const issueTemplate = edit ? conf.Gitlab.IssueTemplate.Edit : conf.Gitlab.IssueTemplate.Import;
+	// Trim tags if there's more than 5 elements.
+	// Save original array somewhere
+	const fullKara = cloneDeep(kara);
+	for (const tagType of Object.keys(tagTypes)) {
+		if (kara[tagType] && kara[tagType].length > 5) {
+			kara[tagType] = kara[tagType].slice(0, 5);
+			kara[tagType].push('(and more...)');
+		}
+	}
 	const title = (issueTemplate.Title || `Inbox ${edit ? 'edit' : 'creation'}: $kara`)
 		.replace('$kara', basename(kara.karafile, '.kara.json'));
 	let desc = (issueTemplate.Description || '')
@@ -88,6 +97,8 @@ export async function createInboxIssue(kid: string, edit?: EditElement) {
 				
 				changes.push(`PARENTS updated : ${oldParents} => ${newParents}`);
 			}
+			// We need to restore kara from fullKara since we may have removed some tags when displaying earlier
+			kara = cloneDeep(fullKara);
 			// I know this is unreadable but take some ibuprofen and it'll be fine.
 			for (const tagType of Object.keys(tagTypes)) {
 				if (!isEqual(edit.oldKara[tagType], kara[tagType])) changes.push(`${tagType.toUpperCase()} updated : (${edit.oldKara[tagType]?.map((t: any) => t.name).join(', ')}) => (${kara[tagType]?.map((t: any) => t.name).join(', ')})`);
