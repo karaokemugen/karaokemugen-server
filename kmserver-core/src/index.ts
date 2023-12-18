@@ -14,7 +14,7 @@ import { initDB } from './dao/database.js';
 import { updateBanSession } from './dao/stats.js';
 import { initFrontend } from './frontend.js';
 import { buildKMExplorer } from './kmexplorer.js';
-import { configureLocale, getConfig, setConfig } from './lib/utils/config.js';
+import { configureLocale, getConfig } from './lib/utils/config.js';
 import { asyncCheckOrMkdir } from './lib/utils/files.js';
 import { createImagePreviews } from './lib/utils/previews.js';
 import { initGitRepos } from './services/git.js';
@@ -188,14 +188,13 @@ async function main() {
 
 	// Normal start here.
 
-	const port = await detect(+argv.opts().port || conf.Frontend.Port);
-
-	if (port !== conf.Frontend.Port) setConfig({
-		Frontend: {
-			Port: port
-		}
-	});
-
+	const port = +argv.opts().port || conf.Frontend.Port;
+	try {
+		await detect(port);
+	} catch (err) {
+		logger.error(`Port ${port} is unavailable. Cannot start KM Server`);
+		throw err;
+	}
 	logger.debug(`Port ${port} is available`, {service});
 
 	// Clean temp periodically of files older than two hours
