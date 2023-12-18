@@ -122,7 +122,7 @@ export default function userController(router: Router) {
 	router.route('/users/:user/resetpassword')
 		.post(async (req, res) => {
 			try {
-				const info = await resetPasswordRequest(req.params.user);
+				const info = await resetPasswordRequest(req.params.user.toLowerCase().trim());
 				res.status(200).json(info);
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));
