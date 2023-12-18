@@ -5,27 +5,30 @@ import { refreshTags } from '../lib/dao/tag.js';
 import { WhereClause } from '../lib/types/database.js';
 import { DBTag } from '../lib/types/database/tag.js';
 import { Tag, TagParams } from '../lib/types/tag.js';
-import { uuidRegexp } from '../lib/utils/constants.js';
+import { tagTypes, uuidRegexp } from '../lib/utils/constants.js';
 import * as sql from './sqls/tag.js';
 
 export async function selectTags(params: TagParams): Promise<DBTag[]> {
 	const filterClauses = params.filter
 		? buildTagClauses(params.filter)
 		: {sql: [], params: {}, additionalFrom: []};
-	const typeClauses = params.type > 0 ? ` AND t.types @> ARRAY[${params.type}]` : '';
+	const typeClauses = params.type > 0 ? ` AND at.types @> ARRAY[${params.type}]` : '';
 	let stripClause = '';
 	const limitClause = '';
 	let offsetClause = '';
 	let joinClauses = '';
 	let orderClause = 'name';
 	let whereClause = '';
+	const collectionClauses = [];
 	if (params.type > 0) {
 		joinClauses = `LEFT   JOIN LATERAL (
 	   	SELECT elem->>'count' AS karacounttype
-	   	FROM   jsonb_array_elements(t_count.count_per_type::jsonb) a(elem)
+	   	FROM   jsonb_array_elements(at.karacount::jsonb) a(elem)
 	   	WHERE  elem->>'type' = '${params.type}'
 	   	) a ON true
 		`;
+		// Without this where condition, all tags are returned.
+		whereClause += ` AND ${params.type} = ANY(at.types)`;
 		if (params.order === 'karacount') {
 			orderClause = 'karacounttype::int2 DESC NULLS LAST, name';
 		}
@@ -35,7 +38,7 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 	}
 	if (params.tid) {
 		if (!params.tid.match(uuidRegexp)) throw 'Invalid TID';
-		whereClause = `AND t.pk_tid = '${params.tid}'`;
+		whereClause = `AND at.pk_tid = '${params.tid}'`;
 	}
 	if (params.from > 0) offsetClause = `OFFSET ${params.from} `;
 	if (params.size > 0) {
@@ -43,9 +46,14 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 		// limitClause = `LIMIT ${params.size} `;
 	}
 	if (!params.includeStaging) {
-		filterClauses.sql.push('t.repository != \'Staging\'');
+		filterClauses.sql.push('at.repository != \'Staging\'');
 	}
-	const collectionClauses = params.forceCollections?.map(c => `kt.fk_tid = '${c}'`) || ['TRUE'];
+	if (params.forceCollections) {
+		for (const collection of params.forceCollections) {
+			collectionClauses.push(`'${collection}~${tagTypes.collections}' = ANY(ak.tid)`);
+		}
+	}
+	
 	const query = sql.selectTags(
 filterClauses.sql,
 typeClauses,
@@ -73,11 +81,11 @@ whereClause
 }
 
 function buildTagClauses(words: string): WhereClause {
-	const q = ['t.tag_search_vector @@ query'];
+	const q = ['at.tag_search_vector @@ query'];
 	return {
 		sql: q,
 		params: {tsquery: paramWords(words).join(' & ')},
-		additionalFrom: [', to_tsquery(\'public.unaccent_conf\', :tsquery) as query, ts_rank_cd(t.tag_search_vector, query) as relevance']
+		additionalFrom: [', to_tsquery(\'public.unaccent_conf\', :tsquery) as query, ts_rank_cd(at.tag_search_vector, query) as relevance']
 	};
 }
 

@@ -1,40 +1,28 @@
 // Tags SQL
 
-export const selectTags = (filterClauses: string[], typeClauses: string, limitClause: string, offsetClause: string, joinClauses: string, orderClauses: string, stripClause: string, additionalFrom: string[], collectionClause: string[], whereClause: string) => `
+export const selectTags = (filterClauses: string[], typeClauses: string, limitClause: string, offsetClause: string, joinClauses: string, orderClauses: string, stripClause: string, additionalFrom: string[], collectionClauses: string[], whereClause: string) => `
 WITH kara_available AS (
-	SELECT k.pk_kid
-	FROM kara k
-	LEFT JOIN kara_tag kt ON k.pk_kid = kt.fk_kid
-	WHERE ${collectionClause.join(' OR ')}
-),
-t_count AS (
-	SELECT a.fk_tid,
-		json_agg(json_build_object('type', a.type, 'count', a.c))::text AS count_per_type
-	FROM (SELECT kara_tag.fk_tid,
-				count(kara_tag.fk_kid) AS c,
-				kara_tag.type
-		FROM kara_tag
-		WHERE kara_tag.fk_kid IN (SELECT * FROM kara_available)
-		GROUP BY kara_tag.fk_tid, kara_tag.type) a
-	GROUP BY a.fk_tid
+	SELECT ak.pk_kid
+	FROM all_karas ak
+	WHERE TRUE 
+	${collectionClauses.length > 0 ? `AND (${collectionClauses.map(clause => `(${clause})`).join(' OR ')})` : ''}
 )
-SELECT t.pk_tid AS tid,
-	t.types,
-	t.name,
-	t.short,
-	t.aliases,
-	t.i18n,
-	t.tagfile,
-	t.repository,
-	t.nolivedownload AS "noLiveDownload",
-	t.priority,
-	t.karafile_tag,
-    t.description,
-	t.external_database_ids,
-	t_count.count_per_type::jsonb AS karacount,
-	count(t.pk_tid) OVER()::integer AS count
-FROM tag t
-LEFT JOIN t_count ON t.pk_tid = t_count.fk_tid
+SELECT at.pk_tid AS tid,
+	at.types,
+	at.name,
+	at.short,
+	at.aliases,
+	at.i18n,
+	at.tagfile,
+	at.repository,
+	at.nolivedownload AS "noLiveDownload",
+	at.priority,
+	at.karafile_tag,
+    at.description,
+	at.external_database_ids,
+	at.karacount,
+	count(at.pk_tid) OVER()::integer AS count
+FROM all_tags at
 ${joinClauses}
 ${additionalFrom.join('')}
 WHERE TRUE
