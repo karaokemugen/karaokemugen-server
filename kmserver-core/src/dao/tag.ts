@@ -105,6 +105,7 @@ export async function insertTag(tag: Tag) {
 		tag.description || {},
 		tag.external_database_ids || null,
 	]);
+	await refreshTags();
 }
 
 export async function clearStagingTags(): Promise<string[]> {
