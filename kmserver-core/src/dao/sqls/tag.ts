@@ -35,7 +35,7 @@ SELECT at.pk_tid AS tid,
 	t_count.count_per_type::jsonb AS karacount,
 	count(at.pk_tid) OVER()::integer AS count
 FROM all_tags at
-LEFT JOIN t_count ON at.pk_tid = t_count.fk_tid
+JOIN t_count ON at.pk_tid = t_count.fk_tid
 ${joinClauses}
 ${additionalFrom.join('')}
 WHERE TRUE
