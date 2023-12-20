@@ -12,7 +12,6 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 	const filterClauses = params.filter
 		? buildTagClauses(params.filter)
 		: {sql: [], params: {}, additionalFrom: []};
-	const typeClauses = params.type > 0 ? ` AND at.types @> ARRAY[${params.type}]` : '';
 	let stripClause = '';
 	const limitClause = '';
 	let offsetClause = '';
@@ -56,7 +55,6 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 	
 	const query = sql.selectTags(
 filterClauses.sql,
-typeClauses,
 limitClause,
 offsetClause,
 joinClauses,
