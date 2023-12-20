@@ -4,8 +4,20 @@ export const selectTags = (filterClauses: string[], limitClause: string, offsetC
 WITH kara_available AS (
 	SELECT ak.pk_kid
 	FROM all_karas ak
-	WHERE TRUE 
+	LEFT JOIN all_kara_tag akt ON ak.pk_kid = akt.fk_kid
+	WHERE TRUE
 	${collectionClauses.length > 0 ? `AND (${collectionClauses.map(clause => `(${clause})`).join(' OR ')})` : ''}
+),
+t_count AS (
+	SELECT a.fk_tid,
+		json_agg(json_build_object('type', a.type, 'count', a.c))::text AS count_per_type
+	FROM (SELECT all_kara_tag.fk_tid,
+				count(all_kara_tag.fk_kid) AS c,
+				all_kara_tag.type
+		FROM all_kara_tag
+		WHERE all_kara_tag.fk_kid IN (SELECT * FROM kara_available)
+		GROUP BY all_kara_tag.fk_tid, all_kara_tag.type) a
+	GROUP BY a.fk_tid
 )
 SELECT at.pk_tid AS tid,
 	at.types,
@@ -20,9 +32,10 @@ SELECT at.pk_tid AS tid,
 	at.karafile_tag,
     at.description,
 	at.external_database_ids,
-	at.karacount,
+	t_count.count_per_type::jsonb AS karacount,
 	count(at.pk_tid) OVER()::integer AS count
 FROM all_tags at
+LEFT JOIN t_count ON at.pk_tid = t_count.fk_tid
 ${joinClauses}
 ${additionalFrom.join('')}
 WHERE TRUE
@@ -85,4 +98,8 @@ export const clearStagingTags = `
 	WHERE pk_tid =
 	      ANY (SELECT pk_tid FROM all_tags WHERE repository = 'Staging' AND karacount IS NULL)
 	RETURNING tag.tagfile;
+`;
+
+export const refreshAllKaraTag = ` 
+REFRESH MATERIALIZED VIEW all_kara_tag;
 `;

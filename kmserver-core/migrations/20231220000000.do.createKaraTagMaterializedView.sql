@@ -1,0 +1,2 @@
+CREATE MATERIALIZED VIEW IF NOT EXISTS all_kara_tag AS
+    SELECT * FROM kara_tag;

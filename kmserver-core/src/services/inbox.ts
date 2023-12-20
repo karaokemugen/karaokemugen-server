@@ -4,7 +4,7 @@ import { v4 as uuidV4 } from 'uuid';
 
 import {clearInbox, deleteInbox, insertInbox, selectInbox, updateInboxDownloaded} from '../dao/inbox.js';
 import { deleteKara } from '../dao/kara.js';
-import {clearStagingTags} from '../dao/tag.js';
+import {clearStagingTags, refreshAllKaraTag} from '../dao/tag.js';
 import { formatKaraV4 } from '../lib/dao/karafile.js';
 import { getDataFromTagFile } from '../lib/dao/tagfile.js';
 import { readAllKaras } from '../lib/services/generation.js';
@@ -135,7 +135,8 @@ export async function removeKaraFromInbox(inid: string) {
 			if (kara) {
 				const karaData = formatKaraV4(kara);
 				await deleteKara([kara.kid]);
-				refreshKarasAfterDBChange('DELETE', [karaData.data]);
+				await refreshKarasAfterDBChange('DELETE', [karaData.data]);
+				await refreshAllKaraTag();
 			}
 		} catch (err) {
 			// Non-fatal.

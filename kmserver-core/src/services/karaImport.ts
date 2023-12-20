@@ -9,6 +9,7 @@ import { v4 as UUIDv4 } from 'uuid';
 import logger from 'winston';
 
 import { insertKara, updateKaraParents } from '../dao/kara.js';
+import { refreshAllKaraTag } from '../dao/tag.js';
 import { applyKaraHooks, refreshHooks } from '../lib/dao/hook.js';
 import { extractVideoSubtitles, getDataFromKaraFile, trimKaraData, verifyKaraData } from '../lib/dao/karafile.js';
 import {
@@ -92,6 +93,7 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		await insertKara(karaData);
 		await Promise.all([updateKaraParents(karaData.data), updateTags(karaData.data)]);
 		await refreshKarasAfterDBChange('ADD', [karaData.data]);
+		await refreshAllKaraTag();
 		logger.debug('Kara', {service, obj: karaData});
 		let issueURL: string;
 		if (conf.Gitlab.Enabled) {
@@ -102,7 +104,7 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 				});
 			}
 			try {
-				issueURL = await createInboxIssue(karaData.data.kid, edit)
+				issueURL = await createInboxIssue(karaData.data.kid, edit);
 			} catch (err) {
 				logger.error(`Unable to post to Gitlab a new inbox issue: ${err}`, { service, obj: err });
 				// Non fatal.

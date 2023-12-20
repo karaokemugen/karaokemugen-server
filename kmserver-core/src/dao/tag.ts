@@ -1,6 +1,6 @@
 import { pg as yesql } from 'yesql';
 
-import { db, paramWords } from '../lib/dao/database.js';
+import { databaseReady, db, newDBTask, paramWords } from '../lib/dao/database.js';
 import { refreshTags } from '../lib/dao/tag.js';
 import { WhereClause } from '../lib/types/database.js';
 import { DBTag } from '../lib/types/database/tag.js';
@@ -103,11 +103,24 @@ export async function insertTag(tag: Tag) {
 		tag.description || {},
 		tag.external_database_ids || null,
 	]);
-	await refreshTags();
+	refreshTags();
+	refreshAllKaraTag();
+	await databaseReady();
 }
 
 export async function clearStagingTags(): Promise<string[]> {
 	const res = await db().query(sql.clearStagingTags);
-	await refreshTags();
+	refreshTags();
+	refreshAllKaraTag();
+	await databaseReady();
 	return res.rows.map(t => t.tagfile);
+}
+
+export async function refreshAllKaraTag() {
+	newDBTask({ func: refreshAllKaraTagTask, name: 'refreshAllKaraTags' });
+	await databaseReady();
+}
+
+async function refreshAllKaraTagTask() {
+	await db().query(sql.refreshAllKaraTag);
 }
