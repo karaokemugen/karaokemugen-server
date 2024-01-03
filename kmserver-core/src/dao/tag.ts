@@ -22,7 +22,7 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 	if (params.type > 0) {
 		joinClauses = `LEFT   JOIN LATERAL (
 	   	SELECT elem->>'count' AS karacounttype
-	   	FROM   jsonb_array_elements(at.karacount::jsonb) a(elem)
+	   	FROM   jsonb_array_elements(t_count.count_per_type::jsonb) a(elem)
 	   	WHERE  elem->>'type' = '${params.type}'
 	   	) a ON true
 		`;
@@ -32,7 +32,7 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 			orderClause = 'karacounttype::int2 DESC NULLS LAST, name';
 		}
 		if (params.stripEmpty) {
-			stripClause = 'AND t_count.count_per_type IS NOT NULL';
+			stripClause = 'AND karacounttype::int2 > 0';
 		}
 	}
 	if (params.tid) {
