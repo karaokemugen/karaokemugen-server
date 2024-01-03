@@ -119,6 +119,10 @@
 </script>
 
 <style scoped lang="scss">
+	.field:not(:last-child) {
+		margin-bottom: 0
+	}
+
 	.field.is-expanded {
 		flex-grow: 1;
 		flex-shrink: 0;
