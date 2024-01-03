@@ -32,7 +32,7 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 			orderClause = 'karacounttype::int2 DESC NULLS LAST, name';
 		}
 		if (params.stripEmpty) {
-			stripClause = 'AND karacounttype::int2 > 0';
+			stripClause = 'AND t_count.count_per_type IS NOT NULL';
 		}
 	}
 	if (params.tid) {
