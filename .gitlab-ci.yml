@@ -94,7 +94,7 @@ deploy_moe:
     - ssh-keyscan -H '$HOST'
     - chmod -R 700 ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd srv/kmserver; mirror -Rnev --parallel=10 --exclude .env --exclude .git/ --exclude app/ --exclude config.yml --exclude database.json --exclude karaokemugen-app/ --exclude logs/ --exclude node_modules/ --exclude kmexplorer/.nuxt/ --exclude kmexplorer/.output/ --exclude .yarn/cache --exclude .yarn/build-state.yml --exclude .yarn/install-state.gz "
+    - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd srv/kmserver; mirror -Rnev --parallel=10 --exclude .env --exclude .git/ --exclude kmserver-core/dist/ --exclude app/ --exclude config.yml --exclude database.json --exclude karaokemugen-app/ --exclude logs/ --exclude node_modules/ --exclude kmexplorer/.nuxt/ --exclude kmexplorer/.output/ --exclude .yarn/cache --exclude .yarn/build-state.yml --exclude .yarn/install-state.gz "
     - ssh -l $USERNAME $HOST 'cd srv/kmserver ; yarn install ; yarn migrate; yarn build:all'
     - ssh -l $USERNAME $HOST 'sudo systemctl restart karaokemugen-server'
   variables:
@@ -115,7 +115,7 @@ deploy_dev:
     - ssh-keyscan -H '$HOST'
     - chmod -R 700 ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd srv/kmserver-dev; mirror -Rnev --parallel=10 --exclude .env --exclude .git/ --exclude app/ --exclude config.yml --exclude database.json --exclude karaokemugen-app/ --exclude logs/ --exclude node_modules/ --exclude kmexplorer/.nuxt/ --exclude kmexplorer/.output/ --exclude .yarn/cache --exclude .yarn/build-state.yml --exclude .yarn/install-state.gz "
+    - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd srv/kmserver-dev; mirror -Rnev --parallel=10 --exclude .env --exclude .git/ --exclude app/ --exclude config.yml --exclude kmserver-core/dist/ --exclude database.json --exclude karaokemugen-app/ --exclude logs/ --exclude node_modules/ --exclude kmexplorer/.nuxt/ --exclude kmexplorer/.output/ --exclude .yarn/cache --exclude .yarn/build-state.yml --exclude .yarn/install-state.gz "
     - ssh -l $USERNAME $HOST 'cd srv/kmserver-dev ; yarn install ; yarn migrate; yarn build:all'
     - ssh -l $USERNAME $HOST 'sudo systemctl restart karaokemugen-server-dev'
   variables:
