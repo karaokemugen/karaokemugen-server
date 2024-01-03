@@ -2062,12 +2062,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@oruga-ui/oruga-next@npm:^0.8.2":
-  version: 0.8.2
-  resolution: "@oruga-ui/oruga-next@npm:0.8.2"
+"@oruga-ui/oruga-next@npm:^0.7.0":
+  version: 0.7.0
+  resolution: "@oruga-ui/oruga-next@npm:0.7.0"
   peerDependencies:
     vue: ^3.0.0
-  checksum: 405d036a57786107f6c8ef7c371f23f75a38e9db3f55aa75595a937732971f5716207e7ac6f05ed43c11da3ea72a209e5c88ce42d45cd797a0758bbb549ac237
+  checksum: d0b0db5b464bac1fa3fed917344af8d90bb5b0765b022ee87c6150a0c3ba1aef20b677116312462f9b2546d3c05ccccd6bedadf8618d1c66fc4c6be2a403a9e0
   languageName: node
   linkType: hard
 
@@ -8976,7 +8976,7 @@ __metadata:
     "@kevinmarrec/nuxt-pwa": ^0.17.0
     "@nuxt/eslint-config": ^0.2.0
     "@nuxtjs/i18n": 8.0.0
-    "@oruga-ui/oruga-next": ^0.8.2
+    "@oruga-ui/oruga-next": ^0.7.0
     "@oruga-ui/theme-bulma": ^0.2.11
     "@pinia-plugin-persistedstate/nuxt": ^1.2.0
     "@pinia/nuxt": 0.5.1

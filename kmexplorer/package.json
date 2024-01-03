@@ -14,7 +14,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/vue-fontawesome": "^3.0.5",
     "@nuxtjs/i18n": "8.0.0",
-    "@oruga-ui/oruga-next": "^0.8.2",
+    "@oruga-ui/oruga-next": "^0.7.0",
     "@oruga-ui/theme-bulma": "^0.2.11",
     "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
     "@pinia/nuxt": "0.5.1",
