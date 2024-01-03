@@ -9072,6 +9072,7 @@ __metadata:
     sanitize-filename: ^1.6.3
     slug: ^8.2.3
     socket.io: ^4.7.2
+    source-map-support: ^0.5.21
     string-replace-async: ^3.0.2
     sudo-block: ^5.0.0
     ts-loader: ^9.5.1
@@ -13221,7 +13222,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"source-map-support@npm:~0.5.20":
+"source-map-support@npm:^0.5.21, source-map-support@npm:~0.5.20":
   version: 0.5.21
   resolution: "source-map-support@npm:0.5.21"
   dependencies:

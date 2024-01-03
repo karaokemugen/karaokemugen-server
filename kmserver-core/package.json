@@ -107,6 +107,7 @@
     "sanitize-filename": "^1.6.3",
     "slug": "^8.2.3",
     "socket.io": "^4.7.2",
+    "source-map-support": "^0.5.21",
     "sudo-block": "^5.0.0",
     "ts-node": "^10.9.2",
     "ultrastar2ass": "^1.0.24",

@@ -59,6 +59,7 @@ await build({
 	entryPoints,
 	platform: 'node',
 	target: 'node16',
+	sourcemap: true,
 	color: true,
 	logLevel: 'info',
 	plugins: [transformImportsPlugin],
