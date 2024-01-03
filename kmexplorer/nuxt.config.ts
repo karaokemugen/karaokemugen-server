@@ -153,11 +153,7 @@ const nuxtConfig = defineNuxtConfig({
 	},
 
 	i18n: {
-		vueI18n: {
-			fallbackLocale: 'en',
-			silentFallbackWarn: true,
-			legacy: false
-		},
+		vueI18n: 'vue-i18n.config.ts',
 		locales: [
 			{
 				code: 'en',
