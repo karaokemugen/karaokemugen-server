@@ -20,12 +20,13 @@
 		"sourceMap": true,
 		"inlineSources": true,
 		"sourceRoot": "/",
-        "outDir": "dist/",
-        "pretty": true,
+		"outDir": "dist/",
+		"pretty": true,
 		"removeComments": true,
 		"downlevelIteration": true,
 		"noUnusedParameters": true,
-		"noUnusedLocals": true
+		"noUnusedLocals": true,
+		"skipLibCheck": true
 	},
 	"include": [
 		"src"

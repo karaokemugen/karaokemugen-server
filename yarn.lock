@@ -9094,6 +9094,7 @@ __metadata:
     socket.io: ^4.7.2
     source-map-support: ^0.5.21
     string-replace-async: ^3.0.2
+    subsrt-ts: ^2.1.2
     sudo-block: ^5.0.0
     ts-loader: ^9.5.1
     ts-node: ^10.9.2
@@ -13588,6 +13589,15 @@ __metadata:
   peerDependencies:
     postcss: ^8.4.31
   checksum: 1fa0ef187c5939dab5be66945af2275411da327c9b859174922202b61830ccc4eefcb1efb5233a9ad6ddc7d2e025f733c7a15fa125bd1691944f630e1824eadd
+  languageName: node
+  linkType: hard
+
+"subsrt-ts@npm:^2.1.2":
+  version: 2.1.2
+  resolution: "subsrt-ts@npm:2.1.2"
+  bin:
+    subsrt-ts: bin/subsrt.js
+  checksum: d1ab8ee837dfbf5b76f06e103cfe5ec9a221162fccfa3028b5e6b99fd9f255b5bc6f78167b3d69e3370bcfc716aad744972452119507b7421538d99b175a7bfb
   languageName: node
   linkType: hard
 
