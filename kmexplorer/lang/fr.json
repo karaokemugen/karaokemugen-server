@@ -284,9 +284,9 @@
 	"search": {
 		"placeholder": {
 			"kara": "Œuvres, chanteurs, noms…",
-			"user": "Nom d'utilisateur…",
-			"tag": "Nom du tag…",
-			"playlist": "Nom, utilisateurs…"
+			"user": "Noms d'utilisateurs…",
+			"tag": "Noms des tags…",
+			"playlist": "Noms, utilisateurs…"
 		},
 		"sort": {
 			"a_z": "De A à Z",

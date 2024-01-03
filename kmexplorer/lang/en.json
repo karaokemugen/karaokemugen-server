@@ -284,9 +284,9 @@
 	"search": {
 		"placeholder": {
 			"kara": "Series, singers, names…",
-			"user": "Username…",
-			"tag": "Tag name…",
-			"playlist": "Name, users…"
+			"user": "Usernames…",
+			"tag": "Tags names…",
+			"playlist": "Names, users…"
 		},
 		"sort": {
 			"a_z": "A-Z",
