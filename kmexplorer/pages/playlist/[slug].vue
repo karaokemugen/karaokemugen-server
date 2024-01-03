@@ -116,12 +116,16 @@
 <script setup lang="ts">
 	import _ from 'lodash';
 	import { storeToRefs } from 'pinia';
+	import * as Toast from 'vue-toastification';
 	import type { DBPLC } from 'kmserver-core/src/lib/types/database/playlist';
 	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
 	import type { KaraList, KaraList as KaraListType } from '%/lib/types/kara';
 	import { useMenubarStore } from '~/store/menubar';
 	import { useAuthStore } from '~/store/auth';
 	import { useModalStore } from '~/store/modal';
+
+	// @ts-ignore
+	const useToast = Toast.useToast ?? Toast.default.useToast;
 
 	const chunkSize = 300;
 
@@ -134,6 +138,7 @@
 	const { params, query } = useRoute();
 	const { t } = useI18n();
 	const route = useRoute();
+	const toast = useToast();
 
 	const currentPage = ref(Number(query.page) || 1);
 	const loading = ref(true);
@@ -237,6 +242,7 @@
 					kids: [event.value]
 				}
 			});
+			toast.success(t('kara.playlists.add_success'));
 			await loadNextPage();
 		}
 	}
