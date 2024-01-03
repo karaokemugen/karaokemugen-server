@@ -4,6 +4,7 @@
 		aria-role="list"
 		multiple
 		scrollable
+		position="bottom"
 	>
 		<template #trigger="{ active }">
 			<button class="button">
