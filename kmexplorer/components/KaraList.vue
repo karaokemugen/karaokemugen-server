@@ -100,7 +100,7 @@
 	}
 	@media (max-width: 769px) {
 		.tile.is-child.is-4 {
-			padding: 1em 1em;
+			padding: 0.25em 0.75em;
 		}
 		.tile.is-parent.is-12 {
 			padding: 0;

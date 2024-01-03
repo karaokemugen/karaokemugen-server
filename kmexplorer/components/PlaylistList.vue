@@ -2,7 +2,7 @@
 	<div
 		v-for="pl in playlists.slice(0, maxIndexPlaylists)"
 		:key="pl.plaid"
-		class="my-2"
+		class="py-1"
 	>
 		<nuxt-link
 			class="link box"

@@ -1,93 +1,95 @@
 <template>
-	<div class="tile is-parent is-vertical">
-		<div class="buttons is-hidden-desktop">
-			<search-bar />
-		</div>
-		<div
-			v-if="loggedIn"
-			class="tabs is-fullwidth is-small"
-		>
-			<ul>
-				<li 
-					:onclick="() => playlistType = 'community'"
-					:class="{'is-active': playlistType === 'community'}"
-				>
-					<a>
-						<span class="icon"><font-awesome-icon :icon="['fas', 'globe']" /></span>
-						<span>{{ $t('playlists.community') }}</span>
-					</a>
-				</li>
-				<li
-					:onclick="() => playlistType = 'favorites'"
-					:class="{'is-active': playlistType === 'favorites'}"
-				>
-					<a>
-						<span class="icon"><font-awesome-icon :icon="['fas', 'star']" /></span>
-						<span>{{ $t('playlists.favorites') }}</span>
-					</a>
-				</li>
-				<li
-					:onclick="() => playlistType = 'personal'"
-					:class="{'is-active': playlistType === 'personal'}"
-				>
-					<a>
-						<span class="icon"><font-awesome-icon :icon="['fas', 'user']" /></span>
-						<span>{{ $t('playlists.my_playlists') }}</span>
-					</a>
-				</li>
-			</ul>
-		</div>
-		<div
-			v-if="!loading"
-			class="buttons"
-		>
-			<button
-				class="button"
-				@click="() => loggedIn ? openModal('createEditPlaylist') : openModal('auth')"
+	<div class="tile is-ancestor">
+		<div class="tile is-parent is-vertical">
+			<div class="tile is-hidden-desktop">
+				<search-bar />
+			</div>
+			<div
+				v-if="loggedIn"
+				class="tabs is-fullwidth is-small"
 			>
-				<font-awesome-icon :icon="['fas', 'plus']" />
-				<span>{{ $t('playlists.create') }}</span>
-			</button>
-			<button
-				class="button"
-				@click="() => !loggedIn && openModal('auth')"
+				<ul>
+					<li 
+						:onclick="() => playlistType = 'community'"
+						:class="{'is-active': playlistType === 'community'}"
+					>
+						<a>
+							<span class="icon"><font-awesome-icon :icon="['fas', 'globe']" /></span>
+							<span>{{ $t('playlists.community') }}</span>
+						</a>
+					</li>
+					<li
+						:onclick="() => playlistType = 'favorites'"
+						:class="{'is-active': playlistType === 'favorites'}"
+					>
+						<a>
+							<span class="icon"><font-awesome-icon :icon="['fas', 'star']" /></span>
+							<span>{{ $t('playlists.favorites') }}</span>
+						</a>
+					</li>
+					<li
+						:onclick="() => playlistType = 'personal'"
+						:class="{'is-active': playlistType === 'personal'}"
+					>
+						<a>
+							<span class="icon"><font-awesome-icon :icon="['fas', 'user']" /></span>
+							<span>{{ $t('playlists.my_playlists') }}</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div
+				v-if="!loading"
+				class="buttons"
 			>
-				<input
-					v-if="loggedIn"
-					class="file-input"
-					type="file"
-					name="importplaylist"
-					accept=".kmplaylist"
-					:onChange="importPlaylist"
+				<button
+					class="button"
+					@click="() => loggedIn ? openModal('createEditPlaylist') : openModal('auth')"
 				>
-				<font-awesome-icon :icon="['fas', 'file-import']" />
-				<span>{{ $t('playlists.import') }}</span>
-			</button>
-		</div>
-		<playlist-list
-			v-if="!loading"
-			:playlists="playlists"
-			:chunk-size="30"
-			:with-buttons="true"
-			@delete="openDeletePlaylistModal"
-			@edit="openEditPlaylistModal"
-		/>
-		<div v-if="!loading">
-			<create-edit-playlist-modal
-				:active="createEditPlaylist"
-				:slug="selectedPlaylist?.slug"
-				@close="afterCreatePlaylist"
+					<font-awesome-icon :icon="['fas', 'plus']" />
+					<span>{{ $t('playlists.create') }}</span>
+				</button>
+				<button
+					class="button"
+					@click="() => !loggedIn && openModal('auth')"
+				>
+					<input
+						v-if="loggedIn"
+						class="file-input"
+						type="file"
+						name="importplaylist"
+						accept=".kmplaylist"
+						:onChange="importPlaylist"
+					>
+					<font-awesome-icon :icon="['fas', 'file-import']" />
+					<span>{{ $t('playlists.import') }}</span>
+				</button>
+			</div>
+			<playlist-list
+				v-if="!loading"
+				:playlists="playlists"
+				:chunk-size="30"
+				:with-buttons="true"
+				@delete="openDeletePlaylistModal"
+				@edit="openEditPlaylistModal"
 			/>
-			<delete-playlist-modal
-				:active="deletePlaylist"
-				:playlist="selectedPlaylist"
-				@close="afterDeletePlaylist"
+			<div v-if="!loading">
+				<create-edit-playlist-modal
+					:active="createEditPlaylist"
+					:slug="selectedPlaylist?.slug"
+					@close="afterCreatePlaylist"
+				/>
+				<delete-playlist-modal
+					:active="deletePlaylist"
+					:playlist="selectedPlaylist"
+					@close="afterDeletePlaylist"
+				/>
+			</div>
+			<loading-nanami
+				v-if="loading"
+				class="tile is-parent is-12"
 			/>
 		</div>
-		<loading-nanami
-			v-if="loading"
-			class="tile is-parent is-12"
-		/>
 	</div>
 </template>
 
