@@ -6,6 +6,7 @@ import detect from 'detect-port';
 import dotenv from 'dotenv';
 import findRemoveSync from 'find-remove';
 import findWorkspaceRoot from 'find-yarn-workspace-root';
+import sourceMapSupport from 'source-map-support';
 import sudoBlock from 'sudo-block';
 import { register } from 'ts-node';
 import logger from 'winston';
@@ -28,6 +29,8 @@ import { generateHardsubs, hardsubsDone, initHardsubGeneration } from './utils/h
 import { initMailer } from './utils/mailer.js';
 import sentry from './utils/sentry.js';
 import { getState, setState } from './utils/state.js';
+
+sourceMapSupport.install();
 
 const appPath = findWorkspaceRoot();
 const dataPath = resolve(appPath, 'app/');
