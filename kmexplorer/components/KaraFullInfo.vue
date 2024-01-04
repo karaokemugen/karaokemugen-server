@@ -61,50 +61,48 @@
 				{{ $t('kara.set_banner.btn') }}
 			</button>
 		</div>
-		<table class="table tagList">
-			<tbody>
-				<tr class="tr-line">
-					<td>
+		<div class="tagList">
+			<div>
+				<div class="tagLabel">
+					<div>
 						<font-awesome-icon
 							:icon="['fas', 'clock']"
 							:fixed-width="true"
 						/>
 						{{ durationString }}
-					</td>
-					<td>
-						{{ $t('kara.created_at') }}:&nbsp;{{ new Date(karaoke.created_at).toLocaleString() }}
-					</td>
-				</tr>
-				<tr
-					v-for="type in Object.keys(tagTypesSorted)"
-					:key="type"
-				>
-					<td>
-						<span class="name">
-							<font-awesome-icon
-								:icon="['fas', tagTypes[type].icon]"
-								:fixed-width="true"
-							/>
-							{{ ['singers', 'songwriters', 'creators', 'authors'].includes(type) ?
-								$t(`kara.${type}_by`) :
-								$t(`kara.tagtypes.${type}`, (karaoke as any)[type].length)
-							}}
-						</span>
-					</td>
-					<td>
-						<div class="tags are-medium">
-							<tag
-								v-for="tag in (karaoke as any)[type]"
-								:key="tag.tid"
-								:type="type"
-								:tag="tag"
-								:staticheight="false"
-							/>
-						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+					</div>
+				</div>
+				<div class="tagLabel">
+					{{ $t('kara.created_at') }}:&nbsp;{{ new Date(karaoke.created_at).toLocaleString() }}
+				</div>
+			</div>
+			<div
+				v-for="type in Object.keys(tagTypesSorted)"
+				:key="type"
+			>
+				<div class="tagLabel">
+					<div>
+						<font-awesome-icon
+							:icon="['fas', tagTypes[type].icon]"
+							:fixed-width="true"
+						/>
+						{{ ['singers', 'songwriters', 'creators', 'authors'].includes(type) ?
+							$t(`kara.${type}_by`) :
+							$t(`kara.tagtypes.${type}`, (karaoke as any)[type].length)
+						}}
+					</div>
+				</div>
+				<div class="tags">
+					<tag
+						v-for="tag in (karaoke as any)[type]"
+						:key="tag.tid"
+						:type="type"
+						:tag="tag"
+						:staticheight="false"
+					/>
+				</div>
+			</div>
+		</div>
 		<div class="buttons">
 			<button
 				v-if="rubyfiedLyrics && live"
@@ -156,11 +154,9 @@
 </template>
 
 <script setup lang='ts'>
-	import slug from 'slug';
 	import { storeToRefs } from 'pinia';
 	import { tagTypes } from '~/assets/constants';
 	import type { DBKara } from '%/lib/types/database/kara';
-	import type { ShortTag } from '~/types/tags';
 	import { useMenubarStore } from '~/store/menubar';
 	import { useModalStore } from '~/store/modal';
 	import { useAuthStore } from '~/store/auth';
@@ -341,19 +337,35 @@
 </script>
 
 <style scoped lang="scss">
-	.table.tagList {
-		width: calc(2.5rem + 100%);
-		left: -1.25rem;
-		position: relative;
-		background-color: unset;
+	.tagList {
+		border-top: 1px solid #5e6d6f;
+		margin-bottom: 1.5rem;
 
-		tr:first-child > td, tr:last-child > td {
-			border-width: 1px 0 1px;
-		}
+		> div {
 
-		td:first-child {
-			padding-left: 1.25rem;
-			vertical-align: middle;
+			display: grid;
+			grid-template-columns: 1fr 4fr;
+			border-bottom: 1px solid #5e6d6f;
+
+			@media screen and (max-width: 768px) {
+				grid-template-columns: 1fr;
+			}
+
+			> div {
+				padding: 0.5em;
+
+				@media screen and (max-width: 768px) {
+					&:first-child {
+						padding-bottom: 0;
+					}
+				}
+
+				&.tagLabel {
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+				}
+			}
 		}
 	}
 
@@ -374,10 +386,5 @@
 		background-color: lighten(#373f40, 5);
 		width: fit-content;
 		overflow-wrap: anywhere;
-	}
-
-	.tr-line > td {
-		height: 2em;
-		line-height: 2em;
 	}
 </style>
