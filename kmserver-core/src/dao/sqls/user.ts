@@ -100,7 +100,7 @@ WHERE pk_login = $20 RETURNING pk_login as login, *;
 export const deleteInactiveUsers = `
 DELETE FROM users
 WHERE last_login_at < $1
-RETURNING pk_login
+RETURNING pk_login as login
 `;
 
 export const insertBan = `
