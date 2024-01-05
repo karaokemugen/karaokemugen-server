@@ -7,6 +7,8 @@ export type LocalStorageStoreType = {
 	enabledCollections: string[]
 	playerVolume: number
 	autoplay: boolean
+	banner: boolean,
+	playlistBannerHidden: string[]
 }
 
 
@@ -18,7 +20,9 @@ export const useLocalStorageStore = defineStore('localStorage', {
 			hideSuggestionModal: false,
 			enabledCollections: useRuntimeConfig().public.DEFAULT_COLLECTIONS,
 			playerVolume: 0.5,
-			autoplay: false
+			autoplay: false,
+			banner: true,
+			playlistBannerHidden: []
 		};
 	},
 	getters: {},
@@ -46,6 +50,12 @@ export const useLocalStorageStore = defineStore('localStorage', {
 		},
 		setAutoplay(autoplay: boolean) {
 			this.autoplay = autoplay;
+		},
+		hideBanner() {
+			this.banner = false;
+		},
+		hidePlaylistBanner(plaid: string) {
+			this.playlistBannerHidden.push(plaid);
 		}
 	},
 	persist: {

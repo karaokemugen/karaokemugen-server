@@ -10,7 +10,7 @@
 		<section class="modal-card-body">
 			<label class="label">
 				{{ $t('modal.add_repository.desc') }}
-				<nuxt-link :href="`https://mugen.karaokes.moe/${$i18n.locale === 'fre' ? '' : 'en/'}download.html`">
+				<nuxt-link :href="`https://mugen.karaokes.moe/${$i18n.locale === 'fr' ? '' : 'en/'}download.html`">
 					{{ $t('modal.add_repository.download') }}
 				</nuxt-link>
 			</label>

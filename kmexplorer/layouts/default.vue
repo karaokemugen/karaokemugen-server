@@ -996,6 +996,47 @@
 				</client-only>
 			</aside>
 			<section class="container column is-fluid main">
+				<client-only>
+					<section
+						v-if="banner"
+						class="mb-4 hero is-link is-small"
+					>
+						<div class="hero-body">
+							<div class="is-flex is-justify-content-space-between">
+								<p class="title">
+									{{ $t('layout.app_banner.title') }}
+								</p>
+								<div>
+									<nuxt-link
+										class="delete"
+										aria-label="close"
+										@click="hideBanner"
+									/>
+								</div>
+							</div>
+							<p class="subtitle">
+								{{ $t('layout.app_banner.description') }}
+							</p>
+							<p class="subtitle">
+								{{ $t('layout.app_banner.more_features', { instance: explorerHost }) }}
+							</p>
+							<i18n-t
+								keypath="layout.app_banner.link"
+								tag="p"
+								class="subtitle"
+							>
+								<template #link>
+									<nuxt-link
+										class="is-underlined"
+										:href="`https://mugen.karaokes.moe/${$i18n.locale === 'fr' ? '' : 'en/'}download.html`"
+									>
+										{{ $t('layout.app_banner.website') }}
+									</nuxt-link>
+								</template>
+							</i18n-t>
+						</div>
+					</section>
+				</client-only>
 				<NuxtPage />
 			</section>
 		</div>
@@ -1099,7 +1140,8 @@
 	const { closeAll, openModal } = useModalStore();
 	const { loggedIn, user } = storeToRefs(useAuthStore());
 	const { logout, login: loginApi } = useAuthStore();
-	const { enabledCollections } = storeToRefs(useLocalStorageStore());
+	const { enabledCollections, banner } = storeToRefs(useLocalStorageStore());
+	const { hideBanner } = useLocalStorageStore();
 
 	useHead(() => {
 		return {

@@ -191,7 +191,8 @@
 			"theater_mode": "Mode Cinéma (T)",
 			"fullscreen": "Plein écran (F)",
 			"autoplay": "Lecture automatique",
-			"loop": "Lire en boucle"
+			"loop": "Lire en boucle",
+			"description": "Cette vidéo est hébergée par {instance}. Veuillez utiliser notre application si vous organisez un événement ou en stream !"
 		}
 	},
 	"layout": {
@@ -207,7 +208,14 @@
 		"results": "{count} résultat | {count} résultats",
 		"collections": "Karaoke Mugen propose différentes collections, choisissez celles qui vous intéressent.",
 		"slogan": "Venez chanter sur cette chanson avec Karaoke Mugen !",
-		"end_users": "Vous avez atteint la fin des utilisateurs (bravo !)."
+		"end_users": "Vous avez atteint la fin des utilisateurs (bravo !).",
+		"app_banner": {
+			"title": "Le saviez-vous ?",
+			"description": "Karaoke Mugen, c'est aussi une application pour Windows, macOS et Linux qui permet de gérer vos playlists et vos soirées karaoké, entre amis, en convention, ou même en stream !",
+			"more_features": "Il y a bien plus de fonctionnalités que sur {instance} !",
+			"link": "Rendez-vous sur le {link} pour télécharger l'application pour votre ordinateur.",
+			"website": "site web"
+		}
 	},
 	"footer": {
 		"home": "Accueil du projet",
@@ -716,7 +724,8 @@
 		"and_contributors_more": "(et {contributors}, {count} de plus)",
 		"my_playlists": "Mes listes",
 		"community": "Communauté",
-		"favorites": "Favoris"
+		"favorites": "Favoris",
+		"app_banner" : "Cette liste de lecture prend de l'ampleur ! Si vous planifiez un événement ou un stream, veuillez utiliser notre application au lieu de {instance}. {instance} n'est PAS en ligne 100 % du temps."
 	},
 	"bans": {
 		"add": "Ajouter une nouvelle exclusion",
