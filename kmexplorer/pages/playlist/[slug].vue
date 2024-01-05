@@ -62,6 +62,29 @@
 					</label>
 				</div>
 				<div class="tile is-vertical table-parent">
+					<client-only>
+						<section
+							v-if="playlist.plaid && karaokes.infos.count > countBannerDisplay && !playlistBannerHidden.includes(playlist.plaid)"
+							class="mb-4 hero is-link is-small"
+						>
+							<div class="hero-body">
+								<div class="is-flex is-justify-content-space-between">
+									<div>
+										<p class="subtitle">
+											{{ $t('playlists.app_banner', { instance: explorerHost }) }}
+										</p>
+									</div>
+									<div>
+										<nuxt-link
+											class="delete"
+											aria-label="close"
+											@click="() => playlist?.plaid && hidePlaylistBanner(playlist.plaid)"
+										/>
+									</div>
+								</div>
+							</div>
+						</section>
+					</client-only>
 					<o-table
 						:data="karaokes.content"
 						:draggable="!search && canEditPlaylist"
@@ -123,16 +146,22 @@
 	import { useMenubarStore } from '~/store/menubar';
 	import { useAuthStore } from '~/store/auth';
 	import { useModalStore } from '~/store/modal';
+	import { useLocalStorageStore } from '~/store/localStorage';
 
 	// @ts-ignore
 	const useToast = Toast.useToast ?? Toast.default.useToast;
 
+	const countBannerDisplay = 25;
 	const chunkSize = 300;
+
+	const explorerHost = useRuntimeConfig().public.EXPLORER_HOST;
 
 	const { createEditPlaylist, deletePlaylist } = storeToRefs(useModalStore());
 	const { closeModal, openModal } = useModalStore();
 	const { search } = storeToRefs(useMenubarStore());
 	const { setResultsCount, setSearch } = useMenubarStore();
+	const { playlistBannerHidden } = storeToRefs(useLocalStorageStore());
+	const { hidePlaylistBanner } = useLocalStorageStore();
 	const { loggedIn, user } = storeToRefs(useAuthStore());
 	const { replace, push } = useRouter();
 	const { params, query } = useRoute();
