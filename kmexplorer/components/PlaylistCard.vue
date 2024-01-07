@@ -141,11 +141,13 @@
 	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
 	import type { PlaylistExport } from '%/lib/types/playlist';
 	import { useAuthStore } from '~/store/auth';
+	import { useModalStore } from '~/store/modal';
 
 	// @ts-ignore
 	const useToast = Toast.useToast ?? Toast.default.useToast;
 
-	const { user } = storeToRefs(useAuthStore());
+	const { user, loggedIn } = storeToRefs(useAuthStore());
+	const { openModal } = useModalStore();
 	const { href } = useRequestURL();
 	const { push } = useRouter();
 	const { t } = useI18n();
@@ -219,10 +221,14 @@
 
 
 	async function favoritePlaylist() {
-		await useCustomFetch(`/api/playlist/${props.playlist.plaid}/favorite`, {
-			method: favorite.value ? 'DELETE' : 'POST'
-		});
-		favorite.value = !favorite.value;
+		if (loggedIn.value) {
+			await useCustomFetch(`/api/playlist/${props.playlist.plaid}/favorite`, {
+				method: favorite.value ? 'DELETE' : 'POST'
+			});
+			favorite.value = !favorite.value;
+		} else {
+			openModal('auth');
+		}
 	}
 </script>
 <style scoped lang="scss">
