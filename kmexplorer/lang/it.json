@@ -618,9 +618,9 @@
 		},
 		"placeholder": {
 			"kara": "Serie, cantanti, nomi…",
-			"tag": "Nome tag…",
-			"user": "Nome utente…",
-			"playlist": "Nome, utenti…"
+			"tag": "Nomi tag…",
+			"user": "Nomi utente…",
+			"playlist": "Nomi, utenti…"
 		},
 		"types": {
 			"karaokes": "Brani",
