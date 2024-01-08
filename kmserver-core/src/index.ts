@@ -15,7 +15,7 @@ import { initDB } from './dao/database.js';
 import { updateBanSession } from './dao/stats.js';
 import { initFrontend } from './frontend.js';
 import { buildKMExplorer } from './kmexplorer.js';
-import { configureLocale, getConfig } from './lib/utils/config.js';
+import { configureLocale, getConfig, resolvedPath } from './lib/utils/config.js';
 import { asyncCheckOrMkdir } from './lib/utils/files.js';
 import { createImagePreviews } from './lib/utils/previews.js';
 import { initGitRepos } from './services/git.js';
@@ -201,7 +201,9 @@ async function main() {
 	logger.debug(`Port ${port} is available`, {service});
 
 	// Clean temp periodically of files older than two hours
-	setInterval(findRemoveSync.bind(this, resolve(dataPath, conf.System.Path.Temp), {age: {seconds: 7200}}), 2 * 60 * 60 * 1000);
+	setInterval(() => {
+		findRemoveSync(resolvedPath('Temp'), {age: {seconds: 7200}});
+	}, 2 * 60 * 60 * 1000);
 
 	initGitRepos();
 	if (conf.Mail.Enabled) initMailer();
