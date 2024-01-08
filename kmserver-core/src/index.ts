@@ -216,6 +216,7 @@ async function main() {
 
 	setState({ acceptedLanguages });
 	configureLocale(acceptedLanguages);
+	initRepos();
 }
 
 function parseArgs() {
