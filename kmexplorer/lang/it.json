@@ -168,7 +168,8 @@
 			"next": "Prossimo brano (N)",
 			"autoplay": "Riproduzione automatica",
 			"theater_mode": "Modalità cinema (T)",
-			"fullscreen": "Schermo intero (F)"
+			"fullscreen": "Schermo intero (F)",
+			"description": "Questo video è ospitato da {instance}. Utilizza la nostra applicazione se stai organizzando un evento o una diretta!"
 		},
 		"childrens": "Varianti",
 		"favorites": {
@@ -588,7 +589,8 @@
 		"by_owner": "da {nickname}",
 		"create": "Crea una nuova playlist",
 		"private": "Privata",
-		"import": "Importa una playlist"
+		"import": "Importa una playlist",
+		"app_banner": "Questa playlist sta diventando enorme! Se stai pianificando un evento o una diretta, utilizza la nostra applicazione anziché {instance}. {instance} NON è online il 100% delle volte."
 	},
 	"duration": {
 		"minutes": "minuti",
@@ -644,7 +646,14 @@
 		"results": "{count} risultato | {count} risultati",
 		"end_my_favorites": "Questa è la fine dei tuoi preferiti.",
 		"suggest_open": "Suggeriscici un brano!",
-		"remove_tags": "Hai provato a rimuovere alcune tag dai filtri dalla ricerca?"
+		"remove_tags": "Hai provato a rimuovere alcune tag dai filtri dalla ricerca?",
+		"app_banner": {
+			"title": "Lo sapevi?",
+			"description": "Karaoke Mugen è anche un'applicazione per Windows, macOS e Linux che ti permette di gestire le playlist e gli eventi karaoke, che siano tra amici, durante le fiere a tema anime o in una tua diretta!",
+			"more_features": "Ci sono molte più funzionalità che su {instance}!",
+			"link": "Visita il {link} per scaricare l'applicazione sul tuo computer.",
+			"website": "sito web"
+		}
 	},
 	"suggestions": {
 		"header": {
