@@ -1,0 +1,1 @@
+ALTER TABLE kara_stats DROP CONSTRAINT kara_stats_fk_kid_fkey;
