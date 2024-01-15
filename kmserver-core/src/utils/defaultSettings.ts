@@ -97,6 +97,9 @@ A new karaoke has been sent to the inbox.
 **Title** : $title
 
 
+**Versions** : $versions
+
+
 **Series** : $series
 
 
@@ -121,7 +124,10 @@ A new karaoke has been sent to the inbox.
 **Singer(s)** : $singer
 
 
-**Tag(s)** : Misc: $tags - Famillies: $families - Genres: $genres - Platforms: $platforms - Origins: $origins
+**Collections** : $collections
+
+
+**Tag(s)** : Misc: $tags - Famillies: $families - Genres: $genres - Platforms: $platforms - Origins: $origins - Warnings: $warnings
 
 
 **Songwriter(s)** : $songwriter
@@ -187,6 +193,9 @@ Someone suggested a karaoke edit. You will find all the new files in the inbox.
 **Title** : $title
 
 
+**Versions** : $versions
+
+
 **Series** : $series
 
 
@@ -211,7 +220,10 @@ Someone suggested a karaoke edit. You will find all the new files in the inbox.
 **Singer(s)** : $singer
 
 
-**Tag(s)** : Misc: $tags - Famillies: $families - Genres: $genres - Platforms: $platforms - Origins: $origins
+**Collections** : $collections
+
+
+**Tag(s)** : Misc: $tags - Famillies: $families - Genres: $genres - Platforms: $platforms - Origins: $origins - Warnings: $warnings
 
 
 **Songwriter(s)** : $songwriter

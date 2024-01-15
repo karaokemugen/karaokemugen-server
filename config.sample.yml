@@ -80,6 +80,9 @@ Gitlab:
         **Title** : $title
 
 
+        **Versions** : $versions
+
+
         **Series** : $series
 
 
@@ -104,7 +107,10 @@ Gitlab:
         **Singer(s)** : $singer
 
 
-        **Tag(s)** : Misc: $tags - Famillies: $families - Genres: $genres - Platforms: $platforms - Origins: $origins
+        **Collections** : $collections
+
+
+        **Tag(s)** : Misc: $tags - Famillies: $families - Genres: $genres - Platforms: $platforms - Origins: $origins - Warnings: $warnings
 
 
         **Songwriter(s)** : $songwriter
@@ -146,6 +152,9 @@ Gitlab:
         **Title** : $title
 
 
+        **Versions** : $versions
+
+
         **Series** : $series
 
 
@@ -170,7 +179,10 @@ Gitlab:
         **Singer(s)** : $singer
 
 
-        **Tag(s)** : Misc: $tags - Famillies: $families - Genres: $genres - Platforms: $platforms - Origins: $origins
+        **Collections** : $collections
+
+
+        **Tag(s)** : Misc: $tags - Famillies: $families - Genres: $genres - Platforms: $platforms - Origins: $origins - Warnings: $warnings
 
 
         **Songwriter(s)** : $songwriter
