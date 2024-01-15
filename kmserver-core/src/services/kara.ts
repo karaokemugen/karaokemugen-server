@@ -5,7 +5,7 @@ import { promises as fs } from 'fs';
 import parallel from 'p-map';
 import { parse, resolve } from 'path';
 
-import {refreshKaraStats, selectAllKaras, selectAllMedias, selectAllYears, selectBaseStats} from '../dao/kara.js';
+import { selectAllKaras, selectAllMedias, selectAllYears, selectBaseStats} from '../dao/kara.js';
 import { copyFromData } from '../lib/dao/database.js';
 import { getLyrics } from '../lib/dao/karafile.js';
 import { generateDatabase } from '../lib/services/generation.js';
