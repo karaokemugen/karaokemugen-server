@@ -176,7 +176,7 @@
 			{ hid: 'og:type', property: 'og:type', content: 'article' },
 			{ hid: 'og:description', property: 'og:description', content: t('layout.slogan') as string },
 			// @ts-ignore: No. :c
-			{ hid: 'twitter:player', name: 'twitter:player', content: `${requestURL.origin}${requestURL.pathname}/theater` },
+			{ hid: 'twitter:player', name: 'twitter:player', content: `${requestURL.origin}${requestURL.pathname}${requestURL.pathname.endsWith('/theater') ? '' : '/theater'}` },
 			{ hid: 'twitter:player:height', name: 'twitter:player:height', content: '720' },
 			{ hid: 'twitter:player:width', name: 'twitter:player:width', content: '1280' },
 			// @ts-ignore: No. :c
