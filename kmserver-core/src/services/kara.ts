@@ -86,7 +86,6 @@ export async function generate(hardsubs = true) {
 		if (conf.KaraExplorer.Import) promises.push(clearOldInboxEntries(), clearUnusedStagingTags());
 		if (conf.System.Repositories[0].OnUpdateTrigger) promises.push(updateTrigger());
 		await Promise.all(promises);
-		refreshKaraStats();
 	} catch (err) {
 		logger.error('Generation failed', {service, obj: err});
 		sentry.error(err, 'fatal');
