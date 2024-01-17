@@ -77,7 +77,7 @@ export async function createPlaylist(pl: DBPL, token: JWTTokenWithRoles) {
 		// If playlist is to be replaced, let's check if we're allowed to
 		if (pls.find(pla =>
 			pl.plaid === pla.plaid &&
-			(token.username === pl.username || pl.contributors.find(c => c.username === token.username)))) {
+			(token.username === pla.username || pla.contributors.find(c => c.username === token.username)))) {
 			const epl = await editPlaylist(pl.plaid, pl, token);
 			emitWS('playlistsUpdated');
 			return epl;
