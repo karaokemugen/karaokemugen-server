@@ -1,6 +1,6 @@
 import {pg as yesql} from 'yesql';
 
-import {buildClauses, buildTypeClauses, db} from '../lib/dao/database.js';
+import {buildClauses, buildTypeClauses, db, transaction} from '../lib/dao/database.js';
 import { WhereClause } from '../lib/types/database.js';
 import { DBKara, DBMedia, DBYear } from '../lib/types/database/kara.js';
 import { DBPLC } from '../lib/types/database/playlist.js';
@@ -233,14 +233,57 @@ export async function selectBaseStats(): Promise<DBStats> {
 }
 
 export async function refreshKaraStats() {
-	logger.info('Refreshing kara stats', {service});
-	await db().query(`DROP TABLE IF EXISTS kara_stats_new;
-	CREATE TABLE kara_stats_new AS ${sql.refreshKaraStats};`);
-	logger.info('Refreshed kara stats, renaming table', { service });
-	await db().query(`DROP TABLE IF EXISTS kara_stats;
-	ALTER TABLE kara_stats_new RENAME TO kara_stats;`);
-	// Re-creating indexes is done asynchronously
-	db().query(sql.createKaraStatsIndexes);
+	logger.info('Refreshing kara stats', { service });
+	logger.debug('Getting all stats from DB', { service });
+	const [played, playedRecently, requested, requestedRecently, favorited] = await Promise.all([
+		db().query(sql.refreshKaraStats.played),
+		db().query(sql.refreshKaraStats.playedRecently),
+		db().query(sql.refreshKaraStats.requested),
+		db().query(sql.refreshKaraStats.requestedRecently),
+		db().query(sql.refreshKaraStats.favorited)
+	]);
+	// Aggregate everything.
+	logger.debug('Aggregating all stats in memory', { service });
+	const statsMap: Map<string, { played: number, playedRecently?: number, requested?: Number, requestedRecently?: number, favorited?: number}> = new Map();
+
+	for (const p of played.rows) {
+		statsMap.set(p.fk_kid, { played: p.played });
+	}
+	for (const pr of playedRecently.rows) {
+		const stat = statsMap.get(pr.fk_kid);
+		stat.playedRecently = pr.playedRecently;
+		statsMap.set(pr.fk_kid, stat);
+	}
+	for (const r of requested.rows) {
+		const stat = statsMap.get(r.fk_kid);
+		stat.requested = r.requested;
+		statsMap.set(r.fk_kid, stat);
+	}
+	for (const rr of requestedRecently.rows) {
+		const stat = statsMap.get(rr.fk_kid);
+		stat.requestedRecently = rr.requestedRecently;
+		statsMap.set(rr.fk_kid, stat);
+	}
+	for (const f of favorited.rows) {
+		const stat = statsMap.get(f.fk_kid);
+		stat.favorited = f.playedRecently;
+		statsMap.set(f.fk_kid, stat);
+	}
+
+
+	const params = [];
+
+	for (const stat of statsMap.entries()) {
+		params.push([stat[0], stat[1].played, stat[1].playedRecently, stat[1].requested, stat[1].requestedRecently, stat[1].favorited]);
+	}
+
+	// This only removes songs not present in all_karas
+	db().query(sql.deleteKaraStats);
+	logger.debug('Inserting into stats DB', { service });
+	// Let's go!
+	await transaction({ params, sql: sql.insertKaraStats });
+	logger.debug('Done refreshing stats DB', { service });
+
 }
 
 export async function selectAllKIDs(kid?: string): Promise<string[]> {

@@ -30,33 +30,33 @@ export const getAllKaras = (
 	onlyCount: boolean,
 	optimizeCount: boolean // use count inside SELECT when possible
 ) => {
-	const groupLine = `GROUP BY ${groupClause} 
-	ak.pk_kid, 
-	ak.titles, 
-	ak.titles_default_language, 
-	ak.mediasize, 
-	ksub.subchecksum, 
-	
+	const groupLine = `GROUP BY ${groupClause}
+	ak.pk_kid,
+	ak.titles,
+	ak.titles_default_language,
+	ak.mediasize,
+	ksub.subchecksum,
+
 	${forPlayer ? 'dummy' : `
-	ak.titles_aliases, 
-	ak.songorder, 
-	ak.tags, 
-	ak.serie_singergroup_singer_sortable, 
-	ak.subfile, 
-	ak.year, 
-	ak.mediafile, 
-	ak.karafile, 
-	ak.duration, 
-	ak.loudnorm, 
-	ak.created_at, 
-	ak.modified_at, 
-	ak.repository, 
-	ak.comment, 
-	ak.songtypes_sortable, 
-	ak.ignore_hooks, 
-	ak.titles_sortable, 
-	ak.kitsu_ids, 
-	ak.anilist_ids, 
+	ak.titles_aliases,
+	ak.songorder,
+	ak.tags,
+	ak.serie_singergroup_singer_sortable,
+	ak.subfile,
+	ak.year,
+	ak.mediafile,
+	ak.karafile,
+	ak.duration,
+	ak.loudnorm,
+	ak.created_at,
+	ak.modified_at,
+	ak.repository,
+	ak.comment,
+	ak.songtypes_sortable,
+	ak.ignore_hooks,
+	ak.titles_sortable,
+	ak.kitsu_ids,
+	ak.anilist_ids,
 	ak.from_display_type,
 	ak.myanimelist_ids
     `}`;
@@ -69,13 +69,13 @@ SELECT
 ${onlyCount && optimizeCount ? `
   COUNT(DISTINCT ak.pk_kid)::integer AS count`
 : `
-  ak.pk_kid AS kid,  
+  ak.pk_kid AS kid,
   ak.titles AS titles,
   ak.titles_default_language as titles_default_language,
   ak.pk_kid || '.' || ak.mediasize::text || '.' || COALESCE(ksub.subchecksum, 'no_ass_file') || '.mp4' AS hardsubbed_mediafile,
   ${selectClause}
   ${forPlayer ? 'true as dummy' : `
-	ak.tags AS tags,  
+	ak.tags AS tags,
 	ak.titles_aliases AS titles_aliases,
 	ak.songorder AS songorder,
 	ak.subfile AS subfile,
@@ -107,14 +107,14 @@ ${forPlayer ? '' : `
 	LEFT OUTER JOIN kara_relation krp ON krp.fk_kid_parent = ak.pk_kid
 	LEFT OUTER JOIN kara_relation krc ON krc.fk_kid_child = ak.pk_kid
 	LEFT JOIN playlist_content plc ON plc.fk_kid = ak.pk_kid
-`} 
+`}
 ${joinClause}
 ${additionalFrom.join('')}
 WHERE ${includeStaging ? 'TRUE' : 'ak.repository != \'Staging\''}
-    ${forPlayer ? 
+    ${forPlayer ?
 		`AND NOT (ak.pk_kid = ANY('{${hardsubsInProgress.join(',')}}'))`
 	: ''}
-	${forPlayer ? 
+	${forPlayer ?
 		'AND NOT ak.tags @> \'[{"noLiveDownload": true}]\''
 	: ''}
 	${
@@ -129,9 +129,9 @@ ${onlyCount && !optimizeCount ? ') res_to_count' : ''}
 ${!onlyCount && optimizeCount ? groupLine : ''}
 ${!onlyCount ? `
 ORDER BY ${orderClauses} ${forPlayer ? 'dummy' : `
-	ak.serie_singergroup_singer_sortable, 
-	ak.songtypes_sortable DESC, 
-	ak.songorder, 
+	ak.serie_singergroup_singer_sortable,
+	ak.songtypes_sortable DESC,
+	ak.songorder,
 	ak.titles_sortable
 `}
 ${limitClause}
@@ -213,60 +213,103 @@ export const selectBaseStats = `SELECT
 (SELECT SUM(duration) FROM kara where repository != 'Staging')::integer AS duration;
 `;
 
-export const deleteKaraStats = 'DELETE FROM kara_stats';
+export const refreshKaraStats = {
+	played: `
+	WITH all_sessions AS (SELECT * FROM stats_session),
+			all_played AS (SELECT * FROM stats_played)
+		SELECT ak.pk_kid AS fk_kid,
+		(SELECT
+        	COUNT(sp.fk_kid)
+        	FROM all_played sp
+        	LEFT JOIN all_sessions ss ON ss.pk_seid = sp.fk_seid AND ss.flag_banned = FALSE
+        	WHERE ak.pk_kid = sp.fk_kid
+ 		) AS played
+ 		FROM all_karas ak
+	`,
+	playedRecently: `
+	WITH all_sessions AS (SELECT * FROM stats_session),
+			all_played AS (SELECT * FROM stats_played)
+		SELECT ak.pk_kid AS fk_kid,
+		(SELECT
+        	COUNT(sp.fk_kid)
+        	FROM all_played sp
+        	LEFT JOIN all_sessions ss ON ss.pk_seid = sp.fk_seid AND ss.flag_banned = FALSE
+        	WHERE ak.pk_kid = sp.fk_kid
+				AND played_at >= current_date - interval '1' year
+ 		) AS playedRecently
+ 		FROM all_karas ak
+	`,
+	requested: `
+		WITH all_sessions AS (SELECT * FROM stats_session),
+			all_requested AS (SELECT * FROM stats_requested)
+		SELECT ak.pk_kid AS fk_kid,
+		(SELECT
+			COUNT(sr.fk_kid)
+			FROM all_requested sr
+			LEFT JOIN all_sessions ss ON ss.pk_seid = sr.fk_seid AND ss.flag_banned = FALSE
+			WHERE
+				ak.pk_kid = sr.fk_kid
+		) AS requested
+		FROM all_karas ak
+	`,
+	requestedRecently: `
+		WITH all_sessions AS (SELECT * FROM stats_session),
+			all_requested AS (SELECT * FROM stats_requested)
+		SELECT ak.pk_kid AS fk_kid,
+		(SELECT
+			COUNT(sr.fk_kid)
+			FROM all_requested sr
+			LEFT JOIN all_sessions ss ON ss.pk_seid = sr.fk_seid AND ss.flag_banned = FALSE
+			WHERE
+				ak.pk_kid = sr.fk_kid
+				AND requested_at >= current_date - interval '1' year
+		) AS requestedRecently
+		FROM all_karas ak
+	`,
+	favorited: `
+	WITH all_favorites AS (SELECT * FROM users_favorites),
+			all_users AS (SELECT pk_login, flag_sendstats FROM users)
+		SELECT ak.pk_kid AS fk_kid,
 
-export const refreshKaraStats = `
-WITH all_sessions AS (SELECT * FROM stats_session),
-	all_played AS (SELECT * FROM stats_played),
-	all_requested AS (SELECT * FROM stats_requested),
-	all_favorites AS (SELECT * FROM users_favorites),
-	all_users AS (SELECT * FROM users)
-SELECT ak.pk_kid AS fk_kid,
- (SELECT
-        COUNT(sp.fk_kid)
-        FROM all_played sp
-        LEFT JOIN all_sessions ss ON ss.pk_seid = sp.fk_seid AND ss.flag_banned = FALSE
-        WHERE ak.pk_kid = sp.fk_kid
- ) AS played,
- (SELECT
-        COUNT(sp.fk_kid)
-        FROM all_played sp
-        LEFT JOIN all_sessions ss ON ss.pk_seid = sp.fk_seid AND ss.flag_banned = FALSE
-        WHERE
-            ak.pk_kid = sp.fk_kid AND
-            played_at >= current_date - interval '1' year
- ) AS played_recently,
- (SELECT
-        COUNT(sr.fk_kid)
-        FROM all_requested sr
-        LEFT JOIN all_sessions ss ON ss.pk_seid = sr.fk_seid AND ss.flag_banned = FALSE
-        WHERE ak.pk_kid = sr.fk_kid
- ) AS requested,
- (SELECT
-        COUNT(sr.fk_kid)
-        FROM all_requested sr
-        LEFT JOIN all_sessions ss ON ss.pk_seid = sr.fk_seid AND ss.flag_banned = FALSE
-        WHERE
-        	ak.pk_kid = sr.fk_kid AND
-            requested_at >= current_date - interval '1' year
- ) AS requested_recently,
- (SELECT
-        COUNT(uf.fk_kid)
-        FROM all_favorites uf
-        LEFT JOIN all_users u ON u.pk_login = uf.fk_login
-        WHERE ak.pk_kid = uf.fk_kid AND
-        (u.flag_sendstats IS NULL OR u.flag_sendstats = TRUE)
- ) AS favorited
-FROM all_karas ak;
-`;
+			(SELECT
+				COUNT(uf.fk_kid)
+				FROM all_favorites uf
+				LEFT JOIN all_users u ON u.pk_login = uf.fk_login
+				WHERE ak.pk_kid = uf.fk_kid AND
+				(u.flag_sendstats IS NULL OR u.flag_sendstats = TRUE)
+		) AS favorited
+		FROM all_karas ak
+	`
+};
 
 export const createKaraStatsIndexes = `
-CREATE INDEX idx_kara_stats_kid ON kara_stats(fk_kid);
+CREATE UNIQUE INDEX idx_kara_stats_kid ON kara_stats(fk_kid);
 CREATE INDEX idx_kara_stats_played ON kara_stats(played);
 CREATE INDEX idx_kara_stats_requested ON kara_stats(requested);
 CREATE INDEX idx_kara_stats_played_recently ON kara_stats(played_recently);
 CREATE INDEX idx_kara_stats_requested_recently ON kara_stats(requested_recently);
 CREATE INDEX idx_kara_stats_favorited ON kara_stats(favorited);
+`;
+
+export const insertKaraStats = `
+INSERT INTO kara_stats
+VALUES(
+	$1,
+	$2,
+	$3,
+	$4,
+	$5,
+	$6
+) ON CONFLICT DO UPDATE SET
+  played = $2,
+  played_recently = $3,
+  requested = $4,
+  requested_recently = $5,
+  favorited = $6;
+`;
+
+export const deleteKaraStats = `
+DELETE FROM kara_stats WHERE fk_kid NOT IN (SELECT fk_kid FROM all_karas);
 `;
 
 export const selectAllKIDs = (singleKID: string) => `

@@ -5,7 +5,7 @@ import { promises as fs } from 'fs';
 import parallel from 'p-map';
 import { parse, resolve } from 'path';
 
-import { selectAllKaras, selectAllMedias, selectAllYears, selectBaseStats} from '../dao/kara.js';
+import { refreshKaraStats, selectAllKaras, selectAllMedias, selectAllYears, selectBaseStats} from '../dao/kara.js';
 import { copyFromData } from '../lib/dao/database.js';
 import { getLyrics } from '../lib/dao/karafile.js';
 import { generateDatabase } from '../lib/services/generation.js';
@@ -85,6 +85,7 @@ export async function generate(hardsubs = true) {
 		}
 		if (conf.KaraExplorer.Import) promises.push(clearOldInboxEntries(), clearUnusedStagingTags());
 		if (conf.System.Repositories[0].OnUpdateTrigger) promises.push(updateTrigger());
+		promises.push(refreshKaraStats());
 		await Promise.all(promises);
 	} catch (err) {
 		logger.error('Generation failed', {service, obj: err});
