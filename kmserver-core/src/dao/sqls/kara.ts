@@ -300,7 +300,7 @@ VALUES(
 	$4,
 	$5,
 	$6
-) ON CONFLICT DO UPDATE SET
+) ON CONFLICT(fk_kid) DO UPDATE SET
   played = $2,
   played_recently = $3,
   requested = $4,
