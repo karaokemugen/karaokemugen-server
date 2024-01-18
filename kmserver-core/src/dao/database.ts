@@ -18,7 +18,6 @@ export async function initDB(log: boolean) {
 	// Execute this every day at midnight.
 	scheduleJob('0 5 * * * *', refreshKaraStats);
 	scheduleJob('0 0 * * * *', deleteInactiveUsers);
-	refreshKaraStats();
 	deleteInactiveUsers();
 	updatePlaylistSearchVector();
 }
