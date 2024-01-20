@@ -251,7 +251,7 @@ export async function refreshKaraStats() {
 	}
 	for (const pr of playedRecently.rows) {
 		const stat = statsMap.get(pr.fk_kid);
-		stat.playedRecently = pr.playedRecently;
+		stat.playedRecently = pr.played_recently;
 		statsMap.set(pr.fk_kid, stat);
 	}
 	for (const r of requested.rows) {
@@ -261,12 +261,12 @@ export async function refreshKaraStats() {
 	}
 	for (const rr of requestedRecently.rows) {
 		const stat = statsMap.get(rr.fk_kid);
-		stat.requestedRecently = rr.requestedRecently;
+		stat.requestedRecently = rr.requested_recently;
 		statsMap.set(rr.fk_kid, stat);
 	}
 	for (const f of favorited.rows) {
 		const stat = statsMap.get(f.fk_kid);
-		stat.favorited = f.playedRecently;
+		stat.favorited = f.favorited;
 		statsMap.set(f.fk_kid, stat);
 	}
 

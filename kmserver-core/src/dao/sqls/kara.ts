@@ -236,7 +236,7 @@ export const refreshKaraStats = {
         	LEFT JOIN all_sessions ss ON ss.pk_seid = sp.fk_seid AND ss.flag_banned = FALSE
         	WHERE ak.pk_kid = sp.fk_kid
 				AND played_at >= current_date - interval '1' year
- 		) AS playedRecently
+ 		) AS played_recently
  		FROM all_karas ak
 	`,
 	requested: `
@@ -263,7 +263,7 @@ export const refreshKaraStats = {
 			WHERE
 				ak.pk_kid = sr.fk_kid
 				AND requested_at >= current_date - interval '1' year
-		) AS requestedRecently
+		) AS requested_recently
 		FROM all_karas ak
 	`,
 	favorited: `
