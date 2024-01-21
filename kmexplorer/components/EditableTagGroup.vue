@@ -164,7 +164,8 @@
 	}
 	function localizedName(tag: DBTag) {
 		if (tag.i18n) {
-			return tag.i18n[getLocaleIn3B(locale.value)] || tag.i18n.eng || tag.name;
+			const labelI18n = tag.i18n[getLocaleIn3B(locale.value)] || tag.i18n.eng || tag.name;
+			return `${labelI18n}${labelI18n !== tag.name ? ` (${tag.name})` : ''}`;
 		} else {
 			return tag.name;
 		}
