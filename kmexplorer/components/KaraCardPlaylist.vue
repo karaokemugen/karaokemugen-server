@@ -57,6 +57,7 @@
 	import { tagTypes } from '~/assets/constants';
 	import { useAuthStore } from '~/store/auth';
 	import type { TagExtend } from '~/store/menubar';
+	import { supportedFiles } from '%/lib/utils/constants';
 
 	const props = defineProps<{
 		karaoke: DBPLC
@@ -84,7 +85,7 @@
 		return getTitleInLocale(props.karaoke.titles, props.karaoke.titles_default_language);
 	});
 	const images = computed((): string[] => {
-		return props.karaoke.mediafile.endsWith('.mp3')
+		return supportedFiles.audio.some((extension) => props.karaoke.mediafile.endsWith(extension))
 			? [`${hardsubUrl}previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`]
 			: [
 				`${hardsubUrl}previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`,

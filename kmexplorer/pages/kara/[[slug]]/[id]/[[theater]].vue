@@ -122,6 +122,7 @@
 
 <script setup lang="ts">
 	import type { DBKara } from '%/lib/types/database/kara';
+	import { supportedFiles } from '%/lib/utils/constants';
 	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
 	import slug from 'slug';
 
@@ -192,7 +193,7 @@
 		])
 	});
 
-	const mp3 = computed(() => karaoke.value?.mediafile.endsWith('.mp3'));
+	const mp3 = computed(() => supportedFiles.audio.some((extension) => karaoke.value?.mediafile.endsWith(extension)));
 	const live = computed(() => karaoke.value && isPlayable(karaoke.value));
 
 	watch(() => [route.query, route.params], fetch);

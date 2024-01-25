@@ -56,6 +56,7 @@
 	import Modal from './Modal.vue';
 	import type { DBKara } from '%/lib/types/database/kara';
 	import { useAuthStore } from '~/store/auth';
+	import { supportedFiles } from '%/lib/utils/constants';
 
 
 	const props = defineProps<{
@@ -75,7 +76,7 @@
 
 	const previews = computed (() => {
 		const arr: string[] = [`${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`];
-		if (props.karaoke.mediafile.endsWith('.mp3')) {
+		if (supportedFiles.audio.some((extension) => props.karaoke.mediafile.endsWith(extension))) {
 			return arr;
 		} else {
 			return [
