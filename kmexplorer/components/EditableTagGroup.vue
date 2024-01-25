@@ -118,7 +118,7 @@
 		if (props.checkboxes) {
 			availableTags.value = await getTags(props.tagType);
 		}
-		if (props.params.length > 0) {
+		if (props.params) {
 			const tags: DBTag[] = [];
 			for (const tag of props.params) {
 				const tag2 = availableTags.value.find(val => val.tid === tag);

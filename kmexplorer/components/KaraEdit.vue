@@ -1032,6 +1032,7 @@
 			push('/import');
 		} else {
 			karaoke.value = convertDBKaraToKaraFile();
+			parents.value = [];
 			mediafile.value = '';
 			subfile.value = '';
 			mediafile_error.value = '';
