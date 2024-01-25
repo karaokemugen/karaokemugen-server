@@ -117,7 +117,6 @@
 
 <script setup lang="ts">
 	import type { DBKara } from '%/lib/types/database/kara';
-	import { supportedFiles } from '%/lib/utils/constants';
 	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
 	import { storeToRefs } from 'pinia';
 	import slug from 'slug';
@@ -150,7 +149,7 @@
 		return getTitleInLocale(props.karaoke.titles, props.karaoke.titles_default_language);
 	});
 	const images = computed((): string[] => {
-		return supportedFiles.audio.some((extension) => props.karaoke.mediafile.endsWith(extension))
+		return props.karaoke.mediafile.endsWith('.mp3')
 			? [`${hardsubUrl}previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`]
 			: [
 				`${hardsubUrl}previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`,
