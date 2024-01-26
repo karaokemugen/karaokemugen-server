@@ -40,6 +40,7 @@ const nuxtConfig = defineNuxtConfig({
 				conf.KaraExplorer.SupportedMedias && conf.KaraExplorer.SupportedMedias?.length > 0
 					? conf.KaraExplorer.SupportedMedias
 					: ([] as string[]).concat(supportedFiles.video, supportedFiles.audio),
+			SUPPORTED_AUDIO: supportedFiles.audio,
 			API_URL: apiUrl,
 			HARDSUB_URL: conf.Hardsub.Url ? `${conf.Hardsub.Url}/` : apiUrl,
 			INSTANCE_NAME: conf.API.Host,
