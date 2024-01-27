@@ -75,7 +75,7 @@
 
 	const previews = computed (() => {
 		const arr: string[] = [`${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`];
-		if (props.karaoke.mediafile.endsWith('.mp3')) {
+		if (conf.public.SUPPORTED_AUDIO.some(extension => props.karaoke.mediafile.endsWith(extension))) {
 			return arr;
 		} else {
 			return [
