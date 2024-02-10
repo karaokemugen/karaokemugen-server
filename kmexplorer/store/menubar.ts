@@ -68,6 +68,11 @@ export const useMenubarStore = defineStore('menubar', {
 		setEnabledLanguages(languages: string[]) {
 			this.enabledLanguages = languages;
 		},
+		addEnabledLanguage(language: string) {
+			if (this.enabledLanguages.indexOf(language) === -1) {
+				this.enabledLanguages.push(language);
+			}
+		},
 		reset() {
 			this.resultsCount = 0;
 			this.search = '';
