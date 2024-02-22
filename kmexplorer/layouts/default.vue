@@ -78,7 +78,14 @@
 						/>
 						{{ $t('menu.random') }}
 					</nuxt-link>
-					<search-tags class="navbar-item is-desktop" />
+					<search-tags
+						v-if="$route.name !== 'suggest'"
+						class="navbar-item is-desktop"
+					/>
+					<search-languages
+						v-if="$route.name === 'suggest'"
+						class="navbar-item is-desktop"
+					/>
 					<div class="navbar-item is-expanded">
 						<search-bar />
 					</div>

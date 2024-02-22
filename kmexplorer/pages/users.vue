@@ -1,7 +1,6 @@
 <template>
 	<div>
 		<div class="tile is-parent is-12 is-hidden-desktop">
-			<search-tags />
 			<search-bar />
 		</div>
 		<div
