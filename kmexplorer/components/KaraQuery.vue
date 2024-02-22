@@ -5,7 +5,7 @@
 				v-if="withSearch"
 				class="tile is-parent is-12 is-hidden-desktop"
 			>
-				<search-tags />
+				<search-tags class="mb-2" />
 				<search-bar />
 				<div class="field is-expanded">
 					<collections-picker :label="$t('search.types.karaokes')" />

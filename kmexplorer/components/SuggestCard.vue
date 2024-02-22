@@ -14,6 +14,7 @@
 					:staticheight="false"
 					icon
 					:nolink="true"
+					@click="addEnabledLanguage(kara.language)"
 				/>
 				<tag
 					v-if="kara.source && canSeeSource"
@@ -49,9 +50,10 @@
 
 <script setup lang="ts">
 	import { storeToRefs } from 'pinia';
-	import { useLocalStorageStore } from '~/store/localStorage';
-	import { useAuthStore } from '~/store/auth';
 	import type { Suggestion } from '~/../kmserver-core/src/types/suggestions';
+	import { useAuthStore } from '~/store/auth';
+	import { useLocalStorageStore } from '~/store/localStorage';
+	import { useMenubarStore } from '~/store/menubar';
 
 	const props = defineProps<{
 		kara: Suggestion
@@ -65,6 +67,7 @@
 	const { loggedIn, user } = storeToRefs(useAuthStore());
 	const { karas } = storeToRefs(useLocalStorageStore());
 	const { addKara } = useLocalStorageStore();
+	const { addEnabledLanguage } = useMenubarStore();
 	const { locale } = useI18n();
 
 	const canDelete = computed(() => loggedIn.value && !!user?.value?.roles?.admin);

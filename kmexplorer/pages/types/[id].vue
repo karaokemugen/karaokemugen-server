@@ -2,7 +2,7 @@
 	<div class="tile is-ancestor">
 		<div class="tile is-vertical">
 			<div class="tile is-parent is-12 is-hidden-desktop">
-				<search-tags />
+				<search-tags class="mb-2" />
 				<search-bar />
 			</div>
 

@@ -3,8 +3,9 @@
 		<section>
 			<div class="hero-body">
 				<div class="tile is-parent is-12 is-hidden-desktop">
+					<search-languages class="mb-2" />
 					<search-bar />
-					<div class="field is-expanded">
+					<div class="field is-expanded mt-2">
 						<languages-picker :label="$t('search.types.suggestions')" />
 					</div>
 				</div>
@@ -110,7 +111,7 @@
 
 	const route = useRoute();
 
-	watch(enabledLanguages, () => setPage(1));
+	watch(enabledLanguages, () => setPage(1), { deep: true });
 	watch(search, () => setPage(1));
 	watch(sort, () => setPage(1), { deep: true });
 
