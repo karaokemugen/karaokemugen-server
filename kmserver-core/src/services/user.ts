@@ -43,8 +43,8 @@ export async function resetPasswordRequest(username: string) {
 		if (!username) throw new ErrorKM('NO_USER_PROVIDED', 400);
 		username = username.toLowerCase();
 		const user = await findUserByName(username, { contact: true });
-		if (!user) throw new ErrorKM('USER_UNKNOWN', 404);
-		if (!user.email) throw new ErrorKM('USER_NO_MAIL', 500);
+		if (!user) throw new ErrorKM('USER_UNKNOWN', 404, false);
+		if (!user.email) throw new ErrorKM('USER_NO_MAIL', 500, false);
 		const requestCode = uuidV4();
 		passwordResetRequests.set(username, {
 			code: requestCode,
@@ -76,8 +76,8 @@ export async function resetPassword(username: string, requestCode: string, newPa
 		if (!request) throw new ErrorKM('NO_REQUEST', 400);
 		if (request.code !== requestCode) throw new ErrorKM('WRONG_CODE', 400);
 		const user = await findUserByName(username, {contact: true});
-		if (!user) throw new ErrorKM('USER_UNKNOWN', 404);
-		if (!user.email) throw new ErrorKM('USER_NO_MAIL', 500);
+		if (!user) throw new ErrorKM('USER_UNKNOWN', 404, false);
+		if (!user.email) throw new ErrorKM('USER_NO_MAIL', 500, false);
 		await changePassword(username, newPassword);
 		passwordResetRequests.delete(username);
 
