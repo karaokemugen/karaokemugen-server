@@ -328,7 +328,7 @@
 			try {
 				await useCustomFetch(`/api/users/${login.value.username}/resetpassword`, {
 					method: 'POST'
-				});
+				}, false);
 				toast.success(t('modal.login.fields.forgot_password.success'));
 			} catch (e) {
 				toast.error(t('modal.login.fields.forgot_password.error'), { icon: 'error' });

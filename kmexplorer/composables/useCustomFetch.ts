@@ -56,7 +56,8 @@ export const useCustomFetchAsync = <
 
 export const useCustomFetch = <T = unknown, R extends NitroFetchRequest = NitroFetchRequest>(
 	request: R,
-	opts?: FetchOptions
+	opts?: FetchOptions,
+	toastError = true
 ) => {
 	const toast = useToast();
 	const auth = useAuthStore();
@@ -74,7 +75,7 @@ export const useCustomFetch = <T = unknown, R extends NitroFetchRequest = NitroF
 			}
 		},
 		onResponseError({ request, response, options }) {
-			if (response._data?.code && !response.ok) { // if no code is present don't display toast
+			if (response._data?.code && !response.ok && toastError) { // if no code is present don't display toast
 				toast.error(nuxt.$i18n.t(`toast.${response._data.code}`), { icon: 'error' });
 			}
 			if (response._data === 'Token has expired' || response._data === 'User logged in unknown') {
