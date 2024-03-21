@@ -125,8 +125,8 @@ export async function getPlaylists(params: PLParams, token: JWTTokenWithRoles): 
 		return pls.filter(pl =>
 			pl.flag_visible_online ||
 			token?.roles.admin ||
-			pl.username === params.username ||
-			pl.contributors.find(c => params.username === c.username));
+			pl.username === token?.username.toLowerCase() ||
+			pl.contributors.find(c => token?.username.toLowerCase() === c.username));
 	} catch (err) {
 		logger.error(`Error getting playlists : ${err}`, { service });
 		sentry.error(err);
