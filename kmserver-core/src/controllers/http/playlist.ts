@@ -22,7 +22,7 @@ export default function PLController(router: Router) {
 						plaid: req.query.plaid,
 						slug: req.query.slug,
 						containsKID: req.query.containsKID,
-						byUsername: req.query.byUsername,
+						byUsername: req.query.byUsername?.toLowerCase(),
 						includeUserAsContributor: Boolean(req.query.includeUserAsContributor),
 						filter: req.query.filter,
 						order: req.query.order,
