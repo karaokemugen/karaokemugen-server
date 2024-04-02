@@ -1,0 +1,9 @@
+[Unit]
+Description=Update kmserver
+
+[Timer]
+OnCalendar=weekly # Insert how often you want to update
+Persistent=false
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,11 @@
+[Unit]
+Description=Karaoke Mugen Server Updater
+
+[Service]
+User=kmserver
+WorkingDirectory=/srv/kmserver
+ExecStart=/srv/kmserver/docs/autoupdate.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

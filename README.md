@@ -12,13 +12,20 @@ Features :
 - Centralize stats uploaded by Karaoke Mugen instances
 - More news at 11.
 
-## Installation
+# Installation
 
-Make sure node and yarn are up to date
+Make sure node and yarn are up to date on a machine with at least **2 gb** of ram
 
+**Requirements:**
 - node 18 or later
 - yarn 3 or later
 - PostgreSQL 12 or later
+
+**Optional:**
+- [ffmpeg with libfdk_aac and ass](./docs/ffmpeg-build-script.sh) support for generating hardsubs
+- A ftp server for allowing maintainers to upload medias (vsftp is simple and works out)
+
+[Detailled debian installation instructions](./docs/kmserver-setup-debian.md)
 
 Clone this repository and install dependencies
 
@@ -33,13 +40,14 @@ yarn build:all
 Use the supplied `config.sample.yml` file and copy it to `app/config.yml`. Edit it and fill in the blanks (username, password, port, host and database name of your choosing.)
 
 As a superuser on PostgreSQL, you need to create the database properly. Use the `psql` command-line tool to connect to your PostgreSQL database.
-
+  
 Example with a database called karaokemugen_server (don't forget to put your own password instead of `musubi`) :
 
 ```SQL
 CREATE DATABASE karaokemugen_server ENCODING 'UTF8';
 CREATE USER karaokemugen_server WITH ENCRYPTED PASSWORD 'musubi';
 GRANT ALL PRIVILEGES ON DATABASE karaokemugen_server TO karaokemugen_server;
+GRANT CREATE ON SCHEMA public TO public;
 ```
 
 Switch to the newly created database and enable the `unaccent` extension.
@@ -52,15 +60,37 @@ CREATE EXTENSION pgcrypto;
 
 Karaoke Mugen Server will create tables and such on first run.
 
-Edit the `app/config.yml` file and fill in the blanks (Karas, Lyrics, Medias, Series and host of your choosing.). 
+Edit the `app/config.yml`:
 
-Run database migrations :
+- Set `InstanceID` to a GUID (Example: `120e3d08-9f5f-44d1-9655-2a04f6e600b`)
+- Set `JwtSecret` to a random text
+
+Run database migrations to setup the structure:
 
 ```sh
 yarn migrate
 ```
 
-Use the command above to generate the database :
+## Prepare a karaoke base
+
+KM Server uses git to keep a karaoke base up to date. Setup a git project on gitlab, github, gitea (selfhosted) or similar and clone it to `app/karaokebase` via `git clone`, then point the config to this directory, like this :
+
+```yaml
+System:
+  Repositories:
+    - Name: kara.moe
+      Enabled: true
+      BaseDir: app/karaokebase/git
+      FullArchiveURL: https://kara.moe/downloads/master.zip # URL to the complete repository as zip
+      SourceArchiveURL: https://gitlab.com/karaokemugen/bases/karaokebase/-/archive/master/karaokebase-master.zip
+      Path: 
+        Medias: 
+          - app/karaokebase/medias
+```
+
+**Note for new repositories:** A `repo.yml` file is needed in the root directory of the repository, which defines some settings.
+
+Generate the kara database based on your current files in the repository paths:
 
 ```sh
 yarn start --generate
@@ -81,25 +111,11 @@ KaraExplorer:
 
 For production use :
 
-- API.Host : Put your server's domain name. It's used by the API to know which domain to listen to and serve requests.
-- API.Secure : Wether your API is going to be on HTTPS or HTTP front server. Enabled by default, disable it for local tests without being behind a webserver
-- Frontend.Port : Port you should access your KM Server at. Usually on nginx or Apache you'll proxy/reverse proxy requests coming from port 80 to this port
-- KaraExplorer.Host : Host KMExplorer should be listening to
+- `API.Host` : Put your server's domain name. It's used by the API to know which domain to listen to and serve requests.
+- `API.Secure`: Wether your API is going to be on HTTPS or HTTP front server. Enabled by default, disable it for local tests without being behind a webserver
+- `Frontend.Port`: Port you should access your KM Server at. Usually on nginx or Apache you'll proxy/reverse proxy requests coming from port 80 to this port
+- `KaraExplorer.Host`: Host KMExplorer should be listening to
 
-## Prepare a karaoke base
-
-KM Server uses git to keep a karaoke base up to date. Setup one in any directory, like `app/karaokebase` via `git clone` then point the config to this directory, like this :
-
-```yaml
-System:
-  Repositories:
-    - Name: kara.moe
-      Enabled: true
-      BaseDir: app/karaokebase,
-      Path: 
-        Medias: 
-          - app/medias
-```
 
 ## Launch
 
@@ -119,6 +135,22 @@ yarn watch:kmexplorer
 
 This link should work now : http://localhost:3000/
 
-## Translation
+### Configure autostart and restart on crash
+
+On a machine with systemd, copy the file [kmserver.service](docs/kmserver.service) to `/etc/systemd/system/kmserver.service`.
+
+This assumes the project is located in `/srv/kmserver` and the user to execute is `kmserver`. You can change the file accordingly and then add the service to autostart with `systemctl enable kmserver`.
+
+Now you can start the kmserver with `sudo service kmserver start`, see its status with `sudo service kmserver status` and show the logs with `sudo journalctl -u kmserver.service -b`. 
+
+## Update the base on the fly
+
+The base can be updated by git and refreshed on the fly by making a request to `/api/update` with an admin authorization token. You can point a webhook from your git service to call this URL whenever someone pushed a change, so that kmserver will update itself automatically. 
+
+Example curl request to trigger an update: `curl -f -X POST -H authorization:<AUTH_TOKEN> https://<repo url>/api/update`
+
+Curl request to get an authorization token (use an admin account) : `curl --header "Content-Type: application/json" --data '{"username":"<username>","password":"<password>"}' --request POST https://<repo url>/api/auth/login`
+
+# Translation
 
 [![Translation status](https://hosted.weblate.org/widgets/karaoke-mugen/-/karaoke-mugen-server/multi-auto.svg)](https://hosted.weblate.org/engage/karaoke-mugen/)
