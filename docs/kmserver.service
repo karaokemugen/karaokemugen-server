@@ -1,0 +1,16 @@
+[Unit]
+Description=Karaoke Mugen Server
+After=postgresql.service
+Wants=postgresql.service
+
+[Service]
+User=kmserver
+Type=simple
+Environment="NODE_ENV=production"
+WorkingDirectory=/srv/kmserver
+ExecStart=/usr/bin/yarn start
+Restart=always
+RestartSec=1000ms
+
+[Install]
+WantedBy=multi-user.target

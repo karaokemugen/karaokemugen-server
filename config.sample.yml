@@ -20,22 +20,29 @@ System:
     - Name: kara.moe
       Online: true
       Enabled: true
-      BaseDir: 'app/data/git'
+      BaseDir: 'repos/karaokebase/git'
+      FullArchiveURL: https://kara.moe/downloads/master.zip
+      SourceArchiveURL: https://gitlab.com/karaokemugen/bases/karaokebase/-/archive/master/karaokebase-master.zip
       Path:
         Medias:
-          - app/data/medias
+          - repos/karaokebase/medias
+      Git:
+        URL: https://gitlab.com/karaokemugen/bases/karaokebase.git"
+        Branch: master
+        ProjectID: 32123952 # Only for gitlab projects / issues
     - Name: Staging
       Online: false
       Enabled: true
-      BaseDir: 'app/staging/git'
+      BaseDir: 'repos/staging/git'
       Path:
         Medias:
-          - app/staging/medias
+          - repos/staging/medias
 Frontend:
   Port: 1350
 API:
   Secure: false
   Host: localhost
+#  Port: 443
 Hardsub:
   Enabled: true
 Users:
@@ -45,12 +52,15 @@ Stats:
 Suggestions:
   Enabled: true
 KaraExplorer:
+  Secure: false
   MediaLinks: true
   Import: true
   InProgressSongsList: https://gitlab.com/karaokemugen/bases/karaokebase/-/issues?scope=all&state=opened&label_name[]=Doing
   AddRepoModalInMenu: false
   DiscourseURL: https://discourse.karaokes.moe
   DiscordURL: https://karaokes.moe/discord
+#  Port: 443
+  Host: localhost
 Gitlab:
   Enabled: true
   Token: xxx
