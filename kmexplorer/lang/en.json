@@ -211,8 +211,8 @@
 		"end_users": "You've reached the end of the user list (congratulations!).",
 		"app_banner": {
 			"title": "Did you know?",
-			"description": "Karaoke Mugen is also an application for Windows, macOS and Linux which allows you to manage playlists and karaoke events, may it be between friends, during anime conventions or even during y our streams !",
-			"more_features": "There are lots more features than on {instance} !",
+			"description": "Karaoke Mugen is also an application for Windows, macOS and Linux which allows you to manage playlists and karaoke events, may it be between friends, during anime conventions or even during your streams!",
+			"more_features": "There are lots more features than on {instance}!",
 			"link": "Check out the {link} to download the application for your computer.",
 			"website": "website"
 		}
@@ -656,7 +656,7 @@
 		"PL_SHARE_ERROR": "Error sharing playlist",
 		"PL_SHARE_CLIPBOARD_SUCCESS": "Playlist link copied in clipboard",
 		"PL_SHARE_CLIPBOARD_FAIL": "Couldn't write playlist link to clipboard",
-		"PL_SHUFFLE_ERROR":  "Error shuffling playlist"
+		"PL_SHUFFLE_ERROR": "Error shuffling playlist"
 	},
 	"roles": {
 		"donator": "Donator",
