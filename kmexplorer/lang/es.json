@@ -234,5 +234,10 @@
 	},
 	"languages": {
 		"qro": "Alfabeto latino (romanización)"
+	},
+	"layout": {
+		"app_banner": {
+			"more_features": "¡Hay muchas más funciones en {instance}!"
+		}
 	}
 }
