@@ -211,7 +211,7 @@
 		"end_users": "Vous avez atteint la fin des utilisateurs (bravo !).",
 		"app_banner": {
 			"title": "Le saviez-vous ?",
-			"description": "Karaoke Mugen, c'est aussi une application pour Windows, macOS et Linux qui permet de gérer vos playlists et vos soirées karaoké, entre amis, en convention, ou même en stream !",
+			"description": "Karaoke Mugen, c'est aussi une application pour Windows, macOS et Linux qui permet de gérer vos playlists et vos soirées karaoké, entre amis, en convention, ou même en stream !",
 			"more_features": "Il y a bien plus de fonctionnalités que sur {instance} !",
 			"link": "Rendez-vous sur le {link} pour télécharger l'application pour votre ordinateur.",
 			"website": "site web"
