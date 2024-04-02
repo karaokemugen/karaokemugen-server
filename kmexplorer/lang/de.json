@@ -249,7 +249,10 @@
 		"end_playlists": "Zeige {number} weitere Playlisten an",
 		"end_users": "Du hast das Ende der Benutzer-Liste erreicht (Glückwunsch!).",
 		"end_my_favorites": "Dies ist das Ende deiner Favoriten.",
-		"remove_tags": "Hast du versucht, einige der Filter-Tags aus der Suche zu entfernen?"
+		"remove_tags": "Hast du versucht, einige der Filter-Tags aus der Suche zu entfernen?",
+		"app_banner": {
+			"website": "webseite"
+		}
 	},
 	"modal": {
 		"signup": {
