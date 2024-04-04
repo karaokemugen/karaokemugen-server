@@ -89,7 +89,7 @@ export async function initConfig(argv: any) {
 	return getConfig();
 }
 
-export function getPublicConfig(_?: boolean) {
+export function getPublicConfig(_?: boolean, __?: boolean) {
 	const conf = cloneDeep(getConfig());
 	delete conf.App;
 	delete conf.System;
