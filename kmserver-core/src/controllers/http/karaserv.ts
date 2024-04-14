@@ -45,7 +45,7 @@ export default function KSController(router: Router) {
 					forPlayer: req.query.forPlayer,
 					ignoreCollections : req.query.ignoreCollections,
 					forceCollections: req.query.collections?.split(',')
-				}, req.authToken);
+				}, req.authToken, req.query.includeStaging);
 				res.json(karas);
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));

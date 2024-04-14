@@ -765,7 +765,8 @@
 				params: {
 					filter: val,
 					size: 50,
-					ignoreCollections: true
+					ignoreCollections: true,
+					includeStaging: true
 				}
 			});
 		if (res.content) {
@@ -814,7 +815,8 @@
 				params: {
 					q: `k:${kid}`,
 					size: 1,
-					ignoreCollections: true
+					ignoreCollections: true,
+					includeStaging: true
 				}
 			}
 		);
