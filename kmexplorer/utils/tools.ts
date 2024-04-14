@@ -9,8 +9,8 @@ import { storeToRefs } from 'pinia';
 import slug from 'slug';
 
 export function getPropertyInLanguage(prop: 'i18n', tag: DBKaraTag | DBTag, mainLanguage: string, fallbackLanguage: string, i18nParam?: Record<string, string>): string
-export function getPropertyInLanguage(prop: 'description', tag: DBTag, mainLanguage: string, fallbackLanguage: string): string
-export function getPropertyInLanguage(prop: 'description' | 'i18n', tag: DBKaraTag | DBTag, mainLanguage: string, fallbackLanguage: string, i18nParam?: Record<string, string>): string {
+export function getPropertyInLanguage(prop: 'description', tag: DBTag, mainLanguage: string, fallbackLanguage: string): string | null
+export function getPropertyInLanguage(prop: 'description' | 'i18n', tag: DBKaraTag | DBTag, mainLanguage: string, fallbackLanguage: string, i18nParam?: Record<string, string>): string | null {
 	// @ts-ignore: The overload will prevent DBKaraTag (without description) being passed to get descriptions
 	const i18n = i18nParam ? i18nParam : tag[prop];
 	if (i18n) {
@@ -18,7 +18,9 @@ export function getPropertyInLanguage(prop: 'description' | 'i18n', tag: DBKaraT
 			? i18n[mainLanguage]
 			: (i18n[fallbackLanguage]
 				? i18n[fallbackLanguage]
-				: (i18n.eng ? i18n.eng : tag.name)
+				: (i18n.eng ? i18n.eng : 
+					(prop === 'description' ? null : tag.name)
+				)
 			);
 	} else {
 		return prop === 'i18n' ? tag.name : '';

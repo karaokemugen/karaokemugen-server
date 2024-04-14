@@ -77,10 +77,6 @@ export function getNavigatorLanguageIn3B(): string {
 	return i18nIsoLanguages.alpha2ToAlpha3B(navigatorLanguage) || '';
 }
 
-export function getLocaleIn3B(userLang:string): string {
-	return i18nIsoLanguages.alpha2ToAlpha3B(userLang) || '';
-}
-
 export function listLangs(name: string, userLang: string): string[] {
 	return getAlpha3BLanguagesLocalized(userLang)
 		.map(lang => lang.name)

@@ -15,7 +15,15 @@
 					:value="tag"
 					@change="check"
 				>
-				{{ localizedName(tag, false) }}
+				<span>
+					<span class="tag-name">{{ localizedName(tag, false) }}</span>
+					<div
+						v-if="tag.description"
+						class="description"
+					>
+						{{ getDescriptionInLocale(tag) }}
+					</div>
+				</span>
 			</label>
 		</div>
 		<div v-if="!checkboxes">
@@ -105,7 +113,6 @@
 	const debouncedGetAsyncData = ref();
 	const inputToFocus = ref<HTMLElement>();
 
-	const { locale } = useI18n();
 	const { openModal } = useModalStore();
 	const { createTag } = storeToRefs(useModalStore());
 
@@ -173,7 +180,7 @@
 	}
 	function localizedName(tag: DBTag, withName = true) {
 		if (tag.i18n) {
-			const labelI18n = tag.i18n[getLocaleIn3B(locale.value)] || tag.i18n.eng || tag.name;
+			const labelI18n = getTagInLocale(tag);
 			return `${labelI18n}${labelI18n !== tag.name && withName ? ` (${tag.name})` : ''}`;
 		} else {
 			return tag.name;
@@ -205,5 +212,15 @@
 <style scoped lang="scss">
 	.checkbox {
 		width: 250px;
+		padding-bottom: 0.3em
+	}
+
+	.tag-name {
+		margin-left: 0.4em;
+	}
+
+	.description {
+		font-size: 0.8em;
+		margin-right: 0.7em;
 	}
 </style>
