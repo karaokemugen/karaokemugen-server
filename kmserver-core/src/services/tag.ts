@@ -1,7 +1,7 @@
 import { v4 as uuidV4 } from 'uuid';
 
 import {insertTag, selectTags} from '../dao/tag.js';
-import { updateTagSearchVector } from '../lib/dao/tag.js';
+import { refreshTags, updateTagSearchVector } from '../lib/dao/tag.js';
 import { writeTagFile } from '../lib/dao/tagfile.js';
 import { DBTag } from '../lib/types/database/tag.js';
 import { Tag, TagList, TagParams } from '../lib/types/tag.js';
@@ -61,7 +61,8 @@ export async function addTag(tag: Tag, opts = {forceRepo: ''}) {
 			insertTag(tag),
 			writeTagFile(tag, resolvedPathRepos('Tags', 'Staging')[0])
 		]);
-		updateTagSearchVector();
+		await updateTagSearchVector();
+		refreshTags();
 		return tag;
 	} catch (err) {
 		logger.error('Unable to add tag', {service, obj: err});

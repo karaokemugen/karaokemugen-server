@@ -586,6 +586,12 @@
 			"label": "Le karaoké se trouve déjà dans la liste de lecture '{name}'.",
 			"add": "Ajouter quand même",
 			"cancel": "Annuler"
+		},
+		"create_tag": {
+			"title": "Création de tag rapide",
+			"submit": "Sauvegarder",
+			"name": "Nom",
+			"types": "Types"
 		}
 	},
 	"titles": {

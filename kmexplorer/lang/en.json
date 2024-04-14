@@ -586,6 +586,12 @@
 			"label": "The karaoke is already in the playlist '{name}'.",
 			"add": "Add anyway",
 			"cancel": "Cancel"
+		},
+		"create_tag": {
+			"title": "Quick tag create",
+			"submit": "Save",
+			"name": "Name",
+			"types": "Tag types"
 		}
 	},
 	"titles": {

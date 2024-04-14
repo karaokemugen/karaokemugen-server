@@ -17,6 +17,7 @@
 						{{ $t('modal.suggest.title') }}
 					</p>
 					<button
+						type="button"
 						class="delete"
 						aria-label="close"
 						@click="closeModal"

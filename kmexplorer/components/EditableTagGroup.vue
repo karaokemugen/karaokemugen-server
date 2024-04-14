@@ -60,7 +60,7 @@
 							class="button"
 							:class="{ 'is-loading': loading }"
 							:disabled="currentVal.length === 0"
-							@click="newValue"
+							@click="() => openModal('createTag')"
 						>
 							<font-awesome-icon :icon="['fas', 'plus']" />
 							<span>{{ $t('kara.import.create') }}</span>
@@ -70,12 +70,19 @@
 			</div>
 		</div>
 	</div>
+	<create-tag-modal
+		:active="!!currentVal && createTag"
+		:initial-tag-types="[tagType]"
+		:initial-name="currentVal"
+		@add-value="addValue"
+	/>
 </template>
 
 <script setup lang="ts">
 	import _ from 'lodash';
 	import type { DBTag } from '%/lib/types/database/tag';
 	import type { KaraTag } from '%/lib/types/kara';
+	import { useModalStore } from '~/store/modal';
 
 	const props = withDefaults(defineProps<{
 		checkboxes?: boolean
@@ -99,6 +106,8 @@
 	const inputToFocus = ref<HTMLElement>();
 
 	const { locale } = useI18n();
+	const { openModal } = useModalStore();
+	const { createTag } = storeToRefs(useModalStore());
 
 	watch([props, inputVisible], ([_newProps, newInputVisible]) => {
 		if (newInputVisible) {
@@ -171,33 +180,18 @@
 		}
 	}
 	function addValue(option: DBTag) {
-		inputVisible.value = false;
-		currentVal.value = '';
 		if (option) {
-			const valuesUpdated: DBTag[] = values.value;
-			valuesUpdated.push(option);
-			values.value = valuesUpdated;
-			emit('change', values.value.map((t: DBTag) => t.tid));
+			inputVisible.value = false;
+			currentVal.value = '';
+			if (option) {
+				const valuesUpdated: DBTag[] = values.value;
+				valuesUpdated.push(option);
+				values.value = valuesUpdated;
+				emit('change', values.value.map((t: DBTag) => t.tid));
+			}
 		}
 	}
-	async function newValue() {
-		if (currentVal) {
-			loading.value = true;
-			const { tag } = await useCustomFetch<{ tag: DBTag }>('/api/tags/createStaging', {
-				method: 'POST',
-				body: {
-					name: currentVal.value,
-					types: [props.tagType],
-					i18n: {
-						eng: currentVal.value
-					}
-				}
-			}).finally(() => {
-				loading.value = false;
-			});
-			addValue(tag);
-		}
-	}
+
 	function deleteValue(option: KaraTag) {
 		values.value = values.value.filter((tag: DBTag) => tag.name !== option.name);
 		emit('change', values.value.map((t: DBTag) => t.tid));

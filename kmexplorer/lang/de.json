@@ -503,7 +503,6 @@
 			"contributors": "Beitragenden",
 			"title_create": "Erstelle eine Playlist",
 			"public": "Öffentlich",
-			"name": "Name",
 			"submit_edit": "Editieren",
 			"submit_create": "Speichern"
 		},
@@ -516,6 +515,11 @@
 			"add": "Lösche Playlist",
 			"label": "Bist du dir wirklich sicher, dass du die Playlist '{name}' löschen möchtest?",
 			"cancel": "Abbrechen"
+		},
+		"create_tag": {
+			"title": "Schnelles Erstellen von Tags",
+			"submit": "Speichern",
+			"types": "Tag-Typen"
 		}
 	},
 	"search": {

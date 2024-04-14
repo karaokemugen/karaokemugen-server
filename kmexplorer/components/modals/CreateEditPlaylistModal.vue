@@ -21,6 +21,7 @@
 						}}
 					</p>
 					<button
+						type="button"
 						class="delete"
 						aria-label="close"
 						@click="cancel"

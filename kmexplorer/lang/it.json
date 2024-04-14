@@ -566,6 +566,12 @@
 			"add": "Elimina la playlist",
 			"label": "Vuoi davvero eliminare la playlist \"{name}\"?",
 			"cancel": "Annulla"
+		},
+		"create_tag": {
+			"title": "Creazione rapida di tag",
+			"submit": "Salva",
+			"name": "Nome",
+			"types": "Tipi di tag"
 		}
 	},
 	"playlists": {

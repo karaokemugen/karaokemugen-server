@@ -506,6 +506,9 @@
 		"reset_password": {
 			"description": "Masukkan kata sandi baru",
 			"button": "Ubah kata sandi"
+		},
+		"create_tag": {
+			"title": "Buat tanda cepat"
 		}
 	},
 	"stats": {

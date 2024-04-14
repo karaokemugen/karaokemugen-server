@@ -10,6 +10,7 @@ export type ModalType = 'auth' |
 	'karaSuggest' |
 	'download' |
 	'banner' |
+	'createTag' |
 	'createEditPlaylist' |
 	'deletePlaylist' |
 	'addDuplicateInPlaylist' |
@@ -25,6 +26,7 @@ export type modalStoreType = {
 	karaSuggest: boolean;
 	download: boolean;
 	banner: boolean;
+	createTag: boolean;
 	createEditPlaylist: boolean;
 	deletePlaylist: boolean;
 	addDuplicateInPlaylist: boolean;
@@ -43,6 +45,7 @@ export const useModalStore = defineStore('modal', {
 			karaSuggest: false,
 			download: false,
 			banner: false,
+			createTag: false,
 			createEditPlaylist: false,
 			deletePlaylist: false,
 			addDuplicateInPlaylist: false,
@@ -67,6 +70,7 @@ export const useModalStore = defineStore('modal', {
 			this.karaSuggest = false;
 			this.download = false;
 			this.banner = false;
+			this.createTag = false;
 			this.createEditPlaylist = false;
 			this.deletePlaylist = false;
 			this.addDuplicateInPlaylist = false;
