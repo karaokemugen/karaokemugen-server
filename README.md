@@ -50,7 +50,7 @@ GRANT ALL PRIVILEGES ON DATABASE karaokemugen_server TO karaokemugen_server;
 GRANT CREATE ON SCHEMA public TO public;
 ```
 
-Switch to the newly created database and enable the `unaccent` extension.
+Switch to the newly created database and enable the `unaccent` and `pgcrypto` extension. Depending on your PostgreSQL version, some extensions might be already installed.
 
 ```SQL
 \c karaokemugen_server
@@ -62,7 +62,7 @@ Karaoke Mugen Server will create tables and such on first run.
 
 Edit the `app/config.yml`:
 
-- Set `InstanceID` to a GUID (Example: `120e3d08-9f5f-44d1-9655-2a04f6e600b`)
+- Set `InstanceID` to a GUID (Example: `120e3d08-9f5f-44d1-9655-2a04f6e600b`). Use a UUID/GUID generator online to get one.
 - Set `JwtSecret` to a random text
 
 Run database migrations to setup the structure:
@@ -150,6 +150,12 @@ The base can be updated by git and refreshed on the fly by making a request to `
 Example curl request to trigger an update: `curl -f -X POST -H authorization:<AUTH_TOKEN> https://<repo url>/api/update`
 
 Curl request to get an authorization token (use an admin account) : `curl --header "Content-Type: application/json" --data '{"username":"<username>","password":"<password>"}' --request POST https://<repo url>/api/auth/login`
+
+To create an admin user, create an admin user with `--createAdmin user,password`. Example : 
+
+```
+yarn start --createAdmin myadminuser,cannotbethiscute` for example.
+```
 
 # Translation
 
