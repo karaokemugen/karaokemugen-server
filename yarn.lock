@@ -9700,14 +9700,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"kbp2ass@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "kbp2ass@npm:1.0.1"
+"kbp2ass@npm:^1.1.3":
+  version: 1.1.3
+  resolution: "kbp2ass@npm:1.1.3"
   dependencies:
-    ass-stringify: ^0.1.3
+    yargs: ^17.6.2
   bin:
     kbp2ass: dist/index.js
-  checksum: 6b4a375dfd752151c2fdd49e8a91538879f21539caf1b330ad3dcd5e299c34716c3dae0bcbf7893db48276dc938ce5ea8ebc50ca7d58e2b876016b7ad3b289da
+  checksum: 1347d122d8b68465752b44fe60ca27232260e09ada3963595b90a2b735f7fb51d7dbacaabb2ecd643c1e1e0e1c87120e90e131a843511dea3937ac549307bac5
   languageName: node
   linkType: hard
 
@@ -9887,7 +9887,7 @@ __metadata:
     js-yaml: ^4.1.0
     jsonwebtoken: ^9.0.2
     kar-to-ass: ^1.0.11
-    kbp2ass: ^1.0.1
+    kbp2ass: ^1.1.3
     kfn-to-ass: ^1.1.0
     kitsu: ^10.1.2
     klaw: ^4.1.0
@@ -16657,7 +16657,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yargs@npm:^17.5.1":
+"yargs@npm:^17.5.1, yargs@npm:^17.6.2":
   version: 17.7.2
   resolution: "yargs@npm:17.7.2"
   dependencies:
