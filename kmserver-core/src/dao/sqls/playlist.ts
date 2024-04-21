@@ -1,6 +1,6 @@
 export const selectPlaylists = (joinClauses: string[], whereClauses: string[], filterClauses: string[], additionalFrom: string, orderClause: string, selectClauses: string[], groupClauses: string[]) => `
 WITH all_users AS (
-	SELECT 
+	SELECT
 		pk_login AS username,
 		nickname,
 		avatar_file
@@ -49,7 +49,7 @@ UPDATE playlist SET
 	slug = :slug,
 	flag_visible = :flag_visible,
 	flag_visible_online = :flag_visible_online,
-	search_vector = to_tsvector(:name) || to_tsvector(:description) || to_tsvector(u.nickname)
+	search_vector = to_tsvector('public.unaccent_conf', name) || to_tsvector('public.unaccent_conf', COALESCE(description, '')) || to_tsvector('public.unaccent_conf', u.nickname)
 FROM users u
 WHERE pk_plaid = :plaid
   AND u.pk_login = playlist.fk_login
@@ -129,7 +129,7 @@ WHERE A.pk_plcid = playlist_content.pk_plcid
 `;
 
 export const updatePlaylistDuration = `
-UPDATE playlist SET 
+UPDATE playlist SET
 	duration = (
 		SELECT COALESCE(SUM(kara.duration),0) AS duration
 			FROM kara, playlist_content
@@ -194,7 +194,7 @@ SELECT
   ak.year,
   ak.mediafile,
   ak.karafile,
-  ak.duration,  
+  ak.duration,
   pc.created_at AS added_at,
   ak.mediasize,
   ksub.subchecksum AS subchecksum,
@@ -270,18 +270,18 @@ INSERT INTO playlist_content(
 `;
 
 export const updatePlaylistSearchVector = (username: string) => `
-UPDATE playlist 
-SET search_vector = 
-	to_tsvector(name) || 
-	to_tsvector(description) || 
-	to_tsvector(u.nickname)
+UPDATE playlist
+SET search_vector =
+	to_tsvector('public.unaccent_conf', name) ||
+	to_tsvector('public.unaccent_conf', COALESCE(description, '')) ||
+	to_tsvector('public.unaccent_conf', u.nickname)
 FROM users u
 WHERE u.pk_login = playlist.fk_login
 ${username ? ' AND fk_login = $1' : ''}
 `;
 
 export const deleteFavoritePlaylist = `
-DELETE FROM users_playlist_favorites 
+DELETE FROM users_playlist_favorites
 WHERE fk_login = $1 AND fk_plaid = $2
 `;
 
