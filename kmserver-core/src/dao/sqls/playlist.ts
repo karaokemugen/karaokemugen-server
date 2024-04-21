@@ -49,7 +49,7 @@ UPDATE playlist SET
 	slug = :slug,
 	flag_visible = :flag_visible,
 	flag_visible_online = :flag_visible_online,
-	search_vector = to_tsvector('public.unaccent_conf', name) || to_tsvector('public.unaccent_conf', COALESCE(description, '')) || to_tsvector('public.unaccent_conf', u.nickname)
+	search_vector = to_tsvector('public.unaccent_conf', :name) || to_tsvector('public.unaccent_conf', COALESCE(:description, '')) || to_tsvector('public.unaccent_conf', 	u.nickname)
 FROM users u
 WHERE pk_plaid = :plaid
   AND u.pk_login = playlist.fk_login
