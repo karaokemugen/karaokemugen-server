@@ -94,7 +94,7 @@ export default function userController(router: Router) {
 			}
 		})
 		.post(async (req, res) => {
-			req.body.login = unescape(req.body.login.trim());
+			if(req.body.login) req.body.login = unescape(req.body.login.trim());
 			try {
 				await createUser(req.body);
 				res.json(APIMessage('USER_CREATED'));
