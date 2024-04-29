@@ -23,7 +23,7 @@ export function getHardsubsBeingProcessed() {
 }
 
 export function hardsubsDone() {
-	return new Promise<void>(done => {
+	return new Promise<void>((done) => {
 		once('hardsubsQueueDrained', () => {
 			done();
 		}).setMaxListeners(30);
@@ -31,27 +31,28 @@ export function hardsubsDone() {
 }
 
 export async function initHardsubGeneration(drainEvent = false) {
-	queue = fastq<never, [string, string, string, string, string], void>(wrappedGenerateHS, 1);
+	queue = fastq<never, [string, string, string, string, string, string], void>(wrappedGenerateHS, 1);
 	const karas = await getAllKaras({ ignoreCollections: true }, undefined, true);
 	generateHardsubsCache(karas);
-	if (drainEvent) queue.drain = () => {
-		emit('hardsubsQueueDrained');
-	};
+	if (drainEvent)
+		queue.drain = () => {
+			emit('hardsubsQueueDrained');
+		};
 }
 
-async function wrappedGenerateHS(payload: [string, string, string, string, string]) {
-	const [mediaPath, subPath, outputFile, kid, loudnorm] = payload;
-	logger.info(`Creating hardsub for ${mediaPath}`, {service});
+async function wrappedGenerateHS(payload: [string, string, string, string, string, string]) {
+	const [mediaPath, subPath, outputFile, kid, loudnorm, fontsDir] = payload;
+	logger.info(`Creating hardsub for ${mediaPath}`, { service });
 	if (await fileExists(outputFile)) return;
 	const assPath = subPath ? `${kid}.ass` : null;
 	if (subPath) await fs.copyFile(subPath, assPath);
 	try {
-		await createHardsub(mediaPath, assPath, outputFile, loudnorm);
+		await createHardsub(mediaPath, assPath, fontsDir, outputFile, loudnorm);
 		hardsubsBeingProcessed.delete(kid);
 		logger.info(`Hardsub for ${mediaPath} created`, { service });
-		logger.info(`${queue.length()} hardsubs left in queue`, {service});
+		logger.info(`${queue.length()} hardsubs left in queue`, { service });
 	} catch (err) {
-		logger.error(`Error creating hardsub for ${mediaPath} : ${err}`, {service, obj: err});
+		logger.error(`Error creating hardsub for ${mediaPath} : ${err}`, { service, obj: err });
 		throw err;
 	} finally {
 		if (assPath) await fs.unlink(assPath);
@@ -59,15 +60,15 @@ async function wrappedGenerateHS(payload: [string, string, string, string, strin
 }
 
 export async function generateHardsubs(karas: KaraList) {
-	logger.info('Generate subchecksums', {service});
+	logger.info('Generate subchecksums', { service });
 	interface HardsubInfo {
-		kid: string,
-		mediafile: string,
-		mediasize: number,
-		subfile: string,
-		repository: string,
-		subchecksum: string,
-		loudnorm: string
+		kid: string;
+		mediafile: string;
+		mediasize: number;
+		subfile: string;
+		repository: string;
+		subchecksum: string;
+		loudnorm: string;
 	}
 	const mediaMap = new Map<string, HardsubInfo>();
 	const mediaWithInfosSet = new Set();
@@ -79,12 +80,15 @@ export async function generateHardsubs(karas: KaraList) {
 			subfile: k.subfile,
 			repository: k.repository,
 			subchecksum: null,
-			loudnorm: k.loudnorm
+			loudnorm: k.loudnorm,
 		});
 	}
 	for (const media of mediaMap.values()) {
 		try {
-			const subfile = await resolveFileInDirs(media.subfile || 'no_ass.txt', resolvedPathRepos('Lyrics', media.repository));
+			const subfile = await resolveFileInDirs(
+				media.subfile || 'no_ass.txt',
+				resolvedPathRepos('Lyrics', media.repository),
+			);
 			media.subchecksum = await generateSubchecksum(subfile[0]);
 		} catch (err) {
 			media.subchecksum = 'no_ass_file';
@@ -93,7 +97,7 @@ export async function generateHardsubs(karas: KaraList) {
 
 		mediaWithInfosSet.add(media.mediafile.replace(ext, `.${media.mediasize}.${media.subchecksum}.mp4`));
 	}
-	logger.info('Generated subchecksums', {service});
+	logger.info('Generated subchecksums', { service });
 	const hardsubDir = resolve(getState().dataPath, getConfig().System.Path.Hardsubs);
 	const hardsubFiles = await fs.readdir(hardsubDir);
 	const hardsubSet = new Set<string>(hardsubFiles);
@@ -103,14 +107,17 @@ export async function generateHardsubs(karas: KaraList) {
 			const fileParts = file.split('.');
 			if (mediaMap.has(fileParts[0])) {
 				// Compare mediasizes. If mediasize or subchecksum are different, remove file
-				if (mediaMap.get(fileParts[0]).mediasize !== +fileParts[1] || mediaMap.get(fileParts[0]).subchecksum !== fileParts[2]) {
+				if (
+					mediaMap.get(fileParts[0]).mediasize !== +fileParts[1] ||
+					mediaMap.get(fileParts[0]).subchecksum !== fileParts[2]
+				) {
 					fs.unlink(resolve(hardsubDir, file));
-					logger.info(`Removing ${file}`, {service});
+					logger.info(`Removing ${file}`, { service });
 				}
 			}
 		});
 	} catch (err) {
-		logger.error('Unable to remove hardsubs, continuing', {service});
+		logger.error('Unable to remove hardsubs, continuing', { service });
 	} finally {
 		profile('removeHardsubs');
 	}
@@ -120,36 +127,43 @@ export async function generateHardsubs(karas: KaraList) {
 			try {
 				const hardsubFile = `${media.kid}.${media.mediasize}.${media.subchecksum}.mp4`;
 				if (!hardsubSet.has(hardsubFile)) {
-					const mediaPath = (await resolveFileInDirs(media.mediafile, resolvedPathRepos('Medias', media.repository)))[0];
+					const mediaPath = (
+						await resolveFileInDirs(media.mediafile, resolvedPathRepos('Medias', media.repository))
+					)[0];
 					let subPath = null;
 					if (media.subfile) {
-						subPath = (await resolveFileInDirs(media.subfile, resolvedPathRepos('Lyrics', media.repository)))[0];
+						subPath = (
+							await resolveFileInDirs(media.subfile, resolvedPathRepos('Lyrics', media.repository))
+						)[0];
 					}
+
+					const fontsDir = resolvedPathRepos('Fonts', media.repository)[0];
+
 					const outputFile = resolve(hardsubDir, hardsubFile);
 					hardsubsBeingProcessed.add(media.kid);
-					queue.push([mediaPath, subPath, outputFile, media.kid, media.loudnorm]);
+					queue.push([mediaPath, subPath, outputFile, media.kid, media.loudnorm, fontsDir]);
 				}
 			} catch (error) {
-				logger.error(`Error when creating hardsub for ${media.mediafile}: ${error}`, {service});
+				logger.error(`Error when creating hardsub for ${media.mediafile}: ${error}`, { service });
 			}
 		}
 	} catch (err) {
-		logger.warn('Some hardsubs could not be created', {service});
+		logger.warn('Some hardsubs could not be created', { service });
 	} finally {
 		profile('createHardsubs');
 	}
 }
 
 async function generateSubchecksum(path: string) {
-	let ass = await fs.readFile(path, {encoding: 'utf-8'}).catch(reason => {
+	let ass = await fs.readFile(path, { encoding: 'utf-8' }).catch((reason) => {
 		if (reason.code === 'ENOENT') {
 			return 'no_ass_file';
 		}
-			throw reason;
+		throw reason;
 	});
 	if (ass === 'no_ass_file') {
 		return ass;
 	}
-		ass = ass.replace(/\r/g, '');
-		return createHash('md5').update(ass, 'utf-8').digest('hex');
+	ass = ass.replace(/\r/g, '');
+	return createHash('md5').update(ass, 'utf-8').digest('hex');
 }
