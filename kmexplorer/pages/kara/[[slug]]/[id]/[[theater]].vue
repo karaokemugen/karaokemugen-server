@@ -195,9 +195,14 @@
 	const mp3 = computed(() => conf.public.SUPPORTED_AUDIO.some(extension => karaoke.value?.mediafile.endsWith(extension)));
 	const live = computed(() => karaoke.value && isPlayable(karaoke.value));
 
-	watch(() => [route.query, route.params], fetch);
-	await fetch();
-	getPlaylists();
+	watch(() => [route.query, route.params], refresh);
+	
+	await refresh();
+
+	async function refresh() {
+		await fetch();
+		getPlaylists();
+	}
 
 	async function getPlaylists() {
 		playlists.value = await useCustomFetch<DBPL[]>('/api/playlist', {
