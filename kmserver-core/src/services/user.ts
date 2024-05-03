@@ -74,7 +74,7 @@ export async function resetPassword(username: string, requestCode: string, newPa
 	try {
 		const request = passwordResetRequests.get(username);
 		if (!request) throw new ErrorKM('NO_REQUEST', 400);
-		if (request.code !== requestCode) throw new ErrorKM('WRONG_CODE', 400);
+		if (request.code !== requestCode) throw new ErrorKM('WRONG_CODE', 400, false);
 		const user = await findUserByName(username, {contact: true});
 		if (!user) throw new ErrorKM('USER_UNKNOWN', 404, false);
 		if (!user.email) throw new ErrorKM('USER_NO_MAIL', 500, false);
