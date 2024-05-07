@@ -6,7 +6,7 @@
 		/>
 	</div>
 </template>
-  
+
 <script setup lang="ts">
 	import _ from 'lodash';
 	import { storeToRefs } from 'pinia';
@@ -26,7 +26,7 @@
 
 	const toggleOn = '<svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 576 512"><style>svg{fill:#ffffff}</style><path d="M192 64C86 64 0 150 0 256S86 448 192 448H384c106 0 192-86 192-192s-86-192-192-192H192zm94 71 191 121 -190 126 z"/></svg>';
 	const toggleOff = '<svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 576 512"><style>svg{fill:#ffffff}</style><path d="M384 128c70.7 0 128 57.3 128 128s-57.3 128-128 128H192c-70.7 0-128-57.3-128-128s57.3-128 128-128H384zM576 256c0-106-86-192-192-192H192C86 64 0 150 0 256S86 448 192 448H384c106 0 192-86 192-192zm-380 90 0 -180L160 166l-0 180zm70 0 0 -180 -36 -0 0 180z"/></svg>';
-	
+
 	const props = defineProps<{
 		title: string,
 		options: any,
@@ -157,7 +157,7 @@
 
 					handleClick() {
 						player.value?.loop(!player.value.loop());
-						(document.getElementsByClassName('vjs-loop-control')[0] as HTMLButtonElement).style.color = player.value?.loop() ? '#1dd2af' :  '';
+						(document.getElementsByClassName('vjs-loop-control')[0] as HTMLButtonElement).style.color = player.value?.loop() ? '#1dd2af' : '';
 					}
 				}
 				//@ts-ignore
@@ -475,6 +475,11 @@
 		top: unset;
 		padding: 2em 1.333em 0.666em;
 		background: linear-gradient(360deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 60%, rgba(0, 0, 0, 0) 100%);
+
+		.vjs-title-bar-title,
+		.vjs-title-bar-description {
+			white-space: unset;
+		}
 	}
 
 	.vjs-volume-panel {
@@ -489,7 +494,7 @@
 		}
 	}
 
-	&.vjs-layout-medium {
+	&.vjs-layout-large {
 		.vjs-title-bar {
 			font-size: 20px;
 		}
@@ -498,10 +503,6 @@
 	&.vjs-layout-tiny,
 	&.vjs-layout-x-small,
 	&.vjs-layout-small {
-		.vjs-title-bar {
-			font-size: 15px;
-		}
-
 		.vjs-time-control {
 			display: none;
 		}
@@ -511,6 +512,13 @@
 	&.vjs-layout-x-small,
 	&.vjs-layout-small,
 	&.vjs-layout-medium {
+		.vjs-title-bar {
+			font-size: 15px;
+
+			.vjs-title-bar-description {
+				display: none;
+			}
+		}
 
 		.vjs-skip-backward-5,
 		.vjs-skip-forward-5,
