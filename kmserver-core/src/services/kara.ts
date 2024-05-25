@@ -55,10 +55,19 @@ export async function getAllYears(params: { order: 'recent' | 'karacount', colle
 
 export async function updateRepo() {
 	await updateGit();
-	await generate();
+	await execa('yarn', ['start', '--generate'], {
+		cwd: __dirname
+	});
+	const karas = await getAllKaras({ ignoreCollections: true }, undefined, true);
+	const promises = [createImagePreviews(karas, 'full', 1280)];
+	if (getConfig().Hardsub.Enabled) {
+		promises.push(generateHardsubs(karas));
+		generateHardsubsCache(karas);
+	}
+	await Promise.all(promises);
 }
 
-export async function generate(hardsubs = true) {
+export async function generate() {
 	try {
 		await removeProcessedInboxes();
 		await generateDatabase({validateOnly: false});
@@ -77,12 +86,7 @@ export async function generate(hardsubs = true) {
 		}
 		await computeSubchecksums();
 		createBaseDumps();
-		const karas = await getAllKaras({ ignoreCollections: true }, undefined, true);
-		const promises = [createImagePreviews(karas, 'full', 1280)];
-		if (hardsubs && conf.Hardsub.Enabled) {
-			promises.push(generateHardsubs(karas));
-			generateHardsubsCache(karas);
-		}
+		const promises = [];
 		if (conf.KaraExplorer.Import) promises.push(clearOldInboxEntries(), clearUnusedStagingTags());
 		if (conf.System.Repositories[0].OnUpdateTrigger) promises.push(updateTrigger());
 		promises.push(refreshKaraStats());

@@ -134,7 +134,7 @@ async function main() {
 	}
 
 	if (argv.opts().generate) {
-		await generate(false);
+		await generate();
 		exit(0);
 	}
 
