@@ -54,17 +54,22 @@ export async function getAllYears(params: { order: 'recent' | 'karacount', colle
 }
 
 const generationAbortController = new AbortController();
+let generationInProgress = false;
 
 export async function updateRepo() {
 	await updateGit();
-	generationAbortController.abort();
+	if (generationInProgress) generationAbortController.abort();
 	try {
+		generationInProgress = true;
 		await execa('yarn', ['start', '--generate'], {
 			cwd: resolve(),
 			signal: generationAbortController.signal
 		});
 	} catch (err) {
 		logger.error(`Generation aborted : ${err}`);
+		throw err;
+	} finally {
+		generationInProgress = false;
 	}
 	const karas = await getAllKaras({ ignoreCollections: true }, undefined, true);
 	const promises = [createImagePreviews(karas, 'full', 1280)];
