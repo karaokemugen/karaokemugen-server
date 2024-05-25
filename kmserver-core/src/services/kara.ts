@@ -69,8 +69,12 @@ export async function updateRepo() {
 			signal: generationAbortController.signal
 		});
 	} catch (err) {
-		logger.error(`Generation aborted : ${err}`);
-		throw err;
+		if (err.isCanceled) {
+			logger.error('Generation aborted', { service });
+			throw new ErrorKM('GEN_ABORTED', 409, false);
+		} else {
+			throw err;
+		}
 	} finally {
 		generationInProgress = false;
 	}
