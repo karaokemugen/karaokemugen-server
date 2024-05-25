@@ -53,12 +53,15 @@ export async function getAllYears(params: { order: 'recent' | 'karacount', colle
 	}
 }
 
-const generationAbortController = new AbortController();
+let generationAbortController = new AbortController();
 let generationInProgress = false;
 
 export async function updateRepo() {
 	await updateGit();
-	if (generationInProgress) generationAbortController.abort();
+	if (generationInProgress) {
+		generationAbortController.abort();
+		generationAbortController = new AbortController();
+	}
 	try {
 		generationInProgress = true;
 		await execa('yarn', ['start', '--generate'], {
