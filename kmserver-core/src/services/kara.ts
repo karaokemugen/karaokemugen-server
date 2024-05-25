@@ -56,7 +56,7 @@ export async function getAllYears(params: { order: 'recent' | 'karacount', colle
 export async function updateRepo() {
 	await updateGit();
 	await execa('yarn', ['start', '--generate'], {
-		cwd: __dirname
+		cwd: resolve()
 	});
 	const karas = await getAllKaras({ ignoreCollections: true }, undefined, true);
 	const promises = [createImagePreviews(karas, 'full', 1280)];
