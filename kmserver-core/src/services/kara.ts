@@ -66,7 +66,7 @@ export async function updateRepo() {
 		generationInProgress = true;
 		await execa('yarn', ['start', '--generate'], {
 			cwd: resolve(),
-			signal: generationAbortController.signal
+			cancelSignal: generationAbortController.signal
 		});
 	} catch (err) {
 		if (err.isCanceled) {
