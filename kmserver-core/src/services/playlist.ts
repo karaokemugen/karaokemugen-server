@@ -89,7 +89,7 @@ export async function createPlaylist(pl: DBPL, token: JWTTokenWithRoles) {
 			modified_at: pl.modified_at || new Date(),
 			// Forcing username provided by function.
 			// The person creating the playlist should be the owner.
-			username: token.username,
+			username: token.username.toLowerCase(),
 			name: pl.name,
 			description: pl.description,
 			// Defaults
@@ -219,7 +219,7 @@ export async function addKaraToPlaylist(kids: string[], plaid: string, token: JW
 		const karaList: PLCInsert[] = karas.content.map(k => {
 			return {
 				kid: k.kid,
-				username: token.username,
+				username: token.username.toLowerCase(),
 				nickname: user.nickname,
 				plaid,
 				added_at: date_add
@@ -495,6 +495,7 @@ export async function addPlaylistToFavorites(plaid: string, token: JWTTokenWithR
 	try {
 		const pl = (await getPlaylists({plaid}, token))[0];
 		if (!pl) throw new ErrorKM('UNKNOWN_PLAYLIST', 404, false);
+		token.username = token.username.toLowerCase();
 		await insertPlaylistToFavorites(token.username, plaid);
 		// For now stats are refreshed every time a user does something. We'll move that to a cronjob later
 		refreshPlaylistStats().then(() => {
@@ -511,6 +512,7 @@ export async function removePlaylistFromFavorites(plaid: string, token: JWTToken
 	try {
 		const pl = (await getPlaylists({plaid}, token))[0];
 		if (!pl) throw new ErrorKM('UNKNOWN_PLAYLIST', 404, false);
+		token.username = token.username.toLowerCase();
 		await deletePlaylistFromFavorites(token.username, plaid);
 		// For now stats are refreshed every time a user does something. We'll move that to a cronjob later
 		refreshPlaylistStats().then(() => {
