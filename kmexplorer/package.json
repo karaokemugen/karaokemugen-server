@@ -33,11 +33,11 @@
     "vue-toastification": "2.0.0-rc.5"
   },
   "devDependencies": {
-    "@kevinmarrec/nuxt-pwa": "^0.17.0",
     "@nuxt/eslint-config": "^0.2.0",
     "@types/lodash": "^4.17.0",
     "@types/slug": "^5.0.8",
     "@types/uuid": "^9.0.8",
+    "@vite-pwa/nuxt": "^0.8.0",
     "eslint": "^8.56.0",
     "nuxt": "^3.11.2",
     "sass": "^1.75.0"

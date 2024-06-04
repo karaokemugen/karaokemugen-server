@@ -4,7 +4,7 @@ import { resolve } from 'node:path';
 import { load } from 'js-yaml';
 import merge from 'lodash/merge';
 
-import type { Config } from 'kmserver-core/src/types/config';
+import type { Config } from '../kmserver-core/src/types/config';
 import { defineNuxtConfig } from 'nuxt/config';
 import { supportedFiles } from '../kmserver-core/src/lib/utils/constants';
 import { sentryDSN } from '../kmserver-core/src/utils/constants';
@@ -96,11 +96,10 @@ const nuxtConfig = defineNuxtConfig({
 			maskablePadding: 0
 		},
 		workbox: {
-			enabled: production,
 			runtimeCaching: [
 				{
 					urlPattern: '/previews/.*',
-					handler: 'cacheFirst'
+					handler: 'CacheFirst'
 				}
 			]
 		}
@@ -121,7 +120,7 @@ const nuxtConfig = defineNuxtConfig({
 		// Doc: https://github.com/nuxt-community/sentry-module
 		'@pinia/nuxt',
 		'@pinia-plugin-persistedstate/nuxt',
-		'@kevinmarrec/nuxt-pwa'
+		'@vite-pwa/nuxt'
 	],
 
 	css: [
