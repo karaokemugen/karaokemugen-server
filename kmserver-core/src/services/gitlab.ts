@@ -79,7 +79,7 @@ export async function createInboxIssue(kid: string, edit?: EditElement) {
 `;
 			if (edit.modifiedLyrics) changes.push('LYRICS updated');
 			if (edit.modifiedMedia) changes.push('MEDIA updated');
-			if (edit.oldKara.from_display_type !== kara.from_display_type) changes.push('FROM DISPLAY TYPE updated');
+			if (edit.oldKara.from_display_type !== kara.from_display_type) changes.push(`FROM DISPLAY TYPE updated : ${edit.oldKara.from_display_type} => ${kara.from_display_type}`);
 			if (!isEqual(edit.oldKara.year, kara.year)) changes.push(`YEAR updated : ${edit.oldKara.year} => ${kara.year}`);
 			if (!isEqual(edit.oldKara.songorder, kara.songorder)) changes.push(`SONGORDER updated : ${edit.oldKara.songorder} => ${kara.songorder}`);
 			if (!isEqual(edit.oldKara.titles, kara.titles)) changes.push(`TITLES updated : ${JSON.stringify(edit.oldKara.titles, null, 2)} => ${JSON.stringify(kara.titles, null, 2)}`);
@@ -93,8 +93,8 @@ export async function createInboxIssue(kid: string, edit?: EditElement) {
 						q: `k:${edit.oldKara.parents.join(',')}`
 					});
 					oldParents = karas.content.map(k => k.karafile);
-				} 
-				
+				}
+
 				changes.push(`PARENTS updated : ${oldParents} => ${newParents}`);
 			}
 			// We need to restore kara from fullKara since we may have removed some tags when displaying earlier
