@@ -11,6 +11,7 @@ import { pubUser } from './userPubSub.js';
 
 // @ts-expect-error
 const anilist = new Anilist();
+// @ts-expect-error
 const kitsu = new Kitsu();
 const service = 'AnimeList';
 
