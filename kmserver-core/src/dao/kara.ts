@@ -92,32 +92,32 @@ function prepareKaraQuery(params: KaraParams) {
 	}
 	if (params.order === 'recent') q.orderClauses = 'created_at DESC, ';
 	if (params.order === 'played') {
-		q.orderClauses = 'ks.played DESC, ';
-		q.selectClause += 'ks.played,';
+		q.orderClauses = 'ks.played DESC NULLS LAST, ';
+		q.selectClause += 'COALESCE(ks.played, 0),';
 		q.groupClause += 'ks.played, ';
 		q.joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
 	}
 	if (params.order === 'playedRecently') {
-		q.orderClauses = 'ks.played_recently DESC, ';
-		q.selectClause += 'ks.played_recently AS played,';
+		q.orderClauses = 'ks.played_recently DESC NULLS LAST, ';
+		q.selectClause += 'COALESCE(ks.played_recently, 0) AS played,';
 		q.groupClause += 'ks.played_recently, ';
 		q.joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
 	}
 	if (params.order === 'favorited') {
-		q.orderClauses = 'ks.favorited DESC, ';
-		q.selectClause += 'ks.favorited,';
+		q.orderClauses = 'ks.favorited DESC NULLS LAST, ';
+		q.selectClause += 'COALESCE(ks.favorited, 0),';
 		q.groupClause += 'ks.favorited, ';
 		q.joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
 	}
 	if (params.order === 'requested') {
-		q.orderClauses = 'ks.requested DESC, ';
-		q.selectClause += 'ks.requested,';
+		q.orderClauses = 'ks.requested DESC NULLS LAST,';
+		q.selectClause += 'COALESCE(ks.requested, 0),';
 		q.groupClause += 'ks.requested, ';
 		q.joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
 	}
 	if (params.order === 'requestedRecently') {
-		q.orderClauses = 'ks.requested_recently DESC, ';
-		q.selectClause += 'ks.requested_recently AS requested,';
+		q.orderClauses = 'ks.requested_recently DESC NULLS LAST, ';
+		q.selectClause += 'COALESCE(ks.requested_recently, 0) AS requested,';
 		q.groupClause += 'ks.requested_recently, ';
 		q.joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
 	}
