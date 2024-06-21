@@ -58,6 +58,7 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
+    "@hiogawa/flac-picture": "^1.0.0-pre.5",
     "@sentry/node": "^8.9.2",
     "@sentry/tracing": "^7.114.0",
     "anilist-node": "^1.14.1",

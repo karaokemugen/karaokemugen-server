@@ -3020,6 +3020,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hiogawa/flac-picture@npm:^1.0.0-pre.5":
+  version: 1.0.0-pre.5
+  resolution: "@hiogawa/flac-picture@npm:1.0.0-pre.5"
+  bin:
+    flac-picture: bin/cli.js
+  checksum: b520de132c405688597f91d19a9cd17c319162463a0135eb8f2375b5e169a8630d36d32650850cfa8e17539ae41a943477cac094784626ca46a9a5a9f0704530
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.11.13":
   version: 0.11.13
   resolution: "@humanwhocodes/config-array@npm:0.11.13"
@@ -12583,6 +12592,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "kmserver-core@workspace:kmserver-core"
   dependencies:
+    "@hiogawa/flac-picture": ^1.0.0-pre.5
     "@sentry/cli": ^2.32.1
     "@sentry/node": ^8.9.2
     "@sentry/tracing": ^7.114.0
