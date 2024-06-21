@@ -9,6 +9,7 @@ import { createKaraIssue, createSuggestionIssue } from '../../services/gitlab.js
 import {getAllKaras, getAllMedias, getAllYears, getBaseStats, getHardsubsCache, getKara} from '../../services/kara.js';
 import {getTag, getTags} from '../../services/tag.js';
 import { optionalAuth } from '../middlewares/auth.js';
+import { getRepoManifest } from '../../lib/services/repo.js';
 
 export default function KSController(router: Router) {
 	router.route('/karas/lastUpdate')
@@ -159,7 +160,8 @@ export default function KSController(router: Router) {
 				FullArchiveURL: getConfig().System.Repositories[0].FullArchiveURL,
 				SourceArchiveURL: getConfig().System.Repositories[0].SourceArchiveURL,
 				LatestCommit: await getLatestGitCommit(),
-				ProjectID: getConfig().System.Repositories[0].Git.ProjectID
+				ProjectID: getConfig().System.Repositories[0].Git.ProjectID,
+				Manifest: getRepoManifest(getConfig().System.Repositories[0].Name)
 			} as RepositoryManifest);
 		});
 	router.route('/karas/repository/diff')
