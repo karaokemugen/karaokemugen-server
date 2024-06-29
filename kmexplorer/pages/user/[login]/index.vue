@@ -63,6 +63,14 @@
 								/>
 								<span class="is-hidden-mobile">{{ $t('profile.edit') }}</span>
 							</button>
+							<button
+								v-if="edit && loggedIn && userConnected?.roles?.admin"
+								type="button"
+								class="button is-danger"
+								@click.prevent="deleteAccount"
+							>
+								{{ $t('modal.profile.delete') }}
+							</button>
 						</client-only>
 					</div>
 					<template v-if="bio || metadata">
@@ -290,6 +298,11 @@
 		});
 	}
 
+	function deleteAccount() {
+		useCustomFetch(`/api/users/${params.login}`, {
+			method: 'DELETE'
+		});
+	}
 
 	function openEdit() {
 		if (viewingSelf.value) {

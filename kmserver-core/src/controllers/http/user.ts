@@ -118,7 +118,15 @@ export default function userController(router: Router) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		})
-		.patch(uploadMiddleware, requireAuth, requireValidUser, updateLoginTime, editHandler(false));
+		.patch(uploadMiddleware, requireAuth, requireValidUser, updateLoginTime, editHandler(false))
+		.delete(requireAuth, requireValidUser, requireAdmin, async (req: any, res) => {
+			try {
+				await removeUser(req.params.user);
+				res.send(APIMessage('USER_DELETED'));
+			} catch (err) {
+				res.status(err.code || 500).json(APIMessage(err.message));
+			}
+		})
 	router.route('/users/:user/resetpassword')
 		.post(async (req, res) => {
 			try {
