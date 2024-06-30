@@ -66,7 +66,7 @@
 			"from_display_type": "Visualizza tipo di tag",
 			"lyrics_file_missing": "Manca il file del testo, il che va bene solo se stai inviando un file MKV o un karaoke senza testo (esatto).",
 			"authors_required": "È necessario inserire l'autore del karaoke",
-			"romanization_warning": "Questo titolo/tag contiene un alfabeto non latino. Devi aggiungere anche la lingua \"Alfabeto Latino (Romanizzazione)\"",
+			"romanization_warning": "Questo titolo/tag contiene un alfabeto non latino. Devi aggiungere anche la lingua \"Alfabeto Latino (Romanizzazione)\", a meno che il titolo in alfabeto non latino non sia una trascrizione di un'altra lingua.",
 			"songwriters_tooltip": "Compositori, arrangiatori e cantautori.",
 			"series_singers_required": "Serie, Cantato da e Dalla band musicale non possono essere tutti vuoti.",
 			"add_success_description": "Un ticket è stato aggiunto al nostro tracker. Puoi controllarne i progressi su {url}",
