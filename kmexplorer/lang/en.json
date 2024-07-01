@@ -113,7 +113,7 @@
 			"description": "This form allows you to submit a karaoke to the Karaoke Mugen team. It will not be immediately integrated in the karaoke database because it requires a validation. Please be patient. Your karaoke may be modified if it doesn't comply to the team rules.",
 			"attention": "ATTENTION:",
 			"check_in_progress": "Please check the list of karaokes currently being made before sending us a song. This'll avoid duplicate work, and the world will thus be a better place.",
-			"documentation_link": "Documentation",
+			"documentation_link": "Please read {instance}'s rules before submitting a song!",
 			"in_progress_link": "Karaokes In Progress List",
 			"license_reminder": "Your karaoke will be published with the {name} license",
 			"license_link": "Learn more about this license by clicking here.",

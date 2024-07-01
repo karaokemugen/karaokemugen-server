@@ -14,9 +14,9 @@
 		</div>
 		<div class="description">
 			<ul>
-				<li>
-					<nuxt-link href="https://docs.karaokes.moe">
-						{{ $t('kara.import.documentation_link') }}
+				<li v-if="manifest?.docsURL">
+					<nuxt-link :href="manifest.docsURL">
+						{{ $t('kara.import.documentation_link', { instance: instanceName }) }}
 					</nuxt-link>
 				</li>
 				<li v-if="in_progress_songs_list">
@@ -33,7 +33,7 @@
 			class="message is-info"
 		>
 			<div class="message-header">
-				<p>{{ $t('kara.import.license_reminder', {name: base_license_name}) }}</p>
+				<p>{{ $t('kara.import.license_reminder', { name: base_license_name }) }}</p>
 			</div>
 			<div class="message-body">
 				<nuxt-link
@@ -52,15 +52,19 @@
 
 <script setup lang="ts">
 	import type { DBKara } from '%/lib/types/database/kara';
+	import type { RepositoryManifestV2 } from '%/lib/types/repo';
 
 	const config = useRuntimeConfig();
 	const route = useRoute();
 	const { t } = useI18n();
 
-	const base_license_name = ref(config.public.BASE_LICENSE_NAME);
-	const base_license_link = ref(config.public.BASE_LICENSE_LINK);
-	const in_progress_songs_list = ref(config.public.IN_PROGRESS_SONGS_LIST);
+	const conf = useRuntimeConfig();
+	const base_license_name = config.public.BASE_LICENSE_NAME;
+	const base_license_link = config.public.BASE_LICENSE_LINK;
+	const in_progress_songs_list = config.public.IN_PROGRESS_SONGS_LIST;
+	const instanceName = conf.public.INSTANCE_NAME;
 	const kara = ref<DBKara>();
+	const manifest = ref<RepositoryManifestV2>();
 
 	definePageMeta({
 		validate: async () => {
@@ -77,6 +81,9 @@
 			throw createError({ statusCode: 404, message: t('kara.notfound') });
 		}
 	}
+
+	const data = await useCustomFetch<{ Manifest: RepositoryManifestV2 }>('/api/karas/repository');
+	manifest.value = data.Manifest;
 </script>
 
 <style scoped lang="scss">
