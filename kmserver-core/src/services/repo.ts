@@ -1,3 +1,4 @@
+import { readAllRepoManifests } from '../lib/services/repo.js';
 import { getConfig, setConfig } from '../lib/utils/config.js';
 
 export function getRepo(repoName: string) {
@@ -28,4 +29,5 @@ export function initRepos() {
 			}
 		});
 	}
+	readAllRepoManifests();
 }
