@@ -42,6 +42,7 @@ export function initFrontend(listenPort: number) {
 	const conf = getConfig();
 	const state = getState();
 	const app = express();
+	const protocol = `http${conf.API.Secure ? 's' : ''}:`;
 
 	// Trust our reverse proxy entirely
 	app.set('trust proxy', (ip: string) => {
@@ -63,12 +64,13 @@ export function initFrontend(listenPort: number) {
 				defaultSrc: ['\'self\'', 'data:'],
 				scriptSrc: ['\'self\'', '\'unsafe-inline\'', '\'unsafe-eval\'', 'https://storage.googleapis.com/workbox-cdn/'],
 				styleSrc: ['\'self\'', '\'unsafe-inline\''],
-				connectSrc: ['\'self\'', 'https:', 'wss:', 'data:'],
-				mediaSrc: ['\'self\'', 'https:', 'data:', 'blob:'],
-				imgSrc: ['\'self\'', 'https:', 'data:', 'blob:'],
+				connectSrc: ['\'self\'', protocol, 'wss:', 'data:'],
+				mediaSrc: ['\'self\'', protocol, 'data:', 'blob:'],
+				imgSrc: ['\'self\'', protocol, 'data:', 'blob:'],
 				frameSrc: ['\'self\''],
-				frameAncestors: ['https:'],
-				workerSrc: ['\'self\'', 'https://storage.googleapis.com/workbox-cdn/']
+				frameAncestors: [protocol],
+				workerSrc: ['\'self\'', 'https://storage.googleapis.com/workbox-cdn/'],
+				upgradeInsecureRequests: conf.API.Secure ? [] : null,
 			}
 		}
 	}) as express.Handler);
