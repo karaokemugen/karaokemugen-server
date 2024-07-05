@@ -15,7 +15,9 @@ const conf = merge(defaults, load(file)) as Config;
 
 const production = process.env.NODE_ENV === 'production';
 
-const apiUrl = `http${conf.API.Secure ? 's' : ''}://${conf.API.Host}${!conf.API.Port || conf.API.Port === 443 || conf.API.Port === 80 ? '' : `:${conf.API.Port}`}/`;
+const apiPort = production ? conf.Frontend.Port : conf.API.Port;
+
+const apiUrl = `http${conf.API.Secure ? 's' : ''}://${conf.API.Host}${!apiPort ? '' : `:${apiPort}`}/`;
 
 const nuxtConfig = defineNuxtConfig({
 
@@ -196,7 +198,7 @@ const nuxtConfig = defineNuxtConfig({
 				file: 'de.json'
 			}
 		],
-		baseUrl: `http${conf.API.Secure ? 's' : ''}://${conf.API.Host}${!conf.API.Port || conf.API.Port === 443 || conf.API.Port === 80 ? '' : `:${conf.API.Port}`}/`,
+		baseUrl: apiUrl,
 		lazy: true,
 		defaultLocale: 'en',
 		strategy: 'no_prefix',
