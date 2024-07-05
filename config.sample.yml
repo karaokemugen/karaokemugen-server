@@ -1,9 +1,6 @@
 App:
   InstanceID: Change me
   JwtSecret: Change me
-BaseLicense:
-  Name: ODbL/CC BY-SA 4.0
-  Link: https://gitlab.com/karaokemugen/bases/karaokebase/-/blob/master/LICENSE.md
 System:
   Database:
     username: karaokemugen_server

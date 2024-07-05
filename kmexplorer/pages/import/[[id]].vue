@@ -29,16 +29,16 @@
 			</ul>
 		</div>
 		<article
-			v-if="base_license_name"
+			v-if="manifest?.license"
 			class="message is-info"
 		>
 			<div class="message-header">
-				<p>{{ $t('kara.import.license_reminder', { name: base_license_name }) }}</p>
+				<p>{{ $t('kara.import.license_reminder', { name: manifest.license }) }}</p>
 			</div>
 			<div class="message-body">
 				<nuxt-link
-					v-if="base_license_link"
-					:href="base_license_link"
+					v-if="manifest.licenseURL"
+					:href="manifest.licenseURL"
 				>
 					{{ $t('kara.import.license_link') }}
 				</nuxt-link>
@@ -59,8 +59,6 @@
 	const { t } = useI18n();
 
 	const conf = useRuntimeConfig();
-	const base_license_name = config.public.BASE_LICENSE_NAME;
-	const base_license_link = config.public.BASE_LICENSE_LINK;
 	const in_progress_songs_list = config.public.IN_PROGRESS_SONGS_LIST;
 	const instanceName = conf.public.INSTANCE_NAME;
 	const kara = ref<DBKara>();

@@ -33,8 +33,6 @@ const nuxtConfig = defineNuxtConfig({
 			IN_PROGRESS_SONGS_LIST: conf.KaraExplorer.InProgressSongsList,
 			DISCORD_LINK: conf.KaraExplorer.DiscordURL,
 			DISCOURSE_LINK: conf.KaraExplorer.DiscourseURL,
-			BASE_LICENSE_NAME: conf.BaseLicense?.Name,
-			BASE_LICENSE_LINK: conf.BaseLicense?.Link,
 			SUPPORTED_LYRICS: supportedFiles.lyrics,
 			SUPPORTED_MEDIAS:
 				conf.KaraExplorer.SupportedMedias && conf.KaraExplorer.SupportedMedias?.length > 0

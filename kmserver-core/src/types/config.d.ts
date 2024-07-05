@@ -8,10 +8,6 @@ export interface Config {
 		JwtSecret?: string,
 		InstanceID?: string,
 	},
-	BaseLicense?: {
-		Name?: string
-		Link?: string
-	},
 	Karaoke?: {
 		Collections: any
 	},

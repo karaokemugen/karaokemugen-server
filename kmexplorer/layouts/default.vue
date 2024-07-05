@@ -1069,10 +1069,10 @@
 					<nuxt-link href="https://gitlab.com/karaokemugen/code/karaokemugen-server/-/blob/master/LICENSE.md">
 						MIT
 					</nuxt-link>
-					<template v-if="base_license_name">
+					<template v-if="manifest?.license">
 						/ {{ $t('footer.base_under_licence') }}
-						<nuxt-link :href="base_license_link">
-							{{ base_license_name }}
+						<nuxt-link :href="manifest.licenseURL">
+							{{ manifest?.license }}
 						</nuxt-link>
 					</template>
 				</p>
@@ -1111,9 +1111,10 @@
 
 <script setup lang="ts">
 	import type { KaraList as KaraListType } from '%/lib/types/kara';
+	import type { RepositoryManifestV2 } from '%/lib/types/repo';
+	import type { LocaleObject } from '@nuxtjs/i18n';
 	import { storeToRefs } from 'pinia';
 	import slug from 'slug';
-	import type { LocaleObject } from 'vue-i18n-routing';
 	import type { TokenResponseWithRoles } from '~/../kmserver-core/src/lib/types/user';
 	import { useAuthStore } from '~/store/auth';
 	import { useLocalStorageStore } from '~/store/localStorage';
@@ -1122,8 +1123,6 @@
 
 	const conf = useRuntimeConfig();
 	const import_enabled = conf.public.KM_IMPORT;
-	const base_license_name = conf.public.BASE_LICENSE_NAME;
-	const base_license_link = conf.public.BASE_LICENSE_LINK;
 	const explorerProtocol = conf.public.EXPLORER_PROTOCOL;
 	const explorerHost = conf.public.EXPLORER_HOST;
 	const discordLink = conf.public.DISCORD_LINK;
@@ -1141,7 +1140,8 @@
 	const menuOpen = ref<TypeMenu>();
 	const tagsOpen = ref(false);
 	const languagesOpen = ref(false);
-
+	const manifest = ref<RepositoryManifestV2>();
+	
 	const { $onAction } = useMenubarStore();
 	const { auth, joinKara, stats, deleteAccount, addRepo, profile } = storeToRefs(useModalStore());
 	const { closeAll, openModal } = useModalStore();
@@ -1189,10 +1189,16 @@
 			closeAll();
 		});
 		checkAuth();
+		getRepoManifest();
 	});
 
 	async function checkAuth() {
 		useCustomFetch<TokenResponseWithRoles>('/api/auth/check').then(res => loginApi(res)).catch(e => logout());
+	}
+
+	async function getRepoManifest() {
+		const data = await useCustomFetch<{ Manifest: RepositoryManifestV2 }>('/api/karas/repository');
+		manifest.value = data.Manifest;
 	}
 
 	function login() {
