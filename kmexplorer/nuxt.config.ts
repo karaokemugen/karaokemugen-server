@@ -15,9 +15,7 @@ const conf = merge(defaults, load(file)) as Config;
 
 const production = process.env.NODE_ENV === 'production';
 
-const apiPort = production ? conf.Frontend.Port : conf.API.Port;
-
-const apiUrl = `http${conf.API.Secure ? 's' : ''}://${conf.API.Host}${!apiPort ? '' : `:${apiPort}`}/`;
+const apiUrl = `http${conf.API.Secure ? 's' : ''}://${conf.API.Host}${conf.API.Port ? `:${conf.API.Port}` : ''}/`;
 
 const nuxtConfig = defineNuxtConfig({
 
