@@ -141,7 +141,7 @@
 			query: reqParams(acceptQueryCollection)
 		});
 		for (const karaoke of data.content) {
-			sortTypesKara(karaoke);
+			karaoke.songtypes = sortAndHideTags(karaoke.songtypes, true);
 		}
 		for (let i = data.infos.from; i < data.infos.to; i++) {
 			karaokes.value.content[i] = data.content[i - data.infos.from];

@@ -162,7 +162,8 @@
 			if (karaSlug !== oldKaraSlug) {
 				navigateTo({ params: { id: kid, slug: karaSlug, theater: theater }, query: route.query }, { replace: true });
 			}
-			karaoke.value = sortTypesKara(res);
+			res.songtypes = sortAndHideTags(res.songtypes, true);
+			karaoke.value = res;
 		} catch (e) {
 			throw createError({ statusCode: 404, message: t('kara.notfound') });
 		}

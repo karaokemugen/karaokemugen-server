@@ -313,7 +313,7 @@
 			}
 		});
 		for (const karaoke of data.content) {
-			sortTypesKara(karaoke);
+			karaoke.songtypes = sortAndHideTags(karaoke.songtypes, true);
 		}
 		karaokes.value = data;
 		loading.value = false;

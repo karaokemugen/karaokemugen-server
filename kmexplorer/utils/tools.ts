@@ -102,19 +102,19 @@ export function buildKaraTitle(
 	)} ${version}`;
 }
 
-export function sortTagByPriority(a: any, b: any) {
-	return a.priority < b.priority ? 1 : a.name.localeCompare(b.name);
+export function sortTagByPriority(a: any, b: any, reverse: boolean) {
+	return (reverse ? a.priority > b.priority : a.priority < b.priority) ? 1 : a.name.localeCompare(b.name);
 }
 
 /**
  * Tags can have a -1 priority to be hidden from public, and -2 to be hidden everywhere
  * @param {Array} tags array of tags
- * @param {String} scope public or admin
+ * @param {Boolean} reverse inverse sort of priority
  * @returns {Array} array of tags without hidden tags and sort
  */
-export function sortAndHideTags(tags: any[]) {
+export function sortAndHideTags(tags: any[], reverse: boolean = false) {
 	return tags?.length > 0
-		? tags.filter(tag => tag.priority >= 0).sort(sortTagByPriority)
+		? tags.filter((tag) => tag.priority >= 0).sort((a, b) => sortTagByPriority(a, b, reverse))
 		: [];
 }
 
@@ -132,31 +132,6 @@ export function fakeYearTag(year: string, count?: number): DBTag {
 			0: count || 0
 		}
 	};
-}
-
-export function sortTypesKara(karaoke: DBKara): DBKara {
-	// Sorting algorithm, as suggested in https://discord.com/channels/84245347336982528/324208228680466434/730387614460543016
-	const high_prio: DBKaraTag[] = [];
-	const std_prio: DBKaraTag[] = [];
-	const low_prio: DBKaraTag[] = [];
-	for (const songtype of karaoke.songtypes) {
-		// Opening, Ending, MV, Insert
-		if (['f02ad9b3-0bd9-4aad-85b3-9976739ba0e4',
-			'38c77c56-2b95-4040-b676-0994a8cb0597',
-			'7be1b15c-cff8-4b37-a649-5c90f3d569a9',
-			'5e5250d9-351a-4a82-98eb-55db50ad8962'].includes(songtype.tid)) {
-			high_prio.push(songtype);
-			// Audio, Other
-		} else if (['97769615-a2e5-4f36-8c23-b2ce2ce3c460',
-			'42a262ae-acba-4ab5-a446-c5789c96c821'].includes(songtype.tid)) {
-			low_prio.push(songtype);
-			// All others
-		} else {
-			std_prio.push(songtype);
-		}
-	}
-	karaoke.songtypes = [...high_prio, ...std_prio, ...low_prio];
-	return karaoke;
 }
 
 export function generateNavigation(search = useMenubarStore().search, tags = useMenubarStore().tags, page = '/search/', enabledCollections = useLocalStorageStore().enabledCollections) {
