@@ -719,9 +719,11 @@
 	import { useLocalStorageStore } from '~/store/localStorage';
 	import { storeToRefs } from 'pinia';
 	import { tagTypes } from '~/assets/constants';
+	import type { RepositoryManifestV2 } from '%/lib/types/repo';
 
 	const props = defineProps<{
 		kara?: DBKara
+		repositoryManifest: RepositoryManifestV2
 	}>();
 
 	const karaoke = ref(convertDBKaraToKaraFile(props.kara));
@@ -773,6 +775,12 @@
 			karaSearch.value = res.content
 				.filter(k => k.kid !== props.kara?.kid)
 				.filter(k => !props.kara || !k.parents.includes(props.kara?.kid))
+				.filter(
+					(k: DBKara) =>
+						k.parents.length === 0 ||
+						!props.repositoryManifest?.rules?.karaFile?.maxParentDepth ||
+						props.repositoryManifest.rules.karaFile.maxParentDepth !== 1
+				)
 				.map(k => {
 					return {
 						label: buildKaraTitle(k, res.i18n),

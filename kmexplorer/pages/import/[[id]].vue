@@ -45,7 +45,10 @@
 			</div>
 		</article>
 		<div class="tile is-child is-8">
-			<kara-edit :kara="kara" />
+			<kara-edit
+				:kara="kara"
+				:repository-manifest="manifest"
+			/>
 		</div>
 	</div>
 </template>
