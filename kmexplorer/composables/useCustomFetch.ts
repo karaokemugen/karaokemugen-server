@@ -7,7 +7,7 @@ import type { Ref } from 'vue';
 import * as Toast from 'vue-toastification';
 import { useAuthStore } from '~/store/auth';
 
-// @ts-ignore
+// @ts-expect-error
 const useToast = Toast.useToast ?? Toast.default.useToast;
 
 export const useCustomFetchAsync = <

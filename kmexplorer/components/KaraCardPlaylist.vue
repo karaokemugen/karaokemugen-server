@@ -99,9 +99,9 @@
 		const tags: TagExtend[] = [];
 		for (const tagType of ['langs', 'series', 'singers', 'singergroups', 'warnings']) {
 			let i = 0;
-			// @ts-ignore
+			// @ts-expect-error
 			if (props.karaoke[tagType] && props.karaoke[tagType].length !== 0) {
-				// @ts-ignore
+				// @ts-expect-error
 				for (const tag of props.karaoke[tagType]) {
 					// Removing all tags mentioned in the karaphrase
 					if (!(

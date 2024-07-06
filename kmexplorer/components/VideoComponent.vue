@@ -116,22 +116,22 @@
 
 				const Button = videojs.getComponent('Button');
 
-				//@ts-ignore
+				//@ts-expect-error
 				class Switch extends Button {
 
 					constructor(player: Player, options = {}) {
 						super(player, options);
 
 						if (player) player.autoplay(props.theaterMode);
-						//@ts-ignore
+						//@ts-expect-error
 						this.setIcon('next-item'); // create the skeleton of the icon
 						this.overrideIcon();
-						//@ts-ignore
+						//@ts-expect-error
 						this.controlText(t('kara.player.autoplay'));
 					}
 
 					overrideIcon() {
-						//@ts-ignore
+						//@ts-expect-error
 						this.el().getElementsByClassName('vjs-icon-placeholder')[0].children[0].outerHTML = autoplay.value ? toggleOn : toggleOff;
 					}
 
@@ -140,18 +140,18 @@
 						this.overrideIcon();
 					}
 				}
-				//@ts-ignore
+				//@ts-expect-error
 				videojs.registerComponent('Switch', Switch);
 
-				//@ts-ignore
+				//@ts-expect-error
 				class Loop extends Button {
 
 					constructor(player: Player, options = {}) {
 						super(player, options);
 
-						//@ts-ignore
+						//@ts-expect-error
 						this.setIcon('repeat');
-						//@ts-ignore
+						//@ts-expect-error
 						this.controlText(t('kara.player.loop'));
 					}
 
@@ -160,11 +160,11 @@
 						(document.getElementsByClassName('vjs-loop-control')[0] as HTMLButtonElement).style.color = player.value?.loop() ? '#1dd2af' : '';
 					}
 				}
-				//@ts-ignore
+				//@ts-expect-error
 				videojs.registerComponent('Loop', Loop);
 				const Component = videojs.getComponent('Component');
 
-				//@ts-ignore
+				//@ts-expect-error
 				class TouchOverlay extends Component {
 
 					constructor(player: Player, options: {}) {
@@ -179,18 +179,18 @@
 						});
 					}
 				}
-				//@ts-ignore
+				//@ts-expect-error
 				Component.registerComponent('TouchOverlay', TouchOverlay);
 
-				//@ts-ignore
+				//@ts-expect-error
 				class TouchControl extends Component {
 
 					constructor(player: Player, options: {}) {
 						super(player, options);
 
-						//@ts-ignore
+						//@ts-expect-error
 						this.addChild('playToggle', {});
-						//@ts-ignore
+						//@ts-expect-error
 						nextButton.value = this.addChild('button', {
 							className: 'vjs-next-control',
 							controlText: t('kara.player.next'),
@@ -198,7 +198,7 @@
 						}, 1);
 						nextButton.value.setIcon('next-item');
 						if (props.playlistMode) {
-							//@ts-ignore
+							//@ts-expect-error
 							previousButton.value = this.addChild('button', {
 								className: 'vjs-previous-control',
 								controlText: t('kara.player.previous'),
@@ -216,7 +216,7 @@
 						});
 					}
 				}
-				//@ts-ignore
+				//@ts-expect-error
 				Component.registerComponent('TouchControl', TouchControl);
 
 				autoplayButton.value = player.value!.getChild('ControlBar')!.addChild('Switch', {
@@ -246,7 +246,7 @@
 						touchOverlay.removeClass('skip');
 						touchOverlay.removeClass('reverse');
 					}, 300);
-					//@ts-ignore
+					//@ts-expect-error
 					player.value.tech(false).off('touchstart');
 					player.value.tech(false).on('touchstart', (e: any) => {
 						if (taps == null) {

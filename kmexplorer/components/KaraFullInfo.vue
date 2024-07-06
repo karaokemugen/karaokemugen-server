@@ -193,7 +193,7 @@
 		delete tagTypesUpdated.years; // This is a decoy for fake years tag
 		// Remove unused tagTypes in context
 		for (const tagType in tagTypesUpdated) {
-			// @ts-ignore
+			// @ts-expect-error
 			if (props.karaoke[tagType].length === 0) {
 				delete tagTypesUpdated[tagType];
 			}
@@ -242,7 +242,7 @@
 		let bannerBan = false;
 		for (const tagType in tagTypes) {
 			if (tagType === 'years') { continue; }
-			// @ts-ignore: il est 23h27 <- ceci n'est pas une raison
+			// @ts-expect-error: il est 23h27 <- ceci n'est pas une raison
 			for (const tag of props.karaoke[tagType]) {
 				if (
 					bannerBanValue.includes(tag.tid)

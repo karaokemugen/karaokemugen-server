@@ -143,7 +143,7 @@
 	import { useAuthStore } from '~/store/auth';
 	import { useModalStore } from '~/store/modal';
 
-	// @ts-ignore
+	// @ts-expect-error
 	const useToast = Toast.useToast ?? Toast.default.useToast;
 
 	const { user, loggedIn } = storeToRefs(useAuthStore());

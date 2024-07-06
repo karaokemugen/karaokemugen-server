@@ -118,7 +118,8 @@ const nuxtConfig = defineNuxtConfig({
 		// Doc: https://github.com/nuxt-community/sentry-module
 		'@pinia/nuxt',
 		'@pinia-plugin-persistedstate/nuxt',
-		'@vite-pwa/nuxt'
+		'@vite-pwa/nuxt',
+		'@nuxt/eslint'
 	],
 
 	css: [

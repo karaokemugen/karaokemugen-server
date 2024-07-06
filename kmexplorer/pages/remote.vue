@@ -75,7 +75,7 @@
 	import type { RemoteAccessToken } from '%/lib/types/remote';
 	import * as Toast from 'vue-toastification';
 
-	// @ts-ignore
+	// @ts-expect-error
 	const useToast = Toast.useToast ?? Toast.default.useToast;
 
 	const remotesToken = ref<RemoteAccessToken[]>([]);

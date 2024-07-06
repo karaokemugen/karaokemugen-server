@@ -148,7 +148,7 @@
 	import { useModalStore } from '~/store/modal';
 	import { useLocalStorageStore } from '~/store/localStorage';
 
-	// @ts-ignore
+	// @ts-expect-error
 	const useToast = Toast.useToast ?? Toast.default.useToast;
 
 	const countBannerDisplay = 25;

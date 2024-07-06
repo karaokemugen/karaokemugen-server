@@ -250,7 +250,7 @@
 	import type { TokenResponseWithRoles } from '~/../kmserver-core/src/lib/types/user';
 	import { useAuthStore } from '~/store/auth';
 
-	// @ts-ignore
+	// @ts-expect-error
 	const useToast = Toast.useToast ?? Toast.default.useToast;
 
 	const props = defineProps<{

@@ -11,7 +11,7 @@ import slug from 'slug';
 export function getPropertyInLanguage(prop: 'i18n', tag: DBKaraTag | DBTag, mainLanguage: string, fallbackLanguage: string, i18nParam?: Record<string, string>): string
 export function getPropertyInLanguage(prop: 'description', tag: DBTag, mainLanguage: string, fallbackLanguage: string): string | null
 export function getPropertyInLanguage(prop: 'description' | 'i18n', tag: DBKaraTag | DBTag, mainLanguage: string, fallbackLanguage: string, i18nParam?: Record<string, string>): string | null {
-	// @ts-ignore: The overload will prevent DBKaraTag (without description) being passed to get descriptions
+	// @ts-expect-error: The overload will prevent DBKaraTag (without description) being passed to get descriptions
 	const i18n = i18nParam ? i18nParam : tag[prop];
 	if (i18n) {
 		return i18n[mainLanguage]

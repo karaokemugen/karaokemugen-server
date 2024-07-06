@@ -881,7 +881,7 @@
 	}
 	async function handleMediafileUpload() {
 		if (mediafileInput.value?.files?.length !== 0) {
-			// @ts-ignore: sisi y'a eu un typecheck en haut, ta gueule mtn :)
+			// @ts-expect-error: sisi y'a eu un typecheck en haut, ta gueule mtn :)
 			const file = mediafileInput.value?.files[0];
 			mediafile_error.value = '';
 			if (file && !isSupportedMediaFile(file.name) && isMediaFile(file.type)) {
@@ -929,7 +929,7 @@
 	}
 	async function handleSubfileUpload() {
 		if (subfileInput.value?.files?.length !== 0) {
-			// @ts-ignore: sisi y'a eu un typecheck en haut, ta gueule mtn :)
+			// @ts-expect-error: sisi y'a eu un typecheck en haut, ta gueule mtn :)
 			const file = subfileInput.value?.files[0];
 			mediafile_error.value = '';
 			if (!file || !isSupportedLyricsFile(file.name)) {
@@ -989,9 +989,9 @@
 		}
 		const karaokeElem = _.cloneDeep(karaoke.value);
 		for (const tag of Object.keys(karaokeElem.data.tags)) {
-			// @ts-ignore: Object.keys type inference is bad hot take
+			// @ts-expect-error: Object.keys type inference is bad hot take
 			if (tag in karaokeElem.data.tags && karaokeElem.data.tags[tag].length === 0) {
-				// @ts-ignore
+				// @ts-expect-error
 				delete karaokeElem.data.tags[tag];
 			}
 		}
