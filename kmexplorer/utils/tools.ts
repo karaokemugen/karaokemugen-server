@@ -2,7 +2,7 @@ import { getNavigatorLanguageIn3B } from './isoLanguages';
 import type { DBTag } from '%/lib/types/database/tag';
 import type { DBKara, DBKaraTag } from '%/lib/types/database/kara';
 import { useMenubarStore, type TagExtend } from '~/store/menubar';
-import { tagTypes } from '~/assets/constants';
+import { tagTypes, tagTypesMap } from '~/assets/constants';
 import { useLocalStorageStore } from '~/store/localStorage';
 import { useAuthStore } from '~/store/auth';
 import { storeToRefs } from 'pinia';
@@ -11,7 +11,6 @@ import slug from 'slug';
 export function getPropertyInLanguage(prop: 'i18n', tag: DBKaraTag | DBTag, mainLanguage: string, fallbackLanguage: string, i18nParam?: Record<string, string>): string
 export function getPropertyInLanguage(prop: 'description', tag: DBTag, mainLanguage: string, fallbackLanguage: string): string | null
 export function getPropertyInLanguage(prop: 'description' | 'i18n', tag: DBKaraTag | DBTag, mainLanguage: string, fallbackLanguage: string, i18nParam?: Record<string, string>): string | null {
-	// @ts-expect-error: The overload will prevent DBKaraTag (without description) being passed to get descriptions
 	const i18n = i18nParam ? i18nParam : tag[prop];
 	if (i18n) {
 		return i18n[mainLanguage]
@@ -29,8 +28,24 @@ export function getPropertyInLanguage(prop: 'description' | 'i18n', tag: DBKaraT
 
 export function getTagInLocale(tag: DBKaraTag | DBTag, i18nParam?: Record<string, string>) {
 	const { user } = storeToRefs(useAuthStore());
-	if (user?.value && user?.value.main_series_lang && user?.value.fallback_series_lang) {
-		return getPropertyInLanguage('i18n', tag, user?.value.main_series_lang, user?.value.fallback_series_lang, i18nParam);
+	const tagLang =
+		tagTypesMap[(tag as DBKaraTag).type_in_kara ? (tag as DBKaraTag).type_in_kara : (tag as DBTag).types[0]]
+			.language;
+	if (tagLang === 'user' && user?.value && user.value.language) {
+		return getPropertyInLanguage('i18n', tag, getLanguageIn3B(user.value.language), 'eng', i18nParam);
+	} else if (
+		tagLang === 'song_name' &&
+		user?.value &&
+		user.value.main_series_lang &&
+		user.value.fallback_series_lang
+	) {
+		return getPropertyInLanguage(
+			'i18n',
+			tag,
+			user.value.main_series_lang,
+			user.value.fallback_series_lang,
+			i18nParam,
+		);
 	} else {
 		return getPropertyInLanguage('i18n', tag, getNavigatorLanguageIn3B(), 'eng', i18nParam);
 	}
@@ -38,14 +53,14 @@ export function getTagInLocale(tag: DBKaraTag | DBTag, i18nParam?: Record<string
 
 export function getDescriptionInLocale(tag: DBTag) {
 	const { user } = storeToRefs(useAuthStore());
-	if (user?.value && user?.value.main_series_lang && user?.value.fallback_series_lang) {
-		return getPropertyInLanguage('description', tag, user?.value.main_series_lang, user?.value.fallback_series_lang);
+	if (user?.value && user?.value.language) {
+		return getPropertyInLanguage('description', tag, user?.value.language, 'eng');
 	} else {
 		return getPropertyInLanguage('description', tag, getNavigatorLanguageIn3B(), 'eng');
 	}
 }
 
-export function getTitleInLocale(titles: any, titles_default_language?:string) {
+export function getTitleInLocale(titles: Record<string, string>, titles_default_language?:string) {
 	const { user } = storeToRefs(useAuthStore());
 	if (user?.value && user?.value.main_series_lang && user?.value.fallback_series_lang) {
 		return titles[user?.value.main_series_lang]

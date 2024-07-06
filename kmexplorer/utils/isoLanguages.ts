@@ -1,4 +1,4 @@
-import i18nIsoLanguages from '@cospired/i18n-iso-languages';
+import { alpha2ToAlpha3B, getAlpha3BCode, getAlpha3BCodes, getName, registerLocale } from '@cospired/i18n-iso-languages';
 import de from '@cospired/i18n-iso-languages/langs/de.json';
 import en from '@cospired/i18n-iso-languages/langs/en.json';
 import fr from '@cospired/i18n-iso-languages/langs/fr.json';
@@ -7,13 +7,13 @@ import pt from '@cospired/i18n-iso-languages/langs/pt.json';
 import es from '@cospired/i18n-iso-languages/langs/es.json';
 import it from '@cospired/i18n-iso-languages/langs/it.json';
 
-i18nIsoLanguages.registerLocale(en);
-i18nIsoLanguages.registerLocale(fr);
-i18nIsoLanguages.registerLocale(id);
-i18nIsoLanguages.registerLocale(de);
-i18nIsoLanguages.registerLocale(pt);
-i18nIsoLanguages.registerLocale(es);
-i18nIsoLanguages.registerLocale(it);
+registerLocale(en);
+registerLocale(fr);
+registerLocale(id);
+registerLocale(de);
+registerLocale(pt);
+registerLocale(es);
+registerLocale(it);
 
 let navigatorLanguage: string;
 if (process.client) {
@@ -74,7 +74,11 @@ export function getLanguagesInLocaleFromCode(code: string, userLang:string) {
 }
 
 export function getNavigatorLanguageIn3B(): string {
-	return i18nIsoLanguages.alpha2ToAlpha3B(navigatorLanguage) || '';
+	return alpha2ToAlpha3B(navigatorLanguage) || '';
+}
+
+export function getLanguageIn3B(code: string) {
+	return alpha2ToAlpha3B(code) || '';
 }
 
 export function listLangs(name: string, userLang: string): string[] {
@@ -85,13 +89,13 @@ export function listLangs(name: string, userLang: string): string[] {
 export function get3BCode(language: string, userLang:string): string {
 	const nuxt = useNuxtApp();
 	if (language === nuxt.$i18n.t('languages.qro')) return 'qro';
-	return i18nIsoLanguages.getAlpha3BCode(language, userLang) as string ||
-		i18nIsoLanguages.getAlpha3BCode(language, 'en') as string;
+	return getAlpha3BCode(language, userLang) as string ||
+		getAlpha3BCode(language, 'en') as string;
 }
 
 function getAlpha3BLanguagesLocalized(userLang: string): Array<{alpha3B: string, name: string}> {
 	const nuxt = useNuxtApp();
-	const alpha3BMap = i18nIsoLanguages.getAlpha3BCodes();
+	const alpha3BMap = getAlpha3BCodes();
 	const result = Object.keys(alpha3BMap).map(code => ({alpha3B: code,
 		name: getLanguageName(code, userLang) || alpha3BMap[code]
 	}));
@@ -102,5 +106,5 @@ function getAlpha3BLanguagesLocalized(userLang: string): Array<{alpha3B: string,
 function getLanguageName(alpha2orAlpha3: string, lang: string) {
 	const nuxt = useNuxtApp();
 	if (alpha2orAlpha3 === 'qr' || alpha2orAlpha3 === 'qro') return nuxt.$i18n.t('languages.qro');
-	return i18nIsoLanguages.getName(alpha2orAlpha3, lang) || i18nIsoLanguages.getName(alpha2orAlpha3, 'en');
+	return getName(alpha2orAlpha3, lang) || getName(alpha2orAlpha3, 'en');
 }
