@@ -418,7 +418,7 @@
 					"placeholder": "Yôjo Senki: Die Saga von Tanya der Bösen"
 				},
 				"name": {
-					"label": "Ihr Name",
+					"label": "Dein Name",
 					"placeholder": "Magischer anonymer"
 				},
 				"link": {
@@ -441,7 +441,7 @@
 			},
 			"title": "Vorschlagen",
 			"submit": "Senden",
-			"subtitle": "Du konntest nichts passendes finden? Erstelle gerne ein Vorschlag."
+			"subtitle": "Du konntest nichts passendes finden? Erstelle hier einen Vorschlag."
 		},
 		"join_kara": {
 			"error": "Der Code ist ungültig, bitte Eingabe überprüfen.",
