@@ -1,7 +1,7 @@
 import { promises as fs } from 'node:fs';
 import { extname, dirname } from 'node:path';
 import { createRequire, builtinModules } from 'node:module';
-import { readPackageUp } from 'read-pkg-up';
+import { readPackageUp } from 'read-package-up';
 import replaceAsync from 'string-replace-async';
 import klaw from 'klaw';
 import { rimraf } from 'rimraf';
