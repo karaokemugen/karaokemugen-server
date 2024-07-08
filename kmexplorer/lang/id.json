@@ -322,7 +322,7 @@
 				"bluesky": {
 					"placeholder": "karaokemugen.bsky.social",
 					"label": "Bluesky"
-				},				
+				},
 				"flag_sendstats": {
 					"label": "Statistik",
 					"checkbox": "Gunakan permintaan favorit dan karaoke saya untuk statistik"
