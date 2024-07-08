@@ -124,4 +124,4 @@ deploy_dev:
     name: dev
     url: https://dev.kara.moe
   only:
-  - dev
+  - back-to-before-monday
