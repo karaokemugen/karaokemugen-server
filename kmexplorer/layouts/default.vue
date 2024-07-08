@@ -1146,7 +1146,7 @@
 	const { auth, joinKara, stats, deleteAccount, addRepo, profile } = storeToRefs(useModalStore());
 	const { closeAll, openModal } = useModalStore();
 	const { loggedIn, user } = storeToRefs(useAuthStore());
-	const { logout, login: loginApi } = useAuthStore();
+	const { logout, login: loginApi, updateUser } = useAuthStore();
 	const { enabledCollections, banner } = storeToRefs(useLocalStorageStore());
 	const { hideBanner } = useLocalStorageStore();
 
@@ -1236,6 +1236,7 @@
 		if (user?.value) {
 			const userEdited = { ...user?.value, avatar_file: undefined, roles: undefined, banner: undefined };
 			userEdited.language = language;
+			updateUser({...user?.value, language})
 			useCustomFetch('/api/myaccount', {
 				method: 'PATCH',
 				body: userEdited

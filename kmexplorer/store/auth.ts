@@ -27,6 +27,9 @@ export const useAuthStore = defineStore('auth', {
 			this.token = undefined;
 			this.user = undefined;
 			this.loggedIn = false;
+		},
+		updateUser(user: DBUser) {
+			this.user = user;
 		}
 	},
 	persist: {
