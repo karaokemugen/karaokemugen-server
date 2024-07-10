@@ -29,8 +29,10 @@ export function getPropertyInLanguage(prop: 'description' | 'i18n', tag: DBKaraT
 export function getTagInLocale(tag: DBKaraTag | DBTag, i18nParam?: Record<string, string>) {
 	const { user } = storeToRefs(useAuthStore());
 	const tagLang =
-		tagTypesMap[(tag as DBKaraTag).type_in_kara ? (tag as DBKaraTag).type_in_kara : (tag as DBTag).types[0]]
-			.language;
+		(tag as DBKaraTag).type_in_kara || (tag as DBTag).types
+			? tagTypesMap[(tag as DBKaraTag).type_in_kara ? (tag as DBKaraTag).type_in_kara : (tag as DBTag).types[0]]
+					.language
+			: null;
 	if (tagLang === 'user' && user?.value && user.value.language) {
 		return getPropertyInLanguage('i18n', tag, getLanguageIn3B(user.value.language), 'eng', i18nParam);
 	} else if (
