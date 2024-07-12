@@ -56,7 +56,7 @@ export function getTagInLocale(tag: DBKaraTag | DBTag, i18nParam?: Record<string
 export function getDescriptionInLocale(tag: DBTag) {
 	const { user } = storeToRefs(useAuthStore());
 	if (user?.value && user?.value.language) {
-		return getPropertyInLanguage('description', tag, user?.value.language, 'eng');
+		return getPropertyInLanguage('description', tag, getLanguageIn3B(user.value.language), 'eng');
 	} else {
 		return getPropertyInLanguage('description', tag, getNavigatorLanguageIn3B(), 'eng');
 	}
