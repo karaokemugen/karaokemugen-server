@@ -144,7 +144,9 @@
 			"contact_infos_tooltip": "Insira seus dados de contato, para que possamos ir até você caso tenhamos alguma dúvida sobre o karaokê.",
 			"add_success_description": "Um problema foi criado em nosso rastreador. Você pode verificar sua progressão em {url}",
 			"songorder_tooltip": "Número de abertura/término. Se esta for a única abertura/final da série, deixe em branco.",
-			"romanization_warning": "Este título/tag contém um alfabeto não latino. Você também deve adicionar o idioma “Alfabeto Latino (Romanização)”, a menos que o título em alfabeto não latino seja uma transcrição completa de outro idioma."
+			"romanization_warning": "Este título/tag contém um alfabeto não latino. Você também deve adicionar o idioma “Alfabeto Latino (Romanização)”, a menos que o título em alfabeto não latino seja uma transcrição completa de outro idioma.",
+			"from_display_type_tooltip": "Selecione o tipo de tag a ser usado ao exibir a música",
+			"show_hide": "Mostrar/Ocultar"
 		},
 		"phrase": "{songtype} de {series}",
 		"meta": "{songtitle} de {serieSinger}",
@@ -175,7 +177,22 @@
 		"childrens": "Canções criança",
 		"parents": "Canções parentes",
 		"singergroups_by": "da banda musical",
-		"live_unavailable": "Você não pode reproduzir este karaokê no seu navegador. O vídeo está em um formato não compatível com navegadores ou foi desativado por motivos legais."
+		"live_unavailable": "Você não pode reproduzir este karaokê no seu navegador. O vídeo está em um formato não compatível com navegadores ou foi desativado por motivos legais.",
+		"player": {
+			"fullscreen": "Tela cheia (F)",
+			"description": "Este vídeo é hospedado por {instance}. Por favor, use nosso aplicativo se você planeja um evento ou transmissão!",
+			"previous": "Música anterior (B)",
+			"next": "Próxima música (N)",
+			"loop": "Loop",
+			"theater_mode": "Modo teatro (T)",
+			"autoplay": "Autoplay"
+		},
+		"playlists": {
+			"add": "Adicionar à playlist",
+			"create": "Criar nova playlist…",
+			"new_playlist_label": "Playlist de {nickname}",
+			"add_success": "Karaokê adicionado com sucesso à playlist."
+		}
 	},
 	"layout": {
 		"end_my_favorites": "Este é o fim dos seus favoritos.",
@@ -189,7 +206,15 @@
 		"slogan": "Esta canção está disponível na base de canções do Karaoke Mugen!",
 		"end_users": "Você chegou ao fim da lista de usuários (parabéns!).",
 		"suggest_open": "Sugira-nos uma música!",
-		"remove_tags": "Você tentou remover algumas tags de filtro da pesquisa?"
+		"remove_tags": "Você tentou remover algumas tags de filtro da pesquisa?",
+		"app_banner": {
+			"title": "Você sabe?",
+			"description": "Karaoke Mugen também é um aplicativo para Windows, macOS e Linux que permite gerenciar playlists e eventos de karaokê, seja entre amigos, durante convenções de anime ou até mesmo durante suas transmissões!",
+			"link": "Confira o {link} para baixar o aplicativo para o seu computador.",
+			"website": "website",
+			"more_features": "Existem muito mais recursos do que em {instance}!"
+		},
+		"end_playlists": "Exibir mais {number} playlists"
 	},
 	"stats": {
 		"all_duration": "Duração de todos os karaokes",
@@ -239,7 +264,8 @@
 		"discourse": "Fórum",
 		"remotes": "Remotos",
 		"singergroups": "Bandas",
-		"franchises": "Franquias"
+		"franchises": "Franquias",
+		"play_random_song": "Tocar música aleatória"
 	},
 	"profile": {
 		"favorites": "Favoritos",
