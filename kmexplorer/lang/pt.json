@@ -1,10 +1,13 @@
 {
 	"error": {
 		"generic": "Erro",
-		"private_profile": "O perfil é privado.",
+		"private_profile": "Perfil é privado.",
 		"not_found_profile": "Não é possível encontrar este utilizador",
 		"not_found_tag": "Tag não encontrada",
-		"remote": "Erro ao carregar listas remotas"
+		"remote": "Erro ao carregar listas remotas",
+		"not_found_playlist": "Playlist não encontrada",
+		"home": "Ir à home",
+		"bans": "Erro ao carregar lista de banimentos"
 	},
 	"kara": {
 		"tagtypes": {
@@ -23,7 +26,11 @@
 			"misc": "Diversos",
 			"versions": "Versão | Versões",
 			"warnings": "Aviso | Avisos",
-			"collections": "Coleção | Coleções"
+			"collections": "Coleção | Coleções",
+			"singergroups": "Banda | Bandas",
+			"franchises": "Franquia | Franquias",
+			"years": "Ano | Anos",
+			"default": "Por padrão"
 		},
 		"creators_by": "Criado por",
 		"songwriters_by": "Composto por",
@@ -74,7 +81,7 @@
 			"default_language": "Idioma padrão",
 			"attention": "ATENÇÃO:",
 			"check_in_progress": "Por favor, verifique a lista de karaokes que estão atualmente a ser feitos antes de nos enviar uma canção. Isto evitará a duplicação de trabalho, e o mundo será assim um lugar melhor.",
-			"documentation_link": "Documentação",
+			"documentation_link": "Por favor, leia as regras de {instance} antes de enviar uma música!",
 			"in_progress_link": "Lista de Karaokes em progresso",
 			"license_reminder": "O seu karaokê será publicado com a licença {name}",
 			"license_link": "Saiba mais sobre esta licença, clicando aqui.",
@@ -106,7 +113,38 @@
 			"restart": "Submeter novo karaokê",
 			"i18n_select": "Adicione um idioma",
 			"send_contact_infos": "Partilhar as minhas informações de contacto com os responsáveis pela base de dados",
-			"contact_infos": "Informação de contacto"
+			"contact_infos": "Informação de contacto",
+			"sections": {
+				"files": "Arquivos",
+				"identity": "Identidade",
+				"categorization": "Categorização",
+				"parents": "Música(s) principal",
+				"titles": "Título(s)",
+				"meta": "Metadata"
+			},
+			"titles_aliases": "Aliases",
+			"songorder_invalid": "Ordem das músicas inválido",
+			"parents": "Pai",
+			"auto_send_contact_infos": "Se você fizer login, poderá marcar uma caixa no formulário para compartilhar automaticamente suas informações de contato com os mantenedores do banco de dados.",
+			"franchises_tooltip": "Se a série faz parte de uma franquia (como Gundam, Mario, Zelda, Naruto, etc.) insira-a aqui.",
+			"singergroups_tooltip": "Se os cantores pertencem a uma banda musical, coloque-os aqui. A banda será exibida nas listas de reprodutores e músicas, em vez de cantores individuais.",
+			"lyrics_file_missing": "O arquivo de letras está faltando, isso somente é apropriado se você estiver enviando um arquivo MKV ou um karaokê sem letra (sim).",
+			"songorder": "Ordem das músicas",
+			"desc": {
+				"titles": "Defina todos os títulos da música em diferentes idiomas. Normalmente, há apenas um título.",
+				"aliases": "Se a música for conhecida por outro nome (abreviações, por exemplo), defina-as aqui para ajudar as pessoas a encontrá-la por meio de pesquisa. Não há necessidade de usar palavras já contidas no(s) título(s) da música.",
+				"parents": "Se esta música for uma versão alternativa de outra, selecione seu(s) pai(s) para pré-preencher este formulário.",
+				"titles_default_language": "O idioma do título padrão deve ser o título original da música. Para títulos em idiomas não latinos (chinês, japonês, árabe, coreano…), adicione um título \"Romanização\" e torne-o padrão.",
+				"parents_public": "Quando um usuário seleciona uma música principal na interface pública, ele verá todas as suas versões secundárias/alternativas."
+			},
+			"title_tooltip": "Se você não sabe, coloque aqui também o nome da série. No caso de uma versão alternativa, nomeie seu título como: 'Meu título ~ Disco vers.' por exemplo",
+			"series_singers_required": "Séries, Cantadas por e Da banda musical não podem ficar vazias ao mesmo tempo.",
+			"groups_tooltip": "Baixe grupos para esta música. A música será incluída nesses pacotes de download",
+			"parents_tooltip": "Se um pai for definido, este karaokê será exibido como alternativa ao(s) karaokê(s) pai(s) selecionado(s).",
+			"contact_infos_tooltip": "Insira seus dados de contato, para que possamos ir até você caso tenhamos alguma dúvida sobre o karaokê.",
+			"add_success_description": "Um problema foi criado em nosso rastreador. Você pode verificar sua progressão em {url}",
+			"songorder_tooltip": "Número de abertura/término. Se esta for a única abertura/final da série, deixe em branco.",
+			"romanization_warning": "Este título/tag contém um alfabeto não latino. Você também deve adicionar o idioma “Alfabeto Latino (Romanização)”, a menos que o título em alfabeto não latino seja uma transcrição completa de outro idioma."
 		},
 		"phrase": "{songtype} de {series}",
 		"meta": "{songtitle} de {serieSinger}",
@@ -135,7 +173,9 @@
 		},
 		"siblings": "Canções semelhantes",
 		"childrens": "Canções criança",
-		"parents": "Canções parentes"
+		"parents": "Canções parentes",
+		"singergroups_by": "da banda musical",
+		"live_unavailable": "Você não pode reproduzir este karaokê no seu navegador. O vídeo está em um formato não compatível com navegadores ou foi desativado por motivos legais."
 	},
 	"layout": {
 		"end_my_favorites": "Este é o fim dos seus favoritos.",
@@ -147,7 +187,9 @@
 		"explore": "Vai adicionar alguns!",
 		"collections": "Karaoke Mugen oferece muitas coleções, escolha aquelas em que está interessado.",
 		"slogan": "Esta canção está disponível na base de canções do Karaoke Mugen!",
-		"end_users": "Você chegou ao fim da lista de usuários (parabéns!)."
+		"end_users": "Você chegou ao fim da lista de usuários (parabéns!).",
+		"suggest_open": "Sugira-nos uma música!",
+		"remove_tags": "Você tentou remover algumas tags de filtro da pesquisa?"
 	},
 	"stats": {
 		"all_duration": "Duração de todos os karaokes",
@@ -194,7 +236,10 @@
 		"langs": "Idiomas",
 		"years": "Anos",
 		"community": "Comunidade",
-		"discourse": "Fórum"
+		"discourse": "Fórum",
+		"remotes": "Remotos",
+		"singergroups": "Bandas",
+		"franchises": "Franquias"
 	},
 	"profile": {
 		"favorites": "Favoritos",
@@ -211,7 +256,9 @@
 				"discord": "Discord",
 				"title": "Onde estou?",
 				"text3": "Se você quiser pedir ajuda, venha nos ver no {discord}. Estamos atentos ás suas sugestões e críticas.",
-				"btn": "OK!"
+				"btn": "OK!",
+				"text2": "Você pode pesquisar algo ou deixar a aleatoriedade fazer o trabalho. Em ambos os casos, ficaríamos gratos pelo tempo que você gasta aprimorando nossos bancos de dados. Obrigado!",
+				"text": "Existem muitos outros bancos de dados de karaokê: aqueles para software UltraStar, Karawin ou Karafun, por exemplo. Então aqui estão alguns títulos já disponíveis com letras sincronizadas. Não conseguimos integrar tudo de uma vez, por isso gostaríamos de saber as suas prioridades!"
 			}
 		},
 		"kara": {
@@ -223,7 +270,8 @@
 			"title": "Importar sugestões",
 			"description": "O que é isto?",
 			"random_selection": "Seleccionar aleatoriamente outras canções",
-			"send_suggestion": "Enviar sugestão"
+			"send_suggestion": "Enviar sugestão",
+			"purpose": "Aqui estão algumas músicas de karaokê que estão prontas para serem importadas. Você pode pesquisar uma música específica ou pressionar o botão \"Selecionar outras músicas aleatoriamente\". Você pode endossar uma música de karaokê pressionando \"Sim!\"."
 		}
 	},
 	"toast": {
@@ -233,7 +281,8 @@
 		"USER_ASCII_CHARACTERS_ONLY": "Apenas caracteres alfanuméricos no seu nome de utilizador (pode mudar o seu apelido mais tarde para o que quiser).",
 		"USER_CREATED": "Utilizador criado com sucesso",
 		"GENERATED_KARA": "Karaokê enviado com sucesso.",
-		"EDITED_KARA": "Modificação enviada com sucesso."
+		"EDITED_KARA": "Modificação enviada com sucesso.",
+		"TAG_CREATED": "Tag criado com sucesso"
 	},
 	"roles": {
 		"donator": "Doador",
@@ -265,7 +314,7 @@
 				},
 				"series": {
 					"label": "Séries / Cantor",
-					"placeholder": "Yôjo Senki: Saga of Tanya the Evil"
+					"placeholder": "Yôjo Senki: Saga de Tanya, o Mal"
 				},
 				"type": {
 					"label": "Tipo"
@@ -279,7 +328,8 @@
 					"placeholder": "Velho do Restelo"
 				}
 			},
-			"submit": "Enviar"
+			"submit": "Enviar",
+			"subtitle": "Você não conseguiu encontrar o que procurava? Você pode enviar uma sugestão."
 		},
 		"crop": {
 			"cancel": "Cancelar",
@@ -291,7 +341,8 @@
 			"karabundle": "Descarregar dados (.json)",
 			"cancel": "Cancelar",
 			"subtitles": "Descarregar letra de canção (.{format})",
-			"media": "Descarregar media (.{format})"
+			"media": "Descarregar media (.{format})",
+			"media_hardsub": "Baixe mídia incluindo legendas (hardsub .mp4)"
 		},
 		"stats": {
 			"label": "Usar os meus favoritos e pedidos de karaokes para estatísticas",
@@ -307,7 +358,8 @@
 			"cancel": "Cancelar",
 			"set": "Usar esta imagem",
 			"next": "Próxima imagem",
-			"previous": "Imagem anterior"
+			"previous": "Imagem anterior",
+			"one": "Existe apenas um banner para karaokês somente com áudio."
 		},
 		"signup": {
 			"fields": {
@@ -324,7 +376,8 @@
 					"placeholder": "exemplo{'@'}shelter.moe"
 				},
 				"username": {
-					"label": "Nome de utilizador"
+					"label": "Nome de utilizador",
+					"placeholder": "LoveLiveFan93"
 				}
 			},
 			"passwords_mismatch": "As senhas não coincidem",
@@ -344,7 +397,8 @@
 				},
 				"flag_public": {
 					"checkbox": "Fazer o meu perfil público",
-					"label": "Perfil público"
+					"label": "Perfil público",
+					"desc": "Por padrão, sua conta fica visível através da pesquisa do usuário e mostra todas as informações acima com exceção do endereço de e-mail. Se você desmarcar esta caixa, sua conta não estará mais disponível nos resultados da pesquisa (você será o único que poderá vê-la, depois de fazer login)."
 				},
 				"url": {
 					"label": "Site",
@@ -367,10 +421,12 @@
 				},
 				"flag_displayfavorites": {
 					"label": "Favoritos",
-					"checkbox": "Mostrar os meus favoritos"
+					"checkbox": "Mostrar os meus favoritos",
+					"desc": "Além de mostrar seu perfil público, você pode mostrar seus favoritos (portanto, seu gosto) para todos. Esta opção está desativada por padrão. Para mostrar seus favoritos, seu perfil deve ser público em primeiro lugar."
 				},
 				"flag_sendstats": {
-					"label": "Estatísticas"
+					"label": "Estatísticas",
+					"checkbox": "Use meus favoritos e solicitações de karaokê para obter estatísticas"
 				},
 				"username": {
 					"label": "Nome de utilizador"
@@ -402,10 +458,28 @@
 				"banner": {
 					"label": "Banner",
 					"remove": "Redefinir para o banner padrão",
-					"upload": "Carregar um banner"
+					"upload": "Carregar um banner",
+					"donator": "Obrigado pelo seu apoio, você é incrível! Você pode fazer upload de um banner personalizado ou usar um de um karaokê de sua preferência.",
+					"change": "Para alterar seu banner, acesse a página de um karaokê e clique no botão “Usar como banner de perfil”. Banners totalmente personalizáveis são um recurso do doador."
 				},
 				"lang_prefs": {
-					"main_song_name_lang": "Preferência de exibição do nome da canção"
+					"main_song_name_lang": "Preferência de exibição do nome da canção",
+					"fallback_song_name_lang": "Preferência de exibição do nome alternativo da música"
+				},
+				"myanimelist": {
+					"label": "MyAnimeList",
+					"placeholder": "karaokemugen"
+				},
+				"kitsu": {
+					"label": "Kitsu",
+					"placeholder": "karaokemugen"
+				},
+				"anilist": {
+					"label": "AniList",
+					"placeholder": "karaokemugen"
+				},
+				"anime_list_to_fetch": {
+					"label": "Lista de anime para recuperar"
 				}
 			},
 			"title": "Editar perfil",
@@ -451,7 +525,9 @@
 			"download": "A aplicação pode ser descarregada aqui.",
 			"online": "Online",
 			"add": "Adicionar",
-			"cancel": "Cancelar"
+			"cancel": "Cancelar",
+			"manual": "Para adicionar manualmente este repositório, abra seu aplicativo Karaoke Mugen, adicione o repositório {repository} a ele, marcando \"{online}\".",
+			"desc": "Você pode adicionar este repositório ao seu aplicativo Karaokê Mugen clicando no botão abaixo. Se o Karaoke Mugen não estiver instalado no seu computador, este botão não terá efeito."
 		}
 	},
 	"search": {
@@ -467,7 +543,8 @@
 			"most_played": "Mais tocados",
 			"most_requested": "Mais pedidos",
 			"languages": "Por idiomas",
-			"likes": "Mais likes"
+			"likes": "Mais likes",
+			"most_favorites": "Mais favoritas"
 		},
 		"aria": {
 			"page": "Página {0}",
@@ -489,7 +566,9 @@
 	"footer": {
 		"software_under_license": "Software sob a licença",
 		"base_under_licence": "Base de karaokê sob a licença",
-		"translation": "Participe na tradução"
+		"translation": "Participe na tradução",
+		"api_documentation": "Documentação da API",
+		"home": "Home do projeto"
 	},
 	"remote": {
 		"code": "Código",
