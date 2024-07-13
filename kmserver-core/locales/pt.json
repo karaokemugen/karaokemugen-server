@@ -1,1 +1,12 @@
-{}
+{
+    "MAIL": {
+        "RESET_PASSWORD_REQUEST": {
+            "SUBJECT": "Reser de senha do Karaoke Mugen",
+            "BODY": "Olá ${{username}},\n\nVocê (ou alguém) solicitou uma redefinição de senha para sua conta em {{host}}. Se você não solicitou isso, ignore este e-mail.\n\nClique no link a seguir para criar uma nova senha:\n\n{{url}}\n\nEste link expirará em duas horas."
+        },
+        "RESET_PASSWORD_DONE": {
+            "SUBJECT": "A senha do Karaoke Mugen foi reiniciada",
+            "BODY": "Olá {{username}},\n\nSua senha foi redefinida com sucesso em {{host}}.\n\n\n\nVocê deve conseguir fazer login usando sua nova senha agora."
+        }
+    }
+}
