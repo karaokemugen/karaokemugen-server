@@ -504,7 +504,8 @@
 			"title_create": "Erstelle eine Playlist",
 			"public": "Öffentlich",
 			"submit_edit": "Editieren",
-			"submit_create": "Speichern"
+			"submit_create": "Speichern",
+			"name": "Name"
 		},
 		"add_duplicate_in_playlist": {
 			"add": "Trotzdem hinzufügen",
