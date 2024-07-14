@@ -101,7 +101,7 @@
 			"title_required": "Si prega di inserire un titolo",
 			"license_link": "Clicca qui per maggiori informazioni riguardo questa licenza.",
 			"created_at": "Data creazione",
-			"documentation_link": "Documentazione",
+			"documentation_link": "Si prega di leggere le regole {instance} prima di inviare un brano!",
 			"lyrics_file_tooltip": "Formati supportati: {formats}",
 			"choose_file": "Scegli un file",
 			"add_file_success": "Il file {name} è stato aggiunto correttamente",
