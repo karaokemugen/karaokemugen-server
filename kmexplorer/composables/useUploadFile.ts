@@ -1,11 +1,22 @@
-export const useUploadFile = (path: string, form: FormData, onUploadProgress: (event: ProgressEvent) => void, onUploadFinished: (result: any) => void) => {
+export const useUploadFile = (
+	path: string,
+	form: FormData,
+	onUploadProgress: (event: ProgressEvent) => void,
+	onUploadFinished: (result: any) => void,
+	onUploadError: (result: any) => void,
+) => {
 	const xhr = new XMLHttpRequest();
 
 	xhr.open('POST', `${useNuxtApp().$config.public.API_URL}${path}`);
 
 	xhr.onreadystatechange = () => {
 		if (xhr.readyState === 4) {
-			onUploadFinished(JSON.parse(xhr.response));
+			const response = JSON.parse(xhr.response);
+			if (xhr.status === 200) {
+				onUploadFinished(response);
+			} else if (response.code) {
+				onUploadError(response.code);
+			}
 		}
 	};
 

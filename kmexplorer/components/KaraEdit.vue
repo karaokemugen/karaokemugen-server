@@ -720,6 +720,7 @@
 	import { storeToRefs } from 'pinia';
 	import { tagTypes } from '~/assets/constants';
 	import type { RepositoryManifestV2 } from '%/lib/types/repo';
+import { useToast } from 'vue-toastification';
 
 	const props = defineProps<{
 		kara?: DBKara
@@ -756,6 +757,7 @@
 	const { setSendContactInfos } = useLocalStorageStore();
 	const { loggedIn, user } = storeToRefs(useAuthStore());
 	const { t } = useI18n();
+	const toast = useToast();
 
 	onMounted(async () => {
 		debouncedGetAsyncData.value = _.debounce(getAsyncData, 500, { leading: true, trailing: true, maxWait: 750 });
@@ -922,6 +924,12 @@
 							lyrics: karaoke.value.medias[0].lyrics || []
 						}];
 						uploading_media.value = false;
+					},
+					(code: string) => {
+						uploading_media.value = false;
+						const error = t(`toast.${code}`);
+						mediafile_error.value = error;
+						toast.error(error, { icon: 'error' });
 					}
 				);
 			}
@@ -958,6 +966,12 @@
 							version: 'Default'
 						}];
 						uploading_sub.value = false;
+					},
+					(code: string) => {
+						uploading_sub.value = false;
+						const error = t(`toast.${code}`);
+						subfile_error.value = error;
+						toast.error(error, { icon: 'error' });
 					}
 				);
 			}
