@@ -95,6 +95,7 @@ export function convertDBKaraToKaraFile(dbKara?: DBKara): KaraFileV4 {
 							return [t, []];
 						}
 					})),
+			from_display_type: dbKara?.from_display_type,
 			titles: dbKara?.titles || {},
 			titles_default_language: dbKara?.titles_default_language,
 			titles_aliases: dbKara?.titles_aliases || [],
