@@ -66,7 +66,7 @@ export async function resetPasswordRequest(username: string) {
 	} catch (err) {
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
-		throw err;
+		throw err instanceof ErrorKM ? err : new ErrorKM('USER_RESET_PASSWORD_ERROR');
 	}
 }
 
