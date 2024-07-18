@@ -24,7 +24,7 @@
 		</div>
 		<div class="title-block">
 			<button
-				v-if="favorite && favorites"
+				v-if="favorite && loggedIn"
 				class="button inline is-normal is-yellow"
 				:class="{'is-loading': loading}"
 				:title="$t('kara.favorites.remove')"
@@ -36,7 +36,7 @@
 				/>
 			</button>
 			<button
-				v-else-if="favorites"
+				v-else-if="loggedIn"
 				class="button inline is-normal is-yellow"
 				:class="{'is-loading': loading}"
 				:title="$t('kara.favorites.add')"
@@ -117,7 +117,7 @@
 
 <script setup lang="ts">
 	import type { DBKara } from '%/lib/types/database/kara';
-	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
+	import type { DBPL } from '%/types/database/playlist';
 	import { storeToRefs } from 'pinia';
 	import slug from 'slug';
 	import { tagTypes } from '~/assets/constants';
@@ -141,9 +141,11 @@
 
 	const activate = ref(false);
 	const loading = ref(false);
-	// If the tag is present, the user is logged in
 	const favorite = ref(typeof props.karaoke.flag_favorites === 'boolean' ? props.karaoke.flag_favorites : false);
-	const favorites = ref(typeof props.karaoke.flag_favorites === 'boolean');
+
+	watch(() => props.karaoke, (karaoke) => {
+		favorite.value = typeof karaoke.flag_favorites === 'boolean' ? karaoke.flag_favorites : false;
+	});
 
 	const title = computed((): string => {
 		return getTitleInLocale(props.karaoke.titles, props.karaoke.titles_default_language);

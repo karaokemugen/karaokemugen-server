@@ -18,7 +18,7 @@
 		</h6>
 		<div class="buttons margin">
 			<button
-				v-if="favorite"
+				v-if="favorite && loggedIn"
 				class="button is-yellow"
 				:class="{ 'is-loading': loading }"
 				@click="toggleFavorite"
@@ -258,6 +258,10 @@
 
 	onMounted(() => {
 		if (props.karaoke?.flag_favorites) { favorite.value = true; }
+	});
+
+	watch(() => props.karaoke, (karaoke) => {
+		favorite.value = karaoke?.flag_favorites;
 	});
 
 	watch(search, () => push('/search'));
