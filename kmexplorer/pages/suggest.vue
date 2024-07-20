@@ -18,12 +18,12 @@
 							{{ $t('suggestions.header.description') }}
 						</nuxt-link>
 					</h2>
-					<h2 class="subtitle">
+					<h2 class="subtitle is-hidden-touch ">
 						{{ $t('suggestions.header.purpose') }}
 						<span v-if="gitlab">{{ $t('suggestions.header.suggestion') }}</span>
 					</h2>
 					<button
-						class="button is-primary"
+						class="button is-primary m-1"
 						:class="{ 'is-loading': loading }"
 						@click="fetchRandomKaras"
 					>
@@ -32,7 +32,7 @@
 					</button>
 					<button
 						v-if="gitlab"
-						class="button is-success"
+						class="button is-success m-1"
 						@click="() => openModal('karaSuggest')"
 					>
 						<span class="icon"><font-awesome-icon :icon="['fas', 'plus']" /></span>
