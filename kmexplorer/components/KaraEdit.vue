@@ -720,12 +720,15 @@
 	import { storeToRefs } from 'pinia';
 	import { tagTypes } from '~/assets/constants';
 	import type { RepositoryManifestV2 } from '%/lib/types/repo';
-import { useToast } from 'vue-toastification';
+	import * as Toast from 'vue-toastification';
 
 	const props = defineProps<{
 		kara?: DBKara
 		repositoryManifest: RepositoryManifestV2
 	}>();
+
+	// @ts-expect-error
+	const useToast = Toast.useToast ?? Toast.default.useToast;
 
 	const karaoke = ref(convertDBKaraToKaraFile(props.kara));
 	const mediafile = ref('');
