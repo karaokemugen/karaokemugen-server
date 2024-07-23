@@ -448,6 +448,10 @@
 					"label": "Kitsu",
 					"placeholder": "karaokemugen"
 				},
+				"gitlab": {
+					"label": "Gitlab",
+					"placeholder": "karaokemugen"
+				},
 				"anime_list_to_fetch": {
 					"label": "Liste d'animés à récuperer"
 				},

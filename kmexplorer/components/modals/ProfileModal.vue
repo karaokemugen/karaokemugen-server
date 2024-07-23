@@ -403,6 +403,31 @@
 							</div>
 						</div>
 					</div>
+					<div
+						v-if="editedUser.social_networks"
+						class="field is-horizontal"
+					>
+						<div class="field-label is-normal">
+							<label
+								for="gitlab"
+								class="label"
+							>{{ $t('modal.profile.fields.gitlab.label') }}</label>
+						</div>
+						<div class="field-body">
+							<div class="field">
+								<div class="control">
+									<input
+										id="gitlab"
+										v-model="editedUser.social_networks.gitlab"
+										type="number"
+										name="gitlab"
+										class="input"
+										:placeholder="$t('modal.profile.fields.gitlab.placeholder')"
+									>
+								</div>
+							</div>
+						</div>
+					</div>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
 							<label
@@ -756,7 +781,8 @@
 			discord: '',
 			twitter: '',
 			mastodon: '',
-			instagram: ''
+			instagram: '',
+			gitlab: '',
 		},
 		roles: {
 			user: true
@@ -792,7 +818,8 @@
 					discord: '',
 					twitter: '',
 					mastodon: '',
-					instagram: ''
+					instagram: '',
+					gitlab: '',
 				};
 			}
 		}
