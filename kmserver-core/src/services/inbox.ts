@@ -75,8 +75,10 @@ export async function getKaraInbox(inid: string): Promise<Inbox> {
 	}
 }
 
-export function getInbox() {
-	return selectInbox();
+export async function getInbox(isMaintainer: boolean) {
+	const listInbox = await selectInbox();
+	if (!isMaintainer) listInbox.forEach(inbox => delete inbox.contact);
+	return listInbox;
 }
 
 export async function markKaraInboxAsDownloaded(inid: string, username: string) {
@@ -110,7 +112,7 @@ export async function addKaraInInbox(kara: KaraFileV4, contact: string, issue?: 
 
 export async function removeProcessedInboxes() {
 	logger.info('Removing possible processed inbox items if they are present in main repository', { service });
-	const inbox = await getInbox();
+	const inbox = await getInbox(false);
 	// Get a list of KIDs from the main repository (not including Staging then)
 	const karaFiles = await listAllFiles('Karaokes', getConfig().System.Repositories[0].Name);
 	const karas = await readAllKaras(karaFiles, false);

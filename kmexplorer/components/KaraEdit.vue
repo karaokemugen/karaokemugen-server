@@ -714,6 +714,7 @@
 	import _ from 'lodash';
 
 	import type { KaraList, MediaInfo } from '%/lib/types/kara';
+	import type { DBInbox } from '%/lib/types/inbox';
 	import type { DBKara } from '%/lib/types/database/kara';
 	import { useAuthStore } from '~/store/auth';
 	import { useLocalStorageStore } from '~/store/localStorage';
@@ -776,8 +777,10 @@
 					includeStaging: true
 				}
 			});
+		const inboxList = (await useCustomFetch<DBInbox[]>('/api/inbox')).filter(inbox => inbox.fix).map(inbox => inbox.kid);
 		if (res.content) {
 			karaSearch.value = res.content
+				.filter(k => !inboxList.includes(k.kid))
 				.filter(k => k.kid !== props.kara?.kid)
 				.filter(k => !props.kara || !k.parents.includes(props.kara?.kid))
 				.filter(

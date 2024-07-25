@@ -42,9 +42,9 @@ export default function inboxController(router: Router) {
 			}
 		});
 	router.route('/inbox')
-		.get(requireAuth, requireValidUser, requireMaintainer, updateLoginTime, async (_req: any, res) => {
+		.get(async (req: any, res) => {
 			try {
-				const inbox = await getInbox();
+				const inbox = await getInbox(req.authToken?.roles?.admin || req.authToken?.roles?.maintainer);
 				res.status(200).json(inbox);
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));
