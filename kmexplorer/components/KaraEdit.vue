@@ -847,6 +847,7 @@
 			Object.keys(karaoke.value?.data?.titles).length === 0
 		) {
 			karas.content[0].kid = '';
+			karas.content[0].created_at = new Date();
 			const actualMedias = karaoke.value.medias;
 			karaoke.value = convertDBKaraToKaraFile(karas.content[0]);
 			karaoke.value.medias = actualMedias;
@@ -910,7 +911,7 @@
 			} else {
 				mediafile.value = file.name;
 				uploading_media.value = true;
-				mediafile_error.value = '';	
+				mediafile_error.value = '';
 				const formData = new FormData();
 				formData.append('file', file);
 				useUploadFile(
