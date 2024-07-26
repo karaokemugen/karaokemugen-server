@@ -279,13 +279,13 @@ export async function refreshKaraStats() {
 		}
 
 		// This only removes songs not present in all_karas
-		db().query(sql.deleteKaraStats);
+		await db().query(sql.deleteKaraStats);
 		logger.debug('Inserting into stats DB', { service });
 		// Let's go!
 		await transaction({ params, sql: sql.insertKaraStats });
 		logger.debug('Done refreshing stats DB', { service });
 	} catch (err) {
-		logger.error('Error refreshing kara stats', { service, obj: err });
+		logger.error(`Error refreshing kara stats : ${err}`, { service, obj: err });
 		throw err;
 	}
 }
