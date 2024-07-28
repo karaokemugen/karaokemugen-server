@@ -394,7 +394,7 @@
 									<input
 										id="kitsu"
 										v-model="editedUser.social_networks.kitsu"
-										type="number"
+										type="text"
 										name="kitsu"
 										class="input"
 										:placeholder="$t('modal.profile.fields.kitsu.placeholder')"
@@ -419,7 +419,7 @@
 									<input
 										id="gitlab"
 										v-model="editedUser.social_networks.gitlab"
-										type="number"
+										type="text"
 										name="gitlab"
 										class="input"
 										:placeholder="$t('modal.profile.fields.gitlab.placeholder')"
