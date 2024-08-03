@@ -57,11 +57,14 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		await applyKaraHooks(kara, true);
 		logger.debug(`Kara during HeavyLifting: ${JSON.stringify(kara)}`, { service });
 		const fileName = await defineFilename(kara);
+		logger.debug(`fileName: ${fileName}`, { service });
 		// Move files to their own directory
 		const filenames = determineMediaAndLyricsFilenames(kara, fileName);
+		logger.debug(`mediafile: ${filenames.mediafile}`, { service });
+		logger.debug(`lyricsfile: ${filenames.lyricsfile}`, { service });
 		const mediaPath = resolve(resolvedPath('Temp'), kara.medias[0].filename);
-		const mediaDest = resolve(resolvedPathRepos('Medias', kara.data.repository)[0], filenames.mediafile);
 		logger.debug(`mediaPath: ${mediaPath}`, { service });
+		const mediaDest = resolve(resolvedPathRepos('Medias', kara.data.repository)[0], filenames.mediafile);
 		logger.debug(`mediaDest: ${mediaDest}`, { service });
 		try {
 			const extractFile = await extractVideoSubtitles(mediaPath, kara.data.kid);
@@ -113,7 +116,7 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		addKaraInInbox(kara, contact, issueURL, edit ? edit.kid : undefined);
 		return issueURL;
 	} catch (err) {
-		logger.error('Error importing kara', {service, obj: err});
+		logger.error('Error importing kara', {service, obj: JSON.stringify(err)});
 		sentry.addErrorInfo('Kara', JSON.stringify(kara, null, 2));
 		throw err;
 	}
@@ -160,7 +163,7 @@ export async function createKara(editedKara: KaraFileV4, contact: string): Promi
 		kara = await preflight(kara);
 		return await heavyLifting(kara, contact);
 	} catch (err) {
-		logger.error('Error editing kara', { service, obj: err });
+		logger.error('Error creating kara', { service, obj: err });
 		sentry.error(err);
 		throw err instanceof ErrorKM ? err : new ErrorKM('IMPORT_KARA_ERROR');
 	}
