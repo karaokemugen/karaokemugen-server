@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import { APIMessage } from '../../lib/services/frontend.js';
 import { getInbox, getKaraInbox, markKaraInboxAsDownloaded, removeKaraFromInbox } from '../../services/inbox.js';
-import {requireAuth, requireMaintainer, requireValidUser, updateLoginTime} from '../middlewares/auth.js';
+import {optionalAuth, requireAuth, requireMaintainer, requireValidUser, updateLoginTime} from '../middlewares/auth.js';
 import { assignIssue } from '../../lib/utils/gitlab.js';
 
 export default function inboxController(router: Router) {
@@ -42,7 +42,7 @@ export default function inboxController(router: Router) {
 			}
 		});
 	router.route('/inbox')
-		.get(async (req: any, res) => {
+		.get(optionalAuth, async (req: any, res) => {
 			try {
 				const inbox = await getInbox(req.authToken?.roles?.admin || req.authToken?.roles?.maintainer);
 				res.status(200).json(inbox);
