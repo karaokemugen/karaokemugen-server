@@ -194,7 +194,7 @@
 		// Remove unused tagTypes in context
 		for (const tagType in tagTypesUpdated) {
 			// @ts-expect-error
-			if (props.karaoke[tagType].length === 0) {
+			if (sortAndHideTags(props.karaoke[tagType]).length === 0) {
 				delete tagTypesUpdated[tagType];
 			}
 		}

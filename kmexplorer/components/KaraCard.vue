@@ -116,7 +116,7 @@
 </template>
 
 <script setup lang="ts">
-	import type { DBKara } from '%/lib/types/database/kara';
+	import type { DBKara, DBKaraTag } from '%/lib/types/database/kara';
 	import type { DBPL } from '%/types/database/playlist';
 	import { storeToRefs } from 'pinia';
 	import slug from 'slug';
@@ -182,7 +182,7 @@
 			// @ts-expect-error
 			for (const tag of props.karaoke[tagType]) {
 				// Removing all tags mentioned in the karaphrase
-				if (!(
+				if ((tag as DBKaraTag).priority >= -1 && !(
 					(props.karaoke.from_display_type === tagType && i === 0) ||
 					// Remove the first series
 					(tagType === 'series' && i === 0 &&

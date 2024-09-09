@@ -131,7 +131,7 @@ export function sortTagByPriority(a: any, b: any, reverse: boolean) {
  */
 export function sortAndHideTags(tags: any[], reverse: boolean = false) {
 	return tags?.length > 0
-		? tags.filter((tag) => tag.priority >= 0).sort((a, b) => sortTagByPriority(a, b, reverse))
+		? tags.filter((tag) => tag.priority >= -1).sort((a, b) => sortTagByPriority(a, b, reverse))
 		: [];
 }
 

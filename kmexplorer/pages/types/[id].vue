@@ -103,7 +103,7 @@
 		params: reqParams,
 		transform: data => {
 			data.content = data.content.filter(
-				(tag: DBTag) => tag.karacount && Object.keys(tag.karacount).length > 0
+				(tag: DBTag) => tag.karacount && Object.keys(tag.karacount).length > 0 && (!tag.priority || tag.priority >= -1)
 			);
 			return data;
 		},
