@@ -94,7 +94,7 @@
 				</div>
 				<div class="tags">
 					<tag
-						v-for="tag in (karaoke as any)[type]"
+						v-for="tag in sortAndHideTags((karaoke as any)[type])"
 						:key="tag.tid"
 						:type="type"
 						:tag="tag"
