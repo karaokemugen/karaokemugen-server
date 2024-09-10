@@ -223,7 +223,7 @@ Someone suggested a karaoke edit. You will find all the new files in the inbox.
 **Collections** : $collections
 
 
-**Tag(s)** : Misc: $tags - Famillies: $families - Genres: $genres - Platforms: $platforms - Origins: $origins - Warnings: $warnings
+**Tag(s)** : Misc: $tags - Video Contents: $families - Genres: $genres - Platforms: $platforms - Origins: $origins - Warnings: $warnings
 
 
 **Songwriter(s)** : $songwriter

@@ -24,7 +24,7 @@
 		"database": "Base de datos",
 		"origins": "Origenes",
 		"franchises": "Franquicias",
-		"families": "Familias",
+		"families": "Contenidos de vídeo",
 		"warnings": "Alertas",
 		"search_users": "Buscar usuarios",
 		"genres": "Géneros",
@@ -82,7 +82,7 @@
 			"origins": "Origen | Origenes",
 			"groups": "Grupo | Grupos",
 			"franchises": "Franquicia | Franquicias",
-			"families": "Familia | Familias",
+			"families": "Contenido de vídeo | Contenidos de vídeo",
 			"series": "Serie"
 		},
 		"authors_by": "Karaoke creado por",
