@@ -107,7 +107,8 @@ export async function generate() {
 		await computeSubchecksums();
 		createBaseDumps();
 		const promises = [];
-		if (conf.KaraExplorer.Import) promises.push(clearOldInboxEntries(), clearUnusedStagingTags());
+		if (conf.KaraExplorer.Import) promises.push(clearOldInboxEntries());
+		// clearUnusedStagingTags() needs to be rewritten to make sure it doesn't delete tags that are still in use.
 		if (conf.System.Repositories[0].OnUpdateTrigger) promises.push(updateTrigger());
 		promises.push(refreshKaraStats());
 		await Promise.all(promises);
