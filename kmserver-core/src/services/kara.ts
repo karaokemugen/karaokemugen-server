@@ -25,7 +25,7 @@ import { generateHardsubs } from '../utils/hardsubs.js';
 import sentry from '../utils/sentry.js';
 import { getState } from '../utils/state.js';
 import { updateGit } from './git.js';
-import { clearOldInboxEntries, clearUnusedStagingTags, removeProcessedInboxes } from './inbox.js';
+import { clearOldInboxEntries, removeProcessedInboxes } from './inbox.js';
 import { findUserByName } from './user.js';
 
 const service = 'Kara';
