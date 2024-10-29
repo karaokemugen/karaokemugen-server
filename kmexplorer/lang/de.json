@@ -57,7 +57,7 @@
 			"lyrics_file_tooltip": "Unterstützte Dateiformate: {formats}",
 			"description": "Durch dieses Formular kann ein fertiges Karaoke dem Karaoke Mugen Team übermittelt werden. Da es nach der Übermittlung überprüft wird, erscheint es noch nicht sofort in der Datenbank. Wir bitten um etwas Geduld. Die eingereichten Dateien könnten vor der Integration noch korrigiert werden, falls sie nicht den Richtlinien des Teams entsprechen.",
 			"attention": "ACHTUNG:",
-			"documentation_link": "Dokumentation",
+			"documentation_link": "Bitte liesen Sie {instance}s Regeln, bevor Sie ein Lied einreichen!",
 			"license_reminder": "Karaoke wird mit der {name} Lizenz veröffentlicht",
 			"license_link": "Mehr über diese Lizenz erfahren (hier Klicken).",
 			"add": "Hinzufügen",
@@ -114,7 +114,7 @@
 			"groups_tooltip": "Download-Gruppen für dieses Lied. Das Lied wird in diesen Download-Packs enthalten sein",
 			"check_in_progress": "Bitte prüfen Sie die Liste der Karaoke, die derzeit erstellt werden, bevor Sie uns ein Lied schicken. So vermeiden Sie Doppelarbeit, und die Welt wird ein besserer Ort sein.",
 			"authors_tooltip": "Du solltest dich hier eintragen ;)",
-			"romanization_warning": "Dieser Titel/Tag enthält eine nicht-lateinische Alphabetsprache. Sie müssen hierzu die Sprache „Lateinisches Alphabet (Romanisierung)“ hinzufügen",
+			"romanization_warning": "Dieser Titel/Tag enthält eine nicht-lateinische Alphabetsprache. Sie müssen hierzu die Sprache „Lateinisches Alphabet (Romanisierung)“ hinzufügen, falls der Titel in nicht-lateinischem Alphabet nicht vollständig eine Transkription einer anderen Sprache ist.",
 			"add_success_description": "Der Fehler wurde in unserem System erstellt. Du kannst den Fortschritt hier prüfen: {url}",
 			"auto_send_contact_infos": "Wenn du dich anmeldest, kannst du ein Kontrollkästchen im Formular aktivieren, um die Kontaktinformationen automatisch an die Datenbank-Manager weiterzugeben.",
 			"contact_infos_tooltip": "Geben hier deine Kontaktdaten ein, damit wir dich bei Fragen zum Karaoke kontaktieren können.",
@@ -223,7 +223,8 @@
 			"autoplay": "Automatische Wiedergabe",
 			"theater_mode": "Theater Modus (T)",
 			"fullscreen": "Vollbild (F)",
-			"loop": "Schleife"
+			"loop": "Schleife",
+			"description": "Dieses Video wird zur Verfügung gestellt von {instance}. Bitte nutzen sie unser Programm, falls Sie ein Event oder einen Stream planen!"
 		}
 	},
 	"error": {
@@ -251,7 +252,11 @@
 		"end_my_favorites": "Dies ist das Ende deiner Favoriten.",
 		"remove_tags": "Hast du versucht, einige der Filter-Tags aus der Suche zu entfernen?",
 		"app_banner": {
-			"website": "webseite"
+			"website": "webseite",
+			"title": "Wussten Sie schon?",
+			"more_features": "Es gibt deutlich mehr Features als auf {instance}!",
+			"description": "Karaoke Mugen ist auch eine Anwendung für Windows, macOS und Linux, die es Ihnen ermöglicht, Playlists und Karaoke-Events zu managen – egal, ob unter Freunden, auf Anime-Konventions oder während eines Streams!",
+			"link": "Nutzen Sie den {link}, um die Anwendung für Ihren Computer runterzuladen."
 		}
 	},
 	"modal": {
@@ -520,7 +525,8 @@
 		"create_tag": {
 			"title": "Schnelles Erstellen von Tags",
 			"submit": "Speichern",
-			"types": "Tag-Typen"
+			"types": "Tag-Typen",
+			"name": "Name"
 		}
 	},
 	"search": {
@@ -541,9 +547,9 @@
 		},
 		"placeholder": {
 			"kara": "Serien, Sänger, Namen…",
-			"tag": "Tag-Name…",
-			"user": "Benutzername…",
-			"playlist": "Name, Benutzer…"
+			"tag": "Tag-Namen…",
+			"user": "Benutzernamen …",
+			"playlist": "Namen, Benutzer…"
 		},
 		"previous": "Vorherige Seite",
 		"aria": {
@@ -724,7 +730,8 @@
 		"repeat": "Wiederholen",
 		"my_playlists": "Meine Playlisten",
 		"favorites": "Favoriten",
-		"community": "Gemeinschaft"
+		"community": "Gemeinschaft",
+		"app_banner": "Diese Playlist wird ganz schön groß! Falls Sie ein Event oder einen Stream planen, nutzen Sie bitte unser Programm anstelle von {instance}. {instance} ist NICHT 100% der Zeit online."
 	},
 	"bans": {
 		"submit": "Hinzufügen",
