@@ -379,6 +379,10 @@
 				"lang_prefs": {
 					"main_song_name_lang": "Sprachpräferenz für Liedernamen",
 					"fallback_song_name_lang": "Anzeigepräferenz für den Fallback-Songnamen"
+				},
+				"gitlab": {
+					"label": "Gitlab",
+					"placeholder": "karaokemugen"
 				}
 			},
 			"delete": "Benutzerkonto löschen",
