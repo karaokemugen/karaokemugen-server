@@ -456,6 +456,10 @@
 				},
 				"anime_list_to_fetch": {
 					"label": "Lista anime da recuperare"
+				},
+				"gitlab": {
+					"placeholder": "karaokemugen",
+					"label": "Gitlab"
 				}
 			},
 			"headers": {
