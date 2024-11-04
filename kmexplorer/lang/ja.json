@@ -1,1 +1,36 @@
-{}
+{
+	"remote": {
+		"no": "いいえ",
+		"yes": "はい"
+	},
+	"modal": {
+		"delete_account": {
+			"cancel": "キャンセル"
+		},
+		"download": {
+			"cancel": "キャンセル"
+		},
+		"crop": {
+			"cancel": "キャンセル"
+		},
+		"join_kara": {
+			"cancel": "キャンセル"
+		},
+		"delete_playlist": {
+			"cancel": "キャンセル"
+		},
+		"add_repository": {
+			"cancel": "キャンセル"
+		},
+		"stats": {
+			"yes": "はい",
+			"no": "いいえ"
+		},
+		"set_banner": {
+			"cancel": "キャンセル"
+		},
+		"add_duplicate_in_playlist": {
+			"cancel": "キャンセル"
+		}
+	}
+}
