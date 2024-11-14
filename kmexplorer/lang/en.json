@@ -24,7 +24,7 @@
 			"genres": "Genre | Genres",
 			"platforms": "Platform | Platforms",
 			"creators": "Creator | Creators",
-			"authors": "Karaokes author | Karaokes authors",
+			"authors": "Karaoke author | Karaoke authors",
 			"groups": "Group | Groups",
 			"misc": "Miscellaneous",
 			"versions": "Version | Versions",
@@ -112,9 +112,9 @@
 			},
 			"description": "This form allows you to submit a karaoke to the Karaoke Mugen team. It will not be immediately integrated in the karaoke database because it requires a validation. Please be patient. Your karaoke may be modified if it doesn't comply to the team rules.",
 			"attention": "ATTENTION:",
-			"check_in_progress": "Please check the list of karaokes currently being made before sending us a song. This'll avoid duplicate work, and the world will thus be a better place.",
+			"check_in_progress": "Please check the list of karaoke subs currently being made before sending us a song. This'll avoid duplicate work, and the world will thus be a better place.",
 			"documentation_link": "Please read {instance}'s rules before submitting a song!",
-			"in_progress_link": "Karaokes In Progress List",
+			"in_progress_link": "Karaoke subs In Progress List",
 			"license_reminder": "Your karaoke will be published with the {name} license",
 			"license_link": "Learn more about this license by clicking here.",
 			"add": "Add",
@@ -226,9 +226,9 @@
 	},
 	"stats": {
 		"karaokes": "Karaoke | Karaokes",
-		"all_duration": "Duration of all karaokes",
+		"all_duration": "Duration of all songs",
 		"last_generation": "Last update",
-		"media_size": "Medias size"
+		"media_size": "Media size"
 	},
 	"duration": {
 		"days": "days",
@@ -555,8 +555,8 @@
 			"error": "The code is invalid, please check what you typed."
 		},
 		"stats": {
-			"label": "Use my favorites and karaokes requests for stats",
-			"desc": "We use your favorites as well as the karaokes that you have requested during a session to make usage statistics (for example, to find out the most requested karaokes).",
+			"label": "Use my favorites and songs requests for stats",
+			"desc": "We use your favorites as well as the songs that you have requested during a session to make usage statistics (for example, to find out the most requested songs).",
 			"refuse_desc": "If you do not want to participate, even if it's anonymous, in these usage statistics, please let us know. If you refuse, your data will be ignored by the server and not sent by the Karaoke Mugen Application.",
 			"change": "You can change this at any time in your profile. Do you accept the usage of your stats?",
 			"yes": "Yes",
@@ -569,7 +569,7 @@
 			"set": "Use this image",
 			"next": "Next image",
 			"previous": "Previous image",
-			"one": "There is only one banner for audio only karaokes."
+			"one": "There is only one banner for audio only songs."
 		},
 		"create_edit_playlist": {
 			"title_create": "Create playlist",
