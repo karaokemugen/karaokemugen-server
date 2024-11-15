@@ -527,7 +527,7 @@
 			"description": "Inserisci una nuova password"
 		},
 		"set_banner": {
-			"one": "C'è solo un banner per i karaoke solo-audio.",
+			"one": "C'è solo un banner per i brani solo-audio.",
 			"label": "Scegli un banner",
 			"next": "Prossima immagine",
 			"previous": "Immagine precedente",
@@ -559,12 +559,12 @@
 			"add": "Aggiungi"
 		},
 		"stats": {
-			"label": "Utilizza i miei preferiti e le mie richieste karaoke per le statistiche",
+			"label": "Utilizza i miei preferiti e le mie richieste di brani per le statistiche",
 			"change": "Puoi cambiare opzione in qualsiasi momento sul tuo profilo. Acconsenti all'utilizzo delle tue statistiche?",
 			"refuse_desc": "Se non vuoi partecipare, nonostante l'anonimato, a queste statistiche, si prega di farcelo sapere. Se rifiuti, i tuoi dati verranno ignorati e non saranno inviati dall'app di Karaoke Mugen.",
 			"no": "No",
 			"yes": "Sì",
-			"desc": "Utilizziamo i tuoi preferiti e le tue richieste karaoke per creare statistiche sul consumo (ad esempio per definire i karaoke più richiesti)."
+			"desc": "Utilizziamo i tuoi preferiti e le tue richieste di brani per creare statistiche sul consumo (ad esempio per definire i brani più richiesti)."
 		},
 		"delete_playlist": {
 			"add": "Elimina la playlist",
@@ -742,7 +742,7 @@
 	},
 	"stats": {
 		"karaokes": "Karaoke | Karaoke",
-		"all_duration": "Durata di tutti i karaoke",
+		"all_duration": "Durata di tutti i brani",
 		"last_generation": "Ultimo aggiornamento",
 		"media_size": "Dimensione dei file multimediali"
 	},
