@@ -34,7 +34,7 @@
 				{{ $t('kara.import.romanization_warning') }}
 			</div>
 		</div>
-		<div class="field is-horizontal is-grouped is-grouped-centered">
+		<div class="field is-horizontal is-grouped ml-5">
 			<label class="label">
 				{{ $t('kara.import.i18n_select') }}
 			</label>
