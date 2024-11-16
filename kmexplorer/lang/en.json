@@ -556,7 +556,7 @@
 		},
 		"stats": {
 			"label": "Use my favorites and songs requests for stats",
-			"desc": "We use your favorites as well as the songs that you have requested during a session to make usage statistics (for example, to find out the most requested songs).",
+			"desc": "We use your favorites as well as the songs that you have requested during a session to make usage statistics (for example, to find out the most popular songs).",
 			"refuse_desc": "If you do not want to participate, even if it's anonymous, in these usage statistics, please let us know. If you refuse, your data will be ignored by the server and not sent by the Karaoke Mugen Application.",
 			"change": "You can change this at any time in your profile. Do you accept the usage of your stats?",
 			"yes": "Yes",
