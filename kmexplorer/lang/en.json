@@ -225,7 +225,7 @@
 		"base_under_licence": "Karaoke base under license"
 	},
 	"stats": {
-		"karaokes": "Karaoke | Karaokes",
+		"karaokes": "Song | Songs",
 		"all_duration": "Duration of all songs",
 		"last_generation": "Last update",
 		"media_size": "Media size"
