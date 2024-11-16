@@ -556,7 +556,7 @@
 		},
 		"stats": {
 			"label": "Utiliser mes favoris et demandes de chansons pour des statistiques",
-			"desc": "Nous utilisons vos favoris ainsi que les karaokés que vous avez demandé lors d'une session pour faire des statistiques d'utilisation (par exemple, permettre de connaître les karaokés les plus demandés).",
+			"desc": "Nous utilisons vos favoris ainsi que les karaokés que vous avez demandé lors d'une session pour faire des statistiques d'utilisation (par exemple, permettre de connaître les karaokés les populaires).",
 			"refuse_desc": "Si vous ne voulez pas participer, même si c'est anonyme, à ces statistiques d'utilisation, merci de nous le dire. Si vous refusez, le serveur ignorera vos échantillons de statistiques et les applications Karaoke Mugen n'enverront pas vos données.",
 			"change": "Vous pouvez changer ceci à tout moment dans votre profil. Acceptez-vous cet usage des statistiques ?",
 			"yes": "Oui",
@@ -569,7 +569,7 @@
 			"set": "Utiliser cette image",
 			"next": "Image suivante",
 			"previous": "Image précédente",
-			"one": "Il n'y a qu'une bannière disponible pour les karaokés Audio uniquement."
+			"one": "Il n'y a qu'une bannière disponible pour les chansons en Audio uniquement."
 		},
 		"create_edit_playlist": {
 			"title_create": "Créer une liste de lecture",
