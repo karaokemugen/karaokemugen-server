@@ -47,6 +47,7 @@ Example with a database called karaokemugen_server (don't forget to put your own
 CREATE DATABASE karaokemugen_server ENCODING 'UTF8';
 CREATE USER karaokemugen_server WITH ENCRYPTED PASSWORD 'musubi';
 GRANT ALL PRIVILEGES ON DATABASE karaokemugen_server TO karaokemugen_server;
+ALTER DATABASE karaokemugen_server OWNER TO karaokemugen_server;
 GRANT CREATE ON SCHEMA public TO public;
 ```
 
