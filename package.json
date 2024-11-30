@@ -43,7 +43,6 @@
    },
    "packageManager": "yarn@3.3.0",
    "resolutions": {
-      "vue": "3.3.13",
       "bulma@^0.9.4": "patch:bulma@npm%3A0.9.4#./.yarn/patches/bulma-npm-0.9.4-31b34939be.patch",
       "bulma@0.9.4": "patch:bulma@npm%3A0.9.4#./.yarn/patches/bulma-npm-0.9.4-31b34939be.patch"
    }
