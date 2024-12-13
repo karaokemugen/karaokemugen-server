@@ -188,7 +188,7 @@ export async function computeSubchecksums() {
 		return checksumASS(lyrics);
 	};
 	const lyricsMap: Map<string, DBKara> = new Map();
-	for (const kara of karas.content.filter(k => k.subfile)) {
+	for (const kara of karas.content.filter(k => k.lyrics_infos[0])) {
 		lyricsMap.set(kara.kid, kara);
 	}
 	const checksums = await parallel([...lyricsMap], mapper, {
@@ -199,9 +199,9 @@ export async function computeSubchecksums() {
 	logger.info('Finished computing checksums', {service});
 }
 
-async function checksumASS(lyrics: any[]): Promise<string[]> {
+async function checksumASS(lyrics: DBKara[]): Promise<string[]> {
 	// We receive a map so the second item is the DBKara we need.
-	const subfile = await resolveFileInDirs(lyrics[1].subfile, resolvedPathRepos('Lyrics', lyrics[1].repository));
+	const subfile = await resolveFileInDirs(lyrics[1].lyrics_infos[0].filename, resolvedPathRepos('Lyrics', lyrics[1].repository));
 	let subdata = await fs.readFile(subfile[0], 'utf-8');
 	subdata = subdata.replace(/\r/g, '');
 	return [lyrics[1].kid, createHash('md5').update(subdata, 'utf-8').digest('hex')];
@@ -222,10 +222,10 @@ export async function getKara(params: KaraParams, token?: JWTTokenWithRoles) {
 		if (!karas[0]) throw new ErrorKM('NO_KARA_FOUND', 404, false);
 		const kara = karas[0];
 		kara.lyrics = null;
-		if (kara.subfile) {
+		if (kara.lyrics_infos[0]) {
 			// FIXME: add support for converting lrc/vtt on the fly here
-			const ext = parse(kara.subfile).ext;
-			let lyrics = await getLyrics(kara.subfile, kara.repository);
+			const ext = parse(kara.lyrics_infos[0].filename).ext;
+			let lyrics = await getLyrics(kara.lyrics_infos[0].filename, kara.repository);
 			// If any other format we return.
 			if (ext === '.srt') {
 				lyrics = srt2ass(lyrics);

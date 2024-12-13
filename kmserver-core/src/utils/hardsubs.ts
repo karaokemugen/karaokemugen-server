@@ -77,7 +77,7 @@ export async function generateHardsubs(karas: KaraList) {
 			kid: k.kid,
 			mediafile: k.mediafile,
 			mediasize: k.mediasize,
-			subfile: k.subfile,
+			subfile: k.lyrics_infos[0].filename,
 			repository: k.repository,
 			subchecksum: null,
 			loudnorm: k.loudnorm,

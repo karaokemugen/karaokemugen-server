@@ -8,7 +8,7 @@ export const selectInbox = (uniqueKara: string) => `
 	    i.fk_kid as kid,
 		${uniqueKara ? `
 			ak.mediafile,
-			ak.subfile,
+			ak.lyrics_infos,
 			ak.karafile,
 			ak.tags,
 		` : ''}
@@ -52,5 +52,5 @@ export const deleteInbox = `
 export const clearInbox = `
 	DELETE FROM inbox i USING kara k
 	WHERE (i.fk_kid = k.pk_kid OR (i.edited_kid = k.pk_kid AND i.downloaded_at IS NOT NULL AND i.downloaded_at < k.modified_at)) AND k.repository != 'Staging'
-	RETURNING i.gitlab_issue, k.pk_kid AS kid, k.mediafile, k.karafile, k.subfile;
+	RETURNING i.gitlab_issue, k.pk_kid AS kid, k.mediafile, k.karafile, k.lyrics_infos;
 `;

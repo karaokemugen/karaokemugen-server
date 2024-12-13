@@ -190,7 +190,7 @@ SELECT
   ak.titles_aliases,
   ak.titles_default_language,
   ak.songorder,
-  ak.subfile,
+  ak.lyrics_infos,
   ak.year,
   ak.mediafile,
   ak.karafile,
@@ -224,7 +224,7 @@ LEFT OUTER JOIN users_favorites uf ON uf.fk_kid = ak.pk_kid AND uf.fk_login = :u
 ${additionalFrom}
 WHERE pc.fk_plaid = :plaid
 ${filterClauses.map(clause => `AND (${clause})`).join(' ')}
-GROUP BY ak.pk_kid, ak.titles, ak.titles_aliases, ak.titles_default_language, ak.songorder, ak.tags, ak.subfile, ak.year, ak.mediafile, ak.karafile, ak.duration, ak.mediasize, pc.created_at, pc.nickname, ak.download_status, ksub.subchecksum, pc.fk_login, pc.pos, pc.pk_plcid, uf.fk_kid, u.avatar_file, ak.repository
+GROUP BY ak.pk_kid, ak.titles, ak.titles_aliases, ak.titles_default_language, ak.songorder, ak.tags, ak.lyrics_infos, ak.year, ak.mediafile, ak.karafile, ak.duration, ak.mediasize, pc.created_at, pc.nickname, ak.download_status, ksub.subchecksum, pc.fk_login, pc.pos, pc.pk_plcid, uf.fk_kid, u.avatar_file, ak.repository
 ORDER BY ${orderClause}
 ${limitClause}
 ${offsetClause}

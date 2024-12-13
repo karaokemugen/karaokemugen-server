@@ -63,10 +63,10 @@ export function convertDBKaraToKaraFile(dbKara?: DBKara): KaraFileV4 {
 				filesize: dbKara?.mediasize || 0,
 				duration: dbKara?.duration || 0,
 				default: true,
-				lyrics: dbKara?.subfile
+				lyrics: dbKara?.lyrics_infos[0]
 					? [
 						{
-							filename: dbKara.subfile,
+							filename: dbKara.lyrics_infos[0].filename,
 							default: true,
 							version: 'Default'
 						}

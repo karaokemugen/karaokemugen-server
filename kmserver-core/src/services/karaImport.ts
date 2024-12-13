@@ -12,11 +12,7 @@ import { insertKara, updateKaraParents } from '../dao/kara.js';
 import { refreshAllKaraTag } from '../dao/tag.js';
 import { applyKaraHooks, refreshHooks } from '../lib/dao/hook.js';
 import { extractVideoSubtitles, getDataFromKaraFile, trimKaraData, verifyKaraData } from '../lib/dao/karafile.js';
-import {
-	defineFilename,
-	determineMediaAndLyricsFilenames,
-	processSubfile
-} from '../lib/services/karaCreation.js';
+import { defineSongname, determineMediaAndLyricsFilenames, processSubfile } from '../lib/services/karaCreation.js';
 import { refreshKarasAfterDBChange, updateTags } from '../lib/services/karaManagement.js';
 import { EditedKara, KaraFileV4 } from '../lib/types/kara.js';
 import { getConfig, resolvedPath, resolvedPathRepos } from '../lib/utils/config.js';
@@ -43,7 +39,7 @@ async function preflight(kara: KaraFileV4): Promise<KaraFileV4> {
 		verifyKaraData(kara);
 		return kara;
 	} catch (err) {
-		logger.error('Bad import data', { service, obj: {err, kara}});
+		logger.error('Bad import data', { service, obj: { err, kara } });
 		throw new ErrorKM('BAD_IMPORT_DATA_ERROR', 400, false);
 	}
 }
@@ -56,12 +52,13 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		await refreshHooks();
 		await applyKaraHooks(kara, true);
 		logger.debug(`Kara during HeavyLifting: ${JSON.stringify(kara)}`, { service });
-		const fileName = await defineFilename(kara);
-		logger.debug(`fileName: ${fileName}`, { service });
+		const { sanitizedFilename, songname } = await defineSongname(kara);
+		kara.data.songname = songname;
+		logger.debug(`fileName: ${sanitizedFilename}`, { service });
 		// Move files to their own directory
-		const filenames = determineMediaAndLyricsFilenames(kara, fileName);
+		const filenames = determineMediaAndLyricsFilenames(kara, sanitizedFilename);
 		logger.debug(`mediafile: ${filenames.mediafile}`, { service });
-		logger.debug(`lyricsfile: ${filenames.lyricsfile}`, { service });
+		logger.debug(`lyricsfile: ${filenames.lyricsfiles[0]}`, { service });
 		const mediaPath = resolve(resolvedPath('Temp'), kara.medias[0].filename);
 		logger.debug(`mediaPath: ${mediaPath}`, { service });
 		const mediaDest = resolve(resolvedPathRepos('Medias', kara.data.repository)[0], filenames.mediafile);
@@ -80,16 +77,19 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		}
 		if (kara.medias[0].lyrics[0]) {
 			const subPath = resolve(resolvedPath('Temp'), kara.medias[0].lyrics[0].filename);
-			const subDest = resolve(resolvedPathRepos('Lyrics', kara.data.repository)[0], filenames.lyricsfile);
+			const subDest = resolve(resolvedPathRepos('Lyrics', kara.data.repository)[0], filenames.lyricsfiles[0]);
 			logger.debug(`subPath: ${subPath}`, { service });
 			logger.debug(`subDest: ${subDest}`, { service });
 			const ext = await processSubfile(subPath);
 			await smartMove(subPath, subDest, { overwrite: true });
-			kara.medias[0].lyrics[0].filename = replaceExt(filenames.lyricsfile, ext);
+			kara.medias[0].lyrics[0].filename = replaceExt(filenames.lyricsfiles[0], ext);
 		}
 		await smartMove(mediaPath, mediaDest, { overwrite: true });
 		kara.medias[0].filename = filenames.mediafile;
-		const karaDest = resolve(resolvedPathRepos('Karaokes', kara.data.repository)[0], `${fileName}.kara.json`);
+		const karaDest = resolve(
+			resolvedPathRepos('Karaokes', kara.data.repository)[0],
+			`${sanitizedFilename}.kara.json`,
+		);
 		await fs.writeFile(karaDest, JSON.stringify(kara, null, 2), 'utf-8');
 		const karaData = await getDataFromKaraFile(karaDest, kara, { media: true, lyrics: true });
 		karaData.meta.karaFile = basename(karaData.meta.karaFile);
@@ -97,13 +97,13 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		await Promise.all([updateKaraParents(karaData.data), updateTags(karaData.data)]);
 		await refreshKarasAfterDBChange('ADD', [karaData.data]);
 		await refreshAllKaraTag();
-		logger.debug('Kara', {service, obj: karaData});
+		logger.debug('Kara', { service, obj: karaData });
 		let issueURL: string;
 		if (conf.Gitlab.Enabled) {
 			if (edit) {
 				edit.oldKara = await getKara({
 					q: `k:${edit.kid}`,
-					ignoreCollections: true
+					ignoreCollections: true,
 				});
 			}
 			try {
@@ -116,7 +116,7 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		addKaraInInbox(kara, contact, issueURL, edit ? edit.kid : undefined);
 		return issueURL;
 	} catch (err) {
-		logger.error('Error importing kara', {service, obj: JSON.stringify(err)});
+		logger.error('Error importing kara', { service, obj: JSON.stringify(err) });
 		sentry.addErrorInfo('Kara', JSON.stringify(kara, null, 2));
 		throw err;
 	}
@@ -126,7 +126,7 @@ export async function editKara(editedKara: EditedKara, contact: string): Promise
 	try {
 		let kara = trimKaraData(editedKara.kara);
 		const conf = getConfig();
-		const onlineRepo = conf.System.Repositories.find(r => r.Name !== 'Staging').Name;
+		const onlineRepo = conf.System.Repositories.find((r) => r.Name !== 'Staging').Name;
 		const edited_kid = kara.data.kid;
 		kara = await preflight(kara);
 		// Before the heavy lifting (tm), we should make copies of media and/or lyrics if they were not edited.
@@ -134,21 +134,21 @@ export async function editKara(editedKara: EditedKara, contact: string): Promise
 			await copy(
 				resolve(resolvedPathRepos('Lyrics', onlineRepo)[0], kara.medias[0].lyrics[0].filename),
 				resolve(resolvedPath('Temp'), kara.medias[0].lyrics[0].filename),
-				{ overwrite: true }
+				{ overwrite: true },
 			);
 		}
 		if (!editedKara.modifiedMedia) {
 			await copy(
 				resolve(resolvedPathRepos('Medias', onlineRepo)[0], kara.medias[0].filename),
 				resolve(resolvedPath('Temp'), kara.medias[0].filename),
-				{ overwrite: true }
+				{ overwrite: true },
 			);
 		}
 		// And now for the fun part
 		return await heavyLifting(kara, contact, {
 			kid: edited_kid,
 			modifiedLyrics: editedKara.modifiedLyrics,
-			modifiedMedia: editedKara.modifiedMedia
+			modifiedMedia: editedKara.modifiedMedia,
 		});
 	} catch (err) {
 		logger.error('Error editing kara', { service, obj: err });
