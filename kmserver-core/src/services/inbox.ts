@@ -32,7 +32,7 @@ export async function getKaraInbox(inid: string): Promise<Inbox> {
 		const inbox = (await selectInbox(inid))[0];
 		const karaPath = resolve(resolvedPathRepos('Karaokes', 'Staging')[0], inbox.karafile);
 		let subPath: string;
-		if (inbox.subfile) subPath = resolve(resolvedPathRepos('Lyrics', 'Staging')[0], inbox.subfile);
+		if (inbox.lyrics_infos[0]) subPath = resolve(resolvedPathRepos('Lyrics', 'Staging')[0], inbox.lyrics_infos[0].filename);
 		const karaData: KaraFileV4 = JSON.parse(await fs.readFile(karaPath, 'utf-8'));
 		karaData.data.repository = onlineRepo;
 		if (inbox.fix) {
@@ -43,10 +43,10 @@ export async function getKaraInbox(inid: string): Promise<Inbox> {
 			file: inbox.karafile
 		};
 		let lyrics: MetaFile;
-		if (inbox.subfile) {
+		if (inbox.lyrics_infos[0]) {
 			lyrics = {
 				data: await fs.readFile(subPath, 'utf-8'),
-				file: inbox.subfile
+				file: inbox.lyrics_infos[0].filename
 			};
 		}
 		const extra_tids = inbox.tags.filter(t => t.repository === 'Staging').map(t => t.tid);
@@ -147,7 +147,7 @@ export async function removeKaraFromInbox(inid: string) {
 		if (inbox.karafile) {
 			const karaPath = resolve(resolvedPathRepos('Karaokes', 'Staging')[0], inbox.karafile);
 			let subPath: string;
-			if (inbox.subfile) subPath = resolve(resolvedPathRepos('Lyrics', 'Staging')[0], inbox.subfile);
+			if (inbox.lyrics_infos[0]) subPath = resolve(resolvedPathRepos('Lyrics', 'Staging')[0], inbox.lyrics_infos[0].filename);
 			const mediaPath = resolve(resolvedPathRepos('Medias', 'Staging')[0], inbox.mediafile);
 			try {
 				await Promise.all([
@@ -214,7 +214,7 @@ export async function clearOldInboxEntries() {
 			// Find and delete files
 			const karaPath = resolve(resolvedPathRepos('Karaokes', 'Staging')[0], kara.karafile);
 			if (await fileExists(karaPath)) {
-				const subPath = resolve(resolvedPathRepos('Lyrics', 'Staging')[0], kara.subfile);
+				const subPath = resolve(resolvedPathRepos('Lyrics', 'Staging')[0], kara.lyrics_infos[0].filename);
 				const mediaPath = resolve(resolvedPathRepos('Medias', 'Staging')[0], kara.mediafile);
 				await Promise.all([
 					fs.unlink(karaPath),

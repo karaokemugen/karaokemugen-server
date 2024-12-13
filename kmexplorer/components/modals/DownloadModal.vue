@@ -22,7 +22,7 @@
 						{{ $t('modal.download.karabundle') }}
 					</nuxt-link>
 					<nuxt-link
-						v-if="karaoke.subfile"
+						v-if="karaoke.lyrics_infos[0]"
 						:href="subtitlesUrl"
 						class="button"
 						download
@@ -88,8 +88,8 @@
 		return mediafile[mediafile.length - 1];
 	});
 	const subtitlesExtension = computed(() => {
-		if (props.karaoke.subfile) {
-			const subfile = props.karaoke.subfile.split('.');
+		if (props.karaoke.lyrics_infos[0]) {
+			const subfile = props.karaoke.lyrics_infos[0].filename.split('.');
 			return subfile[subfile.length - 1];
 		}
 		return '';
@@ -108,7 +108,7 @@
 		return `${filename}.mp4`;
 	});
 	const subtitlesUrl = computed(() => {
-		return `${apiUrl}downloads/lyrics/${encodeURIComponent(props.karaoke.subfile)}`;
+		return `${apiUrl}downloads/lyrics/${encodeURIComponent(props.karaoke.lyrics_infos[0].filename)}`;
 	});
 	const live = computed(() => isPlayable(props.karaoke));
 

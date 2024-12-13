@@ -728,7 +728,7 @@
 		repositoryManifest: RepositoryManifestV2
 	}>();
 
-	// @ts-expect-error
+	// @ts-expect-error vue-toastification is not typed
 	const useToast = Toast.useToast ?? Toast.default.useToast;
 
 	const karaoke = ref(convertDBKaraToKaraFile(props.kara));
@@ -856,7 +856,7 @@
 
 	function submitDisabled(): boolean {
 		return Boolean(
-			(!params.id && !mediafile) ||
+			(!params.id && !mediafile.value) ||
 				karaoke.value.medias.length === 0 ||
 				karaoke.value.medias[0].filesize === 0 ||
 				!isSupportedMediaFile(karaoke.value.medias[0].filename) ||

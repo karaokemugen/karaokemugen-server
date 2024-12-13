@@ -3,6 +3,7 @@ import {pg as yesql} from 'yesql';
 import {db} from '../lib/dao/database.js';
 import {DBInbox, SingleDBInbox} from '../lib/types/inbox.js';
 import * as sql from './sqls/inbox.js';
+import { LyricsInfo } from '../lib/types/kara.js';
 
 export async function selectInbox(): Promise<DBInbox[]>;
 export async function selectInbox(inid: string): Promise<[SingleDBInbox] | []>;
@@ -27,7 +28,7 @@ export async function deleteInbox(inid: string) {
 	return db().query(sql.deleteInbox, [inid]);
 }
 
-export async function clearInbox(): Promise<{ kid: string, mediafile: string, karafile: string, subfile: string, gitlab_issue: string }[]> {
+export async function clearInbox(): Promise<{ kid: string, mediafile: string, karafile: string, lyrics_infos: LyricsInfo[], gitlab_issue: string }[]> {
 	const res = await db().query(sql.clearInbox);
 	return res.rows;
 }

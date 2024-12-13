@@ -19,7 +19,7 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 	let orderClause = 'name';
 	let whereClause = '';
 	const collectionClauses = [];
-	if (params.type > 0) {
+	if (params.type) {
 		joinClauses = `LEFT   JOIN LATERAL (
 	   	SELECT elem->>'count' AS karacounttype
 	   	FROM   jsonb_array_elements(t_count.count_per_type::jsonb) a(elem)
