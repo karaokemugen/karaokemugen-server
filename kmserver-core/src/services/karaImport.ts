@@ -52,8 +52,8 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		await refreshHooks();
 		await applyKaraHooks(kara, true);
 		logger.debug(`Kara during HeavyLifting: ${JSON.stringify(kara)}`, { service });
-		const { sanitizedFilename, songname } = await defineSongname(kara);
-		kara.data.songname = songname;
+		const { sanitizedFilename } = await defineSongname(kara);
+		kara.data.songname = sanitizedFilename;
 		logger.debug(`fileName: ${sanitizedFilename}`, { service });
 		// Move files to their own directory
 		const filenames = determineMediaAndLyricsFilenames(kara, sanitizedFilename);
