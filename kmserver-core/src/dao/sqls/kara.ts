@@ -149,7 +149,6 @@ INSERT INTO kara(
 	year,
 	songorder,
 	mediafile,
-	subfile,
 	duration,
 	loudnorm,
 	modified_at,
@@ -161,7 +160,9 @@ INSERT INTO kara(
 	download_status,
 	comment,
 	ignore_hooks,
-	from_display_type
+	from_display_type,
+	songname,
+	lyrics_infos
 )
 VALUES(
 	:titles,
@@ -170,7 +171,6 @@ VALUES(
 	:year,
 	:songorder,
 	:mediafile,
-	:subfile,
 	:duration,
 	:loudnorm,
 	:modified_at,
@@ -182,7 +182,9 @@ VALUES(
 	:download_status,
 	:comment,
 	:ignoreHooks,
-	:from_display_type
+	:from_display_type,
+	:songname,
+	:lyrics_infos
 );
 `;
 
