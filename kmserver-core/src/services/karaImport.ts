@@ -18,7 +18,7 @@ import { EditedKara, KaraFileV4 } from '../lib/types/kara.js';
 import { getConfig, resolvedPath, resolvedPathRepos } from '../lib/utils/config.js';
 import { ErrorKM } from '../lib/utils/error.js';
 import { replaceExt, smartMove } from '../lib/utils/files.js';
-import { removeControlCharsInObject } from '../lib/utils/objectHelpers.js';
+import { removeControlCharsInObject, sortJSON } from '../lib/utils/objectHelpers.js';
 import { EditElement } from '../types/karaImport.js';
 import sentry from '../utils/sentry.js';
 import { createInboxIssue } from './gitlab.js';
@@ -86,6 +86,13 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		}
 		await smartMove(mediaPath, mediaDest, { overwrite: true });
 		kara.medias[0].filename = filenames.mediafile;
+		
+		// Sort stuff inside kara JSON.
+
+		kara.data = sortJSON(kara.data);
+		kara.medias[0] = sortJSON(kara.medias[0]);
+		if (kara.medias[0].lyrics[0]) kara.medias[0].lyrics[0] = sortJSON(kara.medias[0].lyrics[0]);
+
 		const karaDest = resolve(
 			resolvedPathRepos('Karaokes', kara.data.repository)[0],
 			`${sanitizedFilename}.kara.json`,
