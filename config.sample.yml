@@ -52,7 +52,7 @@ KaraExplorer:
   Secure: false
   MediaLinks: true
   Import: true
-  InProgressSongsList: https://gitlab.com/karaokemugen/bases/karaokebase/-/issues?scope=all&state=opened&label_name[]=Doing
+  InProgressSongsList: https://gitlab.com/karaokemugen/bases/karaokebase/-/issues?scope=all&state=opened&label_name[]=Work in progress
   AddRepoModalInMenu: false
   DiscourseURL: https://discourse.karaokes.moe
   DiscordURL: https://karaokes.moe/discord
