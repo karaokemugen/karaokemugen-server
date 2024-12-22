@@ -197,6 +197,7 @@ const nuxtConfig = defineNuxtConfig({
 				file: 'de.json'
 			}
 		],
+		restructureDir: false,
 		baseUrl: apiUrl,
 		lazy: true,
 		defaultLocale: 'en',
