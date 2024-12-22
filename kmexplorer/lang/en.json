@@ -175,7 +175,7 @@
 			"contact_infos_tooltip": "Enter your contact details, so we can come to you if we have any questions about the karaoke.",
 			"auto_send_contact_infos": "If you log in, you can check a box on the form to automatically share your contact information with database maintainers.",
 			"from_display_type": "From tag type display",
-			"from_display_type_tooltip": "Select tag type to used when displaying the song"
+			"from_display_type_tooltip": "Select the tag type to be displayed with the title of the song. It will show as “[title] from [this tag type]”."
 		},
 		"stats": {
 			"favorited": "Added to favorites by {number} users",
