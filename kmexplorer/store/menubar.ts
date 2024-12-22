@@ -1,4 +1,3 @@
-import { defineStore } from 'pinia';
 import type { DBTag } from '%/lib/types/database/tag';
 
 export interface TagExtend {
@@ -93,6 +92,6 @@ export const useMenubarStore = defineStore('menubar', {
 		}
 	},
 	persist: {
-		storage: persistedState.sessionStorage
+		storage: piniaPluginPersistedstate.sessionStorage()
 	}
 });

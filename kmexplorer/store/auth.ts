@@ -1,4 +1,3 @@
-import { defineStore } from 'pinia';
 import type { DBUser } from '~/../kmserver-core/src/lib/types/database/user';
 import type { TokenResponseWithRoles } from '~/../kmserver-core/src/lib/types/user';
 
@@ -33,6 +32,6 @@ export const useAuthStore = defineStore('auth', {
 		}
 	},
 	persist: {
-		storage: persistedState.localStorage
+		storage: piniaPluginPersistedstate.localStorage()
 	}
 });

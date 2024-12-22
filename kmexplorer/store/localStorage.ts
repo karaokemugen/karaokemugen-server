@@ -1,5 +1,3 @@
-import { defineStore } from 'pinia';
-
 export type LocalStorageStoreType = {
 	karas: number[]
 	sendContactInfos: boolean
@@ -59,6 +57,6 @@ export const useLocalStorageStore = defineStore('localStorage', {
 		}
 	},
 	persist: {
-		storage: persistedState.localStorage
+		storage: piniaPluginPersistedstate.localStorage()
 	}
 });
