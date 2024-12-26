@@ -1,1 +1,35 @@
-{}
+{
+	"error": {
+		"generic": "Błąd",
+		"private_profile": "Profil jest prywatny.",
+		"not_found_profile": "Nie można odnaleźć tego użytkownika",
+		"not_found_playlist": "Nie można znaleźć tej listy odtwarzania",
+		"home": "Go home",
+		"not_found_tag": "Nie znaleziono tagu",
+		"remote": "Błąd podczas wczytywania listy pilotów",
+		"bans": "Błąd podczas wczytywania listy banów"
+	},
+	"kara": {
+		"tagtypes": {
+			"series": "Seria",
+			"langs": "Język | Języki",
+			"songtypes": "Typ utworu | Typy utworów",
+			"singers": "Piosenkarz | Śpiewaków",
+			"songwriters": "Autor piosenek | Kompozytorów",
+			"families": "Treści wideo | Zawartość wideo",
+			"origins": "Pochodzenie | Pochodzenia",
+			"genres": "Gatunek | Gatunków",
+			"platforms": "Platforma | Platformy",
+			"creators": "Twórca | Twórców",
+			"authors": "Autor karaoke | Autorzy karaoke",
+			"groups": "Grupa | Grupy",
+			"misc": "Rozmaity",
+			"versions": "Wersja | Wersje",
+			"warnings": "Ostrzeżenie | Ostrzeżenia",
+			"collections": "Kolekcja | Zbiory"
+		},
+		"phrase": "{songtype} z {series}",
+		"meta": "{tytuł_piosenki} z {serieSinger}",
+		"notfound": "Nie znaleziono karaoke"
+	}
+}
