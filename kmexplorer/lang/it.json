@@ -110,7 +110,7 @@
 			"restart": "Invia un nuovo karaoke",
 			"titles_aliases": "Alias",
 			"parents_tooltip": "Se un brano principale è definito, questo karaoke verrà mostrato come variante della versione principale selezionata.",
-			"from_display_type_tooltip": "Seleziona il tipo di tag da utilizzare quando il brano è visualizzato",
+			"from_display_type_tooltip": "Seleziona il tipo di tag da mostrare insieme al titolo del brano. Verrà mostrato \"[titolo] da [tipo di tag]\".",
 			"in_progress_link": "Lista dei karaoke in lavorazione",
 			"songtypes_required": "È necessario il tipo di brano",
 			"franchises_tooltip": "Se la serie fa parte di un franchise (come Gundam, Mario, Zelda, Naruto, ecc...), inseriscilo qui.",
