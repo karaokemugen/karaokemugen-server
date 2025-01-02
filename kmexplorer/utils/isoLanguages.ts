@@ -6,6 +6,7 @@ import id from '@cospired/i18n-iso-languages/langs/id.json';
 import pt from '@cospired/i18n-iso-languages/langs/pt.json';
 import es from '@cospired/i18n-iso-languages/langs/es.json';
 import it from '@cospired/i18n-iso-languages/langs/it.json';
+import pl from '@cospired/i18n-iso-languages/langs/pl.json';
 
 i18nIsoLanguages.registerLocale(en);
 i18nIsoLanguages.registerLocale(fr);
@@ -14,6 +15,7 @@ i18nIsoLanguages.registerLocale(de);
 i18nIsoLanguages.registerLocale(pt);
 i18nIsoLanguages.registerLocale(es);
 i18nIsoLanguages.registerLocale(it);
+i18nIsoLanguages.registerLocale(pl);
 
 let navigatorLanguage: string;
 if (process.client) {

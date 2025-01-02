@@ -33,7 +33,7 @@
 			"default": "Domyślnie"
 		},
 		"phrase": "{songtype} z {series}",
-		"meta": "{tytuł_piosenki} z {serieSinger}",
+		"meta": "{songtitle} z {serieSinger}",
 		"notfound": "Nie znaleziono karaoke",
 		"singers_by": "Śpiewane przez",
 		"songwriters_by": "Skomponowany przez",
