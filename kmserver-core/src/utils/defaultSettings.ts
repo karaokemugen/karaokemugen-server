@@ -39,7 +39,7 @@ export const defaults: Config = {
 			Previews: 'previews',
 			Hardsubs: 'hardsubs',
 		},
-		DefaultCollections: ['c7db86a0-ff64-4044-9be4-66dd1ef1d1c1', 'dbcf2c22-524d-4708-99bb-601703633927']
+		DefaultCollections: ['c7db86a0-ff64-4044-9be4-66dd1ef1d1c1']
 	},
 	Remote: {
 		Enabled: true,
