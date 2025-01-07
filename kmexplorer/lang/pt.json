@@ -570,6 +570,10 @@
 				},
 				"anime_list_to_fetch": {
 					"label": "Lista de anime para recuperar"
+				},
+				"gitlab": {
+					"label": "Gitlab",
+					"placeholder": "karaokemugen"
 				}
 			},
 			"title": "Editar perfil",
