@@ -1267,13 +1267,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cospired/i18n-iso-languages@npm:^4.2.0":
-  version: 4.2.0
-  resolution: "@cospired/i18n-iso-languages@npm:4.2.0"
-  checksum: c7a04a4453d4193e3d23779489136b2606b1a57f743fb90ade2dfbf7ecb683150753ca0728fddea54395fdc0d1739ec789fe9d8879d5b4b56b693c00d100bb66
-  languageName: node
-  linkType: hard
-
 "@cspotcode/source-map-support@npm:^0.8.0":
   version: 0.8.1
   resolution: "@cspotcode/source-map-support@npm:0.8.1"
@@ -2125,6 +2118,13 @@ __metadata:
   version: 7.1.3
   resolution: "@jsdevtools/ono@npm:7.1.3"
   checksum: 2297fcd472ba810bffe8519d2249171132844c7174f3a16634f9260761c8c78bc0428a4190b5b6d72d45673c13918ab9844d706c3ed4ef8f62ab11a2627a08ad
+  languageName: node
+  linkType: hard
+
+"@karaokemugen/i18n-iso-languages@npm:^4.2.1":
+  version: 4.2.1
+  resolution: "@karaokemugen/i18n-iso-languages@npm:4.2.1"
+  checksum: 8d2fd45995fb7899e368f749bc0445cbb750d351958dcda5e917b88119de7992a9588c4e5584cd579c4379b4d5b3a749587e292888f2d551ed725cd2b2a8a4b6
   languageName: node
   linkType: hard
 
@@ -10074,11 +10074,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "kmexplorer@workspace:kmexplorer"
   dependencies:
-    "@cospired/i18n-iso-languages": ^4.2.0
     "@fortawesome/fontawesome-svg-core": ^6.7.2
     "@fortawesome/free-brands-svg-icons": ^6.7.2
     "@fortawesome/free-solid-svg-icons": ^6.7.2
     "@fortawesome/vue-fontawesome": ^3.0.8
+    "@karaokemugen/i18n-iso-languages": ^4.2.1
     "@nuxt/eslint": ^0.7.4
     "@nuxtjs/i18n": 9.1.1
     "@oruga-ui/oruga-next": ^0.7.0

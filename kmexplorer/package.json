@@ -12,11 +12,11 @@
   },
   "type": "module",
   "dependencies": {
-    "@cospired/i18n-iso-languages": "^4.2.0",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-brands-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/vue-fontawesome": "^3.0.8",
+    "@karaokemugen/i18n-iso-languages": "^4.2.1",
     "@nuxtjs/i18n": "9.1.1",
     "@oruga-ui/oruga-next": "^0.7.0",
     "@oruga-ui/theme-bulma": "^0.2.11",

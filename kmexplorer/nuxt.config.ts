@@ -201,6 +201,12 @@ const nuxtConfig = defineNuxtConfig({
 				name: 'Polski',
 				iso: 'pl',
 				file: 'pl.json'
+			},
+			{
+				code: 'ta',
+				name: 'தமிழ்',
+				iso: 'ta',
+				file: 'ta.json'
 			}
 		],
 		restructureDir: false,

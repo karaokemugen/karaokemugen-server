@@ -1,12 +1,13 @@
-import i18nIsoLanguages from '@cospired/i18n-iso-languages';
-import de from '@cospired/i18n-iso-languages/langs/de.json';
-import en from '@cospired/i18n-iso-languages/langs/en.json';
-import fr from '@cospired/i18n-iso-languages/langs/fr.json';
-import id from '@cospired/i18n-iso-languages/langs/id.json';
-import pt from '@cospired/i18n-iso-languages/langs/pt.json';
-import es from '@cospired/i18n-iso-languages/langs/es.json';
-import it from '@cospired/i18n-iso-languages/langs/it.json';
-import pl from '@cospired/i18n-iso-languages/langs/pl.json';
+import i18nIsoLanguages from '@karaokemugen/i18n-iso-languages';
+import de from '@karaokemugen/i18n-iso-languages/langs/de.json';
+import en from '@karaokemugen/i18n-iso-languages/langs/en.json';
+import fr from '@karaokemugen/i18n-iso-languages/langs/fr.json';
+import id from '@karaokemugen/i18n-iso-languages/langs/id.json';
+import pt from '@karaokemugen/i18n-iso-languages/langs/pt.json';
+import es from '@karaokemugen/i18n-iso-languages/langs/es.json';
+import it from '@karaokemugen/i18n-iso-languages/langs/it.json';
+import pl from '@karaokemugen/i18n-iso-languages/langs/pl.json';
+import ta from '@karaokemugen/i18n-iso-languages/langs/ta.json';
 
 i18nIsoLanguages.registerLocale(en);
 i18nIsoLanguages.registerLocale(fr);
@@ -16,6 +17,7 @@ i18nIsoLanguages.registerLocale(pt);
 i18nIsoLanguages.registerLocale(es);
 i18nIsoLanguages.registerLocale(it);
 i18nIsoLanguages.registerLocale(pl);
+i18nIsoLanguages.registerLocale(ta);
 
 let navigatorLanguage: string;
 if (process.client) {
