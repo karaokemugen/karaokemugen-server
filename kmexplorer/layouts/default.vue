@@ -1262,12 +1262,13 @@
 		margin-bottom: 5em;
 	}
 
-	.addRepo, .launchDice {
+	.addRepo {
 		cursor: pointer;
 		max-width: 10em;
 	}
 	.launchDice {
 		margin: 0.75em;
+		cursor: pointer;
 	}
 
 	aside {
