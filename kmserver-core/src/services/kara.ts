@@ -27,6 +27,7 @@ import { getState } from '../utils/state.js';
 import { updateGit } from './git.js';
 import { clearOldInboxEntries, removeProcessedInboxes } from './inbox.js';
 import { findUserByName } from './user.js';
+import { readAllRepoManifests } from '../lib/services/repo.js';
 
 const service = 'Kara';
 
@@ -90,6 +91,7 @@ export async function updateRepo() {
 export async function generate() {
 	try {
 		await removeProcessedInboxes();
+		await readAllRepoManifests();
 		await generateDatabase({validateOnly: false});
 		const conf = getConfig();
 		// Download master.zip from gitlab to serve it ourselves
