@@ -536,12 +536,12 @@
 	"search": {
 		"next": "Nächste Seite",
 		"sort": {
-			"most_played": "Meistgespielt",
+			"most_played": "Am häufigsten gespielt",
 			"most_requested": "Am häufigsten gewünscht",
 			"kara_count": "Anzahl Lieder",
-			"recent": "Nach Hinzufügungsdatum",
+			"recent": "Nach Erstelldatum",
 			"a_z": "A-Z",
-			"most_favorites": "Am meisten Favorisiert",
+			"most_favorites": "Am meisten favorisiert",
 			"likes": "Meiste Likes",
 			"languages": "Nach Sprachen",
 			"most_played_recently": "Am häufigsten gespielt (kürzlich)",
