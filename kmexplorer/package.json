@@ -25,29 +25,29 @@
     "bulmaswatch": "^0.8.1",
     "dayjs": "^1.11.13",
     "i18n-iso-countries": "^7.13.0",
-    "isomorphic-dompurify": "^2.19.0",
+    "isomorphic-dompurify": "^2.20.0",
     "lodash": "^4.17.21",
     "nuxt-fontawesome": "^0.4.0",
     "pinia": "^2.3.0",
     "pinia-plugin-persistedstate": "^4.2.0",
     "pretty-bytes": "6.1.1",
     "slug": "^10.0.0",
-    "uuid": "^11.0.3",
+    "uuid": "^11.0.5",
     "video.js": "^8.21.0",
     "vue-advanced-cropper": "^2.8.9",
     "vue-toastification": "2.0.0-rc.5"
   },
   "devDependencies": {
-    "@nuxt/eslint": "^0.7.4",
-    "@types/lodash": "^4.17.13",
+    "@nuxt/eslint": "^0.7.5",
+    "@types/lodash": "^4.17.14",
     "@types/slug": "^5.0.9",
     "@types/uuid": "^10.0.0",
     "@vite-pwa/nuxt": "^0.10.6",
-    "eslint": "^9.17.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.2.1",
-    "nuxt": "^3.14.1592",
+    "eslint": "^9.18.0",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-prettier": "^5.2.2",
+    "nuxt": "^3.15.2",
     "prettier": "3.4.2",
-    "sass": "^1.83.0"
+    "sass": "^1.83.4"
   }
 }
