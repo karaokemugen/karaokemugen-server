@@ -1105,6 +1105,7 @@
 			:active="stats"
 			@close="stats = false"
 		/>
+		<NuxtPwaManifest />
 		<a id="downloadAnchorElem" />
 	</div>
 </template>
