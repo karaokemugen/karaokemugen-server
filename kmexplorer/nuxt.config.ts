@@ -18,13 +18,12 @@ const production = process.env.NODE_ENV === 'production';
 const apiUrl = `http${conf.API.Secure ? 's' : ''}://${conf.API.Host}${conf.API.Port ? `:${conf.API.Port}` : ''}/`;
 
 const nuxtConfig = defineNuxtConfig({
-
 	dev: !production,
 
 	components: [{ path: '~/components', pathPrefix: false }],
 
 	nitro: {
-		preset: 'node'
+		preset: 'node',
 	},
 
 	runtimeConfig: {
@@ -62,23 +61,22 @@ const nuxtConfig = defineNuxtConfig({
 						tracingOptions: {
 							hooks: ['mount', 'update'],
 							timeout: 2000,
-							trackComponents: true
-						}
+							trackComponents: true,
+						},
 					},
-					browserOptions: {}
+					browserOptions: {},
 				},
 				config: {
 					ignoreErrors: [
 						'Request aborted',
 						'Network Error',
-						'document.querySelector(\'video\').webkitPresentationMode',
+						"document.querySelector('video').webkitPresentationMode",
 						'Request failed with status code 403',
-						'Request failed with status code 401'
-					]
-				}
+						'Request failed with status code 401',
+					],
+				},
 			},
 		},
-
 	},
 	pwa: {
 		manifest: {
@@ -88,19 +86,39 @@ const nuxtConfig = defineNuxtConfig({
 			description: 'Explorez la base de données de karaokés!',
 			background_color: '#36393f',
 			theme_color: '#375a7f',
-			display: 'standalone'
-		},
-		icon: {
-			maskablePadding: 0
+			display: 'standalone',
+			icons: [
+				{
+					src: 'pwa-64x64.png',
+					sizes: '64x64',
+					type: 'image/png',
+				},
+				{
+					src: 'pwa-192x192.png',
+					sizes: '192x192',
+					type: 'image/png',
+				},
+				{
+					src: 'pwa-512x512.png',
+					sizes: '512x512',
+					type: 'image/png',
+				},
+				{
+					src: 'maskable-icon-512x512.png',
+					sizes: '512x512',
+					type: 'image/png',
+					purpose: 'maskable',
+				},
+			],
 		},
 		workbox: {
 			runtimeCaching: [
 				{
 					urlPattern: '/previews/.*',
-					handler: 'CacheFirst'
-				}
-			]
-		}
+					handler: 'CacheFirst',
+				},
+			],
+		},
 	},
 
 	build: {
@@ -108,8 +126,8 @@ const nuxtConfig = defineNuxtConfig({
 			'@fortawesome/fontawesome-svg-core',
 			'@fortawesome/free-brands-svg-icons',
 			'@fortawesome/free-solid-svg-icons',
-			'@fortawesome/vue-fontawesome'
-		]
+			'@fortawesome/vue-fontawesome',
+		],
 	},
 
 	modules: [
@@ -119,17 +137,15 @@ const nuxtConfig = defineNuxtConfig({
 		'@pinia/nuxt',
 		'pinia-plugin-persistedstate/nuxt',
 		'@vite-pwa/nuxt',
-		'@nuxt/eslint'
+		'@nuxt/eslint',
 	],
 
-	css: [
-		'assets/main.scss'
-	],
+	css: ['assets/main.scss'],
 
 	app: {
 		head: {
 			htmlAttrs: {
-				class: ['has-navbar-fixed-top']
+				class: ['has-navbar-fixed-top'],
 			},
 			meta: [
 				{ charset: 'utf-8' },
@@ -142,13 +158,16 @@ const nuxtConfig = defineNuxtConfig({
 				{ hid: 'og:title', property: 'og:title', content: conf.KaraExplorer.Host },
 				{ hid: 'og:description', property: 'og:description', content: conf.KaraExplorer.Tagline },
 				{ hid: 'og:type', property: 'og:type', content: 'website' },
-				{ hid: 'og:image', property: 'og:image', content: 'https://gitlab.com/karaokemugen/main/-/raw/master/Resources/banniere/banner-website-2021b.png' },
-				{ hid: 'author', name: 'author', content: 'Karaoke Mugen contributors' }
+				{
+					hid: 'og:image',
+					property: 'og:image',
+					content:
+						'https://gitlab.com/karaokemugen/main/-/raw/master/Resources/banniere/banner-website-2021b.png',
+				},
+				{ hid: 'author', name: 'author', content: 'Karaoke Mugen contributors' },
 			],
-			link: [
-				{ rel: 'author', href: '/humans.txt' }
-			]
-		}
+			link: [{ rel: 'author', href: '/humans.txt' }],
+		},
 	},
 
 	i18n: {
@@ -158,56 +177,56 @@ const nuxtConfig = defineNuxtConfig({
 				code: 'en',
 				name: 'English',
 				iso: 'en',
-				file: 'en.json'
+				file: 'en.json',
 			},
 			{
 				code: 'fr',
 				name: 'Français',
 				iso: 'fr',
-				file: 'fr.json'
+				file: 'fr.json',
 			},
 			{
 				code: 'id',
 				name: 'bahasa Indonesia',
 				iso: 'id',
-				file: 'id.json'
+				file: 'id.json',
 			},
 			{
 				code: 'es',
 				name: 'Español',
 				iso: 'es',
-				file: 'es.json'
+				file: 'es.json',
 			},
 			{
 				code: 'pt',
 				name: 'Português',
 				iso: 'pt',
-				file: 'pt.json'
+				file: 'pt.json',
 			},
 			{
 				code: 'it',
 				name: 'Italiano',
 				iso: 'it',
-				file: 'it.json'
+				file: 'it.json',
 			},
 			{
 				code: 'de',
 				name: 'Deutsch',
 				iso: 'de',
-				file: 'de.json'
+				file: 'de.json',
 			},
 			{
 				code: 'pl',
 				name: 'Polski',
 				iso: 'pl',
-				file: 'pl.json'
+				file: 'pl.json',
 			},
 			{
 				code: 'ta',
 				name: 'தமிழ்',
 				iso: 'ta',
-				file: 'ta.json'
-			}
+				file: 'ta.json',
+			},
 		],
 		restructureDir: false,
 		baseUrl: apiUrl,
@@ -216,18 +235,18 @@ const nuxtConfig = defineNuxtConfig({
 		strategy: 'no_prefix',
 		detectBrowserLanguage: {
 			useCookie: true,
-			cookieKey: 'i18n_redirected'
+			cookieKey: 'i18n_redirected',
 		},
-		langDir: 'lang/'
+		langDir: 'lang/',
 	},
 
 	typescript: {
-		shim: false
+		shim: false,
 	},
 
 	telemetry: false,
 
-	modulesDir: ['../node_modules/']
+	modulesDir: ['../node_modules/'],
 });
 
 export default nuxtConfig;
