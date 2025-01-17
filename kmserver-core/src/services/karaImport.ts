@@ -54,7 +54,7 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		logger.debug(`Kara during HeavyLifting: ${JSON.stringify(kara)}`, { service });
 		const { sanitizedFilename } = await defineSongname(kara);
 		kara.data.songname = sanitizedFilename;
-		logger.debug(`fileName: ${sanitizedFilename}`, { service });
+		logger.debug(`songName: ${sanitizedFilename}`, { service });
 		// Move files to their own directory
 		const filenames = determineMediaAndLyricsFilenames(kara, sanitizedFilename);
 		logger.debug(`mediafile: ${filenames.mediafile}`, { service });
@@ -86,7 +86,7 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		}
 		await smartMove(mediaPath, mediaDest, { overwrite: true });
 		kara.medias[0].filename = filenames.mediafile;
-		
+
 		// Sort stuff inside kara JSON.
 
 		kara.data = sortJSON(kara.data);
