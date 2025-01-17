@@ -68,7 +68,7 @@ Gitlab:
         # Karaoke data
 
 
-        **File** : $file
+        **Songname** : $songname
 
 
         **Author(s)** : $author
@@ -120,7 +120,7 @@ Gitlab:
         # Karaoke data
 
 
-        **File** : $file
+        **Songname** : $songname
 
 
         **New subtitle?**: $newSub

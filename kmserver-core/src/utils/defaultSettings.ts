@@ -88,7 +88,7 @@ A new karaoke has been sent to the inbox.
 # Karaoke data
 
 
-**File** : $file
+**Songname** : $songname
 
 
 **Author(s)** : $author
@@ -178,7 +178,7 @@ Someone suggested a karaoke edit. You will find all the new files in the inbox.
 # Karaoke data
 
 
-**File** : $file
+**Songname** : $songname
 
 
 **New subtitle?**: $newSub
