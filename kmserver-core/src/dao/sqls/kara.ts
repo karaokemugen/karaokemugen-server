@@ -5,6 +5,8 @@ export const selectAllMedias = (collectionClauses: string[]) => `
 	k.mediasize,
 	k.pk_kid AS kid,
 	k.titles AS titles,
+	k.repository AS repository,
+	k.songname AS songname,
 	k.titles_default_language AS titles_default_language
 	FROM kara k
 	LEFT JOIN all_karas ak ON k.pk_kid = ak.pk_kid
