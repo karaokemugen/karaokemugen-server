@@ -40,6 +40,7 @@ export const getAllKaras = (
 	ak.titles_default_language,
 	ak.mediasize,
 	ksub.subchecksum,
+	ak.songname,
 
 	${forPlayer ? 'dummy' : `
 	ak.titles_aliases,
@@ -99,6 +100,7 @@ ${onlyCount && optimizeCount ? `
 	ak.kitsu_ids AS kitsu_ids,
 	ak.from_display_type AS from_display_type,
 	ksub.subchecksum AS subchecksum,
+	ak.songname as songname,
 	array_remove(array_agg(DISTINCT plc.fk_plaid), null) AS playlists,
 	array_remove(array_agg(DISTINCT krc.fk_kid_parent), null) AS parents,
 	array_remove(array_agg(DISTINCT krp.fk_kid_child), null) AS children,
