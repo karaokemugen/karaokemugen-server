@@ -1,5 +1,4 @@
 import { cloneDeep, isEqual } from 'lodash';
-import {basename} from 'path';
 
 import { selectAllKaras } from '../dao/kara.js';
 import { getSongSeriesSingers } from '../lib/services/kara.js';
@@ -40,7 +39,7 @@ export async function createInboxIssue(kid: string, edit?: EditElement) {
 		}
 	}
 	const title = (issueTemplate.Title || `Inbox ${edit ? 'edit' : 'creation'}: $kara`)
-		.replace('$kara', kara.songname));
+		.replace('$kara', kara.songname);
 	let desc = (issueTemplate.Description || '')
 		.replace('$file', kara.songname)
 		.replace('$newSub', edit ? edit.modifiedLyrics.toString() : 'N/A')
