@@ -40,9 +40,9 @@ export async function createInboxIssue(kid: string, edit?: EditElement) {
 		}
 	}
 	const title = (issueTemplate.Title || `Inbox ${edit ? 'edit' : 'creation'}: $kara`)
-		.replace('$kara', basename(kara.karafile, '.kara.json'));
+		.replace('$kara', kara.songname));
 	let desc = (issueTemplate.Description || '')
-		.replace('$file', kara.karafile)
+		.replace('$file', kara.songname)
 		.replace('$newSub', edit ? edit.modifiedLyrics.toString() : 'N/A')
 		.replace('$newVideo', edit ? edit.modifiedMedia.toString() : 'N/A')
 		.replace('$comment', kara.comment || '')
