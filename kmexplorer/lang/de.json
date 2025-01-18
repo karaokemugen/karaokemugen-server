@@ -123,7 +123,7 @@
 			"creators_tooltip": "Eintrag, wer die Serie erstellt hat. Dies kann ein Animations-, Film- oder Entwickerstudio sein.",
 			"send_contact_infos": "Teile meine Kontaktinformation den Datenbank-Managern mit",
 			"from_display_type": "Von der Tag-Typ-Anzeige",
-			"from_display_type_tooltip": "Wähle den Tag-Typ aus, der beim Anzeigen des Songs verwendet werden soll"
+			"from_display_type_tooltip": "Wähle den Tag-Typ aus, der beim Anzeigen des Liedes verwendet werden soll. Wird angezeigt als „[Titel] von [dieser Tag-Typ]“."
 		},
 		"tagtypes": {
 			"platforms": "Plattform | Plattformen",
