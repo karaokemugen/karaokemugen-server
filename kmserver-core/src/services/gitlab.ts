@@ -26,7 +26,7 @@ export async function createInboxIssue(kid: string, edit?: EditElement) {
 		const parents = await getAllKaras({
 			q: `k:${kara.parents.join(',')}`
 		});
-		newParents = parents.content.map(k => k.karafile);
+		newParents = parents.content.map(k => k.songname);
 	}
 	const issueTemplate = edit ? conf.Gitlab.IssueTemplate.Edit : conf.Gitlab.IssueTemplate.Import;
 	// Trim tags if there's more than 5 elements.
@@ -91,7 +91,7 @@ export async function createInboxIssue(kid: string, edit?: EditElement) {
 					const karas = await getAllKaras({
 						q: `k:${edit.oldKara.parents.join(',')}`
 					});
-					oldParents = karas.content.map(k => k.karafile);
+					oldParents = karas.content.map(k => k.songname);
 				}
 
 				changes.push(`PARENTS updated : ${oldParents} => ${newParents}`);
