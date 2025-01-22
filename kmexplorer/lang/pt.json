@@ -533,10 +533,6 @@
 					"label": "Email",
 					"placeholder": "exemplo{'@'}shelter.moe"
 				},
-				"twitter": {
-					"label": "Twitter",
-					"placeholder": "KaraokeMugen"
-				},
 				"mastodon": {
 					"label": "Mastodon",
 					"placeholder": "karaokemugen{'@'}shelter.moe"

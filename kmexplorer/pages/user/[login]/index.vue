@@ -70,18 +70,6 @@
 							v-if="metadata"
 							class="metadata"
 						>
-							<div v-if="user.social_networks && user.social_networks.twitter">
-								<font-awesome-icon
-									:icon="['fab', 'twitter']"
-									:fixed-width="true"
-								/>
-								<nuxt-link
-									:href="`https://twitter.com/${user.social_networks.twitter}/`"
-									target="_blank"
-								>
-									{{ user.social_networks.twitter }}
-								</nuxt-link>
-							</div>
 							<div v-if="user.social_networks && user.social_networks.mastodon">
 								<font-awesome-icon
 									:icon="['fab', 'mastodon']"
@@ -245,7 +233,6 @@
 	const metadata = computed(() => !!(
 		user.value?.social_networks?.discord ||
 		user.value?.social_networks?.instagram ||
-		user.value?.social_networks?.twitter ||
 		user.value?.social_networks?.mastodon ||
 		user.value?.social_networks?.bluesky ||
 		user.value?.social_networks?.twitch ||

@@ -248,10 +248,6 @@
 				"location": {
 					"label": "Lokalizacja"
 				},
-				"twitter": {
-					"label": "Twitter",
-					"placeholder": "KaraokeMugen"
-				},
 				"bluesky": {
 					"label": "Bluesky",
 					"placeholder": "karaokemugen.bsky.social"

@@ -372,10 +372,6 @@
 					"label": "முரண்பாடு",
 					"placeholder": "கராக்#1423"
 				},
-				"twitter": {
-					"label": "ட்விட்டர்",
-					"placeholder": "KaraokeMugen"
-				},
 				"bluesky": {
 					"placeholder": "karaokemugen.bsky.social",
 					"label": "ப்ளூச்கி"

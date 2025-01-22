@@ -1,22 +1,16 @@
 /* TEAM */
 Guillaume Lebigot - Créateur KM, backend
-Twitter: @AxelTerizaki
 
 Florent Berthelot - Frontend, KMImport
-Twitter: @Aeden_
 
 Leon Lozahic - Frontend
-Twitter: @leonekmi
 
-/* THANKS */
-Thanks to all karaoke bases contributors! Without the base, this whole project wouldn't make much sense.
-<3 Kmeuh, Rinchama, meuhlake, Dysp, Angor de Redjak, Nock, and so on!
 See <https://gitlab.com/karaokemugen/code/karaokemugen-server/-/graphs/master> for more.
 
 Thanks to our users helping us find bugs and improve our software! You're all awesome <3.
 
 /* SITE */
-(humans.txt) Last update: 2020/08/25
+(humans.txt) Last update: 2025/01/22
 Standards: HTML5, CSS3, PWA, EcmaScript
 Components: Nuxt.js (Vue.js, Pinia, Vue-router, Vue-SSR, Vue-meta), Nuxt PWA, Bulma
 Software: JetBrains WebStorm, Microsoft Visual Studio Code, Yarn

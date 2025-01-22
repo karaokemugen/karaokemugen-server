@@ -85,7 +85,7 @@ import {
 	faRepeat
 } from '@fortawesome/free-solid-svg-icons';
 import {
-	faTwitter,
+	faBluesky,
 	faMastodon,
 	faInstagram,
 	faDiscord,
@@ -155,7 +155,7 @@ library.add(
 	faKey,
 	faLink,
 	faUsers,
-	faTwitter,
+	faBluesky,
 	faMastodon,
 	faInstagram,	
 	faDiscord,

@@ -440,10 +440,6 @@
 					"placeholder": "karaokemugen",
 					"label": "Kitsu"
 				},
-				"twitter": {
-					"label": "Twitter",
-					"placeholder": "KaraokeMugen"
-				},
 				"password_confirmation": {
 					"label": "Conferma password",
 					"placeholder": "PreferiscoDavveroIdolM{'@'}ster"

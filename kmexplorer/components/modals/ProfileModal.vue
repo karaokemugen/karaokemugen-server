@@ -202,32 +202,6 @@
 					>
 						<div class="field-label is-normal">
 							<label
-								for="twitter"
-								class="label"
-							>{{ $t('modal.profile.fields.twitter.label') }}</label>
-						</div>
-						<div class="field-body">
-							<div class="field">
-								<div class="control">
-									<input
-										id="twitter"
-										v-model="editedUser.social_networks.twitter"
-										type="text"
-										name="twitter"
-										class="input"
-										pattern="[A-Za-z0-9_]{1,15}"
-										:placeholder="$t('modal.profile.fields.twitter.placeholder')"
-									>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div
-						v-if="editedUser.social_networks"
-						class="field is-horizontal"
-					>
-						<div class="field-label is-normal">
-							<label
 								for="mastodon"
 								class="label"
 							>{{ $t('modal.profile.fields.mastodon.label') }}</label>
@@ -779,7 +753,6 @@
 		social_networks: {
 			twitch: '',
 			discord: '',
-			twitter: '',
 			mastodon: '',
 			instagram: '',
 			gitlab: '',
@@ -816,7 +789,6 @@
 				editedUser.value.social_networks = {
 					twitch: '',
 					discord: '',
-					twitter: '',
 					mastodon: '',
 					instagram: '',
 					gitlab: '',

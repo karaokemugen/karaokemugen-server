@@ -416,10 +416,6 @@
 					"label": "Discord",
 					"placeholder": "Karak#1423"
 				},
-				"twitter": {
-					"label": "Twitter",
-					"placeholder": "KaraokeMugen"
-				},
 				"bluesky": {
 					"placeholder": "karaokemugen.bsky.social",
 					"label": "Bluesky"

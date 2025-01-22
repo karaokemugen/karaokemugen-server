@@ -323,10 +323,6 @@
 					"label": "Passwort bestätigen",
 					"placeholder": "IchBevorzugeIdolM{'@'}sterWirklich"
 				},
-				"twitter": {
-					"placeholder": "KaraokeMugen",
-					"label": "Twitter"
-				},
 				"bluesky": {
 					"placeholder": "karaokemugen.bsky.social",
 					"label": "Bluesky"

@@ -311,10 +311,6 @@
 		},
 		"profile": {
 			"fields": {
-				"twitter": {
-					"placeholder": "KaraokeMugen",
-					"label": "Twitter"
-				},
 				"mastodon": {
 					"label": "Mastodon",
 					"placeholder": "karaokemugen{'@'}shelter.moe"
