@@ -67,8 +67,9 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		const mediaDest = resolve(resolvedPathRepos('Medias', kara.data.repository)[0], filenames.mediafile);
 		logger.debug(`mediaDest: ${mediaDest}`, { service });
 		try {
-			const extractFile = await extractVideoSubtitles(mediaPath, kara.data.kid);
+			const { extractFile, mediasize } = await extractVideoSubtitles(mediaPath, kara.data.kid);
 			if (extractFile) {
+				kara.medias[0].filesize = mediasize;
 				kara.medias[0].lyrics[0] = {
 					filename: basename(extractFile),
 					version: 'Default',
