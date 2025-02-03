@@ -127,7 +127,7 @@ export default ts.config(
 			parserOptions: {
 				sourceType: "module",
 				ecmaVersion: 2020,
-				project: "./kmserver-core/tsconfig.json"
+				project: "./tsconfig.json"
 			}
 		},
 	},
