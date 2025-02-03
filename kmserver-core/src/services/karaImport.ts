@@ -2,7 +2,6 @@
  * .kara files generation
  */
 
-import { promises as fs } from 'fs';
 import { copy } from 'fs-extra';
 import { basename, resolve } from 'path';
 import { v4 as UUIDv4 } from 'uuid';
@@ -11,9 +10,10 @@ import logger from 'winston';
 import { insertKara, updateKaraParents } from '../dao/kara.js';
 import { refreshAllKaraTag } from '../dao/tag.js';
 import { applyKaraHooks, refreshHooks } from '../lib/dao/hook.js';
-import { extractVideoSubtitles, getDataFromKaraFile, trimKaraData, verifyKaraData } from '../lib/dao/karafile.js';
+import { extractVideoSubtitles, trimKaraData, verifyKaraData, writeKara } from '../lib/dao/karafile.js';
 import { defineSongname, determineMediaAndLyricsFilenames, processSubfile } from '../lib/services/karaCreation.js';
 import { refreshKarasAfterDBChange, updateTags } from '../lib/services/karaManagement.js';
+import { consolidateTagsInRepo } from '../lib/services/tag.js';
 import { EditedKara, KaraFileV4 } from '../lib/types/kara.js';
 import { getConfig, resolvedPath, resolvedPathRepos } from '../lib/utils/config.js';
 import { ErrorKM } from '../lib/utils/error.js';
@@ -52,12 +52,12 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		await refreshHooks();
 		await applyKaraHooks(kara, true);
 		logger.debug(`Kara during HeavyLifting: ${JSON.stringify(kara)}`, { service });
-		let { sanitizedFilename, songname } = await defineSongname(kara);
-		kara.data.songname = songname;
+		const songname = await defineSongname(kara);
+		kara.data.songname = songname.songname;
 		if (edit) {
-			sanitizedFilename = edit.kid
+			songname.sanitizedFilename = edit.kid
 		}
-		logger.debug(`songName: ${sanitizedFilename}`, { service });
+		logger.debug(`songName: ${songname.sanitizedFilename}`, { service });
 		// Move files to their own directory
 		const filenames = determineMediaAndLyricsFilenames(kara);
 		logger.debug(`mediafile: ${filenames.mediafile}`, { service });
@@ -97,18 +97,18 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		kara.medias[0] = sortJSON(kara.medias[0]);
 		if (kara.medias[0].lyrics[0]) kara.medias[0].lyrics[0] = sortJSON(kara.medias[0].lyrics[0]);
 
+		const karaFile = `${songname.sanitizedFilename}.kara.json`;
 		const karaDest = resolve(
 			resolvedPathRepos('Karaokes', kara.data.repository)[0],
-			`${sanitizedFilename}.kara.json`,
+			karaFile,
 		);
-		await fs.writeFile(karaDest, JSON.stringify(kara, null, 2), 'utf-8');
-		const karaData = await getDataFromKaraFile(karaDest, kara, { media: true, lyrics: true });
-		karaData.meta.karaFile = basename(karaData.meta.karaFile);
-		await insertKara(karaData);
-		await Promise.all([updateKaraParents(karaData.data), updateTags(karaData.data)]);
-		await refreshKarasAfterDBChange('ADD', [karaData.data]);
+		await writeKara(karaDest, kara);
+		kara.meta.karaFile = karaFile;
+		await insertKara(kara);
+		await Promise.all([updateKaraParents(kara.data), updateTags(kara.data)]);
+		await refreshKarasAfterDBChange('ADD', [kara.data]);
 		await refreshAllKaraTag();
-		logger.debug('Kara', { service, obj: karaData });
+		logger.debug('Kara', { service, obj: kara });
 		let issueURL: string;
 		if (conf.Gitlab.Enabled) {
 			if (edit) {
@@ -118,13 +118,14 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 				});
 			}
 			try {
-				issueURL = await createInboxIssue(karaData.data.kid, edit);
+				issueURL = await createInboxIssue(kara.data.kid, edit);
 			} catch (err) {
 				logger.error(`Unable to post to Gitlab a new inbox issue: ${err}`, { service, obj: err });
 				// Non fatal.
 			}
 		}
 		addKaraInInbox(kara, contact, issueURL, edit ? edit.kid : undefined);
+		consolidateTagsInRepo(kara);
 		return issueURL;
 	} catch (err) {
 		logger.error('Error importing kara', { service, obj: JSON.stringify(err) });
