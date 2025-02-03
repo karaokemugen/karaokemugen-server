@@ -170,7 +170,7 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 		db().query(yesql(query(false))(q.params)),
 		db().query(yesql(query(true))(q.params))
 	]);
-	if (res.rows[0] != null) {
+	if (res.rows[0] !== null) {
 		res.rows[0].count = resCount.rows[0].count;
 	}
 	return res.rows.map(row => makeKaraPretty(row, params.forPlayer));
@@ -182,16 +182,16 @@ export function makeKaraPretty(row: any, forPlayer = false): DBKara | DBPLC {
 	for (const tagType of Object.keys(tagTypes)) {
 		rowWithoutTags[tagType] = [];
 	}
-	if (tags == null) {
+	if (tags === null) {
 		if (forPlayer) {
 			return row;
 		}
 		return rowWithoutTags;
 	}
 	for (const tag of tags) {
-		if (tag?.type_in_kara == null) continue;
+		if (tag?.type_in_kara === null) continue;
 		const type = getTagTypeName(tag.type_in_kara);
-		if (type == null) continue;
+		if (type === null) continue;
 		rowWithoutTags[type].push(tag);
 	}
 	return rowWithoutTags;
@@ -246,7 +246,7 @@ export async function refreshKaraStats() {
 		]);
 		// Aggregate everything.
 		logger.debug('Aggregating all stats in memory', { service });
-		const statsMap: Map<string, { played: number, playedRecently?: number, requested?: Number, requestedRecently?: number, favorited?: number}> = new Map();
+		const statsMap: Map<string, { played: number, playedRecently?: number, requested?: number, requestedRecently?: number, favorited?: number}> = new Map();
 
 		for (const p of played.rows) {
 			statsMap.set(p.fk_kid, { played: p.played });
