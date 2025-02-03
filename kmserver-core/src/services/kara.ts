@@ -10,6 +10,7 @@ import { copyFromData } from '../lib/dao/database.js';
 import { getLyrics } from '../lib/dao/karafile.js';
 import { generateDatabase } from '../lib/services/generation.js';
 import { formatKaraList } from '../lib/services/kara.js';
+import { readAllRepoManifests } from '../lib/services/repo.js';
 import { DBKara } from '../lib/types/database/kara.js';
 import { KaraList, KaraParams } from '../lib/types/kara.js';
 import { JWTTokenWithRoles } from '../lib/types/user.js';
@@ -25,9 +26,8 @@ import { generateHardsubs } from '../utils/hardsubs.js';
 import sentry from '../utils/sentry.js';
 import { getState } from '../utils/state.js';
 import { updateGit } from './git.js';
-import { clearOldInboxEntries, removeProcessedInboxes } from './inbox.js';
+import { clearOldInboxEntries, clearUnusedStagingTags, removeProcessedInboxes } from './inbox.js';
 import { findUserByName } from './user.js';
-import { readAllRepoManifests } from '../lib/services/repo.js';
 
 const service = 'Kara';
 
@@ -110,10 +110,10 @@ export async function generate() {
 		createBaseDumps();
 		const promises = [];
 		if (conf.KaraExplorer.Import) promises.push(clearOldInboxEntries());
-		// clearUnusedStagingTags() needs to be rewritten to make sure it doesn't delete tags that are still in use.
 		if (conf.System.Repositories[0].OnUpdateTrigger) promises.push(updateTrigger());
 		promises.push(refreshKaraStats());
 		await Promise.all(promises);
+		clearUnusedStagingTags();
 	} catch (err) {
 		logger.error('Generation failed', {service, obj: err});
 		sentry.error(err, 'fatal');

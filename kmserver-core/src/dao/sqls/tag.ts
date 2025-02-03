@@ -93,13 +93,6 @@ ON CONFLICT (pk_tid) DO UPDATE SET
 	external_database_ids = $13
 `;
 
-export const clearStagingTags = `
-	DELETE FROM tag
-	WHERE pk_tid =
-	      ANY (SELECT pk_tid FROM all_tags WHERE repository = 'Staging' AND karacount IS NULL)
-	RETURNING tag.tagfile;
-`;
-
 export const refreshAllKaraTag = ` 
 REFRESH MATERIALIZED VIEW all_kara_tag;
 `;

@@ -4,8 +4,8 @@ import { v4 as uuidV4 } from 'uuid';
 
 import {clearInbox, deleteInbox, insertInbox, selectInbox, updateInboxDownloaded} from '../dao/inbox.js';
 import { deleteKara } from '../dao/kara.js';
-import {clearStagingTags, refreshAllKaraTag} from '../dao/tag.js';
-import { formatKaraV4 } from '../lib/dao/karafile.js';
+import { refreshAllKaraTag } from '../dao/tag.js';
+import { formatKaraV4, getDataFromKaraFile } from '../lib/dao/karafile.js';
 import { getDataFromTagFile } from '../lib/dao/tagfile.js';
 import { readAllKaras } from '../lib/services/generation.js';
 import { refreshKarasAfterDBChange } from '../lib/services/karaManagement.js';
@@ -14,6 +14,7 @@ import { Inbox } from '../lib/types/inbox.js';
 import { KaraFileV4 } from '../lib/types/kara.js';
 import { TagFile } from '../lib/types/tag.js';
 import { getConfig, resolvedPathRepos } from '../lib/utils/config.js';
+import { tagTypes } from '../lib/utils/constants.js';
 import { ErrorKM } from '../lib/utils/error.js';
 import { fileExists, listAllFiles } from '../lib/utils/files.js';
 import { closeIssue } from '../lib/utils/gitlab.js';
@@ -21,7 +22,7 @@ import logger from '../lib/utils/logger.js';
 import { findFileByUUID } from '../utils/files.js';
 import sentry from '../utils/sentry.js';
 import { getKara } from './kara.js';
-import { getTag, getTags } from './tag.js';
+import { getTag } from './tag.js';
 
 const service = 'Inbox';
 
@@ -173,31 +174,34 @@ export async function removeKaraFromInbox(inid: string) {
 }
 
 export async function clearUnusedStagingTags() {
-	logger.debug('Clearing old inbox tags', {service});
-	const tagFilesToDelete = await clearStagingTags();
-	const tags = await getTags({ includeStaging: true });
-	// List tags in staging
-	const tagDir = resolvedPathRepos('Tags', 'Staging')[0];
-	const tagFiles = await fs.readdir(tagDir);
-	for (const tagFile of tagFiles) {
-		const tag = await getDataFromTagFile(resolve(tagDir, tagFile));
-		const tagFromDB = tags.content.find(t => t.tid === tag.tid);
-		if (tagFromDB) {
-			// If tag is found but its repository isn't staging, it means it's been replaced by a tagfile from kara.moe and can be deleted.
-			if (tagFromDB.repository !== 'Staging') {
-				tagFilesToDelete.push(tagFile);
+	try {
+		logger.debug('Clearing old inbox tags', {service});
+		// List all tags used by karas in staging
+		const karaDir = resolvedPathRepos('Karaokes', 'Staging')[0];
+		const karaFiles = await fs.readdir(karaDir);
+		const usedTags = new Set();
+		for (const karaFile of karaFiles) {
+			const kara = await getDataFromKaraFile(resolve(karaDir, karaFile), { media: true, lyrics: true });
+			for (const tagType of Object.keys(tagTypes)) {
+				if (kara.data.tags[tagType]) {
+					kara.data.tags[tagType].forEach(tid => usedTags.add(tid));
+				}
 			}
-		} else {
-			tagFilesToDelete.push(tagFile);
 		}
-	}
-	for (const tagFile of tagFilesToDelete) {
-		logger.info(`Removing unused tag from Staging : ${tagFile}`, { service });
-		try {
-			await fs.unlink(resolve(tagDir, tagFile));
-		} catch (err) {
-			logger.warn(`Unable to remove ${tagFile}, skipping.`, { service });
+		
+		// List tags in staging
+		const tagDir = resolvedPathRepos('Tags', 'Staging')[0];
+		const tagFiles = await fs.readdir(tagDir);
+		for (const tagFile of tagFiles) {
+			const tag = await getDataFromTagFile(resolve(tagDir, tagFile));
+			if (!usedTags.has(tag.tid)) {
+				logger.info(`Removing unused tag from Staging : ${tagFile}`, { service });
+				await fs.unlink(resolve(tagDir, tagFile));
+			}
 		}
+	} catch (err) {
+		// Not fatal
+		logger.error(`Failed to clean tags : ${err}`, { service, obj: err });
 	}
 }
 

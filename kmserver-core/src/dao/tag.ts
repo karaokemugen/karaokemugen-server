@@ -108,14 +108,6 @@ export async function insertTag(tag: Tag) {
 	await databaseReady();
 }
 
-export async function clearStagingTags(): Promise<string[]> {
-	const res = await db().query(sql.clearStagingTags);
-	refreshTags();
-	refreshAllKaraTag();
-	await databaseReady();
-	return res.rows.map(t => t.tagfile);
-}
-
 export async function refreshAllKaraTag() {
 	newDBTask({ func: refreshAllKaraTagTask, name: 'refreshAllKaraTags' });
 	await databaseReady();
