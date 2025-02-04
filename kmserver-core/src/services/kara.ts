@@ -190,7 +190,7 @@ export async function computeSubchecksums() {
 		return checksumASS(lyrics);
 	};
 	const lyricsMap: Map<string, DBKara> = new Map();
-	for (const kara of karas.content.filter(k => k.lyrics_infos[0])) {
+	for (const kara of karas.content.filter(k => k.lyrics_infos[0]?.filename)) {
 		lyricsMap.set(kara.kid, kara);
 	}
 	const checksums = await parallel([...lyricsMap], mapper, {
