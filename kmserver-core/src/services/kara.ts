@@ -113,7 +113,7 @@ export async function generate() {
 		if (conf.System.Repositories[0].OnUpdateTrigger) promises.push(updateTrigger());
 		promises.push(refreshKaraStats());
 		await Promise.all(promises);
-		clearUnusedStagingTags();
+		if (conf.KaraExplorer.Import) clearUnusedStagingTags();
 	} catch (err) {
 		logger.error('Generation failed', {service, obj: err});
 		sentry.error(err, 'fatal');
