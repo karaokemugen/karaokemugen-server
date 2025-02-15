@@ -1,29 +1,27 @@
 <template>
-	<div class="tile is-ancestor">
-		<div class="tile is-parent">
-			<div class="tile is-child">
-				<div class="box">
-					<h4 class="title is-4 with-img">
-						<picture>
-							<source
-								type="image/webp"
-								src="~/assets/nanami-surpris.webp"
-							>
-							<source
-								type="image/png"
-								src="~/assets/nanami-surpris.png"
-							>
-							<img
-								src="~/assets/nanami-surpris.png"
-								alt="Surprised Nanami"
-							>
-						</picture>
-						{{ error.message || $t('error.generic') }}&nbsp;
-						<nuxt-link to="/">
-							{{ $t('error.home') }}
-						</nuxt-link>
-					</h4>
-				</div>
+	<div class="grid">
+		<div class="cell">
+			<div class="box">
+				<h4 class="title is-4 with-img">
+					<picture>
+						<source
+							type="image/webp"
+							src="~/assets/nanami-surpris.webp"
+						>
+						<source
+							type="image/png"
+							src="~/assets/nanami-surpris.png"
+						>
+						<img
+							src="~/assets/nanami-surpris.png"
+							alt="Surprised Nanami"
+						>
+					</picture>
+					{{ error.message || $t('error.generic') }}&nbsp;
+					<nuxt-link to="/">
+						{{ $t('error.home') }}
+					</nuxt-link>
+				</h4>
 			</div>
 		</div>
 	</div>
@@ -36,7 +34,7 @@
 </script>
 
 <style scoped lang="scss">
-	.tile.is-child {
+	.box {
 		padding: 0 1em;
 	}
 	.title.is-4.with-img {

@@ -1,67 +1,55 @@
 <template>
-	<div>
-		<div
-			v-for="n in Math.ceil(karaokes.infos.to / 3)"
-			:key="n"
-			class="tile is-parent is-12"
-		>
-			<div
-				v-for="n2 in 3"
-				:key="`${n}_${n2}`"
-				class="tile is-child is-4"
-			>
-				<kara-card
-					v-if="karaokes.content[(n-1)*3+n2-1]"
-					:karaoke="karaokes.content[(n-1)*3+n2-1]"
-					:playlists="playlists"
-					:karaokes-i18n="karaokes.i18n"
-					@update-playlist="() => emit('update-playlist')"
-				/>
-			</div>
-		</div>
-		<loading-nanami
-			v-if="loading"
-			class="tile is-parent is-12"
+	<div
+		v-for="n in karaokes.infos.to"
+		:key="n"
+		class="cell is-4"
+	>
+		<kara-card
+			v-if="karaokes.content[n]"
+			:karaoke="karaokes.content[n]"
+			:playlists="playlists"
+			:karaokes-i18n="karaokes.i18n"
+			@update-playlist="() => emit('update-playlist')"
 		/>
-		<suggest-line
-			v-if="fullyLoaded && !loading && !favorites && withSuggest"
-			class="tile is-parent is-12"
-			:empty="karaokes.content.length === 0"
-		/>
-		<div
-			v-else-if="fullyLoaded && !loading && myFavorites"
-			class="tile is-parent"
-		>
-			<div class="tile is-child">
-				<div class="box">
-					<h4 class="title is-4 with-img">
-						<img
-							src="~/assets/nanami-surpris.png"
-							alt="Nanamin surprised"
-						>
-						<span>{{ $t('layout.end_my_favorites') }}&nbsp;</span>
-						<nuxt-link to="/search/">
-							{{ $t('layout.explore') }}
-						</nuxt-link>
-					</h4>
-				</div>
-			</div>
+	</div>
+	<loading-nanami
+		v-if="loading"
+		class="cell is-12"
+	/>
+	<suggest-line
+		v-if="fullyLoaded && !loading && !favorites && withSuggest"
+		class="cell is-12"
+		:empty="karaokes.content.length === 0"
+	/>
+	<div
+		v-else-if="fullyLoaded && !loading && myFavorites"
+		class="cell"
+	>
+		<div class="box">
+			<h4 class="title is-4 with-img">
+				<img
+					src="~/assets/nanami-surpris.png"
+					alt="Nanamin surprised"
+				>
+				<span>{{ $t('layout.end_my_favorites') }}&nbsp;</span>
+				<nuxt-link to="/search/">
+					{{ $t('layout.explore') }}
+				</nuxt-link>
+			</h4>
 		</div>
-		<div
-			v-else-if="fullyLoaded && !loading && favorites"
-			class="tile is-parent"
-		>
-			<div class="tile is-child">
-				<div class="box">
-					<h4 class="title is-4 with-img">
-						<img
-							src="~/assets/nanami-surpris.png"
-							alt="Nanamin surprised"
-						>
-						<span>{{ $t('layout.end_favorites') }}&nbsp;</span>
-					</h4>
-				</div>
-			</div>
+	</div>
+	<div
+		v-else-if="fullyLoaded && !loading && favorites"
+		class="cell"
+	>
+		<div class="box">
+			<h4 class="title is-4 with-img">
+				<img
+					src="~/assets/nanami-surpris.png"
+					alt="Nanamin surprised"
+				>
+				<span>{{ $t('layout.end_favorites') }}&nbsp;</span>
+			</h4>
 		</div>
 	</div>
 </template>
@@ -92,17 +80,17 @@
 </script>
 
 <style lang="scss" scoped>
-	.tile.is-parent.is-12 {
+	.cell.is-12 {
 		padding: 0.25rem;
 	}
-	.tile.is-child.is-4 {
+	.box.is-4 {
 		padding: 0 0.25rem;
 	}
 	@media (max-width: 769px) {
-		.tile.is-child.is-4 {
+		.box.is-4 {
 			padding: 0.25em 0.75em;
 		}
-		.tile.is-parent.is-12 {
+		.cell.is-12 {
 			padding: 0;
 		}
 	}

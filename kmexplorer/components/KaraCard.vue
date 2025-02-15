@@ -1,117 +1,115 @@
 <template>
-	<div class="box">
-		<div
-			class="header"
-			@mouseenter="switchImage"
-			@mouseleave="switchImage"
+	<div
+		class="header"
+		@mouseenter="switchImage"
+		@mouseleave="switchImage"
+	>
+		<nuxt-link
+			:to="`/kara/${getSlug}/${karaoke.kid}`"
+			class="images"
+			:class="{blur: karaoke.warnings.length > 0}"
 		>
+			<img
+				:src="images[0]"
+				alt=""
+			>
+			<img
+				v-if="images.length > 1"
+				:src="images[1]"
+				:class="{activate}"
+				alt=""
+			>
+		</nuxt-link>
+	</div>
+	<div class="title-block">
+		<button
+			v-if="favorite && loggedIn"
+			class="button inline is-normal is-yellow"
+			:class="{'is-loading': loading}"
+			:title="$t('kara.favorites.remove')"
+			@click="toggleFavorite"
+		>
+			<font-awesome-icon
+				:icon="['fas', 'eraser']"
+				:fixed-width="true"
+			/>
+		</button>
+		<button
+			v-else-if="loggedIn"
+			class="button inline is-normal is-yellow"
+			:class="{'is-loading': loading}"
+			:title="$t('kara.favorites.add')"
+			@click="toggleFavorite"
+		>
+			<font-awesome-icon
+				:icon="['fas', 'star']"
+				:fixed-width="true"
+			/>
+		</button>
+		<add-to-playlist-button
+			:kid="karaoke.kid"
+			:loading="loading"
+			:playlists="playlists"
+			:kara-card="true"
+			@update-playlist="() => emit('update-playlist')"
+		/>
+		<div>
 			<nuxt-link
 				:to="`/kara/${getSlug}/${karaoke.kid}`"
-				class="images"
-				:class="{blur: karaoke.warnings.length > 0}"
+				class="title is-3 is-spaced"
 			>
-				<img
-					:src="images[0]"
-					alt=""
-				>
-				<img
-					v-if="images.length > 1"
-					:src="images[1]"
-					:class="{activate}"
-					alt=""
-				>
+				{{ title }}
 			</nuxt-link>
-		</div>
-		<div class="title-block">
-			<button
-				v-if="favorite && loggedIn"
-				class="button inline is-normal is-yellow"
-				:class="{'is-loading': loading}"
-				:title="$t('kara.favorites.remove')"
-				@click="toggleFavorite"
-			>
-				<font-awesome-icon
-					:icon="['fas', 'eraser']"
-					:fixed-width="true"
-				/>
-			</button>
-			<button
-				v-else-if="loggedIn"
-				class="button inline is-normal is-yellow"
-				:class="{'is-loading': loading}"
-				:title="$t('kara.favorites.add')"
-				@click="toggleFavorite"
-			>
-				<font-awesome-icon
-					:icon="['fas', 'star']"
-					:fixed-width="true"
-				/>
-			</button>
-			<add-to-playlist-button
-				:kid="karaoke.kid"
-				:loading="loading"
-				:playlists="playlists"
-				:kara-card="true"
-				@update-playlist="() => emit('update-playlist')"
+			<kara-phrase
+				:karaoke="karaoke"
+				:karaokes-i18n="karaokesI18n"
+				tag="h5"
+				class="subtitle is-56"
 			/>
-			<div>
-				<nuxt-link
-					:to="`/kara/${getSlug}/${karaoke.kid}`"
-					class="title is-3 is-spaced"
-				>
-					{{ title }}
-				</nuxt-link>
-				<kara-phrase
-					:karaoke="karaoke"
-					:karaokes-i18n="karaokesI18n"
-					tag="h5"
-					class="subtitle is-56"
-				/>
-			</div>
 		</div>
-		<div class="lebonflex">
-			<div class="tags are-medium">
-				<tag
-					v-for="tag in tags"
-					:key="`${karaoke.kid}-${tag.tag.tid}~${tagTypes[tag.type].type}`"
-					:type="tag.type"
-					:tag="tag.tag"
-					:i18n="karaokesI18n && karaokesI18n[tag.tag.tid]"
-					:staticheight="false"
-					icon
-				/>
-			</div>
-			<i18n-t
-				v-if="karaoke.favorited"
-				keypath="kara.stats.favorited"
-				tag="div"
-				class="box stats"
-			>
-				<template #number>
-					<span class="nb">{{ karaoke.favorited }}</span>
-				</template>
-			</i18n-t>
-			<i18n-t
-				v-if="karaoke.requested"
-				keypath="kara.stats.requested"
-				tag="div"
-				class="box stats blue"
-			>
-				<template #number>
-					<span class="nb">{{ karaoke.requested }}</span>
-				</template>
-			</i18n-t>
-			<i18n-t
-				v-if="karaoke.played"
-				keypath="kara.stats.played"
-				tag="div"
-				class="box stats blue"
-			>
-				<template #number>
-					<span class="nb">{{ karaoke.played }}</span>
-				</template>
-			</i18n-t>
+	</div>
+	<div class="lebonflex">
+		<div class="tags are-medium">
+			<tag
+				v-for="tag in tags"
+				:key="`${karaoke.kid}-${tag.tag.tid}~${tagTypes[tag.type].type}`"
+				:type="tag.type"
+				:tag="tag.tag"
+				:i18n="karaokesI18n && karaokesI18n[tag.tag.tid]"
+				:staticheight="false"
+				icon
+			/>
 		</div>
+		<i18n-t
+			v-if="karaoke.favorited"
+			keypath="kara.stats.favorited"
+			tag="div"
+			class="box stats"
+		>
+			<template #number>
+				<span class="nb">{{ karaoke.favorited }}</span>
+			</template>
+		</i18n-t>
+		<i18n-t
+			v-if="karaoke.requested"
+			keypath="kara.stats.requested"
+			tag="div"
+			class="box stats blue"
+		>
+			<template #number>
+				<span class="nb">{{ karaoke.requested }}</span>
+			</template>
+		</i18n-t>
+		<i18n-t
+			v-if="karaoke.played"
+			keypath="kara.stats.played"
+			tag="div"
+			class="box stats blue"
+		>
+			<template #number>
+				<span class="nb">{{ karaoke.played }}</span>
+			</template>
+		</i18n-t>
 	</div>
 </template>
 

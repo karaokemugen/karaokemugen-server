@@ -26,8 +26,8 @@
 					@select="onKaraSearchChange"
 				/>
 			</label>
-			<div class="tile is-parent">
-				<div class="tile is-vertical player">
+			<div class="cell">
+				<div class="is-vertical player">
 					<live-player
 						v-if="playing"
 						:karaoke="playing"
@@ -61,7 +61,7 @@
 						/>
 					</label>
 				</div>
-				<div class="tile is-vertical table-parent">
+				<div class="is-vertical table-parent">
 					<client-only>
 						<section
 							v-if="playlist.plaid && karaokes.infos.count > countBannerDisplay && !playlistBannerHidden.includes(playlist.plaid)"
@@ -131,7 +131,7 @@
 		</div>
 		<loading-nanami
 			v-if="loading"
-			class="tile is-parent is-12"
+			class="cell is-12"
 		/>
 	</div>
 </template>
@@ -481,7 +481,7 @@
 </style>
 <style scoped lang="scss">
 	@media screen and (max-width: 1024px) {
-		.tile.is-parent {
+		.cell {
 			flex-direction: column;
 		}
 	}

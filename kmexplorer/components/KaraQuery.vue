@@ -1,9 +1,9 @@
 <template>
-	<div class="tile is-ancestor">
-		<div class="tile is-vertical">
+	<div class="fixed-grid has-3-cols">
+		<div class="grid">
 			<div
 				v-if="withSearch"
-				class="tile is-parent is-12 is-hidden-desktop"
+				class="cell is-12 is-hidden-desktop"
 			>
 				<search-tags class="mb-2" />
 				<search-bar />

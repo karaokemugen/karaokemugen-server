@@ -1,6 +1,6 @@
 <template>
 	<article
-		class="tile is-child"
+		class="box"
 	>
 		<div class="is-flex is-justify-content-space-between">
 			<div class="title">

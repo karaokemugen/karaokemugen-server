@@ -1,14 +1,14 @@
 <template>
-	<div class="tile is-ancestor">
-		<div class="tile is-vertical">
-			<div class="tile is-parent is-12 is-hidden-desktop">
+	<div class="grid">
+		<div class="is-vertical">
+			<div class="cell is-12 is-hidden-desktop">
 				<search-tags class="mb-2" />
 				<search-bar />
 			</div>
 
 			<div
 				v-if="tagMaxPage > 1"
-				class="tile is-parent is-12"
+				class="cell is-12"
 			>
 				<pagination
 					:page="page"
@@ -17,7 +17,7 @@
 				/>
 			</div>
 
-			<div class="tile is-parent is-12">
+			<div class="cell is-12">
 				<div
 					v-if="tagMaxPage > 0"
 					class="tags"
@@ -36,7 +36,7 @@
 
 			<div
 				v-if="tagMaxPage > 1"
-				class="tile is-parent is-12"
+				class="cell is-12"
 			>
 				<pagination
 					v-if="tagMaxPage > 1"
@@ -48,7 +48,7 @@
 
 			<loading-nanami
 				v-if="loading"
-				class="tile is-parent is-12"
+				class="cell is-12"
 			/>
 		</div>
 	</div>

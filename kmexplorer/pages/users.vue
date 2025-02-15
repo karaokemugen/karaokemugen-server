@@ -1,17 +1,17 @@
 <template>
 	<div>
-		<div class="tile is-parent is-12 is-hidden-desktop">
+		<div class="cell is-12 is-hidden-desktop">
 			<search-bar />
 		</div>
 		<div
 			v-for="n in Math.ceil(users.content.length / 2)"
 			:key="n"
-			class="tile is-parent is-12"
+			class="cell is-12"
 		>
 			<div
 				v-for="n2 in 2"
 				:key="`${n}_${n2}`"
-				class="tile is-child is-6"
+				class="is-6"
 			>
 				<user-card
 					v-if="users.content[(n - 1) * 2 + n2 - 1]"
@@ -21,18 +21,16 @@
 		</div>
 		<loading-nanami
 			v-if="loading"
-			class="tile is-parent is-12"
+			class="cell is-12"
 		/>
 		<div
 			v-if="fullyLoaded"
-			class="tile is-parent"
+			class="cell"
 		>
-			<div class="tile is-child">
-				<div class="box">
-					<h4 class="title is-4">
-						{{ $t('layout.end_users') }}
-					</h4>
-				</div>
+			<div class="box">
+				<h4 class="title is-4">
+					{{ $t('layout.end_users') }}
+				</h4>
 			</div>
 		</div>
 	</div>

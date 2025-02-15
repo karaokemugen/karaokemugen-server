@@ -44,7 +44,7 @@
 				</nuxt-link>
 			</div>
 		</article>
-		<div class="tile is-child is-8">
+		<div class="is-8">
 			<kara-edit
 				:kara="kara"
 				:repository-manifest="manifest"
@@ -97,7 +97,7 @@
 		}
 	}
 
-	.tile .is-child {
+	.box {
 		transition: width 0.8s;
 		max-width: 1000px;
 	}

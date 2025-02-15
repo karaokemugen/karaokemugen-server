@@ -145,7 +145,7 @@ const nuxtConfig = defineNuxtConfig({
 	app: {
 		head: {
 			htmlAttrs: {
-				class: ['has-navbar-fixed-top'],
+				class: ['has-navbar-fixed-top','theme-dark'],
 			},
 			meta: [
 				{ charset: 'utf-8' },

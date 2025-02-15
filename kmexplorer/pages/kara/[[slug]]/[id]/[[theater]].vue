@@ -1,20 +1,20 @@
 <template>
-	<div class="tile is-ancestor is-vertical">
+	<div class="grid is-vertical">
 		<div
 			v-if="karaoke"
-			class="tile is-parent is-12"
+			class="cell is-12"
 		>
 			<div
 				ref="leftTile"
-				class="tile is-child"
+				class="box"
 				:class="{ 'is-8': !liveOpened, 'is-5': liveOpened }"
 			>
 				<kara-full-info :karaoke="karaoke" />
 			</div>
-			<div class="tile is-4-desktop-only is-parent is-vertical">
+			<div class="cell is-4-desktop-only is-vertical">
 				<div
 					v-if="live"
-					class="tile is-child"
+					class="box"
 				>
 					<live-player
 						:karaoke="karaoke"
@@ -24,44 +24,40 @@
 				</div>
 				<div
 					v-else
-					class="tile is-child"
+					class="box"
 				>
-					<div class="box">
-						<img
-							:src="`${hardsubUrl}previews/${karaoke?.kid}.${karaoke?.mediasize}.25.jpg`"
-							alt=""
-						>
-						<div class="message is-info">
-							<div class="message-body">
-								{{ t('kara.live_unavailable') }}
-							</div>
+					<img
+						:src="`${hardsubUrl}previews/${karaoke?.kid}.${karaoke?.mediasize}.25.jpg`"
+						alt=""
+					>
+					<div class="message is-info">
+						<div class="message-body">
+							{{ t('kara.live_unavailable') }}
 						</div>
 					</div>
 				</div>
 				<div
 					v-show="!liveOpened"
 					v-if="!mp3"
-					class="tile is-child"
+					class="box"
 				>
-					<div class="box">
-						<div class="imgGroup">
-							<img
-								:src="`${hardsubUrl}previews/${karaoke?.kid}.${karaoke?.mediasize}.33.jpg`"
-								alt=""
-							>
-							<img
-								:src="`${hardsubUrl}previews/${karaoke?.kid}.${karaoke?.mediasize}.50.jpg`"
-								alt=""
-							>
-						</div>
+					<div class="imgGroup">
+						<img
+							:src="`${hardsubUrl}previews/${karaoke?.kid}.${karaoke?.mediasize}.33.jpg`"
+							alt=""
+						>
+						<img
+							:src="`${hardsubUrl}previews/${karaoke?.kid}.${karaoke?.mediasize}.50.jpg`"
+							alt=""
+						>
 					</div>
 				</div>
-				<div class="tile is-child">
+				<div class="box">
 					<kara-report :karaoke="karaoke" />
 				</div>
 			</div>
 		</div>
-		<div class="tile is-parent is-vertical relatives">
+		<div class="cell is-vertical relatives">
 			<template v-if="karaoke?.parents && karaoke.parents.length > 0">
 				<div class="title-box">
 					<h1 class="title">
@@ -222,7 +218,7 @@
 </script>
 
 <style scoped lang="scss">
-	.tile.is-child {
+	.box {
 		transition: width 0.8s;
 	}
 
@@ -243,16 +239,16 @@
 		}
 	}
 
-	.tile.is-4-desktop-only.is-parent.is-vertical > .tile.is-child {
+	.cell.is-4-desktop-only.is-vertical > .box {
 		flex-grow: 0;
 	}
 
-	.tile.is-vertical {
+	.is-vertical {
 		padding: 0 1em;
 	}
 
 	@media (max-width: 769px) {
-		.tile.is-vertical {
+		.is-vertical {
 			padding: 1em 0;
 		}
 	}

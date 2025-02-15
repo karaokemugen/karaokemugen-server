@@ -2,7 +2,7 @@
 	<div>
 		<section>
 			<div class="hero-body">
-				<div class="tile is-parent is-12 is-hidden-desktop">
+				<div class="cell is-12 is-hidden-desktop">
 					<search-languages class="mb-2" />
 					<search-bar />
 					<div class="field is-expanded mt-2">

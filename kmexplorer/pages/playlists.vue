@@ -1,7 +1,7 @@
 <template>
-	<div class="tile is-ancestor">
-		<div class="tile is-parent is-vertical">
-			<div class="tile is-hidden-desktop">
+	<div class="grid">
+		<div class="cell is-vertical">
+			<div class="is-hidden-desktop">
 				<search-bar />
 			</div>
 			<div
@@ -87,7 +87,7 @@
 			</div>
 			<loading-nanami
 				v-if="loading"
-				class="tile is-parent is-12"
+				class="cell is-12"
 			/>
 		</div>
 	</div>

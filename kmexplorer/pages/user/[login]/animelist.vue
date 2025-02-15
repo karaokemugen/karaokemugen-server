@@ -1,7 +1,7 @@
 <template>
 	<loading-nanami
 		v-if="!user?.login"
-		class="tile is-parent is-12"
+		class="cell is-12"
 	/>
 	<div v-else>
 		<div class="title-box">
