@@ -105,16 +105,18 @@ export function convertDBKaraToKaraFile(dbKara?: DBKara): KaraFileV4 {
 	};
 }
 
-export function isPlayable(karaoke:DBPLC|DBKara) {
-	let noLiveDownload = false;
-	for (const tagType in tagTypes) {
-		if (tagType === 'years') { continue; }
-		for (const tag of (karaoke as any)[tagType]) {
-			if (tag.noLiveDownload) {
-				noLiveDownload = true;
+export function isPlayable(karaoke:DBPLC|DBKara, isAdmin?: boolean) {
+	let playable = true;
+	if (!isAdmin) {
+		for (const tagType in tagTypes) {
+			if (tagType === 'years') { continue; }
+			for (const tag of (karaoke as any)[tagType]) {
+				if (tag.noLiveDownload) {
+					playable = false;
+				}
 			}
 		}
 	}
-	return !noLiveDownload;
+	return playable;
 }
 

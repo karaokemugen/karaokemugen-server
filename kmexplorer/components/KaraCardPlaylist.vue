@@ -131,7 +131,7 @@
 		return tags;
 	});
 
-	const playable = computed(() => isPlayable(props.karaoke));
+	const playable = computed(() => isPlayable(props.karaoke, user?.value?.roles?.admin));
 </script>
 
 <style scoped lang="scss">

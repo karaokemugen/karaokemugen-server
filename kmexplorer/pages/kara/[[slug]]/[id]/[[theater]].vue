@@ -124,6 +124,7 @@
 	import type { DBKara } from '%/lib/types/database/kara';
 	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
 	import slug from 'slug';
+	import { useAuthStore } from '~/store/auth';
 
 	const karaoke = ref<DBKara>();
 	const liveOpened = ref(false);
@@ -138,6 +139,8 @@
 	const requestURL = useRequestURL();
 	requestURL.protocol = 'https:';
 	const { t } = useI18n();
+
+	const { user } = storeToRefs(useAuthStore());
 
 	definePageMeta({
 		key: 'static'
@@ -194,7 +197,7 @@
 	});
 
 	const mp3 = computed(() => conf.public.SUPPORTED_AUDIO.some(extension => karaoke.value?.mediafile.endsWith(extension)));
-	const live = computed(() => karaoke.value && isPlayable(karaoke.value));
+	const live = computed(() => karaoke.value && isPlayable(karaoke.value, user?.value?.roles?.admin));
 
 	watch(() => [route.query, route.params], refresh);
 	

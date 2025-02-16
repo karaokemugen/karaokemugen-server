@@ -198,7 +198,7 @@
 	watch(() => route.query.index, async (now) => {
 		const index = Number(now) || 0;
 		if (index !== indexPlaying.value) {
-			if (karaokes.value.content[index] && isPlayable(karaokes.value.content[index])) {
+			if (karaokes.value.content[index] && isPlayable(karaokes.value.content[index], user?.value?.roles?.admin)) {
 				indexPlaying.value = index;
 				playing.value = karaokes.value.content[index];
 			}
@@ -282,7 +282,7 @@
 		updateQueryParams();
 		await loadNextPage();
 		indexPlaying.value = 0;
-		if (karaokes.value.content[0] && isPlayable(karaokes.value.content[0])) {
+		if (karaokes.value.content[0] && isPlayable(karaokes.value.content[0], user?.value?.roles?.admin)) {
 			playing.value = karaokes.value.content[0];
 		}
 	}
@@ -298,7 +298,7 @@
 	async function getAsyncAfterPageChange() {
 		await loadNextPage();
 		indexPlaying.value = 0;
-		if (karaokes.value.content[0] && isPlayable(karaokes.value.content[0])) {
+		if (karaokes.value.content[0] && isPlayable(karaokes.value.content[0], user?.value?.roles?.admin)) {
 			playing.value = karaokes.value.content[0];
 		}
 	}
@@ -318,10 +318,10 @@
 		karaokes.value = data;
 		loading.value = false;
 		if (karaokes.value.content.length > 0) {
-			if (query.index && query.index < karaokes.value.content.length && isPlayable(karaokes.value.content[query.index])) {
+			if (query.index && query.index < karaokes.value.content.length && isPlayable(karaokes.value.content[query.index], user?.value?.roles?.admin)) {
 				indexPlaying.value = query.index;
 				playing.value = karaokes.value.content[query.index];
-			} else if (isPlayable(karaokes.value.content[0])) {
+			} else if (isPlayable(karaokes.value.content[0], user?.value?.roles?.admin)) {
 				playing.value = karaokes.value.content[0];
 			}
 		}
@@ -336,7 +336,7 @@
 		}
 		if (indexPlaying.value < karaokes.value.content.length - 1) {
 			indexPlaying.value = indexPlaying.value + 1;
-			if (karaokes.value.content[indexPlaying.value] && isPlayable(karaokes.value.content[indexPlaying.value])) {
+			if (karaokes.value.content[indexPlaying.value] && isPlayable(karaokes.value.content[indexPlaying.value], user?.value?.roles?.admin)) {
 				playing.value = karaokes.value.content[indexPlaying.value];
 				updateQueryParams();
 			} else {
@@ -357,7 +357,7 @@
 		}
 		if (indexPlaying.value > 0) {
 			indexPlaying.value = indexPlaying.value - 1;
-			if (karaokes.value.content[indexPlaying.value] && isPlayable(karaokes.value.content[indexPlaying.value])) {
+			if (karaokes.value.content[indexPlaying.value] && isPlayable(karaokes.value.content[indexPlaying.value], user?.value?.roles?.admin)) {
 				playing.value = karaokes.value.content[indexPlaying.value];
 				updateQueryParams();
 			} else {
@@ -368,7 +368,7 @@
 
 	function updatePlayer(karaoke: DBPLC) {
 		indexPlaying.value = karaokes.value.content.findIndex(n => karaoke.plcid === n.plcid);
-		if (karaoke && isPlayable(karaoke)) {
+		if (karaoke && isPlayable(karaoke, user?.value?.roles?.admin)) {
 			playing.value = karaoke;
 		}
 		updateQueryParams();
@@ -430,7 +430,7 @@
 			if (indexPlaying.value === karaokes.value.content.length) {
 				playing.value = karaokes.value.content[0];
 				indexPlaying.value = 0;
-			} else if (karaokes.value.content[indexPlaying.value] && isPlayable(karaokes.value.content[indexPlaying.value])) {
+			} else if (karaokes.value.content[indexPlaying.value] && isPlayable(karaokes.value.content[indexPlaying.value], user?.value?.roles?.admin)) {
 				playing.value = karaokes.value.content[indexPlaying.value];
 			} else {
 				next();

@@ -67,8 +67,8 @@
 </template>
 
 <script setup lang="ts">
-	import slug from 'slug';
 	import type { DBKara } from '%/lib/types/database/kara';
+	import { useAuthStore } from '~/store/auth';
 
 	const conf = useRuntimeConfig();
 	const apiUrl = conf.public.API_URL;
@@ -80,6 +80,7 @@
 	}>();
 
 	const emit = defineEmits<{(e: 'close'): void}>();
+	const { user } = storeToRefs(useAuthStore());
 
 	const serieSinger = computed(() => getSerieOrSingerGroupsOrSingers(props.karaoke));
 	
@@ -110,7 +111,7 @@
 	const subtitlesUrl = computed(() => {
 		return `${apiUrl}downloads/lyrics/${encodeURIComponent(props.karaoke.lyrics_infos[0].filename)}`;
 	});
-	const live = computed(() => isPlayable(props.karaoke));
+	const live = computed(() => isPlayable(props.karaoke, user?.value?.roles?.admin));
 
 	function closeModal(): void {
 		emit('close');
