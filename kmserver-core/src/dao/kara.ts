@@ -170,7 +170,7 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 		db().query(yesql(query(false))(q.params)),
 		db().query(yesql(query(true))(q.params))
 	]);
-	if (res.rows[0] !== null) {
+	if (res.rows?.length > 0 && res.rows[0] !== null) {
 		res.rows[0].count = resCount.rows[0].count;
 	}
 	return res.rows.map(row => makeKaraPretty(row, params.forPlayer));
