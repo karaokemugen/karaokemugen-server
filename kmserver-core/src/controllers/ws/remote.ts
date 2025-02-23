@@ -22,5 +22,9 @@ export default function remoteSocketController(app: SocketIOApp) {
 		setImmediate(proxyBroadcast, socket, req.body);
 		return true;
 	});
+	app.route('ping', async (socket, _req: APIData) => {
+		socket.emit('pong');
+		return true;
+	});
 	app.on('disconnect', stopRemote);
 }
