@@ -2,8 +2,8 @@ import {pg as yesql} from 'yesql';
 
 import {db} from '../lib/dao/database.js';
 import {DBInbox, SingleDBInbox} from '../lib/types/inbox.js';
-import * as sql from './sqls/inbox.js';
 import { LyricsInfo } from '../lib/types/kara.js';
+import * as sql from './sqls/inbox.js';
 
 export async function selectInbox(): Promise<DBInbox[]>;
 export async function selectInbox(inid: string): Promise<[SingleDBInbox] | []>;
