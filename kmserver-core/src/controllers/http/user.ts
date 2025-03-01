@@ -1,5 +1,4 @@
-import { Router } from 'express';
-import { RequestHandler } from 'express-serve-static-core';
+import { RequestHandler, Router } from 'express';
 import multer from 'multer';
 import { resolve } from 'path';
 
