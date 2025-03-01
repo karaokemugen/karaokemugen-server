@@ -27,7 +27,7 @@ const transformImportsPlugin = {
 						// Determine if module is ESM or not
 						const path = req.resolve(mod);
 						const pjson = await readPackageUp({ cwd: dirname(path) });
-						if (!(typeof pjson.packageJson.module === 'string' || pjson.packageJson.type === 'module' || typeof pjson.packageJson.exports === 'object')) {
+						if (!(mod === 'uuid' || typeof pjson.packageJson.module === 'string' || pjson.packageJson.type === 'module' || typeof pjson.packageJson.exports === 'object')) {
 							// It's CJS!
 							// Reformat imports
 							const newPayload = payload.replace(/([a-zA-Z0-9]+) as ([a-zA-Z0-9]+)/g, '$1: $2');
