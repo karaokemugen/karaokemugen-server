@@ -82,7 +82,8 @@ export async function updateRepo() {
 	const karas = await getAllKaras({ ignoreCollections: true }, undefined, true);
 	const promises = [createImagePreviews(karas, 'full', 1280)];
 	if (getConfig().Hardsub.Enabled) {
-		promises.push(generateHardsubs(karas));
+		// Fuck you typescript.
+		promises.push(generateHardsubs(karas) as any) ;
 		generateHardsubsCache(karas);
 	}
 	await Promise.all(promises);
