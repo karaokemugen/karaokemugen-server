@@ -8,6 +8,7 @@ import {
 	wipeInstance} from '../dao/stats.js';
 import { JWTTokenWithRoles } from '../lib/types/user.js';
 import { uuidRegexp } from '../lib/utils/constants.js';
+import { ErrorKM } from '../lib/utils/error.js';
 import logger from '../lib/utils/logger.js';
 import { check, testJSON } from '../lib/utils/validators.js';
 import { PlayedCacheItem } from '../types/stats.js';
@@ -59,13 +60,13 @@ export async function addPlayed(kid: string, ip: string, userToken?: JWTTokenWit
 
 export async function processStatsPayload(payload: any) {
 	try {
-		if (!testJSON(payload)) throw 'Syntax error in JSON data';
+		if (!testJSON(payload)) throw new ErrorKM('Syntax error in JSON data', 400);
 
 		// Payloads before version 3 are ignored
 		if (payload.payloadVersion < 3) return;
 
 		const validationErrors = check(payload, payloadConstraints);
-		if (validationErrors) throw `Payload is not valid: ${JSON.stringify(validationErrors)}`;
+		if (validationErrors) throw new ErrorKM(`Payload is not valid: ${JSON.stringify(validationErrors)}`, 400);
 		await wipeInstance(payload.instance.instance_id);
 		await upsertInstance(payload.instance);
 		await upsertSessions(payload.instance.instance_id, payload.sessions);
