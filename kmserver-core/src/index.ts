@@ -140,8 +140,8 @@ async function main() {
 
 	if (argv.opts().processHardsubs) {
 		await initHardsubGeneration(true);
-		await generateHardsubs(await getAllKaras({}));
-		await hardsubsDone();
+		const hardsubsCount = await generateHardsubs(await getAllKaras({}));
+		if (hardsubsCount > 0) await harPropedsubsDone();
 		exit(0);
 	}
 

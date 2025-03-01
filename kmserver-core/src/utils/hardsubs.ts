@@ -65,6 +65,7 @@ export async function generateHardsubs(karas: KaraList) {
 		kid: string;
 		mediafile: string;
 		mediasize: number;
+		songname: string;
 		subfile: string;
 		repository: string;
 		subchecksum: string;
@@ -75,6 +76,7 @@ export async function generateHardsubs(karas: KaraList) {
 	for (const k of karas.content) {
 		mediaMap.set(k.kid, {
 			kid: k.kid,
+			songname: k.songname,
 			mediafile: k.mediafile,
 			mediasize: k.mediasize,
 			subfile: k.lyrics_infos[0]?.filename,
@@ -123,6 +125,7 @@ export async function generateHardsubs(karas: KaraList) {
 	}
 	profile('createHardsubs');
 	try {
+		let hardsubsCount = 0;
 		for (const media of mediaMap.values()) {
 			try {
 				const hardsubFile = `${media.kid}.${media.mediasize}.${media.subchecksum}.mp4`;
@@ -142,11 +145,13 @@ export async function generateHardsubs(karas: KaraList) {
 					const outputFile = resolve(hardsubDir, hardsubFile);
 					hardsubsBeingProcessed.add(media.kid);
 					queue.push([mediaPath, subPath, outputFile, media.kid, media.loudnorm, fontsDir]);
+					hardsubsCount += 1;
 				}
 			} catch (error) {
 				logger.error(`Error when creating hardsub for ${media.mediafile}: ${error}`, { service });
 			}
 		}
+		return hardsubsCount;
 	} catch (err) {
 		logger.warn('Some hardsubs could not be created', { service });
 	} finally {
