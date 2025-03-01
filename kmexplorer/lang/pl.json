@@ -325,23 +325,23 @@
 			"subtitle": "Nie możesz znaleźć tego, czego szukałeś? Możesz przesłać sugestię.",
 			"fields": {
 				"title": {
-					"label": "Tytuł",
-					"placeholder": "JINGO JUNGLE (Utwór charakteryzuje się energicznym stylem z elementami rocka oraz mocnymi wokalami i szybkim tempem)"
+					"label": "Tytuł"
 				},
 				"type": {
 					"label": "Typ"
 				},
 				"link": {
-					"label": "Link",
-					"placeholder": "https://www.youtube.com/watch?v=5VRyiaszGtA"
+					"label": "Link"
 				},
 				"name": {
 					"label": "Imię i nazwisko",
 					"placeholder": "Magia anonimowa"
 				},
 				"series": {
-					"label": "Serial / Piosenkarz",
-					"placeholder": "Yôjo Senki: Saga of Tanya the Evil"
+					"label": "Serial"
+				},
+				"singer": {
+					"label": "Piosenkarz"
 				}
 			},
 			"submit": "Prześlij",

@@ -399,19 +399,19 @@
 			"title": "Sugestão",
 			"fields": {
 				"title": {
-					"label": "Título",
-					"placeholder": "JINGO JUNGLE"
+					"label": "Título"
 				},
 				"series": {
-					"label": "Séries / Cantor",
-					"placeholder": "Yôjo Senki: Saga de Tanya, o Mal"
+					"label": "Séries"
+				},
+				"singer": {
+					"label": "Cantor"
 				},
 				"type": {
 					"label": "Tipo"
 				},
 				"link": {
-					"label": "Link",
-					"placeholder": "https://www.youtube.com/watch?v=5VRyiaszGtA"
+					"label": "Link"
 				},
 				"name": {
 					"label": "O seu nome",

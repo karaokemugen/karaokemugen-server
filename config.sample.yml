@@ -24,7 +24,7 @@ System:
         Medias:
           - repos/karaokebase/medias
       Git:
-        URL: https://gitlab.com/karaokemugen/bases/karaokebase.git"
+        URL: https://gitlab.com/karaokemugen/bases/karaokebase.git
         Branch: master
         ProjectID: 32123952 # Only for gitlab projects / issues
     - Name: Staging
@@ -208,7 +208,7 @@ Gitlab:
 
         **Comment** : $comment
     Suggestion:
-      Title : '[Suggestion] $serie - $title'
+      Title: '[Suggestion] $displaytype - $type - $title'
       Labels:
         - suggestion
       Description: >
@@ -221,7 +221,10 @@ Gitlab:
         **Title** : $title
 
 
-        **Series** : $serie
+        **Singer(s)** : $singer
+
+
+        **Series** : $series
 
 
         **Type** : $type

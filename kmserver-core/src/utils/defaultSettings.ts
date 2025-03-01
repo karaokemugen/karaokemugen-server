@@ -148,7 +148,7 @@ A new karaoke has been sent to the inbox.
 **Comment** : $comment`
 			},
 			Suggestion: {
-				Title: '[Suggestion] $serie - $type - $title',
+				Title: '[Suggestion] $displaytype - $type - $title',
 				Labels: ['suggestion'],
 				Description: `
 # Karaoke suggestion
@@ -160,7 +160,10 @@ A new karaoke has been sent to the inbox.
 **Title** : $title
 
 
-**Series** : $serie
+**Singer(s)** : $singer
+
+
+**Series** : $series
 
 
 **Type** : $type

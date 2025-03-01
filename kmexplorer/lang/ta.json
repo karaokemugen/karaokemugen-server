@@ -485,19 +485,19 @@
 		"suggest": {
 			"fields": {
 				"title": {
-					"label": "தலைப்பு",
-					"placeholder": "சிங்கோ சங்கிள்"
+					"label": "தலைப்பு"
 				},
 				"series": {
-					"label": "தொடர் / பாடகர்",
-					"placeholder": "யசோ யாரும்: பண்ணையின் சாகா தீமை"
+					"label": "தொடர்"
+				},
+				"singer": {
+					"label": "பாடகர்"
 				},
 				"type": {
 					"label": "வகை"
 				},
 				"link": {
-					"label": "இணைப்பு",
-					"placeholder": "https://www.youtube.com/watch?v=5VRyiaszGtA"
+					"label": "இணைப்பு"
 				},
 				"name": {
 					"label": "உங்கள் பெயர்",

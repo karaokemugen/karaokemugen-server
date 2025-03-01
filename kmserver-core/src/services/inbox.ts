@@ -134,7 +134,7 @@ export async function removeKaraFromInbox(inid: string) {
 			const kara = await getKara({
 				q: `k:${inbox.edited_kid || inbox.kid}!r:Staging`
 			});
-			// If kara is not found, it means the song has already been added to the database by kara.moe
+			// If kara is not found, it means the song has already been added to the database
 			if (kara) {
 				const karaData = formatKaraV4(kara);
 				await deleteKara([kara.kid]);
@@ -143,7 +143,7 @@ export async function removeKaraFromInbox(inid: string) {
 			}
 		} catch (err) {
 			// Non-fatal.
-			logger.info(`Kara ${inbox.name} is not found, it means the song has already been added to the database by kara.moe`, { service });
+			logger.info(`Kara ${inbox.name} is not found, it means the song has already been added to the database`, { service });
 		}
 		if (inbox.karafile) {
 			const karaPath = resolve(resolvedPathRepos('Karaokes', 'Staging')[0], inbox.karafile);

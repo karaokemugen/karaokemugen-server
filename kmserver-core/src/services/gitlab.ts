@@ -138,22 +138,24 @@ async function gitlabCreateIssue(title: string, desc: string, labels: string[]):
 	}
 }
 
-export async function createSuggestionIssue(title: string, serie:string, type:string, link:string, username: string): Promise<string> {
+export async function createSuggestionIssue(title: string, serie:string, singer: string, type:string, link:string, username: string): Promise<string> {
 	try {
 		const conf = getConfig().Gitlab.IssueTemplate;
 		let titleIssue = conf?.Suggestion?.Title
 			? conf.Suggestion.Title
-			: '[suggestion] $serie - $type - $title';
+			: '[suggestion] $displaytype - $type - $title';
 		titleIssue = titleIssue.replace('$title', title);
 		titleIssue = titleIssue.replace('$type', type);
-		titleIssue = titleIssue.replace('$serie', serie);
+		const displaytype = (singer && serie) ? `${serie}/${singer}` : `${serie}${singer}`;
+		titleIssue = titleIssue.replace('$displaytype', displaytype);
 		let desc = conf?.Suggestion?.Description
 			? conf.Suggestion.Description
 			: 'From $username : it would be nice if someone could time this!';
 		const user = await findUserByName(username);
 		desc = desc.replace('$username', user ? user.nickname : username);
 		desc = desc.replace('$title', title);
-		desc = desc.replace('$serie', serie);
+		desc = desc.replace('$series', serie);
+		desc = desc.replace('$singer', singer);
 		desc = desc.replace('$type', type);
 		desc = desc.replace('$link', link);
 		return await gitlabCreateIssue(titleIssue, desc, conf.Suggestion.Labels);

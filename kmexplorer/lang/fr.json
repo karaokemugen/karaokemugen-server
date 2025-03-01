@@ -502,19 +502,19 @@
 			"subtitle": "Vous n'avez pas trouvé votre bonheur ? Vous pouvez nous formuler une recommandation.",
 			"fields": {
 				"title": {
-					"label": "Titre",
-					"placeholder": "JINGO JUNGLE"
+					"label": "Titre"
 				},
 				"series": {
-					"label": "Œuvre / Chanteur",
-					"placeholder": "Yôjo Senki : Saga of Tanya the Evil"
+					"label": "Œuvre"
+				},
+				"singer": {
+					"label": "Chanteur"
 				},
 				"type": {
 					"label": "Type"
 				},
 				"link": {
-					"label": "Lien",
-					"placeholder": "https://www.youtube.com/watch?v=5VRyiaszGtA"
+					"label": "Lien"
 				},
 				"name": {
 					"label": "Votre nom",

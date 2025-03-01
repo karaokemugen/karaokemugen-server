@@ -419,20 +419,20 @@
 		"suggest": {
 			"fields": {
 				"series": {
-					"label": "Serie / Sänger",
-					"placeholder": "Yôjo Senki: Die Saga von Tanya der Bösen"
+					"label": "Serie"
+				},
+				"singer": {
+					"label": " Sänger"
 				},
 				"name": {
 					"label": "Dein Name",
 					"placeholder": "Magischer anonymer"
 				},
 				"link": {
-					"placeholder": "https://www.youtube.com/watch?v=5VRyiaszGtA",
 					"label": "Link"
 				},
 				"title": {
-					"label": "Titel",
-					"placeholder": "JINGO-DSCHUNGEL"
+					"label": "Titel"
 				},
 				"type": {
 					"label": "Typ"

@@ -47,7 +47,7 @@
 										name="title"
 										class="input"
 										required
-										:placeholder="$t('modal.suggest.fields.title.placeholder')"
+										:placeholder="$t('modal.suggest.fields.title.label')"
 										autocomplete="off"
 									>
 								</div>
@@ -70,8 +70,31 @@
 										type="text"
 										name="series"
 										class="input"
+										:placeholder="$t('modal.suggest.fields.series.label')"
+										autocomplete="off"
+									>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="field is-horizontal">
+						<div class="field-label is-normal">
+							<label
+								for="singer"
+								class="label"
+							>{{ $t('modal.suggest.fields.singer.label') }}</label>
+						</div>
+						<div class="field-body">
+							<div class="field">
+								<div class="control">
+									<input
+										id="singer"
+										v-model="formData.singer"
+										type="text"
+										name="singer"
+										class="input"
 										required
-										:placeholder="$t('modal.suggest.fields.series.placeholder')"
+										:placeholder="$t('modal.suggest.fields.singer.label')"
 										autocomplete="off"
 									>
 								</div>
@@ -124,7 +147,7 @@
 										name="link"
 										class="input"
 										required
-										:placeholder="$t('modal.suggest.fields.link.placeholder')"
+										:placeholder="$t('modal.suggest.fields.link.label')"
 										autocomplete="off"
 									>
 								</div>
@@ -215,12 +238,14 @@
 	const formData = ref<{
 		title: string,
 		serie: string,
+		singer: string,
 		type: string,
 		link: string,
 		username: string
 	}>({
 		title: '',
 		serie: '',
+		singer: '',
 		type: 'OP',
 		link: '',
 		username: ''
@@ -259,7 +284,7 @@
 		emit('close');
 	}
 	async function submitForm() {
-		if (formData.value.title && formData.value.serie && formData.value.link) {
+		if (formData.value.title && formData.value.singer && formData.value.link) {
 			loading.value = true;
 			if (!formData.value.username) {
 				formData.value.username = 'Anonymous';
@@ -273,6 +298,7 @@
 			formData.value = {
 				title: '',
 				serie: '',
+				singer: '',
 				type: 'OP',
 				link: '',
 				username: ''

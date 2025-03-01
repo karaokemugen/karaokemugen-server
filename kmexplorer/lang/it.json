@@ -314,16 +314,16 @@
 			},
 			"fields": {
 				"series": {
-					"label": "Serie/Cantante",
-					"placeholder": "Yôjo Senki: Saga of Tanya the Evil"
+					"label": "Serie"
+				},
+				"singer": {
+					"label": "Cantante"
 				},
 				"link": {
-					"label": "Link",
-					"placeholder": "https://www.youtube.com/watch?v=5VRyiaszGtA"
+					"label": "Link"
 				},
 				"title": {
-					"label": "Titolo",
-					"placeholder": "JINGO JUNGLE"
+					"label": "Titolo"
 				},
 				"name": {
 					"placeholder": "Anonimo magico",

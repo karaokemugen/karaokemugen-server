@@ -168,7 +168,7 @@ Gitlab:
         **Comment** : $comment
 
     Suggestion:
-      Title: '[Suggestion] $serie - $title'
+      Title: '[Suggestion] $displaytype - $type - $title'
       Labels:
         - suggestion
       Description: >
@@ -181,7 +181,10 @@ Gitlab:
         **Title** : $title
 
 
-        **Series** : $serie
+        **Singer(s)** : $singer
+
+
+        **Series** : $series
 
 
         **Type** : $type

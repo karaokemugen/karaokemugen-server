@@ -439,19 +439,19 @@
 			"subtitle": "Kamu tidak bisa menemukan apa yang kamu cari? Kamu masih bisa mengisi sebuah saran.",
 			"fields": {
 				"title": {
-					"label": "Judul",
-					"placeholder": "Like Flames"
+					"label": "Judul"
 				},
 				"series": {
-					"label": "Serial/Penyanyi",
-					"placeholder": "That Time I Got Reincarnated as a Slime"
+					"label": "Serial"
+				},
+				"singer": {
+					"label": "Penyanyi"
 				},
 				"type": {
 					"label": "Jenis"
 				},
 				"link": {
-					"label": "Tautan",
-					"placeholder": "https://youtube.com/watch?v=q8TGietS5Q0"
+					"label": "Tautan"
 				},
 				"name": {
 					"label": "Nama kamu",
