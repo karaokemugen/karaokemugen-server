@@ -146,7 +146,7 @@ export async function createSuggestionIssue(title: string, serie:string, singer:
 			: '[suggestion] $displaytype - $type - $title';
 		titleIssue = titleIssue.replace('$title', title);
 		titleIssue = titleIssue.replace('$type', type);
-		const displaytype = (singer && serie) ? `${serie}/${singer}` : `${serie}${singer}`;
+		const displaytype = singer && serie ? `${serie}/${singer}` : `${serie || ''}${singer}`;
 		titleIssue = titleIssue.replace('$displaytype', displaytype);
 		let desc = conf?.Suggestion?.Description
 			? conf.Suggestion.Description
@@ -154,13 +154,13 @@ export async function createSuggestionIssue(title: string, serie:string, singer:
 		const user = await findUserByName(username);
 		desc = desc.replace('$username', user ? user.nickname : username);
 		desc = desc.replace('$title', title);
-		desc = desc.replace('$series', serie);
+		desc = desc.replace('$series', serie || '');
 		desc = desc.replace('$singer', singer);
 		desc = desc.replace('$type', type);
 		desc = desc.replace('$link', link);
 		return await gitlabCreateIssue(titleIssue, desc, conf.Suggestion.Labels);
 	} catch (err) {
-		logger.error('Unable to post new suggestion to gitlab', {service, obj: err});
+		logger.error('Unable to post new suggestion to gitlab', { service, obj: err });
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
 		throw new ErrorKM('POST_SUGGESTION_ERROR');
