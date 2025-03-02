@@ -59,7 +59,7 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 		}
 		logger.debug(`songName: ${songname.sanitizedFilename}`, { service });
 		// Move files to their own directory
-		const filenames = determineMediaAndLyricsFilenames(kara);
+		const filenames = determineMediaAndLyricsFilenames(kara, edit?.kid);
 		logger.debug(`mediafile: ${filenames.mediafile}`, { service });
 		logger.debug(`lyricsfile: ${filenames.lyricsfiles[0]}`, { service });
 		const mediaPath = resolve(resolvedPath('Temp'), kara.medias[0].filename);
