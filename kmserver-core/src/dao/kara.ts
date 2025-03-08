@@ -182,17 +182,17 @@ export function makeKaraPretty(row: any, forPlayer = false): DBKara | DBPLC {
 	for (const tagType of Object.keys(tagTypes)) {
 		rowWithoutTags[tagType] = [];
 	}
-	if (tags === null) {
+	if (!tags) {
 		if (forPlayer) {
 			return row;
 		}
 		return rowWithoutTags;
 	}
 	for (const tag of tags) {
-		if (tag?.type_in_kara === null) continue;
-		const type = getTagTypeName(tag.type_in_kara);
-		if (type === null) continue;
-		rowWithoutTags[type].push(tag);
+		if (tag && tag?.type_in_kara) {
+			const type = getTagTypeName(tag.type_in_kara);
+			if (type) rowWithoutTags[type].push(tag);
+		}
 	}
 	return rowWithoutTags;
 }
