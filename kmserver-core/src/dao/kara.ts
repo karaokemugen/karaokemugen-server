@@ -140,14 +140,7 @@ function prepareKaraQuery(params: KaraParams) {
 
 export async function selectAllKaras(params: KaraParams, includeStaging = false): Promise<DBKara[]> {
 	const q = prepareKaraQuery(params);
-	const optimizeCount = q.sql.length === 0 &&
-		q.selectClause === '' &&
-		q.joinClause === '' &&
-		q.groupClause === '' &&
-		q.whereClauses.length === 0 &&
-		q.additionalFrom.length === 0;
-
-	const query = (count: boolean) => sql.getAllKaras(
+	const query = sql.getAllKaras(
 		q.sql,
 		q.orderClauses,
 		q.limitClause,
@@ -162,13 +155,21 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 		q.collectionClauses,
 		q.withCTEs,
 		params.forPlayer,
-		getHardsubsBeingProcessed(),
-		count,
-		optimizeCount
+		getHardsubsBeingProcessed()
+	);
+	const countQuery = sql.getAllKarasCount(
+		q.sql,
+		q.joinClause,
+		q.whereClauses,
+		q.fromClauses,
+		q.additionalFrom,
+		includeStaging,
+		q.collectionClauses,
+		q.withCTEs
 	);
 	const [res, resCount] = await Promise.all([
-		db().query(yesql(query(false))(q.params)),
-		db().query(yesql(query(true))(q.params))
+		db().query(yesql(query)(q.params)),
+		db().query(yesql(countQuery)(q.params))
 	]);
 	if (res.rows?.length > 0 && res.rows[0] !== null) {
 		res.rows[0].count = resCount.rows[0].count;

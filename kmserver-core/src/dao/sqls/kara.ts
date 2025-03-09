@@ -31,49 +31,9 @@ export const getAllKaras = (
 	withCTE: string[],
 	forPlayer: boolean,
 	hardsubsInProgress: string[],
-	onlyCount: boolean,
-	optimizeCount: boolean // use count inside SELECT when possible
-) => {
-	const groupLine = `GROUP BY ${groupClause}
-	ak.pk_kid,
-	ak.titles,
-	ak.titles_default_language,
-	ak.mediasize,
-	ksub.subchecksum,
-	ak.songname,
-
-	${forPlayer ? 'dummy' : `
-	ak.titles_aliases,
-	ak.songorder,
-	ak.tags,
-	ak.serie_singergroup_singer_sortable,
-	ak.lyrics_infos,
-	ak.year,
-	ak.mediafile,
-	ak.karafile,
-	ak.duration,
-	ak.loudnorm,
-	ak.created_at,
-	ak.modified_at,
-	ak.repository,
-	ak.comment,
-	ak.songtypes_sortable,
-	ak.ignore_hooks,
-	ak.titles_sortable,
-	ak.kitsu_ids,
-	ak.anilist_ids,
-	ak.from_display_type,
-	ak.myanimelist_ids
-    `}`;
-	return `
-${onlyCount && !optimizeCount ? `
-SELECT COUNT(*)::integer AS count FROM (`
-: ''}
+) => `
 WITH ${withCTE.join(', \n')}
 SELECT
-${onlyCount && optimizeCount ? `
-  COUNT(DISTINCT ak.pk_kid)::integer AS count`
-: `
   ak.pk_kid AS kid,
   ak.titles AS titles,
   ak.titles_default_language as titles_default_language,
@@ -106,7 +66,6 @@ ${onlyCount && optimizeCount ? `
 	array_remove(array_agg(DISTINCT krp.fk_kid_child), null) AS children,
 	COALESCE(array_remove((SELECT array_agg(DISTINCT fk_kid_child) FROM kara_relation WHERE fk_kid_parent = ANY (array_remove(array_agg(DISTINCT krc.fk_kid_parent), null))), ak.pk_kid), array[]::uuid[]) AS siblings
   `}
-`}
 FROM ${fromClauses.join(', ')}
 LEFT JOIN kara_subchecksum ksub ON ksub.fk_kid = ak.pk_kid
 ${forPlayer ? '' : `
@@ -130,10 +89,38 @@ WHERE ${includeStaging ? 'TRUE' : 'ak.repository != \'Staging\''}
 	}
 	${filterClauses.map(clause => `AND (${clause})`).reduce((a, b) => (`${a} ${b}`), '')}
 	${whereClauses.join(' ')}
-${!optimizeCount ? groupLine : ''}
-${onlyCount && !optimizeCount ? ') res_to_count' : ''}
-${!onlyCount && optimizeCount ? groupLine : ''}
-${!onlyCount ? `
+
+GROUP BY ${groupClause}
+	ak.pk_kid,
+	ak.titles,
+	ak.titles_default_language,
+	ak.mediasize,
+	ksub.subchecksum,
+	ak.songname,
+
+	${forPlayer ? 'dummy' : `
+	ak.titles_aliases,
+	ak.songorder,
+	ak.tags,
+	ak.serie_singergroup_singer_sortable,
+	ak.lyrics_infos,
+	ak.year,
+	ak.mediafile,
+	ak.karafile,
+	ak.duration,
+	ak.loudnorm,
+	ak.created_at,
+	ak.modified_at,
+	ak.repository,
+	ak.comment,
+	ak.songtypes_sortable,
+	ak.ignore_hooks,
+	ak.titles_sortable,
+	ak.kitsu_ids,
+	ak.anilist_ids,
+	ak.from_display_type,
+	ak.myanimelist_ids
+	`}
 ORDER BY ${orderClauses} ${forPlayer ? 'dummy' : `
 	ak.serie_singergroup_singer_sortable,
 	ak.songtypes_sortable DESC,
@@ -141,9 +128,38 @@ ORDER BY ${orderClauses} ${forPlayer ? 'dummy' : `
 	ak.titles_sortable
 `}
 ${limitClause}
-${offsetClause}`
-: ''}`;
-};
+${offsetClause}
+
+`;
+
+export const getAllKarasCount = (
+	filterClauses: string[],
+	joinClause: string,
+	whereClauses: string[],
+	fromClauses: string[],
+	additionalFrom: string[],
+	includeStaging: boolean,
+	collectionClauses: string[],
+	withCTE: string[],
+) => `
+SELECT COUNT(*)::integer AS count FROM (
+	WITH ${withCTE.join(', \n')}
+	SELECT
+		DISTINCT ak.pk_kid AS kid
+	FROM ${fromClauses.join(', ')}
+	LEFT JOIN playlist_content plc ON plc.fk_kid = ak.pk_kid
+	${joinClause}
+${additionalFrom.join('')}
+WHERE ${includeStaging ? 'TRUE' : 'ak.repository != \'Staging\''}
+   ${
+	collectionClauses.length > 0
+		? `AND (${collectionClauses.map(clause => `(${clause})`).join(' OR ')})`
+		: ''
+	}
+	${filterClauses.map(clause => `AND (${clause})`).reduce((a, b) => (`${a} ${b}`), '')}
+	${whereClauses.join(' ')}
+) res_to_count
+`;
 
 export const insertKara = `
 INSERT INTO kara(
