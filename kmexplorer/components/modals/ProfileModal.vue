@@ -119,7 +119,7 @@
 									<input
 										id="url"
 										v-model="editedUser.url"
-										type="text"
+										type="url"
 										name="url"
 										class="input"
 										:placeholder="$t('modal.profile.fields.url.placeholder')"
