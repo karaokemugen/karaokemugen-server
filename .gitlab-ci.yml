@@ -15,8 +15,8 @@ stages:
   - deploy
   - scan
   - dast
-  - test  
-  
+  - test
+
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
@@ -24,7 +24,7 @@ dast:
   stage: scan
   variables:
     DAST_WEBSITE: https://dev.kara.moe
-  tags: 
+  tags:
     - $RUNNER_LINUX
   dast_configuration:
     site_profile: "Kara.moe"
@@ -39,7 +39,7 @@ sast:
 semgrep-sast:
   interruptible: true
   stage: scan
-  tags: 
+  tags:
     - $RUNNER_LINUX
   rules:
     - if: $CI_COMMIT_BRANCH == "dev"
@@ -47,7 +47,7 @@ semgrep-sast:
 nodejs-scan-sast:
   interruptible: true
   stage: scan
-  tags: 
+  tags:
     - $RUNNER_LINUX
   rules:
     - if: $CI_COMMIT_BRANCH == "dev"
@@ -55,19 +55,19 @@ nodejs-scan-sast:
 secret_detection:
   interruptible: true
   stage: scan
-  tags: 
+  tags:
     - $RUNNER_LINUX
   variables:
     SECRET_DETECTION_EXCLUDED_PATHS: 'node_modules kmexplorer/node_modules dist'
   rules:
     - if: $CI_COMMIT_BRANCH == "dev"
     - when: never
-  
+
 
 update_sentry:
   stage: deploy
   image: node:18
-  tags: 
+  tags:
     - $RUNNER_LINUX
   cache:
     key: km-server-${CI_COMMIT_REF_SLUG}
@@ -86,7 +86,7 @@ update_sentry:
 
 deploy_moe:
   stage: deploy
-  tags: 
+  tags:
     - $RUNNER_LINUX
   script:
     - mkdir ~/.ssh
@@ -107,21 +107,21 @@ deploy_moe:
 
 deploy_dev:
   stage: deploy
-  tags: 
+  tags:
     - $RUNNER_LINUX
   script:
     - mkdir ~/.ssh
     - echo "$SSH_KEY" > ~/.ssh/id_rsa
-    - ssh-keyscan -H '$HOST'
+    - ssh-keyscan -H '$HOSTDEV'
     - chmod -R 700 ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; cd srv/kmserver-dev; mirror -Rnev --parallel=10 --exclude .env --exclude .git/ --exclude app/ --exclude config.yml --exclude kmserver-core/dist/ --exclude database.json --exclude karaokemugen-app/ --exclude logs/ --exclude node_modules/ --exclude kmexplorer/.nuxt/ --exclude kmexplorer/.output/ --exclude .yarn/cache --exclude .yarn/build-state.yml --exclude .yarn/install-state.gz "
-    - ssh -l $USERNAME $HOST 'cd srv/kmserver-dev ; yarn install ; yarn migrate; yarn build:all'
-    - ssh -l $USERNAME $HOST 'sudo systemctl restart karaokemugen-server-dev'
+    - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOSTDEV; cd kmserver-dev; mirror -Rnev --parallel=10 --exclude .env --exclude .git/ --exclude app/ --exclude config.yml --exclude kmserver-core/dist/   --exclude logs/ --exclude node_modules/ --exclude kmexplorer/.nuxt/ --exclude kmexplorer/.output/ --exclude .yarn/cache --exclude .yarn/build-state.yml --exclude .yarn/install-state.gz "
+    - ssh -l $USERNAME $HOSTDEV 'cd kmserver-dev ; yarn install ; yarn migrate; yarn build:all'
+    - ssh -l $USERNAME $HOSTDEV 'sudo systemctl restart karaokemugen-server-dev'
   variables:
     NODE_ENV: production
   environment:
     name: dev
-    url: https://dev.kara.moe
+    url: https://mugen.re
   only:
   - dev
