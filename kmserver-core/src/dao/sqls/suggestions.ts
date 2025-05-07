@@ -20,6 +20,7 @@ SELECT
 DISTINCT
 language
 FROM suggestions
+ORDER BY language
 `;
 
 export const updateSuggestionSearchVector = `
