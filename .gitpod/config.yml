@@ -59,7 +59,7 @@ Gitlab:
       Labels:
         - to integrate
       Description: >
-        A new karaoke has been sent to the Karaoke Mugen team inbox. Please integrate it as soon as possible if it meets the required quality criteria.
+        A new karaoke has been sent to the $instance team inbox. Please integrate it as soon as possible if it meets the required quality criteria.
 
 
         The files (.kara, video, .ass and serial if necessary) are present in the following location of your FTP account: kmpublic / inbox

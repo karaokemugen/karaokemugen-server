@@ -41,6 +41,7 @@ export async function createInboxIssue(kid: string, edit?: EditElement) {
 	const title = (issueTemplate.Title || `Inbox ${edit ? 'edit' : 'creation'}: $kara`)
 		.replace('$kara', kara.songname);
 	let desc = (issueTemplate.Description || '')
+		.replace('$instance', conf.API.Host)
 		.replace('$songname', kara.songname)
 		.replace('$newSub', edit ? edit.modifiedLyrics.toString() : 'N/A')
 		.replace('$newVideo', edit ? edit.modifiedMedia.toString() : 'N/A')

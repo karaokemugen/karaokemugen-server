@@ -110,7 +110,7 @@
 				"titles_default_language": "La langue du titre par défaut devrait être le titre d'origine. Pour les titres en alphabet non-latin (chinois, japonais, coréen, arabe…), ajoutez un titre \"Romanisation\" et mettez-le par défaut.",
 				"aliases": "Si la chanson est connue sous un autre nom (abréviation par exemple), indiquez-les ici pour aider le public à les trouver à travers la recherche. Pas besoin d'utiliser des mots déjà contenus dans le(s) titre(s)."
 			},
-			"description": "Ce formulaire permet d'envoyer un karaoké à l'équipe de Karaoke Mugen. Il ne sera pas intégré immédiatement dans la base de karaokés car il nécessite une validation préalable. Aussi, votre karaoké peut être modifié par l'équipe de Karaoke Mugen s'il ne convient pas aux normes. Reportez-vous à la documentation pour plus d'information, section “Guide du contributeur” puis “Documents de référence”.",
+			"description": "Ce formulaire permet d'envoyer un karaoké à l'équipe de {instance}. Il ne sera pas intégré immédiatement dans la base de karaokés car il nécessite une validation préalable. Aussi, votre karaoké peut être modifié par l'équipe s'il ne convient pas aux normes. Reportez-vous à la documentation pour plus d'information, section “Guide du contributeur” puis “Documents de référence”.",
 			"attention": "ATTENTION :",
 			"check_in_progress": "Merci de vérifier la liste des karaokés en cours de réalisation avant de proposer un karaoké. Cela évitera à tout le monde de faire deux fois le travail, et le monde sera meilleur.",
 			"documentation_link": "Veuillez lire les règles de {instance} avant d'envoyer une chanson !",
@@ -206,7 +206,7 @@
 		"end_playlists": "Afficher {number} listes de lecture en plus",
 		"explore": "Allez en ajouter !",
 		"results": "{count} résultat | {count} résultats",
-		"collections": "Karaoke Mugen propose différentes collections, choisissez celles qui vous intéressent.",
+		"collections": "{instance} propose différentes collections, choisissez celles qui vous intéressent.",
 		"slogan": "Venez chanter sur cette chanson avec Karaoke Mugen !",
 		"end_users": "Vous avez atteint la fin des utilisateurs (bravo !).",
 		"app_banner": {

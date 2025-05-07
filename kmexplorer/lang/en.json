@@ -110,7 +110,7 @@
 				"titles_default_language": "Default title language should be the song's original title. For titles in non-latin languages (chinese, japanese, arabic, korean…), add a \"Romanization\" title and make it default.",
 				"aliases": "If the song is known as something else (abbreviations for example), set them here to help people find it through search. No need to use words already contained in the song title(s)."
 			},
-			"description": "This form allows you to submit a karaoke to the Karaoke Mugen team. It will not be immediately integrated in the karaoke database because it requires a validation. Please be patient. Your karaoke may be modified if it doesn't comply to the team rules.",
+			"description": "This form allows you to submit a karaoke to the {instance} team. It will not be immediately integrated in the karaoke database because it requires a validation. Please be patient. Your karaoke may be modified if it doesn't comply to the team rules.",
 			"attention": "ATTENTION:",
 			"check_in_progress": "Please check the list of karaoke subs currently being made before sending us a song. This'll avoid duplicate work, and the world will thus be a better place.",
 			"documentation_link": "Please read {instance}'s rules before submitting a song!",
@@ -206,7 +206,7 @@
 		"end_playlists": "Display {number} more playlists",
 		"explore": "Go add some!",
 		"results": "{count} result | {count} results",
-		"collections": "Karaoke Mugen provides many collections, choose the ones you are interested in.",
+		"collections": "{instance} provides many collections, choose the ones you are interested in.",
 		"slogan": "Come sing this song with Karaoke Mugen!",
 		"end_users": "You've reached the end of the user list (congratulations!).",
 		"app_banner": {

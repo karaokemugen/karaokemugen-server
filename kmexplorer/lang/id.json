@@ -108,7 +108,7 @@
 			"add_success": "Karaoke kamu telah berhasil dikirimkan!",
 			"add_success_description": "Masalah telah dibuat di pelacak kami. Kamu bisa memeriksa kemajuannya di {url}",
 			"add_error": "Galat telah terjadi, karaoke belum dikirim dengan benar",
-			"description": "Formulir ini memperbolehkan kamu untuk mengirimkan sebuah karaoke ke tim Karaoke Mugen. Jadi tidak akan langsung diintegrasikan ke basis data karaoke karena membutuhkan validasi. Mohon bersabar. Karaoke kamu mungkin akan dimodifikasi jika tidak mematuhi peraturan KM.",
+			"description": "Formulir ini memperbolehkan kamu untuk mengirimkan sebuah karaoke ke tim {instance}. Jadi tidak akan langsung diintegrasikan ke basis data karaoke karena membutuhkan validasi. Mohon bersabar. Karaoke kamu mungkin akan dimodifikasi jika tidak mematuhi peraturan KM.",
 			"comment_tooltip": "Jika kamu ingin menambahkan pesan untuk integrator atau hanya ingin bilang terima kasih, bilanglah di sini!",
 			"media_file_tooltip": "Format berkas yang didukung: {formats}",
 			"title": "Judul",
@@ -185,7 +185,7 @@
 		"remove_tags": "Apakah kamu sudah mencoba menghapus beberapa tanda filter dari pencarian?",
 		"end_my_favorites": "Ini merupakan akhir dari favoritmu.",
 		"end_users": "Kamu sudah mencapai akhir dari daftar pengguna (selamat!).",
-		"collections": "Karaoke Mugen menyediakan banyak koleksi, pilih salah satu yang menarik buat Anda."
+		"collections": "{instance} menyediakan banyak koleksi, pilih salah satu yang menarik buat Anda."
 	},
 	"footer": {
 		"home": "Beranda proyek",

@@ -4,7 +4,11 @@
 			keypath="kara.import.description"
 			tag="div"
 			class="description"
-		/>
+		>
+			<template #instance>
+				<span>{{ instanceName }}</span>
+			</template>
+		</i18n-t>
 		<div class="description">
 			<i18n-t
 				keypath="kara.import.attention"

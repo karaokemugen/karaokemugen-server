@@ -144,7 +144,7 @@
 			"auto_send_contact_infos": "Jeśli się zalogujesz, możesz zaznaczyć pole w formularzu, aby automatycznie udostępniać swoje dane kontaktowe opiekunom bazy danych.",
 			"from_display_type": "Wyświetlanie typu tagu",
 			"from_display_type_tooltip": "Wybierz typ tagu, który ma być wyświetlany wraz z tytułem utworu. Będzie on wyświetlany jako \"[tytuł] z [ten typ tagu]\".",
-			"description": "Ten formularz umożliwia zgłoszenie karaoke do zespołu Karaoke Mugen. Nie zostanie on od razu zintegrowany z bazą danych karaoke, ponieważ wymaga walidacji. Prosimy o cierpliwość. Twoje karaoke może zostać zmodyfikowane, jeśli nie jest zgodne z zasadami drużyny.",
+			"description": "Ten formularz umożliwia zgłoszenie karaoke do zespołu {instance}. Nie zostanie on od razu zintegrowany z bazą danych karaoke, ponieważ wymaga walidacji. Prosimy o cierpliwość. Twoje karaoke może zostać zmodyfikowane, jeśli nie jest zgodne z zasadami drużyny.",
 			"creators_tooltip": "Podmiot, który utworzył serię. Może to być studio animacji, studio filmowe lub studio gier.",
 			"add_file_media_error": "{name} nie jest plikiem multimedialnym",
 			"check_in_progress": "Prosimy o zapoznanie się z listą aktualnie tworzonych napisów karaoke przed wysłaniem nam piosenki. Pozwoli to uniknąć powielania pracy, a świat stanie się lepszym miejscem.",
@@ -624,7 +624,7 @@
 		"end_favorites": "To już koniec ulubionych.",
 		"end_playlists": "Wyświetl {number} więcej list odtwarzania",
 		"explore": "Idź i dodaj trochę!",
-		"collections": "Karaoke Mugen udostępnia wiele kolekcji, wybierz te, które Cię interesują.",
+		"collections": "{instance} udostępnia wiele kolekcji, wybierz te, które Cię interesują.",
 		"slogan": "Przyjdź i zaśpiewaj tę piosenkę z Karaoke Mugen!",
 		"app_banner": {
 			"title": "Czy wiesz, że...?",

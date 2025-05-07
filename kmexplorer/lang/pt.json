@@ -67,7 +67,7 @@
 			}
 		},
 		"import": {
-			"description": "Este formulário permite que você envie um karaokê para a equipe Karaoke Mugen. Não será imediatamente integrado na base de dados do karaokê porque requer uma validação. Por favor, seja paciente. Seu karaokê poderá ser modificado caso não esteja de acordo com as regras da equipe.",
+			"description": "Este formulário permite que você envie um karaokê para a equipe {instance}. Não será imediatamente integrado na base de dados do karaokê porque requer uma validação. Por favor, seja paciente. Seu karaokê poderá ser modificado caso não esteja de acordo com as regras da equipe.",
 			"create": "Criar",
 			"submit": "Enviar karaokê",
 			"comment_tooltip": "Se você quiser adicionar uma mensagem para os mantenedores ou apenas agradecer, diga aqui!",
@@ -203,7 +203,7 @@
 		"suggest": "Não consegue encontrar o que está procurando?",
 		"end_favorites": "Este é o fim dos favoritos.",
 		"explore": "Vai adicionar alguns!",
-		"collections": "Karaoke Mugen oferece muitas coleções, escolha aquelas em que está interessado.",
+		"collections": "{instance} oferece muitas coleções, escolha aquelas em que está interessado.",
 		"slogan": "Venha cantar essa música com o Karaokê Mugen!",
 		"end_users": "Você chegou ao fim da lista de usuários (parabéns!).",
 		"suggest_open": "Sugira-nos uma música!",
