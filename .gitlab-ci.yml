@@ -23,12 +23,12 @@ variables:
 dast:
   stage: scan
   variables:
-    DAST_WEBSITE: https://dev.kara.moe
+    DAST_WEBSITE: https://mugen.re
   tags:
     - $RUNNER_LINUX
   dast_configuration:
-    site_profile: "Kara.moe"
-    scanner_profile: "Kara.moe"
+    site_profile: "mugen.re"
+    scanner_profile: "mugen.re"
   rules:
     - if: $CI_COMMIT_BRANCH == "dev"
     - when: never
@@ -37,14 +37,6 @@ sast:
     SAST_EXCLUDED_PATHS: spec, test, tests, tmp, assets, build, img, util, packages, dist
     SECRET_DETECTION_EXCLUDED_PATHS: doc, spec, test, tests, .md, node_modules, yarn.lock, kmexplorer/node_modules, dist, .yarn
 semgrep-sast:
-  interruptible: true
-  stage: scan
-  tags:
-    - $RUNNER_LINUX
-  rules:
-    - if: $CI_COMMIT_BRANCH == "dev"
-    - when: never
-nodejs-scan-sast:
   interruptible: true
   stage: scan
   tags:

@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 
-main_host="https://kara.moe"
+main_host="https://mugen.re"
 
 # No media on gitpod, delegate previews to main deployment
 if [[ ${1:-} == "undo" ]]; then

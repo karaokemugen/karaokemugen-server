@@ -12,7 +12,7 @@ System:
     ffmpeg:
       Linux: /usr/bin/ffmpeg
   Repositories:
-    - Name: kara.moe
+    - Name: mugen.re
       Online: true
       Enabled: true
       BaseDir: 'data/git'

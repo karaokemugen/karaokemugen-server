@@ -2,12 +2,12 @@
 
 This is the online server component of Karaoke Mugen.
 
-Check its main instance at https://kara.moe
+Check its main instance at https://mugen.re
 
 Features :
 
 - Allow people to browse through a karaoke database
-- Expose karaoke sessions to the public via a room code based on subdomain (like abcd.kara.moe)
+- Expose karaoke sessions to the public via a room code based on subdomain (like abcd.mugen.re)
 - Offer access to the karaoke database online through an API similar to KM App. Also serves associated files.
 - Centralize stats uploaded by Karaoke Mugen instances
 - More news at 11.
@@ -79,10 +79,10 @@ KM Server uses git to keep a karaoke base up to date. Setup a git project on git
 ```yaml
 System:
   Repositories:
-    - Name: kara.moe
+    - Name: mugen.re
       Enabled: true
       BaseDir: app/karaokebase/git
-      FullArchiveURL: https://kara.moe/downloads/master.zip # URL to the complete repository as zip
+      FullArchiveURL: https://mugen.re/downloads/master.zip # URL to the complete repository as zip
       SourceArchiveURL: https://gitlab.com/karaokemugen/bases/karaokebase/-/archive/master/karaokebase-master.zip
       Path: 
         Medias: 
