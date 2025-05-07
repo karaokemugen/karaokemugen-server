@@ -82,7 +82,7 @@ export const defaults: Config = {
 				Title: '[Inbox] $kara',
 				Labels: ['To Add'],
 				Description: `
-A new karaoke has been sent to the inbox. 
+A new karaoke has been sent to the inbox.
 
 
 # Karaoke data
@@ -127,7 +127,7 @@ A new karaoke has been sent to the inbox.
 **Collections** : $collections
 
 
-**Tag(s)** : Misc: $tags - Famillies: $families - Genres: $genres - Platforms: $platforms - Origins: $origins - Warnings: $warnings
+**Tag(s)** : Misc: $tags - Video Contents: $families - Genres: $genres - Platforms: $platforms - Origins: $origins - Warnings: $warnings
 
 
 **Songwriter(s)** : $songwriter

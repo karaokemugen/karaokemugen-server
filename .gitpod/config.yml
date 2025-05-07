@@ -59,10 +59,7 @@ Gitlab:
       Labels:
         - to integrate
       Description: >
-        A new karaoke has been sent to the $instance team inbox. Please integrate it as soon as possible if it meets the required quality criteria.
-
-
-        The files (.kara, video, .ass and serial if necessary) are present in the following location of your FTP account: kmpublic / inbox
+        A new karaoke has been sent to the inbox.
 
 
         # Karaoke data
@@ -107,6 +104,9 @@ Gitlab:
         **Duration** : $duration
 
 
+        **From Display Type** : $fromDisplayType
+
+
         **Comment** : $comment
 
     Edit:
@@ -114,7 +114,7 @@ Gitlab:
       Labels:
         - to integrate
       Description: >
-        A proposal to modify a karaoke has been sent. You will find all the new files in the inbox.
+        Someone suggested a karaoke edit. You will find all the new files in the inbox.
 
 
         # Karaoke data
@@ -150,7 +150,7 @@ Gitlab:
         **Singer(s)** : $singer
 
 
-        **Tag(s)** : Misc: $tags - Video Contents: $families - Genres: $genres - Platforms: $platforms - Origins: $origins
+        **Tag(s)** : Misc: $tags - Famillies: $families - Genres: $genres - Platforms: $platforms - Origins: $origins - Warnings: $warnings
 
 
         **Songwriter(s)** : $songwriter
@@ -163,6 +163,9 @@ Gitlab:
 
 
         **Duration** : $duration
+
+
+        **From Display Type** : $fromDisplayType
 
 
         **Comment** : $comment
