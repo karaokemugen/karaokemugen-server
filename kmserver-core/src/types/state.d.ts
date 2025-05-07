@@ -29,5 +29,6 @@ export interface State {
 		validate?: boolean,
 		debug?: boolean,
 		staticServe?: boolean
-	}
+	},
+	DBReady: boolean;
 }

@@ -10816,6 +10816,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jschardet@npm:^3.1.4":
+  version: 3.1.4
+  resolution: "jschardet@npm:3.1.4"
+  checksum: 30a1dfe2d0bbdfa4e641827ac31173e8b25c533d519d45edfe15091db8ec4737715de2daa13bc49037b74b3812778b7a43b6f6c94bf081df3566b133a43e98ec
+  languageName: node
+  linkType: hard
+
 "jsdoc-type-pratt-parser@npm:^4.0.0, jsdoc-type-pratt-parser@npm:~4.1.0":
   version: 4.1.0
   resolution: "jsdoc-type-pratt-parser@npm:4.1.0"
@@ -11223,6 +11230,7 @@ __metadata:
     i18next: ^23.12.2
     i18next-fs-backend: ^2.3.2
     js-yaml: ^4.1.0
+    jschardet: ^3.1.4
     jsonwebtoken: ^9.0.2
     kar-to-ass: ^1.0.11
     kbp2ass: ^1.1.3

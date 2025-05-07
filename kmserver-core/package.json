@@ -83,6 +83,7 @@
     "i18next": "^23.12.2",
     "i18next-fs-backend": "^2.3.2",
     "js-yaml": "^4.1.0",
+    "jschardet": "^3.1.4",
     "jsonwebtoken": "^9.0.2",
     "kar-to-ass": "^1.0.11",
     "kbp2ass": "^1.1.3",

@@ -10,6 +10,8 @@ const pjson = JSON.parse(readFileSync(resolve(findWorkspaceRoot(), 'kmserver-cor
 // Internal settings
 let state: State = {
 	os: process.platform,
+	// DBReady has no use yet on KMServer
+	DBReady: true,
 	opt: {
 		generateDB: false,
 		reset: false,
