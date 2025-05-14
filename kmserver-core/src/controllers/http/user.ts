@@ -84,7 +84,7 @@ export default function userController(router: Router) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		})
-		.delete(requireAuth, requireValidUser, updateLoginTime, async (req: any, res) => {
+		.delete(requireAuth, requireValidUser, async (req: any, res) => {
 			try {
 				await removeUser(req.authToken.username);
 				res.send(APIMessage('USER_DELETED'));
