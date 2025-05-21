@@ -276,7 +276,7 @@
 
 	const { locale, t } = useI18n();
 	const conf = useRuntimeConfig();
-	const instanceName = conf.public.INSTANCE_NAME;
+	const instanceName = conf.public.host;
 	const loginApi = useAuthStore().login;
 
 	const toast = useToast();

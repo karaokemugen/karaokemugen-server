@@ -53,7 +53,7 @@
 	const { search } = storeToRefs(useMenubarStore());
 	const { setSearch, setResultsCount } = useMenubarStore();
 	const conf = useRuntimeConfig();
-	const usersEnabled = conf.public.USERS;
+	const usersEnabled = conf.public.usersEnabled;
 
 	const loading = ref(true);
 	const mounted = ref(false);

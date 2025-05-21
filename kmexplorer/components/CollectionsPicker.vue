@@ -37,7 +37,7 @@
 	const { setEnabledCollections } = useLocalStorageStore();
 
 	const conf = useRuntimeConfig();
-	const instanceName = conf.public.INSTANCE_NAME;
+	const instanceName = conf.public.host;
 
 	defineProps<{
 		label: string

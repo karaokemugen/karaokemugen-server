@@ -24,7 +24,7 @@
 	const { user } = storeToRefs(useAuthStore());
 
 	const conf = useRuntimeConfig();
-	const usersEnabled = conf.public.USERS;
+	const usersEnabled = conf.public.usersEnabled;
 
 	if (!usersEnabled || !user) {
 		throw createError({ statusCode: 404 });

@@ -724,8 +724,8 @@
 	const { setToken } = useAuthStore();
 	const { openModal } = useModalStore();
 	const conf = useRuntimeConfig();
-	const instanceName = conf.public.INSTANCE_NAME;
-	const apiUrl = conf.public.API_URL;
+	const instanceName = conf.public.host;
+	const apiUrl = conf.public.apiUrl;
 
 	const { locale } = useI18n();
 

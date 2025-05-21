@@ -41,7 +41,7 @@
 	const { loggedIn, user:userConnected } = storeToRefs(useAuthStore());
 
 	const conf = useRuntimeConfig();
-	const apiUrl = conf.public.API_URL;
+	const apiUrl = conf.public.apiUrl;
 
 	const viewingSelf = computed(() => loggedIn.value && props.user.login === userConnected?.value?.login);
 </script>

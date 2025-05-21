@@ -10,12 +10,37 @@ import { supportedFiles } from '../kmserver-core/src/lib/utils/constants';
 import { sentryDSN } from '../kmserver-core/src/utils/constants';
 import { defaults } from '../kmserver-core/src/utils/defaultSettings';
 
-const file = readFileSync(resolve('../app/config.yml'), 'utf-8');
-const conf = merge(defaults, load(file)) as Config;
-
 const production = process.env.NODE_ENV === 'production';
 
-const apiUrl = `http${conf.API.Secure ? 's' : ''}://${conf.API.Host}${conf.API.Port ? `:${conf.API.Port}` : ''}/`;
+let apiUrl = '/';
+
+let properties = {};
+if (!production) {
+	const file = readFileSync(resolve('../app/config.yml'), 'utf-8');
+	const conf = merge(defaults, load(file)) as Config;
+	apiUrl = `http${conf.API.Secure ? 's' : ''}://${conf.API.Host}${conf.API.Port ? `:${conf.API.Port}` : ''}/`;
+	properties = {
+		supportedMedias:
+			conf.KaraExplorer.SupportedMedias && conf.KaraExplorer.SupportedMedias?.length > 0
+				? conf.KaraExplorer.SupportedMedias
+				: ([] as string[]).concat(supportedFiles.video, supportedFiles.audio),
+		importEnabled: conf.KaraExplorer.Import,
+		inProgressSongsList: conf.KaraExplorer.InProgressSongsList,
+		discordLink: conf.KaraExplorer.DiscordURL,
+		discourseLink: conf.KaraExplorer.DiscourseURL,
+		hardsubUrl: conf.Hardsub.Url ? `${conf.Hardsub.Url}/` : apiUrl,
+		host: conf.API.Host,
+		explorerProtocol: `http${conf.KaraExplorer.Secure ? 's' : ''}`,
+		explorerHost: conf.KaraExplorer.Host,
+		explorerTagline: conf.KaraExplorer.Tagline,
+		bannerBan: conf.Users.BannerBan,
+		usersEnabled: conf.Users.Enabled,
+		suggestionsEnabled: conf.Suggestions.Enabled,
+		defaultCollections: conf.System.DefaultCollections,
+		gitlabEnabled: conf.Gitlab?.Enabled,
+		addRepoToModalInMenu: conf.KaraExplorer.AddRepoModalInMenu,
+	}
+}
 
 const nuxtConfig = defineNuxtConfig({
 	dev: !production,
@@ -28,28 +53,10 @@ const nuxtConfig = defineNuxtConfig({
 
 	runtimeConfig: {
 		public: {
-			KM_IMPORT: conf.KaraExplorer.Import,
-			IN_PROGRESS_SONGS_LIST: conf.KaraExplorer.InProgressSongsList,
-			DISCORD_LINK: conf.KaraExplorer.DiscordURL,
-			DISCOURSE_LINK: conf.KaraExplorer.DiscourseURL,
-			SUPPORTED_LYRICS: supportedFiles.lyrics,
-			SUPPORTED_MEDIAS:
-				conf.KaraExplorer.SupportedMedias && conf.KaraExplorer.SupportedMedias?.length > 0
-					? conf.KaraExplorer.SupportedMedias
-					: ([] as string[]).concat(supportedFiles.video, supportedFiles.audio),
-			SUPPORTED_AUDIO: supportedFiles.audio,
-			API_URL: apiUrl,
-			HARDSUB_URL: conf.Hardsub.Url ? `${conf.Hardsub.Url}/` : apiUrl,
-			INSTANCE_NAME: conf.API.Host,
-			EXPLORER_PROTOCOL: `http${conf.KaraExplorer.Secure ? 's' : ''}`,
-			EXPLORER_HOST: conf.KaraExplorer.Host,
-			EXPLORER_TAGLINE: conf.KaraExplorer.Tagline,
-			BANNER_BAN: conf.Users.BannerBan,
-			USERS: conf.Users.Enabled,
-			SUGGESTIONS: conf.Suggestions.Enabled,
-			DEFAULT_COLLECTIONS: conf.System.DefaultCollections,
-			GITLAB: conf.Gitlab?.Enabled,
-			ADD_REPO_MODAL_IN_MENU: conf.KaraExplorer.AddRepoModalInMenu,
+			...properties,
+			supportedLyrics: supportedFiles.lyrics,
+			supportedAudio: supportedFiles.audio,
+			apiUrl: apiUrl,
 			sentry: {
 				disabled: Boolean(process.env.SENTRY_TEST),
 				dsn: process.env.SENTRY_DSN || sentryDSN,
@@ -147,25 +154,6 @@ const nuxtConfig = defineNuxtConfig({
 			htmlAttrs: {
 				class: ['has-navbar-fixed-top'],
 			},
-			meta: [
-				{ charset: 'utf-8' },
-				{ hid: 'viewport', name: 'viewport', content: 'width=device-width, initial-scale=1' },
-				{ hid: 'twitter:card', name: 'twitter:card', content: 'summary' },
-				{ hid: 'twitter:site', name: 'twitter:site', content: '@KaraokeMugen' },
-				{ hid: 'twitter:title', name: 'twitter:title', content: conf.KaraExplorer.Tagline },
-				{ hid: 'description', name: 'description', content: conf.KaraExplorer.Tagline },
-				{ hid: 'theme-color', name: 'theme-color', content: '#375a7f' },
-				{ hid: 'og:title', property: 'og:title', content: conf.KaraExplorer.Host },
-				{ hid: 'og:description', property: 'og:description', content: conf.KaraExplorer.Tagline },
-				{ hid: 'og:type', property: 'og:type', content: 'website' },
-				{
-					hid: 'og:image',
-					property: 'og:image',
-					content:
-						'https://gitlab.com/karaokemugen/main/-/raw/master/Resources/banniere/banner-website-2021b.png',
-				},
-				{ hid: 'author', name: 'author', content: 'Karaoke Mugen contributors' },
-			],
 			link: [{ rel: 'author', href: '/humans.txt' }],
 		},
 	},

@@ -36,7 +36,7 @@
 		active: boolean
 	}>();
 
-	const explorerHost = useRuntimeConfig().public.EXPLORER_HOST;
+	const explorerHost = useRuntimeConfig().public.explorerHost;
 	const emit = defineEmits<{(e: 'close'): void}>();
 
 	function submitForm(): void {

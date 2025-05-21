@@ -192,9 +192,9 @@
 	const error = ref(false);
 
 	const conf = useRuntimeConfig();
-	const explorerProtocol = conf.public.EXPLORER_PROTOCOL;
-	const explorerHost = conf.public.EXPLORER_HOST;
-	const explorerTagline = conf.public.EXPLORER_TAGLINE;
+	const explorerProtocol = conf.public.explorerProtocol;
+	const explorerHost = conf.public.explorerHost as string;
+	const explorerTagline = conf.public.explorerTagline as string;
 
 	const { enabledCollections } = storeToRefs(useLocalStorageStore());
 	const { setAutoplay } = useLocalStorageStore();
@@ -204,6 +204,21 @@
 	const { push } = useRouter();
 
 	const { t } = useI18n();
+
+	useSeoMeta({
+		charset: 'utf-8',
+		viewport: 'width=device-width, initial-scale=1',
+		twitterCard: 'summary',
+		twitterSite: '@KaraokeMugen',
+		twitterTitle: explorerTagline,
+		description: explorerTagline,
+		themeColor: '#375a7f',
+		ogTitle: explorerHost,
+		ogDescription: explorerTagline,
+		ogType: 'website',
+		ogImage: 'https://gitlab.com/karaokemugen/main/-/raw/master/Resources/banniere/banner-website-2021b.png',
+		author: 'Karaoke Mugen contributors',
+	});
 
 	definePageMeta({
 		keepalive: {

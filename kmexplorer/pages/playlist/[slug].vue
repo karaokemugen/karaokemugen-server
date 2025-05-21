@@ -154,7 +154,7 @@
 	const countBannerDisplay = 25;
 	const chunkSize = 300;
 
-	const explorerHost = useRuntimeConfig().public.EXPLORER_HOST;
+	const explorerHost = useRuntimeConfig().public.explorerHost;
 
 	const { createEditPlaylist, deletePlaylist } = storeToRefs(useModalStore());
 	const { closeModal, openModal } = useModalStore();

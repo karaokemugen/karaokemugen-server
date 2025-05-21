@@ -71,11 +71,11 @@
 	const { setToken } = useAuthStore();
 
 	const conf = useRuntimeConfig();
-	const hardsubUrl = conf.public.HARDSUB_URL;
+	const hardsubUrl = conf.public.hardsubUrl;
 
 	const previews = computed (() => {
 		const arr: string[] = [`${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`];
-		if (conf.public.SUPPORTED_AUDIO.some(extension => props.karaoke.mediafile.endsWith(extension))) {
+		if (conf.public.supportedAudio.some(extension => props.karaoke.mediafile.endsWith(extension))) {
 			return arr;
 		} else {
 			return [

@@ -181,7 +181,7 @@
 	const { push } = useRouter();
 
 	const conf = useRuntimeConfig();
-	const bannerBanValue = conf.public.BANNER_BAN;
+	const bannerBanValue = conf.public.bannerBan;
 
 	const live = computed(() => isPlayable(props.karaoke, user?.value?.roles?.admin));
 	const title = computed(() => getTitleInLocale(props.karaoke.titles, props.karaoke.titles_default_language));

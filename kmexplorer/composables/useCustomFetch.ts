@@ -31,7 +31,7 @@ export const useCustomFetchAsync = <
 	const auth = useAuthStore();
 	const nuxt = useNuxtApp();
 	return useFetch<ResT, ErrorT, ReqT, Method, _ResT, DataT, PickKeys, DefaultT>(request, {
-		baseURL: nuxt.$config.public.API_URL,
+		baseURL: nuxt.$config.public.apiUrl,
 		headers: {
 			authorization: auth.token || '',
 			...opts?.headers,
@@ -63,7 +63,7 @@ export const useCustomFetch = <T = unknown, R extends NitroFetchRequest = NitroF
 	const auth = useAuthStore();
 	const nuxt = useNuxtApp();
 	return $fetch<T, R>(request, {
-		baseURL: nuxt.$config.public.API_URL,
+		baseURL: nuxt.$config.public.apiUrl,
 		headers: {
 			authorization: auth.token || '',
 			...opts?.headers

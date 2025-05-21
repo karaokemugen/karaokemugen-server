@@ -71,8 +71,8 @@
 	import { useAuthStore } from '~/store/auth';
 
 	const conf = useRuntimeConfig();
-	const apiUrl = conf.public.API_URL;
-	const hardsubUrl = conf.public.HARDSUB_URL;
+	const apiUrl = conf.public.apiUrl;
+	const hardsubUrl = conf.public.hardsubUrl;
 
 	const props = defineProps<{
 		active: boolean,

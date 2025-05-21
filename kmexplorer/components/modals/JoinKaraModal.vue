@@ -46,8 +46,8 @@
 	const error = ref(false);
 
 	const conf = useRuntimeConfig();
-	const explorerProtocol = conf.public.EXPLORER_PROTOCOL;
-	const explorerHost = conf.public.EXPLORER_HOST;
+	const explorerProtocol = conf.public.explorerProtocol;
+	const explorerHost = conf.public.explorerHost;
 
 	async function submitForm(): Promise<void> {
 		if (token.value) {

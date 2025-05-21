@@ -72,7 +72,7 @@
 	const { loggedIn, user } = storeToRefs(useAuthStore());
 
 	const conf = useRuntimeConfig();
-	const hardsubUrl = conf.public.HARDSUB_URL;
+	const hardsubUrl = conf.public.hardsubUrl;
 
 	const canEditPlaylist = computed(() =>
 		loggedIn?.value &&
@@ -84,7 +84,7 @@
 		return getTitleInLocale(props.karaoke.titles, props.karaoke.titles_default_language);
 	});
 	const images = computed((): string[] => {
-		return conf.public.SUPPORTED_AUDIO.some(extension => props.karaoke.mediafile.endsWith(extension))
+		return conf.public.supportedAudio.some(extension => props.karaoke.mediafile.endsWith(extension))
 			? [`${hardsubUrl}previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`]
 			: [
 				`${hardsubUrl}previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`,

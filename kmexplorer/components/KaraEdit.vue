@@ -750,9 +750,9 @@
 	const subfileInput = ref<HTMLInputElement>();
 
 	const conf = useRuntimeConfig();
-	const supportedLyrics = conf.public.SUPPORTED_LYRICS;
-	const supportedMedias = conf.public.SUPPORTED_MEDIAS;
-	const instanceName = conf.public.INSTANCE_NAME;
+	const supportedLyrics = conf.public.supportedLyrics;
+	const supportedMedias = conf.public.supportedMedias;
+	const instanceName = conf.public.host;
 
 	const { params } = useRoute();
 	const { push } = useRouter();

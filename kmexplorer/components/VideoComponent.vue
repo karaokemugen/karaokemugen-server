@@ -17,7 +17,7 @@
 	import 'video.js/dist/video-js.css';
 	import { useLocalStorageStore } from '~/store/localStorage';
 
-	const explorerHost = useRuntimeConfig().public.EXPLORER_HOST;
+	const explorerHost = useRuntimeConfig().public.explorerHost;
 
 	const { playerVolume, autoplay } = storeToRefs(useLocalStorageStore());
 	const { setPlayerVolume, setAutoplay } = useLocalStorageStore();

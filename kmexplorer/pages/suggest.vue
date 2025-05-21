@@ -107,7 +107,7 @@
 	const { closeModal, openModal } = useModalStore();
 
 	const conf = useRuntimeConfig();
-	const gitlab = conf.public.GITLAB;
+	const gitlab = conf.public.gitlabEnabled;
 
 	const route = useRoute();
 

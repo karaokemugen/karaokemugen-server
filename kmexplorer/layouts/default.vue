@@ -1123,14 +1123,14 @@
 	import { useModalStore } from '~/store/modal';
 
 	const conf = useRuntimeConfig();
-	const import_enabled = conf.public.KM_IMPORT;
-	const explorerProtocol = conf.public.EXPLORER_PROTOCOL;
-	const explorerHost = conf.public.EXPLORER_HOST;
-	const discordLink = conf.public.DISCORD_LINK;
-	const discourseLink = conf.public.DISCOURSE_LINK;
-	const usersEnabled = conf.public.USERS;
-	const suggestions = conf.public.SUGGESTIONS;
-	const addRepoModalInMenu = conf.public.ADD_REPO_MODAL_IN_MENU;
+	const import_enabled = conf.public.importEnabled;
+	const explorerProtocol = conf.public.explorerProtocol;
+	const explorerHost = conf.public.explorerHost;
+	const discordLink = conf.public.discordLink;
+	const discourseLink = conf.public.discourseLink;
+	const usersEnabled = conf.public.usersEnabled;
+	const suggestions = conf.public.suggestionsEnabled;
+	const addRepoModalInMenu = conf.public.addRepoToModalInMenu;
 
 	type TypeMenu = 'community' | 'account' | 'database';
 

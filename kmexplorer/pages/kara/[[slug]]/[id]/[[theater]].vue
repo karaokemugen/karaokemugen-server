@@ -132,8 +132,8 @@
 	const playlists = ref<DBPL[]>([]);
 
 	const conf = useRuntimeConfig();
-	const apiUrl = conf.public.API_URL;
-	const hardsubUrl = conf.public.HARDSUB_URL;
+	const apiUrl = conf.public.apiUrl;
+	const hardsubUrl = conf.public.hardsubUrl;
 
 	const route = useRoute();
 	const requestURL = useRequestURL();
@@ -196,7 +196,7 @@
 		])
 	});
 
-	const mp3 = computed(() => conf.public.SUPPORTED_AUDIO.some(extension => karaoke.value?.mediafile.endsWith(extension)));
+	const mp3 = computed(() => conf.public.supportedAudio.some(extension => karaoke.value?.mediafile.endsWith(extension)));
 	const live = computed(() => karaoke.value && isPlayable(karaoke.value, user?.value?.roles?.admin));
 
 	watch(() => [route.query, route.params], refresh);

@@ -225,8 +225,8 @@
 	const { t, locale } = useI18n();
 
 	const conf = useRuntimeConfig();
-	const usersEnabled = conf.public.USERS;
-	const apiUrl = conf.public.API_URL;
+	const usersEnabled = conf.public.usersEnabled;
+	const apiUrl = conf.public.apiUrl;
 
 	const viewingSelf = computed(() => loggedIn.value && (params.login === userConnected?.value?.login));
 	const canEdit = computed(() => (loggedIn.value && !!userConnected?.value?.roles?.admin) || viewingSelf.value);

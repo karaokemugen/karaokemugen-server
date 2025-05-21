@@ -23,9 +23,9 @@
 						{{ $t('kara.import.documentation_link', { instance: instanceName }) }}
 					</nuxt-link>
 				</li>
-				<li v-if="in_progress_songs_list">
+				<li v-if="inProgressSongsList">
 					<nuxt-link
-						:href="in_progress_songs_list"
+						:href="inProgressSongsList"
 					>
 						{{ $t('kara.import.in_progress_link') }}
 					</nuxt-link>
@@ -66,15 +66,15 @@
 	const { t } = useI18n();
 
 	const conf = useRuntimeConfig();
-	const in_progress_songs_list = config.public.IN_PROGRESS_SONGS_LIST;
-	const instanceName = conf.public.INSTANCE_NAME;
+	const inProgressSongsList = config.public.inProgressSongsList;
+	const instanceName = conf.public.host;
 	const kara = ref<DBKara>();
 	const manifest = ref<RepositoryManifestV2>();
 
 	definePageMeta({
 		validate: async () => {
 			const config = useRuntimeConfig();
-			return (config.public.KM_IMPORT as unknown as boolean);
+			return (config.public.importEnabled as unknown as boolean);
 		}
 	});
 

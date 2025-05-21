@@ -16,7 +16,7 @@ export const useLocalStorageStore = defineStore('localStorage', {
 			karas: [],
 			sendContactInfos: false,
 			hideSuggestionModal: false,
-			enabledCollections: useRuntimeConfig().public.DEFAULT_COLLECTIONS,
+			enabledCollections: useRuntimeConfig().public.defaultCollections,
 			playerVolume: 0.5,
 			autoplay: false,
 			banner: true,

@@ -54,7 +54,7 @@
 	const { locale } = useI18n();
 
 	const conf = useRuntimeConfig();
-	const hardsubUrl = conf.public.HARDSUB_URL;
+	const hardsubUrl = conf.public.hardsubUrl;
 
 	const mediaHardsubUrl = computed(() => {
 		return `${hardsubUrl}hardsubs/${props.karaoke.hardsubbed_mediafile}`;
