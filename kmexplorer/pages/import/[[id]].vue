@@ -23,9 +23,9 @@
 						{{ $t('kara.import.documentation_link', { instance: url.hostname }) }}
 					</nuxt-link>
 				</li>
-				<li v-if="config?.KaraExplorer.InProgressSongsList">
+				<li v-if="config?.Frontend.InProgressSongsList">
 					<nuxt-link
-						:href="config?.KaraExplorer.InProgressSongsList"
+						:href="config?.Frontend.InProgressSongsList"
 					>
 						{{ $t('kara.import.in_progress_link') }}
 					</nuxt-link>
@@ -72,7 +72,7 @@
 	const kara = ref<DBKara>();
 	const manifest = ref<RepositoryManifestV2>();
 
-	if (!config?.value?.KaraExplorer.Import) {
+	if (!config?.value?.Frontend.Import) {
 		throw createError({
 			statusCode: 404,
 			statusMessage: 'Page Not Found'

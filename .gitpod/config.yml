@@ -28,6 +28,12 @@ System:
           - staging/medias
 Frontend:
   Port: changeit_FrontendPort
+  Import: true
+  Suggestions: true
+  InProgressSongsList: changeit_karaokebase/-/issues?scope=all&state=opened&label_name[]=Doing
+  Secure: false
+  DiscourseURL: https://discourse.karaokes.moe
+  DiscordURL: https://karaokes.moe/discord
 API:
   Host: changeit_APIHost
   Port: 80
@@ -39,14 +45,6 @@ Shortener:
   Enabled: true
 Stats:
   Enabled: true
-KaraExplorer:
-  MediaLinks: true
-  Import: true
-  Suggestions: true
-  InProgressSongsList: changeit_karaokebase/-/issues?scope=all&state=opened&label_name[]=Doing
-  Secure: false
-  DiscourseURL: https://discourse.karaokes.moe
-  DiscordURL: https://karaokes.moe/discord
 Gitlab:
   Enabled: changeit_GitlabEnabled
   Token: changeit_GitlabToken

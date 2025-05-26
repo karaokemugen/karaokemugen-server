@@ -17,9 +17,19 @@ export interface Config {
 		FrontendRoot: string
 	},
 	Frontend: {
-		Port: number
-		Host: string
-		Secure: boolean
+		Port: number,
+		Host: string,
+		Secure: boolean,
+		Enabled: boolean,
+		Tagline: string,
+		DiscordURL?: string,
+		DiscourseURL?: string,
+		Import: boolean,
+		Suggestions: boolean,
+		InProgressSongsList?: string,
+		SupportedMedias?: string [],
+		AddRepoModalInMenu: boolean,
+		DefaultCollections?: string[],
 	},
 	Hardsub: {
 		Enabled: boolean
@@ -31,19 +41,6 @@ export interface Config {
 	},
 	Stats: {
 		Enabled: boolean,
-	},
-	KaraExplorer: {
-		Enabled: boolean
-		Tagline: string
-		DiscordURL?: string
-		DiscourseURL?: string
-		MediaLinks: boolean
-		Import: boolean
-		Suggestions: boolean
-		InProgressSongsList?: string
-		SupportedMedias?: string []
-		AddRepoModalInMenu: boolean
-		DefaultCollections?: string[],
 	},
 	Gitlab?: {
 		Enabled?: boolean,

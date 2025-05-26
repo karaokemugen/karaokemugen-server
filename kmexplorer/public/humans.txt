@@ -1,7 +1,7 @@
 /* TEAM */
 Guillaume Lebigot - Créateur KM, backend
 
-Florent Berthelot - Frontend, KMImport
+Florent Berthelot - Frontend
 
 Leon Lozahic - Frontend
 

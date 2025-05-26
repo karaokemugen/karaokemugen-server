@@ -31,7 +31,7 @@
 			</nuxt-link>
 		</h1>
 		<h2 class="subtitle">
-			{{ config?.KaraExplorer.Tagline }}
+			{{ config?.Frontend.Tagline }}
 		</h2>
 		<nuxt-link
 			class="button is-success button-play"
@@ -207,11 +207,11 @@
 		viewport: 'width=device-width, initial-scale=1',
 		twitterCard: 'summary',
 		twitterSite: '@KaraokeMugen',
-		twitterTitle: config?.value?.KaraExplorer.Tagline,
-		description: config?.value?.KaraExplorer.Tagline,
+		twitterTitle: config?.value?.Frontend.Tagline,
+		description: config?.value?.Frontend.Tagline,
 		themeColor: '#375a7f',
 		ogTitle: requestUrl.hostname,
-		ogDescription: config?.value?.KaraExplorer.Tagline,
+		ogDescription: config?.value?.Frontend.Tagline,
 		ogType: 'website',
 		ogImage: 'https://gitlab.com/karaokemugen/main/-/raw/master/Resources/banniere/banner-website-2021b.png',
 		author: 'Karaoke Mugen contributors',

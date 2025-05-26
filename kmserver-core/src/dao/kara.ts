@@ -129,7 +129,7 @@ function prepareKaraQuery(params: KaraParams) {
 		q.limitClause = `LIMIT ${params.random}`;
 	}
 	if (!params.ignoreCollections) {
-		for (const collection of (params.forceCollections || getConfig().KaraExplorer.DefaultCollections)) {
+		for (const collection of (params.forceCollections || getConfig().Frontend.DefaultCollections)) {
 			if (collection) q.collectionClauses.push(`'${collection}~${tagTypes.collections}' = ANY(ak.tid)`);
 		}
 	}

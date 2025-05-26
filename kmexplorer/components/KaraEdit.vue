@@ -766,8 +766,8 @@
 	const { t } = useI18n();
 	const toast = useToast();
 	const supportedMedias = 
-			config?.value?.KaraExplorer.SupportedMedias && config?.value?.KaraExplorer.SupportedMedias?.length > 0
-				? config?.value?.KaraExplorer.SupportedMedias
+			config?.value?.Frontend.SupportedMedias && config?.value?.Frontend.SupportedMedias?.length > 0
+				? config?.value?.Frontend.SupportedMedias
 				: ([] as string[]).concat(supportedFiles?.value?.video ?? [], supportedFiles?.value?.audio ?? []);
 
 	onMounted(async () => {

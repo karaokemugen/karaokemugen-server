@@ -108,7 +108,7 @@ export function initFrontend(listenPort: number) {
 		app.use('/banners', express.static(resolvedPath('Banners')));
 	}
 	// KMExplorer
-	if (conf.KaraExplorer.Enabled) {
+	if (conf.Frontend.Enabled) {
 		app.use('/previews', express.static(resolvedPath('Previews')));
 	}
 
@@ -121,7 +121,7 @@ export function initFrontend(listenPort: number) {
 		app.use(vhost(`*.${conf.Remote.BaseHost}`, initRemote()));
 	}
 	// KMExplorer
-	if (conf.KaraExplorer.Enabled) {
+	if (conf.Frontend.Enabled) {
 		startKMExplorer(app);
 	}
 	userSubSocketController(ws);
@@ -140,7 +140,7 @@ function api() {
 	PLController(apiRouter);
 	inboxController(apiRouter);
 	PMController(apiRouter);
-	if (conf.KaraExplorer.Import) KImportController(apiRouter);
+	if (conf.Frontend.Import) KImportController(apiRouter);
 	// Stats
 	if (conf.Stats.Enabled) statsController(apiRouter);
 	if (conf.Users.Enabled) {
@@ -148,6 +148,6 @@ function api() {
 		favoritesController(apiRouter);
 		authController(apiRouter);
 	}
-	if (conf.KaraExplorer.Suggestions) suggestionsController(apiRouter);
+	if (conf.Frontend.Suggestions) suggestionsController(apiRouter);
 	return apiRouter;
 }

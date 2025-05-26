@@ -149,8 +149,8 @@
 					</nuxt-link>
 				</client-only>
 				<nuxt-link
-					v-if="config?.KaraExplorer.DiscordURL"
-					:href="config?.KaraExplorer.DiscordURL"
+					v-if="config?.Frontend.DiscordURL"
+					:href="config?.Frontend.DiscordURL"
 					class="navbar-item"
 					@click="closeMenu"
 				>
@@ -161,8 +161,8 @@
 					{{ $t('menu.discord') }}
 				</nuxt-link>
 				<nuxt-link
-					v-if="config?.KaraExplorer.DiscourseURL"
-					:href="config?.KaraExplorer.DiscourseURL"
+					v-if="config?.Frontend.DiscourseURL"
+					:href="config?.Frontend.DiscourseURL"
 					class="navbar-item"
 					@click="closeMenu"
 				>
@@ -173,7 +173,7 @@
 					{{ $t('menu.discourse') }}
 				</nuxt-link>
 				<nuxt-link
-					v-if="config?.KaraExplorer.Import"
+					v-if="config?.Frontend.Import"
 					class="navbar-item"
 					to="/import"
 					@click="closeMenu"
@@ -185,7 +185,7 @@
 					{{ $t('menu.kara_import') }}
 				</nuxt-link>
 				<nuxt-link
-					v-if="config?.KaraExplorer.Suggestions"
+					v-if="config?.Frontend.Suggestions"
 					class="navbar-item"
 					to="/suggest"
 					@click="closeMenu"
@@ -538,7 +538,7 @@
 			<aside class="menu is-hidden-touch">
 				<ul class="menu-list">
 					<li
-						v-if="config?.KaraExplorer.AddRepoModalInMenu"
+						v-if="config?.Frontend.AddRepoModalInMenu"
 						class="addRepo"
 						:title="$t('modal.add_repository.label')"
 					>
@@ -874,8 +874,8 @@
 							</nuxt-link>
 						</client-only>
 						<nuxt-link
-							v-if="config?.KaraExplorer.DiscordURL"
-							:href="config?.KaraExplorer.DiscordURL"
+							v-if="config?.Frontend.DiscordURL"
+							:href="config?.Frontend.DiscordURL"
 							active-class="is-active"
 						>
 							<font-awesome-icon
@@ -885,8 +885,8 @@
 							{{ $t('menu.discord') }}
 						</nuxt-link>
 						<nuxt-link
-							v-if="config?.KaraExplorer.DiscourseURL"
-							:href="config?.KaraExplorer.DiscourseURL"
+							v-if="config?.Frontend.DiscourseURL"
+							:href="config?.Frontend.DiscourseURL"
 							active-class="is-active"
 						>
 							<font-awesome-icon
@@ -898,7 +898,7 @@
 					</li>
 					<li>
 						<nuxt-link
-							v-if="config?.KaraExplorer.Import"
+							v-if="config?.Frontend.Import"
 							to="/import"
 							active-class="is-active"
 						>
@@ -911,7 +911,7 @@
 					</li>
 					<li>
 						<nuxt-link
-							v-if="config?.KaraExplorer.Suggestions"
+							v-if="config?.Frontend.Suggestions"
 							to="/suggest"
 							active-class="is-active"
 						>
@@ -1201,7 +1201,7 @@
 	async function getConfig() {
 		const data = await useCustomFetch<Config>('/api/config');
 		setConfig(data);
-		if (enabledCollections.value.length === 0) setEnabledCollections(data.KaraExplorer.DefaultCollections);
+		if (enabledCollections.value.length === 0) setEnabledCollections(data.Frontend.DefaultCollections);
 		const { supportedFiles } = await useCustomFetch<{ supportedFiles: supportedFilesType }>('/api/supportedStuff');
 		setSupportedFiles(supportedFiles);
 	}

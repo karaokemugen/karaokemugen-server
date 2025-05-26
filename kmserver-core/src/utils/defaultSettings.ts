@@ -49,6 +49,11 @@ export const defaults: Config = {
 		Port: 1350,
 		Secure: true,
 		Host: 'localhost',
+		Enabled: true,
+		Tagline: 'Explore! Find! Sing!',
+		Import: true,
+		Suggestions: true,
+		AddRepoModalInMenu: false
 	},
 	Hardsub: {
 		Enabled: true
@@ -59,14 +64,6 @@ export const defaults: Config = {
 	},
 	Stats: {
 		Enabled: true
-	},
-	KaraExplorer: {
-		Enabled: true,
-		Tagline: 'Explore! Find! Sing!',
-		MediaLinks: true,
-		Import: true,
-		Suggestions: true,
-		AddRepoModalInMenu: false
 	},
 	Gitlab: {
 		IssueTemplate: {
