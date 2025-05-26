@@ -69,10 +69,11 @@
 <script setup lang="ts">
 	import type { DBKara } from '%/lib/types/database/kara';
 	import { useAuthStore } from '~/store/auth';
+	import { useConfigStore } from '~/store/config';
 
-	const conf = useRuntimeConfig();
-	const apiUrl = conf.public.apiUrl;
-	const hardsubUrl = conf.public.hardsubUrl;
+	const { config } = storeToRefs(useConfigStore());
+	const url = useRequestURL();
+	const hardsubUrl = config.value.Hardsub.Url ?? url.origin;
 
 	const props = defineProps<{
 		active: boolean,
@@ -96,20 +97,20 @@
 		return '';
 	});
 	const jsonUrl = computed(() => {
-		return `${apiUrl}downloads/karaokes/${encodeURIComponent(props.karaoke.karafile)}`;
+		return `${url.origin}/downloads/karaokes/${encodeURIComponent(props.karaoke.karafile)}`;
 	});
 	const mediaUrl = computed(() => {
-		return `${apiUrl}downloads/medias/${encodeURIComponent(props.karaoke.mediafile)}`;
+		return `${url.origin}/downloads/medias/${encodeURIComponent(props.karaoke.mediafile)}`;
 	});
 	const mediaHardsubUrl = computed(() => {
-		return `${hardsubUrl}hardsubs/${props.karaoke.hardsubbed_mediafile}`;
+		return `${hardsubUrl}/hardsubs/${props.karaoke.hardsubbed_mediafile}`;
 	});
 	const hardsubMediaFileName = computed(() => {
 		const filename = props.karaoke.mediafile.substring(0, props.karaoke.mediafile.lastIndexOf('.')) || props.karaoke.mediafile;
 		return `${filename}.mp4`;
 	});
 	const subtitlesUrl = computed(() => {
-		return `${apiUrl}downloads/lyrics/${encodeURIComponent(props.karaoke.lyrics_infos[0].filename)}`;
+		return `${url.origin}/downloads/lyrics/${encodeURIComponent(props.karaoke.lyrics_infos[0].filename)}`;
 	});
 	const live = computed(() => isPlayable(props.karaoke, user?.value?.roles?.admin));
 

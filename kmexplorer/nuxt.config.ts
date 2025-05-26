@@ -1,46 +1,7 @@
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
-
-import { load } from 'js-yaml';
-import merge from 'lodash/merge';
-
-import type { Config } from '../kmserver-core/src/types/config';
 import { defineNuxtConfig } from 'nuxt/config';
-import { supportedFiles } from '../kmserver-core/src/lib/utils/constants';
 import { sentryDSN } from '../kmserver-core/src/utils/constants';
-import { defaults } from '../kmserver-core/src/utils/defaultSettings';
 
 const production = process.env.NODE_ENV === 'production';
-
-let apiUrl = '/';
-
-let properties = {};
-if (!production) {
-	const file = readFileSync(resolve('../app/config.yml'), 'utf-8');
-	const conf = merge(defaults, load(file)) as Config;
-	apiUrl = `http${conf.API.Secure ? 's' : ''}://${conf.API.Host}${conf.API.Port ? `:${conf.API.Port}` : ''}/`;
-	properties = {
-		supportedMedias:
-			conf.KaraExplorer.SupportedMedias && conf.KaraExplorer.SupportedMedias?.length > 0
-				? conf.KaraExplorer.SupportedMedias
-				: ([] as string[]).concat(supportedFiles.video, supportedFiles.audio),
-		importEnabled: conf.KaraExplorer.Import,
-		inProgressSongsList: conf.KaraExplorer.InProgressSongsList,
-		discordLink: conf.KaraExplorer.DiscordURL,
-		discourseLink: conf.KaraExplorer.DiscourseURL,
-		hardsubUrl: conf.Hardsub.Url ? `${conf.Hardsub.Url}/` : apiUrl,
-		host: conf.API.Host,
-		explorerProtocol: `http${conf.KaraExplorer.Secure ? 's' : ''}`,
-		explorerHost: conf.KaraExplorer.Host,
-		explorerTagline: conf.KaraExplorer.Tagline,
-		bannerBan: conf.Users.BannerBan,
-		usersEnabled: conf.Users.Enabled,
-		suggestionsEnabled: conf.Suggestions.Enabled,
-		defaultCollections: conf.System.DefaultCollections,
-		gitlabEnabled: conf.Gitlab?.Enabled,
-		addRepoToModalInMenu: conf.KaraExplorer.AddRepoModalInMenu,
-	}
-}
 
 const nuxtConfig = defineNuxtConfig({
 	dev: !production,
@@ -49,14 +10,36 @@ const nuxtConfig = defineNuxtConfig({
 
 	nitro: {
 		preset: 'node',
+		devProxy: {
+            '/api': {
+                target: 'http://localhost:1350/api',
+                changeOrigin: true
+            },
+			'/previews': {
+                target: 'http://localhost:1350/previews',
+                changeOrigin: true
+            },
+			'/hardsubs': {
+                target: 'http://localhost:1350/hardsubs',
+                changeOrigin: true
+            },
+			'/banners': {
+                target: 'http://localhost:1350/banners',
+                changeOrigin: true
+            },
+			'/avatars': {
+                target: 'http://localhost:1350/avatars',
+                changeOrigin: true
+            },
+			'/downloads': {
+                target: 'http://localhost:1350/downloads',
+                changeOrigin: true
+            }
+        }
 	},
 
 	runtimeConfig: {
 		public: {
-			...properties,
-			supportedLyrics: supportedFiles.lyrics,
-			supportedAudio: supportedFiles.audio,
-			apiUrl: apiUrl,
 			sentry: {
 				disabled: Boolean(process.env.SENTRY_TEST),
 				dsn: process.env.SENTRY_DSN || sentryDSN,
@@ -217,7 +200,6 @@ const nuxtConfig = defineNuxtConfig({
 			},
 		],
 		restructureDir: false,
-		baseUrl: apiUrl,
 		lazy: true,
 		defaultLocale: 'en',
 		strategy: 'no_prefix',

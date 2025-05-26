@@ -51,13 +51,13 @@ export async function resetPasswordRequest(username: string) {
 			date: +(new Date().getTime() / 1000).toFixed(0)
 		});
 		const conf = getConfig();
-		
+
 		await sendMail(
 			i18n.t('MAIL.RESET_PASSWORD_REQUEST.SUBJECT', { lng: getUserLanguage(user) }),
 			i18n.t('MAIL.RESET_PASSWORD_REQUEST.BODY', {
 				username,
-				host: getConfig().API.Host,
-				url: `${conf.API.Secure ? 'https://' : 'http://'}${conf.API.Host}/user/${user.login}/resetPasswordRequest/${requestCode}`,
+				host: getConfig().Frontend.Host,
+				url: `${conf.Frontend.Secure ? 'https://' : 'http://'}${conf.Frontend.Host}/user/${user.login}/resetPasswordRequest/${requestCode}`,
 				lng: getUserLanguage(user)
 			}),
 			username,
@@ -85,7 +85,7 @@ export async function resetPassword(username: string, requestCode: string, newPa
 			i18n.t('MAIL.RESET_PASSWORD_DONE.SUBJECT', { lng: getUserLanguage(user) }),
 			i18n.t('MAIL.RESET_PASSWORD_DONE.BODY', {
 				username,
-				host: getConfig().API.Host,
+				host: getConfig().Frontend.Host,
 				lng: getUserLanguage(user)
 			}),
 			username,

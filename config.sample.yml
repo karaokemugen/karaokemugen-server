@@ -36,10 +36,8 @@ System:
           - repos/staging/medias
 Frontend:
   Port: 1350
-API:
-  Secure: false
   Host: localhost
-#  Port: 443
+  Secure: false
 Hardsub:
   Enabled: true
 Users:
@@ -51,15 +49,12 @@ Stats:
 Suggestions:
   Enabled: true
 KaraExplorer:
-  Secure: false
   MediaLinks: true
   Import: true
   InProgressSongsList: https://gitlab.com/karaokemugen/bases/karaokebase/-/issues?scope=all&state=opened&label_name[]=Work in progress
   AddRepoModalInMenu: false
   DiscourseURL: https://discourse.karaokes.moe
   DiscordURL: https://karaokes.moe/discord
-#  Port: 443
-  Host: localhost
 Gitlab:
   Enabled: true
   Token: xxx

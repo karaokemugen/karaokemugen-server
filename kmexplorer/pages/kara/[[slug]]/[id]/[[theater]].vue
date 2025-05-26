@@ -28,7 +28,7 @@
 				>
 					<div class="box">
 						<img
-							:src="`${hardsubUrl}previews/${karaoke?.kid}.${karaoke?.mediasize}.25.jpg`"
+							:src="`${hardsubUrl}/previews/${karaoke?.kid}.${karaoke?.mediasize}.25.jpg`"
 							alt=""
 						>
 						<div class="message is-info">
@@ -46,11 +46,11 @@
 					<div class="box">
 						<div class="imgGroup">
 							<img
-								:src="`${hardsubUrl}previews/${karaoke?.kid}.${karaoke?.mediasize}.33.jpg`"
+								:src="`${hardsubUrl}/previews/${karaoke?.kid}.${karaoke?.mediasize}.33.jpg`"
 								alt=""
 							>
 							<img
-								:src="`${hardsubUrl}previews/${karaoke?.kid}.${karaoke?.mediasize}.50.jpg`"
+								:src="`${hardsubUrl}/previews/${karaoke?.kid}.${karaoke?.mediasize}.50.jpg`"
 								alt=""
 							>
 						</div>
@@ -125,6 +125,7 @@
 	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
 	import slug from 'slug';
 	import { useAuthStore } from '~/store/auth';
+	import { useConfigStore } from '~/store/config';
 
 	const karaoke = ref<DBKara>();
 	const liveOpened = ref(false);
@@ -132,12 +133,11 @@
 	const playlists = ref<DBPL[]>([]);
 
 	const conf = useRuntimeConfig();
-	const apiUrl = conf.public.apiUrl;
-	const hardsubUrl = conf.public.hardsubUrl;
+	const { config, supportedFiles } = storeToRefs(useConfigStore());
+	const url = useRequestURL();
+	const hardsubUrl = config?.value?.Hardsub.Url ?? url.origin;
 
 	const route = useRoute();
-	const requestURL = useRequestURL();
-	requestURL.protocol = 'https:';
 	const { t } = useI18n();
 
 	const { user } = storeToRefs(useAuthStore());
@@ -180,23 +180,23 @@
 			{ hid: 'og:type', property: 'og:type', content: 'article' },
 			{ hid: 'og:description', property: 'og:description', content: t('layout.slogan') as string },
 			// @ts-expect-error: No. :c
-			{ hid: 'twitter:player', name: 'twitter:player', content: `${requestURL.origin}${requestURL.pathname}${requestURL.pathname.endsWith('/theater') ? '' : '/theater'}` },
+			{ hid: 'twitter:player', name: 'twitter:player', content: `${url.origin}${url.pathname}${url.pathname.endsWith('/theater') ? '' : '/theater'}` },
 			{ hid: 'twitter:player:height', name: 'twitter:player:height', content: '720' },
 			{ hid: 'twitter:player:width', name: 'twitter:player:width', content: '1280' },
 			// @ts-expect-error: No. :c
-			{ hid: 'og:image', property: 'og:image', content: karaoke.value?.warnings?.length ? `${apiUrl}banners/cropped.jpg` : `${hardsubUrl}previews/${karaoke.value?.kid}.${karaoke.value?.mediasize}.25.jpg` },
+			{ hid: 'og:image', property: 'og:image', content: karaoke.value?.warnings?.length ? `${url.origin}/banners/cropped.jpg` : `${hardsubUrl}/previews/${karaoke.value?.kid}.${karaoke.value?.mediasize}.25.jpg` },
 			// @ts-expect-error: rah :O
-			{ hid: 'twitter:image', name: 'twitter:image', content: karaoke.value?.warnings?.length ? `${apiUrl}banners/cropped.jpg` : `${hardsubUrl}previews/${karaoke.value?.kid}.${karaoke.value?.mediasize}.25.jpg` },
+			{ hid: 'twitter:image', name: 'twitter:image', content: karaoke.value?.warnings?.length ? `${url.origin}/banners/cropped.jpg` : `${hardsubUrl}/previews/${karaoke.value?.kid}.${karaoke.value?.mediasize}.25.jpg` },
 			// hardsub compatibility for apps that use youtube-dl for direct streaming (without breaking the card view as with og:type video) 
 			// twitter:player:stream assumes a raw stream and is checked before twitter:player https://github.com/ytdl-org/youtube-dl/blob/master/youtube_dl/extractor/generic.py#L3662
 			// @ts-expect-error: No. :c
-			{ hid: 'twitter:player:stream', name: 'twitter:player:stream', content: karaoke.value?.hardsubbed_mediafile && live.value ? `${hardsubUrl}hardsubs/${karaoke.value?.hardsubbed_mediafile}` : '' },
+			{ hid: 'twitter:player:stream', name: 'twitter:player:stream', content: karaoke.value?.hardsubbed_mediafile && live.value ? `${hardsubUrl}/hardsubs/${karaoke.value?.hardsubbed_mediafile}` : '' },
 
 		// The rest of meta tags is handled by KaraFullInfo.vue
 		])
 	});
 
-	const mp3 = computed(() => conf.public.supportedAudio.some(extension => karaoke.value?.mediafile.endsWith(extension)));
+	const mp3 = computed(() => supportedFiles?.value?.audio.some(extension => karaoke.value?.mediafile.endsWith(extension)));
 	const live = computed(() => karaoke.value && isPlayable(karaoke.value, user?.value?.roles?.admin));
 
 	watch(() => [route.query, route.params], refresh);

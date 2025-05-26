@@ -22,7 +22,7 @@
 			@click.prevent="() => openModal('addRepo')"
 		>
 			{{ $t('modal.add_repository.button') }}
-			{{ explorerHost }}
+			{{ requestUrl.hostname }}
 			<nuxt-link href="#">
 				<font-awesome-icon
 					:icon="['fas', 'folder-plus']"
@@ -31,7 +31,7 @@
 			</nuxt-link>
 		</h1>
 		<h2 class="subtitle">
-			{{ explorerTagline }}
+			{{ config?.KaraExplorer.Tagline }}
 		</h2>
 		<nuxt-link
 			class="button is-success button-play"
@@ -184,6 +184,7 @@
 	import { storeToRefs } from 'pinia';
 	import prettyBytes from 'pretty-bytes';
 	import slug from 'slug';
+	import { useConfigStore } from '~/store/config';
 	import { useLocalStorageStore } from '~/store/localStorage';
 	import { useMenubarStore } from '~/store/menubar';
 	import { useModalStore } from '~/store/modal';
@@ -191,18 +192,14 @@
 	const token = ref('');
 	const error = ref(false);
 
-	const conf = useRuntimeConfig();
-	const explorerProtocol = conf.public.explorerProtocol;
-	const explorerHost = conf.public.explorerHost as string;
-	const explorerTagline = conf.public.explorerTagline as string;
-
 	const { enabledCollections } = storeToRefs(useLocalStorageStore());
 	const { setAutoplay } = useLocalStorageStore();
 	const { search } = storeToRefs(useMenubarStore());
 	const { reset } = useMenubarStore();
 	const { openModal } = useModalStore();
 	const { push } = useRouter();
-
+	const { config } = storeToRefs(useConfigStore());
+	const requestUrl = useRequestURL();
 	const { t } = useI18n();
 
 	useSeoMeta({
@@ -210,11 +207,11 @@
 		viewport: 'width=device-width, initial-scale=1',
 		twitterCard: 'summary',
 		twitterSite: '@KaraokeMugen',
-		twitterTitle: explorerTagline,
-		description: explorerTagline,
+		twitterTitle: config.value?.KaraExplorer.Tagline,
+		description: config.value?.KaraExplorer.Tagline,
 		themeColor: '#375a7f',
-		ogTitle: explorerHost,
-		ogDescription: explorerTagline,
+		ogTitle: requestUrl.hostname,
+		ogDescription: config.value?.KaraExplorer.Tagline,
 		ogType: 'website',
 		ogImage: 'https://gitlab.com/karaokemugen/main/-/raw/master/Resources/banniere/banner-website-2021b.png',
 		author: 'Karaoke Mugen contributors',
@@ -246,7 +243,7 @@
 				if (/^https?:\/\//.test(token.value)) {
 					url = token.value;
 				} else {
-					url = `${explorerProtocol}://${token.value}.${explorerHost}`;
+					url = `${requestUrl.protocol}//${token.value}.${requestUrl.host}`;
 				}
 				await $fetch(url);
 				window.open(url, '_self');

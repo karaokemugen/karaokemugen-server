@@ -31,10 +31,10 @@
 							v-if="editedUser.avatar_file"
 							alt="Profile Picture"
 							class="img"
-							:src="editedUser.avatar_file.startsWith('data:') ? editedUser.avatar_file : `${apiUrl}avatars/${editedUser.avatar_file}`"
+							:src="editedUser.avatar_file.startsWith('data:') ? editedUser.avatar_file : `${url.origin}/avatars/${editedUser.avatar_file}`"
 						>
 						<div class="data">
-							<span class="login">{{ `${editedUser.login}@${instanceName}` }}</span>
+							<span class="login">{{ `${editedUser.login}@${url.hostname}` }}</span>
 							<user-badges :roles="editedUser.roles" />
 							<label
 								for="avatar"
@@ -440,7 +440,7 @@
 						</div>
 						<div class="field-body flex-column">
 							<img
-								:src="editedUser.banner?.startsWith('data:') ? editedUser.banner: `${apiUrl}banners/${editedUser.banner}`"
+								:src="editedUser.banner?.startsWith('data:') ? editedUser.banner: `${url.origin}/banners/${editedUser.banner}`"
 								alt="User banner"
 								class="banner"
 							>
@@ -723,9 +723,7 @@
 	const { user } = storeToRefs(useAuthStore());
 	const { setToken } = useAuthStore();
 	const { openModal } = useModalStore();
-	const conf = useRuntimeConfig();
-	const instanceName = conf.public.host;
-	const apiUrl = conf.public.apiUrl;
+	const url = useRequestURL();
 
 	const { locale } = useI18n();
 

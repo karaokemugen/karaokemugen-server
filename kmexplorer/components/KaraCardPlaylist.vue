@@ -57,6 +57,7 @@
 	import { tagTypes } from '~/assets/constants';
 	import { useAuthStore } from '~/store/auth';
 	import type { TagExtend } from '~/store/menubar';
+	import { useConfigStore } from '~/store/config';
 
 	const props = defineProps<{
 		karaoke: DBPLC
@@ -71,8 +72,10 @@
 
 	const { loggedIn, user } = storeToRefs(useAuthStore());
 
-	const conf = useRuntimeConfig();
-	const hardsubUrl = conf.public.hardsubUrl;
+	const { config, supportedFiles } = storeToRefs(useConfigStore());
+	const url = useRequestURL();
+	const hardsubUrl = config?.value?.Hardsub.Url ?? url.origin;
+
 
 	const canEditPlaylist = computed(() =>
 		loggedIn?.value &&
@@ -84,11 +87,11 @@
 		return getTitleInLocale(props.karaoke.titles, props.karaoke.titles_default_language);
 	});
 	const images = computed((): string[] => {
-		return conf.public.supportedAudio.some(extension => props.karaoke.mediafile.endsWith(extension))
-			? [`${hardsubUrl}previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`]
+		return supportedFiles?.value?.audio.some(extension => props.karaoke.mediafile.endsWith(extension))
+			? [`${hardsubUrl}/previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`]
 			: [
-				`${hardsubUrl}previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`,
-				`${hardsubUrl}previews/${props.karaoke.kid}.${props.karaoke.mediasize}.33.jpg`,
+				`${hardsubUrl}/previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`,
+				`${hardsubUrl}/previews/${props.karaoke.kid}.${props.karaoke.mediasize}.33.jpg`,
 			];
 	});
 	const getSlug = computed((): string => {

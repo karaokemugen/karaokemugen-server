@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import {getSettings} from '../../lib/dao/database.js';
 import { APIMessage } from '../../lib/services/frontend.js';
+import { getRepoManifest } from '../../lib/services/repo.js';
 import { RepositoryManifest } from '../../lib/types/repo.js';
 import {getConfig} from '../../lib/utils/config.js';
 import { getGitDiff, getLatestGitCommit } from '../../services/git.js';
@@ -9,7 +10,6 @@ import { createKaraIssue, createSuggestionIssue } from '../../services/gitlab.js
 import {getAllKaras, getAllMedias, getAllYears, getBaseStats, getHardsubsCache, getKara} from '../../services/kara.js';
 import {getTag, getTags} from '../../services/tag.js';
 import { optionalAuth } from '../middlewares/auth.js';
-import { getRepoManifest } from '../../lib/services/repo.js';
 
 export default function KSController(router: Router) {
 	router.route('/karas/lastUpdate')

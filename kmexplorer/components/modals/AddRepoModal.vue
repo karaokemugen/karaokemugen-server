@@ -20,7 +20,7 @@
 					tag="label"
 				>
 					<template #repository>
-						<span class="boldLabel">{{ explorerHost }}</span>
+						<span class="boldLabel">{{ url.hostname }}</span>
 					</template>
 					<template #online>
 						<span class="boldLabel">{{ $t('modal.add_repository.online') }}</span>
@@ -36,11 +36,12 @@
 		active: boolean
 	}>();
 
-	const explorerHost = useRuntimeConfig().public.explorerHost;
+	const url = useRequestURL();
+
 	const emit = defineEmits<{(e: 'close'): void}>();
 
 	function submitForm(): void {
-		window.open(`km://addRepo/${explorerHost}`);
+		window.open(`km://addRepo/${url.hostname}`);
 		closeModal();
 	}
 	function closeModal(): void {

@@ -60,7 +60,7 @@
 			<div class="field">
 				<label
 					class="label"
-					:title="t('kara.import.lyrics_file_tooltip', {formats: supportedLyrics.join(', ')})"
+					:title="t('kara.import.lyrics_file_tooltip', {formats: supportedFiles?.lyrics.join(', ')})"
 				>
 					{{ t('kara.import.lyrics_file') }}
 					<font-awesome-icon
@@ -78,7 +78,7 @@
 							class="file-input"
 							type="file"
 							name="resume"
-							:accept="supportedLyrics.map(val => '.'+val).join(',')"
+							:accept="supportedFiles?.lyrics.map(val => '.'+val).join(',')"
 							@change="handleSubfileUpload()"
 						>
 						<span class="file-cta">
@@ -722,6 +722,7 @@
 	import { tagTypes } from '~/assets/constants';
 	import type { RepositoryManifestV2 } from '%/lib/types/repo';
 	import * as Toast from 'vue-toastification';
+	import { useConfigStore } from '~/store/config';
 
 	const props = defineProps<{
 		kara?: DBKara
@@ -749,10 +750,7 @@
 	const mediafileInput = ref<HTMLInputElement>();
 	const subfileInput = ref<HTMLInputElement>();
 
-	const conf = useRuntimeConfig();
-	const supportedLyrics = conf.public.supportedLyrics;
-	const supportedMedias = conf.public.supportedMedias;
-	const instanceName = conf.public.host;
+	const url = useRequestURL();
 
 	const { params } = useRoute();
 	const { push } = useRouter();
@@ -760,8 +758,13 @@
 	const { sendContactInfos } = storeToRefs(useLocalStorageStore());
 	const { setSendContactInfos } = useLocalStorageStore();
 	const { loggedIn, user } = storeToRefs(useAuthStore());
+	const { supportedFiles, config } = storeToRefs(useConfigStore());
 	const { t } = useI18n();
 	const toast = useToast();
+	const supportedMedias = 
+			config?.value?.KaraExplorer.SupportedMedias && config?.value?.KaraExplorer.SupportedMedias?.length > 0
+				? config?.value?.KaraExplorer.SupportedMedias
+				: ([] as string[]).concat(supportedFiles?.value?.video ?? [], supportedFiles?.value?.audio ?? []);
 
 	onMounted(async () => {
 		debouncedGetAsyncData.value = _.debounce(getAsyncData, 500, { leading: true, trailing: true, maxWait: 750 });
@@ -1001,7 +1004,7 @@
 		loading.value = true;
 		let contact: string = '';
 		if (loggedIn.value && sendContactInfos) {
-			contact = `${user?.value?.login}@${instanceName}`;
+			contact = `${user?.value?.login}@${url.hostname}`;
 			setSendContactInfos(true);
 		} else if (!loggedIn.value) {
 			contact = contactInfos.value;

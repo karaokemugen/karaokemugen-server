@@ -39,7 +39,6 @@ export const defaults: Config = {
 			Previews: 'previews',
 			Hardsubs: 'hardsubs',
 		},
-		DefaultCollections: ['c7db86a0-ff64-4044-9be4-66dd1ef1d1c1']
 	},
 	Remote: {
 		Enabled: true,
@@ -47,7 +46,9 @@ export const defaults: Config = {
 		FrontendRoot: '/'
 	},
 	Frontend: {
-		Port: 1350
+		Port: 1350,
+		Secure: true,
+		Host: 'localhost',
 	},
 	Hardsub: {
 		Enabled: true
@@ -62,18 +63,11 @@ export const defaults: Config = {
 	Suggestions: {
 		Enabled: true
 	},
-	API: {
-		Secure: true,
-		Host: 'localhost',
-		Port: 1350
-	},
 	KaraExplorer: {
 		Enabled: true,
-		Host: 'localhost',
 		Tagline: 'Explore! Find! Sing!',
 		MediaLinks: true,
 		Import: true,
-		Secure: true,
 		AddRepoModalInMenu: false
 	},
 	Gitlab: {

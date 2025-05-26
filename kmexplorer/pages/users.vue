@@ -43,6 +43,7 @@
 	import _ from 'lodash';
 	import type { UserList } from '%/types/user';
 	import { useMenubarStore } from '~/store/menubar';
+	import { useConfigStore } from '~/store/config';
 
 	interface UsersRequest {
 		filter?: string,
@@ -52,8 +53,7 @@
 
 	const { search } = storeToRefs(useMenubarStore());
 	const { setSearch, setResultsCount } = useMenubarStore();
-	const conf = useRuntimeConfig();
-	const usersEnabled = conf.public.usersEnabled;
+	const { config } = storeToRefs(useConfigStore());
 
 	const loading = ref(true);
 	const mounted = ref(false);
@@ -84,7 +84,7 @@
 	await fetch();
 
 	async function fetch() {
-		if (!usersEnabled) {
+		if (!config.value?.Users.Enabled) {
 			throw createError({ statusCode: 404 });
 		}
 		// Load the first page

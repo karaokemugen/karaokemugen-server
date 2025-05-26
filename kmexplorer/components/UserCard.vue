@@ -2,13 +2,13 @@
 	<div class="user-box">
 		<div class="user-header">
 			<img
-				:src="`${apiUrl}banners/${user.banner}`"
+				:src="`${url.origin}/banners/${user.banner}`"
 				alt="User banner"
 				class="banner"
 			>
 			<div class="title-bar">
 				<img
-					:src="`${apiUrl}avatars/${user.avatar_file}`"
+					:src="`${url.origin}/avatars/${user.avatar_file}`"
 					alt=""
 					class="profile"
 				>
@@ -39,9 +39,7 @@
 	}>();
 
 	const { loggedIn, user:userConnected } = storeToRefs(useAuthStore());
-
-	const conf = useRuntimeConfig();
-	const apiUrl = conf.public.apiUrl;
+	const url = useRequestURL();
 
 	const viewingSelf = computed(() => loggedIn.value && props.user.login === userConnected?.value?.login);
 </script>

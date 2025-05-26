@@ -20,7 +20,7 @@
 					</h2>
 					<h2 class="subtitle is-hidden-touch ">
 						{{ $t('suggestions.header.purpose') }}
-						<span v-if="gitlab">{{ $t('suggestions.header.suggestion') }}</span>
+						<span v-if="config.Gitlab?.Enabled">{{ $t('suggestions.header.suggestion') }}</span>
 					</h2>
 					<button
 						class="button is-primary m-1"
@@ -31,7 +31,7 @@
 						<span>{{ $t('suggestions.header.random_selection') }}</span>
 					</button>
 					<button
-						v-if="gitlab"
+						v-if="config.Gitlab?.Enabled"
 						class="button is-success m-1"
 						@click="() => openModal('karaSuggest')"
 					>
@@ -66,7 +66,7 @@
 			@close="() => setHideSuggestionModal()"
 		/>
 		<kara-suggest-modal
-			v-if="!loading && gitlab"
+			v-if="!loading && config.Gitlab?.Enabled"
 			:active="karaSuggest"
 			@close="() => closeModal('karaSuggest')"
 		/>
@@ -79,6 +79,7 @@
 	import { useModalStore } from '~/store/modal';
 	import { useLocalStorageStore } from '~/store/localStorage';
 	import type { Suggestion } from '~/../kmserver-core/src/types/suggestions';
+	import { useConfigStore } from '~/store/config';
 
 	type SuggestList = {
 		content: Suggestion[]
@@ -105,9 +106,8 @@
 	const { setHideSuggestionModal, openHideSuggestionModal } = useLocalStorageStore();
 	const { karaSuggest } = storeToRefs(useModalStore());
 	const { closeModal, openModal } = useModalStore();
+	const { config } = storeToRefs(useConfigStore());
 
-	const conf = useRuntimeConfig();
-	const gitlab = conf.public.gitlabEnabled;
 
 	const route = useRoute();
 

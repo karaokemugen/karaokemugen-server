@@ -17,10 +17,9 @@
 	import 'video.js/dist/video-js.css';
 	import { useLocalStorageStore } from '~/store/localStorage';
 
-	const explorerHost = useRuntimeConfig().public.explorerHost;
-
 	const { playerVolume, autoplay } = storeToRefs(useLocalStorageStore());
 	const { setPlayerVolume, setAutoplay } = useLocalStorageStore();
+	const url = useRequestURL();
 	const route = useRoute();
 	const { t } = useI18n();
 
@@ -314,7 +313,7 @@
 		const titleBar: TitleBar = (player.value!.getChild('TitleBar') as any as TitleBar);
 		titleBar.update({
 			title: props.fullscreen || props.theaterMode ? props.title : '',
-			description: props.fullscreen || props.theaterMode ? t('kara.player.description', { instance: explorerHost }) : ''
+			description: props.fullscreen || props.theaterMode ? t('kara.player.description', { instance: url.hostname }) : ''
 		});
 	}
 

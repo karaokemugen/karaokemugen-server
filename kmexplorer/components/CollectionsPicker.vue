@@ -14,7 +14,7 @@
 				{{ label }}
 			</button>
 		</template>
-		<p>{{ $t('layout.collections', { instance: instanceName }) }}</p>
+		<p>{{ $t('layout.collections', { instance: url.hostname }) }}</p>
 
 		<o-dropdown-item
 			v-for="collection in collections"
@@ -36,8 +36,7 @@
 	const { enabledCollections } = storeToRefs(useLocalStorageStore());
 	const { setEnabledCollections } = useLocalStorageStore();
 
-	const conf = useRuntimeConfig();
-	const instanceName = conf.public.host;
+	const url = useRequestURL();
 
 	defineProps<{
 		label: string
