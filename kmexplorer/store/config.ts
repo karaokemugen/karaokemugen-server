@@ -13,7 +13,10 @@ export type configStoreType = {
 
 export const useConfigStore = defineStore('config', {
 	state: (): configStoreType => {
-		return {};
+		return {
+			config: undefined,
+			supportedFiles: undefined
+		};
 	},
 	getters: {},
 	actions: {

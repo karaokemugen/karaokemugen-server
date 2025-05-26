@@ -148,6 +148,6 @@ function api() {
 		favoritesController(apiRouter);
 		authController(apiRouter);
 	}
-	if (conf.Suggestions.Enabled) suggestionsController(apiRouter);
+	if (conf.KaraExplorer.Suggestions) suggestionsController(apiRouter);
 	return apiRouter;
 }

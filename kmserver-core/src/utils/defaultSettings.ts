@@ -60,14 +60,12 @@ export const defaults: Config = {
 	Stats: {
 		Enabled: true
 	},
-	Suggestions: {
-		Enabled: true
-	},
 	KaraExplorer: {
 		Enabled: true,
 		Tagline: 'Explore! Find! Sing!',
 		MediaLinks: true,
 		Import: true,
+		Suggestions: true,
 		AddRepoModalInMenu: false
 	},
 	Gitlab: {

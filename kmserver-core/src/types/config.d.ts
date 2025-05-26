@@ -32,9 +32,6 @@ export interface Config {
 	Stats: {
 		Enabled: boolean,
 	},
-	Suggestions: {
-		Enabled: boolean,
-	},
 	KaraExplorer: {
 		Enabled: boolean
 		Tagline: string
@@ -42,6 +39,7 @@ export interface Config {
 		DiscourseURL?: string
 		MediaLinks: boolean
 		Import: boolean
+		Suggestions: boolean
 		InProgressSongsList?: string
 		SupportedMedias?: string []
 		AddRepoModalInMenu: boolean

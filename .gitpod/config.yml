@@ -39,11 +39,10 @@ Shortener:
   Enabled: true
 Stats:
   Enabled: true
-Suggestions:
-  Enabled: true
 KaraExplorer:
   MediaLinks: true
   Import: true
+  Suggestions: true
   InProgressSongsList: changeit_karaokebase/-/issues?scope=all&state=opened&label_name[]=Doing
   Secure: false
   DiscourseURL: https://discourse.karaokes.moe

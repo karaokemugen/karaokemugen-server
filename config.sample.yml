@@ -46,11 +46,10 @@ Remote:
   Enabled: true
 Stats:
   Enabled: true
-Suggestions:
-  Enabled: true
 KaraExplorer:
   MediaLinks: true
   Import: true
+  Suggestions: true
   InProgressSongsList: https://gitlab.com/karaokemugen/bases/karaokebase/-/issues?scope=all&state=opened&label_name[]=Work in progress
   AddRepoModalInMenu: false
   DiscourseURL: https://discourse.karaokes.moe
