@@ -252,7 +252,7 @@
 					@change="(tags) => karaoke.data.tags.franchises = tags"
 				/>
 			</div>
-			<div class="field">
+			<div v-if="tagsCheckbox.get(3)?.length ?? 0 > 0" class="field">
 				<label class="label">{{ t('kara.tagtypes.songtypes', karaoke.data.tags.songtypes.length) }}</label>
 				<editable-tag-group
 					:checkboxes="true"
@@ -292,7 +292,7 @@
 					</p>
 				</div>
 			</div>
-			<div class="field">
+			<div v-if="tagsCheckbox.get(14)?.length ?? 0 > 0" class="field">
 				<label class="label">{{ t('kara.tagtypes.versions', karaoke.data.tags.versions.length) }}</label>
 				<editable-tag-group
 					:checkboxes="true"
@@ -414,9 +414,9 @@
 				</div>
 			</div>
 		</div>
-		<label class="title">{{ t('kara.import.sections.categorization') }}</label>
-		<div class="box">
-			<div class="field">
+		<label v-if="isCheckboxTagsNotEmpty()" class="title">{{ t('kara.import.sections.categorization') }}</label>
+		<div v-if="isCheckboxTagsNotEmpty()" class="box">
+			<div v-if="tagsCheckbox.get(16)?.length ?? 0 > 0" class="field">
 				<label class="label">{{ t('kara.tagtypes.collections', karaoke.data.tags.collections.length) }}</label>
 				<div class="control">
 					<editable-tag-group
@@ -433,7 +433,7 @@
 					{{ t('kara.import.collections_required') }}
 				</p>
 			</div>
-			<div class="field">
+			<div  v-if="tagsCheckbox.get(10)?.length ?? 0 > 0" class="field">
 				<label class="label">{{ t('kara.tagtypes.families', karaoke.data.tags.families.length) }}</label>
 				<div class="control">
 					<editable-tag-group
@@ -444,7 +444,7 @@
 					/>
 				</div>
 			</div>
-			<div class="field">
+			<div  v-if="tagsCheckbox.get(13)?.length ?? 0 > 0" class="field">
 				<label class="label">{{ t('kara.tagtypes.platforms', karaoke.data.tags.platforms.length) }}</label>
 				<div class="control">
 					<o-collapse :open="false">
@@ -463,7 +463,7 @@
 					</o-collapse>
 				</div>
 			</div>
-			<div class="field">
+			<div  v-if="tagsCheckbox.get(12)?.length ?? 0 > 0" class="field">
 				<label class="label">{{ t('kara.tagtypes.genres', karaoke.data.tags.genres.length) }}</label>
 				<div class="control">
 					<editable-tag-group
@@ -474,7 +474,7 @@
 					/>
 				</div>
 			</div>
-			<div class="field">
+			<div  v-if="tagsCheckbox.get(11)?.length ?? 0 > 0" class="field">
 				<label class="label">{{ t('kara.tagtypes.origins', karaoke.data.tags.origins.length) }}</label>
 				<div class="control">
 					<editable-tag-group
@@ -485,7 +485,7 @@
 					/>
 				</div>
 			</div>
-			<div class="field">
+			<div  v-if="tagsCheckbox.get(7)?.length ?? 0 > 0" class="field">
 				<label class="label">{{ t('kara.tagtypes.misc', karaoke.data.tags.misc.length) }}</label>
 				<div class="control">
 					<editable-tag-group
@@ -496,7 +496,7 @@
 					/>
 				</div>
 			</div>
-			<div class="field">
+			<div  v-if="tagsCheckbox.get(15)?.length ?? 0 > 0" class="field">
 				<label class="label">{{ t('kara.tagtypes.warnings', karaoke.data.tags.warnings.length) }}</label>
 				<div class="control">
 					<editable-tag-group
@@ -507,7 +507,7 @@
 					/>
 				</div>
 			</div>
-			<div class="field">
+			<div v-if="tagsCheckbox.get(9)?.length ?? 0 > 0" class="field">
 				<label
 					class="label"
 					:title="t('kara.import.groups_tooltip')"
@@ -527,183 +527,183 @@
 					/>
 				</div>
 			</div>
-			<label class="title">{{ t('kara.import.sections.meta') }}</label>
-			<div class="box">
-				<div class="field">
-					<label
-						class="label"
-						:title="t('kara.import.from_display_type_tooltip')"
+		</div>
+		<label class="title">{{ t('kara.import.sections.meta') }}</label>
+		<div class="box">
+			<div class="field">
+				<label
+					class="label"
+					:title="t('kara.import.from_display_type_tooltip')"
+				>
+					{{ t('kara.import.from_display_type') }}
+					<font-awesome-icon
+						:icon="['fas', 'question-circle']"
+						:fixed-width="true"
+					/>
+				</label>
+				<div class="control select">
+					<select
+						id="from_display_type"
+						v-model="karaoke.data.from_display_type"
+						:required="true"
+						name="from_display_type"
+						autocomplete="off"
 					>
-						{{ t('kara.import.from_display_type') }}
-						<font-awesome-icon
-							:icon="['fas', 'question-circle']"
-							:fixed-width="true"
-						/>
-					</label>
-					<div class="control select">
-						<select
-							id="from_display_type"
-							v-model="karaoke.data.from_display_type"
-							:required="true"
-							name="from_display_type"
-							autocomplete="off"
+						<option
+							v-for="tagType in Object.keys(tagTypes).concat(undefined)"
+							:key="tagType"
+							:value="tagType"
 						>
-							<option
-								v-for="tagType in Object.keys(tagTypes).concat(undefined)"
-								:key="tagType"
-								:value="tagType"
-							>
-								{{ t(tagType ? `kara.tagtypes.${tagType}` : 'kara.tagtypes.default') }}
-							</option>
-						</select>
-					</div>
+							{{ t(tagType ? `kara.tagtypes.${tagType}` : 'kara.tagtypes.default') }}
+						</option>
+					</select>
 				</div>
-				<div class="field">
-					<label
-						class="label"
-						:title="t('kara.import.authors_tooltip')"
+			</div>
+			<div class="field">
+				<label
+					class="label"
+					:title="t('kara.import.authors_tooltip')"
+				>
+					{{ t('kara.authors_by') }}
+					<font-awesome-icon
+						:icon="['fas', 'question-circle']"
+						:fixed-width="true"
+					/>
+				</label>
+				<div class="control">
+					<editable-tag-group
+						:tag-type="6"
+						:params="karaoke.data.tags.authors"
+						@change="(tags) => karaoke.data.tags.authors = tags"
+					/>
+					<p
+						v-if="karaoke.data.tags.authors.length === 0"
+						class="help is-danger"
 					>
-						{{ t('kara.authors_by') }}
-						<font-awesome-icon
-							:icon="['fas', 'question-circle']"
-							:fixed-width="true"
-						/>
-					</label>
-					<div class="control">
-						<editable-tag-group
-							:tag-type="6"
-							:params="karaoke.data.tags.authors"
-							@change="(tags) => karaoke.data.tags.authors = tags"
-						/>
-						<p
-							v-if="karaoke.data.tags.authors.length === 0"
-							class="help is-danger"
-						>
-							{{ t('kara.import.authors_required') }}
+						{{ t('kara.import.authors_required') }}
+					</p>
+				</div>
+			</div>
+			<div class="field">
+				<label
+					class="label"
+					:title="t('kara.import.comment_tooltip')"
+				>
+					{{ t('kara.import.comment') }}
+					<font-awesome-icon
+						:icon="['fas', 'question-circle']"
+						:fixed-width="true"
+					/>
+				</label>
+				<div class="control">
+					<input
+						v-model="karaoke.data.comment"
+						class="input"
+						type="text"
+					>
+				</div>
+			</div>
+			<div class="field">
+				<label class="label">{{ t('kara.import.created_at') }}</label>
+				<div class="control">
+					<input
+						class="input is-static"
+						type="text"
+						readonly
+						:value="karaoke.data.created_at ? new Date(karaoke.data.created_at).toLocaleString() : null"
+					>
+				</div>
+			</div>
+			<div
+				v-if="loggedIn"
+				class="field"
+			>
+				<label for="contact">
+					<input
+						id="contact"
+						v-model="sendContactInfos"
+						type="checkbox"
+					>
+					{{ t('kara.import.send_contact_infos') }}
+				</label>
+			</div>
+			<div
+				v-if="!loggedIn"
+				class="field"
+			>
+				<label
+					class="label"
+					:title="t('kara.import.contact_infos_tooltip')"
+				>
+					{{ t('kara.import.contact_infos') }}
+					<font-awesome-icon
+						:icon="['fas', 'question-circle']"
+						:fixed-width="true"
+					/>
+				</label>
+				<div class="control">
+					<input
+						v-model="contactInfos"
+						class="input"
+						type="text"
+					>
+					<label>{{ t('kara.import.auto_send_contact_infos') }}</label>
+				</div>
+			</div>
+			<div class="field">
+				<div class="control submit">
+					<button
+						class="button is-link"
+						:class="{'is-loading': loading}"
+						:disabled="submitDisabled()"
+						@click="submit"
+					>
+						{{ t('kara.import.submit') }}
+					</button>
+					<span
+						v-if="!subfile && !subfile_error"
+						class="help is-warning"
+					>{{ t('kara.import.lyrics_file_missing') }}</span>
+				</div>
+			</div>
+			<div
+				class="modal"
+				:class="{'is-active': gitlabUrl}"
+			>
+				<div class="modal-background" />
+				<div class="modal-card">
+					<header class="modal-card-head">
+						<p class="modal-card-title">
+							{{ t('kara.import.add_success') }}
 						</p>
-					</div>
-				</div>
-				<div class="field">
-					<label
-						class="label"
-						:title="t('kara.import.comment_tooltip')"
-					>
-						{{ t('kara.import.comment') }}
-						<font-awesome-icon
-							:icon="['fas', 'question-circle']"
-							:fixed-width="true"
+						<nuxt-link
+							class="delete"
+							aria-label="close"
+							@click.prevent="reset"
 						/>
-					</label>
-					<div class="control">
-						<input
-							v-model="karaoke.data.comment"
-							class="input"
-							type="text"
-						>
-					</div>
-				</div>
-				<div class="field">
-					<label class="label">{{ t('kara.import.created_at') }}</label>
-					<div class="control">
-						<input
-							class="input is-static"
-							type="text"
-							readonly
-							:value="karaoke.data.created_at ? new Date(karaoke.data.created_at).toLocaleString() : null"
-						>
-					</div>
-				</div>
-				<div
-					v-if="loggedIn"
-					class="field"
-				>
-					<label for="contact">
-						<input
-							id="contact"
-							v-model="sendContactInfos"
-							type="checkbox"
-						>
-						{{ t('kara.import.send_contact_infos') }}
-					</label>
-				</div>
-				<div
-					v-if="!loggedIn"
-					class="field"
-				>
-					<label
-						class="label"
-						:title="t('kara.import.contact_infos_tooltip')"
+					</header>
+					<i18n-t
+						keypath="kara.import.add_success_description"
+						tag="section"
+						class="modal-card-body"
 					>
-						{{ t('kara.import.contact_infos') }}
-						<font-awesome-icon
-							:icon="['fas', 'question-circle']"
-							:fixed-width="true"
-						/>
-					</label>
-					<div class="control">
-						<input
-							v-model="contactInfos"
-							class="input"
-							type="text"
-						>
-						<label>{{ t('kara.import.auto_send_contact_infos') }}</label>
-					</div>
-				</div>
-				<div class="field">
-					<div class="control submit">
-						<button
-							class="button is-link"
-							:class="{'is-loading': loading}"
-							:disabled="submitDisabled()"
-							@click="submit"
-						>
-							{{ t('kara.import.submit') }}
-						</button>
-						<span
-							v-if="!subfile && !subfile_error"
-							class="help is-warning"
-						>{{ t('kara.import.lyrics_file_missing') }}</span>
-					</div>
-				</div>
-				<div
-					class="modal"
-					:class="{'is-active': gitlabUrl}"
-				>
-					<div class="modal-background" />
-					<div class="modal-card">
-						<header class="modal-card-head">
-							<p class="modal-card-title">
-								{{ t('kara.import.add_success') }}
-							</p>
+						<template #url>
 							<nuxt-link
-								class="delete"
-								aria-label="close"
-								@click.prevent="reset"
-							/>
-						</header>
-						<i18n-t
-							keypath="kara.import.add_success_description"
-							tag="section"
-							class="modal-card-body"
-						>
-							<template #url>
-								<nuxt-link
-									:href="gitlabUrl"
-									target="_blank"
-								>
-									{{ gitlabUrl }}
-								</nuxt-link>
-							</template>
-						</i18n-t>
-						<footer class="modal-card-foot">
-							<button
-								class="button is-success"
-								@click.prevent="reset"
+								:href="gitlabUrl"
+								target="_blank"
 							>
-								{{ t('kara.import.restart') }}
-							</button>
-						</footer>
-					</div>
+								{{ gitlabUrl }}
+							</nuxt-link>
+						</template>
+					</i18n-t>
+					<footer class="modal-card-foot">
+						<button
+							class="button is-success"
+							@click.prevent="reset"
+						>
+							{{ t('kara.import.restart') }}
+						</button>
+					</footer>
 				</div>
 			</div>
 		</div>
@@ -723,6 +723,7 @@
 	import type { RepositoryManifestV2 } from '%/lib/types/repo';
 	import * as Toast from 'vue-toastification';
 	import { useConfigStore } from '~/store/config';
+	import type { DBTag } from '%/lib/types/database/tag';
 
 	const props = defineProps<{
 		kara?: DBKara
@@ -731,6 +732,8 @@
 
 	// @ts-expect-error vue-toastification is not typed
 	const useToast = Toast.useToast ?? Toast.default.useToast;
+
+	const typeTagCheckbox = [3, 14, 16, 10, 13, 12, 11, 7, 15, 9];
 
 	const karaoke = ref(convertDBKaraToKaraFile(props.kara));
 	const mediafile = ref('');
@@ -745,6 +748,7 @@
 	const currentParent = ref<{ label: string; value: string }>();
 	const parents = ref<{ label: string; value: string }[]>([]);
 	const karaSearch = ref<{ label: string; value: string }[]>([]);
+	const tagsCheckbox = ref<Map<number, DBTag[]>>(new Map());
 
 	const debouncedGetAsyncData = ref();
 	const mediafileInput = ref<HTMLInputElement>();
@@ -801,6 +805,7 @@
 		}
 	}
 
+	getTagsCheckbox();
 	getParents();
 
 	async function getParents() {
@@ -997,7 +1002,7 @@
 	}
 	function isSupportedLyricsFile(filename: string) {
 		return new RegExp(
-			`^.+\\.(${supportedLyrics.join('|')})$`
+			`^.+\\.(${supportedFiles?.value?.lyrics.join('|')})$`
 		).test(filename);
 	}
 	function submit() {
@@ -1075,6 +1080,31 @@
 			mediafileInput.value = undefined;
 			subfileInput.value = undefined;
 		}
+	}
+	async function getTagsCheckbox() {
+		const newTagsCheckbox = new Map(tagsCheckbox.value);
+		for (const type of typeTagCheckbox) {
+			const { content } = await useCustomFetch<{ content: DBTag[] }>('/api/karas/tags', {
+				query: {
+					type,
+					includeStaging: true,
+					size: 1000
+				}
+			});
+			newTagsCheckbox.set(type, content);
+		}
+		tagsCheckbox.value = newTagsCheckbox;
+	};
+
+	function isCheckboxTagsNotEmpty() {
+		return (tagsCheckbox.value.get(16)?.length ?? 0 > 0) ||
+			(tagsCheckbox.value.get(10)?.length ?? 0 > 0) ||
+			(tagsCheckbox.value.get(13)?.length ?? 0 > 0) ||
+			(tagsCheckbox.value.get(12)?.length ?? 0 > 0) ||
+			(tagsCheckbox.value.get(11)?.length ?? 0 > 0) ||
+			(tagsCheckbox.value.get(7)?.length ?? 0 > 0) ||
+			(tagsCheckbox.value.get(15)?.length ?? 0 > 0) ||
+			(tagsCheckbox.value.get(9)?.length ?? 0 > 0)
 	}
 </script>
 
