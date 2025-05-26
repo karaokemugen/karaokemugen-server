@@ -39,6 +39,7 @@
 	import { useAuthStore } from '~/store/auth';
 	import { useLocalStorageStore } from '~/store/localStorage';
 	import slug from 'slug';
+	import { useConfigStore } from '~/store/config';
 
 	const props = defineProps<{
 		karaoke: DBKara
@@ -53,11 +54,12 @@
 	const { loggedIn, user } = storeToRefs(useAuthStore());
 	const { locale } = useI18n();
 
-	const conf = useRuntimeConfig();
-	const hardsubUrl = conf.public.hardsubUrl;
+	const { config } = storeToRefs(useConfigStore());
+	const url = useRequestURL();
+	const hardsubUrl = config.value.Hardsub.Url ?? url.origin;
 
 	const mediaHardsubUrl = computed(() => {
-		return `${hardsubUrl}hardsubs/${props.karaoke.hardsubbed_mediafile}`;
+		return `${hardsubUrl}/hardsubs/${props.karaoke.hardsubbed_mediafile}`;
 	});
 	const theaterMode = computed(() => route.params.theater === 'theater');
 	const isIframe = ref(false);
@@ -77,7 +79,7 @@
 		controls: true,
 		fluid: !theaterMode.value && !fullscreen.value,
 		fill: true,
-		poster: `${hardsubUrl}previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`,
+		poster: `${hardsubUrl}/previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`,
 		controlBar: {
 			fullscreenToggle: false,
 			skipButtons: {

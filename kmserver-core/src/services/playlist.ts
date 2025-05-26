@@ -389,7 +389,7 @@ export async function exportPlaylist(plaid: string, token: JWTTokenWithRoles) {
 		};
 		playlist.PlaylistInformation = plExport;
 		playlist.PlaylistContents = plContents.content as any;
-		playlist.Server = getConfig().API.Host;
+		playlist.Server = getConfig().Frontend.Host;
 		return playlist;
 	} catch (err) {
 		logger.error(`Error exporting playlist ${plaid} : ${err}`, { service });

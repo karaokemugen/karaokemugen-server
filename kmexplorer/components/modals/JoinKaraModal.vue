@@ -35,19 +35,15 @@
 </template>
 
 <script setup lang="ts">
-
 	defineProps<{
 		active: boolean
 	}>();
 
 	const emit = defineEmits<{(e: 'close'): void}>();
+	const requestUrl = useRequestURL();
 
 	const token = ref('');
 	const error = ref(false);
-
-	const conf = useRuntimeConfig();
-	const explorerProtocol = conf.public.explorerProtocol;
-	const explorerHost = conf.public.explorerHost;
 
 	async function submitForm(): Promise<void> {
 		if (token.value) {
@@ -57,7 +53,7 @@
 				if (/^https?:\/\//.test(token.value)) {
 					url = token.value;
 				} else {
-					url = `${explorerProtocol}://${token.value}.${explorerHost}`;
+					url = `${requestUrl.protocol}//${token.value}.${requestUrl.hostname}`;
 				}
 				await $fetch(url);
 				window.open(url, '_self');

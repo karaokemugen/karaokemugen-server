@@ -42,7 +42,7 @@ export function initFrontend(listenPort: number) {
 	const conf = getConfig();
 	const state = getState();
 	const app = express();
-	const protocol = `http${conf.API.Secure ? 's' : ''}:`;
+	const protocol = `http${conf.Frontend.Secure ? 's' : ''}:`;
 
 	// Trust our reverse proxy entirely
 	app.set('trust proxy', (ip: string) => {
@@ -55,7 +55,7 @@ export function initFrontend(listenPort: number) {
 		else next();
 	});
 	app.use(helmet({
-		crossOriginResourcePolicy: conf.API.Host === 'localhost' ? false : {
+		crossOriginResourcePolicy: conf.Frontend.Host === 'localhost' ? false : {
 			policy: 'same-origin'
 		},
 		hsts: false,
@@ -70,7 +70,7 @@ export function initFrontend(listenPort: number) {
 				frameSrc: ['\'self\''],
 				frameAncestors: [protocol],
 				workerSrc: ['\'self\'', 'https://storage.googleapis.com/workbox-cdn/'],
-				upgradeInsecureRequests: conf.API.Secure ? [] : null,
+				upgradeInsecureRequests: conf.Frontend.Secure ? [] : null,
 			}
 		}
 	}) as express.Handler);
@@ -94,23 +94,19 @@ export function initFrontend(listenPort: number) {
 	});
 
 	// KMServer
-	// If static serve is enabled, we're serving all files from KMServer instead of Apache/nginx
+	// If static serve is enabled, we're serving all files from KMServer instead of our reverse proxy
 	if (state.opt.staticServe) {
 		app.use('/downloads', express.static(resolve(getState().dataPath, getConfig().System.Repositories[0].BaseDir)));
 		app.use('/downloads/medias', express.static(resolvedPathRepos('Medias')[0]));
 		app.use('/hardsubs', express.static(resolve(getState().dataPath, getConfig().System.Path.Hardsubs)));
 	}
-	
+
 	// API router
 	app.use('/api', api());
 	if (conf.Users.Enabled) {
 		app.use('/avatars', express.static(resolvedPath('Avatars')));
 		app.use('/banners', express.static(resolvedPath('Banners')));
 	}
-	// Redirect old base route to root
-	app.get('/base*', (req, res) => {
-		res.redirect(301, req.url.replace(/^\/base\/?/, '/'));
-	});
 	// KMExplorer
 	if (conf.KaraExplorer.Enabled) {
 		app.use('/previews', express.static(resolvedPath('Previews')));

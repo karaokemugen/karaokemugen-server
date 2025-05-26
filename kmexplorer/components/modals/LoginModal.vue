@@ -65,7 +65,7 @@
 								</div>
 								<div class="control is-expanded">
 									<div class="button is-static">
-										{{ `@${instanceName}` }}
+										{{ `@${url.hostname}` }}
 									</div>
 								</div>
 							</div>
@@ -145,7 +145,7 @@
 								</div>
 								<div class="control is-expanded">
 									<div class="button is-static">
-										{{ `@${instanceName}` }}
+										{{ `@${url.hostname}` }}
 									</div>
 								</div>
 							</div>
@@ -275,9 +275,8 @@
 	const emit = defineEmits<{(e: 'close'|'login'): void}>();
 
 	const { locale, t } = useI18n();
-	const conf = useRuntimeConfig();
-	const instanceName = conf.public.host;
 	const loginApi = useAuthStore().login;
+	const url = useRequestURL();
 
 	const toast = useToast();
 

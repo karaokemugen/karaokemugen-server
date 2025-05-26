@@ -7,7 +7,7 @@ export const useUploadFile = (
 ) => {
 	const xhr = new XMLHttpRequest();
 
-	xhr.open('POST', `${useNuxtApp().$config.public.apiUrl}${path}`);
+	xhr.open('POST', `${useRequestURL().origin}${path}`);
 
 	xhr.onreadystatechange = () => {
 		if (xhr.readyState === 4) {

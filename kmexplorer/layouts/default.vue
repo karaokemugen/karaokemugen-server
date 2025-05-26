@@ -20,7 +20,7 @@
 							alt="Logo"
 						>
 					</picture>
-					{{ explorerHost }}
+					{{ url.hostname }}
 				</nuxt-link>
 				<div
 					class="navbar-item is-hidden-desktop"
@@ -97,7 +97,7 @@
 				class="navbar-dropdown"
 			>
 				<nuxt-link
-					v-if="usersEnabled"
+					v-if="config?.Users.Enabled"
 					class="navbar-item"
 					to="/playlists"
 					@click="closeMenu"
@@ -123,7 +123,7 @@
 					</nuxt-link>
 				</client-only>
 				<nuxt-link
-					v-if="usersEnabled"
+					v-if="config?.Users.Enabled"
 					class="navbar-item"
 					to="/users"
 					@click="closeMenu"
@@ -149,8 +149,8 @@
 					</nuxt-link>
 				</client-only>
 				<nuxt-link
-					v-if="discordLink"
-					:href="discordLink"
+					v-if="config?.KaraExplorer.DiscordURL"
+					:href="config?.KaraExplorer.DiscordURL"
 					class="navbar-item"
 					@click="closeMenu"
 				>
@@ -161,8 +161,8 @@
 					{{ $t('menu.discord') }}
 				</nuxt-link>
 				<nuxt-link
-					v-if="discourseLink"
-					:href="discourseLink"
+					v-if="config?.KaraExplorer.DiscourseURL"
+					:href="config?.KaraExplorer.DiscourseURL"
 					class="navbar-item"
 					@click="closeMenu"
 				>
@@ -173,7 +173,7 @@
 					{{ $t('menu.discourse') }}
 				</nuxt-link>
 				<nuxt-link
-					v-if="import_enabled"
+					v-if="config?.KaraExplorer.Import"
 					class="navbar-item"
 					to="/import"
 					@click="closeMenu"
@@ -185,7 +185,7 @@
 					{{ $t('menu.kara_import') }}
 				</nuxt-link>
 				<nuxt-link
-					v-if="suggestions"
+					v-if="config?.Suggestions.Enabled"
 					class="navbar-item"
 					to="/suggest"
 					@click="closeMenu"
@@ -229,7 +229,7 @@
 						{{ $t('menu.anime_list') }}
 					</nuxt-link>
 					<nuxt-link
-						v-else-if="usersEnabled"
+						v-else-if="config?.Users.Enabled"
 						class="navbar-item"
 						aria-label="Login"
 						@click.prevent="() => {
@@ -538,7 +538,7 @@
 			<aside class="menu is-hidden-touch">
 				<ul class="menu-list">
 					<li
-						v-if="addRepoModalInMenu"
+						v-if="config?.KaraExplorer.AddRepoModalInMenu"
 						class="addRepo"
 						:title="$t('modal.add_repository.label')"
 					>
@@ -826,7 +826,7 @@
 				<ul class="menu-list">
 					<li>
 						<nuxt-link
-							v-if="usersEnabled"
+							v-if="config?.Users.Enabled"
 							to="/playlists"
 							active-class="is-active"
 						>
@@ -850,7 +850,7 @@
 							</nuxt-link>
 						</client-only>
 						<nuxt-link
-							v-if="usersEnabled"
+							v-if="config?.Users.Enabled"
 							to="/users"
 							active-class="is-active"
 						>
@@ -874,8 +874,8 @@
 							</nuxt-link>
 						</client-only>
 						<nuxt-link
-							v-if="discordLink"
-							:href="discordLink"
+							v-if="config?.KaraExplorer.DiscordURL"
+							:href="config?.KaraExplorer.DiscordURL"
 							active-class="is-active"
 						>
 							<font-awesome-icon
@@ -885,8 +885,8 @@
 							{{ $t('menu.discord') }}
 						</nuxt-link>
 						<nuxt-link
-							v-if="discourseLink"
-							:href="discourseLink"
+							v-if="config?.KaraExplorer.DiscourseURL"
+							:href="config?.KaraExplorer.DiscourseURL"
 							active-class="is-active"
 						>
 							<font-awesome-icon
@@ -898,7 +898,7 @@
 					</li>
 					<li>
 						<nuxt-link
-							v-if="import_enabled"
+							v-if="config?.KaraExplorer.Import"
 							to="/import"
 							active-class="is-active"
 						>
@@ -911,7 +911,7 @@
 					</li>
 					<li>
 						<nuxt-link
-							v-if="suggestions"
+							v-if="config?.Suggestions.Enabled"
 							to="/suggest"
 							active-class="is-active"
 						>
@@ -1025,7 +1025,7 @@
 								{{ $t('layout.app_banner.description') }}
 							</p>
 							<p class="subtitle">
-								{{ $t('layout.app_banner.more_features', { instance: explorerHost }) }}
+								{{ $t('layout.app_banner.more_features', { instance: url.hostname }) }}
 							</p>
 							<i18n-t
 								keypath="layout.app_banner.link"
@@ -1117,20 +1117,12 @@
 	import { storeToRefs } from 'pinia';
 	import slug from 'slug';
 	import type { TokenResponseWithRoles } from '~/../kmserver-core/src/lib/types/user';
+	import type { Config } from '~/../kmserver-core/src/types/config';
 	import { useAuthStore } from '~/store/auth';
+	import { useConfigStore, type supportedFilesType } from '~/store/config';
 	import { useLocalStorageStore } from '~/store/localStorage';
 	import { useMenubarStore } from '~/store/menubar';
 	import { useModalStore } from '~/store/modal';
-
-	const conf = useRuntimeConfig();
-	const import_enabled = conf.public.importEnabled;
-	const explorerProtocol = conf.public.explorerProtocol;
-	const explorerHost = conf.public.explorerHost;
-	const discordLink = conf.public.discordLink;
-	const discourseLink = conf.public.discourseLink;
-	const usersEnabled = conf.public.usersEnabled;
-	const suggestions = conf.public.suggestionsEnabled;
-	const addRepoModalInMenu = conf.public.addRepoToModalInMenu;
 
 	type TypeMenu = 'community' | 'account' | 'database';
 
@@ -1149,12 +1141,15 @@
 	const { loggedIn, user } = storeToRefs(useAuthStore());
 	const { logout, login: loginApi, updateUser } = useAuthStore();
 	const { enabledCollections, banner } = storeToRefs(useLocalStorageStore());
-	const { hideBanner } = useLocalStorageStore();
+	const { hideBanner, setEnabledCollections } = useLocalStorageStore();
+	const { config } = storeToRefs(useConfigStore());
+	const { setConfig, setSupportedFiles } = useConfigStore();
+	const url = useRequestURL();
 
 	useHead(() => {
 		return {
 			meta: [
-				{ hid: 'og:url', property: 'og:url', content: `${explorerProtocol}://${explorerHost}/${fullPath}` }
+				{ hid: 'og:url', property: 'og:url', content: `${url.protocol}//${url.host}/${fullPath}` }
 			],
 			titleTemplate: (titleChunk) => {
 				// If undefined or blank then we don't need the hyphen
@@ -1191,6 +1186,7 @@
 		});
 		checkAuth();
 		getRepoManifest();
+		getConfig();
 	});
 
 	async function checkAuth() {
@@ -1200,6 +1196,14 @@
 	async function getRepoManifest() {
 		const data = await useCustomFetch<{ Manifest: RepositoryManifestV2 }>('/api/karas/repository');
 		manifest.value = data.Manifest;
+	}
+
+	async function getConfig() {
+		const data = await useCustomFetch<Config>('/api/config');
+		setConfig(data);
+		if (enabledCollections.value.length === 0) setEnabledCollections(data.KaraExplorer.DefaultCollections);
+		const { supportedFiles } = await useCustomFetch<{ supportedFiles: supportedFilesType }>('/api/supportedStuff');
+		setSupportedFiles(supportedFiles);
 	}
 
 	function login() {

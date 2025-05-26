@@ -10,20 +10,21 @@ Features :
 - Expose karaoke sessions to the public via a room code based on subdomain (like abcd.mugen.re)
 - Offer access to the karaoke database online through an API similar to KM App. Also serves associated files.
 - Centralize stats uploaded by Karaoke Mugen instances
-- More news at 11.
 
 # Installation
 
 Make sure node and yarn are up to date on a machine with at least **2 gb** of ram
 
 **Requirements:**
-- node 18 or later
+
+- node 22 or later
 - yarn 3 or later
 - PostgreSQL 12 or later
 
 **Optional:**
+
 - [ffmpeg with libfdk_aac and ass](./docs/ffmpeg-build-script.sh) support for generating hardsubs
-- A ftp server for allowing maintainers to upload medias (vsftp is simple and works out)
+- A FTP server for allowing maintainers to upload medias (vsftp is simple and works out)
 
 [Detailled debian installation instructions](./docs/kmserver-setup-debian.md)
 
@@ -40,7 +41,7 @@ yarn build:all
 Use the supplied `config.sample.yml` file and copy it to `app/config.yml`. Edit it and fill in the blanks (username, password, port, host and database name of your choosing.)
 
 As a superuser on PostgreSQL, you need to create the database properly. Use the `psql` command-line tool to connect to your PostgreSQL database.
-  
+
 Example with a database called karaokemugen_server (don't forget to put your own password instead of `musubi`) :
 
 ```SQL
@@ -84,8 +85,8 @@ System:
       BaseDir: app/karaokebase/git
       FullArchiveURL: https://mugen.re/downloads/master.zip # URL to the complete repository as zip
       SourceArchiveURL: https://gitlab.com/karaokemugen/bases/karaokebase/-/archive/master/karaokebase-master.zip
-      Path: 
-        Medias: 
+      Path:
+        Medias:
           - app/karaokebase/medias
 ```
 
@@ -104,18 +105,14 @@ For local use, please put this in your `app/config.yml` file :
 ```yaml
 Frontend:
   Port: 1350
-API:
-  Secure: false
-KaraExplorer:
   Secure: false
 ```
 
 For production use :
 
-- `API.Host` : Put your server's domain name. It's used by the API to know which domain to listen to and serve requests.
-- `API.Secure`: Wether your API is going to be on HTTPS or HTTP front server. Enabled by default, disable it for local tests without being behind a webserver
+- `Frontend.Host` : Put your server's domain name.
+- `Frontend.Secure`: Wether your frontend is going to be on HTTPS or HTTP front server. Enabled by default, disable it for local tests without being behind a webserver
 - `Frontend.Port`: Port you should access your KM Server at. Usually on nginx or Apache you'll proxy/reverse proxy requests coming from port 80 to this port
-- `KaraExplorer.Host`: Host KMExplorer should be listening to
 
 
 ## Launch
@@ -142,17 +139,17 @@ On a machine with systemd, copy the file [kmserver.service](docs/kmserver.servic
 
 This assumes the project is located in `/srv/kmserver` and the user to execute is `kmserver`. You can change the file accordingly and then add the service to autostart with `systemctl enable kmserver`.
 
-Now you can start the kmserver with `sudo service kmserver start`, see its status with `sudo service kmserver status` and show the logs with `sudo journalctl -u kmserver.service -b`. 
+Now you can start the kmserver with `sudo service kmserver start`, see its status with `sudo service kmserver status` and show the logs with `sudo journalctl -u kmserver.service -b`.
 
 ## Update the base on the fly
 
-The base can be updated by git and refreshed on the fly by making a request to `/api/update` with an admin authorization token. You can point a webhook from your git service to call this URL whenever someone pushed a change, so that kmserver will update itself automatically. 
+The base can be updated by git and refreshed on the fly by making a request to `/api/update` with an admin authorization token. You can point a webhook from your git service to call this URL whenever someone pushed a change, so that kmserver will update itself automatically.
 
 Example curl request to trigger an update: `curl -f -X POST -H authorization:<AUTH_TOKEN> https://<repo url>/api/update`
 
 Curl request to get an authorization token (use an admin account) : `curl --header "Content-Type: application/json" --data '{"username":"<username>","password":"<password>"}' --request POST https://<repo url>/api/auth/login`
 
-To create an admin user, create an admin user with `--createAdmin user,password`. Example : 
+To create an admin user, create an admin user with `--createAdmin user,password`. Example :
 
 ```
 yarn start --createAdmin myadminuser,cannotbethiscute` for example.

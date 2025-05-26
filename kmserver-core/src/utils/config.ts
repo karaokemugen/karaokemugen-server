@@ -91,9 +91,9 @@ export async function initConfig(argv: any) {
 
 export function getPublicConfig(_?: boolean, __?: boolean) {
 	const conf = cloneDeep(getConfig());
-	delete conf.App;
 	delete conf.System;
-	delete conf.Gitlab;
+	delete conf.App;
+	delete conf.Gitlab.IssueTemplate;
 	delete conf.Mail;
 	return conf;
 }

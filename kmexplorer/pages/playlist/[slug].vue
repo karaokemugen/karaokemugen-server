@@ -71,7 +71,7 @@
 								<div class="is-flex is-justify-content-space-between">
 									<div>
 										<p class="subtitle">
-											{{ $t('playlists.app_banner', { instance: explorerHost }) }}
+											{{ $t('playlists.app_banner', { instance: url.hostname }) }}
 										</p>
 									</div>
 									<div>
@@ -154,8 +154,6 @@
 	const countBannerDisplay = 25;
 	const chunkSize = 300;
 
-	const explorerHost = useRuntimeConfig().public.explorerHost;
-
 	const { createEditPlaylist, deletePlaylist } = storeToRefs(useModalStore());
 	const { closeModal, openModal } = useModalStore();
 	const { search } = storeToRefs(useMenubarStore());
@@ -168,6 +166,7 @@
 	const { t } = useI18n();
 	const route = useRoute();
 	const toast = useToast();
+	const url = useRequestURL();
 
 	const currentPage = ref(Number(query.page) || 1);
 	const loading = ref(true);

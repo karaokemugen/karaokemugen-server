@@ -7,7 +7,7 @@
 		<div class="user-box">
 			<div class="header">
 				<img
-					:src="`${apiUrl}banners/${user.banner}`"
+					:src="`${requestUrl.origin}/banners/${user.banner}`"
 					alt="User banner"
 					class="banner"
 				>
@@ -210,6 +210,7 @@
 	import { useModalStore } from '~/store/modal';
 	import { useAuthStore } from '~/store/auth';
 	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
+	import { useConfigStore } from '~/store/config';
 
 	type RoleKey = keyof Roles;
 
@@ -223,10 +224,9 @@
 	const { openModal } = useModalStore();
 	const { params } = useRoute();
 	const { t, locale } = useI18n();
+	const { config } = storeToRefs(useConfigStore());
 
-	const conf = useRuntimeConfig();
-	const usersEnabled = conf.public.usersEnabled;
-	const apiUrl = conf.public.apiUrl;
+	const requestUrl = useRequestURL();
 
 	const viewingSelf = computed(() => loggedIn.value && (params.login === userConnected?.value?.login));
 	const canEdit = computed(() => (loggedIn.value && !!userConnected?.value?.roles?.admin) || viewingSelf.value);
@@ -247,7 +247,7 @@
 	getPlaylists();
 
 	async function fetch() {
-		if (!usersEnabled) {
+		if (!config.value?.Users.Enabled) {
 			throw createError({ statusCode: 404 });
 		}
 		const url = viewingSelf.value
@@ -274,12 +274,6 @@
 			params: {
 				byUsername: user?.value?.login
 			}
-		});
-	}
-
-	function deleteAccount() {
-		useCustomFetch(`/api/users/${params.login}`, {
-			method: 'DELETE'
 		});
 	}
 

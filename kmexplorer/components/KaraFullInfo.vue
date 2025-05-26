@@ -162,6 +162,7 @@
 	import { useAuthStore } from '~/store/auth';
 	import DOMPurify from 'isomorphic-dompurify';
 	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
+	import { useConfigStore } from '~/store/config';
 
 	const props = defineProps<{
 		karaoke: DBKara
@@ -179,9 +180,7 @@
 	const { search } = storeToRefs(useMenubarStore());
 	const { addTag } = useMenubarStore();
 	const { push } = useRouter();
-
-	const conf = useRuntimeConfig();
-	const bannerBanValue = conf.public.bannerBan;
+	const { config } = storeToRefs(useConfigStore());
 
 	const live = computed(() => isPlayable(props.karaoke, user?.value?.roles?.admin));
 	const title = computed(() => getTitleInLocale(props.karaoke.titles, props.karaoke.titles_default_language));
@@ -245,7 +244,7 @@
 			// @ts-expect-error: il est 23h27 <- ceci n'est pas une raison
 			for (const tag of props.karaoke[tagType]) {
 				if (
-					bannerBanValue.includes(tag.tid)
+					config.value?.Users.BannerBan.includes(tag.tid)
 				) {
 					bannerBan = true;
 					break;

@@ -47,7 +47,7 @@ sudo apt-get install -y nginx libnginx-mod-http-fancyindex
 
 See the ready to use [build script](./ffmpeg-build-script.sh) or the [official instructions](https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu). Make sure to also install libass (available in apt repository) and add the `--enable-libass` parameter when buiding ffmpeg.
 
-## Misc 
+## Misc
 ```sh
 sudo apt-get install -y git
 sudo apt-get install -y uuid-runtime
@@ -78,7 +78,7 @@ sudo mkdir /home/kmuser/storage
 mount --bind /storage /home/kmuser/storage
 # Mount it permanently
 echo "/storage /home/kmuser/storage none rw,bind 0 0" >> /etc/fstab
-``` 
+```
 
 # Install kmserver
 

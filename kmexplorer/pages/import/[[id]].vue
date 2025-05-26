@@ -6,7 +6,7 @@
 			class="description"
 		>
 			<template #instance>
-				<span>{{ instanceName }}</span>
+				<span>{{ url.hostname }}</span>
 			</template>
 		</i18n-t>
 		<div class="description">
@@ -20,12 +20,12 @@
 			<ul>
 				<li v-if="manifest?.docsURL">
 					<nuxt-link :href="manifest.docsURL">
-						{{ $t('kara.import.documentation_link', { instance: instanceName }) }}
+						{{ $t('kara.import.documentation_link', { instance: url.hostname }) }}
 					</nuxt-link>
 				</li>
-				<li v-if="inProgressSongsList">
+				<li v-if="config?.KaraExplorer.InProgressSongsList">
 					<nuxt-link
-						:href="inProgressSongsList"
+						:href="config?.KaraExplorer.InProgressSongsList"
 					>
 						{{ $t('kara.import.in_progress_link') }}
 					</nuxt-link>
@@ -60,23 +60,24 @@
 <script setup lang="ts">
 	import type { DBKara } from '%/lib/types/database/kara';
 	import type { RepositoryManifestV2 } from '%/lib/types/repo';
+	import { useConfigStore } from '~/store/config';
 
-	const config = useRuntimeConfig();
+	const { config } = storeToRefs(useConfigStore());
+
 	const route = useRoute();
 	const { t } = useI18n();
 
-	const conf = useRuntimeConfig();
-	const inProgressSongsList = config.public.inProgressSongsList;
-	const instanceName = conf.public.host;
+	const url = useRequestURL();
+
 	const kara = ref<DBKara>();
 	const manifest = ref<RepositoryManifestV2>();
 
-	definePageMeta({
-		validate: async () => {
-			const config = useRuntimeConfig();
-			return (config.public.importEnabled as unknown as boolean);
-		}
-	});
+	if (!config.value?.KaraExplorer.Import) {
+		throw createError({
+			statusCode: 404,
+			statusMessage: 'Page Not Found'
+		})
+	}
 
 	if (route.params?.id) {
 		try {

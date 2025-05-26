@@ -19,14 +19,12 @@
 <script setup lang="ts">
 	import { storeToRefs } from 'pinia';
 	import { useAuthStore } from '~/store/auth';
-
+	import { useConfigStore } from '~/store/config';
 
 	const { user } = storeToRefs(useAuthStore());
+	const { config } = storeToRefs(useConfigStore());
 
-	const conf = useRuntimeConfig();
-	const usersEnabled = conf.public.usersEnabled;
-
-	if (!usersEnabled || !user) {
+	if (!config.value?.Users.Enabled || !user?.value) {
 		throw createError({ statusCode: 404 });
 	}
 </script>

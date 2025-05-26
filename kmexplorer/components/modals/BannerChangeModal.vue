@@ -12,7 +12,7 @@
 			<div class="image-chooser">
 				<img
 					class="pending-banner"
-					:src="`${hardsubUrl}previews/${previews[img]}`"
+					:src="`${hardsubUrl}/previews/${previews[img]}`"
 					:alt="`Banner #${img + 1}`"
 				>
 				<div class="space-buttons">
@@ -56,6 +56,7 @@
 	import Modal from './Modal.vue';
 	import type { DBKara } from '%/lib/types/database/kara';
 	import { useAuthStore } from '~/store/auth';
+	import { useConfigStore } from '~/store/config';
 
 
 	const props = defineProps<{
@@ -70,12 +71,13 @@
 
 	const { setToken } = useAuthStore();
 
-	const conf = useRuntimeConfig();
-	const hardsubUrl = conf.public.hardsubUrl;
+	const { config, supportedFiles } = storeToRefs(useConfigStore());
+	const url = useRequestURL();
+	const hardsubUrl = config?.value?.Hardsub.Url ?? url.origin;
 
 	const previews = computed (() => {
 		const arr: string[] = [`${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`];
-		if (conf.public.supportedAudio.some(extension => props.karaoke.mediafile.endsWith(extension))) {
+		if (supportedFiles?.value?.audio.some(extension => props.karaoke.mediafile.endsWith(extension))) {
 			return arr;
 		} else {
 			return [

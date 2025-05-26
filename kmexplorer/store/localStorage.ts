@@ -16,7 +16,7 @@ export const useLocalStorageStore = defineStore('localStorage', {
 			karas: [],
 			sendContactInfos: false,
 			hideSuggestionModal: false,
-			enabledCollections: useRuntimeConfig().public.defaultCollections,
+			enabledCollections: [],
 			playerVolume: 0.5,
 			autoplay: false,
 			banner: true,
@@ -28,9 +28,9 @@ export const useLocalStorageStore = defineStore('localStorage', {
 		addKara(id: number) {
 			this.karas.push(id);
 		},
-		setEnabledCollections(collecs: string[]) {
+		setEnabledCollections(collecs?: string[]) {
 			// Don't allow no collections
-			if (collecs.length > 0) {
+			if (collecs && collecs.length > 0) {
 				this.enabledCollections = collecs;
 			}
 		},
