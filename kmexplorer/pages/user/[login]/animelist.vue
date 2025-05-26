@@ -24,7 +24,7 @@
 	const { user } = storeToRefs(useAuthStore());
 	const { config } = storeToRefs(useConfigStore());
 
-	if (!config.value?.Users.Enabled || !user?.value) {
+	if (!config?.value?.Users.Enabled || !user?.value) {
 		throw createError({ statusCode: 404 });
 	}
 </script>

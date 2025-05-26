@@ -56,7 +56,7 @@
 
 	const { config } = storeToRefs(useConfigStore());
 	const url = useRequestURL();
-	const hardsubUrl = config.value.Hardsub.Url ?? url.origin;
+	const hardsubUrl = config?.value.Hardsub.Url ?? url.origin;
 
 	const mediaHardsubUrl = computed(() => {
 		return `${hardsubUrl}/hardsubs/${props.karaoke.hardsubbed_mediafile}`;

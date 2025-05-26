@@ -84,7 +84,7 @@
 	await fetch();
 
 	async function fetch() {
-		if (!config.value?.Users.Enabled) {
+		if (!config?.value?.Users.Enabled) {
 			throw createError({ statusCode: 404 });
 		}
 		// Load the first page

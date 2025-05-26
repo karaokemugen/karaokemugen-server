@@ -244,7 +244,7 @@
 			// @ts-expect-error: il est 23h27 <- ceci n'est pas une raison
 			for (const tag of props.karaoke[tagType]) {
 				if (
-					config.value?.Users.BannerBan.includes(tag.tid)
+					config?.value?.Users.BannerBan.includes(tag.tid)
 				) {
 					bannerBan = true;
 					break;
