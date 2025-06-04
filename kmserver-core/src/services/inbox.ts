@@ -2,7 +2,7 @@ import { promises as fs } from 'fs';
 import { resolve } from 'path';
 import { v4 as uuidV4 } from 'uuid';
 
-import {clearInbox, deleteInbox, insertInbox, selectInbox, updateInboxDownloaded} from '../dao/inbox.js';
+import {clearInbox, deleteInbox, insertInbox, selectInbox, updateInboxDownloaded, updateInboxUnassign} from '../dao/inbox.js';
 import { deleteKara } from '../dao/kara.js';
 import { refreshAllKaraTag } from '../dao/tag.js';
 import { formatKaraV4, getDataFromKaraFile } from '../lib/dao/karafile.js';
@@ -17,12 +17,14 @@ import { getConfig, resolvedPathRepos } from '../lib/utils/config.js';
 import { tagTypes } from '../lib/utils/constants.js';
 import { ErrorKM } from '../lib/utils/error.js';
 import { fileExists, listAllFiles } from '../lib/utils/files.js';
-import { closeIssue } from '../lib/utils/gitlab.js';
+import { assignIssue, closeIssue } from '../lib/utils/gitlab.js';
 import logger from '../lib/utils/logger.js';
 import { findFileByUUID } from '../utils/files.js';
 import sentry from '../utils/sentry.js';
 import { getKara } from './kara.js';
+import { getRepos } from './repo.js';
 import { getTag } from './tag.js';
+import { findUserByName } from './user.js';
 
 const service = 'Inbox';
 
@@ -94,6 +96,28 @@ export async function markKaraInboxAsDownloaded(inid: string, username: string) 
 	}
 }
 
+function getGitlabIssueNumber(url: string): number {
+	return +url.split('/')[url.split('/').length - 1];
+}
+
+export async function markKaraInboxAsUnassigned(inid: string, username: string) {
+	try {
+		const inbox = (await selectInbox(inid))[0];
+		if (!inbox) throw new ErrorKM('INBOX_UNKNOWN_ERROR', 404, false);
+		await updateInboxUnassign(inid);
+		const user = await findUserByName(username, { public: false });
+		if (user.social_networks.gitlab) {
+			// This will hurt when we have multiple repositories in KM Server
+			assignIssue(getGitlabIssueNumber(inbox.gitlab_issue), getRepos()[0].Name);
+		}
+	} catch (err) {
+		logger.error(`Failed to mark inbox item ${inid} as downloaded by ${username}`, {service, obj: err});
+		sentry.error(err);
+		throw err instanceof ErrorKM ? err : new ErrorKM('MARK_INBOX_DOWNLOADED_ERROR');
+	}
+}
+
+
 export async function addKaraInInbox(kara: KaraFileV4, contact: string, issue?: string, edited_kid?: string) {
 	try {
 		await insertInbox({
@@ -163,7 +187,7 @@ export async function removeKaraFromInbox(inid: string) {
 		}
 		await deleteInbox(inid);
 		if (inbox.gitlab_issue) {
-			const numberIssue = +inbox.gitlab_issue.split('/')[inbox.gitlab_issue.split('/').length - 1];
+			const numberIssue = getGitlabIssueNumber(inbox.gitlab_issue);
 			await closeIssue(numberIssue, getConfig().System.Repositories[0].Name);
 		}
 	} catch (err) {
@@ -188,7 +212,7 @@ export async function clearUnusedStagingTags() {
 				}
 			}
 		}
-		
+
 		// List tags in staging
 		const tagDir = resolvedPathRepos('Tags', 'Staging')[0];
 		const tagFiles = await fs.readdir(tagDir);

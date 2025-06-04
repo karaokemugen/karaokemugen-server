@@ -24,6 +24,12 @@ export async function updateInboxDownloaded(username: string, inid: string) {
 	]);
 }
 
+export async function updateInboxUnassign(inid: string) {
+	return db().query(sql.updateInboxUnassign, [
+		inid
+	]);
+}
+
 export async function deleteInbox(inid: string) {
 	return db().query(sql.deleteInbox, [inid]);
 }

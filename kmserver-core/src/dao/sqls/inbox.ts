@@ -40,6 +40,11 @@ export const insertInbox = `
 	)
 `;
 
+export const updateInboxUnassign = `
+    UPDATE inbox set fk_login_downloaded = NULL, downloaded_at = NULL
+	WHERE pk_inid = $1
+`;
+
 export const updateInboxDownloaded = `
 	UPDATE inbox SET fk_login_downloaded = $1, downloaded_at = $2
 	WHERE pk_inid = $3
