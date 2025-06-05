@@ -1,9 +1,10 @@
+import type { TagTypeNum } from '%/lib/types/tag';
 import type { Roles } from '%/lib/types/user';
 
 export interface TagType {
 	icon: string;
 	class: string;
-	type?: number;
+	type?: TagTypeNum | 0;
 	name?: string;
 	language: 'song_name' | 'user';
 }

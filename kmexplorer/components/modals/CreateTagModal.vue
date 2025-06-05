@@ -70,7 +70,7 @@
 										>
 											<option
 												v-for="tagType in creatableTagTypes"
-												:key="tagType"
+												:key="tagType.type"
 												:value="tagType.type"
 												:class="{'is-active': types.includes(tagType.type as number)}"
 											>
@@ -104,6 +104,7 @@
 	import type { DBTag } from '%/lib/types/database/tag';
 	import { tagTypes, type TagType } from '~/assets/constants';
 	import { useConfigStore } from '~/store/config';
+	import type { TagTypeNum } from '%/lib/types/tag';
 
 	const { config } = storeToRefs(useConfigStore());
 
@@ -129,8 +130,8 @@
 
 	const { closeModal } = useModalStore();
 
-	const creatableTagTypes: TagType = Object.entries(tagTypes)
-		.filter(e => !config?.value?.Frontend?.LimitedTagTypes?.includes(e[1].type))
+	const creatableTagTypes: TagType[] = Object.entries(tagTypes)
+		.filter(e => !config?.value?.Frontend.Import.LimitedTagTypes?.includes(e[1].type as TagTypeNum))
 		// map into TagType
 		.map(e => {
 			return {
