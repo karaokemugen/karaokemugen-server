@@ -28,6 +28,7 @@ export interface Config {
 		Suggestions: boolean,
 		InProgressSongsList?: string,
 		SupportedMedias?: string [],
+		CreatableTagTypes?: number [],
 		AddRepoModalInMenu: boolean,
 		DefaultCollections?: string[],
 	},
