@@ -38,7 +38,21 @@ Frontend:
   Port: 1350
   Host: localhost
   Secure: false
-  Import: true
+  Import: 
+    Enabled: true
+    LimitedTagTypes:
+      - 3
+      - 5
+      - 7
+      - 9
+      - 10
+      - 11
+      - 12
+      - 13
+      - 14
+      - 15
+      - 16
+      - 0
   Suggestions: true
   InProgressSongsList: https://gitlab.com/karaokemugen/bases/karaokebase/-/issues?scope=all&state=opened&label_name[]=Work in progress
   AddRepoModalInMenu: false

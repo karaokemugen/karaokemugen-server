@@ -1,4 +1,5 @@
 import { Repository, RepositoryManifest } from '../lib/types/repo.js';
+import { TagTypeNum } from '../lib/types/tag.js';
 import { RepositoryServer } from './repo.js';
 
 type RepositoryWithManifest = Repository & RepositoryManifest & RepositoryServer;
@@ -24,11 +25,13 @@ export interface Config {
 		Tagline: string,
 		DiscordURL?: string,
 		DiscourseURL?: string,
-		Import: boolean,
+		Import: {
+			Enabled: boolean,
+			LimitedTagTypes: TagTypeNum[]
+		},
 		Suggestions: boolean,
 		InProgressSongsList?: string,
-		SupportedMedias?: string [],
-		CreatableTagTypes?: number [],
+		SupportedMedias?: string[],
 		AddRepoModalInMenu: boolean,
 		DefaultCollections?: string[],
 	},
