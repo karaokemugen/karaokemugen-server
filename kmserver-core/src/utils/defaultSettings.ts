@@ -51,7 +51,10 @@ export const defaults: Config = {
 		Host: 'localhost',
 		Enabled: true,
 		Tagline: 'Explore! Find! Sing!',
-		Import: true,
+		Import: {
+			Enabled: true,
+			LimitedTagTypes: []
+		},
 		Suggestions: true,
 		AddRepoModalInMenu: false
 	},
