@@ -131,7 +131,7 @@
 	const { closeModal } = useModalStore();
 
 	const creatableTagTypes: TagType[] = Object.entries(tagTypes)
-		.filter(e => !config?.value?.Frontend.Import.LimitedTagTypes?.includes(e[1].type as TagTypeNum))
+		.filter(e => !config?.value?.Frontend.Import.LimitedTagTypes.includes(e[1].type as TagTypeNum))
 		// map into TagType
 		.map(e => {
 			return {
