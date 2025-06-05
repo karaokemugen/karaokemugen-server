@@ -898,7 +898,7 @@
 					</li>
 					<li>
 						<nuxt-link
-							v-if="config?.Frontend.Import"
+							v-if="config?.Frontend.Import.Enabled"
 							to="/import"
 							active-class="is-active"
 						>

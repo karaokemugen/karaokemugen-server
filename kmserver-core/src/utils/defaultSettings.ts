@@ -53,7 +53,19 @@ export const defaults: Config = {
 		Tagline: 'Explore! Find! Sing!',
 		Import: {
 			Enabled: true,
-			LimitedTagTypes: []
+			LimitedTagTypes: [
+				3,
+				5,
+				7,
+				9,
+				10,
+				11,
+				12,
+				13,
+				14,
+				15,
+				16
+			]
 		},
 		Suggestions: true,
 		AddRepoModalInMenu: false
