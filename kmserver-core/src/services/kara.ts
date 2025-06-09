@@ -110,11 +110,11 @@ export async function generate() {
 		await computeSubchecksums();
 		createBaseDumps();
 		const promises = [];
-		if (conf.Frontend.Import) promises.push(clearOldInboxEntries());
+		if (conf.Frontend.Import.Enabled) promises.push(clearOldInboxEntries());
 		if (conf.System.Repositories[0].OnUpdateTrigger) promises.push(updateTrigger());
 		promises.push(refreshKaraStats());
 		await Promise.all(promises);
-		if (conf.Frontend.Import) await clearUnusedStagingTags();
+		if (conf.Frontend.Import.Enabled) await clearUnusedStagingTags();
 	} catch (err) {
 		logger.error('Generation failed', {service, obj: err});
 		sentry.error(err, 'fatal');

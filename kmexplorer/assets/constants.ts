@@ -1,16 +1,17 @@
+import type { TagTypeNum } from '%/lib/types/tag';
 import type { Roles } from '%/lib/types/user';
 
-export interface tagType {
+export interface TagType {
 	icon: string;
 	class: string;
-	type?: number;
+	type?: TagTypeNum | 0;
 	name?: string;
 	language: 'song_name' | 'user';
 }
 
 export const tagRegex = /([a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12})~([0-9]{1,2})/;
 
-export const tagTypesMap: { [key: number]: tagType } = {
+export const tagTypesMap: { [key: number]: TagType } = {
 	3: {
 		icon: 'tasks',
 		class: 'is-success',
@@ -127,7 +128,7 @@ export const tagTypesMap: { [key: number]: tagType } = {
 	},
 };
 
-export const tagTypes: { [key: string]: tagType } = {
+export const tagTypes: { [key: string]: TagType } = {
 	songtypes: {
 		icon: 'tasks',
 		class: 'is-success',

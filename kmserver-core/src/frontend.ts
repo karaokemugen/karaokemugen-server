@@ -140,7 +140,7 @@ function api() {
 	PLController(apiRouter);
 	inboxController(apiRouter);
 	PMController(apiRouter);
-	if (conf.Frontend.Import) KImportController(apiRouter);
+	if (conf.Frontend.Import.Enabled) KImportController(apiRouter);
 	// Stats
 	if (conf.Stats.Enabled) statsController(apiRouter);
 	if (conf.Users.Enabled) {
