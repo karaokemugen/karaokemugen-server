@@ -173,7 +173,7 @@
 					{{ $t('menu.discourse') }}
 				</nuxt-link>
 				<nuxt-link
-					v-if="config?.Frontend.Import"
+					v-if="config?.Frontend.Import.Enabled"
 					class="navbar-item"
 					to="/import"
 					@click="closeMenu"
@@ -898,7 +898,7 @@
 					</li>
 					<li>
 						<nuxt-link
-							v-if="config?.Frontend.Import"
+							v-if="config?.Frontend.Import.Enabled"
 							to="/import"
 							active-class="is-active"
 						>

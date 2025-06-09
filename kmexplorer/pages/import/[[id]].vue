@@ -72,7 +72,7 @@
 	const kara = ref<DBKara>();
 	const manifest = ref<RepositoryManifestV2>();
 
-	if (!config?.value?.Frontend.Import) {
+	if (!config?.value?.Frontend.Import.Enabled) {
 		throw createError({
 			statusCode: 404,
 			statusMessage: 'Page Not Found'

@@ -69,12 +69,12 @@
 											size="4"
 										>
 											<option
-												v-for="tagType in Object.keys(tagTypes)"
-												:key="tagType"
-												:value="tagTypes[tagType].type"
-												:class="{'is-active': types.includes(tagTypes[tagType].type as number)}"
+												v-for="tagType in creatableTagTypes"
+												:key="tagType.type"
+												:value="tagType.type"
+												:class="{'is-active': types.includes(tagType.type as number)}"
 											>
-												{{ $t(`kara.tagtypes.${tagType}`) }}
+												{{ $t(`kara.tagtypes.${tagType.name}`) }}
 											</option>
 										</select>
 									</span>
@@ -102,7 +102,11 @@
 <script setup lang="ts">
 	import { useModalStore } from '~/store/modal';
 	import type { DBTag } from '%/lib/types/database/tag';
-	import { tagTypes } from '~/assets/constants';
+	import { tagTypes, type TagType } from '~/assets/constants';
+	import { useConfigStore } from '~/store/config';
+	import type { TagTypeNum } from '%/lib/types/tag';
+
+	const { config } = storeToRefs(useConfigStore());
 
 	const props = defineProps<{
 		active: boolean
@@ -125,6 +129,18 @@
 
 
 	const { closeModal } = useModalStore();
+
+	const creatableTagTypes: TagType[] = Object.entries(tagTypes)
+		// Remove year type
+		.filter(e => e[1].type != 0)
+		.filter(e => !config?.value?.Frontend.Import.LimitedTagTypes.includes(e[1].type as TagTypeNum))
+		// map into TagType
+		.map(e => {
+			return {
+			name: e[0],
+			...e[1],
+			}
+		});
 
 	function cancel(): void {
 		closeModal('createTag');
