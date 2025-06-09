@@ -38,7 +38,7 @@
 						v-if="live"
 						:href="mediaUrl"
 						class="button"
-						download
+						:download="`${karaoke.songname}.${mediaExtension}`"
 						@click="closeModal"
 					>
 						<font-awesome-icon
@@ -51,7 +51,7 @@
 						v-if="live"
 						:href="mediaHardsubUrl"
 						class="button"
-						:download="hardsubMediaFileName"
+						:download="`${karaoke.songname}_hardsub.mp4`"
 						@click="closeModal"
 					>
 						<font-awesome-icon
@@ -104,10 +104,6 @@
 	});
 	const mediaHardsubUrl = computed(() => {
 		return `${hardsubUrl}/hardsubs/${props.karaoke.hardsubbed_mediafile}`;
-	});
-	const hardsubMediaFileName = computed(() => {
-		const filename = props.karaoke.mediafile.substring(0, props.karaoke.mediafile.lastIndexOf('.')) || props.karaoke.mediafile;
-		return `${filename}.mp4`;
 	});
 	const subtitlesUrl = computed(() => {
 		return `${url.origin}/downloads/lyrics/${encodeURIComponent(props.karaoke.lyrics_infos[0].filename)}`;
