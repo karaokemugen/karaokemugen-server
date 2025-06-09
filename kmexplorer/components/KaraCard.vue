@@ -138,7 +138,7 @@
 	const { loggedIn } = storeToRefs(useAuthStore());
 	const { config, supportedFiles } = storeToRefs(useConfigStore());
 	const url = useRequestURL();
-	const hardsubUrl = config?.value?.Hardsub.Url ?? url.origin;
+	const hardsubUrl = config?.value?.Hardsub?.Url ?? url.origin;
 
 	const activate = ref(false);
 	const loading = ref(false);
