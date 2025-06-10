@@ -257,7 +257,10 @@ export async function getAllKaras(params: KaraParams, token?: JWTTokenWithRoles,
 		}
 		if (params.forceCollections) {
 			for (const collection of params.forceCollections) {
-				if (!uuidRegexp.test(collection)) throw new ErrorKM('GET_KARA_COLLECTION_FORMAT_ERROR', 400, false);
+				if (!uuidRegexp.test(collection)) {
+					logger.error(`Invalid collection in ${params.forceCollections.join(', ')}`, { service });
+					throw new ErrorKM('GET_KARA_COLLECTION_FORMAT_ERROR', 400, false);
+				}
 			}
 		}
 		const pl = await selectAllKaras(params, includeStaging);
