@@ -923,7 +923,7 @@
 				const formData = new FormData();
 				formData.append('file', file);
 				useUploadFile(
-					'api/karas/importMedia',
+					'/api/karas/importMedia',
 					formData,
 					(progressEvent: ProgressEvent<EventTarget>) => {
 						uploading_media.value = Math.round((progressEvent.loaded * 100) / progressEvent.total);
@@ -969,7 +969,7 @@
 				const formData = new FormData();
 				formData.append('file', file);
 				useUploadFile(
-					'api/karas/importSub',
+					'/api/karas/importSub',
 					formData,
 					(progressEvent: ProgressEvent<EventTarget>) => {
 						uploading_sub.value = Math.round((progressEvent.loaded * 100) / progressEvent.total);
