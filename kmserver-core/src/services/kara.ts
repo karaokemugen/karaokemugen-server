@@ -255,7 +255,7 @@ export async function getAllKaras(params: KaraParams, token?: JWTTokenWithRoles,
 				throw new ErrorKM('GET_FAVORITES_FROM_USER_NOT_FOUND_ERROR', 404, false);
 			}
 		}
-		if (params.forceCollections) {
+		if (params.forceCollections?.length > 0) {
 			for (const collection of params.forceCollections) {
 				if (!uuidRegexp.test(collection)) {
 					logger.error(`Invalid collection in ${params.forceCollections.join(', ')}`, { service });
