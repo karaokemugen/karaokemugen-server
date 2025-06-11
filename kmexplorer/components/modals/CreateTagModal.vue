@@ -133,7 +133,7 @@
 	const creatableTagTypes: TagType[] = Object.entries(tagTypes)
 		// Remove year type
 		.filter(e => e[1].type != 0)
-		.filter(e => !config?.value?.Frontend.Import.LimitedTagTypes.includes(e[1].type as TagTypeNum))
+		.filter(e => config?.value && !config.value.Frontend.Import.LimitedTagTypes.includes(e[1].type as TagTypeNum))
 		// map into TagType
 		.map(e => {
 			return {

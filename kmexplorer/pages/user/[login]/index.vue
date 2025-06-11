@@ -247,7 +247,7 @@
 	getPlaylists();
 
 	async function fetch() {
-		if (!config?.value?.Users.Enabled) {
+		if (config?.value && !config.value.Users.Enabled) {
 			throw createError({ statusCode: 404 });
 		}
 		const url = viewingSelf.value
