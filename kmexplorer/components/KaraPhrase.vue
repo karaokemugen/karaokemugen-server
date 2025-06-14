@@ -54,11 +54,12 @@
 	const serieSinger = computed<ShortTag>(() => getSerieOrSingerGroupsOrSingers(props.karaoke, props.karaokesI18n));
 
 	const songtype = computed<ShortTag>(() => {
+		const songtypes = sortAndHideTags(props.karaoke.songtypes);
 		return {
-			slug: slug(props.karaoke.songtypes[0].name),
-			name: getTagInLocale(props.karaoke.songtypes[0], props.karaokesI18n && props.karaokesI18n[props.karaoke.songtypes[0].tid]),
+			slug: slug(songtypes[0].name),
+			name: getTagInLocale(songtypes[0], props.karaokesI18n && props.karaokesI18n[songtypes[0].tid]),
 			type: 'songtypes',
-			tag: props.karaoke.songtypes[0]
+			tag: songtypes[0]
 		};
 	});
 	const versions = computed<ShortTag[]>(() => {

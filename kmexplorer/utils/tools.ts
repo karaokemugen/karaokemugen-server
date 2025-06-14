@@ -120,7 +120,7 @@ export function buildKaraTitle(
 }
 
 export function sortTagByPriority(a: any, b: any, reverse: boolean) {
-	return (reverse ? a.priority > b.priority : a.priority < b.priority) ? 1 : a.name.localeCompare(b.name);
+	return (reverse ? a.priority < b.priority : a.priority > b.priority) ? 1 : a.name.localeCompare(b.name);
 }
 
 /**
