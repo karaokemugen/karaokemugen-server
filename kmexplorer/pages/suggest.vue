@@ -20,7 +20,7 @@
 					</h2>
 					<h2 class="subtitle is-hidden-touch ">
 						{{ $t('suggestions.header.purpose') }}
-						<span v-if="config.Gitlab?.Enabled">{{ $t('suggestions.header.suggestion') }}</span>
+						<span v-if="config?.Gitlab?.Enabled">{{ $t('suggestions.header.suggestion') }}</span>
 					</h2>
 					<button
 						class="button is-primary m-1"
@@ -31,7 +31,7 @@
 						<span>{{ $t('suggestions.header.random_selection') }}</span>
 					</button>
 					<button
-						v-if="config.Gitlab?.Enabled"
+						v-if="config?.Gitlab?.Enabled"
 						class="button is-success m-1"
 						@click="() => openModal('karaSuggest')"
 					>
@@ -66,7 +66,7 @@
 			@close="() => setHideSuggestionModal()"
 		/>
 		<kara-suggest-modal
-			v-if="!loading && config.Gitlab?.Enabled"
+			v-if="!loading && config?.Gitlab?.Enabled"
 			:active="karaSuggest"
 			@close="() => closeModal('karaSuggest')"
 		/>
