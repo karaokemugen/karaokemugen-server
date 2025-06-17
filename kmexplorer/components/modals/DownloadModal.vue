@@ -25,7 +25,7 @@
 						v-if="karaoke.lyrics_infos[0]"
 						:href="subtitlesUrl"
 						class="button"
-						download
+						:download="`${karaoke.songname}.${subtitlesExtension}`"
 						@click="closeModal"
 					>
 						<font-awesome-icon
