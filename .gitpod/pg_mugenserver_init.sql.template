@@ -1,6 +1,0 @@
-CREATE DATABASE :pg_dbname: ENCODING 'UTF8';
-CREATE USER :pg_user: WITH ENCRYPTED PASSWORD ':pg_password:';
-GRANT ALL PRIVILEGES ON DATABASE :pg_dbname: TO :pg_user:;
-\c :pg_dbname:
-CREATE EXTENSION unaccent;
-CREATE EXTENSION pgcrypto;
