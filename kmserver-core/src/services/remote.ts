@@ -20,7 +20,7 @@ import { asyncCheckOrMkdir } from '../lib/utils/files.js';
 import logger from '../lib/utils/logger.js';
 import { getWS } from '../lib/utils/ws.js';
 import {resolvedPathRemoteRoot} from '../utils/config.js';
-import { getVersion, watchRemotes } from '../utils/remote.js';
+import { fetchRemote, getVersion, isRemoteAvailable, isRemoteDownloadable, watchRemotes } from '../utils/remote.js';
 import sentry from '../utils/sentry.js';
 import { getState } from '../utils/state.js';
 
@@ -75,6 +75,8 @@ async function findFreeCode() {
 }
 
 export async function startRemote(socket: Socket, req: RemoteSettings): Promise<RemoteResponse> {
+	// Find out if we have the right version
+
 	if (req.token) {
 		const instance = (await selectRemoteTokens(req.token))[0];
 		if (instance) {
@@ -85,6 +87,13 @@ export async function startRemote(socket: Socket, req: RemoteSettings): Promise<
 					logger.warn('Cannot update instance last use', {service, obj: err});
 				});
 				setupRemote(instance.code, req.version, socket);
+				if (!isRemoteAvailable(req.version)) {
+					if (!await isRemoteDownloadable(req.version)) {
+						logger.error(`Frontend version ${req.version} is not available locally or remotely`, { service });
+						throw new Error(); // Not sure if I shouldn't throw something else or not.
+					}
+					fetchRemote(req.version);
+				}
 				return {
 					host: `${instance.code}.${getConfig().Remote.BaseHost}`,
 					code: instance.code,
