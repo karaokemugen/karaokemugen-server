@@ -249,6 +249,7 @@
 	import * as Toast from 'vue-toastification';
 	import type { TokenResponseWithRoles } from '~/../kmserver-core/src/lib/types/user';
 	import { useAuthStore } from '~/store/auth';
+	import { useConfigStore } from '~/store/config';
 
 	// @ts-expect-error
 	const useToast = Toast.useToast ?? Toast.default.useToast;
@@ -277,6 +278,7 @@
 	const { locale, t } = useI18n();
 	const loginApi = useAuthStore().login;
 	const url = useRequestURL();
+	const { config } = storeToRefs(useConfigStore());
 
 	const toast = useToast();
 
@@ -330,7 +332,11 @@
 				}, false);
 				toast.success(t('modal.login.fields.forgot_password.success'));
 			} catch (e) {
-				toast.error(t('modal.login.fields.forgot_password.error'), { icon: 'error' });
+				toast.error(t('modal.login.fields.forgot_password.error', {
+					email:
+						config?.value?.Frontend.AdminEmail ??
+						t('modal.login.fields.forgot_password.error_fallback')
+				}), { icon: 'error' });
 			}
 		}
 	}

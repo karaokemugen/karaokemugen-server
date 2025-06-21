@@ -465,7 +465,8 @@
 				"forgot_password": {
 					"label": "Passwort vergessen?",
 					"success": "Es wurde eine E-Mail mit einem Link zum Zurücksetzen des Passworts gesendet.",
-					"error": "Das Passwort konnte nicht zurückgesetzt werden: Bitte kontaktiere den Serveradministrator, der für den Account zuständig ist."
+					"error": "Das Passwort konnte nicht zurückgesetzt werden: Bitte kontaktiere {email}.",
+					"error_fallback": "den Serveradministrator, der für den Account zuständig ist"
 				},
 				"username": {
 					"label": "Benutzername",
