@@ -3,7 +3,6 @@ import { RemoteResponse, RemoteSettings } from '../../lib/types/remote.js';
 import logger from '../../lib/utils/logger.js';
 import { SocketIOApp } from '../../lib/utils/ws.js';
 import { proxyBroadcast, startRemote, stopRemote } from '../../services/remote.js';
-import { getVersion } from '../../utils/remote.js';
 import { WS_CMD } from '../../utils/ws.js';
 
 const service = 'WSRemote';
@@ -11,10 +10,7 @@ const service = 'WSRemote';
 export default function remoteSocketController(app: SocketIOApp) {
 	app.route(WS_CMD.REMOTE_START, async (socket, req: APIData<RemoteSettings>): Promise<RemoteResponse> => {
 		logger.info(`Start remote for ${req.body.InstanceID}`, {service});
-		if (getVersion(req.body.version) !== false) {
-			return startRemote(socket, req.body);
-		} 
-			throw { code: 400, message: { code: 'OUTDATED_CLIENT' } };
+		return startRemote(socket, req.body);
 	});
 	app.route(WS_CMD.REMOTE_STOP, async (socket) => {
 		return stopRemote(socket);

@@ -90,7 +90,7 @@ export async function startRemote(socket: Socket, req: RemoteSettings): Promise<
 				if (!isRemoteAvailable(req.version)) {
 					if (!await isRemoteDownloadable(req.version)) {
 						logger.error(`Frontend version ${req.version} is not available locally or remotely`, { service });
-						throw new Error(); // Not sure if I shouldn't throw something else or not.
+						throw { code: 400, message: { code: 'OUTDATED_CLIENT' } };
 					}
 					fetchRemote(req.version);
 				}
@@ -170,7 +170,7 @@ export function initRemote() {
 frontend,
 					{ index: false }
 )(req, res, next);
-			} 
+			}
 				res.status(500).send('Cannot find KMFrontend required version.');
 				sentry.error(`Unknown KM App version ${remotesVersions.get(req.vhost[0])} when starting remote`);
 		} else {
