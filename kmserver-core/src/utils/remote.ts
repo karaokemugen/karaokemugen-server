@@ -49,7 +49,7 @@ export async function fetchRemote(version: string) {
 	try {
 		const filename = resolve(resolvedPath('Temp'), `${version}.zip`);
 		await downloadFile({
-			url: `https://${getConfig().Remote.FrontendBundlesURL}/${version}.zip`,
+			url: `${getConfig().Remote.FrontendBundlesURL}/${version}.zip`,
 			name: `Frontend ${version}`,
 			filename
 		});
