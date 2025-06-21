@@ -147,7 +147,7 @@ export async function createSuggestionIssue(title: string, serie:string, singer:
 			: '[suggestion] $displaytype - $type - $title';
 		titleIssue = titleIssue.replace('$title', title);
 		titleIssue = titleIssue.replace('$type', type);
-		const displaytype = singer && serie ? `${serie}/${singer}` : `${serie || ''}${singer}`;
+		const displaytype = singer && serie ? `${serie} / ${singer}` : `${serie || ''}${singer}`;
 		titleIssue = titleIssue.replace('$displaytype', displaytype);
 		let desc = conf?.Suggestion?.Description
 			? conf.Suggestion.Description
