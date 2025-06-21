@@ -501,7 +501,8 @@
 		"login": {
 			"fields": {
 				"forgot_password": {
-					"error": "Non è stato possibile reimpostare la password: contatta l'amministratore del server del tuo account.",
+					"error": "Non è stato possibile reimpostare la password: contatta {email}.",
+					"error_fallback": "l'amministratore del server del tuo account",
 					"success": "Ti è stata inviata una mail con un link per reimpostare la tua password.",
 					"label": "Hai dimenticato la password?"
 				},

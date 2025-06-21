@@ -20,6 +20,7 @@ export interface Config {
 	Frontend: {
 		Port: number,
 		Host: string,
+		AdminEmail?: string,
 		Secure: boolean,
 		Enabled: boolean,
 		Tagline: string,

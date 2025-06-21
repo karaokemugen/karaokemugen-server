@@ -38,7 +38,8 @@ Frontend:
   Port: 1350
   Host: localhost
   Secure: false
-  Import: 
+  AdminEmail: admin@mugen.re
+  Import:
     Enabled: true
     LimitedTagTypes:
       - 3

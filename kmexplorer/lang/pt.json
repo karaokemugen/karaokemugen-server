@@ -603,7 +603,8 @@
 				"forgot_password": {
 					"label": "Esqueceu sua senha?",
 					"success": "Um e-mail foi enviado com um link para redefinir a sua senha.",
-					"error": "Não foi possível redefinir a sua senha: entre em contato com o administrador do servidor ao qual a sua conta pertence."
+					"error": "Não foi possível redefinir a sua senha: entre em contato com {email}.",
+					"error_fallback": "o administrador do servidor ao qual a sua conta pertence"
 				}
 			},
 			"title": "Login",

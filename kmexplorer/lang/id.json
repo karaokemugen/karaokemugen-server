@@ -292,7 +292,8 @@
 		"login": {
 			"fields": {
 				"forgot_password": {
-					"error": "Tidak bisa mengatur ulang kata sandimu: hubungi admin peladen di mana akun kamu terdaftar.",
+					"error": "Tidak bisa mengatur ulang kata sandimu: hubungi {email}.",
+					"error_fallback": "admin peladen di mana akun kamu terdaftar",
 					"success": "Sebuah surel telah dikirim dengan tautan untuk mengatur ulang kata sandimu.",
 					"label": "Lupa kata sandi?"
 				},

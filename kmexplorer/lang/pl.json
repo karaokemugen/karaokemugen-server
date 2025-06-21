@@ -434,7 +434,8 @@
 				},
 				"forgot_password": {
 					"label": "Zapomniałeś hasła?",
-					"error": "Nie można zresetować hasła: skontaktuj się z administratorem serwera, do którego należy Twoje konto.",
+					"error": "Nie można zresetować hasła: skontaktuj się z {email}.",
+					"error_fallback": "administratorem serwera, do którego należy Twoje konto",
 					"success": "Została wysłana wiadomość e-mail z linkiem do zresetowania hasła."
 				}
 			},
