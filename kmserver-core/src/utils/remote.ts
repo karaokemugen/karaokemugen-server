@@ -27,7 +27,7 @@ export function watchRemotes(): void {
 export function getVersion(version: string): string | false {
 	if (availableRemotes.includes(version)) {
 		return resolve(resolvedPathRemoteRoot(), version);
-	} 
+	}
 		return false;
 }
 
@@ -37,7 +37,7 @@ export async function isRemoteAvailable(version: string) {
 
 export async function isRemoteDownloadable(version: string) {
 	try {
-		const url = `https://${getConfig().Remote.FrontendBundlesURL}/${version}.zip`;
+		const url = `${getConfig().Remote.FrontendBundlesURL}/${version}.zip`;
 		await HTTP.head(url);
 		return true;
 	} catch (err) {
@@ -56,7 +56,7 @@ export async function fetchRemote(version: string) {
 		logger.info(`Installing remote ${version}`, { service });
 		const outDir = resolve(resolvedPathRemoteRoot(), version);
 		await fs.mkdir(outDir);
-		await extract(filename, { 
+		await extract(filename, {
 			dir: outDir
 		});
 		logger.info(`Installed remote ${version}`, { service });

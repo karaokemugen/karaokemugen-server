@@ -87,7 +87,7 @@ export async function startRemote(socket: Socket, req: RemoteSettings): Promise<
 					logger.warn('Cannot update instance last use', {service, obj: err});
 				});
 				setupRemote(instance.code, req.version, socket);
-				if (!isRemoteAvailable(req.version)) {
+				if (!await isRemoteAvailable(req.version)) {
 					if (!await isRemoteDownloadable(req.version)) {
 						logger.error(`Frontend version ${req.version} is not available locally or remotely`, { service });
 						throw { code: 400, message: { code: 'OUTDATED_CLIENT' } };

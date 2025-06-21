@@ -24,7 +24,7 @@ import { promoteToken } from './services/remote.js';
 import { initRepos } from './services/repo.js';
 import { addSuggestionsFromFile } from './services/suggestions.js';
 import { addRoleToUser, changePassword, createUser, initUsers, removeRoleFromUser } from './services/user.js';
-import { initConfig } from './utils/config.js';
+import { initConfig, resolvedPathRemoteRoot } from './utils/config.js';
 import { generateHardsubs, hardsubsDone, initHardsubGeneration } from './utils/hardsubs.js';
 import { initMailer } from './utils/mailer.js';
 import sentry from './utils/sentry.js';
@@ -106,7 +106,8 @@ async function main() {
 		asyncCheckOrMkdir(resolve(dataPath, paths.Temp)),
 		asyncCheckOrMkdir(resolve(dataPath, paths.Previews)),
 		asyncCheckOrMkdir(resolve(dataPath, paths.Avatars)),
-		asyncCheckOrMkdir(resolve(dataPath, paths.Hardsubs))
+		asyncCheckOrMkdir(resolve(dataPath, paths.Hardsubs)),
+		asyncCheckOrMkdir(resolvedPathRemoteRoot())
 	];
 	for (const repo of conf.System.Repositories) {
 		for (const p of Object.keys(repo.Path)) {
