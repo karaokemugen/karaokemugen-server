@@ -74,6 +74,7 @@
     "express": "^4.21.2",
     "express-http-proxy": "^2.1.1",
     "express-range": "^2.0.1",
+    "extract-zip": "^2.0.1",
     "fastq": "^1.19.1",
     "file-type": "^20.4.0",
     "find-remove": "^5.1.0",

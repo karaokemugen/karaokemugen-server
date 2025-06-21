@@ -44,6 +44,7 @@ export const defaults: Config = {
 		Enabled: true,
 		BaseHost: 'localhost',
 		FrontendRoot: '/'
+		FrontendBundlesURL: 'https://mugen.karaokes.moe/frontends'
 	},
 	Frontend: {
 		Port: 1350,

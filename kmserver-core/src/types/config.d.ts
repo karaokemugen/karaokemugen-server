@@ -16,6 +16,7 @@ export interface Config {
 		Enabled: boolean
 		BaseHost: string
 		FrontendRoot: string
+		FrontendBundlesURL: string
 	},
 	Frontend: {
 		Port: number,
