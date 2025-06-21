@@ -43,8 +43,8 @@ export const defaults: Config = {
 	Remote: {
 		Enabled: true,
 		BaseHost: 'localhost',
-		FrontendRoot: '/'
-		FrontendBundlesURL: 'https://mugen.karaokes.moe/frontends'
+		FrontendRoot: '/',
+		FrontendBundlesURL: 'https://mugen.karaokes.moe/frontends',
 	},
 	Frontend: {
 		Port: 1350,
