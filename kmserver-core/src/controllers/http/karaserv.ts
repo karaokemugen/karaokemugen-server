@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { resolve } from 'path';
 
 import {getSettings} from '../../lib/dao/database.js';
 import { APIMessage } from '../../lib/services/frontend.js';
@@ -9,6 +10,7 @@ import { getGitDiff, getLatestGitCommit } from '../../services/git.js';
 import { createKaraIssue, createSuggestionIssue } from '../../services/gitlab.js';
 import {getAllKaras, getAllMedias, getAllYears, getBaseStats, getHardsubsCache, getKara} from '../../services/kara.js';
 import {getTag, getTags} from '../../services/tag.js';
+import { getState } from '../../utils/state.js';
 import { optionalAuth } from '../middlewares/auth.js';
 
 export default function KSController(router: Router) {
@@ -159,7 +161,7 @@ export default function KSController(router: Router) {
 				Git: getConfig().System.Repositories[0].Git.URL,
 				FullArchiveURL: getConfig().System.Repositories[0].FullArchiveURL,
 				SourceArchiveURL: getConfig().System.Repositories[0].SourceArchiveURL,
-				LatestCommit: await getLatestGitCommit(),
+				LatestCommit: await getLatestGitCommit(resolve(getState().dataPath, getConfig().System.Repositories[0].BaseDir), getConfig().System.Repositories[0].Git?.Branch),
 				ProjectID: getConfig().System.Repositories[0].Git.ProjectID,
 				Manifest: getRepoManifest(getConfig().System.Repositories[0].Name)
 			} as RepositoryManifest);
