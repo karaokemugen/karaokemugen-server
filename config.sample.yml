@@ -17,7 +17,7 @@ System:
     - Name: mugen.re
       Online: true
       Enabled: true
-      BaseDir: 'repos/karaokebase/git'
+      BaseDir: 'repos/karaokebase/json'
       FullArchiveURL: https://mugen.re/downloads/master.zip
       SourceArchiveURL: https://gitlab.com/karaokemugen/bases/karaokebase/-/archive/master/karaokebase-master.zip
       Path:
@@ -38,7 +38,7 @@ Frontend:
   Port: 1350
   Host: localhost
   Secure: false
-  AdminEmail: admin@mugen.re
+  AdminEmail: mugen@karaokes.moeUpdate
   Import:
     Enabled: true
     LimitedTagTypes:
