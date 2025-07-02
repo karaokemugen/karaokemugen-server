@@ -1,12 +1,14 @@
 services:
   kmserver:
     build: .
-    image: registry.gitlab.com/karaokemugen/code/karaokemugen-server
+    image: registry.gitlab.com/karaokemugen/code/karaokemugen-server:${TAG}
     container_name: kmserver
     hostname: kmserver
+    # Change this in your .env
     environment:
       ADMIN_USERNAME: admin
       ADMIN_PASSWORD: admin
+      TAG: latest
     ports:
       - 1350:80
     volumes:
