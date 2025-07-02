@@ -11,7 +11,14 @@ Features :
 - Offer access to the karaoke database online through an API similar to KM App. Also serves associated files.
 - Centralize stats uploaded by Karaoke Mugen instances
 
-# Installation
+# Deploy via Docker
+
+- Check `docker-compose.yml` for environment variables you'll want to change, namely `ADMIN_USER` and `ADMIN_PASSWORD` which will be created during container launch. Use a `.env` file to store those.
+- Run `docker compose up -d`
+- Point your reverse proxy to port 1350 as it's the only exposed port.
+- If you are going to use the "remote" feature (allowing short URLs for people using Karaoke Mugen app on your server, like `https://abcd.mugen.re`) make sure you're using a wildcard domain certificate so all subdomains of your KM Server are using the certificate. See `docs/docker/apache.example.conf` for guidance.
+
+# Installation from source
 
 Make sure node and yarn are up to date on a machine with at least **2 gb** of ram
 
