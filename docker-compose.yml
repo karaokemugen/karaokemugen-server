@@ -1,0 +1,27 @@
+services:
+  kmserver:
+    build: .
+    image: registry.gitlab.com/karaokemugen/code/karaokemugen-server
+    container_name: kmserver
+    hostname: kmserver
+    environment:
+      ADMIN_USERNAME: admin
+      ADMIN_PASSWORD: admin
+    ports:
+      - 1350:80
+    volumes:
+      - ./app:/srv/kmserver/app
+
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    environment:
+      POSTGRES_USER: karaokemugen_server
+      POSTGRES_PASSWORD: blabla
+      POSTGRES_DB: karaokemugen_server
+    volumes:
+      - ./docker/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+      - database:/var/lib/postgresql/data
+
+volumes:
+  database: {}
