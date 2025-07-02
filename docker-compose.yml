@@ -21,7 +21,5 @@ services:
       POSTGRES_DB: karaokemugen_server
     volumes:
       - ./docker/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
-      - database:/var/lib/postgresql/data
+      - ./app/database:/var/lib/postgresql/data
 
-volumes:
-  database: {}
