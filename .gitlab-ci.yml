@@ -12,6 +12,7 @@ include:
   - template: DAST.gitlab-ci.yml
 
 stages:
+  - build
   - deploy
   - scan
   - dast
@@ -55,6 +56,26 @@ secret_detection:
     - if: $CI_COMMIT_BRANCH == "dev"
     - when: never
 
+docker:
+  stage: build
+  image: docker
+  services:
+    - docker:dind
+  variables:
+    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
+    - docker pull $IMAGE_TAG || true
+    - docker build --cache-from $IMAGE_TAG -t $IMAGE_TAG .
+    - docker push $IMAGE_TAG
+    - |
+      if [ $CI_COMMIT_REF_SLUG = "master" ]; then
+        docker tag $IMAGE_TAG $CI_REGISTRY_IMAGE:latest
+        docker push $CI_REGISTRY_IMAGE:latest
+      fi
+  only:
+    - master
+    - dev
 
 update_sentry:
   stage: deploy
@@ -99,6 +120,8 @@ deploy_moe:
 
 deploy_dev:
   stage: deploy
+  needs:
+    - docker
   tags:
     - $RUNNER_LINUX
   script:
@@ -107,9 +130,8 @@ deploy_dev:
     - ssh-keyscan -H '$HOSTDEV'
     - chmod -R 700 ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOSTDEV; cd kmserver-dev; mirror -Rnev --parallel=10 --exclude .env --exclude .git/ --exclude app/ --exclude config.yml --exclude kmserver-core/dist/   --exclude logs/ --exclude node_modules/ --exclude kmexplorer/.nuxt/ --exclude kmexplorer/.output/ --exclude .yarn/cache --exclude .yarn/build-state.yml --exclude .yarn/install-state.gz "
-    - ssh -l $USERNAME $HOSTDEV 'cd kmserver-dev ; yarn install ; yarn migrate; yarn build:all'
-    - ssh -l $USERNAME $HOSTDEV 'sudo systemctl restart kmserver-dev'
+    - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOSTDEV; cd kmserver-dev; mirror -Rnev --parallel=10 --exclude .env --exclude .git/ --exclude app/ --exclude .env --exclude config.yml --exclude kmserver-core/dist/   --exclude logs/ --exclude node_modules/ --exclude kmexplorer/.nuxt/ --exclude kmexplorer/.output/ --exclude .yarn/cache --exclude .yarn/build-state.yml --exclude .yarn/install-state.gz "
+    - ssh -l $USERNAME $HOSTDEV 'cd kmserver-dev ; docker compose pull ; docker compose up'
   variables:
     NODE_ENV: production
   environment:
