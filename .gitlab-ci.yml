@@ -131,7 +131,7 @@ deploy_dev:
     - chmod -R 700 ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOSTDEV; cd kmserver-dev; mirror -Rnev --parallel=10 --exclude .env --exclude .git/ --exclude app/ --exclude .env --exclude config.yml --exclude kmserver-core/dist/   --exclude logs/ --exclude node_modules/ --exclude kmexplorer/.nuxt/ --exclude kmexplorer/.output/ --exclude .yarn/cache --exclude .yarn/build-state.yml --exclude .yarn/install-state.gz "
-    - ssh -l $USERNAME $HOSTDEV 'cd kmserver-dev ; docker compose pull ; docker compose up'
+    - ssh -l $USERNAME $HOSTDEV 'cd kmserver-dev ; docker compose pull ; docker compose up -d'
   variables:
     NODE_ENV: production
   environment:
