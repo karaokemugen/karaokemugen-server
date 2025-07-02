@@ -5,7 +5,7 @@ System:
   Database:
     username: karaokemugen_server
     password: blabla
-    host: localhost
+    host: postgres
     database: karaokemugen_server
     port: 5432
   Binaries:
