@@ -205,7 +205,7 @@
 		"siblings": "Ähnliche Lieder",
 		"childrens": "Unterstellte Lieder",
 		"stats": {
-			"requested": "{Anzahl} Mal angefordert",
+			"requested": "{Anzahl} mal angefordert",
 			"played": "{number} mal abgespielt",
 			"favorited": "Von {number} Benutzern zu den Favoriten hinzugefügt"
 		},
