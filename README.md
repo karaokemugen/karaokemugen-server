@@ -2,14 +2,27 @@
 
 This is the online server component of Karaoke Mugen.
 
-Check its main instance at https://mugen.re
+# Overview
 
-Features :
+KM Server is an online component for the [Karaoke Mugen Desktop App](https://mugen.karaokes.moe/en). While it can be used on its own to offer a searchable karaoke database, its main purpose is to offer online features to KM App.
 
-- Allow people to browse through a karaoke database
-- Expose karaoke sessions to the public via a room code based on subdomain (like abcd.mugen.re)
-- Offer access to the karaoke database online through an API similar to KM App. Also serves associated files.
-- Centralize stats uploaded by Karaoke Mugen instances
+# Use cases
+
+Is KM Server for you?
+
+- For events : your users will have their own user accounts, favorites and so on with only the songs you wish to offer to your public. You can also use your own domain for KM App remote URLs like `https://xxxx.mugen.re`
+- For karaoke groups : it can showcase your work to the internet and allow other KM Apps to download your content
+
+# Features
+
+- User account system with favorites and persistent settings accross different KM Apps
+- Community playlist sharing
+- Serve a song repository to KM Apps
+- Make this song repository browsable online (media is hardsubbed automatically via ffmpeg)
+- Serve a remote interface to your KM App so users can browse and request songs from their smartphones during a karaoke session
+- Gather stats from KM apps connecting to your instance (if the users opted in)
+- Manage song suggestions from other karaoke sources
+- ...and a few other minor features. See [Server API documentation](https://api.karaokes.moe/server)
 
 # Deploy via Docker
 
