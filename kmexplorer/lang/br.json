@@ -1,1 +1,42 @@
-{}
+{
+	"kara": {
+		"tagtypes": {
+			"langs": "Yezh|Yezhoù",
+			"singers": "Kaner|Kanerien",
+			"years": "Bloaz|Bloazioù",
+			"singergroups": "Strollad|Strolladoù"
+		},
+		"creators_by": "Krouet gant",
+		"authors_by": "Karaoke krouet gant",
+		"created_at": "Krouet ",
+		"download": "Pellgargañ",
+		"singers_by": "Kanet gant",
+		"problem": {
+			"form": {
+				"username": {
+					"label": "Hoc'h anv"
+				},
+				"submit": "Kas"
+			}
+		},
+		"import": {
+			"attention": "DIWALL :",
+			"create": "Krouiñ",
+			"submit": "Kas ar karaoke-mañ",
+			"title": "Titl",
+			"langs_required": "Dibabit ur yezh",
+			"i18n_select": "Ouzhpennañ ur yezh",
+			"i18n_delete": "Dilemel ar yezh",
+			"created_at": "Deiziad krouiñ",
+			"add_success": "Kaset eo bet ho karaoke !",
+			"restart": "Kas ur karaoke nevez"
+		},
+		"player": {
+			"next": "Kanaouenn war-lerc'h (N)",
+			"previous": "Kanaouenn a-raok (B)"
+		}
+	},
+	"error": {
+		"generic": "Fazi"
+	}
+}
