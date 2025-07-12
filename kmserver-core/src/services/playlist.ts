@@ -481,6 +481,8 @@ export async function importPlaylist(playlist: PlaylistExport, token: JWTTokenWi
 			updatePlaylistDuration(pl.plaid)
 		]);
 		emitWS('playlistsUpdated');
+		emitWS('playlistContentsUpdated', pl.plaid);
+		emitWS('playlistInfoUpdated', pl.plaid);
 		return {
 			plaid: pl.plaid,
 		};
