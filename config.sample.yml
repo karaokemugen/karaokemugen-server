@@ -1,6 +1,8 @@
 App:
   InstanceID: Change me
   JwtSecret: Change me
+  MasterServersUplink: 
+    - mugen.re
 System:
   Database:
     username: karaokemugen_server
