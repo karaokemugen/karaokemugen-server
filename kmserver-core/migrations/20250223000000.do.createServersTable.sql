@@ -3,7 +3,7 @@ CREATE TABLE server (
 	sid UUID NOT NULL,
 	last_seen TIMESTAMPTZ NOT NULL,
 	flag_banned BOOLEAN
-)
+);
 
 CREATE UNIQUE INDEX idx_server_domain ON server(domain);
 CREATE UNIQUE INDEX idx_server_sid ON server(sid);
