@@ -39,7 +39,7 @@ export async function sendHeartbeat() {
 	const conf = getConfig();
 	const servers = conf.App.MasterServersUplink;
 	const sid = conf.App.InstanceID;
-	const domain = conf.KaraExplorer.Host;
+	const domain = conf.Frontend.Host;
 	if (!servers) return;
 	for (const server of servers) {
 		try {
