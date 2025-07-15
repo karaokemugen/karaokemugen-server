@@ -26,7 +26,7 @@ Is KM Server for you?
 
 # Deploy via Docker
 
-- Check `docker-compose.yml` for environment variables you'll want to change, namely `ADMIN_USER` and `ADMIN_PASSWORD` which will be created during container launch. Use a `.env` file to store those.
+- Copy `.env.example` to `.env` and change the environment variables to your needs. `ADMIN_USER` and `ADMIN_PASSWORD` will be used to create an admin user during container launch.
 - If you are going to use the "remote" feature (allowing short URLs for people using Karaoke Mugen app on your server, like `https://abcd.mugen.re`) make sure you're using a wildcard domain certificate so all subdomains of your KM Server are using the certificate. See `docs/docker/apache.example.conf` for guidance.
 - Make sure a git repository with your karaoke base exists in `app/repos/karaokebase/json`.
 - Run `docker compose up -d`

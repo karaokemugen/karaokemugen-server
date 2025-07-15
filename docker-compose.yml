@@ -6,22 +6,34 @@ services:
     hostname: kmserver
     # Change this in your .env
     environment:
-      ADMIN_USERNAME: admin
-      ADMIN_PASSWORD: admin
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-changeme}
       TAG: latest
     ports:
-      - 1350:80
+      - ${PORT:-1350}:80
     volumes:
       - ./app:/srv/kmserver/app
+    # - ./medias/:/srv/kmserver/app/repos/karaokebase/medias:ro # custom media path for default repository
+    env_file: ".env"
+    depends_on: # Start kmserver after the db is ready
+      postgres:
+        condition: service_healthy
 
   postgres:
     image: postgres:17
     container_name: postgres
-    environment:
+    environment: 
+      # These values must match the config in app/config.yml
       POSTGRES_USER: karaokemugen_server
       POSTGRES_PASSWORD: blabla
       POSTGRES_DB: karaokemugen_server
     volumes:
       - ./docker/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
       - ./app/database:/var/lib/postgresql/data
+    env_file: ".env"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 60
 
