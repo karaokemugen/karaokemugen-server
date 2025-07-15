@@ -8,6 +8,7 @@ export interface Config {
 	App: {
 		JwtSecret?: string,
 		InstanceID?: string,
+		MasterServersUplink?: string[],
 	},
 	Karaoke?: {
 		Collections: any

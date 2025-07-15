@@ -47,7 +47,7 @@ Make sure node and yarn are up to date on a machine with at least **2 gb** of ra
 - [ffmpeg with libfdk_aac and ass](./docs/ffmpeg-build-script.sh) support for generating hardsubs
 - A FTP server for allowing maintainers to upload medias (vsftp is simple and works out)
 
-[Detailled debian installation instructions](./docs/kmserver-setup-debian.md)
+[Detailed debian installation instructions](./docs/kmserver-setup-debian.md)
 
 Clone this repository and install dependencies
 
@@ -135,6 +135,17 @@ For production use :
 - `Frontend.Secure`: Wether your frontend is going to be on HTTPS or HTTP front server. Enabled by default, disable it for local tests without being behind a webserver
 - `Frontend.Port`: Port you should access your KM Server at. Usually on nginx or Apache you'll proxy/reverse proxy requests coming from port 80 to this port
 
+### Master Server uplink
+
+If your server wants to be known by apps which by default use mugen.re as a default master server, you need to add this to your configuration :
+
+```YAML
+App: 
+  MasterServersUplink: 
+    - mugen.re
+```
+
+Your KM Server will then send a heartbeat ping to the master servers listed. Any KM Server can act as a master server, it depends on which apps query it.
 
 ## Launch
 

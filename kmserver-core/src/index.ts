@@ -22,6 +22,7 @@ import { initGitRepos } from './services/git.js';
 import { generate, getAllKaras } from './services/kara.js';
 import { promoteToken } from './services/remote.js';
 import { initRepos } from './services/repo.js';
+import { banServer, initUplink } from './services/server.js';
 import { addSuggestionsFromFile } from './services/suggestions.js';
 import { addRoleToUser, changePassword, createUser, initUsers, removeRoleFromUser } from './services/user.js';
 import { initConfig, resolvedPathRemoteRoot } from './utils/config.js';
@@ -190,6 +191,11 @@ async function main() {
 		exit(0);
 	}
 
+	if (argv.opts().banServer) {
+		await banServer(argv.opts().banServer);
+		exit(0);
+	}
+
 	// Normal start here.
 
 	const port = +argv.opts().port || conf.Frontend.Port;
@@ -218,6 +224,7 @@ async function main() {
 	setState({ acceptedLanguages });
 	configureLocale(acceptedLanguages);
 	initRepos();
+	initUplink();
 }
 
 function parseArgs() {
