@@ -21,8 +21,9 @@ services:
 
   postgres:
     image: postgres:17
-    container_name: postgres
-    environment: 
+    container_name: kmserver-postgres
+    hostname: postgres
+    environment:
       # These values must match the config in app/config.yml
       POSTGRES_USER: karaokemugen_server
       POSTGRES_PASSWORD: blabla
