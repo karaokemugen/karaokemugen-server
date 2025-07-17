@@ -1,1 +1,12 @@
-{}
+{
+    "MAIL": {
+        "RESET_PASSWORD_REQUEST": {
+            "SUBJECT": "Adkorañ ar ger-tremen Karaoke Mugen",
+            "BODY": "Demat {{username}},\n\nUn adkoradur ar ger-tremen zo bet goulennet gant c'hwi (pe unan bennak) evit ho kont e {{host}}. Ma n'hoc'h eus ket goulennet kement-se, dianavit ar postel-mañ.\n\nKlikit war al liamm-mañ evit krouiñ ur ger-tremen nevez.\n\n{{url}}\n\nA-benn div eurvezh e vo tremenet al liamm-mañ."
+        },
+        "RESET_PASSWORD_DONE": {
+            "SUBJECT": "Adkoret eo bet ar ger-tremen Karaoke Mugen",
+            "BODY": "Demat {{username}},\n\nAdkoret eo bet gant berzh ho ker-tremen e {{host}}.\n\n\n\nGallout a rafec'h kevreañ gant ho ker-tremen nevez."
+        }
+    }
+}
