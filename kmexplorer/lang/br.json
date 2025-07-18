@@ -4,7 +4,15 @@
 			"langs": "Yezh|Yezhoù",
 			"singers": "Kaner|Kanerien",
 			"years": "Bloaz|Bloazioù",
-			"singergroups": "Strollad|Strolladoù"
+			"singergroups": "Strollad|Strolladoù",
+			"songtypes": "Seurt kan | Seurtoù kan",
+			"songwriters": "Sonaozour | Sonaozourien",
+			"origins": "Orin | Orinoù",
+			"platforms": "Savenn | Savennoù",
+			"creators": "Krouer | Krouerien",
+			"authors": "Krouer karaokeoù | Krouerien karaokeoù",
+			"misc": "Diseurt",
+			"default": "Dre ziouer"
 		},
 		"creators_by": "Krouet gant",
 		"authors_by": "Karaoke krouet gant",
@@ -14,9 +22,25 @@
 		"problem": {
 			"form": {
 				"username": {
-					"label": "Hoc'h anv"
+					"label": "Hoc'h anv",
+					"placeholder": "PervezhAmMeus"
 				},
-				"submit": "Kas"
+				"submit": "Kas",
+				"type": {
+					"media": "Kudenn gant ar media",
+					"metadata": "Kudenn gant ar rouadennoù",
+					"lyrics": "Kudenn gant ar pozioù"
+				},
+				"comment": {
+					"label": "Evezhiadenn",
+					"placeholder": "Ne vez ket sinkronelaet ar pozioù goude 2 vunutenn."
+				},
+				"thanks": {
+					"btn": "Serriñ"
+				}
+			},
+			"btn": {
+				"lyrics": "Kudenn gant ar pozioù"
 			}
 		},
 		"import": {
@@ -29,14 +53,52 @@
 			"i18n_delete": "Dilemel ar yezh",
 			"created_at": "Deiziad krouiñ",
 			"add_success": "Kaset eo bet ho karaoke !",
-			"restart": "Kas ur karaoke nevez"
+			"restart": "Kas ur karaoke nevez",
+			"sections": {
+				"files": "Restroù",
+				"titles": "Titl(où)"
+			},
+			"add": "Ouzhpennañ",
+			"show_hide": "Diskouez / Kuzhat",
+			"choose_file": "Dibabit ur restr",
+			"add_file_media_error": "N'eo ket ur restr media {name}",
+			"add_file_lyrics_error": "N'eo ket restr an istitloù {name}",
+			"add_file_success": "Ouzhpennet eo bet gant berzh ar restr {name}",
+			"media_file": "Restr media",
+			"lyrics_file": "Restr an istitloù",
+			"series_tooltip": "Heuliadenn skinwell, anv film, c'hoari video hag all.",
+			"default_language": "Yezh dre ziouer"
 		},
 		"player": {
 			"next": "Kanaouenn war-lerc'h (N)",
-			"previous": "Kanaouenn a-raok (B)"
+			"previous": "Kanaouenn a-raok (B)",
+			"fullscreen": "Skramm leun (F)",
+			"theater_mode": "Mod Sinema (T)"
+		},
+		"phrase": "{songtype} eus {series}",
+		"meta": "{songtitle} eus {serieSinger}",
+		"notfound": "N'eo ket kavet ar c'haraoke",
+		"songwriters_by": "Sonaozet gant",
+		"duration": "Padelezh ",
+		"childrens": "Kanoù bugale",
+		"lyrics": {
+			"show": "Diskouez ar pozioù",
+			"hide": "Kuzhat ar pozioù"
+		},
+		"favorites": {
+			"add": "Ouzhpennañ d'ar pennroll",
+			"remove": "Dilemel diouzh ar pennroll"
+		},
+		"set_banner": {
+			"btn": "Implijout evel banniel profil"
 		}
 	},
 	"error": {
-		"generic": "Fazi"
+		"generic": "Fazi",
+		"not_found_tag": "N'eo ket bet kavet an tikedenn",
+		"remote": "Fazi o kargañ listenn ar remotes",
+		"private_profile": "Ar profil zo prevez.",
+		"not_found_profile": "Ne c'heller ket kavet an implijer-mañ",
+		"home": "Mont d'an degemer"
 	}
 }
