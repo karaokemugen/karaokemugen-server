@@ -32,5 +32,17 @@
 		"add_duplicate_in_playlist": {
 			"cancel": "キャンセル"
 		}
+	},
+	"duration": {
+		"minutes": "分",
+		"seconds": "秒",
+		"hours": "時間",
+		"days": "日間"
+	},
+	"menu": {
+		"singergroups": "バンド",
+		"langs": "言語",
+		"login": "ログイン",
+		"logout": "ログアウト"
 	}
 }
