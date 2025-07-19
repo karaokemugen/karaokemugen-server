@@ -100,5 +100,304 @@
 		"private_profile": "Ar profil zo prevez.",
 		"not_found_profile": "Ne c'heller ket kavet an implijer-mañ",
 		"home": "Mont d'an degemer"
+	},
+	"layout": {
+		"app_banner": {
+			"title": "Gouzout a rit ?",
+			"website": "lec'hienn web"
+		},
+		"loading": "O kargañ…",
+		"end_favorites": "Echu eo ar pennroll.",
+		"end_my_favorites": "Echu eo ho pennroll.",
+		"explore": "Kit da ouzhpennañ !"
+	},
+	"footer": {
+		"home": "Degemer ar raktres",
+		"api_documentation": "Teuliadur API",
+		"translation": "Kemer perzh en droidigezh"
+	},
+	"stats": {
+		"karaokes": "Kan | Kanoù",
+		"all_duration": "Padelezh an holl kanoù"
+	},
+	"duration": {
+		"days": "devezh",
+		"hours": "eur",
+		"minutes": "munutenn",
+		"seconds": "eilenn"
+	},
+	"menu": {
+		"singergroups": "Strolladoù sonerezh",
+		"misc": "Diseurt",
+		"langs": "Yezhoù",
+		"years": "Bloavezhioù",
+		"community": "Kumuniezh",
+		"remotes": "Remotes",
+		"search_users": "Klask implijerien",
+		"discord": "Discord",
+		"discourse": "Forom",
+		"kara_import": "Kas ur kara",
+		"account": "Kont",
+		"anime_list": "Ma animeoù",
+		"login": "Kevreañ",
+		"logout": "Digevreañ",
+		"register": "Enskrivañ",
+		"connection": "Kevreadenn",
+		"switch_language": "Kemmañ ar yezh"
+	},
+	"profile": {
+		"favorites": "Pennroll",
+		"you": " (c'hwi eo !)",
+		"anime_list": "Ma animeoù"
+	},
+	"search": {
+		"sort": {
+			"a_z": "A-Z",
+			"kara_count": "Niver a ganaouennoù",
+			"languages": "Dre yezhoù",
+			"duration": "Dre padelezhioù"
+		},
+		"next": "Pajenn war-lerc'h",
+		"previous": "Pajenn a-raok",
+		"aria": {
+			"goto": "Mont d'ar bajenn {0}",
+			"page": "Pajenn {0}"
+		},
+		"types": {
+			"users": "Implijerien",
+			"karaokes": "Kanaouennoù"
+		},
+		"placeholder": {
+			"playlist": "Anvioù, implijerien…"
+		}
+	},
+	"modal": {
+		"reset_password": {
+			"button": "Kemmañ ar ger-tremen"
+		},
+		"login": {
+			"title": "Kevreañ",
+			"fields": {
+				"username": {
+					"placeholder": "LoveLiveFan93"
+				},
+				"password": {
+					"label": "Ger-tremen",
+					"placeholder": "EGwirionezIdolM{'@'}sterZoGwelloc'h"
+				},
+				"forgot_password": {
+					"label": "Disonjet eo ar ger-tremen ?"
+				}
+			}
+		},
+		"signup": {
+			"fields": {
+				"email": {
+					"label": "Chomlec'h Postel",
+					"placeholder": "test{'@'}shelter.moe"
+				},
+				"username": {
+					"placeholder": "LoveLiveFan93"
+				},
+				"password": {
+					"label": "Ger-tremen",
+					"placeholder": "EGwirionezIdolM{'@'}sterZoGwelloc'h"
+				},
+				"password_confirmation": {
+					"label": "Kadarnadur ar ger-tremen",
+					"placeholder": "EGwirionezIdolM{'@'}sterZoGwelloc'h"
+				}
+			},
+			"title": "Enskrivañ",
+			"submit": "Enskrivañ"
+		},
+		"profile": {
+			"headers": {
+				"profile": "A-zivout",
+				"password": "Kemmañ ar ger-tremen"
+			},
+			"fields": {
+				"nickname": {
+					"placeholder": "LoveLiveFan93"
+				},
+				"password": {
+					"label": "Ger-tremen",
+					"placeholder": "EGwirionezIdolM{'@'}sterZoGwelloc'h"
+				},
+				"password_confirmation": {
+					"label": "Kadarnadur ar ger-tremen",
+					"placeholder": "EGwirionezIdolM{'@'}sterZoGwelloc'h"
+				},
+				"email": {
+					"label": "Chomlec'h Postel",
+					"placeholder": "test{'@'}shelter.moe"
+				},
+				"url": {
+					"label": "Lec'hienn Web",
+					"placeholder": "https://karaokes.moe"
+				},
+				"discord": {
+					"label": "Discord",
+					"placeholder": "Karak#1423"
+				},
+				"bluesky": {
+					"placeholder": "karaokemugen.bsky.social",
+					"label": "Bluesky"
+				},
+				"mastodon": {
+					"label": "Mastodon",
+					"placeholder": "karaokemugen{'@'}shelter.moe"
+				},
+				"instagram": {
+					"label": "Instagram",
+					"placeholder": "karaokemugen"
+				},
+				"twitch": {
+					"label": "Twitch",
+					"placeholder": "KaraokeLive"
+				},
+				"myanimelist": {
+					"label": "MyAnimeList",
+					"placeholder": "karaokemugen"
+				},
+				"anilist": {
+					"label": "AniList",
+					"placeholder": "karaokemugen"
+				},
+				"kitsu": {
+					"label": "Kitsu",
+					"placeholder": "karaokemugen"
+				},
+				"gitlab": {
+					"label": "Gitlab",
+					"placeholder": "karaokemugen"
+				},
+				"banner": {
+					"label": "Banniel"
+				},
+				"flag_displayfavorites": {
+					"label": "Pennroll",
+					"checkbox": "Diskouez ma fennroll"
+				}
+			},
+			"submit": "Saveteiñ",
+			"delete": "Dilemel ar gont"
+		},
+		"add_repository": {
+			"online": "Enlinenn",
+			"add": "Ouzhpennañ",
+			"cancel": "Nullañ"
+		},
+		"delete_account": {
+			"add": "Dilemel ar gont",
+			"cancel": "Nullañ"
+		},
+		"suggest": {
+			"fields": {
+				"title": {
+					"label": "Titl"
+				},
+				"name": {
+					"label": "Hoc'h anv"
+				}
+			},
+			"submitted": {
+				"here": "amañ",
+				"close": "Serriñ"
+			}
+		},
+		"download": {
+			"label": "Pellgargañ ar c'haraoke",
+			"karabundle": "Pellgargañ ar rouadennoù (.json)",
+			"subtitles": "Pellgargañ ar pozioù (.{format})",
+			"media": "Pellgargañ ar media (.{format})",
+			"media_hardsub": "Pellgargañ ar media gant istitloù (.mp4 hardsub)",
+			"cancel": "Nullañ"
+		},
+		"crop": {
+			"add": "Ouzhpennañ",
+			"cancel": "Nullañ"
+		},
+		"stats": {
+			"yes": "Ya",
+			"no": "Ket"
+		},
+		"set_banner": {
+			"label": "Dibab ur banniel",
+			"next": "Skeudenn war-lerc'h",
+			"previous": "Skeudenn a-raok",
+			"cancel": "Nullañ",
+			"set": "Implijout ar skeudenn-mañ"
+		},
+		"create_edit_playlist": {
+			"name": "Anv",
+			"submit_create": "Saveteiñ",
+			"submit_edit": "Kemmañ"
+		},
+		"create_tag": {
+			"submit": "Saveteiñ",
+			"name": "Anv"
+		},
+		"join_kara": {
+			"cancel": "Nullañ"
+		},
+		"delete_playlist": {
+			"cancel": "Nullañ"
+		},
+		"add_duplicate_in_playlist": {
+			"cancel": "Nullañ"
+		}
+	},
+	"titles": {
+		"home": "Degemer"
+	},
+	"toast": {
+		"USER_CREATED": "Krouet eo bet an implijer gant berzh",
+		"GENERATED_KARA": "Kaset eo bet ar c'haraoke gant berzh.",
+		"BANNER_BANNED": "Ne c'heller ket implijout ar banniel-mañ"
+	},
+	"suggestions": {
+		"kara": {
+			"yes": "Ya !",
+			"remove": "Dilemel"
+		},
+		"modal": {
+			"welcome": {
+				"discord": "Discord"
+			}
+		}
+	},
+	"remote": {
+		"code": "Kod",
+		"token": "Token",
+		"edit_button": "Kemmañ al linenn",
+		"delete_button": "Dilemel al linenn",
+		"edit_success": "Kemmet eo bet ar remote gant berzh",
+		"edit_error": "Fazi o kemmañ ar remote",
+		"delete_error": "Fazi o dilemel ar remote",
+		"yes": "Ya",
+		"no": "Ket"
+	},
+	"playlists": {
+		"karacount": "{karacount} a ganaouennoù",
+		"duration": "Padelezh {duration}",
+		"edit": "Kemmañ",
+		"delete": "Dilemel",
+		"by_owner": "gant {nickname}",
+		"and_contributors": "(ha {contributors})",
+		"and_contributors_more": "(ha {contributors}, {count} ouzhpenn)",
+		"community": "Kumuniezh",
+		"favorites": "Pennroll"
+	},
+	"bans": {
+		"submit": "Ouzhpennañ",
+		"delete": "Dilemel",
+		"value": "Talvoud",
+		"add": "Ouzhpennañ ur berz nevez",
+		"banned_at": "Berzet d'ar",
+		"type": "Seurt"
+	},
+	"languages": {
+		"qro": "Lizherenneg Latin (Romanekadur)"
 	}
 }
