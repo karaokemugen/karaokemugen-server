@@ -80,7 +80,7 @@
 		"notfound": "N'eo ket kavet ar c'haraoke",
 		"songwriters_by": "Sonaozet gant",
 		"duration": "Padelezh ",
-		"childrens": "Kanoù bugale",
+		"childrens": "Kanaouennoù bugale",
 		"lyrics": {
 			"show": "Diskouez ar pozioù",
 			"hide": "Kuzhat ar pozioù"
@@ -91,6 +91,9 @@
 		},
 		"set_banner": {
 			"btn": "Implijout evel banniel profil"
+		},
+		"stats": {
+			"played": "Sonet eo bet {number} a wechoù"
 		}
 	},
 	"error": {
@@ -114,11 +117,15 @@
 	"footer": {
 		"home": "Degemer ar raktres",
 		"api_documentation": "Teuliadur API",
-		"translation": "Kemer perzh en droidigezh"
+		"translation": "Kemer perzh en droidigezh",
+		"software_under_license": "Meziant dindan aotre",
+		"base_under_licence": "Dastumad karaokeoù didan aotre"
 	},
 	"stats": {
-		"karaokes": "Kan | Kanoù",
-		"all_duration": "Padelezh an holl kanoù"
+		"karaokes": "Kanaouenn | Kanaouennoù",
+		"all_duration": "Padelezh an holl ganaouennoù",
+		"last_generation": "Hizivadenn ziwezhañ",
+		"media_size": "Ment ar mediaoù"
 	},
 	"duration": {
 		"days": "devezh",
@@ -133,7 +140,7 @@
 		"years": "Bloavezhioù",
 		"community": "Kumuniezh",
 		"remotes": "Remotes",
-		"search_users": "Klask implijerien",
+		"search_users": "Implijerien",
 		"discord": "Discord",
 		"discourse": "Forom",
 		"kara_import": "Kas ur kara",
@@ -143,7 +150,14 @@
 		"logout": "Digevreañ",
 		"register": "Enskrivañ",
 		"connection": "Kevreadenn",
-		"switch_language": "Kemmañ ar yezh"
+		"switch_language": "Kemmañ ar yezh",
+		"creators": "Krouerien",
+		"songwriters": "Sonaozourien",
+		"singers": "Kanerien",
+		"random": "Stlepel ar diñsoù",
+		"play_random_song": "Seniñ ur ganaouenn dre zegouezh",
+		"kara_suggest": "Kinnig ur c'hara",
+		"tags": "All…"
 	},
 	"profile": {
 		"favorites": "Pennroll",
@@ -155,7 +169,9 @@
 			"a_z": "A-Z",
 			"kara_count": "Niver a ganaouennoù",
 			"languages": "Dre yezhoù",
-			"duration": "Dre padelezhioù"
+			"duration": "Dre padelezhioù",
+			"most_played": "Sonet ar muiañ",
+			"most_played_recently": "Sonet ar muiañ (nevez zo)"
 		},
 		"next": "Pajenn war-lerc'h",
 		"previous": "Pajenn a-raok",
@@ -286,7 +302,10 @@
 		"add_repository": {
 			"online": "Enlinenn",
 			"add": "Ouzhpennañ",
-			"cancel": "Nullañ"
+			"cancel": "Nullañ",
+			"button": "Kavlec'hiad :",
+			"label": "Ouzphennañ ar c'havlec'hiad-mañ d'ho arload Karaoke Mugen !",
+			"download": "Gallout a reer pellgargañ an arload amañ."
 		},
 		"delete_account": {
 			"add": "Dilemel ar gont",
@@ -299,12 +318,19 @@
 				},
 				"name": {
 					"label": "Hoc'h anv"
+				},
+				"singer": {
+					"label": "Kaner"
+				},
+				"link": {
+					"label": "Liamm"
 				}
 			},
 			"submitted": {
 				"here": "amañ",
 				"close": "Serriñ"
-			}
+			},
+			"submit": "Kas"
 		},
 		"download": {
 			"label": "Pellgargañ ar c'haraoke",
@@ -332,14 +358,18 @@
 		"create_edit_playlist": {
 			"name": "Anv",
 			"submit_create": "Saveteiñ",
-			"submit_edit": "Kemmañ"
+			"submit_edit": "Kemmañ",
+			"description": "Deskrivadur"
 		},
 		"create_tag": {
 			"submit": "Saveteiñ",
 			"name": "Anv"
 		},
 		"join_kara": {
-			"cancel": "Nullañ"
+			"cancel": "Nullañ",
+			"label": "Kemer perzh er c'haraoke",
+			"desc": "Skrivit ar c'hod evit kemer perzh ur c'haraoke zo anezhañ",
+			"help": "Skrivit kod an dalc'h (peurliesañ 4 lizherenn) evit kemer perzh ur c'haraoke zo anezhañ."
 		},
 		"delete_playlist": {
 			"cancel": "Nullañ"
@@ -387,7 +417,9 @@
 		"and_contributors": "(ha {contributors})",
 		"and_contributors_more": "(ha {contributors}, {count} ouzhpenn)",
 		"community": "Kumuniezh",
-		"favorites": "Pennroll"
+		"favorites": "Pennroll",
+		"public": "Foran",
+		"private": "Prevez"
 	},
 	"bans": {
 		"submit": "Ouzhpennañ",
