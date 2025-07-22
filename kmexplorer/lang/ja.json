@@ -31,6 +31,47 @@
 		},
 		"add_duplicate_in_playlist": {
 			"cancel": "キャンセル"
+		},
+		"reset_password": {
+			"button": "パスワードを変更する"
+		},
+		"login": {
+			"fields": {
+				"password": {
+					"label": "パスワード"
+				}
+			}
+		},
+		"signup": {
+			"fields": {
+				"password": {
+					"label": "パスワード"
+				},
+				"password_confirmation": {
+					"label": "パスワード確認"
+				},
+				"email": {
+					"label": "メール",
+					"placeholder": "test{'@'}shelter.moe"
+				}
+			}
+		},
+		"profile": {
+			"headers": {
+				"password": "パスワードを変更する"
+			},
+			"fields": {
+				"password": {
+					"label": "パスワード"
+				},
+				"password_confirmation": {
+					"label": "パスワード確認"
+				},
+				"email": {
+					"label": "メール",
+					"placeholder": "test{'@'}shelter.moe"
+				}
+			}
 		}
 	},
 	"duration": {
@@ -44,5 +85,8 @@
 		"langs": "言語",
 		"login": "ログイン",
 		"logout": "ログアウト"
+	},
+	"toast": {
+		"PASSWORD_UPDATED": "パスワードが成功に更新された"
 	}
 }
