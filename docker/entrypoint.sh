@@ -6,7 +6,6 @@ if [ ! -f app/config.yml ]; then
 fi
 
 yarn migrate
-yarn workspace kmserver-core qstart --createAdmin $ADMIN_USERNAME,$ADMIN_PASSWORD || true
 yarn generate
 nginx
 

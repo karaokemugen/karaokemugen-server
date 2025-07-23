@@ -26,11 +26,12 @@ Is KM Server for you?
 
 # Deploy via Docker
 
-- Copy `.env.example` to `.env` and change the environment variables to your needs. `ADMIN_USER` and `ADMIN_PASSWORD` will be used to create an admin user during container launch.
+- Copy `.env.example` to `.env` and change the environment variables to your needs.
 - If you are going to use the "remote" feature (allowing short URLs for people using Karaoke Mugen app on your server, like `https://abcd.mugen.re`) make sure you're using a wildcard domain certificate so all subdomains of your KM Server are using the certificate. See `docs/docker/apache.example.conf` for guidance.
 - Make sure a git repository with your karaoke base exists in `app/repos/karaokebase/json`.
 - Run `docker compose up -d`
 - Point your reverse proxy to port 1350 as it's the only exposed port.
+- Create a new user and it'll be automatically made admin. Only the first user created is made admin.
 
 # Installation from source
 
@@ -140,8 +141,8 @@ For production use :
 If your server wants to be known by apps which by default use mugen.re as a default master server, you need to add this to your configuration :
 
 ```YAML
-App: 
-  MasterServersUplink: 
+App:
+  MasterServersUplink:
     - mugen.re
 ```
 

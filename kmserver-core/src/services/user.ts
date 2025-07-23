@@ -270,6 +270,9 @@ export async function createUser(user: User, opts: any = {}) {
 		if (user.password.length < 8) throw new ErrorKM('PASSWORD_TOO_SHORT', 400, false);
 		user.password = await hashPasswordbcrypt(user.password);
 		if (await checkForBans(user)) throw new ErrorKM('CREATE_USER_ERROR', 403, false);
+		// Make user admin if they're the very first user being created
+		const users = await getAllUsers();
+		if (users.content.length === 0) user.roles.admin = true;
 		await insertUser(user);
 		delete user.password;
 		pubUser(user.login);
