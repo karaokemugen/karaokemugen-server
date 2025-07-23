@@ -53,7 +53,7 @@
 		const res = await useCustomFetch<DBYear[]>('/api/karas/years/', {
 			params: {
 				order: sort.value[route.name] as 'recent' | 'karacount',
-				collections: enabledCollections.value.join(',')
+				collections: enabledCollections.value.length > 0 ? enabledCollections.value.join(',') : undefined
 			}
 		}).catch(_err => {
 			throw createError({ statusCode: 404, message: t('error.not_found_tag') });
@@ -71,7 +71,7 @@
 		const res = await useCustomFetch<DBYear[]>('/api/karas/years/', {
 			params: {
 				order: sort.value[route.name] as 'recent' | 'karacount',
-				collections: enabledCollections.value.join(',')
+				collections: enabledCollections.value.length > 0 ? enabledCollections.value.join(',') : undefined
 			}
 		});
 		years.value = res;

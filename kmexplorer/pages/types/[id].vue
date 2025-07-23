@@ -63,7 +63,7 @@
 	import { useMenubarStore } from '~/store/menubar';
 
 	interface TagsRequest extends TagParams {
-		collections: string
+		collections?: string
 	}
 
 	const { search, sort } = storeToRefs(useMenubarStore());
@@ -94,7 +94,7 @@
 			order: sort.value[route.name] as 'az' | 'karacount',
 			stripEmpty: true,
 			filter: search.value || undefined,
-			collections: enabledCollections.value.join(','),
+			collections: enabledCollections.value.length > 0 ? enabledCollections.value.join(',') : undefined,
 			type: tagTypes[route.params.id as string].type as TagTypeNum
 		} as TagsRequest;
 	});

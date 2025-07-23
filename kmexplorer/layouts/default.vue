@@ -1224,7 +1224,7 @@
 			params: {
 				random: 1,
 				safeOnly: true,
-				collections: enabledCollections.value.join(',')
+				collections: enabledCollections.value.length > 0 ? enabledCollections.value.join(',') : undefined
 			}
 		});
 		const kid = res.content[0].kid;

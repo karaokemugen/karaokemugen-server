@@ -36,7 +36,7 @@
 	import { useMenubarStore } from '~/store/menubar';
 
 	interface KaraRequest extends KaraParams {
-		collections: string
+		collections?: string
 	}
 
 	const { user, loggedIn } = storeToRefs(useAuthStore());
@@ -219,7 +219,7 @@
 			collections:
 				typeof route.query.collections === 'string' && acceptQueryCollection
 					? decodeURIComponent(route.query.collections).replaceAll(':', ',')
-					: enabledCollections.value.join(','),
+					: (enabledCollections.value.length > 0 ? enabledCollections.value.join(',') : undefined),
 			userAnimeList: props.userAnimeList || undefined
 		};
 	}
