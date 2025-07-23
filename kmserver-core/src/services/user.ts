@@ -159,6 +159,10 @@ export async function removeUser(username: string) {
 	try {
 		if (!username) throw new ErrorKM('NO_USER_PROVIDED', 400);
 		username = username.toLowerCase();
+		// Check if user is the last admin. If so do not delete.
+		const users = await getAllUsers();
+		const adminUsers = users.content.filter(u => u.roles.admin);
+		if (adminUsers.length === 1 && adminUsers[0].login === username) throw new ErrorKM('LAST_ADMIN_USER_CANNOT_BE_DELETED', 400);
 		delPubUser(username);
 		return await deleteUser(username);
 	} catch (err) {
