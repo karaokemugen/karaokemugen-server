@@ -11,7 +11,14 @@ export const selectAllMedias = (collectionClauses: string[]) => `
 	FROM kara k
 	LEFT JOIN all_karas ak ON k.pk_kid = ak.pk_kid
 	WHERE k.repository != 'Staging'
-	${collectionClauses.length > 0 ? `AND (${collectionClauses.map(clause => `(${clause})`).join(' OR ')})` : ''}
+	${collectionClauses.length > 0
+		? `AND ((${collectionClauses
+				.map(clause => `(${clause})`)
+				.join(
+					' OR '
+				)}) OR jsonb_array_length(jsonb_path_query_array( ak.tags, '$[*] ? (@.type_in_kara == 16)')) = 0)`
+		: ''
+}
 
 `;
 
@@ -83,9 +90,14 @@ WHERE ${includeStaging ? 'TRUE' : 'ak.repository != \'Staging\''}
 		'AND NOT ak.tags @> \'[{"noLiveDownload": true}]\''
 	: ''}
 	${
-	collectionClauses.length > 0
-		? `AND (${collectionClauses.map(clause => `(${clause})`).join(' OR ')})`
+		collectionClauses.length > 0
+		? `AND ((${collectionClauses
+				.map(clause => `(${clause})`)
+				.join(
+					' OR '
+				)}) OR jsonb_array_length(jsonb_path_query_array( ak.tags, '$[*] ? (@.type_in_kara == 16)')) = 0)`
 		: ''
+
 	}
 	${filterClauses.map(clause => `AND (${clause})`).reduce((a, b) => (`${a} ${b}`), '')}
 	${whereClauses.join(' ')}
@@ -153,9 +165,13 @@ ${additionalFrom.join('')}
 WHERE ${includeStaging ? 'TRUE' : 'ak.repository != \'Staging\''}
    ${
 	collectionClauses.length > 0
-		? `AND (${collectionClauses.map(clause => `(${clause})`).join(' OR ')})`
+		? `AND ((${collectionClauses
+				.map(clause => `(${clause})`)
+				.join(
+					' OR '
+				)}) OR jsonb_array_length(jsonb_path_query_array( ak.tags, '$[*] ? (@.type_in_kara == 16)')) = 0)`
 		: ''
-	}
+    }
 	${filterClauses.map(clause => `AND (${clause})`).reduce((a, b) => (`${a} ${b}`), '')}
 	${whereClauses.join(' ')}
 ) res_to_count
@@ -220,7 +236,14 @@ FROM kara AS k
 LEFT JOIN kara k2 ON k2.pk_kid = k.pk_kid
 LEFT JOIN all_karas ak ON k2.pk_kid = ak.pk_kid
 WHERE true
-${collectionClauses.length > 0 ? `AND (${collectionClauses.map(clause => `(${clause})`).join(' OR ')})` : ''}
+${collectionClauses.length > 0
+	? `AND ((${collectionClauses
+			.map(clause => `(${clause})`)
+			.join(
+				' OR '
+			)}) OR jsonb_array_length(jsonb_path_query_array( ak.tags, '$[*] ? (@.type_in_kara == 16)')) = 0)`
+	: ''
+}
 GROUP BY k.year
 ORDER BY ${orderClauses};
 `;
