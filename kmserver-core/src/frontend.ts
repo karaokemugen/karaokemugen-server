@@ -31,6 +31,7 @@ import logger from './lib/utils/logger.js';
 import { initWS } from './lib/utils/ws.js';
 import { initRemote } from './services/remote.js';
 import { getState } from './utils/state.js';
+import uplinkController from './controllers/http/server.js';
 
 const service = 'Frontend';
 
@@ -140,6 +141,7 @@ function api() {
 	PLController(apiRouter);
 	inboxController(apiRouter);
 	PMController(apiRouter);
+	uplinkController(apiRouter);
 	if (conf.Frontend.Import.Enabled) KImportController(apiRouter);
 	// Stats
 	if (conf.Stats.Enabled) statsController(apiRouter);
