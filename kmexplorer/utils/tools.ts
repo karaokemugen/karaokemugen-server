@@ -1,4 +1,4 @@
-import { getNavigatorLanguageIn3B } from './isoLanguages';
+import { getBrowserLanguageIn3B } from './isoLanguages';
 import type { DBTag } from '%/lib/types/database/tag';
 import type { DBKara, DBKaraTag } from '%/lib/types/database/kara';
 import { useMenubarStore, type TagExtend } from '~/store/menubar';
@@ -49,7 +49,7 @@ export function getTagInLocale(tag: DBKaraTag | DBTag, i18nParam?: Record<string
 			i18nParam,
 		);
 	} else {
-		return getPropertyInLanguage('i18n', tag, getNavigatorLanguageIn3B(), 'eng', i18nParam);
+		return getPropertyInLanguage('i18n', tag, getBrowserLanguageIn3B(), 'eng', i18nParam);
 	}
 }
 
@@ -58,7 +58,7 @@ export function getDescriptionInLocale(tag: DBTag) {
 	if (user?.value && user?.value.language) {
 		return getPropertyInLanguage('description', tag, getLanguageIn3B(user.value.language), 'eng');
 	} else {
-		return getPropertyInLanguage('description', tag, getNavigatorLanguageIn3B(), 'eng');
+		return getPropertyInLanguage('description', tag, getBrowserLanguageIn3B(), 'eng');
 	}
 }
 
@@ -72,7 +72,7 @@ export function getTitleInLocale(titles: Record<string, string>, titles_default_
 				: titles[titles_default_language || 'eng']
 			);
 	} else {
-		return titles[getNavigatorLanguageIn3B()] ? titles[getNavigatorLanguageIn3B()] : titles[titles_default_language || 'eng'];
+		return titles[getBrowserLanguageIn3B()] ? titles[getBrowserLanguageIn3B()] : titles[titles_default_language || 'eng'];
 	}
 }
 

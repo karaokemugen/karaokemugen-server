@@ -21,9 +21,9 @@ i18nIsoLanguages.registerLocale(pl);
 i18nIsoLanguages.registerLocale(ta);
 i18nIsoLanguages.registerLocale(br);
 
-let navigatorLanguage: string;
+let browserLanguage: string;
 if (process.client) {
-	navigatorLanguage = navigator.languages[0].substring(0, 2);
+	browserLanguage = navigator.languages[0].substring(0, 2);
 }
 
 export const langWithRomanization = [
@@ -79,8 +79,8 @@ export function getLanguagesInLocaleFromCode(code: string, userLang: string) {
 	return getLanguageName(code, userLang) || '';
 }
 
-export function getNavigatorLanguageIn3B(): string {
-	return i18nIsoLanguages.alpha2ToAlpha3B(navigatorLanguage) || '';
+export function getBrowserLanguageIn3B(): string {
+	return i18nIsoLanguages.alpha2ToAlpha3B(browserLanguage) || '';
 }
 
 export function getLanguageIn3B(code: string) {
