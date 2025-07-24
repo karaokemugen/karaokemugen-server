@@ -1,5 +1,10 @@
+import type { VueI18nOptions } from 'vue-i18n';
+
 export default {
-	fallbackLocale: 'en',
+	fallbackLocale: {
+		br: ['fr'],
+		default: ['en'],
+	},
 	silentFallbackWarn: true,
-	legacy: false
-};
+	legacy: false,
+} as VueI18nOptions;
