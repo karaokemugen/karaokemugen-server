@@ -12,7 +12,9 @@
 			"creators": "Krouer | Krouerien",
 			"authors": "Krouer karaokeoù | Krouerien karaokeoù",
 			"misc": "Diseurt",
-			"default": "Dre ziouer"
+			"default": "Dre ziouer",
+			"genres": "Doare | Doareoù",
+			"warnings": "Diwall | Diwalloù"
 		},
 		"creators_by": "Krouet gant",
 		"authors_by": "Karaoke krouet gant",
@@ -29,7 +31,8 @@
 				"type": {
 					"media": "Kudenn gant ar media",
 					"metadata": "Kudenn gant ar rouadennoù",
-					"lyrics": "Kudenn gant ar pozioù"
+					"lyrics": "Kudenn gant ar pozioù",
+					"label": "Seurt kudenn"
 				},
 				"comment": {
 					"label": "Evezhiadenn",
@@ -37,11 +40,16 @@
 				},
 				"thanks": {
 					"btn": "Serriñ"
-				}
+				},
+				"title": "Kemenn ur gudenn"
 			},
 			"btn": {
-				"lyrics": "Kudenn gant ar pozioù"
-			}
+				"lyrics": "Kudenn gant ar pozioù",
+				"edit": "Kinnig ur gemm",
+				"media": "Kudenn gant ar media",
+				"metadata": "Kudenn gant ar roadennoù"
+			},
+			"title": "Ur gudenn gant {title} ?"
 		},
 		"import": {
 			"attention": "DIWALL :",
@@ -67,13 +75,21 @@
 			"media_file": "Restr media",
 			"lyrics_file": "Restr an istitloù",
 			"series_tooltip": "Heuliadenn skinwell, anv film, c'hoari video hag all.",
-			"default_language": "Yezh dre ziouer"
+			"default_language": "Yezh dre ziouer",
+			"license_reminder": "Ho karaoke a vo embannet dindan aotre {name}",
+			"license_link": "Gouzout hiroc'h diwar-benn an aotre-se en ur glikañ amañ.",
+			"comment": "Un evezhiadenn ?",
+			"titles_aliases": "Aliasoù",
+			"titles_aliases_tooltip": "Anvioù berr pe eil, implijet evit an enklask."
 		},
 		"player": {
 			"next": "Kanaouenn war-lerc'h (N)",
 			"previous": "Kanaouenn a-raok (B)",
 			"fullscreen": "Skramm leun (F)",
-			"theater_mode": "Mod Sinema (T)"
+			"theater_mode": "Mod Sinema (T)",
+			"autoplay": "Lenn emgefreek",
+			"loop": "Lenn dizehan",
+			"description": "Ar video-mañ zo herberc'hiet gant {instance}. Implijit hon arload ma vez aozet ur darvoud pe ur stream mar plij !"
 		},
 		"phrase": "{songtype} eus {series}",
 		"meta": "{songtitle} eus {serieSinger}",
@@ -90,11 +106,23 @@
 			"remove": "Dilemel diouzh ar pennroll"
 		},
 		"set_banner": {
-			"btn": "Implijout evel banniel profil"
+			"btn": "Implijout evel banniel profil",
+			"forbidden_label": "Ne c'hellit ket implijout ar c'haraoke-mañ evel banniel ho profil."
 		},
 		"stats": {
-			"played": "Sonet eo bet {number} a wechoù"
-		}
+			"played": "Sonet eo bet {number} a wechoù",
+			"favorited": "Ouzhpennet eo bet d'ar penrolloù gant {number} a implijerien",
+			"requested": "Goulennet {number} a wechoù"
+		},
+		"singergroups_by": "eus ar strollad sonerezh",
+		"live_unavailable": "Ne c'hellit ket lenn ar c'haraoke-mañ en ho merdeer. Marteze n'eo ket skoret mentrezh ar video evit ar merdeerioù pe diweredekaet evit abegoù lezennel.",
+		"playlists": {
+			"add": "Ouzhpennañ d'ur roll-lenn",
+			"create": "Krouiñ ur roll-lenn nevez…",
+			"new_playlist_label": "Roll-lenn {nickname}",
+			"add_success": "Ouzhpennet eo bet d'ar roll-lenn ar c'haraoke gant berzh."
+		},
+		"siblings": "Kanaouennoù heñvel"
 	},
 	"error": {
 		"generic": "Fazi",
@@ -102,7 +130,8 @@
 		"remote": "Fazi o kargañ listenn ar remotes",
 		"private_profile": "Ar profil zo prevez.",
 		"not_found_profile": "Ne c'heller ket kavet an implijer-mañ",
-		"home": "Mont d'an degemer"
+		"home": "Mont d'an degemer",
+		"not_found_playlist": "Ne c'heller ket kavout ar roll-lenn-mañ"
 	},
 	"layout": {
 		"app_banner": {
@@ -112,14 +141,19 @@
 		"loading": "O kargañ…",
 		"end_favorites": "Echu eo ar pennroll.",
 		"end_my_favorites": "Echu eo ho pennroll.",
-		"explore": "Kit da ouzhpennañ !"
+		"explore": "Kit da ouzhpennañ !",
+		"empty": "Klasket hon eus e pep lec'h, n'eus ket kavet netra.",
+		"suggest": "Ne gavit ket ar pezh emaoc'h o klask ?",
+		"suggest_open": "Kinnigit ur ganaouenn deomp !",
+		"end_playlists": "Diskouez {number} a rolloù-lenn ouzhpenn",
+		"results": "{count} disoc'h | {count} zisoc'h | {count} disoc'h | {count} a zisoc'hoù | {count} disoc'h"
 	},
 	"footer": {
 		"home": "Degemer ar raktres",
 		"api_documentation": "Teuliadur API",
 		"translation": "Kemer perzh en droidigezh",
 		"software_under_license": "Meziant dindan aotre",
-		"base_under_licence": "Dastumad karaokeoù didan aotre"
+		"base_under_licence": "Dastumad karaokeoù dindan aotre"
 	},
 	"stats": {
 		"karaokes": "Kanaouenn | Kanaouennoù",
@@ -157,12 +191,23 @@
 		"random": "Stlepel ar diñsoù",
 		"play_random_song": "Seniñ ur ganaouenn dre zegouezh",
 		"kara_suggest": "Kinnig ur c'hara",
-		"tags": "All…"
+		"tags": "All…",
+		"add_repository": "Ouzhpennañ ar c'havlec'hiad-mañ d'an arload",
+		"karas": "Kanaouennoù",
+		"warnings": "Diwalloù",
+		"songtypes": "Seurtoù",
+		"genres": "Doreoù",
+		"platforms": "Savennoù",
+		"playlists": "Rolloù-lenn"
 	},
 	"profile": {
 		"favorites": "Pennroll",
 		"you": " (c'hwi eo !)",
-		"anime_list": "Ma animeoù"
+		"anime_list": "Ma animeoù",
+		"edit": "Kemmañ ar profil",
+		"private": "Prevez eo ho profil, c'hwi hepken a c'hell gwelout anezhañ.",
+		"public_favorites": "Foran eo ho pennrolloù. Klikit evit kuzhat anezho.",
+		"private_favorites": "Prevez eo ho pennrolloù. Klikit evit diskouez anezho."
 	},
 	"search": {
 		"sort": {
@@ -171,7 +216,12 @@
 			"languages": "Dre yezhoù",
 			"duration": "Dre padelezhioù",
 			"most_played": "Sonet ar muiañ",
-			"most_played_recently": "Sonet ar muiañ (nevez zo)"
+			"most_played_recently": "Sonet ar muiañ (nevez zo)",
+			"recent": "Dre devezh ouzhpennet",
+			"most_favorites": "Ar gwellañ pennrollet",
+			"most_requested": "Ar muiañ goulennet",
+			"most_requested_recently": "Ar muiañ goulennet (nevez zo)",
+			"username": "Dre anvioù implijer"
 		},
 		"next": "Pajenn war-lerc'h",
 		"previous": "Pajenn a-raok",
@@ -181,21 +231,26 @@
 		},
 		"types": {
 			"users": "Implijerien",
-			"karaokes": "Kanaouennoù"
+			"karaokes": "Kanaouennoù",
+			"favorites": "Pennrolloù implijer",
+			"suggestions": "Kinnigoù"
 		},
 		"placeholder": {
-			"playlist": "Anvioù, implijerien…"
+			"playlist": "Anvioù, implijerien…",
+			"user": "Anvioù implijer…"
 		}
 	},
 	"modal": {
 		"reset_password": {
-			"button": "Kemmañ ar ger-tremen"
+			"button": "Kemmañ ar ger-tremen",
+			"description": "Skrivit ur ger-tremen nevez"
 		},
 		"login": {
 			"title": "Kevreañ",
 			"fields": {
 				"username": {
-					"placeholder": "LoveLiveFan93"
+					"placeholder": "LoveLiveFan93",
+					"label": "Anv implijer"
 				},
 				"password": {
 					"label": "Ger-tremen",
@@ -204,7 +259,9 @@
 				"forgot_password": {
 					"label": "Disonjet eo ar ger-tremen ?"
 				}
-			}
+			},
+			"subtitle": "Kevreit ouzh ho kont enlinenn evit gwelout ho pennrolloù ha kemmañ ho profil !",
+			"submit": "Kevreañ"
 		},
 		"signup": {
 			"fields": {
@@ -213,7 +270,8 @@
 					"placeholder": "test{'@'}shelter.moe"
 				},
 				"username": {
-					"placeholder": "LoveLiveFan93"
+					"placeholder": "LoveLiveFan93",
+					"label": "Anv implijer"
 				},
 				"password": {
 					"label": "Ger-tremen",
@@ -225,16 +283,20 @@
 				}
 			},
 			"title": "Enskrivañ",
-			"submit": "Enskrivañ"
+			"submit": "Enskrivañ",
+			"subtitle": "Enskrivit evit enrollañ ho pennrolloù ha krouiñ ho profil !"
 		},
 		"profile": {
 			"headers": {
 				"profile": "A-zivout",
-				"password": "Kemmañ ar ger-tremen"
+				"password": "Kemmañ ar ger-tremen",
+				"privacy": "Prevezded",
+				"lang": "Dibaboù yezh"
 			},
 			"fields": {
 				"nickname": {
-					"placeholder": "LoveLiveFan93"
+					"placeholder": "LoveLiveFan93",
+					"label": "Lesanv"
 				},
 				"password": {
 					"label": "Ger-tremen",
@@ -294,10 +356,28 @@
 				"flag_displayfavorites": {
 					"label": "Pennroll",
 					"checkbox": "Diskouez ma fennroll"
+				},
+				"username": {
+					"label": "Anv implijer"
+				},
+				"bio": {
+					"label": "Buhezskrid",
+					"placeholder": "Ma buhez zo"
+				},
+				"location": {
+					"label": "Chomlec'h"
+				},
+				"flag_public": {
+					"label": "Profil foran"
+				},
+				"flag_sendstats": {
+					"label": "Stadegoù"
 				}
 			},
 			"submit": "Saveteiñ",
-			"delete": "Dilemel ar gont"
+			"delete": "Dilemel ar gont",
+			"title": "Kemmañ profil",
+			"select_avatar": "Dibab an avatar"
 		},
 		"add_repository": {
 			"online": "Enlinenn",
@@ -317,20 +397,25 @@
 					"label": "Titl"
 				},
 				"name": {
-					"label": "Hoc'h anv"
+					"label": "Hoc'h anv",
+					"placeholder": "Dizanv hud"
 				},
 				"singer": {
 					"label": "Kaner"
 				},
 				"link": {
 					"label": "Liamm"
+				},
+				"type": {
+					"label": "Seurt"
 				}
 			},
 			"submitted": {
 				"here": "amañ",
 				"close": "Serriñ"
 			},
-			"submit": "Kas"
+			"submit": "Kas",
+			"title": "Kinnigoù"
 		},
 		"download": {
 			"label": "Pellgargañ ar c'haraoke",
@@ -342,7 +427,8 @@
 		},
 		"crop": {
 			"add": "Ouzhpennañ",
-			"cancel": "Nullañ"
+			"cancel": "Nullañ",
+			"label": "Krennañ avatar"
 		},
 		"stats": {
 			"yes": "Ya",
@@ -359,7 +445,11 @@
 			"name": "Anv",
 			"submit_create": "Saveteiñ",
 			"submit_edit": "Kemmañ",
-			"description": "Deskrivadur"
+			"description": "Deskrivadur",
+			"title_create": "Krouiñ ur roll-lenn",
+			"title_edit": "Kemmañ ar roll-lenn",
+			"contributors": "Kenlabourerien",
+			"public": "Foran"
 		},
 		"create_tag": {
 			"submit": "Saveteiñ",
@@ -369,10 +459,12 @@
 			"cancel": "Nullañ",
 			"label": "Kemer perzh er c'haraoke",
 			"desc": "Skrivit ar c'hod evit kemer perzh ur c'haraoke zo anezhañ",
-			"help": "Skrivit kod an dalc'h (peurliesañ 4 lizherenn) evit kemer perzh ur c'haraoke zo anezhañ."
+			"help": "Skrivit kod an dalc'h (peurliesañ 4 lizherenn) evit kemer perzh ur c'haraoke zo anezhañ.",
+			"add": "Kemer perzh"
 		},
 		"delete_playlist": {
-			"cancel": "Nullañ"
+			"cancel": "Nullañ",
+			"add": "Dilemel ar roll-lenn"
 		},
 		"add_duplicate_in_playlist": {
 			"cancel": "Nullañ"
@@ -384,7 +476,14 @@
 	"toast": {
 		"USER_CREATED": "Krouet eo bet an implijer gant berzh",
 		"GENERATED_KARA": "Kaset eo bet ar c'haraoke gant berzh.",
-		"BANNER_BANNED": "Ne c'heller ket implijout ar banniel-mañ"
+		"BANNER_BANNED": "Ne c'heller ket implijout ar banniel-mañ",
+		"USER_EDITED": "Kemmet eo bet an implijer gant berzh",
+		"USER_DELETED": "Dilamet eo bet an implijer gant berzh",
+		"PASSWORD_UPDATED": "Kemmet eo bet ar ger-tremen gant berzh",
+		"NO_KARA_FOUND": "N'eus bet kavet kanaouenn ebet",
+		"GET_FAVORITES_FROM_USER_NOT_FOUND_ERROR": "N'eus bet kavet implijer ebet",
+		"UNKNOWN_PLAYLIST": "Roll-lenn dianav",
+		"UNKNOWN_SONG": "Kanaouenn dianav"
 	},
 	"suggestions": {
 		"kara": {
@@ -393,8 +492,14 @@
 		},
 		"modal": {
 			"welcome": {
-				"discord": "Discord"
+				"discord": "Discord",
+				"title": "Pelec'h emaon ?",
+				"btn": "Mat eo !"
 			}
+		},
+		"header": {
+			"description": "Petro eo an dra-se ?",
+			"send_suggestion": "Kas ur kinnig"
 		}
 	},
 	"remote": {
@@ -406,7 +511,9 @@
 		"edit_error": "Fazi o kemmañ ar remote",
 		"delete_error": "Fazi o dilemel ar remote",
 		"yes": "Ya",
-		"no": "Ket"
+		"no": "Ket",
+		"last_ip": "Ip diwezhañ",
+		"last_use": "Implijet da ziwezhañ"
 	},
 	"playlists": {
 		"karacount": "{karacount} a ganaouennoù",
@@ -419,7 +526,15 @@
 		"community": "Kumuniezh",
 		"favorites": "Pennroll",
 		"public": "Foran",
-		"private": "Prevez"
+		"private": "Prevez",
+		"create": "Krouiñ ur roll-lenn nevez",
+		"shuffle": "Meskañ",
+		"copy": "Eilañ",
+		"copy_of": "Eilenn eus {playlist}",
+		"share": "Rannañ",
+		"repeat": "Adlenn",
+		"add_karaoke": "Ouzhpennañ ur c'haraoke d'ar roll-lenn",
+		"my_playlists": "Ma rolloù-lenn"
 	},
 	"bans": {
 		"submit": "Ouzhpennañ",
@@ -431,5 +546,8 @@
 	},
 	"languages": {
 		"qro": "Lizherenneg Latin (Romanekadur)"
+	},
+	"roles": {
+		"contributor": "Kenlabourer·ez"
 	}
 }
