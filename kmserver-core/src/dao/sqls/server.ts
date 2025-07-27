@@ -15,8 +15,7 @@ INSERT INTO server
 VALUES (
 	$1,
 	$2,
-	now(),
-	$3
+	now()
 )
 ON CONFLICT(domain, sid) DO UPDATE SET
   last_seen = now(),

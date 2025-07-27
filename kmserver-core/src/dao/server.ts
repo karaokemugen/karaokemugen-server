@@ -16,6 +16,5 @@ export function upsertServer(kmServer: KMServer) {
 		kmServer.domain,
 		kmServer.sid,
 		kmServer.last_seen,
-		kmServer.flag_banned,
 	]);
 }
