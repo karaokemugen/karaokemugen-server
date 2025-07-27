@@ -6,8 +6,6 @@ services:
     hostname: kmserver
     # Change this in your .env
     environment:
-      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
-      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-changeme}
       TAG: latest
     ports:
       - ${PORT:-1350}:80
