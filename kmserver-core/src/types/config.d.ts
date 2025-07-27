@@ -37,6 +37,9 @@ export interface Config {
 		SupportedMedias?: string[],
 		AddRepoModalInMenu: boolean,
 		DefaultCollections?: string[],
+		Library?: {
+			KaraLineSort?: any,
+		}
 	},
 	Hardsub: {
 		Enabled: boolean
@@ -71,6 +74,9 @@ export interface Config {
 			database?: string,
 			superuser?: string,
 			superuserPassword?: string,
+			bundledPostgresBinary?: boolean,
+			connection?: 'tcp' | 'socket',
+			socket?: string,
 		},
 		Binaries: {
 			ffmpeg: {
