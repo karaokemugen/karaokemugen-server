@@ -16,6 +16,7 @@ export const defaults: Config = {
 			host: 'localhost',
 			port: 5432,
 			database: 'karaokemugen_server',
+			connection: 'tcp',
 		},
 		Binaries: {
 			ffmpeg: {

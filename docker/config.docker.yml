@@ -8,6 +8,7 @@ System:
     host: postgres
     database: karaokemugen_server
     port: 5432
+    connection: tcp
   Binaries:
     ffmpeg:
       Linux: /usr/bin/ffmpeg
@@ -38,7 +39,7 @@ Frontend:
   Port: 1350
   Host: localhost
   Secure: false
-  Import: 
+  Import:
     Enabled: true
     LimitedTagTypes:
       - 3
