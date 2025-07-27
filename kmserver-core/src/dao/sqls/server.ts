@@ -18,7 +18,7 @@ VALUES (
 	now()
 )
 ON CONFLICT(domain, sid) DO UPDATE SET
-  last_seen = now(),
+  last_seen = now()
 `;
 
 export const updateBanServer = `
