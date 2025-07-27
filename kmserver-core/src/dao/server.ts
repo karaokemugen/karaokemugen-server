@@ -7,6 +7,10 @@ export async function selectServers(publicView = false): Promise<KMServer[]> {
 	return res.rows;
 }
 
+export function updateBanServer(domain: string, flag_banned: boolean) {
+	return db().query(sql.updateBanServer, [domain, flag_banned])
+}
+
 export function upsertServer(kmServer: KMServer) {
 	return db().query(sql.upsertServer, [
 		kmServer.domain,

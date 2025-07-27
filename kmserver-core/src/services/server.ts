@@ -1,4 +1,4 @@
-import { selectServers, upsertServer } from '../dao/server.js';
+import { selectServers, updateBanServer, upsertServer } from '../dao/server.js';
 import { getConfig } from '../lib/utils/config.js';
 import { ErrorKM } from '../lib/utils/error.js';
 import HTTP from '../lib/utils/http.js';
@@ -19,16 +19,11 @@ export async function getServers(publicView = false) {
 	return selectServers(publicView);
 }
 
-export async function banServer(domain: string, banned = true) { 
+export async function banServer(domain: string, banned = true) {
 	const servers = await getServers();
 	const server = servers.find(s => s.domain === domain);
 	if (server) {
-		await upsertServer({
-			domain,
-			sid: server.sid,
-			last_seen: server.last_seen,
-			flag_banned: banned
-		});
+		await updateBanServer(domain, banned);
 		logger.info(`Server ${domain} ${!banned ? 'un' : ''}banned`, {service});
 	} else {
 		throw new ErrorKM('UNKNOWN_SERVER', 404, false);
@@ -47,7 +42,7 @@ export async function sendHeartbeat() {
 				domain,
 				sid,
 			});
-		} catch (err) { 
+		} catch (err) {
 			logger.error(`Unable to send heartbeat to master server ${server} : ${err}`, { service });
 		}
 	}
@@ -60,6 +55,6 @@ export async function initUplink() {
 		return;
 	}
 	// Send a heartbeat every 24 hours.
-	setInterval(sendHeartbeat, 1000 * 3600 * 24); 
+	setInterval(sendHeartbeat, 1000 * 3600 * 24);
 	sendHeartbeat();
 }
