@@ -6,7 +6,6 @@ if [ ! -f app/config.yml ]; then
 fi
 
 yarn migrate
-yarn generate
 nginx
 
 exec "$@"
