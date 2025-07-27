@@ -1,4 +1,4 @@
-import { Repository, RepositoryManifest } from '../lib/types/repo.js';
+import { AudioCodec, Repository, RepositoryManifest, VideoColorSpace, VideoContainer } from '../lib/types/repo.js';
 import { TagTypeNum } from '../lib/types/tag.js';
 import { RepositoryServer } from './repo.js';
 
@@ -44,8 +44,25 @@ export interface Config {
 	Hardsub: {
 		Enabled: boolean
 		Url?: string
+		Encoding?: {
+			Container?: VideoContainer,
+			Video?: {
+				Codec?: VideoCodec,
+				ColorSpace?: VideoColorSpace,
+				Framerate?: number, // Experimental
+				MaxResolution?: {
+					Height: number,
+					Width: number
+				}
+			},
+			Audio?: {
+				Codec?: AudioCodec,
+				Bitrate?: string,
+			}
+			AdditionalParameters?: string
+		}
 	},
-  	Users: {
+	Users: {
 		Enabled: boolean,
 		BannerBan: string[]
 	},
