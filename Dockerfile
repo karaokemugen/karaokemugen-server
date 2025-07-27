@@ -4,9 +4,20 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         nginx libnginx-mod-http-fancyindex \
         git uuid-runtime \
-        curl ca-certificates && \
+        curl ca-certificates wget && \
     rm -rf /var/lib/apt/lists/*
 
+# Arial font for hardsubs
+RUN sed -i 's/Components: main/Components: main contrib/g' /etc/apt/sources.list.d/debian.sources && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+        nginx libnginx-mod-http-fancyindex \
+        git uuid-runtime \
+        curl ca-certificates \
+        ttf-mscorefonts-installer && \
+    rm -rf /var/lib/apt/lists/*
+
+# Precompiled binaries
 RUN curl -fsSLo /tmp/app-linux.tar.gz https://mugen.karaokes.moe/downloads/dist_linux-x64-8.0.tar.gz && \
     tar xzf /tmp/app-linux.tar.gz -C /tmp && \
     mv /tmp/app-linux/bin/x64/ffmpeg /usr/bin/ffmpeg && \

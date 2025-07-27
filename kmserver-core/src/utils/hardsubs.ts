@@ -3,13 +3,15 @@ import { promise as fastq } from 'fastq';
 import { promises as fs } from 'fs';
 import { extname, resolve } from 'path';
 
+import { FFmpegHardsubOptions } from '../lib/types/ffmpeg.js';
 import { KaraList } from '../lib/types/kara.js';
-import { getConfig, resolvedPathRepos } from '../lib/utils/config.js';
+import { getConfig, resolvedPath, resolvedPathRepos } from '../lib/utils/config.js';
 import { createHardsub } from '../lib/utils/ffmpeg.js';
 import { fileExists, resolveFileInDirs } from '../lib/utils/files.js';
 import logger, { profile } from '../lib/utils/logger.js';
 import { emit, once } from '../lib/utils/pubsub.js';
 import { generateHardsubsCache, getAllKaras } from '../services/kara.js';
+import { Config } from '../types/config.js';
 import { getState } from './state.js';
 
 const service = 'Hardsubs';
@@ -44,10 +46,13 @@ async function wrappedGenerateHS(payload: [string, string, string, string, strin
 	const [mediaPath, subPath, outputFile, kid, loudnorm, fontsDir] = payload;
 	logger.info(`Creating hardsub for ${mediaPath}`, { service });
 	if (await fileExists(outputFile)) return;
-	const assPath = subPath ? `${kid}.ass` : null;
-	if (subPath) await fs.copyFile(subPath, assPath);
+	const assPathTemp = subPath ? resolve(resolvedPath('Temp'), `${kid}.ass`) : null;
+	if (subPath) {
+		await fs.copyFile(subPath, assPathTemp);
+	}
 	try {
-		await createHardsub(mediaPath, assPath, fontsDir, outputFile, loudnorm);
+		const hardsubConfigOptions = getConfig().Hardsub?.Encoding;
+		await createHardsub(mediaPath, assPathTemp, fontsDir, outputFile, loudnorm, hardsubConfigToEncodingOptions(hardsubConfigOptions));
 		hardsubsBeingProcessed.delete(kid);
 		logger.info(`Hardsub for ${mediaPath} created`, { service });
 		logger.info(`${queue.length()} hardsubs left in queue`, { service });
@@ -55,7 +60,7 @@ async function wrappedGenerateHS(payload: [string, string, string, string, strin
 		logger.error(`Error creating hardsub for ${mediaPath} : ${err}`, { service, obj: err });
 		throw err;
 	} finally {
-		if (assPath) await fs.unlink(assPath);
+		if (assPathTemp) await fs.unlink(assPathTemp);
 	}
 }
 
@@ -172,3 +177,19 @@ async function generateSubchecksum(path: string) {
 	ass = ass.replace(/\r/g, '');
 	return createHash('md5').update(ass, 'utf-8').digest('hex');
 }
+
+function hardsubConfigToEncodingOptions(hardsubConfig: Config['Hardsub']['Encoding']): FFmpegHardsubOptions {
+	return {
+		container: hardsubConfig?.Container,
+		videoCodec: hardsubConfig?.Video?.Codec,
+		videoColorSpace: hardsubConfig?.Video?.ColorSpace,
+		videoFramerate: hardsubConfig?.Video?.Framerate,
+		audioCodec: hardsubConfig?.Audio?.Codec,
+		audioBitrate: hardsubConfig?.Audio?.Bitrate,
+		additionalFfmpegParameters: hardsubConfig?.AdditionalParameters,
+		maxResolution: hardsubConfig?.Video?.MaxResolution && {
+			height: hardsubConfig.Video.MaxResolution?.Height,
+			width: hardsubConfig.Video.MaxResolution?.Width
+		}
+	}
+};

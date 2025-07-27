@@ -72,7 +72,26 @@ export const defaults: Config = {
 		AddRepoModalInMenu: false
 	},
 	Hardsub: {
-		Enabled: true
+		Enabled: true,
+		Encoding: {
+			Container: 'mp4',
+			Video: {
+				Codec: 'h264',
+				ColorSpace: 'yuv420p',
+				//Framerate: 30, // Experimental
+				MaxResolution: {
+					Height: 1080,
+					Width: 1920
+				}
+			},
+			Audio: {
+				Codec: 'aac',
+				Bitrate: '320k',
+
+			},
+			AdditionalParameters: '-crf 23 -vbr 5 -global_quality:a 14 -ac 2 -ar 44100 -preset slow'
+		}
+
 	},
 	Users: {
 		Enabled: true,
@@ -309,12 +328,12 @@ Someone suggested a karaoke edit. You will find all the new files in the inbox.
 };
 
 export const configConstraints = {
-	'App.JwtSecret': { presence: {allowEmpty: false}},
-	'App.InstanceID': { presence: {allowEmpty: false}},
-	'System.Database.username': { presence: {allowEmpty: false}},
+	'App.JwtSecret': { presence: { allowEmpty: false } },
+	'App.InstanceID': { presence: { allowEmpty: false } },
+	'System.Database.username': { presence: { allowEmpty: false } },
 	'System.Database.password': { presence: true },
-	'System.Database.host': { presence: {allowEmpty: false}},
-	'System.Database.database': { presence: {allowEmpty: false}},
-	'System.Binaries.ffmpeg': { presence: {allowEmpty: false}},
-	'Frontend.Port': { numericality: true}
+	'System.Database.host': { presence: { allowEmpty: false } },
+	'System.Database.database': { presence: { allowEmpty: false } },
+	'System.Binaries.ffmpeg': { presence: { allowEmpty: false } },
+	'Frontend.Port': { numericality: true }
 };
