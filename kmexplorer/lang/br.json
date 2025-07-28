@@ -3,7 +3,7 @@
 		"tagtypes": {
 			"langs": "Yezh|Yezhoù",
 			"singers": "Kaner|Kanerien",
-			"years": "Bloaz|Bloazioù",
+			"years": "Bloavezh|Bloavezhioù",
 			"singergroups": "Strollad|Strolladoù",
 			"songtypes": "Seurt kan | Seurtoù kan",
 			"songwriters": "Sonaozour | Sonaozourien",
@@ -452,7 +452,7 @@
 			"public": "Foran"
 		},
 		"create_tag": {
-			"submit": "Saveteiñ",
+			"submit": "Enrollañ",
 			"name": "Anv"
 		},
 		"join_kara": {
