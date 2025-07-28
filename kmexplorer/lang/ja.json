@@ -20,7 +20,8 @@
 			"cancel": "キャンセル"
 		},
 		"add_repository": {
-			"cancel": "キャンセル"
+			"cancel": "キャンセル",
+			"online": "オンライン"
 		},
 		"stats": {
 			"yes": "はい",
@@ -40,7 +41,9 @@
 				"password": {
 					"label": "パスワード"
 				}
-			}
+			},
+			"title": "ログイン",
+			"submit": "ログイン"
 		},
 		"signup": {
 			"fields": {
@@ -70,8 +73,67 @@
 				"email": {
 					"label": "メール",
 					"placeholder": "test{'@'}shelter.moe"
+				},
+				"url": {
+					"label": "ウェブサイト",
+					"placeholder": "https://karaokes.moe"
+				},
+				"discord": {
+					"label": "Discord",
+					"placeholder": "Karak#1423"
+				},
+				"bluesky": {
+					"label": "Bluesky",
+					"placeholder": "karaokemugen.bsky.social"
+				},
+				"mastodon": {
+					"label": "Mastodon",
+					"placeholder": "karaokemugen{'@'}shelter.moe"
+				},
+				"instagram": {
+					"label": "Instagram"
+				},
+				"twitch": {
+					"label": "Twitch"
+				},
+				"myanimelist": {
+					"label": "MyAnimeList"
+				},
+				"anilist": {
+					"label": "AniList"
+				},
+				"gitlab": {
+					"label": "Gitlab"
+				},
+				"flag_public": {
+					"label": "公開プロフィール"
 				}
+			},
+			"submit": "セーブ"
+		},
+		"suggest": {
+			"fields": {
+				"singer": {
+					"label": "歌手"
+				},
+				"link": {
+					"label": "リンク"
+				},
+				"series": {
+					"label": "作品"
+				}
+			},
+			"submitted": {
+				"close": "閉じる",
+				"here": "ここ"
 			}
+		},
+		"create_edit_playlist": {
+			"public": "公開",
+			"submit_create": "セーブ"
+		},
+		"create_tag": {
+			"submit": "セーブ"
 		}
 	},
 	"duration": {
@@ -84,9 +146,118 @@
 		"singergroups": "バンド",
 		"langs": "言語",
 		"login": "ログイン",
-		"logout": "ログアウト"
+		"logout": "ログアウト",
+		"karas": "曲",
+		"singers": "歌手",
+		"series": "作品",
+		"years": "年代",
+		"discord": "Discord",
+		"switch_language": "言語を変更する",
+		"connection": "ログイン",
+		"warnings": "警告",
+		"versions": "バージョン",
+		"account": "アカウント",
+		"anime_list": "自分のアニメ",
+		"random": "サイコロを振る",
+		"tags": "その他、、、",
+		"songwriters": "作曲家"
 	},
 	"toast": {
 		"PASSWORD_UPDATED": "パスワードが成功に更新された"
+	},
+	"error": {
+		"generic": "エラー",
+		"home": "ホームページに戻る"
+	},
+	"kara": {
+		"tagtypes": {
+			"series": "作品",
+			"langs": "言語",
+			"singers": "歌手",
+			"singergroups": "バンド",
+			"years": "年代",
+			"warnings": "警告",
+			"versions": "バージョン",
+			"songwriters": "作曲家"
+		},
+		"lyrics": {
+			"show": "歌詞を表示",
+			"hide": "歌詞を隠す"
+		},
+		"playlists": {
+			"add": "再生リストに入る",
+			"new_playlist_label": "{nickname}の再生リスト"
+		},
+		"problem": {
+			"form": {
+				"thanks": {
+					"btn": "閉じる"
+				},
+				"comment": {
+					"label": "コメント"
+				}
+			}
+		},
+		"import": {
+			"sections": {
+				"files": "ファイル"
+			},
+			"comment": "コメントする？",
+			"langs_required": "言語を選んでください"
+		},
+		"duration": "持続時間 ",
+		"download": "ダウンロード"
+	},
+	"layout": {
+		"app_banner": {
+			"website": "ウェブサイト"
+		}
+	},
+	"footer": {
+		"home": "プロジェクトホーム",
+		"translation": "翻訳に貢献する",
+		"api_documentation": "APIドキュメント"
+	},
+	"stats": {
+		"karaokes": "曲"
+	},
+	"search": {
+		"aria": {
+			"page": "ページ{0}"
+		},
+		"placeholder": {
+			"kara": "作品、歌手、名前、、、"
+		},
+		"types": {
+			"karaokes": "曲"
+		}
+	},
+	"titles": {
+		"home": "ホームページ"
+	},
+	"suggestions": {
+		"kara": {
+			"yes": "はい！",
+			"ok": "了解！"
+		},
+		"modal": {
+			"welcome": {
+				"discord": "Discord",
+				"title": "どこにいますか？"
+			}
+		},
+		"header": {
+			"description": "これは何ですか？",
+			"random_selection": "他の曲をランダムに選択する"
+		}
+	},
+	"playlists": {
+		"copy": "コピーする",
+		"share": "シェアする",
+		"duration": "持続時間 {duration}",
+		"public": "公開"
+	},
+	"languages": {
+		"qro": "ローマ字"
 	}
 }
