@@ -475,11 +475,11 @@ export async function importPlaylist(playlist: PlaylistExport, token: JWTTokenWi
 		let pl: DBPL = (await getPlaylists({plaid: playlist.PlaylistInformation.plaid}, token))[0];
 		if (pl) {
 			await emptyPlaylist(playlist.PlaylistInformation.plaid, token);
-			await editPlaylist(playlist.PlaylistInformation.plaid, playlist.PlaylistInformation, token);
+			pl = await editPlaylist(playlist.PlaylistInformation.plaid, playlist.PlaylistInformation, token);
 		} else {
 			pl = await createPlaylist(playlist.PlaylistInformation, token);
 		}
-		await addKaraToPlaylist(playlist.PlaylistContents.map(plc => plc.kid), playlist.PlaylistInformation.plaid, token);
+		await addKaraToPlaylist(playlist.PlaylistContents.map(plc => plc.kid), pl.plaid, token);
 		await Promise.all([
 			updatePlaylistKaraCount(pl.plaid),
 			updatePlaylistDuration(pl.plaid)
