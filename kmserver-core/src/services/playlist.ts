@@ -472,9 +472,13 @@ export async function importPlaylist(playlist: PlaylistExport, token: JWTTokenWi
 			throw new ErrorKM('INVALID_DATA', 400, false);
 		}
 		// We need to empty the playlist first.
-		await emptyPlaylist(playlist.PlaylistInformation.plaid, token);
-		// This should attempt to create a playlist or edit an existing one
-		const pl = await createPlaylist(playlist.PlaylistInformation, token);
+		let pl: DBPL = (await getPlaylists({plaid: playlist.PlaylistInformation.plaid}, token))[0];
+		if (pl) {
+			await emptyPlaylist(playlist.PlaylistInformation.plaid, token);
+			await editPlaylist(playlist.PlaylistInformation.plaid, playlist.PlaylistInformation, token);
+		} else {
+			pl = await createPlaylist(playlist.PlaylistInformation, token);
+		}
 		await addKaraToPlaylist(playlist.PlaylistContents.map(plc => plc.kid), playlist.PlaylistInformation.plaid, token);
 		await Promise.all([
 			updatePlaylistKaraCount(pl.plaid),
