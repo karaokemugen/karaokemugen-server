@@ -1,1 +1,12 @@
-{}
+{
+    "MAIL": {
+        "RESET_PASSWORD_REQUEST": {
+            "SUBJECT": "Karaoke Mugen Wachtwoord Aanpassen",
+            "BODY": "Hallo ${{username}},\n\nU (of iemand) heeft een wachtwoord aanpassing aangevraagd voor uw account op {{host}}. Als u dit niet heeft aangrvraagd, negeer alstublieft deze email.\n\nKlik alstublieft op de volgende link om een nieuw wachtwoord aan te maken :\n\n{{url}}\n\nDeze link verloopt na twee uur."
+        },
+        "RESET_PASSWORD_DONE": {
+            "SUBJECT": "Karaoke Mugen Wachtwoord is veranderd",
+            "BODY": "Hallo {{username}},\n\nUw wachtwoord bij {{host}} is succesvol veranderd.\n\n\n\nUw nieuwe wachtwoord zou nu moeten werken."
+        }
+    }
+}
