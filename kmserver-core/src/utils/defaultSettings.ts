@@ -70,7 +70,58 @@ export const defaults: Config = {
 			]
 		},
 		Suggestions: true,
-		AddRepoModalInMenu: false
+		AddRepoModalInMenu: false,
+		Library: {
+			KaraLineDisplay: [
+				{
+					type: 'langs',
+					display: 'short',
+				},
+				{
+					type: ['displayType', 'series', 'singergroups', 'singers'],
+					display: 'i18n',
+					style: 'bold',
+				},
+				{
+					type: 'songtypes',
+					display: 'short',
+				},
+				{
+					type: 'title',
+					display: 'i18n',
+					style: 'italic',
+				},
+				{
+					type: 'versions',
+					display: 'tag',
+				},
+				{
+					type: 'families',
+					display: 'tag',
+				},
+				{
+					type: 'platforms',
+					display: 'tag',
+				},
+				{
+					type: 'genres',
+					display: 'tag',
+				},
+				{
+					type: 'origins',
+					display: 'tag',
+				},
+				{
+					type: 'misc',
+					display: 'tag',
+				},
+				{
+					type: 'warnings',
+					display: 'tag',
+				},
+			],
+			KaraLineSort: [['series', 'singergroups', 'singers'], 'songtypes', 'langs', 'parents', 'title'],
+		},
 	},
 	Hardsub: {
 		Enabled: true,

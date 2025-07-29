@@ -1,3 +1,4 @@
+import { KaraLineDisplayElement, KaraSortElement } from '../lib/types/config.js';
 import { AudioCodec, Repository, RepositoryManifest, VideoColorSpace, VideoContainer } from '../lib/types/repo.js';
 import { TagTypeNum } from '../lib/types/tag.js';
 import { RepositoryServer } from './repo.js';
@@ -38,8 +39,9 @@ export interface Config {
 		AddRepoModalInMenu: boolean,
 		DefaultCollections?: string[],
 		Library?: {
-			KaraLineSort?: any,
-		}
+			KaraLineDisplay?: KaraLineDisplayElement[];
+			KaraLineSort?: KaraSortElement[];
+		};
 	},
 	Hardsub: {
 		Enabled: boolean

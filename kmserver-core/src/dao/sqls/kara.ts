@@ -24,12 +24,12 @@ export const selectAllMedias = (collectionClauses: string[]) => `
 
 export const getAllKaras = (
 	filterClauses: string[],
-	orderClauses: string,
+	orderClauses: string[],
 	limitClause: string,
 	offsetClause: string,
 	selectClause: string,
 	joinClause: string,
-	groupClause: string,
+	groupClauses: string[],
 	whereClauses: string[],
 	fromClauses: string[],
 	additionalFrom: string[],
@@ -75,6 +75,7 @@ SELECT
   `}
 FROM ${fromClauses.join(', ')}
 LEFT JOIN kara_subchecksum ksub ON ksub.fk_kid = ak.pk_kid
+LEFT OUTER JOIN all_karas_sortable AS aks ON aks.fk_kid = ak.pk_kid
 ${forPlayer ? '' : `
 	LEFT OUTER JOIN kara_relation krp ON krp.fk_kid_parent = ak.pk_kid
 	LEFT OUTER JOIN kara_relation krc ON krc.fk_kid_child = ak.pk_kid
@@ -100,9 +101,9 @@ WHERE ${includeStaging ? 'TRUE' : 'ak.repository != \'Staging\''}
 
 	}
 	${filterClauses.map(clause => `AND (${clause})`).reduce((a, b) => (`${a} ${b}`), '')}
-	${whereClauses.join(' ')}
+	${whereClauses.length > 0 ? `AND ${whereClauses.join('\nAND ')}` : ''}
 
-GROUP BY ${groupClause}
+GROUP BY ${groupClauses.length > 0 ? `${groupClauses.join(',\n')},` : ''}
 	ak.pk_kid,
 	ak.titles,
 	ak.titles_default_language,
@@ -114,7 +115,6 @@ GROUP BY ${groupClause}
 	ak.titles_aliases,
 	ak.songorder,
 	ak.tags,
-	ak.serie_singergroup_singer_sortable,
 	ak.lyrics_infos,
 	ak.year,
 	ak.mediafile,
@@ -125,20 +125,13 @@ GROUP BY ${groupClause}
 	ak.modified_at,
 	ak.repository,
 	ak.comment,
-	ak.songtypes_sortable,
 	ak.ignore_hooks,
-	ak.titles_sortable,
 	ak.kitsu_ids,
 	ak.anilist_ids,
 	ak.from_display_type,
 	ak.myanimelist_ids
 	`}
-ORDER BY ${orderClauses} ${forPlayer ? 'dummy' : `
-	ak.serie_singergroup_singer_sortable,
-	ak.songtypes_sortable DESC,
-	ak.songorder,
-	ak.titles_sortable
-`}
+ORDER BY ${orderClauses.join(',\n')}
 ${limitClause}
 ${offsetClause}
 
