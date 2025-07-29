@@ -1,1 +1,15 @@
-{}
+{
+	"error": {
+		"generic": "Fout",
+		"private_profile": "Profiel is privé.",
+		"not_found_profile": "Deze gebruiker is niet vindbaar",
+		"not_found_playlist": "Kan deze afspeellijst niet vinden",
+		"home": "Ga naar hoofdpagina",
+		"not_found_tag": "Tag niet gevonden",
+		"remote": "Fout bij het laden van externe lijsten",
+		"bans": "Fout bij laden van verbannings lijsten"
+	},
+	"kara": {
+		"phrase": "{songtype} van {series}"
+	}
+}
