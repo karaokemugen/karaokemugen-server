@@ -207,7 +207,8 @@
 		"edit": "Kemmañ ar profil",
 		"private": "Prevez eo ho profil, c'hwi hepken a c'hell gwelout anezhañ.",
 		"public_favorites": "Foran eo ho pennrolloù. Klikit evit kuzhat anezho.",
-		"private_favorites": "Prevez eo ho pennrolloù. Klikit evit diskouez anezho."
+		"private_favorites": "Prevez eo ho pennrolloù. Klikit evit diskouez anezho.",
+		"playlists_count": "{count} roll-lenn | {count} roll-lenn | {count} roll-lenn | {count} a rolloù-lenn | {count} roll-lenn"
 	},
 	"search": {
 		"sort": {
@@ -467,7 +468,8 @@
 			"add": "Dilemel ar roll-lenn"
 		},
 		"add_duplicate_in_playlist": {
-			"cancel": "Nullañ"
+			"cancel": "Nullañ",
+			"label": "Emañ ar c'haraoke er roll-lenn '{name}' dija."
 		}
 	},
 	"titles": {
