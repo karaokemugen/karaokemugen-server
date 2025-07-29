@@ -72,18 +72,18 @@ function prepareKaraQuery(params: KaraParams) {
 	if (params.favorites) {
 		q.joinClause += ' LEFT JOIN users_favorites AS fv ON fv.fk_kid = ak.pk_kid';
 		q.params.username_favs = params.favorites;
-		q.whereClauses.push('AND fv.fk_login = :username_favs');
+		q.whereClauses.push('fv.fk_login = :username_favs');
 	}
 	if (params.safeOnly) {
 		q.withCTEs.push(`warning_tags AS (SELECT array_agg(pk_tid || '~${tagTypes.warnings}') tid FROM tag t WHERE t.types @> ARRAY[${tagTypes.warnings}])`);
 		q.fromClauses.push('warning_tags wt');
-		q.whereClauses.push('AND NOT wt.tid && ak.tid');
+		q.whereClauses.push('NOT wt.tid && ak.tid');
 	}
 	if (params.userAnimeList) {
 		q.withCTEs.push(
 			'anime_list_infos AS (SELECT anime_list_ids, anime_list_to_fetch FROM users where users.pk_login = :username_anime_list)'
 		);
-		q.whereClauses.push(` AND (
+		q.whereClauses.push(`(
 			(SELECT anime_list_to_fetch FROM anime_list_infos) = 'myanimelist' AND myanimelist_ids::int[] && (SELECT anime_list_ids FROM anime_list_infos)
 		OR (
 			SELECT anime_list_to_fetch FROM anime_list_infos) = 'anilist' AND anilist_ids::int[] && (SELECT anime_list_ids FROM anime_list_infos)
