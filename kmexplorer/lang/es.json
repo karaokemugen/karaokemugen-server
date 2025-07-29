@@ -58,7 +58,8 @@
 		"not_found_profile": "No se pudo encontrar a este usuario",
 		"not_found_playlist": "No se pudo encontrar esta lista de reproducción",
 		"not_found_tag": "No se ha encontrado esta etiqueta",
-		"remote": "Error al cargar listas remotas"
+		"remote": "Error al cargar listas remotas",
+		"bans": ""
 	},
 	"toast": {
 		"TAG_CREATED": "Etiqueta creada con éxito",
