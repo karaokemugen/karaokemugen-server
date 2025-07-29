@@ -193,7 +193,7 @@ export async function getPlaylistContents(plaid: string, token: JWTTokenWithRole
 }
 
 /** Add song to playlist */
-export async function addKaraToPlaylist(kids: string[], plaid: string, token: JWTTokenWithRoles, pos?: number) {
+export async function addKaraToPlaylist(kids: string[], plaid: string, token: JWTTokenWithRoles, pos?: number, checkUnknownSongs = true) {
 	try {
 		token.username = token.username.toLowerCase();
 		const [pls, karas] = await Promise.all([
@@ -207,7 +207,7 @@ export async function addKaraToPlaylist(kids: string[], plaid: string, token: JW
 		if (!pl) throw new ErrorKM('UNKNOWN_PLAYLIST', 404, false);
 		const user: User = await findUserByName(token.username);
 
-		if (karas.content.length !== kids.length) throw new ErrorKM('UNKNOWN_SONG', 404, false);
+		if (checkUnknownSongs && karas.content.length !== kids.length) throw new ErrorKM('UNKNOWN_SONG', 404, false);
 
 		logger.debug(`Adding ${kids.length} karaokes to playlist ${pl.name || 'unknown'} by ${token.username}...`, { service });
 
@@ -479,7 +479,7 @@ export async function importPlaylist(playlist: PlaylistExport, token: JWTTokenWi
 		} else {
 			pl = await createPlaylist(playlist.PlaylistInformation, token);
 		}
-		await addKaraToPlaylist(playlist.PlaylistContents.map(plc => plc.kid), pl.plaid, token);
+		await addKaraToPlaylist(playlist.PlaylistContents.map(plc => plc.kid), pl.plaid, token, null, false);
 		await Promise.all([
 			updatePlaylistKaraCount(pl.plaid),
 			updatePlaylistDuration(pl.plaid)
