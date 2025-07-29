@@ -166,7 +166,7 @@ WHERE ${includeStaging ? 'TRUE' : 'ak.repository != \'Staging\''}
 		: ''
     }
 	${filterClauses.map(clause => `AND (${clause})`).reduce((a, b) => (`${a} ${b}`), '')}
-	${whereClauses.join(' ')}
+	${whereClauses.length > 0 ? `AND ${whereClauses.join('\nAND ')}` : ''}
 ) res_to_count
 `;
 
