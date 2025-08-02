@@ -14,7 +14,8 @@
 			"misc": "Diseurt",
 			"default": "Dre ziouer",
 			"genres": "Doare | Doareoù",
-			"warnings": "Diwall | Diwalloù"
+			"warnings": "Diwall | Diwalloù",
+			"versions": "Handelv"
 		},
 		"creators_by": "Krouet gant",
 		"authors_by": "Karaoke krouet gant",
@@ -80,7 +81,9 @@
 			"license_link": "Gouzout hiroc'h diwar-benn an aotre-se en ur glikañ amañ.",
 			"comment": "Un evezhiadenn ?",
 			"titles_aliases": "Aliasoù",
-			"titles_aliases_tooltip": "Anvioù berr pe eil, implijet evit an enklask."
+			"titles_aliases_tooltip": "Anvioù berr pe eil, implijet evit an enklask.",
+			"songorder": "Niverenn ganaouenn",
+			"contact_infos": "Titouroù darempred"
 		},
 		"player": {
 			"next": "Kanaouenn war-lerc'h (N)",
@@ -198,7 +201,8 @@
 		"songtypes": "Seurtoù",
 		"genres": "Doreoù",
 		"platforms": "Savennoù",
-		"playlists": "Rolloù-lenn"
+		"playlists": "Rolloù-lenn",
+		"versions": "Handelvoù"
 	},
 	"profile": {
 		"favorites": "Pennroll",
@@ -501,7 +505,8 @@
 		},
 		"header": {
 			"description": "Petro eo an dra-se ?",
-			"send_suggestion": "Kas ur kinnig"
+			"send_suggestion": "Kas ur kinnig",
+			"title": "Kinnigoù enporzhiañ"
 		}
 	},
 	"remote": {
@@ -536,7 +541,9 @@
 		"share": "Rannañ",
 		"repeat": "Adlenn",
 		"add_karaoke": "Ouzhpennañ ur c'haraoke d'ar roll-lenn",
-		"my_playlists": "Ma rolloù-lenn"
+		"my_playlists": "Ma rolloù-lenn",
+		"import": "Enporzhiañ ur roll-lenn",
+		"export": "Ezporzhiañ"
 	},
 	"bans": {
 		"submit": "Ouzhpennañ",
