@@ -1,7 +1,6 @@
 import {pg as yesql} from 'yesql';
 
 import {buildClauses, buildTypeClauses, db, transaction} from '../lib/dao/database.js';
-import { getKaraLineSortOrder } from '../lib/dao/karafile.js';
 import { WhereClause } from '../lib/types/database.js';
 import { DBKara, DBMedia, DBYear } from '../lib/types/database/kara.js';
 import { DBPLC } from '../lib/types/database/playlist.js';
@@ -33,6 +32,29 @@ export async function selectAllYears(params: { order: 'recent' | 'karacount', co
 	}
 	const res = await db().query(sql.getYears(orderClauses, collectionsClauses));
 	return res.rows;
+}
+
+
+function getKaraLineSortOrder(direction: 'asc' | 'desc' = 'asc'): { orderBy: string[]; groupBy: string[] } {
+	const orderBy = [];
+	const groupBy = [];
+	const karaLineSort = getConfig().Frontend.Library.KaraLineSort;
+	for (const e of karaLineSort) {
+		if (typeof e === 'string' && Object.keys(tagTypes).includes(e)) {
+			orderBy.push(`aks.${e} ${direction}`);
+			groupBy.push(`aks.${e}`);
+		} else if (Array.isArray(e)) {
+			orderBy.push(`aks.${e.join('_')} ${direction}`);
+			groupBy.push(`aks.${e.join('_')}`);
+		} else if (e === 'title') {
+			orderBy.push(`aks.titles ${direction}`);
+			groupBy.push(`aks.titles`);
+		}
+	}
+	return {
+		orderBy,
+		groupBy,
+	};
 }
 
 function prepareKaraQuery(params: KaraParams) {
@@ -126,6 +148,7 @@ function prepareKaraQuery(params: KaraParams) {
 		q.joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
 	} else {
 		// Build order here from config
+		params.direction = 'asc';
 		const config = getKaraLineSortOrder(params.direction);
 		q.orderClauses.push(...config.orderBy);
 		q.groupClauses.push(...config.groupBy);
