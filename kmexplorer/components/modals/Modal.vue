@@ -76,4 +76,8 @@
 		justify-content: space-between;
 	}
 
+	.modal-card {
+		width: auto;
+	}
+
 </style>
