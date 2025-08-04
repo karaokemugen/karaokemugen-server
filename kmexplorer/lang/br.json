@@ -212,7 +212,8 @@
 		"private": "Prevez eo ho profil, c'hwi hepken a c'hell gwelout anezhañ.",
 		"public_favorites": "Foran eo ho pennrolloù. Klikit evit kuzhat anezho.",
 		"private_favorites": "Prevez eo ho pennrolloù. Klikit evit diskouez anezho.",
-		"playlists_count": "{count} roll-lenn | {count} roll-lenn | {count} roll-lenn | {count} a rolloù-lenn | {count} roll-lenn"
+		"playlists_count": "{count} roll-lenn | {count} roll-lenn | {count} roll-lenn | {count} a rolloù-lenn | {count} roll-lenn",
+		"favorites_count": "{count} pennroll | {count} bennroll | {count} fennroll | {count} a bennrolloù | {count} pennroll"
 	},
 	"search": {
 		"sort": {
@@ -489,7 +490,8 @@
 		"NO_KARA_FOUND": "N'eus bet kavet kanaouenn ebet",
 		"GET_FAVORITES_FROM_USER_NOT_FOUND_ERROR": "N'eus bet kavet implijer ebet",
 		"UNKNOWN_PLAYLIST": "Roll-lenn dianav",
-		"UNKNOWN_SONG": "Kanaouenn dianav"
+		"UNKNOWN_SONG": "Kanaouenn dianav",
+		"GET_FAVORITES_FROM_USER_FORBIDDEN_ERROR": "N'eo ket foran ar pennrolloù implijer-mañ"
 	},
 	"suggestions": {
 		"kara": {
