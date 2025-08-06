@@ -112,6 +112,18 @@
 					<nuxt-link
 						v-if="loggedIn && user?.roles?.admin"
 						class="navbar-item"
+						to="/administration"
+						@click="closeMenu"
+					>
+						<font-awesome-icon
+							:icon="['fas', 'screwdriver-wrench']"
+							:fixed-width="true"
+						/>
+						{{ $t('menu.administration') }}
+					</nuxt-link>
+					<nuxt-link
+						v-if="loggedIn && user?.roles?.admin"
+						class="navbar-item"
 						to="/remote"
 						@click="closeMenu"
 					>
@@ -837,6 +849,17 @@
 							{{ $t('menu.playlists') }}
 						</nuxt-link>
 						<client-only>
+							<nuxt-link
+								v-if="loggedIn && user?.roles?.admin"
+								to="/administration"
+								active-class="is-active"
+							>
+								<font-awesome-icon
+									:icon="['fas', 'screwdriver-wrench']"
+									:fixed-width="true"
+								/>
+								{{ $t('menu.administration') }}
+							</nuxt-link>
 							<nuxt-link
 								v-if="loggedIn && user?.roles?.admin"
 								to="/remote"

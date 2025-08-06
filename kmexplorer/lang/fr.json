@@ -264,6 +264,7 @@
 		"playlists": "Listes de lecture",
 		"community": "Communauté",
 		"remotes": "Remotes",
+		"administration": "Administration",
 		"bans": "Exclusions",
 		"search_users": "Utilisateurs",
 		"discord": "Discord",
@@ -709,6 +710,10 @@
 		"delete_error": "Erreur lors de la suppression de l'accès à distance",
 		"yes": "Oui",
 		"no": "Non"
+	},
+	"administration": {
+		"generate_database": "Générer la base de données",
+		"generation_triggered": "La génération a été lancée."
 	},
 	"playlists": {
 		"create": "Créer une nouvelle liste de lecture",

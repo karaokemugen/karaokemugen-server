@@ -69,7 +69,7 @@
 	import { useAuthStore } from '~/store/auth';
 	import { useModalStore } from '~/store/modal';
 
-	// @ts-expect-error
+	// @ts-expect-error vue-toastification is not typed
 	const useToast = Toast.useToast ?? Toast.default.useToast;
 
 	const props = defineProps<{

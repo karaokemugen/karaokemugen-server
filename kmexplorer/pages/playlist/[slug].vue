@@ -148,7 +148,7 @@
 	import { useModalStore } from '~/store/modal';
 	import { useLocalStorageStore } from '~/store/localStorage';
 
-	// @ts-expect-error
+	// @ts-expect-error vue-toastification is not typed
 	const useToast = Toast.useToast ?? Toast.default.useToast;
 
 	const countBannerDisplay = 25;

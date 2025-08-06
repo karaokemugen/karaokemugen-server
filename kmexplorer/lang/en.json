@@ -264,6 +264,7 @@
 		"community": "Community",
 		"playlists": "Playlists",
 		"remotes": "Remotes",
+		"administration": "Administration",
 		"bans": "Bans",
 		"search_users": "Search users",
 		"discord": "Discord",
@@ -709,6 +710,10 @@
 		"delete_error": "Error when deleting remote",
 		"yes": "Yes",
 		"no": "No"
+	},
+	"administration": {
+		"generate_database": "Generate database",
+		"generation_triggered": "Generation has been triggered."
 	},
 	"playlists": {
 		"create": "Create new playlist",

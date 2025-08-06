@@ -251,7 +251,7 @@
 	import { useAuthStore } from '~/store/auth';
 	import { useConfigStore } from '~/store/config';
 
-	// @ts-expect-error
+	// @ts-expect-error vue-toastification is not typed
 	const useToast = Toast.useToast ?? Toast.default.useToast;
 
 	const props = defineProps<{

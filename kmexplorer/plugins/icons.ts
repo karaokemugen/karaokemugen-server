@@ -82,7 +82,8 @@ import {
 	faShuffle,
 	faCopy,
 	faArrowUp,
-	faRepeat
+	faRepeat,
+	faScrewdriverWrench
 } from '@fortawesome/free-solid-svg-icons';
 import {
 	faBluesky,
@@ -184,7 +185,8 @@ library.add(
 	faCopy,
 	faRepeat,
 	faArrowUp,
-	faSitemap);
+	faSitemap,
+	faScrewdriverWrench);
 
 export default defineNuxtPlugin((nuxtApp) => {
 	nuxtApp.vueApp.component('FontAwesomeIcon', FontAwesomeIcon);
