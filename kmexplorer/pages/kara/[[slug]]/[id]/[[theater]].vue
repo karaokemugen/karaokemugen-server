@@ -134,7 +134,7 @@
 
 	const { config, supportedFiles } = storeToRefs(useConfigStore());
 	const url = useRequestURL();
-	const hardsubUrl = config?.value?.Hardsub?.Url ?? url.origin;
+	const hardsubUrl = config?.value?.Hardsub?.Url ?? `http${config?.value?.Frontend?.Secure ? 's' : ''}://${url.hostname}`;
 
 	const route = useRoute();
 	const { t } = useI18n();
