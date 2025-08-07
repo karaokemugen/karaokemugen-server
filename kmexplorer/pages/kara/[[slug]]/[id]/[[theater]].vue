@@ -132,7 +132,6 @@
 	const leftTile = ref<HTMLElement>();
 	const playlists = ref<DBPL[]>([]);
 
-	const conf = useRuntimeConfig();
 	const { config, supportedFiles } = storeToRefs(useConfigStore());
 	const url = useRequestURL();
 	const hardsubUrl = config?.value?.Hardsub?.Url ?? url.origin;
@@ -180,13 +179,13 @@
 			{ hid: 'og:type', property: 'og:type', content: 'article' },
 			{ hid: 'og:description', property: 'og:description', content: t('layout.slogan') as string },
 			// @ts-expect-error: No. :c
-			{ hid: 'twitter:player', name: 'twitter:player', content: `${url.origin}${url.pathname}${url.pathname.endsWith('/theater') ? '' : '/theater'}` },
+			{ hid: 'twitter:player', name: 'twitter:player', content: `http${config?.value?.Frontend?.Secure ? 's' : ''}://${url.hostname}${url.pathname}${url.pathname.endsWith('/theater') ? '' : '/theater'}` },
 			{ hid: 'twitter:player:height', name: 'twitter:player:height', content: '720' },
 			{ hid: 'twitter:player:width', name: 'twitter:player:width', content: '1280' },
 			// @ts-expect-error: No. :c
-			{ hid: 'og:image', property: 'og:image', content: karaoke.value?.warnings?.length ? `${url.origin}/banners/cropped.jpg` : `${hardsubUrl}/previews/${karaoke.value?.kid}.${karaoke.value?.mediasize}.25.jpg` },
+			{ hid: 'og:image', property: 'og:image', content: karaoke.value?.warnings?.length ? `http${config?.value?.Frontend?.Secure ? 's' : ''}://${url.hostname}/banners/cropped.jpg` : `${hardsubUrl}/previews/${karaoke.value?.kid}.${karaoke.value?.mediasize}.25.jpg` },
 			// @ts-expect-error: rah :O
-			{ hid: 'twitter:image', name: 'twitter:image', content: karaoke.value?.warnings?.length ? `${url.origin}/banners/cropped.jpg` : `${hardsubUrl}/previews/${karaoke.value?.kid}.${karaoke.value?.mediasize}.25.jpg` },
+			{ hid: 'twitter:image', name: 'twitter:image', content: karaoke.value?.warnings?.length ? `http${config?.value?.Frontend?.Secure ? 's' : ''}://${url.hostname}/banners/cropped.jpg` : `${hardsubUrl}/previews/${karaoke.value?.kid}.${karaoke.value?.mediasize}.25.jpg` },
 			// hardsub compatibility for apps that use youtube-dl for direct streaming (without breaking the card view as with og:type video) 
 			// twitter:player:stream assumes a raw stream and is checked before twitter:player https://github.com/ytdl-org/youtube-dl/blob/master/youtube_dl/extractor/generic.py#L3662
 			// @ts-expect-error: No. :c
