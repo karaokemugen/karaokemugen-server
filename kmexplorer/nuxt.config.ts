@@ -204,6 +204,12 @@ const nuxtConfig = defineNuxtConfig({
 				iso: 'br',
 				file: 'br.json',
 			},
+			{
+				code: 'ja',
+				name: '日本語',
+				iso: 'ja',
+				file: 'ja.json',
+			},
 		],
 		restructureDir: false,
 		lazy: true,

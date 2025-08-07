@@ -9,6 +9,7 @@ import it from '@karaokemugen/i18n-iso-languages/langs/it.json';
 import pl from '@karaokemugen/i18n-iso-languages/langs/pl.json';
 import ta from '@karaokemugen/i18n-iso-languages/langs/ta.json';
 import br from '@karaokemugen/i18n-iso-languages/langs/br.json';
+import ja from '@karaokemugen/i18n-iso-languages/langs/ja.json';
 
 i18nIsoLanguages.registerLocale(en);
 i18nIsoLanguages.registerLocale(fr);
@@ -20,6 +21,7 @@ i18nIsoLanguages.registerLocale(it);
 i18nIsoLanguages.registerLocale(pl);
 i18nIsoLanguages.registerLocale(ta);
 i18nIsoLanguages.registerLocale(br);
+i18nIsoLanguages.registerLocale(ja);
 
 let browserLanguage: string;
 if (process.client) {
