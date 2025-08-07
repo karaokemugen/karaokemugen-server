@@ -16,6 +16,7 @@ import KServerController from './controllers/http/karaserv.js';
 import PLController from './controllers/http/playlist.js';
 import PMController from './controllers/http/playlistMedias.js';
 import remoteController from './controllers/http/remote.js';
+import uplinkController from './controllers/http/server.js';
 import statsController from './controllers/http/stats.js';
 import suggestionsController from './controllers/http/suggestions.js';
 import userController from './controllers/http/user.js';
@@ -31,7 +32,6 @@ import logger from './lib/utils/logger.js';
 import { initWS } from './lib/utils/ws.js';
 import { initRemote } from './services/remote.js';
 import { getState } from './utils/state.js';
-import uplinkController from './controllers/http/server.js';
 
 const service = 'Frontend';
 

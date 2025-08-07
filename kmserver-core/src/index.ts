@@ -14,7 +14,7 @@ import logger from 'winston';
 import { initDB } from './dao/database.js';
 import { updateBanSession } from './dao/stats.js';
 import { initFrontend } from './frontend.js';
-import { buildKMExplorer } from './kmexplorer.js';
+import { buildKMExplorer, updateWebmanifest } from './kmexplorer.js';
 import { configureLocale, getConfig, resolvedPath } from './lib/utils/config.js';
 import { asyncCheckOrMkdir } from './lib/utils/files.js';
 import { createImagePreviews } from './lib/utils/previews.js';
@@ -94,6 +94,7 @@ async function main() {
 		electron: false
 	});
 	await initConfig(argv.opts());
+	updateWebmanifest();
 	initRepos();
 	const conf = getConfig();
 	console.log('--------------------------------------------------------------------');
