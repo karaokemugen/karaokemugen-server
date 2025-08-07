@@ -140,7 +140,7 @@
 		"minutes": "分",
 		"seconds": "秒",
 		"hours": "時間",
-		"days": "日間"
+		"days": "日"
 	},
 	"menu": {
 		"singergroups": "バンド",
@@ -220,7 +220,9 @@
 		"api_documentation": "APIドキュメント"
 	},
 	"stats": {
-		"karaokes": "曲"
+		"karaokes": "曲",
+		"all_duration": "全曲の時間",
+		"last_generation": "最終更新"
 	},
 	"search": {
 		"aria": {
