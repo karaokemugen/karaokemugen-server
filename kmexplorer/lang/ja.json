@@ -204,7 +204,8 @@
 			},
 			"comment": "コメントする？",
 			"langs_required": "言語を選んでください",
-			"songwriters_tooltip": "作曲家と編曲家と作詞家"
+			"songwriters_tooltip": "作曲家と編曲家と作詞家",
+			"title": "タイトル"
 		},
 		"duration": "持続時間 ",
 		"download": "ダウンロード"
