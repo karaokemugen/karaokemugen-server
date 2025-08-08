@@ -73,7 +73,7 @@
 
 	const { config, supportedFiles } = storeToRefs(useConfigStore());
 	const url = useRequestURL();
-	const hardsubUrl = config?.value?.Hardsub?.Url ?? `http${config?.value?.Frontend?.Secure ? 's' : ''}://${url.hostname}`;
+	const hardsubUrl = config?.value?.Hardsub?.Url ?? url.origin;
 
 	const previews = computed (() => {
 		const arr: string[] = [`${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`];
