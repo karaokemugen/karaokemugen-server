@@ -83,12 +83,13 @@
 			"titles_aliases": "Aliasoù",
 			"titles_aliases_tooltip": "Anvioù berr pe eil, implijet evit an enklask.",
 			"songorder": "Niverenn ganaouenn",
-			"contact_infos": "Titouroù darempred"
+			"contact_infos": "Titouroù darempred",
+			"songwriters_tooltip": "Sonazourien, kempennerien ha saverien pozioù."
 		},
 		"player": {
 			"next": "Kanaouenn war-lerc'h (N)",
 			"previous": "Kanaouenn a-raok (B)",
-			"fullscreen": "Skramm leun (F)",
+			"fullscreen": "Skramm a-bezh (F)",
 			"theater_mode": "Mod Sinema (T)",
 			"autoplay": "Lenn emgefreek",
 			"loop": "Lenn dizehan",
@@ -149,7 +150,8 @@
 		"suggest": "Ne gavit ket ar pezh emaoc'h o klask ?",
 		"suggest_open": "Kinnigit ur ganaouenn deomp !",
 		"end_playlists": "Diskouez {number} a rolloù-lenn ouzhpenn",
-		"results": "{count} disoc'h | {count} zisoc'h | {count} disoc'h | {count} a zisoc'hoù | {count} disoc'h"
+		"results": "{count} disoc'h | {count} zisoc'h | {count} disoc'h | {count} a zisoc'hoù | {count} disoc'h",
+		"slogan": "Deuit 'ta da ganañ ar ganaouenn-mañ gant Karaoke Mugen !"
 	},
 	"footer": {
 		"home": "Degemer ar raktres",
@@ -202,7 +204,10 @@
 		"genres": "Doreoù",
 		"platforms": "Savennoù",
 		"playlists": "Rolloù-lenn",
-		"versions": "Handelvoù"
+		"versions": "Handelvoù",
+		"administration": "Mererezh",
+		"origins": "Orinoù",
+		"series": "Oberennoù"
 	},
 	"profile": {
 		"favorites": "Pennroll",
@@ -233,7 +238,8 @@
 		"previous": "Pajenn a-raok",
 		"aria": {
 			"goto": "Mont d'ar bajenn {0}",
-			"page": "Pajenn {0}"
+			"page": "Pajenn {0}",
+			"sort": "Rummañ dre"
 		},
 		"types": {
 			"users": "Implijerien",
@@ -243,7 +249,9 @@
 		},
 		"placeholder": {
 			"playlist": "Anvioù, implijerien…",
-			"user": "Anvioù implijer…"
+			"user": "Anvioù implijer…",
+			"kara": "Oberennoù, kanerien, anvioù…",
+			"tag": "Anvioù an dikedennoù…"
 		}
 	},
 	"modal": {
@@ -290,7 +298,8 @@
 			},
 			"title": "Enskrivañ",
 			"submit": "Enskrivañ",
-			"subtitle": "Enskrivit evit enrollañ ho pennrolloù ha krouiñ ho profil !"
+			"subtitle": "Enskrivit evit enrollañ ho pennrolloù ha krouiñ ho profil !",
+			"passwords_mismatch": "Ne glot ket ar gerioù-tremen"
 		},
 		"profile": {
 			"headers": {
@@ -377,13 +386,19 @@
 					"label": "Profil foran"
 				},
 				"flag_sendstats": {
-					"label": "Stadegoù"
+					"label": "Stadegoù",
+					"checkbox": "Implijout ma fennrolloù ha goulennoù ganaouennoù evit an stadegoù"
+				},
+				"lang_prefs": {
+					"main_song_name_lang": "Gwellvez diskouez anv ar ganaouennoù",
+					"fallback_song_name_lang": "Eil gwellvez diskouez anv ar ganaouennoù"
 				}
 			},
 			"submit": "Saveteiñ",
 			"delete": "Dilemel ar gont",
 			"title": "Kemmañ profil",
-			"select_avatar": "Dibab an avatar"
+			"select_avatar": "Dibab an avatar",
+			"passwords_mismatch": "Ne glot ket ar gerioù-tremen"
 		},
 		"add_repository": {
 			"online": "Enlinenn",
@@ -395,7 +410,8 @@
 		},
 		"delete_account": {
 			"add": "Dilemel ar gont",
-			"cancel": "Nullañ"
+			"cancel": "Nullañ",
+			"label": "Sur oc'h e fell deoc'h dilemel ho kont ?"
 		},
 		"suggest": {
 			"fields": {
@@ -414,6 +430,9 @@
 				},
 				"type": {
 					"label": "Seurt"
+				},
+				"series": {
+					"label": "Oberenn"
 				}
 			},
 			"submitted": {
@@ -459,7 +478,8 @@
 		},
 		"create_tag": {
 			"submit": "Enrollañ",
-			"name": "Anv"
+			"name": "Anv",
+			"types": "Seurtoù"
 		},
 		"join_kara": {
 			"cancel": "Nullañ",
@@ -470,11 +490,13 @@
 		},
 		"delete_playlist": {
 			"cancel": "Nullañ",
-			"add": "Dilemel ar roll-lenn"
+			"add": "Dilemel ar roll-lenn",
+			"label": "Sur oc'h e fell deoc'h dilemel ar roll-lenn '{name}' ?"
 		},
 		"add_duplicate_in_playlist": {
 			"cancel": "Nullañ",
-			"label": "Emañ ar c'haraoke er roll-lenn '{name}' dija."
+			"label": "Emañ ar c'haraoke er roll-lenn '{name}' dija.",
+			"add": "Ouzhpennañ memes tra"
 		}
 	},
 	"titles": {
@@ -491,7 +513,11 @@
 		"GET_FAVORITES_FROM_USER_NOT_FOUND_ERROR": "N'eus bet kavet implijer ebet",
 		"UNKNOWN_PLAYLIST": "Roll-lenn dianav",
 		"UNKNOWN_SONG": "Kanaouenn dianav",
-		"GET_FAVORITES_FROM_USER_FORBIDDEN_ERROR": "N'eo ket foran ar pennrolloù implijer-mañ"
+		"GET_FAVORITES_FROM_USER_FORBIDDEN_ERROR": "N'eo ket foran ar pennrolloù implijer-mañ",
+		"LOG_ERROR": "Titouroù kevreañ direizh.",
+		"TAG_CREATED": "Krouet eo bet an dikedenn gant berzh",
+		"PASSWORD_TOO_SHORT": "Re verr eo ar ger-tremen",
+		"SUBFILE_FORMAT_UNKNOWN": "Mentrezh ar pozioù dianav"
 	},
 	"suggestions": {
 		"kara": {
@@ -508,7 +534,8 @@
 		"header": {
 			"description": "Petro eo an dra-se ?",
 			"send_suggestion": "Kas ur kinnig",
-			"title": "Kinnigoù enporzhiañ"
+			"title": "Kinnigoù enporzhiañ",
+			"random_selection": "Dibab kanaouennoù all dre zegouezh"
 		}
 	},
 	"remote": {
@@ -522,7 +549,8 @@
 		"yes": "Ya",
 		"no": "Ket",
 		"last_ip": "Ip diwezhañ",
-		"last_use": "Implijet da ziwezhañ"
+		"last_use": "Implijet da ziwezhañ",
+		"permanent": "Peurzalc'hus"
 	},
 	"playlists": {
 		"karacount": "{karacount} a ganaouennoù",
@@ -553,12 +581,14 @@
 		"value": "Talvoud",
 		"add": "Ouzhpennañ ur berz nevez",
 		"banned_at": "Berzet d'ar",
-		"type": "Seurt"
+		"type": "Seurt",
+		"reason": "Abeg"
 	},
 	"languages": {
 		"qro": "Lizherenneg Latin (Romanekadur)"
 	},
 	"roles": {
-		"contributor": "Kenlabourer·ez"
+		"contributor": "Kenlabourer·ez",
+		"admin": "Merour·ez"
 	}
 }
