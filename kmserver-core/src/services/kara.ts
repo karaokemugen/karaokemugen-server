@@ -89,6 +89,19 @@ export async function updateRepo() {
 	await Promise.all(promises);
 }
 
+export async function createPreviews() {
+	const karas = await getAllKaras({ ignoreCollections: true }, undefined, true);
+	createImagePreviews(karas, 'full', 1280)
+}
+
+export async function createHardsubs() {
+	if (getConfig().Hardsub.Enabled) {
+		const karas = await getAllKaras({ ignoreCollections: true }, undefined, true);
+		generateHardsubs(karas);
+		generateHardsubsCache(karas);
+	}
+}
+
 export async function generate() {
 	try {
 		await removeProcessedInboxes();
