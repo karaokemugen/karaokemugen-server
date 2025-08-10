@@ -712,8 +712,12 @@
 		"no": "Non"
 	},
 	"administration": {
+		"update_git": "Mettre à jour le dépôt Git",
+		"update_git_triggered": "La mise à jour a été lancée.",
 		"generate_database": "Générer la base de données",
-		"generation_triggered": "La génération a été lancée."
+		"generation_triggered": "La génération a été lancée.",
+		"generate_previews": "Générer les aperçus",
+		"generate_hardsubs": "Générer les médias avec les sous-titres incrustés"
 	},
 	"playlists": {
 		"create": "Créer une nouvelle liste de lecture",

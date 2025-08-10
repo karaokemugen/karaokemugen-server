@@ -1,7 +1,8 @@
 import { Router } from 'express';
 
 import { supportedAudioCodecs, supportedFiles, supportedVideoCodecs, supportedVideoColorSpaces } from '../../lib/utils/constants.js';
-import { generate, updateRepo } from '../../services/kara.js';
+import { updateGit } from '../../services/git.js';
+import { createHardsubs, createPreviews, generate, updateRepo } from '../../services/kara.js';
 import { getPublicConfig } from '../../utils/config.js';
 import {requireAdmin, requireAuth, requireValidUser} from '../middlewares/auth.js';
 
@@ -10,9 +11,21 @@ export default async function adminController(router: Router) {
 		generate();
 		res.status(200).send('Generation triggered');
 	});
+	router.post('/git/update', requireAuth, requireValidUser, requireAdmin, async (_, res) => {
+		updateGit();
+		res.status(200).json();
+	});
 	router.post('/update', requireAuth, requireValidUser, requireAdmin, async (_, res) => {
 		updateRepo();
 		res.status(200).send('Generation triggered');
+	});
+	router.post('/previews/generate', requireAuth, requireValidUser, requireAdmin, async (_, res) => {
+		createPreviews();
+		res.status(200).json();
+	});
+	router.post('/hardsubs/generate', requireAuth, requireValidUser, requireAdmin, async (_, res) => {
+		createHardsubs();
+		res.status(200).json();
 	});
 	router.get('/config', async (_, res) => {
 		res.status(200).json(getPublicConfig());
