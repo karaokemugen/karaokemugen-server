@@ -39,7 +39,8 @@
 		"playlists": "Playlisten",
 		"bans": "Sperrungen",
 		"play_random_song": "Spiele einen zufälligen Song",
-		"remotes": "Standorte"
+		"remotes": "Standorte",
+		"administration": "Administration"
 	},
 	"kara": {
 		"import": {
@@ -745,5 +746,9 @@
 	},
 	"languages": {
 		"qro": "Lateinisches Alphabet (Romanisierung)"
+	},
+	"administration": {
+		"generate_database": "Datenbank generieren",
+		"generation_triggered": "Die Generierung wurde ausgelöst."
 	}
 }
