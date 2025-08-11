@@ -107,6 +107,10 @@
 				},
 				"flag_public": {
 					"label": "公開プロフィール"
+				},
+				"flag_displayfavorites": {
+					"label": "お気に入り",
+					"checkbox": "お気に入りを表示する"
 				}
 			},
 			"submit": "セーブ"
@@ -160,7 +164,8 @@
 		"anime_list": "自分のアニメ",
 		"random": "サイコロを振る",
 		"tags": "その他、、、",
-		"songwriters": "作曲家"
+		"songwriters": "作曲家",
+		"community": "コミュニティ"
 	},
 	"toast": {
 		"PASSWORD_UPDATED": "パスワードが成功に更新された"
@@ -185,8 +190,8 @@
 			"hide": "歌詞を隠す"
 		},
 		"playlists": {
-			"add": "再生リストに入る",
-			"new_playlist_label": "{nickname}の再生リスト"
+			"add": "プレイリストに追加する",
+			"new_playlist_label": "{nickname}のプレイリスト"
 		},
 		"problem": {
 			"form": {
@@ -205,10 +210,15 @@
 			"comment": "コメントする？",
 			"langs_required": "言語を選んでください",
 			"songwriters_tooltip": "作曲家と編曲家と作詞家",
-			"title": "タイトル"
+			"title": "タイトル",
+			"show_hide": "表示/非表示"
 		},
 		"duration": "持続時間 ",
-		"download": "ダウンロード"
+		"download": "ダウンロード",
+		"favorites": {
+			"add": "お気に入りに追加する",
+			"remove": "お気に入りから削除する"
+		}
 	},
 	"layout": {
 		"app_banner": {
@@ -233,7 +243,11 @@
 			"kara": "作品、歌手、名前、、、"
 		},
 		"types": {
-			"karaokes": "曲"
+			"karaokes": "曲",
+			"favorites": "ユーザーのお気に入り"
+		},
+		"sort": {
+			"most_favorites": "最もお気に入り"
 		}
 	},
 	"titles": {
@@ -259,9 +273,14 @@
 		"copy": "コピーする",
 		"share": "シェアする",
 		"duration": "持続時間 {duration}",
-		"public": "公開"
+		"public": "公開",
+		"community": "コミュニティ",
+		"favorites": "お気に入り"
 	},
 	"languages": {
 		"qro": "ローマ字"
+	},
+	"profile": {
+		"favorites": "お気に入り"
 	}
 }
