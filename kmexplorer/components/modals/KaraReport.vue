@@ -28,6 +28,7 @@
 			{{ $t('kara.problem.btn.lyrics') }}
 		</button>
 		<nuxt-link
+			v-if="config?.Frontend.Import.Enabled"
 			:to="`/import/${karaoke.kid}`"
 			class="button is-success"
 		>
@@ -188,6 +189,7 @@
 
 <script setup lang="ts">
 	import type { DBKara } from '%/lib/types/database/kara';
+	import { useConfigStore } from '~/store/config';
 
 	type ProblemsType = 'Media' | 'Metadata' | 'Lyrics';
 
@@ -213,6 +215,7 @@
 		if(now.kid !== old.kid) submitted.value = false;
 	});
 
+	const { config } = storeToRefs(useConfigStore());
 	const title = computed(() => getTitleInLocale(props.karaoke.titles, props.karaoke.titles_default_language));
 
 	function toggleModal(type?: ProblemsType) {
