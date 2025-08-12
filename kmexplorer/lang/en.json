@@ -713,7 +713,7 @@
 	},
 	"administration": {
 		"update_git": "Update Git repository",
-		"update_git_triggered": "Update has been triggered",
+		"update_git_triggered": "Update has been triggered.",
 		"generate_database": "Generate database",
 		"generation_triggered": "Generation has been triggered.",
 		"generate_previews": "Generate previews",
