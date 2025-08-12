@@ -4,6 +4,7 @@ services:
     image: registry.gitlab.com/karaokemugen/code/karaokemugen-server:${TAG}
     container_name: kmserver
     hostname: kmserver
+    restart: always
     # Change this in your .env
     environment:
       TAG: latest
@@ -21,6 +22,7 @@ services:
     image: postgres:17
     container_name: kmserver-postgres
     hostname: postgres
+    restart: always
     environment:
       # These values must match the config in app/config.yml
       POSTGRES_USER: karaokemugen_server
@@ -35,4 +37,3 @@ services:
       interval: 5s
       timeout: 5s
       retries: 60
-
