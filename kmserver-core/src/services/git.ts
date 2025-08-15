@@ -96,21 +96,27 @@ export async function getGitDiff(commit: string, fullFiles = false): Promise<str
 	}
 }
 export async function initGitRepos() {
-	for (let repo of getConfig().System.Repositories) {
+	for (const repo of getConfig().System.Repositories) {
 		const repoBaseDirAbsolute = resolve(getState().dataPath, repo.BaseDir);
 		// Clone repo if not existent and init
-		if (repo.Git?.URL && !(await isGit(repoBaseDirAbsolute))) {
-				const repoFiles = existsSync(repoBaseDirAbsolute) ? await fs.readdir(repoBaseDirAbsolute, {recursive: true}) : [];
-				if (repoFiles.length > 4) { // Failsafe  
+		if (repo.Git?.URL) {
+			if (!(await isGit(repoBaseDirAbsolute))) {
+				const repoFiles = existsSync(repoBaseDirAbsolute)
+					? await fs.readdir(repoBaseDirAbsolute, { recursive: true })
+					: [];
+				if (repoFiles.length > 4) {
+					// Failsafe
 					const errormessage = `The repository ${repoBaseDirAbsolute} is not a git repository but contains files or folders. Please empty the folder or clone the repository properly`;
-					logger.error(errormessage, {service});
+					logger.error(errormessage, { service });
 					throw errormessage;
 				}
-				logger.log(`The repository ${repoBaseDirAbsolute} is empty, attempting to clone from ${repo.Git.URL}`, {service});
-				if (existsSync(repoBaseDirAbsolute))
-					await fs.rm(repoBaseDirAbsolute, {recursive: true})
+				logger.log(`The repository ${repoBaseDirAbsolute} is empty, attempting to clone from ${repo.Git.URL}`, {
+					service,
+				});
+				if (existsSync(repoBaseDirAbsolute)) await fs.rm(repoBaseDirAbsolute, { recursive: true });
 				await gitClone(repoBaseDirAbsolute, repo.Git.URL);
 			}
-		await gitConfig(repoBaseDirAbsolute);
+			await gitConfig(repoBaseDirAbsolute);
+		}
 	}
 }
