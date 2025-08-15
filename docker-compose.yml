@@ -23,6 +23,7 @@ services:
     container_name: kmserver-postgres
     hostname: postgres
     restart: always
+    shm_size: 1g # Modify this in override depending on your host setup
     environment:
       # These values must match the config in app/config.yml
       POSTGRES_USER: karaokemugen_server
