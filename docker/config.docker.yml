@@ -69,9 +69,7 @@ Stats:
   Enabled: true
 Gitlab:
   Enabled: true
-  Token: xxx
   Host: https://gitlab.com
-  ProjectID: 1
   IssueTemplate:
     Import:
       Title: '[Inbox] $kara'
