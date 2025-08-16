@@ -106,7 +106,7 @@ System:
       Enabled: true
       BaseDir: app/karaokebase/git
       FullArchiveURL: https://mugen.re/downloads/master.zip # URL to the complete repository as zip
-      SourceArchiveURL: https://gitlab.com/karaokemugen/bases/karaokebase/-/archive/master/karaokebase-master.zip
+      SourceArchiveURL: https://gitlab.com/karaokemugen/bases/mugenre-database/-/archive/main/mugenre-database-main.zip
       Path:
         Medias:
           - app/karaokebase/medias

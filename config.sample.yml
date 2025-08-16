@@ -22,14 +22,14 @@ System:
       Enabled: true
       BaseDir: "repos/karaokebase/json"
       FullArchiveURL: https://mugen.re/downloads/master.zip
-      SourceArchiveURL: https://gitlab.com/karaokemugen/bases/karaokebase/-/archive/master/karaokebase-master.zip
+      SourceArchiveURL: https://gitlab.com/karaokemugen/bases/mugenre-database/-/archive/main/mugenre-database-main.zip
       Path:
         Medias:
           - repos/karaokebase/medias
       Git:
-        URL: https://gitlab.com/karaokemugen/bases/karaokebase.git
+        URL: https://gitlab.com/karaokemugen/bases/mugenre-database.git
         Branch: master
-        ProjectID: 32123952 # Only for gitlab projects / issues
+        ProjectID: 72177322 # Only for gitlab projects / issues
     - Name: Staging
       Online: false
       Enabled: true
@@ -58,7 +58,7 @@ Frontend:
       - 16
       - 0
   Suggestions: true
-  InProgressSongsList: https://gitlab.com/karaokemugen/bases/karaokebase/-/issues?scope=all&state=opened&label_name[]=Work in progress
+  InProgressSongsList: https://gitlab.com/karaokemugen/bases/mugenre-database/-/issues?scope=all&state=opened&label_name[]=Work in progress
   AddRepoModalInMenu: false
   DiscourseURL: https://discourse.karaokes.moe
   DiscordURL: https://karaokes.moe/discord
