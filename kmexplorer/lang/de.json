@@ -749,6 +749,10 @@
 	},
 	"administration": {
 		"generate_database": "Datenbank generieren",
-		"generation_triggered": "Die Generierung wurde ausgelöst."
+		"generation_triggered": "Die Generierung wurde ausgelöst.",
+		"update_git": "Git-Repository updaten",
+		"update_git_triggered": "Das Update wurde gestartet.",
+		"generate_previews": "Vorschau generieren",
+		"generate_hardsubs": "Hardsubs generieren"
 	}
 }
