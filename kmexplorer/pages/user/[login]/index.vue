@@ -12,57 +12,69 @@
 					class="banner"
 				>
 				<div class="down">
-					<div class="title-bar">
-						<img
-							:src="`/avatars/${user.avatar_file}`"
-							alt=""
-							class="profile"
-						>
-						<div class="name-badges">
-							<div
-								ref="name"
-								class="name"
-								:class="{edit}"
-								:contenteditable="edit"
+					<div class="is-flex is-justify-content-space-between is-align-items-center">
+						<div class="title-bar">
+							<img
+								:src="`/avatars/${user.avatar_file}`"
+								alt=""
+								class="profile"
 							>
-								{{ user.nickname }}
-								<font-awesome-icon
-									v-if="!edit && !user.flag_public"
-									:icon="['fas', 'lock']"
-									fixed-width
-									:title="$t('profile.private')"
+							<div class="name-badges">
+								<div
+									ref="name"
+									class="name"
+									:class="{edit}"
+									:contenteditable="edit"
+								>
+									{{ user.nickname }}
+									<font-awesome-icon
+										v-if="!edit && !user.flag_public"
+										:icon="['fas', 'lock']"
+										fixed-width
+										:title="$t('profile.private')"
+									/>
+								</div>
+								<user-badges
+									:roles="user.roles"
+									:edit="edit"
+									@toggle="toggleRole"
 								/>
 							</div>
-							<user-badges
-								:roles="user.roles"
-								:edit="edit"
-								@toggle="toggleRole"
-							/>
 						</div>
 						<client-only>
-							<button
-								v-if="edit"
-								class="button is-success"
-								:class="{'is-loading': loading}"
-								@click.prevent="submitEdit"
-							>
-								<font-awesome-icon
-									:icon="['fas', 'sign-in-alt']"
-									fixed-width
-								/>
-								<span class="is-hidden-mobile">{{ $t('modal.profile.submit') }}</span>
-							</button>
-							<button
-								v-else-if="canEdit"
-								class="button"
-								@click.prevent="openEdit"
-							>
-								<font-awesome-icon
-									:icon="['fas', 'edit']"
-									fixed-width
-								/>
-								<span class="is-hidden-mobile">{{ $t('profile.edit') }}</span>
-							</button>
+							<div class="is-flex is-justify-content-flex-end">
+								<button
+									v-if="edit"
+									class="button is-success"
+									:class="{'is-loading': loading}"
+									@click.prevent="submitEdit"
+								>
+									<font-awesome-icon
+										:icon="['fas', 'sign-in-alt']"
+										fixed-width
+									/>
+									<span class="is-hidden-mobile">{{ $t('modal.profile.submit') }}</span>
+								</button>
+								<button
+									v-else-if="canEdit"
+									class="button"
+									@click.prevent="openEdit"
+								>
+									<font-awesome-icon
+										:icon="['fas', 'edit']"
+										fixed-width
+									/>
+									<span class="is-hidden-mobile">{{ $t('profile.edit') }}</span>
+								</button>
+								<button
+									v-if="!edit && canDeleteAdmin"
+									type="button"
+									class="button is-danger"
+									@click.prevent="openDeleteAccountModal"
+								>
+									{{ $t('modal.profile.delete') }}
+								</button>
+							</div>
 						</client-only>
 					</div>
 					<template v-if="bio || metadata">
@@ -230,6 +242,7 @@
 
 	const viewingSelf = computed(() => loggedIn.value && (params.login === userConnected?.value?.login));
 	const canEdit = computed(() => (loggedIn.value && !!userConnected?.value?.roles?.admin) || viewingSelf.value);
+	const canDeleteAdmin = computed(() => loggedIn.value && !!userConnected?.value?.roles?.admin && !viewingSelf.value);
 	const metadata = computed(() => !!(
 		user.value?.social_networks?.discord ||
 		user.value?.social_networks?.instagram ||
@@ -322,6 +335,10 @@
 		}).finally(() => {
 			loading.value = false;
 		});
+	}
+
+	function openDeleteAccountModal() {
+		openModal('deleteAccount');
 	}
 </script>
 

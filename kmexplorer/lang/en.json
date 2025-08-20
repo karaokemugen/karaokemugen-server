@@ -495,6 +495,7 @@
 			"cancel": "Cancel"
 		},
 		"delete_account": {
+			"label_admin": "Do you really want to delete this account?",
 			"label": "Do you really want to delete your account?",
 			"add": "Delete account",
 			"cancel": "Cancel"
