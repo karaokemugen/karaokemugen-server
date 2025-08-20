@@ -96,7 +96,7 @@
 									<input
 										id="email"
 										v-model="editedUser.email"
-										type="text"
+										type="email"
 										name="email"
 										class="input"
 										required

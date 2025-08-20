@@ -21,10 +21,8 @@
 							>
 							<div class="name-badges">
 								<div
-									ref="name"
+									v-if="!edit"
 									class="name"
-									:class="{edit}"
-									:contenteditable="edit"
 								>
 									{{ user.nickname }}
 									<font-awesome-icon
@@ -33,6 +31,44 @@
 										fixed-width
 										:title="$t('profile.private')"
 									/>
+								</div>
+								<div v-if="edit" class="m-2">
+									<div class="field is-horizontal">
+										<div class="field-label is-normal">
+											<label
+												for="nickname"
+												class="label"
+											>{{ $t('modal.profile.fields.nickname.label') }}</label>
+										</div>
+										<div class="field-body">
+											<input
+												id="nickname"
+												v-model="user.nickname"
+												type="text"
+												name="nickname"
+												class="input"
+												required
+											>
+										</div>
+									</div>
+									<div class="field is-horizontal">
+										<div class="field-label is-normal">
+											<label
+												for="email"
+												class="label"
+											>{{ $t('modal.profile.fields.email.label') }}</label>
+										</div>
+										<div class="field-body">
+											<input
+												id="email"
+												v-model="user.email"
+												type="email"
+												name="email"
+												class="input"
+												required
+											>
+										</div>
+									</div>
 								</div>
 								<user-badges
 									:roles="user.roles"
@@ -229,7 +265,6 @@
 	const user = ref<DBUser>();
 	const edit = ref(false);
 	const loading = ref(false);
-	const name = ref<HTMLDivElement>();
 	const playlists = ref<DBPL[]>([]);
 
 	const { loggedIn, user: userConnected } = storeToRefs(useAuthStore());
@@ -266,7 +301,11 @@
 		const url = viewingSelf.value
 			? '/api/myaccount'
 			: `/api/users/${params.login}`;
-		const res = await useCustomFetch<DBUser>(url).catch((err: any) => {
+		const res = await useCustomFetch<DBUser>(url, {
+			params: {
+				forcePublic: loggedIn.value && !!userConnected?.value?.roles?.admin
+			}
+		}).catch((err) => {
 			if (err?.response?.status === 404) {
 				throw createError({ statusCode: 404, message: t('error.not_found_profile') });
 			}
@@ -311,7 +350,8 @@
 		useCustomFetch(`/api/users/${params.login}`, {
 			method: 'PATCH',
 			body: {
-				nickname: name.value?.innerText || user.value?.nickname,
+				nickname: user.value?.nickname,
+				email: user.value?.email,
 				roles: user.value?.roles
 			}
 		}).then(() => {
@@ -422,12 +462,6 @@
 						overflow: hidden;
 
 						transition: padding 150ms ease, margin 150ms ease;
-						&.edit {
-							padding: .5em;
-							margin: .25em;
-							background-color: #343b3d;
-							border-bottom: whitesmoke 1px solid;
-						}
 					}
 				}
 				> button {

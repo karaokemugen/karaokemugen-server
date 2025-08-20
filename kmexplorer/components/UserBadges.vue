@@ -64,6 +64,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		> .tag {
+			margin-bottom: .25em;
 			input[type="checkbox"] {
 				margin-right: .5em;
 				background-color: #373f40;

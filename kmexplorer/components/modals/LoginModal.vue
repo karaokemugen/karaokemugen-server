@@ -218,7 +218,7 @@
 									<input
 										id="title"
 										v-model="login.email"
-										type="text"
+										type="email"
 										name="title"
 										class="input"
 										required
