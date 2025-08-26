@@ -192,7 +192,7 @@
 			"fullscreen": "Fullscreen (F)",
 			"autoplay": "Autoplay",
 			"loop": "Loop",
-			"description": "This video is hosted by {instance}. Please use our application if you plan an event or stream!"
+			"description": "This video is hosted by {instance}. Consider using the application if you plan an event or stream!"
 		}
 	},
 	"layout": {
@@ -742,7 +742,7 @@
 		"my_playlists": "My playlists",
 		"community": "Community",
 		"favorites": "Favorites",
-		"app_banner": "This playlist is getting big! If you're planning an event or stream, please use our application instead of {instance} for it. {instance} is NOT online 100% of the time."
+		"app_banner": "This playlist is getting big! If you're planning an event or stream, consider using the application instead of {instance} for it. {instance} is NOT online 100% of the time."
 	},
 	"bans": {
 		"add": "Add new ban",

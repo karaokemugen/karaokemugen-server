@@ -192,7 +192,7 @@
 			"fullscreen": "Plein écran (F)",
 			"autoplay": "Lecture automatique",
 			"loop": "Lire en boucle",
-			"description": "Cette vidéo est hébergée par {instance}. Veuillez utiliser notre application si vous organisez un événement ou en stream !"
+			"description": "Cette vidéo est hébergée par {instance}. Pensez à utiliser l'application si vous organisez un événement ou en stream !"
 		}
 	},
 	"layout": {
@@ -742,7 +742,7 @@
 		"my_playlists": "Mes listes",
 		"community": "Communauté",
 		"favorites": "Favoris",
-		"app_banner": "Cette liste de lecture prend de l'ampleur ! Si vous planifiez un événement ou un stream, veuillez utiliser notre application au lieu de {instance}. {instance} n'est PAS en ligne 100 % du temps."
+		"app_banner": "Cette liste de lecture prend de l'ampleur ! Si vous planifiez un événement ou un stream, pensez à utiliser l'application au lieu de {instance}. {instance} n'est PAS en ligne 100 % du temps."
 	},
 	"bans": {
 		"add": "Ajouter une nouvelle exclusion",
