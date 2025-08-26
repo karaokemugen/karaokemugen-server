@@ -445,6 +445,9 @@
 </script>
 <style lang="scss">
 .video-js {
+	&.vjs-user-inactive {
+		cursor: none;
+	}
 	.vjs-control-bar {
 		font-size: 15px;
 
