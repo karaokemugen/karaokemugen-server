@@ -1,5 +1,6 @@
 <template>
 	<o-dropdown
+		v-if="collections.length > 0"
 		v-model="enabledCollectionsModel"
 		aria-role="list"
 		multiple

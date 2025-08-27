@@ -1,5 +1,6 @@
 <template>
 	<o-dropdown
+		v-if="languages.length > 0"
 		v-model="enabledLanguagesModel"
 		aria-role="list"
 		multiple
