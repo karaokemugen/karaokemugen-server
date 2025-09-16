@@ -181,7 +181,7 @@
 				"submit": "Senden",
 				"thanks": {
 					"text": "Danke! Wir werden uns das Problem so bald wie möglich anschauen: {url}",
-					"btn": "Schliessen"
+					"btn": "Schließen"
 				},
 				"comment": {
 					"label": "Kommentar",
