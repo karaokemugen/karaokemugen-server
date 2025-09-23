@@ -225,7 +225,7 @@
 			"theater_mode": "Theater Modus (T)",
 			"fullscreen": "Vollbild (F)",
 			"loop": "Schleife",
-			"description": "Dieses Video wird zur Verfügung gestellt von {instance}. Bitte nutzen sie unser Programm, falls Sie ein Event oder einen Stream planen!"
+			"description": "Dieses Video wird zur Verfügung gestellt von {instance}. Bitte zieh die App in Betracht, falls du ein Event oder einen Stream planst!"
 		}
 	},
 	"error": {
@@ -397,7 +397,8 @@
 		"delete_account": {
 			"cancel": "Abbrechen",
 			"add": "Konto löschen",
-			"label": "Bist du dir wirklich sicher, deinen Account zu löschen?"
+			"label": "Bist du dir wirklich sicher, deinen Account zu löschen?",
+			"label_admin": "Möchtest du dieses Benutzerkonto wirklich löschen?"
 		},
 		"download": {
 			"label": "Karaoke herunterladen",
@@ -733,7 +734,7 @@
 		"my_playlists": "Meine Playlisten",
 		"favorites": "Favoriten",
 		"community": "Gemeinschaft",
-		"app_banner": "Diese Playlist wird ganz schön groß! Falls Sie ein Event oder einen Stream planen, nutzen Sie bitte unser Programm anstelle von {instance}. {instance} ist NICHT 100% der Zeit online."
+		"app_banner": "Diese Playlist wird ganz schön groß! Falls du ein Event oder einen Stream planst, ziehe bitte die App anstelle von {instance} in Betracht. {instance} ist NICHT 100% der Zeit online."
 	},
 	"bans": {
 		"submit": "Hinzufügen",
