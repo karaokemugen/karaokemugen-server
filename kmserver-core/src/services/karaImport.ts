@@ -45,7 +45,7 @@ async function preflight(kara: KaraFileV4): Promise<KaraFileV4> {
 }
 
 // Common work between edits and creations
-async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElement): Promise<string> {
+async function heavyLifting(kara: KaraFileV4, contact: {name: string, login?: string}, edit?: EditElement): Promise<string> {
 	const conf = getConfig();
 	try {
 		// Refresh hooks at every kara we get.
@@ -133,7 +133,7 @@ async function heavyLifting(kara: KaraFileV4, contact: string, edit?: EditElemen
 	}
 }
 
-export async function editKara(editedKara: EditedKara, contact: string): Promise<string> {
+export async function editKara(editedKara: EditedKara, contact: string, login?: string): Promise<string> {
 	try {
 		let kara = trimKaraData(editedKara.kara);
 		const conf = getConfig();
@@ -156,7 +156,10 @@ export async function editKara(editedKara: EditedKara, contact: string): Promise
 			);
 		}
 		// And now for the fun part
-		return await heavyLifting(kara, contact, {
+		return await heavyLifting(kara, {
+			name: contact,
+			login
+		}, {
 			kid: edited_kid,
 			modifiedLyrics: editedKara.modifiedLyrics,
 			modifiedMedia: editedKara.modifiedMedia,
@@ -168,11 +171,11 @@ export async function editKara(editedKara: EditedKara, contact: string): Promise
 	}
 }
 
-export async function createKara(editedKara: KaraFileV4, contact: string): Promise<string> {
+export async function createKara(editedKara: KaraFileV4, contact: string, login: string): Promise<string> {
 	try {
 		let kara = trimKaraData(editedKara);
 		kara = await preflight(kara);
-		return await heavyLifting(kara, contact);
+		return await heavyLifting(kara, {name: contact, login});
 	} catch (err) {
 		logger.error('Error creating kara', { service, obj: err });
 		sentry.error(err);

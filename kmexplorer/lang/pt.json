@@ -112,7 +112,6 @@
 			"add_error": "Ocorreu um erro, o karaokê não foi enviado corretamente",
 			"restart": "Submeter novo karaokê",
 			"i18n_select": "Adicione um idioma",
-			"send_contact_infos": "Compartilhar minhas informações de contato com os mantenedores do banco de dados",
 			"contact_infos": "Informação de contacto",
 			"sections": {
 				"files": "Arquivos",
@@ -125,7 +124,6 @@
 			"titles_aliases": "Aliases",
 			"songorder_invalid": "Ordem das músicas inválido",
 			"parents": "Pai",
-			"auto_send_contact_infos": "Se você fizer login, poderá marcar uma caixa no formulário para compartilhar automaticamente suas informações de contato com os mantenedores do banco de dados.",
 			"franchises_tooltip": "Se a série faz parte de uma franquia (como Gundam, Mario, Zelda, Naruto, etc.) insira-a aqui.",
 			"singergroups_tooltip": "Se os cantores pertencem a uma banda musical, coloque-os aqui. A banda será exibida nas listas de reprodutores e músicas, em vez de cantores individuais.",
 			"lyrics_file_missing": "O arquivo de letras está faltando, isso somente é apropriado se você estiver enviando um arquivo MKV ou um karaokê sem letra (sim).",

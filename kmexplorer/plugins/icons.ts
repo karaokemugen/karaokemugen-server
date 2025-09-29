@@ -85,6 +85,7 @@ import {
 	faRepeat,
 	faScrewdriverWrench,
 	faImages,
+	faCircleInfo
 } from '@fortawesome/free-solid-svg-icons';
 import {
 	faGitAlt,
@@ -190,6 +191,7 @@ library.add(
 	faSitemap,
 	faScrewdriverWrench,
 	faImages,
+	faCircleInfo,
 	faGitAlt);
 
 export default defineNuxtPlugin((nuxtApp) => {

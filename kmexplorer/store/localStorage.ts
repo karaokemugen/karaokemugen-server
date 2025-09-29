@@ -1,6 +1,5 @@
 export type LocalStorageStoreType = {
 	karas: number[]
-	sendContactInfos: boolean
 	hideSuggestionModal: boolean
 	enabledCollections: string[]
 	playerVolume: number
@@ -14,7 +13,6 @@ export const useLocalStorageStore = defineStore('localStorage', {
 	state: (): LocalStorageStoreType => {
 		return {
 			karas: [],
-			sendContactInfos: false,
 			hideSuggestionModal: false,
 			enabledCollections: [],
 			playerVolume: 0.5,
@@ -39,9 +37,6 @@ export const useLocalStorageStore = defineStore('localStorage', {
 		},
 		setHideSuggestionModal() {
 			this.hideSuggestionModal = true;
-		},
-		setSendContactInfos(sendContactInfos: boolean) {
-			this.sendContactInfos = sendContactInfos;
 		},
 		setPlayerVolume(volume: number) {
 			this.playerVolume = volume;

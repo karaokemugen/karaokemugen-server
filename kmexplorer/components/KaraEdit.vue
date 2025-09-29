@@ -618,14 +618,9 @@
 				v-if="loggedIn"
 				class="field"
 			>
-				<label for="contact">
-					<input
-						id="contact"
-						v-model="sendContactInfos"
-						type="checkbox"
-					>
-					{{ t('kara.import.send_contact_infos') }}
-				</label>
+				<div class="notification">
+					{{ $t('kara.import.contact_infos_warning') }}
+				</div>
 			</div>
 			<div
 				v-if="!loggedIn"
@@ -647,7 +642,6 @@
 						class="input"
 						type="text"
 					>
-					<label>{{ t('kara.import.auto_send_contact_infos') }}</label>
 				</div>
 			</div>
 			<div class="field">
@@ -717,13 +711,13 @@
 	import type { DBInbox } from '%/lib/types/inbox';
 	import type { DBKara } from '%/lib/types/database/kara';
 	import { useAuthStore } from '~/store/auth';
-	import { useLocalStorageStore } from '~/store/localStorage';
 	import { storeToRefs } from 'pinia';
 	import { tagTypes } from '~/assets/constants';
 	import type { RepositoryManifestV2 } from '%/lib/types/repo';
 	import * as Toast from 'vue-toastification';
 	import { useConfigStore } from '~/store/config';
 	import type { DBTag } from '%/lib/types/database/tag';
+	import { useModalStore } from '~/store/modal';
 
 	const props = defineProps<{
 		kara?: DBKara
@@ -759,10 +753,9 @@
 	const { params } = useRoute();
 	const { push } = useRouter();
 
-	const { sendContactInfos } = storeToRefs(useLocalStorageStore());
-	const { setSendContactInfos } = useLocalStorageStore();
 	const { loggedIn, user } = storeToRefs(useAuthStore());
 	const { supportedFiles, config } = storeToRefs(useConfigStore());
+	const { openModal } = useModalStore();
 	const { t } = useI18n();
 	const toast = useToast();
 	const supportedMedias = 
@@ -770,9 +763,18 @@
 				? config?.value?.Frontend.SupportedMedias
 				: ([] as string[]).concat(supportedFiles?.value?.video ?? [], supportedFiles?.value?.audio ?? []);
 
+	if (config?.value && config.value.Frontend.Import.LoginNeeded && !loggedIn.value) {
+		displayAuthIfLoginIsRequired();
+	}
+
 	onMounted(async () => {
 		debouncedGetAsyncData.value = _.debounce(getAsyncData, 500, { leading: true, trailing: true, maxWait: 750 });
 	});
+
+	function displayAuthIfLoginIsRequired() {
+		toast.warning(t('kara.import.login_required'));
+		openModal('auth')
+	}
 
 	async function getAsyncData(val: string) {
 		const res = await useCustomFetch<KaraList>('/api/karas/search',
@@ -1006,15 +1008,16 @@
 		).test(filename);
 	}
 	function submit() {
+		if (config?.value && config.value.Frontend.Import.LoginNeeded && !loggedIn.value) {
+			displayAuthIfLoginIsRequired();
+			return;
+		}
 		loading.value = true;
 		let contact: string = '';
-		if (loggedIn.value && sendContactInfos) {
+		if (loggedIn.value) {
 			contact = `${user?.value?.login}@${url.hostname}`;
-			setSendContactInfos(true);
 		} else if (!loggedIn.value) {
 			contact = contactInfos.value;
-		} else {
-			setSendContactInfos(false);
 		}
 		const karaokeElem = _.cloneDeep(karaoke.value);
 		for (const tag of Object.keys(karaokeElem.data.tags)) {

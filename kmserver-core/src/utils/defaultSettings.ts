@@ -67,7 +67,8 @@ export const defaults: Config = {
 				14,
 				15,
 				16
-			]
+			],
+			LoginNeeded: false
 		},
 		Suggestions: true,
 		AddRepoModalInMenu: false,
