@@ -95,6 +95,9 @@
 			}
 		},
 		"import": {
+			"login_required": "Vous devez vous connecter pour envoyer une chanson.",
+			"quota_count": "Vous pouvez encore envoyer {count} chanson. | Vous pouvez encore envoyer {count} chansons.",
+			"quota_reached": "Vous avez envoyé trop de chansons, veuillez attendre que certaines d'entre elles soient acceptées ou refusées avant d'en envoyer d'autres.",
 			"sections": {
 				"files": "Fichiers",
 				"parents": "Chanson(s) parente(s)",
@@ -170,10 +173,9 @@
 			"i18n_delete": "Supprimer la langue",
 			"romanization_warning": "Ce titre/tag contient une langue en alphabet non latin. Vous devez ajouter la langue “Alphabet Latin (Romanisation)” en plus sauf si ce titre en alphabet non latin est intégralement une transcription d’une autre langue.",
 			"default_language": "Langue par défaut",
-			"send_contact_infos": "Partager mes informations de contact avec les mainteneurs de la base",
+			"contact_infos_warning": "Vos informations de contact seront partagées avec les mainteneurs de la base, qui pourront ainsi vous contacter s'ils ont des questions sur votre karaoké.",
 			"contact_infos": "Informations de contact",
 			"contact_infos_tooltip": "Indiquez vos données de contact, nous pourrons ainsi venir vers vous si nous avons des questions au sujet du karaoké.",
-			"auto_send_contact_infos": "Si vous vous connectez, vous pouvez cocher une case sur le formulaire pour partager automatiquement vos informations de contact avec les mainteneurs de la base.",
 			"from_display_type": "Affichage du tag de la provenance de la chanson",
 			"from_display_type_tooltip": "Choissisez le type de tag qui sera affiché avec le titre de la chanson. Il s'affichera sous la forme “[titre] de [ce type de tag]”."
 		},

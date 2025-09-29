@@ -6,7 +6,7 @@ import { APIMessage } from '../../lib/services/frontend.js';
 import { getConfig } from '../../lib/utils/config.js';
 import { unescape } from '../../lib/utils/validators.js';
 import { refreshAnimeList } from '../../services/animeList.js';
-import { addBan, createUser, editUser, findUserByName, getAllUsers, getBans, removeBan, removeUser, resetPassword, resetPasswordRequest } from '../../services/user.js';
+import { addBan, createUser, editUser, findUserByName, getAllUsers, getBans, getSubmittedInbox, removeBan, removeUser, resetPassword, resetPasswordRequest } from '../../services/user.js';
 import { BanType, UserOptions } from '../../types/user.js';
 import { getState } from '../../utils/state.js';
 import { optionalAuth, requireAdmin, requireAuth, requireValidUser, updateLoginTime } from '../middlewares/auth.js';
@@ -167,6 +167,15 @@ export default function userController(router: Router) {
 			try {
 				await refreshAnimeList(req.authToken.username.toLowerCase());
 				res.status(200).json();
+			} catch (err) {
+				res.status(err.code || 500).json(APIMessage(err.message));
+			}
+		});
+	router.route('/myaccount/inbox/submitted')
+		.post(requireAuth, requireValidUser, updateLoginTime, async (req: any, res) => {
+			try {
+				const submissionInfo = await getSubmittedInbox(req.authToken.username.toLowerCase());
+				res.status(200).json(submissionInfo);
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}

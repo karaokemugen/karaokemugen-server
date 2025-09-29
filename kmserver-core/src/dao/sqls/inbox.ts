@@ -15,7 +15,8 @@ export const selectInbox = (uniqueKara: string) => `
 		i.gitlab_issue,
 		i.contact,
 		i.edited_kid,
-		i.edited_kid is not null as fix
+		i.edited_kid is not null as fix,
+		i.fk_login
 	FROM inbox i
 	${uniqueKara ? 'LEFT JOIN all_karas ak ON i.fk_kid = ak.pk_kid WHERE pk_inid = $1' : ''}
 `;
@@ -28,7 +29,8 @@ export const insertInbox = `
 		gitlab_issue,
 		contact,
 		fk_kid,
-		edited_kid
+		edited_kid,
+		fk_login
 	) VALUES(
 		:inid,
 		:name,
@@ -36,7 +38,8 @@ export const insertInbox = `
 		:gitlab_issue,
 		:contact,
 		:kid,
-		:edited_kid
+		:edited_kid,
+		:fk_login
 	)
 `;
 

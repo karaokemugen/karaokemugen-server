@@ -10,7 +10,7 @@ import { getDataFromTagFile } from '../lib/dao/tagfile.js';
 import { readAllKaras } from '../lib/services/generation.js';
 import { refreshKarasAfterDBChange } from '../lib/services/karaManagement.js';
 import {KaraMetaFile, MetaFile, TagMetaFile} from '../lib/types/downloads.js';
-import { Inbox } from '../lib/types/inbox.js';
+import { DBInbox, Inbox } from '../lib/types/inbox.js';
 import { KaraFileV4 } from '../lib/types/kara.js';
 import { TagFile } from '../lib/types/tag.js';
 import { getConfig, resolvedPathRepos } from '../lib/utils/config.js';
@@ -78,9 +78,12 @@ export async function getKaraInbox(inid: string): Promise<Inbox> {
 	}
 }
 
-export async function getInbox(isMaintainer: boolean) {
+export async function getInbox(isMaintainer: boolean): Promise<DBInbox[]> {
 	const listInbox = await selectInbox();
-	if (!isMaintainer) listInbox.forEach(inbox => delete inbox.contact);
+	if (!isMaintainer) listInbox.forEach(inbox => {
+		delete inbox.contact;
+		delete inbox.fk_login;
+	});
 	return listInbox;
 }
 
@@ -118,16 +121,17 @@ export async function markKaraInboxAsUnassigned(inid: string, username: string) 
 }
 
 
-export async function addKaraInInbox(kara: KaraFileV4, contact: string, issue?: string, edited_kid?: string) {
+export async function addKaraInInbox(kara: KaraFileV4, contact: {name: string, login?: string}, issue?: string, edited_kid?: string) {
 	try {
 		await insertInbox({
 			inid: uuidV4(),
 			name: kara.data.songname,
 			created_at: new Date(),
 			gitlab_issue: issue,
-			contact,
+			contact: contact.name,
 			kid: kara.data.kid,
-			edited_kid
+			edited_kid,
+			fk_login: contact.login ?? null
 		});
 	} catch (err) {
 		logger.error('Unable to create kara in inbox', {service, obj: err});

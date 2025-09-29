@@ -26,6 +26,7 @@ import { sendMail } from '../utils/mailer.js';
 import sentry from '../utils/sentry.js';
 import { getState } from '../utils/state.js';
 import { refreshAnimeList } from './animeList.js';
+import { getInbox } from './inbox.js';
 import { getKara } from './kara.js';
 import { delPubUser, pubUser } from './userPubSub.js';
 
@@ -435,6 +436,19 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 
 export async function updateUserLastLogin(username: string) {
 	await updateLastLogin(username);
+}
+
+export async function getSubmittedInbox(username: string) {
+	const inbox = await getInbox(true);
+	return inbox.filter(inbox => inbox.fk_login === username);
+}
+
+export async function canSubmitInbox(username: string) {
+	const inboxOfUser = await getSubmittedInbox(username);
+	if (!getConfig().Frontend.Import?.MaxPerUser) {
+		return true;
+	}
+	return getConfig().Frontend.Import.MaxPerUser < inboxOfUser.filter((inbox) => !inbox.fix).length;
 }
 
 export function decodeJwtToken(token: string): JWTTokenWithRoles | false {

@@ -31,7 +31,9 @@ export interface Config {
 		DiscourseURL?: string,
 		Import: {
 			Enabled: boolean,
-			LimitedTagTypes: TagTypeNum[]
+			LimitedTagTypes: TagTypeNum[],
+			LoginNeeded: boolean,
+			MaxPerUser?: number
 		},
 		Suggestions: boolean,
 		InProgressSongsList?: string,
