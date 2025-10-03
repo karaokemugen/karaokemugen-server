@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 import { KaraLineDisplayElement, KaraSortElement } from '../lib/types/config.js';
 import { AudioCodec, Repository, RepositoryManifest, VideoColorSpace, VideoContainer } from '../lib/types/repo.js';
-=======
-import { Repository, RepositoryManifest } from '../lib/types/repo.js';
->>>>>>> 402-be-able-to-disable-creation-of-some-tag-types
 import { TagTypeNum } from '../lib/types/tag.js';
 import { RepositoryServer } from './repo.js';
 
