@@ -41,7 +41,6 @@ Frontend:
   Port: 1350
   Host: localhost
   Secure: false
-  AdminEmail: mugen@karaokes.moe
   Import:
     Enabled: true
     LimitedTagTypes:

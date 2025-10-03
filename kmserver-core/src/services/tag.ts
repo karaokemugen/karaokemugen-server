@@ -5,7 +5,7 @@ import { refreshTags, updateTagSearchVector } from '../lib/dao/tag.js';
 import { writeTagFile } from '../lib/dao/tagfile.js';
 import { DBTag } from '../lib/types/database/tag.js';
 import { Tag, TagList, TagParams } from '../lib/types/tag.js';
-import { resolvedPathRepos } from '../lib/utils/config.js';
+import { getConfig, resolvedPathRepos } from '../lib/utils/config.js';
 import { ErrorKM } from '../lib/utils/error.js';
 import { sanitizeFile } from '../lib/utils/files.js';
 import logger from '../lib/utils/logger.js';
@@ -52,6 +52,12 @@ export async function getTag(tid: string) {
 
 export async function addTag(tag: Tag, opts = {forceRepo: ''}) {
 	try {
+		// Check if tag is forbidden
+		const conf = getConfig();
+		if (conf.Frontend?.Import?.LimitedTagTypes && tag.types.some(t => conf.Frontend.Import.LimitedTagTypes.includes(t))) {
+			throw new ErrorKM('FORBIDDEN_TAG_TYPE', 403, false);
+		}
+
 		tag.tid = uuidV4();
 		tag.tagfile = `${sanitizeFile(tag.name)}.${tag.tid.substring(0, 8)}.tag.json`;
 		if (opts.forceRepo) {
@@ -68,6 +74,6 @@ export async function addTag(tag: Tag, opts = {forceRepo: ''}) {
 		logger.error('Unable to add tag', {service, obj: err});
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
-		throw new Error('ADD_TAG_ERROR');
+		throw err instanceof ErrorKM ? err : new ErrorKM('ADD_TAG_ERROR');
 	}
 }
