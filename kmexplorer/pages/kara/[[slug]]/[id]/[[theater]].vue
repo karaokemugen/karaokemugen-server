@@ -154,6 +154,8 @@
 			}
 			res.songtypes = sortAndHideTags(res.songtypes, true);
 			karaoke.value = res;
+
+			if (res.repository === 'Staging') throw createError({ statusCode: 404, message: t('kara.notfound') });
 		} catch (e) {
 			throw createError({ statusCode: 404, message: t('kara.notfound') });
 		}
