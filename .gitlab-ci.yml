@@ -79,7 +79,7 @@ docker:
 
 update_sentry:
   stage: deploy
-  image: node:18
+  image: node:22
   tags:
     - $RUNNER_LINUX
   cache:

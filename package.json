@@ -39,7 +39,7 @@
       "email": "axel@teri-chan.net"
    },
    "engines": {
-      "node": ">=18"
+      "node": ">=22"
    },
    "packageManager": "yarn@3.3.0",
    "resolutions": {
