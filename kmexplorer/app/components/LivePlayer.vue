@@ -40,6 +40,7 @@
 	import { useLocalStorageStore } from '~/store/localStorage';
 	import slug from 'slug';
 	import { useConfigStore } from '~/store/config';
+	import type { CustomDocument, CustomElement } from '~/types/htmlelement';
 
 	const props = defineProps<{
 		karaoke: DBKara
@@ -160,9 +161,21 @@
 
 	async function changeFullscreen() {
 		if (!fullscreen.value) {
-			await window.document.documentElement.requestFullscreen();
+			const docEl = window.document.documentElement as CustomElement;
+			if (docEl.requestFullscreen) {
+				await docEl.requestFullscreen();
+			} else if (docEl.webkitRequestFullscreen) {
+				await docEl.webkitRequestFullscreen();
+			} else if (docEl.webkitEnterFullscreen) {
+				await docEl.webkitEnterFullscreen();
+			}
 		} else {
-			await window.document.exitFullscreen();
+			const docEl = window.document as CustomDocument;
+			if (docEl.exitFullscreen) {
+				await docEl.exitFullscreen();
+			}else if (docEl.webkitCancelFullScreen) {
+        		await docEl.webkitCancelFullScreen();
+			}
 		}
 	}
 
