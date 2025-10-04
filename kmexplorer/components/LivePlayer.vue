@@ -104,7 +104,7 @@
 	}));
 
 	watch(() => theaterMode.value || fullscreen.value, (newTheaterMode) => {
-		if (process.client) {
+		if (import.meta.client) {
 			if (newTheaterMode) {
 				document.getElementsByTagName('html')[0].classList.add('theater');
 			} else {

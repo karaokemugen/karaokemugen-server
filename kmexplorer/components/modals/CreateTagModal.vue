@@ -146,7 +146,7 @@
 		closeModal('createTag');
 	}
 	async function submitForm() {
-		if (name && types.value?.length > 0) {
+		if (name.value && types.value?.length > 0) {
 			loading.value = true;
 			const { tag } = await useCustomFetch<{ tag: DBTag }>('/api/tags/createStaging', {
 				method: 'POST',

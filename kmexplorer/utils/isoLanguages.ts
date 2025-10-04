@@ -24,7 +24,7 @@ i18nIsoLanguages.registerLocale(br);
 i18nIsoLanguages.registerLocale(ja);
 
 let browserLanguage: string;
-if (process.client) {
+if (import.meta.client) {
 	browserLanguage = navigator.languages[0].substring(0, 2);
 }
 
@@ -71,7 +71,7 @@ export const langWithRomanization = [
 ];
 
 export function getListLanguagesInLocale(userLang: string): Array<{ value: string; label: string }> {
-	if (process.client) {
+	if (import.meta.client) {
 		return getAlpha3BLanguagesLocalized(userLang).map((lang) => ({ label: lang.name, value: lang.alpha3B }));
 	}
 	return [];

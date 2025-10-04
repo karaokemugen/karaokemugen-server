@@ -119,7 +119,7 @@
 		}
 	}
 	function searchPermanent(remote: RemoteAccessToken, input: string) {
-		let inputBool: Boolean | undefined;
+		let inputBool: boolean | undefined;
 		if (input.toLowerCase() === t('remote.yes').toLowerCase()) {
 			inputBool = true;
 		} else if (input.toLowerCase() === t('remote.no').toLowerCase()) {

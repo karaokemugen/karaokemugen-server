@@ -1,4 +1,4 @@
-import { DBKaraTag } from '%/lib/types/database/kara';
+import type { DBKaraTag } from '%/lib/types/database/kara';
 
 export interface ShortTag {
 	name: string,

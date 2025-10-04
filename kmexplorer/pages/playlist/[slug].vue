@@ -220,7 +220,7 @@
 
 	onUnmounted(() => setSearch(''));
 
-	if (process.client) {
+	if (import.meta.client) {
 		await fetch();
 	}
 
@@ -237,7 +237,7 @@
 		});
 		if (playlists.length > 0) {
 			playlist.value = playlists[0];
-		} else if (process.client) {
+		} else if (import.meta.client) {
 			showError(createError({ statusCode: 404, message: t('error.not_found_playlist') }));
 		}
 	}

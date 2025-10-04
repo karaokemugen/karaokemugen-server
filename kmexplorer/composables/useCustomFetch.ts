@@ -1,8 +1,8 @@
 import type { AvailableRouterMethod, NitroFetchRequest } from 'nitropack';
-import { FetchResult, UseFetchOptions } from 'nuxt/app';
-import { KeysOf } from 'nuxt/dist/app/composables/asyncData';
-import type { FetchError } from 'ofetch';
-import { FetchOptions } from 'ofetch';
+import type { FetchResult, UseFetchOptions } from 'nuxt/app';
+import type { KeysOf } from 'nuxt/dist/app/composables/asyncData';
+import type { FetchError, FetchOptions  } from 'ofetch';
+
 import type { Ref } from 'vue';
 import * as Toast from 'vue-toastification';
 import { useAuthStore } from '~/store/auth';

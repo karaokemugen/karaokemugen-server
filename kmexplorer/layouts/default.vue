@@ -1189,7 +1189,7 @@
 		$onAction(callback => {
 			callback.after(() => {
 				if (callback.name === 'setSearch') {
-					if (!onKaraTagUserListView) {
+					if (!onKaraTagUserListView.value) {
 						push(generateNavigation());
 					} // Each KaraList view handles a search change itself, either by swapping the route
 				// or by reset the List with new filter

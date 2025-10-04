@@ -75,7 +75,7 @@
 	const props = withDefaults(defineProps<{
 		karaokes: KaraList
 		playlists: DBPL[]
-		loading: Boolean
+		loading: boolean
 		favorites: string
 		withSuggest: boolean
 	}>(), {
