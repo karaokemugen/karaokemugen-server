@@ -1,4 +1,9 @@
 <template>
+	<div v-if="title && karaokes.infos.count > 0" class="title-box">
+		<h1 class="title">
+			{{ title }}
+		</h1>
+	</div>
 	<div class="tile is-ancestor">
 		<div class="tile is-vertical">
 			<div
@@ -59,10 +64,15 @@
 		withSearch?: boolean
 		userAnimeList?: string
 		ignoreFilter?: boolean
+		title?: string
 	}>(), {
+		favorites: undefined,
+		kids: undefined,
 		withSuggest: true,
 		withSearch: true,
-		ignoreFilter: false
+		userAnimeList: undefined,
+		ignoreFilter: false,
+		title: undefined
 	});
 
 	setResultsCount(0);
@@ -235,6 +245,17 @@
 </script>
 
 <style lang="scss">
+	.title-box {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		@media screen and (max-width: 769px) {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+		margin-bottom: .5rem;
+	}
+	
 	.field.is-expanded {
 		flex-grow: 1;
 		flex-shrink: 0;

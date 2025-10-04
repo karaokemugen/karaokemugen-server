@@ -63,42 +63,30 @@
 		</div>
 		<div class="tile is-parent is-vertical relatives">
 			<template v-if="karaoke?.parents && karaoke.parents.length > 0">
-				<div class="title-box">
-					<h1 class="title">
-						{{ t('kara.parents') }}
-					</h1>
-				</div>
 				<kara-query
 					:kids="karaoke?.parents"
 					:with-suggest="false"
 					:with-search="false"
 					:ignore-filter="true"
+					:title="t('kara.parents')"
 				/>
 			</template>
 			<template v-if="karaoke?.children && karaoke.children.length > 0">
-				<div class="title-box">
-					<h1 class="title">
-						{{ t('kara.childrens') }}
-					</h1>
-				</div>
 				<kara-query
 					:kids="karaoke?.children"
 					:with-suggest="false"
 					:with-search="false"
 					:ignore-filter="true"
+					:title="t('kara.childrens')"
 				/>
 			</template>
 			<template v-if="karaoke?.siblings && karaoke.siblings.length > 0">
-				<div class="title-box">
-					<h1 class="title">
-						{{ t('kara.siblings') }}
-					</h1>
-				</div>
 				<kara-query
 					:kids="karaoke?.siblings"
 					:with-suggest="false"
 					:with-search="false"
 					:ignore-filter="true"
+					:title="t('kara.siblings')"
 				/>
 			</template>
 			<div v-if="playlists.length > 0">
@@ -132,7 +120,6 @@
 	const leftTile = ref<HTMLElement>();
 	const playlists = ref<DBPL[]>([]);
 
-	const conf = useRuntimeConfig();
 	const { config, supportedFiles } = storeToRefs(useConfigStore());
 	const url = useRequestURL();
 	const hardsubUrl = config?.value?.Hardsub?.Url ?? url.origin;
