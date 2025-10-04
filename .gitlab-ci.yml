@@ -69,12 +69,12 @@ docker:
     - docker build --cache-from $IMAGE_TAG -t $IMAGE_TAG .
     - docker push $IMAGE_TAG
     - |
-      if [ $CI_COMMIT_REF_SLUG = "master" ]; then
+      if [ $CI_COMMIT_REF_SLUG = "main" ]; then
         docker tag $IMAGE_TAG $CI_REGISTRY_IMAGE:latest
         docker push $CI_REGISTRY_IMAGE:latest
       fi
   only:
-    - master
+    - main
     - dev
 
 update_sentry:
@@ -94,7 +94,7 @@ update_sentry:
     - yarn build:all
     - yarn workspace kmserver-core sentry:sourcemaps
   only:
-    - master
+    - main
     - dev
 
 deploy_dev:

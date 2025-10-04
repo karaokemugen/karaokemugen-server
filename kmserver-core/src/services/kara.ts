@@ -108,7 +108,7 @@ export async function generate() {
 		await readAllRepoManifests();
 		await generateDatabase({validateOnly: false});
 		const conf = getConfig();
-		// Download master.zip from gitlab to serve it ourselves
+		// Download main.zip from gitlab to serve it ourselves
 		const repo = conf.System.Repositories[0];
 		if (repo.SourceArchiveURL) {
 			const downloadURL = repo.SourceArchiveURL;

@@ -28,7 +28,7 @@ System:
           - repos/karaokebase/medias
       Git:
         URL: https://gitlab.com/karaokemugen/bases/mugenre-database.git
-        Branch: master
+        Branch: main
         ProjectID: 72177322 # Only for gitlab projects / issues
     - Name: Staging
       Online: false
