@@ -5,6 +5,7 @@ const production = process.env.NODE_ENV === 'production';
 
 const nuxtConfig = defineNuxtConfig({
 	dev: !production,
+	compatibilityDate: '2025-10-04',
 
 	components: [{ path: '~/components', pathPrefix: false }],
 
