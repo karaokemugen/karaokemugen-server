@@ -31,7 +31,7 @@ export default function KIController(router: Router) {
 			}
 			// If login needed check check if kara limit has been reached
 			try {
-				const url = await createKara(req.body.kara, req.body.contact, req.authToken.username.toLowerCase());
+				const url = await createKara(req.body.kara, req.body.contact, req.authToken?.username.toLowerCase());
 				res.status(200).json(APIMessage('GENERATED_KARA', url || ''));
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));
@@ -45,7 +45,7 @@ export default function KIController(router: Router) {
 				return;
 			}
 			try {
-				const url = await editKara(req.body, req.body.contact, req.authToken.username.toLowerCase());
+				const url = await editKara(req.body, req.body.contact, req.authToken?.username.toLowerCase());
 				res.status(200).json(APIMessage('EDITED_KARA', url || ''));
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));
