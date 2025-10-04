@@ -165,21 +165,21 @@
 		// @ts-expect-error: no?
 		title: computed(() => karaoke.value?.titles[karaoke.value.titles_default_language]),
 		meta: computed(() => [
-			{ hid: 'twitter:card', name: 'twitter:card', content: 'player' },
-			{ hid: 'og:type', property: 'og:type', content: 'article' },
-			{ hid: 'og:description', property: 'og:description', content: t('layout.slogan') as string },
+			{ key: 'twitter:card', name: 'twitter:card', content: 'player' },
+			{ key: 'og:type', property: 'og:type', content: 'article' },
+			{ key: 'og:description', property: 'og:description', content: t('layout.slogan') as string },
 			// @ts-expect-error: No. :c
-			{ hid: 'twitter:player', name: 'twitter:player', content: `${url.origin}${url.pathname}${url.pathname.endsWith('/theater') ? '' : '/theater'}` },
-			{ hid: 'twitter:player:height', name: 'twitter:player:height', content: '720' },
-			{ hid: 'twitter:player:width', name: 'twitter:player:width', content: '1280' },
+			{ key: 'twitter:player', name: 'twitter:player', content: `${url.origin}${url.pathname}${url.pathname.endsWith('/theater') ? '' : '/theater'}` },
+			{ key: 'twitter:player:height', name: 'twitter:player:height', content: '720' },
+			{ key: 'twitter:player:width', name: 'twitter:player:width', content: '1280' },
 			// @ts-expect-error: No. :c
-			{ hid: 'og:image', property: 'og:image', content: karaoke.value?.warnings?.length ? `${url.origin}/banners/cropped.jpg` : `${hardsubUrl}/previews/${karaoke.value?.kid}.${karaoke.value?.mediasize}.25.jpg` },
+			{ key: 'og:image', property: 'og:image', content: karaoke.value?.warnings?.length ? `${url.origin}/banners/cropped.jpg` : `${hardsubUrl}/previews/${karaoke.value?.kid}.${karaoke.value?.mediasize}.25.jpg` },
 			// @ts-expect-error: rah :O
-			{ hid: 'twitter:image', name: 'twitter:image', content: karaoke.value?.warnings?.length ? `${url.origin}/banners/cropped.jpg` : `${hardsubUrl}/previews/${karaoke.value?.kid}.${karaoke.value?.mediasize}.25.jpg` },
+			{ key: 'twitter:image', name: 'twitter:image', content: karaoke.value?.warnings?.length ? `${url.origin}/banners/cropped.jpg` : `${hardsubUrl}/previews/${karaoke.value?.kid}.${karaoke.value?.mediasize}.25.jpg` },
 			// hardsub compatibility for apps that use youtube-dl for direct streaming (without breaking the card view as with og:type video) 
 			// twitter:player:stream assumes a raw stream and is checked before twitter:player https://github.com/ytdl-org/youtube-dl/blob/master/youtube_dl/extractor/generic.py#L3662
 			// @ts-expect-error: No. :c
-			{ hid: 'twitter:player:stream', name: 'twitter:player:stream', content: karaoke.value?.hardsubbed_mediafile && live.value ? `${hardsubUrl}/hardsubs/${karaoke.value?.hardsubbed_mediafile}` : '' },
+			{ key: 'twitter:player:stream', name: 'twitter:player:stream', content: karaoke.value?.hardsubbed_mediafile && live.value ? `${hardsubUrl}/hardsubs/${karaoke.value?.hardsubbed_mediafile}` : '' },
 
 		// The rest of meta tags is handled by KaraFullInfo.vue
 		])

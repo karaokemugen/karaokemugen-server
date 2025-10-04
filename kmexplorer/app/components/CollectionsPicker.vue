@@ -4,7 +4,6 @@
 		v-model="enabledCollectionsModel"
 		aria-role="list"
 		multiple
-		position="bottom"
 	>
 		<template #trigger="{ active }">
 			<button class="button">

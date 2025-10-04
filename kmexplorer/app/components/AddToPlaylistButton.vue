@@ -5,7 +5,6 @@
 			aria-role="list"
 			class="mr-2"
 			scrollable
-			position="bottom"
 		>
 			<template #trigger>
 				<button

@@ -1172,7 +1172,7 @@
 	useHead(() => {
 		return {
 			meta: [
-				{ hid: 'og:url', property: 'og:url', content: `${url.protocol}//${url.host}/${fullPath}` }
+				{ key: 'og:url', property: 'og:url', content: `${url.protocol}//${url.host}/${fullPath}` }
 			],
 			titleTemplate: (titleChunk) => {
 				// If undefined or blank then we don't need the hyphen

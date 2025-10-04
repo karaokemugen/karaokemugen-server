@@ -271,21 +271,21 @@
 	useHead({
 		meta: [
 			{
-				hid: 'twitter:title',
+				key: 'twitter:title',
 				name: 'twitter:title',
 				content: formatWarnings() + t('kara.meta', {
 					songtitle: props.karaoke.titles_default_language && props.karaoke.titles[props.karaoke.titles_default_language], serieSinger: serieSinger.value.name
 				})
 			},
 			{
-				hid: 'description',
+				key: 'description',
 				name: 'description',
 				content: formatWarnings() + t('kara.meta', {
 					songtitle: props.karaoke.titles_default_language && props.karaoke.titles[props.karaoke.titles_default_language], serieSinger: serieSinger.value.name
 				})
 			},
 			{
-				hid: 'og:title',
+				key: 'og:title',
 				property: 'og:title',
 				content: formatWarnings() + t('kara.meta', {
 					songtitle: props.karaoke.titles_default_language && props.karaoke.titles[props.karaoke.titles_default_language], serieSinger: serieSinger.value.name
