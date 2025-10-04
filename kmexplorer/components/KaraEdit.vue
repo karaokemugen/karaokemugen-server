@@ -550,11 +550,11 @@
 						autocomplete="off"
 					>
 						<option
-							v-for="tagType in Object.keys(tagTypes).concat(undefined)"
-							:key="tagType"
-							:value="tagType"
+							v-for="tagType in displayTypeOptions"
+							:key="tagType.value"
+							:value="tagType.value"
 						>
-							{{ t(tagType ? `kara.tagtypes.${tagType}` : 'kara.tagtypes.default') }}
+							{{ tagType.label }}
 						</option>
 					</select>
 				</div>
@@ -769,6 +769,26 @@
 
 	onMounted(async () => {
 		debouncedGetAsyncData.value = _.debounce(getAsyncData, 500, { leading: true, trailing: true, maxWait: 750 });
+	});
+	
+	const displayTypeOptions = computed(() => {
+		const tagtypes = ['']
+			.concat(Object.keys(tagTypes).filter(tagType => karaoke.value.data.tags[tagType.toLowerCase()]?.length > 0));
+			return tagtypes.map(tagType => {
+				return {
+					label: t(tagType ? `kara.tagtypes.${tagType}` : 'kara.tagtypes.default'),
+					value: tagType === '' ? undefined : tagType.toLowerCase(),
+				};
+			})
+		}
+	);
+
+	watchEffect(async () => {
+		const tagtypes = Object.keys(tagTypes).filter(tagType => karaoke.value.data.tags[tagType.toLowerCase()]?.length > 0);
+		if (karaoke.value.data.from_display_type
+			&& !tagtypes.includes(karaoke.value.data.from_display_type)) {
+			karaoke.value.data.from_display_type = undefined;
+		}
 	});
 
 	function displayAuthIfLoginIsRequired() {
