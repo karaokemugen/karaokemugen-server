@@ -44,7 +44,8 @@
    "packageManager": "yarn@3.3.0",
    "resolutions": {
       "bulma@^0.9.4": "patch:bulma@npm%3A0.9.4#./.yarn/patches/bulma-npm-0.9.4-31b34939be.patch",
-      "bulma@0.9.4": "patch:bulma@npm%3A0.9.4#./.yarn/patches/bulma-npm-0.9.4-31b34939be.patch"
+      "bulma@0.9.4": "patch:bulma@npm%3A0.9.4#./.yarn/patches/bulma-npm-0.9.4-31b34939be.patch",
+      "@types/express": "4.17.21"
    },
    "dependencies": {
       "nuxt": "latest"
