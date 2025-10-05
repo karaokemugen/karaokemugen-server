@@ -26,7 +26,7 @@ RUN curl -fsSLo /tmp/app-linux.tar.gz https://mugen.karaokes.moe/downloads/dist_
 
 WORKDIR /srv/kmserver
 ENV NODE_ENV=production
-RUN npm install -g corepack
+RUN npm install -g corepack && mkdir -m 777 /.cache
 COPY package.json yarn.lock .yarnrc.yml ./
 COPY .yarn .yarn
 COPY kmexplorer/package.json kmexplorer/package.json
