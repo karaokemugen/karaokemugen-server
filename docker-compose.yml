@@ -9,7 +9,7 @@ services:
     environment:
       TAG: latest
     ports:
-      - ${PORT:-1350}:80
+      - ${PORT:-1350}:8888
     volumes:
       - ./app:/srv/kmserver/app
     # - ./medias/:/srv/kmserver/app/repos/karaokebase/medias:ro # custom media path for default repository
