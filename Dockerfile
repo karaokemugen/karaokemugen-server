@@ -41,7 +41,7 @@ COPY assets assets
 COPY util util
 COPY kmexplorer kmexplorer
 COPY kmserver-core kmserver-core
-RUN yarn build:all
+RUN yarn build:all && chmod -R 777 /srv/kmserver/kmexplorer/.output
 
 ENTRYPOINT ["/usr/local/bin/entrypoint"]
 CMD ["yarn", "workspace", "kmserver-core", "qstart"]
