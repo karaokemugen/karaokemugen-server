@@ -38,7 +38,7 @@ export function getCountriesInLocaleFromCode(code: string, userLang:string) {
 	return countries.getName(code, userLang) || '';
 }
 
-export function getCountryCode(name: tring, userLang: string): string {
+export function getCountryCode(name: string, userLang: string): string {
 	for (const country of getListCountriesInLocale(userLang)) {
 		if (country.label === name) {
 			return country.value;
