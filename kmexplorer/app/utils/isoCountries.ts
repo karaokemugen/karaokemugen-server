@@ -38,7 +38,7 @@ export function getCountriesInLocaleFromCode(code: string, userLang:string) {
 	return countries.getName(code, userLang) || '';
 }
 
-export function getCountryCode(name:string, userLang:string): string {
+export function getCountryCode(name: tring, userLang: string): string {
 	for (const country of getListCountriesInLocale(userLang)) {
 		if (country.label === name) {
 			return country.value;
@@ -47,11 +47,12 @@ export function getCountryCode(name:string, userLang:string): string {
 	return '';
 }
 
-export function listCountries(name: string, userLang:string) {
+export function listCountries(name: string, userLang: string) {
 	const listCountries: string[] = [];
 	for (const country of getListCountriesInLocale(userLang)) {
 		listCountries.push(country.label);
 	}
 	return listCountries.filter(value =>
-		!value.toLowerCase().includes(name.toLowerCase()));
+		value.toLowerCase().includes(name.toLowerCase())
+	);
 }
