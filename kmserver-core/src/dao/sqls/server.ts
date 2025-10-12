@@ -13,9 +13,10 @@ ORDER BY RANDOM()
 export const upsertServer = `
 INSERT INTO server
 VALUES (
-	$1,
-	$2,
-	now()
+  $1,
+  $2,
+  now(),
+  false
 )
 ON CONFLICT(domain, sid) DO UPDATE SET
   last_seen = now()
