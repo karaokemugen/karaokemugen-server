@@ -123,7 +123,7 @@
 											:key="songtype"
 											:value="songtype"
 										>
-											{{ songtypes[songtype][locale] || songtypes[songtype]['eng'] || songtype }}
+											{{ songtypes[songtype][localeIn3B] || songtypes[songtype]['eng'] || songtype }}
 										</option>
 									</select>
 								</div>
@@ -226,6 +226,7 @@
 	import { storeToRefs } from 'pinia';
 	import type { TagList } from '%/lib/types/tag';
 	import { useAuthStore } from '~/store/auth';
+	import { useI18n } from 'vue-i18n'
 
 	defineProps<{
 		active: boolean
@@ -305,6 +306,7 @@
 			};
 		}
 	}
+	const localeIn3B = computed(() =>  getLanguageIn3B(locale.value));
 </script>
 
 <style scoped lang="scss">
