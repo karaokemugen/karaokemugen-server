@@ -17,7 +17,7 @@
 					@click="addEnabledLanguage(kara.language)"
 				/>
 				<tag
-					v-if="kara.source && canSeeSource"
+					v-if="kara.source && canSeeSourceAndDelete"
 					type="groups"
 					:tag="{name : kara.source}"
 					:staticheight="false"
@@ -27,7 +27,7 @@
 			</div>
 			<div class="media-right">
 				<button
-					v-if="canDelete"
+					v-if="canSeeSourceAndDelete"
 					class="button is-danger"
 					:disabled="done_delete"
 					:class="{'is-loading': loading}"
@@ -70,8 +70,7 @@
 	const { addEnabledLanguage } = useMenubarStore();
 	const { locale } = useI18n();
 
-	const canDelete = computed(() => loggedIn.value && !!user?.value?.roles?.admin);
-	const canSeeSource = computed(() => loggedIn.value && (!!user?.value?.roles?.admin || !!user?.value?.roles?.maintainer));
+	const canSeeSourceAndDelete = computed(() => loggedIn.value && (!!user?.value?.roles?.admin || !!user?.value?.roles?.maintainer));
 
 	onMounted( () => {
 		if (karas.value.find(el => el === props.kara.id) !== undefined) {
