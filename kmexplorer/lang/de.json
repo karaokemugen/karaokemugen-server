@@ -122,7 +122,11 @@
 			"parents_tooltip": "Wenn ein übergeordnetes Karaoke definiert ist, wird dieses Karaoke als Alternative zu den ausgewählten übergeordneten Karaokes angezeigt.",
 			"creators_tooltip": "Eintrag, wer die Serie erstellt hat. Dies kann ein Animations-, Film- oder Entwickerstudio sein.",
 			"from_display_type": "Von der Tag-Typ-Anzeige",
-			"from_display_type_tooltip": "Wähle den Tag-Typ aus, der beim Anzeigen des Liedes verwendet werden soll. Wird angezeigt als „[Titel] von [dieser Tag-Typ]“."
+			"from_display_type_tooltip": "Wähle den Tag-Typ aus, der beim Anzeigen des Liedes verwendet werden soll. Wird angezeigt als „[Titel] von [dieser Tag-Typ]“.",
+			"login_required": "Du musst eingeloggt sein, um ein Lied einzusenden.",
+			"quota_count": "Du kannst noch {count} Lieder einsenden. | Du kannst noch {count} Lieder einsenden.",
+			"quota_reached": "Du hast zu viele Lieder eingesendet. Bitte warte bis einige davon angenommen oder abgelehnt worden, bis du ein weiteres einsendest.",
+			"contact_infos_warning": "Deine Kontaktdaten werden mit den Maintainern der Datenbank geteilt. Sie melden sich ggf. bei dir, falls sie Fragen zu deiner Einsendung haben."
 		},
 		"tagtypes": {
 			"platforms": "Plattform | Plattformen",
