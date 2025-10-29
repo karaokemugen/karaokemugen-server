@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
 
+# Use linuxserver hack to downgrade to user node
+USERHOME=$(grep node /etc/passwd | cut -d ":" -f6)
+usermod -d "/root" node
+groupmod -o -g "${PGID}" node
+usermod -o -u "${PUID}" node
+usermod -d "${USERHOME}" node
+
 if [ ! -f app/config.yml ]; then
-    cp config.docker.yml app/config.yml
+    cp -p config.docker.yml app/config.yml
     sed -i "s/%UUID%/$(uuidgen)/g" app/config.yml
 fi
 
-yarn migrate
+gosu node yarn migrate
 nginx
 
-exec "$@"
+gosu node "$@"

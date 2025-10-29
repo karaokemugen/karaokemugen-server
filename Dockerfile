@@ -3,7 +3,7 @@ FROM node:22-slim
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         nginx libnginx-mod-http-fancyindex \
-        git uuid-runtime \
+        gosu git uuid-runtime \
         curl ca-certificates wget && \
     rm -rf /var/lib/apt/lists/*
 
@@ -26,22 +26,26 @@ RUN curl -fsSLo /tmp/app-linux.tar.gz https://mugen.karaokes.moe/downloads/dist_
 
 WORKDIR /srv/kmserver
 ENV NODE_ENV=production
-RUN npm install -g corepack && mkdir -m 777 /.cache
-COPY package.json yarn.lock .yarnrc.yml ./
-COPY .yarn .yarn
-COPY kmexplorer/package.json kmexplorer/package.json
-COPY kmserver-core/package.json kmserver-core/package.json
+RUN chown node: /srv/kmserver
+
+# Build app as node
+USER node
+COPY --chown=node package.json yarn.lock .yarnrc.yml ./
+COPY --chown=node .yarn .yarn
+COPY --chown=node kmexplorer/package.json kmexplorer/package.json
+COPY --chown=node kmserver-core/package.json kmserver-core/package.json
 RUN yarn install
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint
 COPY docker/nginx.conf /etc/nginx/sites-available/default
 COPY docker/config.docker.yml config.docker.yml
-COPY config.sample.yml app/config.yml
-COPY app app
-COPY assets assets
-COPY util util
-COPY kmexplorer kmexplorer
-COPY kmserver-core kmserver-core
-RUN yarn build:all && chmod -R 777 /srv/kmserver/kmexplorer/.output
+COPY --chown=node config.sample.yml app/config.yml
+COPY --chown=node app app
+COPY --chown=node assets assets
+COPY --chown=node util util
+COPY --chown=node kmexplorer kmexplorer
+COPY --chown=node kmserver-core kmserver-core
+RUN yarn build:all
 
+USER root
 ENTRYPOINT ["/usr/local/bin/entrypoint"]
 CMD ["yarn", "workspace", "kmserver-core", "qstart"]

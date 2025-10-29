@@ -8,7 +8,6 @@ System:
     host: postgres
     database: karaokemugen_server
     port: 5432
-    connection: tcp
   Binaries:
     ffmpeg:
       Linux: /usr/bin/ffmpeg

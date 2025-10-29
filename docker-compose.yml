@@ -8,8 +8,10 @@ services:
     # Change this in your .env
     environment:
       TAG: latest
+      PUID: 1000
+      PGID: 1000
     ports:
-      - ${PORT:-1350}:8888
+      - ${PORT:-1350}:80
     volumes:
       - ./app:/srv/kmserver/app
     # - ./medias/:/srv/kmserver/app/repos/karaokebase/medias:ro # custom media path for default repository
