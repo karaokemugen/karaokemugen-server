@@ -18,10 +18,10 @@ export async function getFavorites(token: JWTTokenWithRoles) {
 	}
 }
 
-export async function addFavorite(token: JWTTokenWithRoles, kid: string) {
+export async function addFavorite(token: JWTTokenWithRoles, kid: string, favorited_at: string) {
 	try {
 		token.username = token.username.toLowerCase();
-		await insertFavorite(token.username, kid);
+		await insertFavorite(token.username, kid, favorited_at);
 		pubUser(token.username);
 	} catch (err) {
 		logger.error(`Unable to add favorites for ${token?.username}`, {service, obj: err});

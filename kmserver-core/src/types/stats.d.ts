@@ -17,6 +17,7 @@ export interface Instance {
 
 export interface Favorite {
 	kid: string
+	favorited_at: Date
 }
 
 export interface Played {
