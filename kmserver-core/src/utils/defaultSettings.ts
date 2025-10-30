@@ -43,7 +43,6 @@ export const defaults: Config = {
 	},
 	Remote: {
 		Enabled: true,
-		BaseHost: 'localhost',
 		FrontendRoot: 'kmremotes',
 		FrontendBundlesURL: 'https://mugen.karaokes.moe/frontends',
 	},

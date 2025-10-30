@@ -119,7 +119,7 @@ export function initFrontend(listenPort: number) {
 	const ws = initWS(server);
 	if (conf.Remote.Enabled) {
 		remoteSocketController(ws);
-		app.use(vhost(`*.${conf.Remote.BaseHost}`, initRemote()));
+		app.use(vhost(`*.${conf.Frontend.Host}`, initRemote()));
 	}
 	// KMExplorer
 	if (conf.Frontend.Enabled) {

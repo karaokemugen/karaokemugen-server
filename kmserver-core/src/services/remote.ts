@@ -95,7 +95,7 @@ export async function startRemote(socket: Socket, req: RemoteSettings): Promise<
 					fetchRemote(req.version);
 				}
 				return {
-					host: `${instance.code}.${getConfig().Remote.BaseHost}`,
+					host: `${instance.code}.${getConfig().Frontend.Host}`,
 					code: instance.code,
 					token: instance.token
 				};
@@ -112,7 +112,7 @@ export async function startRemote(socket: Socket, req: RemoteSettings): Promise<
 			const token = uuidV4();
 			await insertNewToken(code, token, socket.handshake.address);
 			setupRemote(code, req.version, socket);
-			return { host: `${code}.${getConfig().Remote.BaseHost}`, code, token };
+			return { host: `${code}.${getConfig().Frontend.Host}`, code, token };
 		} catch (err) {
 			logger.error('Cannot start remote and assign new token', {service, obj: err});
 			return { err: true, reason: 'CANNOT_START' };
