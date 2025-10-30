@@ -86,6 +86,7 @@ function prepareKaraQuery(params: KaraParams) {
 				THEN FALSE
 				ELSE TRUE
 			END) as flag_favorites,
+			f.favorited_at AS favorited_at,
 			`;
 		q.joinClause = 'LEFT OUTER JOIN users_favorites AS f ON f.fk_login = :username AND f.fk_kid = ak.pk_kid';
 		q.groupClauses.push('f.fk_kid');
@@ -131,6 +132,8 @@ function prepareKaraQuery(params: KaraParams) {
 		q.selectClause += 'COALESCE(ks.played_recently, 0) AS played,';
 		q.groupClauses.push('ks.played_recently');
 		q.joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
+	} else if (params.order === 'user_favorites') {
+		q.orderClauses.push(`f.favorited_at ${params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
 	} else if (params.order === 'favorited') {
 		q.orderClauses.push(`ks.favorited ${params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
 		q.selectClause += 'COALESCE(ks.favorited, 0) AS favorited,';
