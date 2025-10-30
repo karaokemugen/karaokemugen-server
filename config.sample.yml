@@ -42,6 +42,8 @@ Frontend:
   Secure: false
   Import:
     Enabled: true
+    LoginNeeded: true
+    MaxPerUser: 3
     LimitedTagTypes:
       - 3
       - 5

@@ -13,6 +13,8 @@ It's about time.
 - Translations: Updated german
 - Maintainers: Maintainers can no remove suggestions
 - Import: You can now forbid creation of some tag types when importing songs via the import page. See sample config file for info.
+- Import: Number of inboxes submitted can be limited by user. This is a placeholder before we deploy the "My Submissions" feature subset. Check sample config file for help. (`Import.LoginNeeded` and `Import.MaxPerUser`)
+
 
 ## Fixes
 
@@ -22,4 +24,4 @@ It's about time.
 
 ## Dev
 
-- Deps: Updated to Nuxt
+- Deps: Updated backend and frontend deps
