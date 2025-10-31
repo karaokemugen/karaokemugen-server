@@ -121,12 +121,10 @@ export async function generate() {
 			downloadFile(downloadItem);
 		}
 		await computeSubchecksums();
-		createBaseDumps();
-		const promises = [];
-		if (conf.Frontend.Import.Enabled) promises.push(clearOldInboxEntries());
-		if (conf.System.Repositories[0].OnUpdateTrigger) promises.push(updateTrigger());
-		promises.push(refreshKaraStats());
-		await Promise.all(promises);
+		await createBaseDumps();
+		if (conf.Frontend.Import.Enabled) await clearOldInboxEntries();
+		if (conf.System.Repositories[0].OnUpdateTrigger) await updateTrigger();
+		await refreshKaraStats();
 		if (conf.Frontend.Import.Enabled) await clearUnusedStagingTags();
 	} catch (err) {
 		logger.error('Generation failed', {service, obj: err});
