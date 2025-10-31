@@ -30,6 +30,7 @@ import { generateHardsubs, hardsubsDone, initHardsubGeneration } from './utils/h
 import { initMailer } from './utils/mailer.js';
 import sentry from './utils/sentry.js';
 import { getState, setState } from './utils/state.js';
+import { enableProfiling } from './lib/utils/logger.js';
 
 sourceMapSupport.install();
 
@@ -126,6 +127,7 @@ async function main() {
 
 	if (argv.opts().sql) setState({ opt: {sql: true }});
 	if (argv.opts().staticServe) setState({opt: {staticServe: true}});
+	if (argv.opts().profiling) enableProfiling();
 
 	await initDB(getState().opt.sql);
 	await initUsers();
@@ -242,6 +244,7 @@ function parseArgs() {
 		.option('--processHardsubs', 'process any missing hardsubs')
 		.option('--sql', 'display SQL queries (in debug)')
 		.option('--debug', 'display debug messages')
+		.option('--profiling', 'enable profiling in logs')
 		.option('--staticServe', 'serve static files via NodeJS')
 		.option('--banSession', 'ban a session SEID')
 		.option('--unbanSession', 'ban a session SEID')
