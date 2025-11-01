@@ -6,6 +6,7 @@ usermod -d "/root" node
 groupmod -o -g "${PGID}" node
 usermod -o -u "${PUID}" node
 usermod -d "${USERHOME}" node
+chown -R node: /srv/kmserver/km*
 
 if [ ! -f app/config.yml ]; then
     cp -p config.docker.yml app/config.yml
