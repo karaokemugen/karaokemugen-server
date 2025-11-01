@@ -139,6 +139,7 @@ async function main() {
 	}
 
 	if (argv.opts().generate) {
+		setState({ opt: { generateDB: true }});
 		await generate();
 		exit(0);
 	}

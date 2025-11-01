@@ -6,8 +6,10 @@ import { refreshKaraStats } from './kara.js';
 import { updatePlaylistSearchVector } from './playlist.js';
 import { upsertInstance } from './stats.js';
 import { deleteInactiveUsers } from './user.js';
+import { refreshSortables } from '../lib/dao/kara.js';
+import { getState } from '../utils/state.js';
 
-export async function initDB(log: boolean) {
+export async function 	initDB(log: boolean) {
 	await connectDB(() => {}, {superuser: false, db: getConfig().System.Database.database, log});
 	// Inserting instance data for server
 	await upsertInstance({
@@ -20,4 +22,6 @@ export async function initDB(log: boolean) {
 	scheduleJob('0 0 0 * * *', deleteInactiveUsers);
 	deleteInactiveUsers();
 	updatePlaylistSearchVector();
+	// This is to make sure the table exists at startup
+	if (!getState().opt.generateDB) refreshSortables();
 }
