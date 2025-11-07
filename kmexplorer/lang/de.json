@@ -119,7 +119,7 @@
 			"add_success_description": "Die Issue wurde in unserem System erfolgreich erstellt. Du kannst den Fortschritt hier prüfen: {url}",
 			"contact_infos_tooltip": "Geben hier deine Kontaktdaten ein, damit wir dich bei Fragen zum Karaoke kontaktieren können.",
 			"title_tooltip": "Falls unbekannt, trage hier ebenfalls den Serien-Namen ein. Für den Fall einer alternativen Version, benenne den Titel wie z.B. 'My title ~ Disco vers.'",
-			"parents_tooltip": "Wenn ein übergeordnetes Karaoke definiert ist, wird dieses Karaoke als Alternative zu den ausgewählten übergeordneten Karaokes angezeigt.",
+			"parents_tooltip": "Wenn ein übergeordnetes Lied definiert ist, wird dieses Lied als Alternative zu dem ausgewählten übergeordneten Lied angezeigt.",
 			"creators_tooltip": "Eintrag, wer die Serie erstellt hat. Dies kann ein Animations-, Film- oder Entwickerstudio sein.",
 			"from_display_type": "Von der Tag-Typ-Anzeige",
 			"from_display_type_tooltip": "Wähle den Tag-Typ aus, der beim Anzeigen des Liedes verwendet werden soll. Wird angezeigt als „[Titel] von [dieser Tag-Typ]“.",
