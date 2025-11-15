@@ -93,7 +93,7 @@
 			"theater_mode": "Mod Sinema (T)",
 			"autoplay": "Lenn emgefreek",
 			"loop": "Lenn dizehan",
-			"description": "Ar video-mañ zo herberc'hiet gant {instance}. Implijit hon arload ma vez aozet ur darvoud pe ur stream mar plij !"
+			"description": "Ar video-mañ zo herberc'hiet gant {instance}. Sonjit impijout hon arload ma vez aozet ur darvoud pe ur stream !"
 		},
 		"phrase": "{songtype} eus {series}",
 		"meta": "{songtitle} eus {serieSinger}",
