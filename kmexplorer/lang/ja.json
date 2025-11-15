@@ -163,7 +163,7 @@
 		"account": "アカウント",
 		"anime_list": "自分のアニメ",
 		"random": "サイコロを振る",
-		"tags": "その他、、、",
+		"tags": "その他⋯",
 		"songwriters": "作曲家",
 		"community": "コミュニティ"
 	},
@@ -240,7 +240,7 @@
 			"page": "ページ{0}"
 		},
 		"placeholder": {
-			"kara": "作品、歌手、名前、、、"
+			"kara": "作品、歌手、名前⋯"
 		},
 		"types": {
 			"karaokes": "曲",
