@@ -1,3 +1,17 @@
+# 2025.11.23
+
+This is a hotfix release
+
+## Changes
+
+- Translations: Updated german and breton
+
+## Fixes
+
+- Fix search karas
+- Fix all_karas_tags not refreshed after regen
+- Add margin on suggestion card
+
 # 2025.11.01
 
 From now on changelogs will be made for Karaoke Mugen Server.
