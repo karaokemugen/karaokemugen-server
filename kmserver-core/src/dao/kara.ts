@@ -89,7 +89,7 @@ function prepareKaraQuery(params: KaraParams) {
 			f.favorited_at AS favorited_at,
 			`;
 		q.joinClause = 'LEFT OUTER JOIN users_favorites AS f ON f.fk_login = :username AND f.fk_kid = ak.pk_kid';
-		q.groupClauses.push('f.fk_kid');
+		q.groupClauses.push('f.fk_kid', 'f.favorited_at');
 		q.params.username = params.username;
 	}
 	if (params.favorites) {
