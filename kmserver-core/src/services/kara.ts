@@ -28,6 +28,7 @@ import { getState } from '../utils/state.js';
 import { updateGit } from './git.js';
 import { clearOldInboxEntries, clearUnusedStagingTags, removeProcessedInboxes } from './inbox.js';
 import { findUserByName } from './user.js';
+import { refreshAllKaraTag } from '../dao/tag.js';
 
 const service = 'Kara';
 
@@ -120,12 +121,15 @@ export async function generate() {
 			};
 			downloadFile(downloadItem);
 		}
-		await computeSubchecksums();
-		await createBaseDumps();
-		if (conf.Frontend.Import.Enabled) await clearOldInboxEntries();
-		if (conf.System.Repositories[0].OnUpdateTrigger) await updateTrigger();
-		await refreshKaraStats();
 		if (conf.Frontend.Import.Enabled) await clearUnusedStagingTags();
+		const promises = [];
+		promises.push(computeSubchecksums());
+		if (conf.Frontend.Import.Enabled) promises.push(clearOldInboxEntries());
+		if (conf.System.Repositories[0].OnUpdateTrigger) promises.push(updateTrigger());
+		promises.push(refreshKaraStats());
+		promises.push(refreshAllKaraTag());
+		await Promise.all(promises);
+		createBaseDumps();
 	} catch (err) {
 		logger.error('Generation failed', {service, obj: err});
 		sentry.error(err, 'fatal');
