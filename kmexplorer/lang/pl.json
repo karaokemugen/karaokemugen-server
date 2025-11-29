@@ -134,9 +134,7 @@
 			"groups_tooltip": "Pobierz grupy dla tej piosenki. Utwór zostanie dołączony do tych pakietów do pobrania",
 			"parents": "Rodzice",
 			"created_at": "Data utworzenia",
-			"add_success": "Twoje karaoke zostało pomyślnie wysłane!",
 			"add_error": "Wystąpił błąd, karaoke nie zostało poprawnie wysłane",
-			"restart": "Prześlij nowe karaoke",
 			"i18n_select": "Dodawanie języka",
 			"default_language": "Język domyślny",
 			"contact_infos": "Informacje kontaktowe",
@@ -158,7 +156,6 @@
 			"songorder_tooltip": "Numer początkowy/końcowy. Jeśli jest to jedyny opening/ending w serii, pozostaw to pole puste.",
 			"year_required": "Wymagany jest rok emisji",
 			"singergroups_tooltip": "Jeśli piosenkarze należą do zespołu muzycznego, umieść ich tutaj. Zespół będzie wyświetlany na listach odtwarzaczy i utworów, a nie poszczególni wokaliści.",
-			"add_success_description": "Na naszym trackerze został utworzony problem. Możesz sprawdzić jego postęp na {url}",
 			"authors_required": "Wymagany jest autor karaoke",
 			"add_file_media_not_supported_error": "{name} nie jest obsługiwanym plikiem multimedialnym, przekonwertuj go na jeden z następujących formatów: {formats}",
 			"media_file_required": "Plik multimedialny jest obowiązkowy",
@@ -696,7 +693,7 @@
 		"platforms": "Platformy",
 		"versions": "Wersje",
 		"search_users": "Wyszukiwanie użytkowników",
-		"discourse": "Forum"
+		"forum": "Forum"
 	},
 	"profile": {
 		"favorites": "Ulubione",

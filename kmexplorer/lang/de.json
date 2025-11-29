@@ -22,7 +22,7 @@
 		"discord": "Discord",
 		"franchises": "Franchises",
 		"logout": "Abmelden",
-		"discourse": "Forum",
+		"forum": "Forum",
 		"community": "Community",
 		"kara_import": "Karaoke einreichen",
 		"search_users": "Benutzer suchen",
@@ -78,7 +78,6 @@
 			"titles_aliases": "Pseudonyme",
 			"titles_aliases_tooltip": "Kurzformen oder alternative Namen, um besser gefunden zu werden.",
 			"add_file_media_not_supported_error": "{name} ist keine unterstützte Mediendatei, bitte zuerst in einen dieser Formate konvertieren: {formats}",
-			"restart": "Neues Karaoke einreichen",
 			"comment_tooltip": "Wenn Sie eine Nachricht für die Integratoren hinzufügen oder einfach nur Danke sagen möchten, können Sie dies hier tun!",
 			"contact_infos": "Kontaktinformationen",
 			"sections": {
@@ -106,7 +105,6 @@
 			"created_at": "Erstellungsdatum",
 			"i18n_delete": "Sprache entfernen",
 			"authors_required": "Autor des Karaokes ist erforderlich",
-			"add_success": "Karaoke wurde erfolgreich versendet!",
 			"collections_required": "Mindestens eine Sammlung muss ausgewählt sein",
 			"series_singers_required": "Serien, gesungen von und von der Band können nicht gleichzeitig leer sein.",
 			"franchises_tooltip": "Wenn die Serie Teil einer Franchise ist (wie Gundam, Mario, Zelda, Naruto, etc.), diese hier angeben.",
@@ -116,7 +114,6 @@
 			"check_in_progress": "Bitte prüft die Liste der Karaoke-Subs, die derzeit erstellt werden, bevor du uns ein Lied schickst. So vermeidest du doppelte Arbeit und machst die Welt zu einem besseren Ort.",
 			"authors_tooltip": "Du solltest dich hier eintragen ;)",
 			"romanization_warning": "Dieser Titel/Tag enthält eine nicht-lateinische Alphabetsprache. Sie müssen hierzu die Sprache „Lateinisches Alphabet (Romanisierung)“ hinzufügen, falls der Titel in nicht-lateinischem Alphabet nicht vollständig eine Transkription einer anderen Sprache ist.",
-			"add_success_description": "Die Issue wurde in unserem System erfolgreich erstellt. Du kannst den Fortschritt hier prüfen: {url}",
 			"contact_infos_tooltip": "Geben hier deine Kontaktdaten ein, damit wir dich bei Fragen zum Karaoke kontaktieren können.",
 			"title_tooltip": "Falls unbekannt, trage hier ebenfalls den Serien-Namen ein. Für den Fall einer alternativen Version, benenne den Titel wie z.B. 'My title ~ Disco vers.'",
 			"parents_tooltip": "Wenn ein übergeordnetes Lied definiert ist, wird dieses Lied als Alternative zu dem ausgewählten übergeordneten Lied angezeigt.",
@@ -750,7 +747,7 @@
 	"languages": {
 		"qro": "Lateinisches Alphabet (Romanisierung)"
 	},
-	"administration": {
+	"dashboard": {
 		"generate_database": "Datenbank generieren",
 		"generation_triggered": "Die Generierung wurde ausgelöst.",
 		"update_git": "Git-Repository updaten",

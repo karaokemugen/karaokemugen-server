@@ -1,8 +1,10 @@
+import {pg as yesql} from 'yesql';
+
 import { db, paramWords } from '../lib/dao/database.js';
 import { DBUser } from '../lib/types/database/user.js';
 import { User } from '../lib/types/user.js';
 import logger from '../lib/utils/logger.js';
-import { Ban, BanType } from '../types/user.js';
+import { Ban, BanType, UserParams } from '../types/user.js';
 import * as sql from './sqls/user.js';
 
 const service = 'DB';
@@ -12,16 +14,42 @@ export async function updateLastLogin(username: string): Promise<string> {
 	return res.rows[0].last_login_at;
 }
 
-export async function selectUser(searchType: string, value: any): Promise<DBUser> {
-	const query = sql.selectUser(false, `${searchType} = $1`);
-	const res = await db().query(query, [value]);
-	return res.rows[0];
+export async function updateContributorTrustLevel(username: string, level: number) {
+	return db().query(sql.updateContributorLevel, [username, level]);
 }
 
-export async function selectAllUsers(filter?: string, from?: number, size?: number, publicOnly = false, order = false): Promise<DBUser[]> {
+export async function selectAllUsers(searchParams?: UserParams): Promise<DBUser[]> {
+    const whereClauses = [];
+	let offsetClause = '';
+	let limitClause = '';
+	if (searchParams?.publicOnly) {
+		whereClauses.push('flag_public = true');
+	}
+	// FIXME: We need to secure this so people don't randomly throw in weird role names. Maybe some typescript magic should occur here to define the roles in constants.ts and pick them in typescript
+	if (searchParams?.roles) {
+		const rolesClauses = [];
+		for (const role of Object.keys(searchParams.roles)) {
+			if (searchParams.roles[role] === true) rolesClauses.push(`roles @> '{ "${role}": true }'`);
+		}
+		if (rolesClauses.length > 0) whereClauses.push(`(${rolesClauses.join(' OR ')})`);
+	}
+	if (searchParams?.filter) {
+		searchParams.filter = paramWords(searchParams.filter).join(' & ')
+	}
+	if (searchParams?.username) {
+		whereClauses.push(`pk_login = :username`);
+	}
+	if (searchParams?.nickname) {
+		whereClauses.push(`nickname = :nickname`);
+	}
+	if (!isNaN(searchParams.from)) {
+		offsetClause = ` OFFSET :from`;
+	}
+	if (!isNaN(searchParams.size)) {
+		limitClause = ` LIMIT :size`;
+	}
 	const res = await db().query(
-		sql.selectUser(!!filter, publicOnly ? 'flag_public' : '', (size) ? `LIMIT ${size} OFFSET ${from || 0}` : '', order),
-		filter ? [paramWords(filter).join(' & ')] : []
+		yesql(sql.selectUser(searchParams.filter, whereClauses, offsetClause, limitClause, false))(searchParams)
 	);
 	return res.rows;
 }
@@ -79,7 +107,8 @@ export async function updateUser(user: User): Promise<DBUser> {
 		user.anime_list_last_modified_at,
 		user.anime_list_ids,
 		user.flag_parentsonly,
-		user.login
+		user.flag_contributor_emails,
+		user.login,
 	])).rows[0];
 }
 

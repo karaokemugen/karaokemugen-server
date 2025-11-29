@@ -165,10 +165,7 @@
 			"parents": "Parents",
 			"parents_tooltip": "Si un parent est défini, ce karaoké apparaîtra comme une alternative au(x) kara(s) parent(s) renseigné(s).",
 			"created_at": "Date de création",
-			"add_success": "Votre karaoké est envoyé !",
-			"add_success_description": "Un ticket a été crée sur notre outil de suivi. Vous pouvez consulter l'avancement de l'intégration de votre karaoké : {url}",
 			"add_error": "Une erreur a eu lieu, le karaoké n'a pas pu être envoyé",
-			"restart": "Soumettre un nouveau karaoké",
 			"i18n_select": "Ajouter une langue",
 			"i18n_delete": "Supprimer la langue",
 			"romanization_warning": "Ce titre/tag contient une langue en alphabet non latin. Vous devez ajouter la langue “Alphabet Latin (Romanisation)” en plus sauf si ce titre en alphabet non latin est intégralement une transcription d’une autre langue.",
@@ -267,14 +264,16 @@
 		"community": "Communauté",
 		"remotes": "Remotes",
 		"administration": "Administration",
+		"dashboard": "Tableau de bord",
 		"bans": "Exclusions",
 		"search_users": "Utilisateurs",
 		"discord": "Discord",
-		"discourse": "Forum",
+		"forum": "Forum",
 		"kara_import": "Envoyer un kara",
 		"kara_suggest": "Suggérer un kara",
 		"account": "Compte",
 		"anime_list": "Mes animés",
+		"submissions": "Mes contributions",
 		"login": "Se connecter",
 		"logout": "Se déconnecter",
 		"register": "S'inscrire",
@@ -290,14 +289,16 @@
 		"playlists_count": "{count} liste de lecture | {count} listes de lecture",
 		"anime_list": "Mes animés",
 		"public_favorites": "Vos favoris sont publics. Cliquez pour cacher vos favoris.",
-		"private_favorites": "Vos favoris sont privés. Cliquez pour partager vos favoris."
+		"private_favorites": "Vos favoris sont privés. Cliquez pour partager vos favoris.",
+		"submissions": "Mes contributions"
 	},
 	"search": {
 		"placeholder": {
 			"kara": "Œuvres, chanteurs, noms…",
 			"user": "Noms d'utilisateurs…",
 			"tag": "Noms des tags…",
-			"playlist": "Noms, utilisateurs…"
+			"playlist": "Noms, utilisateurs…",
+			"submissions": "Noms"
 		},
 		"sort": {
 			"a_z": "De A à Z",
@@ -311,7 +312,9 @@
 			"likes": "Le plus de likes",
 			"languages": "Par langues",
 			"duration": "Par durées",
-			"username": "Par noms d'utilisateur"
+			"username": "Par noms d'utilisateur",
+			"recent_modified": "Par date de modification",
+			"status": "Par statut"
 		},
 		"next": "Page suivante",
 		"previous": "Page précédente",
@@ -466,6 +469,11 @@
 					"label": "Profil public",
 					"checkbox": "Rendre mon profil public",
 					"desc": "Par défaut, votre compte est visible publiquement via la recherche des utilisateurs et affiche les informations définies ci-dessus hormis l'adresse e-mail. Si vous décochez cette case, votre compte ne sera plus disponible dans les résultats de recherche (vous serez le seul à pouvoir le voir, une fois connecté)."
+				},
+				"flag_contributor_emails": {
+					"label": "Mes contributions",
+					"checkbox": "Envoyer des emails sur l'état de mes contributions",
+					"desc": "En cochant cette case, vous recevrez des emails lorsqu'un changement d'état (accepté, refusé, demande de changements, etc.) aura lieu sur vos chansons envoyées pour évaluation auprès de l'équipe qui gère la base de données."
 				},
 				"flag_displayfavorites": {
 					"label": "Favoris",
@@ -667,7 +675,8 @@
 		"PL_SHARE_ERROR": "Erreur lors du partage de la liste de lecture",
 		"PL_SHARE_CLIPBOARD_SUCCESS": "Lien de la liste de lecture copié dans le presse-papier",
 		"PL_SHARE_CLIPBOARD_FAIL": "Lien de la liste de lecture n'a pas pu être copié dans le presse-papier",
-		"PL_SHUFFLE_ERROR": "Erreur lors du mélange de la liste de lecture"
+		"PL_SHUFFLE_ERROR": "Erreur lors du mélange de la liste de lecture",
+		"USER_INBOX_QUOTA_REACHED": "Vous avez atteint votre quota."
 	},
 	"roles": {
 		"donator": "Donateur(-ice)",
@@ -714,13 +723,18 @@
 		"yes": "Oui",
 		"no": "Non"
 	},
-	"administration": {
+	"dashboard": {
 		"update_git": "Mettre à jour le dépôt Git",
 		"update_git_triggered": "La mise à jour a été lancée.",
 		"generate_database": "Générer la base de données",
 		"generation_triggered": "La génération a été lancée.",
 		"generate_previews": "Générer les aperçus",
-		"generate_hardsubs": "Générer les médias avec les sous-titres incrustés"
+		"generate_hardsubs": "Générer les médias avec les sous-titres incrustés",
+		"trust_levels": "Niveau de confiance des contributeurs",
+		"available_trust_levels": "Niveaux de confiance disponibles :",
+		"trust_level_submissions": "Niveau {level} : {songs} contributions",
+		"trust_level": "Niveau {level}",
+		"submissions_status": "Uniquement les contributions aux statuts 'Envoyée', 'En revue' et 'Changement Requis' sont prises en compte dans le quota."
 	},
 	"playlists": {
 		"create": "Créer une nouvelle liste de lecture",
@@ -757,5 +771,23 @@
 	},
 	"languages": {
 		"qro": "Alphabet Latin (Romanisation)"
+	},
+	"submissions": {
+		"status": {
+			"sent": "Envoyée",
+			"in_review": "En revue",
+			"changes_requested": "Changements requis",
+			"accepted": "Acceptée",
+			"rejected": "Rejetée"
+		},
+		"modified_at": "Modifiée le {date}",
+		"rejected_reason_button": "Raison du refus",
+		"rejected_reason": "Raison du refus : {reason}",
+		"cleanup": "Les contributions aux statuts 'Refusée', 'Acceptée' ou 'Changements requis' datant de plus de {days} jours sont automatiquement supprimées.",
+		"contact_maintainers": "Si vous avez besoin de contacter les mainteneurs, vous pouvez les joindre via :",
+		"email": "Email",
+		"forum": "Forum",
+		"discord": "Discord",
+		"quota": "Vous pouvez envoyer { songs } / { quota } chansons."
 	}
 }

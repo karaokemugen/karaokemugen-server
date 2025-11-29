@@ -27,12 +27,13 @@ export interface Config {
 		Enabled: boolean,
 		Tagline: string,
 		DiscordURL?: string,
-		DiscourseURL?: string,
+		ForumURL?: string,
 		Import: {
 			Enabled: boolean,
 			LimitedTagTypes: TagTypeNum[],
 			LoginNeeded: boolean,
-			MaxPerUser?: number
+			ContributorTrustLevels?: Record<number, number>
+			CleanupDays?: number,
 		},
 		Suggestions: boolean,
 		InProgressSongsList?: string,

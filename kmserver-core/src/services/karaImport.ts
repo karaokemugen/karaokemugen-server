@@ -14,16 +14,19 @@ import { extractVideoSubtitles, trimKaraData, verifyKaraData, writeKara } from '
 import { defineSongname, determineMediaAndLyricsFilenames, processSubfile } from '../lib/services/karaCreation.js';
 import { refreshKarasAfterDBChange, updateTags } from '../lib/services/karaManagement.js';
 import { consolidateTagsInRepo } from '../lib/services/tag.js';
+import { DBInbox, InboxActions } from '../lib/types/inbox.js';
 import { EditedKara, KaraFileV4 } from '../lib/types/kara.js';
 import { getConfig, resolvedPath, resolvedPathRepos } from '../lib/utils/config.js';
 import { ErrorKM } from '../lib/utils/error.js';
 import { replaceExt, smartMove } from '../lib/utils/files.js';
+import { postNoteToIssue } from '../lib/utils/gitlab.js';
 import { removeControlCharsInObject, sortJSON } from '../lib/utils/objectHelpers.js';
 import { EditElement } from '../types/karaImport.js';
 import sentry from '../utils/sentry.js';
-import { createInboxIssue } from './gitlab.js';
-import { addKaraInInbox } from './inbox.js';
+import { createInboxIssue, editInboxIssue } from './gitlab.js';
+import { addKaraInInbox, getGitlabIssueNumber, getInbox, setInboxStatus } from './inbox.js';
 import { getKara } from './kara.js';
+import { canSubmitInbox } from './user.js';
 
 const service = 'KaraImport';
 
@@ -45,7 +48,7 @@ async function preflight(kara: KaraFileV4): Promise<KaraFileV4> {
 }
 
 // Common work between edits and creations
-async function heavyLifting(kara: KaraFileV4, contact: {name: string, login?: string}, edit?: EditElement): Promise<string> {
+async function heavyLifting(kara: KaraFileV4, contact: {name: string, login?: string}, edit?: EditElement): Promise<KaraFileV4> {
 	const conf = getConfig();
 	try {
 		// Refresh hooks at every kara we get.
@@ -116,16 +119,20 @@ async function heavyLifting(kara: KaraFileV4, contact: {name: string, login?: st
 					ignoreCollections: true,
 				});
 			}
-			try {
-				issueURL = await createInboxIssue(kara.data.kid, edit);
-			} catch (err) {
-				logger.error(`Unable to post to Gitlab a new inbox issue: ${err}`, { service, obj: err });
-				// Non fatal.
-			}
+
 		}
-		addKaraInInbox(kara, contact, issueURL, edit ? edit.kid : undefined);
+		const inboxes = await getInbox(true);
+		const newInid = await addKaraInInbox(kara, contact, issueURL, edit ? edit.kid : undefined, edit?.inid);
+		if (edit?.inid) {
+			const inbox = inboxes.find(i => i.inid === edit.inid);
+			let status: InboxActions = 'sent';
+			if (inbox.status === 'changes_requested' || inbox.status === 'in_review') status = 'in_review';
+			setInboxStatus(edit.inid, status);
+		} else {
+			setInboxStatus(newInid, 'sent');
+		}
 		consolidateTagsInRepo(kara);
-		return issueURL;
+		return kara;
 	} catch (err) {
 		logger.error('Error importing kara', { service, obj: JSON.stringify(err) });
 		sentry.addErrorInfo('Kara', JSON.stringify(kara, null, 2));
@@ -133,37 +140,68 @@ async function heavyLifting(kara: KaraFileV4, contact: {name: string, login?: st
 	}
 }
 
-export async function editKara(editedKara: EditedKara, contact: string, login?: string): Promise<string> {
+export async function editKara(editedKara: EditedKara, contact: string, login?: string, inid?: string): Promise<string> {
 	try {
+		// If login needed, raise error if not logged in
+		if (!login && getConfig().Frontend.Import.LoginNeeded) {
+			throw new ErrorKM('LOGIN_NEEDED', 401, false);
+		}
 		let kara = trimKaraData(editedKara.kara);
 		const conf = getConfig();
-		const onlineRepo = conf.System.Repositories.find((r) => r.Name !== 'Staging').Name;
+		const repoName = conf.System.Repositories.find((r) => r.Name !== 'Staging').Name;
+		const sourceRepoName = editedKara.kara.data.repository;
 		const edited_kid = kara.data.kid;
 		kara = await preflight(kara);
+		let inbox: DBInbox;
+		if (inid) {
+			const inboxes = await getInbox(false);
+			inbox = inboxes.filter(i => i.inid === inid)[0];
+			if (!inbox) throw new ErrorKM('INBOX_UNKNOWN_ERROR', 404, false);
+		}
 		// Before the heavy lifting (tm), we should make copies of media and/or lyrics if they were not edited.
 		if (!editedKara.modifiedLyrics && kara.medias[0].lyrics.length > 0) {
 			await copy(
-				resolve(resolvedPathRepos('Lyrics', onlineRepo)[0], kara.medias[0].lyrics[0].filename),
+				resolve(resolvedPathRepos('Lyrics', sourceRepoName)[0], kara.medias[0].lyrics[0].filename),
 				resolve(resolvedPath('Temp'), kara.medias[0].lyrics[0].filename),
 				{ overwrite: true },
 			);
 		}
 		if (!editedKara.modifiedMedia) {
 			await copy(
-				resolve(resolvedPathRepos('Medias', onlineRepo)[0], kara.medias[0].filename),
+				resolve(resolvedPathRepos('Medias', sourceRepoName)[0], kara.medias[0].filename),
 				resolve(resolvedPath('Temp'), kara.medias[0].filename),
 				{ overwrite: true },
 			);
 		}
 		// And now for the fun part
-		return await heavyLifting(kara, {
-			name: contact,
-			login
-		}, {
+		const edit = {
 			kid: edited_kid,
 			modifiedLyrics: editedKara.modifiedLyrics,
 			modifiedMedia: editedKara.modifiedMedia,
-		});
+			inid,
+		};
+		await heavyLifting(kara, {
+			name: contact,
+			login
+		}, edit);
+		let issueURL = '';
+		try {
+			if (inid) {
+				issueURL = inbox.gitlab_issue;
+				if (inbox.status === 'changes_requested') await setInboxStatus(inid, 'in_review');
+				if (issueURL) {
+					const numberIssue = getGitlabIssueNumber(issueURL);
+					await postNoteToIssue(numberIssue, repoName, 'Song has been modified by original uploader: ');
+					await editInboxIssue(kara.data.kid, numberIssue, edit);
+				}
+			} else {
+				issueURL = await createInboxIssue(kara.data.kid, edit);
+			}
+		} catch (err) {
+			logger.error(`Unable to post to Gitlab a new inbox issue: ${err}`, { service, obj: err });
+			// Non fatal.
+		}
+		return issueURL;
 	} catch (err) {
 		logger.error('Error editing kara', { service, obj: err });
 		sentry.error(err);
@@ -171,14 +209,31 @@ export async function editKara(editedKara: EditedKara, contact: string, login?: 
 	}
 }
 
-export async function createKara(editedKara: KaraFileV4, contact: string, login: string): Promise<string> {
+export async function createKara(editedKara: KaraFileV4, contact: string, login?: string): Promise<string> {
 	try {
+		if (getConfig().Frontend.Import.LoginNeeded) {
+			// Check if logged in
+			if (!login) {
+				throw new ErrorKM('LOGIN_NEEDED', 401, false);
+			}
+			// Will throw if not able to submit.
+			await canSubmitInbox(login);
+		}
 		let kara = trimKaraData(editedKara);
 		kara = await preflight(kara);
-		return await heavyLifting(kara, {name: contact, login});
+		await heavyLifting(kara, {name: contact, login});
+		let issueURL = '';
+		try {
+			issueURL = await createInboxIssue(kara.data.kid);
+		} catch (err) {
+			logger.error(`Unable to post to Gitlab a new inbox issue: ${err}`, { service, obj: err });
+			// Non fatal.
+		}
+		return issueURL;
 	} catch (err) {
 		logger.error('Error creating kara', { service, obj: err });
 		sentry.error(err);
 		throw err instanceof ErrorKM ? err : new ErrorKM('IMPORT_KARA_ERROR');
 	}
 }
+

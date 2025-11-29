@@ -5,7 +5,8 @@ export interface TagExtend {
 	tag: DBTag;
 }
 
-export type sortTypes = 'az' | 'karacount' | 'recent' | 'played' | 'favorited' | 'requested' | 'likes' | 'language';
+export type sortTypes = 'az' | 'karacount' | 'recent' | 'played' | 'favorited' |
+	'requested' | 'likes' | 'language' | 'recentModified' | 'status';
 
 export type menubarStoreType = {
 	tags: TagExtend[];
@@ -16,21 +17,24 @@ export type menubarStoreType = {
 
 }
 
+export const defaultSort: Record<string, sortTypes> = {
+	'types-id': 'karacount',
+	'types-years': 'recent',
+	'search-query': 'recent',
+	'user-login': 'recent',
+	'user-login-animelist': 'recent',
+	'users': 'az',
+	'suggest': 'likes',
+	'playlists': 'az',
+	'user-login-submissions': 'recentModified'
+};
+
 export const useMenubarStore = defineStore('menubar', {
 	state: (): menubarStoreType => {
 		return {
 			tags: [],
 			search: '',
-			sort: {
-				'types-id': 'karacount',
-				'types-years': 'recent',
-				'search-query': 'recent',
-				'user-login': 'recent',
-				'user-login-animelist': 'recent',
-				'users': 'az',
-				'suggest': 'likes',
-				'playlists': 'az'
-			},
+			sort: defaultSort,
 			resultsCount: 0,
 			enabledLanguages: []
 		};
@@ -59,7 +63,7 @@ export const useMenubarStore = defineStore('menubar', {
 		},
 		setSort(sort: sortTypes) {
 			const route = useRoute();
-			this.sort[route.name] = sort;
+			this.sort[route.name as string] = sort;
 		},
 		setResultsCount(count: number) {
 			this.resultsCount = count;
@@ -79,16 +83,7 @@ export const useMenubarStore = defineStore('menubar', {
 			this.resultsCount = 0;
 			this.search = '';
 			this.tags = [];
-			this.sort = {
-				'types-id': 'karacount',
-				'types-years': 'recent',
-				'search-query': 'recent',
-				'user-login': 'recent',
-				'user-login-animelist': 'recent',
-				'users': 'az',
-				'suggest': 'likes',
-				'playlists': 'az'
-			};
+			this.sort = defaultSort;
 		}
 	},
 	persist: {

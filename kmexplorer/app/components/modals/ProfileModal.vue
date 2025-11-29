@@ -214,7 +214,7 @@
 										v-model="editedUser.social_networks.mastodon"
 										type="text"
 										name="mastodon"
-										class="input"			
+										class="input"
 										pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
 										:placeholder="$t('modal.profile.fields.mastodon.placeholder')"
 									>
@@ -240,7 +240,7 @@
 										v-model="editedUser.social_networks.bluesky"
 										type="text"
 										name="bluesky"
-										class="input"			
+										class="input"
 										pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
 										:placeholder="$t('modal.profile.fields.bluesky.placeholder')"
 									>
@@ -517,6 +517,27 @@
 									type="checkbox"
 								>
 								{{ $t('modal.profile.fields.flag_public.checkbox') }}
+							</label>
+						</div>
+					</div>
+					<div class="field is-horizontal">
+						<div class="field-label is-normal">
+							<label class="label">{{ $t('modal.profile.fields.flag_contributor_emails.label') }}</label>
+						</div>
+						<div class="field-body flex-column">
+							<div class="has-text-white">
+								{{ $t('modal.profile.fields.flag_contributor_emails.desc') }}
+							</div>
+							<label
+								for="favorites"
+								class="field"
+							>
+								<input
+									id="favorites"
+									v-model="editedUser.flag_contributor_emails"
+									type="checkbox"
+								>
+								{{ $t('modal.profile.fields.contributor_emails.checkbox') }}
 							</label>
 						</div>
 					</div>

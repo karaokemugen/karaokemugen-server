@@ -11,7 +11,7 @@ import { v4 as uuidV4 } from 'uuid';
 
 import { createJwtToken } from '../controllers/http/auth.js';
 import { updatePlaylistSearchVector } from '../dao/playlist.js';
-import { deleteBan, deleteUser, insertBan, insertUser, selectAllUsers, selectBans, selectUser, updateLastLogin, updateUser, updateUserPassword } from '../dao/user.js';
+import { deleteBan, deleteUser, insertBan, insertUser, selectAllUsers, selectBans, updateContributorTrustLevel, updateLastLogin, updateUser, updateUserPassword } from '../dao/user.js';
 import { DBUser } from '../lib/types/database/user.js';
 import { JWTTokenWithRoles, User } from '../lib/types/user.js';
 import { getConfig, resolvedPath } from '../lib/utils/config.js';
@@ -34,7 +34,7 @@ const service = 'User';
 
 const passwordResetRequests = new Map();
 
-function getUserLanguage(user: User): string {
+export function getUserLanguage(user: User): string {
 	// Fallback to english if no user language recognized
 	return getState().acceptedLanguages.includes(user.language) ? user.language : 'en';
 }
@@ -129,7 +129,7 @@ export async function findUserByName(username: string, opts: UserOptions = {}) {
 	try {
 		if (!username) throw new ErrorKM('NO_USER_PROVIDED', 400, false);
 		username = username.toLowerCase();
-		const user = await selectUser('pk_login', username);
+		const user = (await selectAllUsers({ username }))[0];
 		if (!user) return null;
 		user.password_last_modified_at = new Date(user.password_last_modified_at);
 		if (opts.public) {
@@ -184,10 +184,10 @@ export function formatUserList(users: DBUser[], from: number): UserList {
 	};
 }
 
-export async function getAllUsers(opts: UserParams = { public: false }) {
+export async function getAllUsers(opts: UserParams = { publicOnly: false }) {
 	try {
-		const users = await selectAllUsers(opts.filter, opts.from, opts.size, opts.public, true);
-		if (opts.public) {
+		const users = await selectAllUsers(opts);
+		if (opts.publicOnly) {
 			users.forEach((_, i) => {
 				delete users[i].password;
 				delete users[i].email;
@@ -264,7 +264,7 @@ export async function createUser(user: User, opts: any = {}) {
 		if (!user.login) throw new ErrorKM('USER_EMPTY_LOGIN', 400, false);
 		user.login = user.login.toLowerCase();
 		// Check if login or nickname already exists.
-		if (await selectUser('pk_login', user.login) || await selectUser('nickname', user.login)) {
+		if ((await selectAllUsers({ username: user.login }))[0] || (await selectAllUsers({ nickname: user.login }))[0]) {
 			logger.error(`User/nickname ${user.login} already exists, cannot create it`, { service });
 			throw new ErrorKM('USER_ALREADY_EXISTS', 409, false);
 		}
@@ -355,14 +355,18 @@ export async function changePassword(username: string, password: string) {
 	return updateUserPassword(username, password);
 }
 
+export async function setUserContributorTrustLevel(username: string, level: number) {
+	await updateContributorTrustLevel(username, level);
+}
+
 export async function addRoleToUser(username: string, role: string) {
-	const user = await selectUser('pk_login', username);
+	const user = (await selectAllUsers({ username }))[0];
 	user.roles[role] = true;
 	await editUser(username, user, null, adminToken);
 }
 
 export async function removeRoleFromUser(username: string, role: string) {
-	const user = await selectUser('pk_login', username);
+	const user = (await selectAllUsers({ username }))[0];
 	user.roles[role] = false;
 	await editUser(username, user, null, adminToken);
 }
@@ -379,7 +383,7 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		if (user.roles && !isLooselyEqual(user.roles, currentUser.roles) && token.roles && !token.roles.admin) throw new ErrorKM('CHECK_YOUR_PRIVILEGES', 403, false);
 		if (await checkForBans(mergedUser)) throw new ErrorKM('EDIT_USER_ERROR', 403, false);
 		// Check if login already exists.
-		if (user.nickname && currentUser.nickname !== user.nickname && await selectUser('nickname', user.nickname)) throw new ErrorKM('NICKNAME_ALREADY_USED', 409, false);
+		if (user.nickname && currentUser.nickname !== user.nickname && (await selectAllUsers({nickname: user.nickname}))[0]) throw new ErrorKM('NICKNAME_ALREADY_USED', 409, false);
 		if (user.password) {
 			if (user.password.length < 8) throw new ErrorKM('PASSWORD_TOO_SHORT', 400, false);
 			const password = await hashPasswordbcrypt(user.password);
@@ -438,17 +442,19 @@ export async function updateUserLastLogin(username: string) {
 	await updateLastLogin(username);
 }
 
-export async function getSubmittedInbox(username: string) {
-	const inbox = await getInbox(true);
-	return inbox.filter(inbox => inbox.fk_login === username);
-}
-
 export async function canSubmitInbox(username: string) {
-	const inboxOfUser = await getSubmittedInbox(username);
-	if (!getConfig().Frontend.Import?.MaxPerUser) {
-		return true;
-	}
-	return getConfig().Frontend.Import.MaxPerUser < inboxOfUser.filter((inbox) => !inbox.fix).length;
+	const user = (await getAllUsers({publicOnly: false, filter: username})).content.filter(u => u.login === username)[0];
+	if (!user) throw new ErrorKM('USER_UNKNOWN', 404, false);
+	const trustLevels = getConfig().Frontend.Import.ContributorTrustLevels;
+	// Trust levels can be unset, so we test that.
+	if (!trustLevels) return true;
+	// If level doesn't exist anymore, let's say they can send as many songs as they want.
+	const songsAllowed = trustLevels[user.contributor_trust_level];
+	if (isNaN(songsAllowed)) return true;
+	const inboxesFromUser = await getInbox(true, username);
+	const pendingInboxes = inboxesFromUser.filter(i => i.status === 'changes_requested' || i.status === 'in_review' || i.status === 'sent');
+	if (pendingInboxes.length > songsAllowed) throw new ErrorKM('USER_INBOX_QUOTA_REACHED', 429, false);
+	return true;
 }
 
 export function decodeJwtToken(token: string): JWTTokenWithRoles | false {

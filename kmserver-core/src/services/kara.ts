@@ -6,6 +6,7 @@ import parallel from 'p-map';
 import { parse, resolve } from 'path';
 
 import { refreshKaraStats, selectAllKaras, selectAllMedias, selectAllYears, selectBaseStats} from '../dao/kara.js';
+import { refreshAllKaraTag } from '../dao/tag.js';
 import { copyFromData } from '../lib/dao/database.js';
 import { getLyrics } from '../lib/dao/karafile.js';
 import { generateDatabase } from '../lib/services/generation.js';
@@ -26,9 +27,8 @@ import { generateHardsubs } from '../utils/hardsubs.js';
 import sentry from '../utils/sentry.js';
 import { getState } from '../utils/state.js';
 import { updateGit } from './git.js';
-import { clearOldInboxEntries, clearUnusedStagingTags, removeProcessedInboxes } from './inbox.js';
+import { clearProcessedInboxes, clearUnusedStagingTags } from './inbox.js';
 import { findUserByName } from './user.js';
-import { refreshAllKaraTag } from '../dao/tag.js';
 
 const service = 'Kara';
 
@@ -105,9 +105,9 @@ export async function createHardsubs() {
 
 export async function generate() {
 	try {
-		await removeProcessedInboxes();
 		await readAllRepoManifests();
-		await generateDatabase({validateOnly: false});
+		const karas = await generateDatabase({validateOnly: false});
+		await clearProcessedInboxes(karas);
 		const conf = getConfig();
 		// Download main.zip from gitlab to serve it ourselves
 		const repo = conf.System.Repositories[0];
@@ -124,7 +124,6 @@ export async function generate() {
 		if (conf.Frontend.Import.Enabled) await clearUnusedStagingTags();
 		const promises = [];
 		promises.push(computeSubchecksums());
-		if (conf.Frontend.Import.Enabled) promises.push(clearOldInboxEntries());
 		if (conf.System.Repositories[0].OnUpdateTrigger) promises.push(updateTrigger());
 		promises.push(refreshKaraStats());
 		promises.push(refreshAllKaraTag());

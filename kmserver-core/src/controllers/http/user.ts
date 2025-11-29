@@ -6,10 +6,11 @@ import { APIMessage } from '../../lib/services/frontend.js';
 import { getConfig } from '../../lib/utils/config.js';
 import { unescape } from '../../lib/utils/validators.js';
 import { refreshAnimeList } from '../../services/animeList.js';
-import { addBan, createUser, editUser, findUserByName, getAllUsers, getBans, getSubmittedInbox, removeBan, removeUser, resetPassword, resetPasswordRequest } from '../../services/user.js';
+import { getInbox } from '../../services/inbox.js';
+import { addBan, createUser, editUser, findUserByName, getAllUsers, getBans, removeBan, removeUser, resetPassword, resetPasswordRequest, setUserContributorTrustLevel } from '../../services/user.js';
 import { BanType, UserOptions } from '../../types/user.js';
 import { getState } from '../../utils/state.js';
-import { optionalAuth, requireAdmin, requireAuth, requireValidUser, updateLoginTime } from '../middlewares/auth.js';
+import { optionalAuth, requireAdmin, requireAuth, requireMaintainer, requireValidUser, updateLoginTime } from '../middlewares/auth.js';
 
 function editHandler(userFromToken: boolean): RequestHandler {
 	return async (req: any, res) => {
@@ -73,8 +74,11 @@ export default function userController(router: Router) {
 	router.route('/users')
 		.get(optionalAuth, async (req: any, res) => {
 			try {
+				const role = {};
+				if (req.query.role) role[req.query.role] = true;
 				const info = await getAllUsers({
-					public: !req.authToken?.roles?.admin,
+					publicOnly: !req.authToken?.roles?.admin,
+					roles: role,
 					filter: req.query.filter as string,
 					from: +req.query.from,
 					size: +req.query.size
@@ -144,6 +148,16 @@ export default function userController(router: Router) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
+	router.route('/users/:user/contributortrustlevel')
+		.put(requireAuth, requireValidUser, requireMaintainer, async (req, res) => {
+			try {
+				await setUserContributorTrustLevel(req.params.user, req.body.level);
+				res.status(200).json();
+			} catch (err) {
+				res.status(err.code || 500).json(APIMessage(err.message));
+			}
+		});
+
 	router.route('/myaccount')
 		.get(requireAuth, requireValidUser, updateLoginTime, async (req: any, res: any) => {
 			try {
@@ -174,7 +188,7 @@ export default function userController(router: Router) {
 	router.route('/myaccount/inbox/submitted')
 		.post(requireAuth, requireValidUser, updateLoginTime, async (req: any, res) => {
 			try {
-				const submissionInfo = await getSubmittedInbox(req.authToken.username.toLowerCase());
+				const submissionInfo = await getInbox(false, req.authToken.username.toLowerCase());
 				res.status(200).json(submissionInfo);
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));

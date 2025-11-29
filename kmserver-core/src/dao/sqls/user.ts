@@ -24,7 +24,7 @@ INSERT INTO users(
 ) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW(), NOW(), true, false, $11, $12, $13, $14, $15)
 `;
 
-export const selectUser = (filter = false, where?: string, offset_limit?: string, order = false) => `
+export const selectUser = (filter: string, where?: string[], offsetClause?: string, limitClause?: string, order = false) => `
 SELECT
 	pk_login AS login,
 	nickname,
@@ -50,14 +50,17 @@ SELECT
 	anime_list_ids,
 	(select count(fk_kid) from users_favorites where fk_login = pk_login)::integer as favorites_count,
 	flag_parentsonly,
+	contributor_trust_level,
+	flag_contributor_emails,
 	count(pk_login) OVER()::integer AS count
 FROM users
 WHERE
-	${where || 'TRUE'} AND
-	${filter ? 'to_tsvector(\'public.unaccent_conf\', concat(pk_login, \' \', nickname)) @@ to_tsquery(\'public.unaccent_conf\', $1)' : 'true'}
+	${where.length > 0 ? where.join(' AND ') : 'true' } AND
+	${filter ? 'to_tsvector(\'public.unaccent_conf\', concat(pk_login, \' \', nickname)) @@ to_tsquery(\'public.unaccent_conf\', :filter)' : 'true'}
 GROUP BY pk_login, nickname, password, roles, avatar_file, bio, url, email, location, flag_sendstats, main_series_lang, fallback_series_lang, password_last_modified_at, last_login_at, social_networks, flag_public, flag_displayfavorites, banner, language
 ${order ? 'ORDER BY pk_login asc' : ''}
-${offset_limit || ''}
+${limitClause}
+${offsetClause}
 `;
 
 export const deleteUser = `
@@ -71,6 +74,10 @@ UPDATE users SET password = $2, password_last_modified_at = NOW() WHERE pk_login
 
 export const updateLastLogin = `
 UPDATE users SET last_login_at = NOW() WHERE pk_login = $1 RETURNING last_login_at;
+`;
+
+export const updateContributorLevel = `
+UPDATE users SET contributor_trust_level = $2 WHERE pk_login = $1
 `;
 
 export const updateUser = `
@@ -93,8 +100,9 @@ UPDATE users SET
 	anime_list_to_fetch = $16,
 	anime_list_last_modified_at = $17,
 	anime_list_ids = $18,
-	flag_parentsonly = $19
-WHERE pk_login = $20 RETURNING pk_login as login, *;
+	flag_parentsonly = $19,
+	flag_contributor_emails = $20
+WHERE pk_login = $21 RETURNING pk_login as login, *;
 `;
 
 export const deleteInactiveUsers = `
@@ -112,7 +120,7 @@ DELETE FROM bans WHERE type = $1 AND value = $2
 `;
 
 export const selectBans = (type: string) => `
-SELECT type, value, banned_at, reason 
+SELECT type, value, banned_at, reason
 FROM bans
 ${type ? ` WHERE type = '${type}'` : ''}
 `;

@@ -158,11 +158,11 @@ export default function KSController(router: Router) {
 	router.route('/karas/repository')
 		.get(async (_req, res) => {
 			res.status(200).json({
-				Git: getConfig().System.Repositories[0].Git.URL,
+				Git: getConfig().System.Repositories[0].Git?.URL,
 				FullArchiveURL: getConfig().System.Repositories[0].FullArchiveURL,
 				SourceArchiveURL: getConfig().System.Repositories[0].SourceArchiveURL,
 				LatestCommit: await getLatestGitCommit(resolve(getState().dataPath, getConfig().System.Repositories[0].BaseDir), getConfig().System.Repositories[0].Git?.Branch),
-				ProjectID: getConfig().System.Repositories[0].Git.ProjectID,
+				ProjectID: getConfig().System.Repositories[0].Git?.ProjectID,
 				Manifest: getRepoManifest(getConfig().System.Repositories[0].Name)
 			} as RepositoryManifest);
 		});

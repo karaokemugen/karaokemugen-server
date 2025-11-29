@@ -1,7 +1,8 @@
 <template>
 	<div class="field is-expanded has-addons">
 		<div
-			v-if="results && !route.name.includes('playlist')"
+			v-if="results && !(route.name as string).includes('playlist') 
+				&& route.name !== 'user-login-submissions'"
 			class="control is-hidden-touch"
 		>
 			<collections-picker
@@ -82,7 +83,7 @@
 	});
 
 	const canCount = computed(() => ['types-id', 'types-years', 'search-query', 'user-login', 'user-login-animelist', 'users', 'suggest', 'playlists'].includes(route.name as string));
-	const canSearch = computed(() => ['types-id', 'types-years', 'search-query', 'user-login', 'user-login-animelist', 'users', 'suggest', 'playlists', 'playlist-slug'].includes(route.name as string));
+	const canSearch = computed(() => ['types-id', 'types-years', 'search-query', 'user-login', 'user-login-animelist', 'users', 'suggest', 'playlists', 'playlist-slug', 'user-login-submissions'].includes(route.name as string));
 	const searchLabel = computed((): string => {
 		if (route.name === 'users') {
 			return $t('search.types.users') as string;
@@ -99,6 +100,8 @@
 	const placeholder = computed((): string => {
 		if (route.name === 'users') {
 			return $t('search.placeholder.user') as string;
+		} else if (route.name === 'user-login-submissions') {
+			return $t('search.placeholder.submissions') as string;
 		} else if (route.name === 'playlists') {
 			return $t('search.placeholder.playlist') as string;
 		} else if (['types-id', 'types-years'].includes(route.name as string)) {
