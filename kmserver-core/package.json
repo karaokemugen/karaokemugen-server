@@ -58,7 +58,7 @@
   },
   "dependencies": {
     "@hiogawa/flac-picture": "^1.0.0-pre.5",
-    "@sentry/node": "^10.9.0",
+    "@sentry/node": "^10.27.0",
     "@sentry/tracing": "^7.120.4",
     "agentkeepalive": "^4.6.0",
     "anilist-node": "^1.14.1",
