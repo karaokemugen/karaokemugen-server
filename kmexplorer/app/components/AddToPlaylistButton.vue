@@ -121,7 +121,6 @@
 	}
 
 	async function callApi(plaid?: string) {
-		openModal('addDuplicateInPlaylist');
 		await useCustomFetch(`/api/playlist/${plaid}`, {
 			method: 'POST',
 			body: {
