@@ -673,12 +673,6 @@
 			"sort": "Ordenar por",
 			"goto": "Ir para a página {0}"
 		},
-		"types": {
-			"karaokes": "Canções",
-			"users": "Usuários",
-			"favorites": "Favoritos do usuário",
-			"suggestions": "Sugestões"
-		},
 		"next": "Próxima página",
 		"previous": "Página anterior"
 	},

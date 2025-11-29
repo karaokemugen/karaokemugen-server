@@ -734,12 +734,6 @@
 			"goto": "Przejdź do strony {0}",
 			"sort": "Sortuj wg",
 			"page": "Strona {0}"
-		},
-		"types": {
-			"karaokes": "Piosenki",
-			"users": "Użytkownicy",
-			"favorites": "Ulubione użytkownika",
-			"suggestions": "Sugestie"
 		}
 	}
 }

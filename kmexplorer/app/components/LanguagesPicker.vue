@@ -13,7 +13,7 @@
 					fixed-width
 					:icon="['fas', active ? 'chevron-up':'chevron-down']"
 				/>
-				{{ label }}
+				{{ $t('search.types.languages') }}
 			</button>
 		</template>
 		<o-dropdown-item
@@ -31,10 +31,6 @@
 	import { storeToRefs } from 'pinia';
 	import { useAuthStore } from '~/store/auth';
 	import { useMenubarStore } from '~/store/menubar';
-
-	defineProps<{
-		label: string
-	}>();
 
 	const languages = ref<string[]>([]);
 

@@ -560,12 +560,6 @@
 			"sort": "Sortieren nach",
 			"goto": "Zu Seite {0}",
 			"page": "Seite {0}"
-		},
-		"types": {
-			"suggestions": "Vorschläge",
-			"favorites": "Favoriten des Benutzers",
-			"users": "Benutzer",
-			"karaokes": "Lieder"
 		}
 	},
 	"profile": {

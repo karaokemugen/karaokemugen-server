@@ -241,12 +241,6 @@
 			"page": "Pajenn {0}",
 			"sort": "Rummañ dre"
 		},
-		"types": {
-			"users": "Implijerien",
-			"karaokes": "Kanaouennoù",
-			"favorites": "Pennrolloù implijer",
-			"suggestions": "Kinnigoù"
-		},
 		"placeholder": {
 			"playlist": "Anvioù, implijerien…",
 			"user": "Anvioù implijer…",

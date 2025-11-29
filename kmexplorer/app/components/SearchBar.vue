@@ -3,16 +3,10 @@
 		<div
 			v-if="results && !(route.name as string).includes('playlist') 
 				&& route.name !== 'user-login-submissions'"
-			class="control is-hidden-touch"
+			class="control is-hidden-touch mr-3"
 		>
-			<collections-picker
-				v-if="route.name !== 'suggest'"
-				:label="searchLabel"
-			/>
-			<languages-picker
-				v-if="route.name === 'suggest'"
-				:label="searchLabel"
-			/>
+			<collections-picker v-if="route.name !== 'suggest'" />
+			<languages-picker v-if="route.name === 'suggest'" />
 		</div>
 		<div
 			class="control is-expanded"
@@ -84,19 +78,7 @@
 
 	const canCount = computed(() => ['types-id', 'types-years', 'search-query', 'user-login', 'user-login-animelist', 'users', 'suggest', 'playlists'].includes(route.name as string));
 	const canSearch = computed(() => ['types-id', 'types-years', 'search-query', 'user-login', 'user-login-animelist', 'users', 'suggest', 'playlists', 'playlist-slug', 'user-login-submissions'].includes(route.name as string));
-	const searchLabel = computed((): string => {
-		if (route.name === 'users') {
-			return $t('search.types.users') as string;
-		} else if (route.name === 'user-login') {
-			return $t('search.types.favorites') as string;
-		} else if (route.name === 'suggest') {
-			return $t('search.types.suggestions') as string;
-		} else if (['types-id', 'types-years'].includes(route.name as string)) {
-			return $t(`menu.${route.name === 'types-years' ? 'years' : route.params.id}`) as string;
-		} else {
-			return $t('search.types.karaokes') as string;
-		}
-	});
+
 	const placeholder = computed((): string => {
 		if (route.name === 'users') {
 			return $t('search.placeholder.user') as string;

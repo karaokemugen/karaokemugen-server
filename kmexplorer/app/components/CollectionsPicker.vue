@@ -11,7 +11,7 @@
 					fixed-width
 					:icon="['fas', active ? 'chevron-up' : 'chevron-down']"
 				/>
-				{{ label }}
+				{{ $t('search.types.collections') }}
 			</button>
 		</template>
 		<p>{{ $t('layout.collections', { instance: url.hostname }) }}</p>
@@ -37,10 +37,6 @@
 	const { setEnabledCollections } = useLocalStorageStore();
 
 	const url = useRequestURL();
-
-	defineProps<{
-		label: string
-	}>();
 
 	const { data: collections } = await useCustomFetchAsync('/api/karas/tags', {
 		query: {

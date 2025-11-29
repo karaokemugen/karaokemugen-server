@@ -327,10 +327,8 @@
 			"sort": "Trier par"
 		},
 		"types": {
-			"karaokes": "Chansons",
-			"users": "Utilisateurs",
-			"favorites": "Favoris de l'utilisateur",
-			"suggestions": "Suggestions"
+			"collections": "Collections",
+			"languages": "Langues"
 		}
 	},
 	"modal": {

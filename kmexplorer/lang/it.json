@@ -627,12 +627,6 @@
 			"user": "Nomi utente…",
 			"playlist": "Nomi, utenti…"
 		},
-		"types": {
-			"karaokes": "Brani",
-			"suggestions": "Suggerimenti",
-			"users": "Utenti",
-			"favorites": "Preferiti dell'utente"
-		},
 		"previous": "Pagina precedente",
 		"next": "Prossima pagina"
 	},

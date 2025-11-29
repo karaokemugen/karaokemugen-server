@@ -253,13 +253,7 @@
 			"most_requested_recently": "Paling banyak diminta (12 bulan terakhir)"
 		},
 		"next": "Halaman selanjutnya",
-		"previous": "Halaman sebelumnya",
-		"types": {
-			"karaokes": "Lagu",
-			"favorites": "Favorit pengguna",
-			"users": "Pengguna",
-			"suggestions": "Usulan"
-		}
+		"previous": "Halaman sebelumnya"
 	},
 	"modal": {
 		"signup": {
