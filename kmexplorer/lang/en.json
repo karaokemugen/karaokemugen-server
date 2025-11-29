@@ -620,7 +620,6 @@
 		"EDIT_KARA_ERROR": "Unable to send the edit.",
 		"FILE_UPLOADED": "File uploaded.",
 		"USER_EDITED": "User successfully edited",
-		"TAG_CREATED": "Tag successfully created",
 		"USER_DELETED": "User successfully deleted",
 		"PASSWORD_UPDATED": "Password successfully updated",
 		"ADD_FAVORITE_ERROR": "Unable to add this song to your favorites",

@@ -57,8 +57,8 @@ export default function KIController(router: Router) {
 	});
 	router.post('/tags/createStaging', async (req, res) => {
 		try {
-			const tag = await addTag(req.body, {forceRepo: 'Staging'});
-			res.json({ code: 'TAG_CREATED', tag });
+			await addTag(req.body, {forceRepo: 'Staging'});
+			res.status(200).json();
 		} catch (err) {
 			res.status(err.code || 500).json(APIMessage(err.message));
 		}

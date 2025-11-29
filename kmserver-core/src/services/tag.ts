@@ -58,7 +58,7 @@ export async function addTag(tag: Tag, opts = {forceRepo: ''}) {
 			throw new ErrorKM('FORBIDDEN_TAG_TYPE', 403, false);
 		}
 
-		tag.tid = uuidV4();
+		tag.tid = tag.tid || uuidV4();
 		tag.tagfile = `${sanitizeFile(tag.name)}.${tag.tid.substring(0, 8)}.tag.json`;
 		if (opts.forceRepo) {
 			tag.repository = opts.forceRepo;

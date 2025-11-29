@@ -84,11 +84,7 @@
 					</div>
 				</section>
 				<footer class="modal-card-foot">
-					<button
-						class="button is-success"
-						:class="{ 'is-loading': loading }"
-						type="submit"
-					>
+					<button class="button is-success" type="submit">
 						{{
 							$t('modal.create_tag.submit')
 						}}
@@ -105,6 +101,7 @@
 	import { tagTypes, type TagType } from '~/assets/constants';
 	import { useConfigStore } from '~/store/config';
 	import type { TagTypeNum } from '%/lib/types/tag';
+	import { v4 as UUIDv4 } from 'uuid';
 
 	const { config } = storeToRefs(useConfigStore());
 
@@ -114,11 +111,10 @@
 		initialName?: string;
 	}>();
 
-	const loading = ref(false);
 	const types = ref(props.initialTagTypes || []);
 	const name = ref(props.initialName);
 
-	const emit = defineEmits<{ (e: 'addValue', tag: DBTag): void }>();
+	const emit = defineEmits<{ (e: 'sendNewTag', tag: DBTag): void }>();
 
 	watch([props], ([_newProps]) => {
 		if (props.active) {
@@ -147,21 +143,15 @@
 	}
 	async function submitForm() {
 		if (name.value && types.value?.length > 0) {
-			loading.value = true;
-			const { tag } = await useCustomFetch<{ tag: DBTag }>('/api/tags/createStaging', {
-				method: 'POST',
-				body: {
-					name: name.value,
-					types: types.value,
-					i18n: {
-						eng: name.value
-					}
+			emit('sendNewTag', {
+				tid : UUIDv4(),
+				name: name.value,
+				types: types.value as unknown as TagTypeNum[],
+				i18n: {
+					eng: name.value
 				}
-			}).finally(() => {
-				loading.value = false;
 			});
 			closeModal('createTag');
-			emit('addValue', tag);
 		}
 	}
 </script>

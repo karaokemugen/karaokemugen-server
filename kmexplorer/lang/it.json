@@ -243,7 +243,6 @@
 		"ADD_SUGGESTION_ERROR": "Impossibile inviare il suggerimento",
 		"GET_FAVORITES_FROM_USER_NOT_FOUND_ERROR": "Non è stato trovato alcun utente",
 		"GENERATED_KARA": "Karaoke inviato correttamente.",
-		"TAG_CREATED": "Tag creata correttamente",
 		"PL_IMPORT_ERROR": "Errore durante l'importazione della playlist",
 		"USER_DELETED": "Utente eliminato correttamente",
 		"GET_USER_ERROR": "Errore durante il recupero dell'utente",

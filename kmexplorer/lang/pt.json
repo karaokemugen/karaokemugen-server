@@ -310,7 +310,6 @@
 		"USER_CREATED": "Utilizador criado com sucesso",
 		"GENERATED_KARA": "Karaokê enviado com sucesso.",
 		"EDITED_KARA": "Modificação enviada com sucesso.",
-		"TAG_CREATED": "Tag criado com sucesso",
 		"NO_KARA_FOUND": "Nenhuma música encontrada",
 		"GET_KARA_ERROR": "Erro ao obter a música",
 		"GET_KARAS_ERROR": "Erro ao obter a lista de músicas",

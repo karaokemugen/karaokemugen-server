@@ -82,7 +82,7 @@
 		:active="!!currentVal && createTag"
 		:initial-tag-types="[tagType]"
 		:initial-name="currentVal"
-		@add-value="addValue"
+		@send-new-tag="sendNewTag"
 	/>
 </template>
 
@@ -102,7 +102,7 @@
 		noCreate: false
 	});
 
-	const emit = defineEmits<{ (e: 'change', value: string[]): void }>();
+	const emit = defineEmits<{ (e: 'change', value: string[]): void; (e: 'create', tag: DBTag): void; }>();
 
 	const availableTags = ref<DBTag[]>([]);
 	const values = ref<DBTag[]>([]);
@@ -186,6 +186,12 @@
 			return tag.name;
 		}
 	}
+
+	function sendNewTag(option: DBTag) {
+		emit('create', option);
+		addValue(option);
+	}
+
 	function addValue(option: DBTag) {
 		if (option) {
 			inputVisible.value = false;

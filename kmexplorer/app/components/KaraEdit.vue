@@ -196,16 +196,17 @@
 		<label class="title">{{ t('kara.import.sections.identity') }}</label>
 		<div class="box">
 			<div class="field">
-				<label class="label">{{ t('kara.tagtypes.langs', karaoke.data.tags.langs.length) }}</label>
+				<label class="label">{{ t('kara.tagtypes.langs', karaoke.data.tags.langs?.length || 0) }}</label>
 				<div class="control">
 					<editable-tag-group
 						:tag-type="5"
-						:params="karaoke.data.tags.langs"
+						:params="karaoke.data.tags.langs || []"
 						no-create
 						@change="(tags) => karaoke.data.tags.langs = tags"
+						@create="(tag) => addTagToCreateList(tag)"
 					/>
 					<p
-						v-if="karaoke.data.tags.langs.length === 0"
+						v-if="karaoke.data.tags.langs?.length === 0"
 						class="help is-danger"
 					>
 						{{ t('kara.import.langs_required') }}
@@ -217,7 +218,7 @@
 					class="label"
 					:title="t('kara.import.series_tooltip')"
 				>
-					{{ t('kara.tagtypes.series', karaoke.data.tags.series.length) }}
+					{{ t('kara.tagtypes.series', karaoke.data.tags.series?.length || 0) }}
 					<font-awesome-icon
 						:icon="['fas', 'question-circle']"
 						:fixed-width="true"
@@ -225,11 +226,12 @@
 				</label>
 				<editable-tag-group
 					:tag-type="1"
-					:params="karaoke.data.tags.series"
+					:params="karaoke.data.tags.series || []"
 					@change="(tags) => karaoke.data.tags.series = tags"
+					@create="(tag) => addTagToCreateList(tag)"
 				/>
 				<p
-					v-if="karaoke.data.tags.series.length === 0 && karaoke.data.tags.singers.length === 0 && karaoke.data.tags.singergroups.length === 0"
+					v-if="karaoke.data.tags.series?.length === 0 && karaoke.data.tags.singers?.length === 0 && karaoke.data.tags.singergroups?.length === 0"
 					class="help is-danger"
 				>
 					{{ t('kara.import.series_singers_required') }}
@@ -240,7 +242,7 @@
 					class="label"
 					:title="t('kara.import.franchises_tooltip')"
 				>
-					{{ t('kara.tagtypes.franchises', karaoke.data.tags.franchises.length) }}
+					{{ t('kara.tagtypes.franchises', karaoke.data.tags.franchises?.length || 0) }}
 					<font-awesome-icon
 						:icon="['fas', 'question-circle']"
 						:fixed-width="true"
@@ -248,20 +250,22 @@
 				</label>
 				<editable-tag-group
 					:tag-type="18"
-					:params="karaoke.data.tags.franchises"
+					:params="karaoke.data.tags.franchises || []"
 					@change="(tags) => karaoke.data.tags.franchises = tags"
+					@create="(tag) => addTagToCreateList(tag)"
 				/>
 			</div>
 			<div v-if="tagsCheckbox.get(3)?.length ?? 0 > 0" class="field">
-				<label class="label">{{ t('kara.tagtypes.songtypes', karaoke.data.tags.songtypes.length) }}</label>
+				<label class="label">{{ t('kara.tagtypes.songtypes', karaoke.data.tags.songtypes?.length || 0) }}</label>
 				<editable-tag-group
 					:checkboxes="true"
 					:tag-type="3"
-					:params="karaoke.data.tags.songtypes"
+					:params="karaoke.data.tags.songtypes || []"
 					@change="(tags) => karaoke.data.tags.songtypes = tags"
+					@create="(tag) => addTagToCreateList(tag)"
 				/>
 				<p
-					v-if="karaoke.data.tags.songtypes.length === 0"
+					v-if="karaoke.data.tags.songtypes?.length === 0"
 					class="help is-danger"
 				>
 					{{ t('kara.import.songtypes_required') }}
@@ -293,12 +297,13 @@
 				</div>
 			</div>
 			<div v-if="tagsCheckbox.get(14)?.length ?? 0 > 0" class="field">
-				<label class="label">{{ t('kara.tagtypes.versions', karaoke.data.tags.versions.length) }}</label>
+				<label class="label">{{ t('kara.tagtypes.versions', karaoke.data.tags.versions?.length || 0) }}</label>
 				<editable-tag-group
 					:checkboxes="true"
 					:tag-type="14"
-					:params="karaoke.data.tags.versions"
+					:params="karaoke.data.tags.versions || []"
 					@change="(tags) => karaoke.data.tags.versions = tags"
+					@create="(tag) => addTagToCreateList(tag)"
 				/>
 			</div>
 			<div class="field">
@@ -306,11 +311,12 @@
 				<div class="control">
 					<editable-tag-group
 						:tag-type="2"
-						:params="karaoke.data.tags.singers"
+						:params="karaoke.data.tags.singers || []"
 						@change="(tags) => karaoke.data.tags.singers = tags"
+						@create="(tag) => addTagToCreateList(tag)"
 					/>
 					<p
-						v-if="karaoke.data.tags.series.length === 0 && karaoke.data.tags.singers.length === 0 && karaoke.data.tags.singergroups.length === 0"
+						v-if="karaoke.data.tags.series?.length === 0 && karaoke.data.tags.singers?.length === 0 && karaoke.data.tags.singergroups?.length === 0"
 						class="help is-danger"
 					>
 						{{ t('kara.import.series_singers_required') }}
@@ -331,11 +337,12 @@
 				<div class="control">
 					<editable-tag-group
 						:tag-type="17"
-						:params="karaoke.data.tags.singergroups"
+						:params="karaoke.data.tags.singergroups || []"
 						@change="(tags) => karaoke.data.tags.singergroups = tags"
+						@create="(tag) => addTagToCreateList(tag)"
 					/>
 					<p
-						v-if="karaoke.data.tags.series.length === 0 && karaoke.data.tags.singers.length === 0 && karaoke.data.tags.singergroups.length === 0"
+						v-if="karaoke.data.tags.series?.length === 0 && karaoke.data.tags.singers?.length === 0 && karaoke.data.tags.singergroups?.length === 0"
 						class="help is-danger"
 					>
 						{{ t('kara.import.series_singers_required') }}
@@ -356,8 +363,9 @@
 				<div class="control">
 					<editable-tag-group
 						:tag-type="8"
-						:params="karaoke.data.tags.songwriters"
+						:params="karaoke.data.tags.songwriters || []"
 						@change="(tags) => karaoke.data.tags.songwriters = tags"
+						@create="(tag) => addTagToCreateList(tag)"
 					/>
 				</div>
 			</div>
@@ -375,8 +383,9 @@
 				<div class="control">
 					<editable-tag-group
 						:tag-type="4"
-						:params="karaoke.data.tags.creators"
+						:params="karaoke.data.tags.creators || []"
 						@change="(tags) => karaoke.data.tags.creators = tags"
+						@create="(tag) => addTagToCreateList(tag)"
 					/>
 				</div>
 			</div>
@@ -417,35 +426,37 @@
 		<label v-if="isCheckboxTagsNotEmpty()" class="title">{{ t('kara.import.sections.categorization') }}</label>
 		<div v-if="isCheckboxTagsNotEmpty()" class="box">
 			<div v-if="tagsCheckbox.get(16)?.length ?? 0 > 0" class="field">
-				<label class="label">{{ t('kara.tagtypes.collections', karaoke.data.tags.collections.length) }}</label>
+				<label class="label">{{ t('kara.tagtypes.collections', karaoke.data.tags.collections?.length || 0) }}</label>
 				<div class="control">
 					<editable-tag-group
 						:checkboxes="true"
 						:tag-type="16"
-						:params="karaoke.data.tags.collections"
+						:params="karaoke.data.tags.collections || []"
 						@change="(tags) => karaoke.data.tags.collections = tags"
+						@create="(tag) => addTagToCreateList(tag)"
 					/>
 				</div>
 				<p
-					v-if="karaoke.data.tags.collections.length === 0"
+					v-if="karaoke.data.tags.collections?.length === 0"
 					class="help is-danger"
 				>
 					{{ t('kara.import.collections_required') }}
 				</p>
 			</div>
 			<div  v-if="tagsCheckbox.get(10)?.length ?? 0 > 0" class="field">
-				<label class="label">{{ t('kara.tagtypes.families', karaoke.data.tags.families.length) }}</label>
+				<label class="label">{{ t('kara.tagtypes.families', karaoke.data.tags.families?.length || 0) }}</label>
 				<div class="control">
 					<editable-tag-group
 						:checkboxes="true"
 						:tag-type="10"
-						:params="karaoke.data.tags.families"
+						:params="karaoke.data.tags.families || []"
 						@change="(tags) => karaoke.data.tags.families = tags"
+						@create="(tag) => addTagToCreateList(tag)"
 					/>
 				</div>
 			</div>
 			<div  v-if="tagsCheckbox.get(13)?.length ?? 0 > 0" class="field">
-				<label class="label">{{ t('kara.tagtypes.platforms', karaoke.data.tags.platforms.length) }}</label>
+				<label class="label">{{ t('kara.tagtypes.platforms', karaoke.data.tags.platforms?.length || 0) }}</label>
 				<div class="control">
 					<o-collapse :open="false">
 						<template #trigger>
@@ -457,53 +468,58 @@
 							class="show-hide"
 							:checkboxes="true"
 							:tag-type="13"
-							:params="karaoke.data.tags.platforms"
+							:params="karaoke.data.tags.platforms || []"
 							@change="(tags) => karaoke.data.tags.platforms = tags"
+							@create="(tag) => addTagToCreateList(tag)"
 						/>
 					</o-collapse>
 				</div>
 			</div>
 			<div  v-if="tagsCheckbox.get(12)?.length ?? 0 > 0" class="field">
-				<label class="label">{{ t('kara.tagtypes.genres', karaoke.data.tags.genres.length) }}</label>
+				<label class="label">{{ t('kara.tagtypes.genres', karaoke.data.tags.genres?.length || 0) }}</label>
 				<div class="control">
 					<editable-tag-group
 						:checkboxes="true"
 						:tag-type="12"
-						:params="karaoke.data.tags.genres"
+						:params="karaoke.data.tags.genres || []"
 						@change="(tags) => karaoke.data.tags.genres = tags"
+						@create="(tag) => addTagToCreateList(tag)"
 					/>
 				</div>
 			</div>
 			<div  v-if="tagsCheckbox.get(11)?.length ?? 0 > 0" class="field">
-				<label class="label">{{ t('kara.tagtypes.origins', karaoke.data.tags.origins.length) }}</label>
+				<label class="label">{{ t('kara.tagtypes.origins', karaoke.data.tags.origins?.length || 0) }}</label>
 				<div class="control">
 					<editable-tag-group
 						:checkboxes="true"
 						:tag-type="11"
-						:params="karaoke.data.tags.origins"
+						:params="karaoke.data.tags.origins || []"
 						@change="(tags) => karaoke.data.tags.origins = tags"
+						@create="(tag) => addTagToCreateList(tag)"
 					/>
 				</div>
 			</div>
 			<div  v-if="tagsCheckbox.get(7)?.length ?? 0 > 0" class="field">
-				<label class="label">{{ t('kara.tagtypes.misc', karaoke.data.tags.misc.length) }}</label>
+				<label class="label">{{ t('kara.tagtypes.misc', karaoke.data.tags.misc?.length || 0) }}</label>
 				<div class="control">
 					<editable-tag-group
 						:checkboxes="true"
 						:tag-type="7"
-						:params="karaoke.data.tags.misc"
+						:params="karaoke.data.tags.misc || []"
 						@change="(tags) => karaoke.data.tags.misc = tags"
+						@create="(tag) => addTagToCreateList(tag)"
 					/>
 				</div>
 			</div>
 			<div  v-if="tagsCheckbox.get(15)?.length ?? 0 > 0" class="field">
-				<label class="label">{{ t('kara.tagtypes.warnings', karaoke.data.tags.warnings.length) }}</label>
+				<label class="label">{{ t('kara.tagtypes.warnings', karaoke.data.tags.warnings?.length || 0) }}</label>
 				<div class="control">
 					<editable-tag-group
 						:checkboxes="true"
 						:tag-type="15"
-						:params="karaoke.data.tags.warnings"
+						:params="karaoke.data.tags.warnings || []"
 						@change="(tags) => karaoke.data.tags.warnings = tags"
+						@create="(tag) => addTagToCreateList(tag)"
 					/>
 				</div>
 			</div>
@@ -512,7 +528,7 @@
 					class="label"
 					:title="t('kara.import.groups_tooltip')"
 				>
-					{{ t('kara.tagtypes.groups', karaoke.data.tags.groups.length) }}
+					{{ t('kara.tagtypes.groups', karaoke.data.tags.groups?.length || 0) }}
 					<font-awesome-icon
 						:icon="['fas', 'question-circle']"
 						:fixed-width="true"
@@ -522,8 +538,9 @@
 					<editable-tag-group
 						:checkboxes="true"
 						:tag-type="9"
-						:params="karaoke.data.tags.groups"
+						:params="karaoke.data.tags.groups || []"
 						@change="(tags) => karaoke.data.tags.groups = tags"
+						@create="(tag) => addTagToCreateList(tag)"
 					/>
 				</div>
 			</div>
@@ -573,11 +590,12 @@
 				<div class="control">
 					<editable-tag-group
 						:tag-type="6"
-						:params="karaoke.data.tags.authors"
+						:params="karaoke.data.tags.authors || []"
 						@change="(tags) => karaoke.data.tags.authors = tags"
+						@create="(tag) => addTagToCreateList(tag)"
 					/>
 					<p
-						v-if="karaoke.data.tags.authors.length === 0"
+						v-if="karaoke.data.tags.authors?.length === 0"
 						class="help is-danger"
 					>
 						{{ t('kara.import.authors_required') }}
@@ -702,6 +720,7 @@
 	const parents = ref<{ label: string; value: string }[]>([]);
 	const karaSearch = ref<{ label: string; value: string }[]>([]);
 	const tagsCheckbox = ref<Map<number, DBTag[]>>(new Map());
+	const tagsToCreateList = ref<DBTag[]>([]);
 
 	const debouncedGetAsyncData = ref();
 	const mediafileInput = ref<HTMLInputElement>();
@@ -732,7 +751,7 @@
 	
 	const displayTypeOptions = computed(() => {
 		const tagtypes = ['']
-			.concat(Object.keys(tagTypes).filter(tagType => karaoke.value.data.tags[tagType.toLowerCase()]?.length > 0));
+			.concat(Object.keys(tagTypes).filter(tagType => karaoke.value.data.tags[tagType.toLowerCase()]?.length || 0 > 0));
 			return tagtypes.map(tagType => {
 				return {
 					label: t(tagType ? `kara.tagtypes.${tagType}` : 'kara.tagtypes.default'),
@@ -743,7 +762,7 @@
 	);
 
 	watchEffect(async () => {
-		const tagtypes = Object.keys(tagTypes).filter(tagType => karaoke.value.data.tags[tagType.toLowerCase()]?.length > 0);
+		const tagtypes = Object.keys(tagTypes).filter(tagType => karaoke.value.data.tags[tagType.toLowerCase()]?.length || 0 > 0);
 		if (karaoke.value.data.from_display_type
 			&& !tagtypes.includes(karaoke.value.data.from_display_type)) {
 			karaoke.value.data.from_display_type = undefined;
@@ -828,11 +847,11 @@
 		// Check if user has already started doing input, or if it's an edit of existing kara
 		if (
 			karas.content.length > 0 &&
-			karas.content[0].kid === kid &&
+			karas.content[0]?.kid === kid &&
 			!props.kara?.kid &&
-			karaoke.value?.data.tags.series.length === 0 &&
-			karaoke.value?.data.tags.langs.length === 0 &&
-			karaoke.value?.data.tags.versions.length === 0 &&
+			karaoke.value?.data.tags.series?.length === 0 &&
+			karaoke.value?.data.tags.langs?.length === 0 &&
+			karaoke.value?.data.tags.versions?.length === 0 &&
 			Object.keys(karaoke.value?.data?.titles).length === 0
 		) {
 			karas.content[0].kid = '';
@@ -847,8 +866,8 @@
 		return Boolean(
 			(!params.id && !mediafile.value) ||
 				karaoke.value.medias.length === 0 ||
-				karaoke.value.medias[0].filesize === 0 ||
-				!isSupportedMediaFile(karaoke.value.medias[0].filename) ||
+				karaoke.value.medias[0]?.filesize === 0 ||
+				!isSupportedMediaFile(karaoke.value.medias[0]?.filename || '') ||
 				mediafile_error.value.length > 0 ||
 				subfile_error.value.length > 0 ||
 				!karaoke.value.data.titles ||
@@ -858,9 +877,9 @@
 				(karaoke.value.data.tags.series?.length === 0 &&
 					karaoke.value.data.tags.singergroups?.length === 0 &&
 					karaoke.value.data.tags.singers?.length === 0) ||
-				karaoke.value.data.tags.songtypes.length === 0 ||
-				karaoke.value.data.tags.langs.length === 0 ||
-				karaoke.value.data.tags.collections.length === 0 ||
+				karaoke.value.data.tags.songtypes?.length === 0 ||
+				karaoke.value.data.tags.langs?.length === 0 ||
+				karaoke.value.data.tags.collections?.length === 0 ||
 				!karaoke.value.data.year ||
 				karaoke.value.data.year < 1800 ||
 				karaoke.value.data.year > new Date().getFullYear() ||
@@ -917,7 +936,7 @@
 							filesize: Number(result.size),
 							duration: result.duration,
 							default: true,
-							lyrics: karaoke.value.medias[0].lyrics || []
+							lyrics: karaoke.value.medias[0]?.lyrics || []
 						}];
 						uploading_media.value = false;
 					},
@@ -956,11 +975,13 @@
 						uploading_sub.value = Math.round((progressEvent.loaded * 100) / progressEvent.total);
 					},
 					(result: string) => {
-						karaoke.value.medias[0].lyrics = [{
-							filename: result,
-							default: true,
-							version: 'Default'
-						}];
+						if (karaoke.value.medias[0]) {
+							karaoke.value.medias[0].lyrics = [{
+								filename: result,
+								default: true,
+								version: 'Default'
+							}];
+						}
 						uploading_sub.value = false;
 					},
 					(code: string) => {
@@ -986,7 +1007,21 @@
 			`^.+\\.(${supportedFiles?.value?.lyrics.join('|')})$`
 		).test(filename);
 	}
-	function submit() {
+
+	function addTagToCreateList(tag: DBTag) {
+		tagsToCreateList.value.push(tag);
+	}
+
+	async function addNewTagsToStaging() {
+		for (const tag of tagsToCreateList.value) {
+			await useCustomFetch<{ tag: DBTag }>('/api/tags/createStaging', {
+					method: 'POST',
+					body: tag
+			});
+		}
+	}
+	
+	async function submit() {
 		if (config?.value && config.value.Frontend.Import.LoginNeeded && !loggedIn.value) {
 			displayAuthIfLoginIsRequired();
 			return;
@@ -1002,7 +1037,6 @@
 		for (const tag of Object.keys(karaokeElem.data.tags)) {
 			// @ts-expect-error: Object.keys type inference is bad hot take
 			if (tag in karaokeElem.data.tags && karaokeElem.data.tags[tag].length === 0) {
-				// @ts-expect-error
 				delete karaokeElem.data.tags[tag];
 			}
 		}
@@ -1014,6 +1048,7 @@
 		if (!karaokeElem.data.comment) karaokeElem.data.comment = undefined;
 		if (!karaokeElem.data.songorder) karaokeElem.data.songorder = undefined;
 		if (karaokeElem.data.titles_aliases?.length === 0) karaokeElem.data.titles_aliases = undefined;
+		await addNewTagsToStaging();
 		if (params.id) {
 			useCustomFetch<{data : string }>(
 				`/api/karas/${karaokeElem.data.kid}`,
