@@ -8,10 +8,13 @@ export interface UserOptions {
 }
 
 export interface UserParams {
-	public: boolean,
 	filter?: string,
 	from?: number,
-	size?: number
+	size?: number,
+	publicOnly?: boolean,
+	roles?: Roles,
+	username?: string,
+	nickname?: string,
 }
 
 export interface UserList extends DBList {

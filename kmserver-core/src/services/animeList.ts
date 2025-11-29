@@ -2,7 +2,7 @@ import Anilist from 'anilist-node';
 import Kitsu from 'kitsu';
 import malScraper from 'mal-scraper';
 
-import { selectUser, updateUser } from '../dao/user.js';
+import { selectAllUsers, updateUser } from '../dao/user.js';
 import { KitsuResponseLibraryEntries } from '../lib/types/animeListApi.js';
 import { myanimelistStatusCompleted, myanimelistStatusWatching } from '../lib/utils/constants.js';
 import logger from '../lib/utils/logger.js';
@@ -17,7 +17,7 @@ const service = 'AnimeList';
 export async function refreshAnimeList(username: string): Promise<boolean> {
 	try {
 		username = username.toLowerCase();
-		const user = await selectUser('pk_login', username);
+		const user = (await selectAllUsers({ username }))[0];
 		const animeListToFetch = user.anime_list_to_fetch;
 
 		let animeListIds: number[] = null;

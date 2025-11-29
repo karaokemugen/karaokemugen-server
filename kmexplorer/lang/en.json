@@ -165,10 +165,7 @@
 			"parents": "Parents",
 			"parents_tooltip": "If a parent is defined, this karaoke will show as alternative to the selected parent karaoke(s).",
 			"created_at": "Creation date",
-			"add_success": "Your karaoke has been successfully sent!",
-			"add_success_description": "An issue has been created on our tracker. You can check its progression at {url}",
 			"add_error": "An error has occurred, karaoke has not been sent properly",
-			"restart": "Submit new karaoke",
 			"i18n_select": "Add a language",
 			"i18n_delete": "Remove language",
 			"romanization_warning": "This title/tag contains a non-Latin alphabet language. You must add the language “Latin Alphabet (Romanization)” as well unless the title in non-Latin alphabet is a transcription of another language in its entirety.",
@@ -267,14 +264,16 @@
 		"playlists": "Playlists",
 		"remotes": "Remotes",
 		"administration": "Administration",
+		"dashboard": "Dashboard",
 		"bans": "Bans",
 		"search_users": "Search users",
 		"discord": "Discord",
-		"discourse": "Forum",
+		"forum": "Forum",
 		"kara_import": "Submit a karaoke",
 		"kara_suggest": "Suggest a karaoke",
 		"account": "Account",
 		"anime_list": "My animes",
+		"submissions": "My submissions",
 		"login": "Login",
 		"logout": "Logout",
 		"register": "Register",
@@ -290,14 +289,16 @@
 		"playlists_count": "{count} playlist | {count} playlists",
 		"anime_list": "My animes",
 		"public_favorites": "Your favorites are public. Click to hide them.",
-		"private_favorites": "Your favorites are private. Click to show them."
+		"private_favorites": "Your favorites are private. Click to show them.",
+		"submissions": "My submissions"
 	},
 	"search": {
 		"placeholder": {
 			"kara": "Series, singers, names…",
 			"user": "Usernames…",
 			"tag": "Tags names…",
-			"playlist": "Names, users…"
+			"playlist": "Names, users…",
+			"submissions": "Names"
 		},
 		"sort": {
 			"a_z": "A-Z",
@@ -311,7 +312,9 @@
 			"likes": "Most likes",
 			"languages": "By languages",
 			"duration": "By durations",
-			"username": "By usernames"
+			"username": "By usernames",
+			"recent_modified": "By modified date",
+			"status": "By status"
 		},
 		"next": "Next page",
 		"previous": "Previous page",
@@ -466,6 +469,11 @@
 					"label": "Public profile",
 					"checkbox": "Make my profile public",
 					"desc": "By default, your account is visible via the user search and shows all the above informations with the exception of the e-mail address. If you uncheck this box, your account will not be available anymore in the search results (you will be the only one to be able to see it, once you've logged in)."
+				},
+				"flag_contributor_emails": {
+					"label": "My Contributions",
+					"checkbox": "Send mails on your contributions' status changes",
+					"desc": "By enabling this, you'll receive emails each time your submitted songs change status (accepted, refused, requesting changes, etc.) Status changes occur when a database maintainer reviews your submitted songs."
 				},
 				"flag_displayfavorites": {
 					"label": "Favorites",
@@ -667,7 +675,8 @@
 		"PL_SHARE_ERROR": "Error sharing playlist",
 		"PL_SHARE_CLIPBOARD_SUCCESS": "Playlist link copied in clipboard",
 		"PL_SHARE_CLIPBOARD_FAIL": "Couldn't write playlist link to clipboard",
-		"PL_SHUFFLE_ERROR": "Error shuffling playlist"
+		"PL_SHUFFLE_ERROR": "Error shuffling playlist",
+		"USER_INBOX_QUOTA_REACHED": "You reached your quota."
 	},
 	"roles": {
 		"donator": "Donator",
@@ -714,13 +723,18 @@
 		"yes": "Yes",
 		"no": "No"
 	},
-	"administration": {
+	"dashboard": {
 		"update_git": "Update Git repository",
 		"update_git_triggered": "Update has been triggered.",
 		"generate_database": "Generate database",
 		"generation_triggered": "Generation has been triggered.",
 		"generate_previews": "Generate previews",
-		"generate_hardsubs": "Generate hardsubs"
+		"generate_hardsubs": "Generate hardsubs",
+		"trust_levels": "Contributor trust level",
+		"available_trust_levels": "Trust level available:",
+		"trust_level_submissions": "Level {level} : {songs} submissions",
+		"trust_level": "Level {level}",
+		"submissions_status": "Only submissions with the statuses 'Sent', 'Under Review', and 'Change Required' are counted toward the quota."
 	},
 	"playlists": {
 		"create": "Create new playlist",
@@ -757,5 +771,23 @@
 	},
 	"languages": {
 		"qro": "Latin Alphabet (Romanization)"
+	},
+	"submissions": {
+		"status": {
+			"sent": "Sent",
+			"in_review": "In review",
+			"changes_requested": "Changes requested",
+			"accepted": "Accepted",
+			"rejected": "Rejected"
+		},
+		"modified_at": "Modified at {date}",
+		"rejected_reason_button": "Rejected reason",
+		"rejected_reason": "Rejected reason: {reason}",
+		"cleanup": "Submissions with the status 'Rejected', 'Accepted', or 'Changes required' that are older than {days} days are automatically deleted.",
+		"contact_maintainers": "If you need to contact the maintainers, you can reach them via:",
+		"email": "Email",
+		"forum": "Forum",
+		"discord": "Discord",
+		"quota": "You can sent { songs } / { quota } songs."
 	}
 }

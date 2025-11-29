@@ -7,7 +7,6 @@ import { processUploadedMedia } from '../../lib/services/karaCreation.js';
 import {getConfig} from '../../lib/utils/config.js';
 import {createKara, editKara} from '../../services/karaImport.js';
 import { addTag } from '../../services/tag.js';
-import { canSubmitInbox } from '../../services/user.js';
 import { getState } from '../../utils/state.js';
 import { optionalAuth } from '../middlewares/auth.js';
 
@@ -16,41 +15,23 @@ export default function KIController(router: Router) {
 	const upload = multer({ dest: resolve(getState().dataPath, conf.System.Path.Temp)});
 
 	router.route('/karas')
-		.post(optionalAuth, async (req: any, res) => {
-			if (getConfig().Frontend.Import.LoginNeeded) {
-				// Check if logged in
-				if (!req.authToken) {
-					res.status(401).json();
-					return;
-				}
-				// Check if user has reached limit
-				if (!canSubmitInbox(req.authToken.username.toLowerCase())) {
-					res.status(403).json();
-					return;
-				}
-			}
-			// If login needed check check if kara limit has been reached
-			try {
-				const url = await createKara(req.body.kara, req.body.contact, req.authToken?.username.toLowerCase());
-				res.status(200).json(APIMessage('GENERATED_KARA', url || ''));
-			} catch (err) {
-				res.status(err.code || 500).json(APIMessage(err.message));
-			}
-		});
+		.post(optionalAuth, async (req: any, res: any) => {
+		try {
+			const url = await createKara(req.body.kara, req.body.contact, req.authToken?.username.toLowerCase());
+			res.status(200).json(APIMessage('GENERATED_KARA', url || ''));
+		} catch (err) {
+			res.status(err.code || 500).json(APIMessage(err.message));
+		}
+	});
 	router.route('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})')
 		.put(optionalAuth, async (req: any, res: any) => {
-			// If login needed, raise error if not logged in
-			if (!req.authToken && getConfig().Frontend.Import.LoginNeeded) {
-				res.status(401).json();
-				return;
-			}
-			try {
-				const url = await editKara(req.body, req.body.contact, req.authToken?.username.toLowerCase());
-				res.status(200).json(APIMessage('EDITED_KARA', url || ''));
-			} catch (err) {
-				res.status(err.code || 500).json(APIMessage(err.message));
-			}
-		});
+		try {
+			const url = await editKara(req.body, req.body.contact, req.authToken?.username.toLowerCase(), req.body.inid);
+			res.status(200).json(APIMessage('EDITED_KARA', url || ''));
+		} catch (err) {
+			res.status(err.code || 500).json(APIMessage(err.message));
+		}
+	});
 	router.post('/karas/importMedia', upload.single('file'), async (req, res) => {
 		try {
 			if (req.file) {

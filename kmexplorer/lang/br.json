@@ -61,8 +61,6 @@
 			"i18n_select": "Ouzhpennañ ur yezh",
 			"i18n_delete": "Dilemel ar yezh",
 			"created_at": "Deiziad krouiñ",
-			"add_success": "Kaset eo bet ho karaoke !",
-			"restart": "Kas ur karaoke nevez",
 			"sections": {
 				"files": "Restroù",
 				"titles": "Titl(où)"
@@ -181,7 +179,7 @@
 		"remotes": "Remotes",
 		"search_users": "Implijerien",
 		"discord": "Discord",
-		"discourse": "Forom",
+		"forum": "Forom",
 		"kara_import": "Kas ur kara",
 		"account": "Kont",
 		"anime_list": "Ma animeoù",

@@ -660,46 +660,6 @@
 					>{{ t('kara.import.lyrics_file_missing') }}</span>
 				</div>
 			</div>
-			<div
-				class="modal"
-				:class="{'is-active': gitlabUrl}"
-			>
-				<div class="modal-background" />
-				<div class="modal-card">
-					<header class="modal-card-head">
-						<p class="modal-card-title">
-							{{ t('kara.import.add_success') }}
-						</p>
-						<nuxt-link
-							class="delete"
-							aria-label="close"
-							@click.prevent="reset"
-						/>
-					</header>
-					<i18n-t
-						keypath="kara.import.add_success_description"
-						tag="section"
-						class="modal-card-body"
-					>
-						<template #url>
-							<nuxt-link
-								:href="gitlabUrl"
-								target="_blank"
-							>
-								{{ gitlabUrl }}
-							</nuxt-link>
-						</template>
-					</i18n-t>
-					<footer class="modal-card-foot">
-						<button
-							class="button is-success"
-							@click.prevent="reset"
-						>
-							{{ t('kara.import.restart') }}
-						</button>
-					</footer>
-				</div>
-			</div>
 		</div>
 	</div>
 </template>
@@ -734,7 +694,6 @@
 	const subfile = ref('');
 	const mediafile_error = ref('');
 	const subfile_error = ref('');
-	const gitlabUrl = ref('');
 	const loading = ref(false);
 	const uploading_media = ref<number | boolean>(false);
 	const uploading_sub = ref<number | boolean>(false);
@@ -750,7 +709,7 @@
 
 	const url = useRequestURL();
 
-	const { params } = useRoute();
+	const { params, query } = useRoute();
 	const { push } = useRouter();
 
 	const { loggedIn, user } = storeToRefs(useAuthStore());
@@ -1061,14 +1020,15 @@
 				{
 					method: 'PUT',
 					body: {
+						inid: query.inid,
 						kara: karaokeElem,
 						modifiedMedia: !!mediafile.value,
 						modifiedLyrics: !!subfile.value,
 						contact
 					}
 				}
-			).then((res) => {
-				gitlabUrl.value = res.data;
+			).then(() => {
+				redirect();
 			}).finally(() => {
 				loading.value = false;
 			});
@@ -1082,28 +1042,22 @@
 						contact
 					}
 				}
-			).then((res) => {
-				gitlabUrl.value = res.data;
+			).then(() => {
+				redirect();
 			}).finally(() => {
 				loading.value = false;
 			});
 		}
 	}
-	function reset() {
-		if (params.id) {
-			push('/import');
+
+	function redirect() {
+		if (loggedIn.value) {
+			push(`/user/${user?.value?.login}/submissions`);
 		} else {
-			karaoke.value = convertDBKaraToKaraFile();
-			parents.value = [];
-			mediafile.value = '';
-			subfile.value = '';
-			mediafile_error.value = '';
-			subfile_error.value = '';
-			gitlabUrl.value = '';
-			mediafileInput.value = undefined;
-			subfileInput.value = undefined;
+			push('/');
 		}
 	}
+
 	async function getTagsCheckbox() {
 		const newTagsCheckbox = new Map(tagsCheckbox.value);
 		for (const type of typeTagCheckbox) {

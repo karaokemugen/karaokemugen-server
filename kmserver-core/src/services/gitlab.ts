@@ -15,8 +15,7 @@ import { findUserByName } from './user.js';
 
 const service = 'Gitlab';
 
-/** Use the appropriate template and post an inbox element to GitLab * */
-export async function createInboxIssue(kid: string, edit?: EditElement) {
+export async function buildIssue(kid: string, edit?: EditElement) {
 	const conf = getConfig();
 	let kara = await getKara({
 		q: `k:${kid}`
@@ -105,13 +104,57 @@ export async function createInboxIssue(kid: string, edit?: EditElement) {
 			}
 			desc += changes.map(c => `- ${c}`).join('\n');
 		}
-	return gitlabCreateIssue(title, desc, issueTemplate.Labels);
+	return {
+		title,
+		description: desc
+	}
+}
+
+/** Use the appropriate template and post an inbox element to GitLab * */
+export async function createInboxIssue(kid: string, edit?: EditElement) {
+	const conf = getConfig();
+	const issueTemplate = edit ? conf.Gitlab.IssueTemplate.Edit : conf.Gitlab.IssueTemplate.Import;
+	const issue = await buildIssue(kid, edit);
+	return gitlabCreateIssue(issue.title, issue.description, issueTemplate.Labels);
+}
+
+export async function editInboxIssue(kid: string, issueID: number, edit?: EditElement) {
+	const issue = await buildIssue(kid, edit);
+	return gitlabEditIssue(issueID, issue.title, issue.description);
+}
+
+async function gitlabEditIssue(issueID: number, title: string, desc: string) {
+	const conf = getConfig();
+	if (!conf.System.Repositories[0].Git?.ProjectID) return;
+	const params = {
+		title,
+		// Tildes are often found in japanese names and can cause strikeout text in markdown once rendered.
+		description: desc.replaceAll('~', '\\~'),
+	};
+	const url = new URL(conf.System.Repositories[0].Git.URL);
+	try {
+		await HTTP.put(`${url.protocol}//${url.hostname}/api/v4/projects/${conf.System.Repositories[0].Git.ProjectID}/issues/${issueID}`, params, {
+			headers: {
+				'PRIVATE-TOKEN': conf.System.Repositories[0].Git.Password,
+				'Content-Type': 'application/json'
+			},
+			timeout: 25000
+		});
+	} catch(err) {
+		logger.error(`Unable to update issue ${issueID}`, {service, obj: err?.response?.data?.message?.error || err});
+		sentry.addErrorInfo('Issue title', title);
+		sentry.addErrorInfo('Issue body', desc);
+		sentry.error(err);
+		throw err;
+	}
+
 }
 
 /** Posts a new issue to gitlab and return its URL */
 async function gitlabCreateIssue(title: string, desc: string, labels: string[]): Promise<string> {
 	try {
 		const conf = getConfig();
+		if (!conf.System.Repositories[0].Git?.ProjectID) return;
 		if (!labels) labels = [];
 		const params = {
 			id: `${conf.System.Repositories[0].Git.ProjectID}`,

@@ -20,7 +20,7 @@
 							alt="Logo"
 						>
 					</picture>
-					{{ url.hostname }}
+					<span class="is-hidden-touch">{{ url.hostname }}</span>
 				</nuxt-link>
 				<div
 					class="navbar-item is-hidden-desktop"
@@ -49,6 +49,17 @@
 					>
 						<font-awesome-icon
 							:icon="['fas', 'at']"
+							:fixed-width="true"
+						/>
+					</nuxt-link>
+				</div>
+				<div class="navbar-item has-dropdown is-hidden-desktop">
+					<nuxt-link
+						class="navbar-link"
+						@click="openMenu('administration')"
+					>
+						<font-awesome-icon
+							:icon="['fas', 'screwdriver-wrench']"
 							:fixed-width="true"
 						/>
 					</nuxt-link>
@@ -108,32 +119,6 @@
 					/>
 					{{ $t('menu.playlists') }}
 				</nuxt-link>
-				<client-only>
-					<nuxt-link
-						v-if="loggedIn && user?.roles?.admin"
-						class="navbar-item"
-						to="/administration"
-						@click="closeMenu"
-					>
-						<font-awesome-icon
-							:icon="['fas', 'screwdriver-wrench']"
-							:fixed-width="true"
-						/>
-						{{ $t('menu.administration') }}
-					</nuxt-link>
-					<nuxt-link
-						v-if="loggedIn && user?.roles?.admin"
-						class="navbar-item"
-						to="/remote"
-						@click="closeMenu"
-					>
-						<font-awesome-icon
-							:icon="['fas', 'house-laptop']"
-							:fixed-width="true"
-						/>
-						{{ $t('menu.remotes') }}
-					</nuxt-link>
-				</client-only>
 				<nuxt-link
 					v-if="config?.Users.Enabled"
 					class="navbar-item"
@@ -146,20 +131,6 @@
 					/>
 					{{ $t('menu.search_users') }}
 				</nuxt-link>
-				<client-only>
-					<nuxt-link
-						v-if="loggedIn && user?.roles?.admin"
-						class="navbar-item"
-						to="/bans"
-						@click="closeMenu"
-					>
-						<font-awesome-icon
-							:icon="['fas', 'ban']"
-							:fixed-width="true"
-						/>
-						{{ $t('menu.bans') }}
-					</nuxt-link>
-				</client-only>
 				<nuxt-link
 					v-if="config?.Frontend.DiscordURL"
 					:href="config?.Frontend.DiscordURL"
@@ -173,8 +144,8 @@
 					{{ $t('menu.discord') }}
 				</nuxt-link>
 				<nuxt-link
-					v-if="config?.Frontend.DiscourseURL"
-					:href="config?.Frontend.DiscourseURL"
+					v-if="config?.Frontend.ForumURL"
+					:href="config?.Frontend.ForumURL"
 					class="navbar-item"
 					@click="closeMenu"
 				>
@@ -182,7 +153,7 @@
 						:icon="['fab', 'discourse']"
 						:fixed-width="true"
 					/>
-					{{ $t('menu.discourse') }}
+					{{ $t('menu.forum') }}
 				</nuxt-link>
 				<nuxt-link
 					v-if="config?.Frontend.Import.Enabled"
@@ -208,6 +179,49 @@
 					/>
 					{{ $t('menu.kara_suggest') }}
 				</nuxt-link>
+			</div>
+
+			<div
+				v-if="menuOpen === 'administration' && loggedIn && (user?.roles?.admin || user?.roles?.maintainer)"
+				class="navbar-dropdown"
+			>
+				<client-only>
+					<nuxt-link
+						class="navbar-item"
+						to="/administration/dashboard"
+						@click="closeMenu"
+					>
+						<font-awesome-icon
+							:icon="['fas', 'screwdriver-wrench']"
+							:fixed-width="true"
+						/>
+						{{ $t('menu.dashboard') }}
+					</nuxt-link>
+					<nuxt-link
+						v-if="loggedIn && user?.roles?.admin"
+						class="navbar-item"
+						to="/administration/remote"
+						@click="closeMenu"
+					>
+						<font-awesome-icon
+							:icon="['fas', 'house-laptop']"
+							:fixed-width="true"
+						/>
+						{{ $t('menu.remotes') }}
+					</nuxt-link>
+					<nuxt-link
+						v-if="loggedIn && user?.roles?.admin"
+						class="navbar-item"
+						to="/administration/bans"
+						@click="closeMenu"
+					>
+						<font-awesome-icon
+							:icon="['fas', 'ban']"
+							:fixed-width="true"
+						/>
+						{{ $t('menu.bans') }}
+					</nuxt-link>
+				</client-only>
 			</div>
 
 			<client-only>
@@ -239,6 +253,20 @@
 					>
 						<i :className="`icon-${user.anime_list_to_fetch}`" />
 						{{ $t('menu.anime_list') }}
+					</nuxt-link>
+					<nuxt-link
+						v-if="loggedIn && user && config?.Frontend.Import.Enabled"
+						:to="`/user/${user.login}/submissions`"
+						class="navbar-item"
+						active-class="is-active"
+						aria-label="My submissions"
+						@click="closeMenu"
+					>
+						<font-awesome-icon
+							:icon="['fas', 'file-lines']"
+							:fixed-width="true"
+						/>
+						{{ $t('menu.submissions') }}
 					</nuxt-link>
 					<nuxt-link
 						v-else-if="config?.Users.Enabled"
@@ -848,30 +876,6 @@
 							/>
 							{{ $t('menu.playlists') }}
 						</nuxt-link>
-						<client-only>
-							<nuxt-link
-								v-if="loggedIn && user?.roles?.admin"
-								to="/administration"
-								active-class="is-active"
-							>
-								<font-awesome-icon
-									:icon="['fas', 'screwdriver-wrench']"
-									:fixed-width="true"
-								/>
-								{{ $t('menu.administration') }}
-							</nuxt-link>
-							<nuxt-link
-								v-if="loggedIn && user?.roles?.admin"
-								to="/remote"
-								active-class="is-active"
-							>
-								<font-awesome-icon
-									:icon="['fas', 'house-laptop']"
-									:fixed-width="true"
-								/>
-								{{ $t('menu.remotes') }}
-							</nuxt-link>
-						</client-only>
 						<nuxt-link
 							v-if="config?.Users.Enabled"
 							to="/users"
@@ -883,19 +887,6 @@
 							/>
 							{{ $t('menu.search_users') }}
 						</nuxt-link>
-						<client-only>
-							<nuxt-link
-								v-if="loggedIn && user?.roles?.admin"
-								to="/bans"
-								active-class="is-active"
-							>
-								<font-awesome-icon
-									:icon="['fas', 'ban']"
-									:fixed-width="true"
-								/>
-								{{ $t('menu.bans') }}
-							</nuxt-link>
-						</client-only>
 						<nuxt-link
 							v-if="config?.Frontend.DiscordURL"
 							:href="config?.Frontend.DiscordURL"
@@ -908,15 +899,15 @@
 							{{ $t('menu.discord') }}
 						</nuxt-link>
 						<nuxt-link
-							v-if="config?.Frontend.DiscourseURL"
-							:href="config?.Frontend.DiscourseURL"
+							v-if="config?.Frontend.ForumURL"
+							:href="config?.Frontend.ForumURL"
 							active-class="is-active"
 						>
 							<font-awesome-icon
 								:icon="['fab', 'discourse']"
 								:fixed-width="true"
 							/>
-							{{ $t('menu.discourse') }}
+							{{ $t('menu.forum') }}
 						</nuxt-link>
 					</li>
 					<li>
@@ -946,6 +937,47 @@
 						</nuxt-link>
 					</li>
 				</ul>
+				<p class="menu-label" v-if="loggedIn && (user?.roles?.admin || user?.roles?.maintainer)">
+					{{ $t('menu.administration') }}
+				</p>
+				<ul class="menu-list" v-if="loggedIn && (user?.roles?.admin || user?.roles?.maintainer)">
+					<li>
+						<client-only>
+							<nuxt-link
+								to="/administration/dashboard"
+								active-class="is-active"
+							>
+								<font-awesome-icon
+									:icon="['fas', 'screwdriver-wrench']"
+									:fixed-width="true"
+								/>
+								{{ $t('menu.dashboard') }}
+							</nuxt-link>
+							<nuxt-link
+								v-if="loggedIn && user?.roles?.admin"
+								to="/administration/remote"
+								active-class="is-active"
+							>
+								<font-awesome-icon
+									:icon="['fas', 'house-laptop']"
+									:fixed-width="true"
+								/>
+								{{ $t('menu.remotes') }}
+							</nuxt-link>
+							<nuxt-link
+								v-if="loggedIn && user?.roles?.admin"
+								to="/administration/bans"
+								active-class="is-active"
+							>
+								<font-awesome-icon
+									:icon="['fas', 'ban']"
+									:fixed-width="true"
+								/>
+								{{ $t('menu.bans') }}
+							</nuxt-link>
+						</client-only>
+					</li>
+				</ul>
 				<client-only>
 					<p class="menu-label">
 						{{ $t('menu.account') }}
@@ -972,6 +1004,17 @@
 							>
 								<i :className="`icon-${user.anime_list_to_fetch}`" />
 								{{ $t('menu.anime_list') }}
+							</nuxt-link>
+							<nuxt-link
+								v-if="loggedIn && user && config?.Frontend.Import.Enabled"
+								:to="`/user/${user.login}/submissions`"
+								active-class="is-active"
+								aria-label="My submissions"
+							>
+								<font-awesome-icon
+									:icon="['fas', 'file-lines']"
+								/>
+								{{ $t('menu.submissions') }}
 							</nuxt-link>
 							<nuxt-link
 								v-if="loggedIn"
@@ -1147,7 +1190,7 @@
 	import { useMenubarStore } from '~/store/menubar';
 	import { useModalStore } from '~/store/modal';
 
-	type TypeMenu = 'community' | 'account' | 'database';
+	type TypeMenu = 'community' | 'account' | 'database' | 'administration';
 
 	const { params, fullPath, name } = useRoute();
 	const { beforeEach, push } = useRouter();

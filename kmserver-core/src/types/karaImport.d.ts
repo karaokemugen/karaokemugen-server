@@ -4,5 +4,6 @@ export interface EditElement {
 	kid: string
 	modifiedLyrics: boolean
 	modifiedMedia: boolean,
-	oldKara?: DBKara
+	oldKara?: DBKara,
+	inid?: string,
 }

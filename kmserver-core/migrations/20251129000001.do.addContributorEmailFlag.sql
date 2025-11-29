@@ -1,0 +1,1 @@
+ALTER TABLE users ADD COLUMN IF NOT EXISTS flag_contributor_emails BOOLEAN NOT NULL DEFAULT true;

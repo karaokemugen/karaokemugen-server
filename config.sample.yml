@@ -43,7 +43,6 @@ Frontend:
   Import:
     Enabled: true
     LoginNeeded: true
-    MaxPerUser: 3
     LimitedTagTypes:
       - 3
       - 5
@@ -57,10 +56,15 @@ Frontend:
       - 15
       - 16
       - 0
+    CleanupDays: 30
+    ContributorTrustLevels:
+      1 : 2
+      2 : 5
+      3 : 10
   Suggestions: true
   InProgressSongsList: https://gitlab.com/karaokemugen/bases/mugenre-database/-/issues?scope=all&state=opened&label_name[]=Work in progress
   AddRepoModalInMenu: false
-  DiscourseURL: https://discourse.karaokes.moe
+  ForumURL: https://discourse.karaokes.moe
   DiscordURL: https://karaokes.moe/discord
 Hardsub:
   Enabled: true
