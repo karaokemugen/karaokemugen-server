@@ -69,7 +69,7 @@ export async function buildIssue(kid: string, edit?: EditElement) {
 		.replace('$parents', newParents.join(', '))
 		.replace('$duration', duration(kara.duration))
 		.replace('$fromDisplayType', kara.from_display_type || '');
-		if (edit) {
+		if (edit?.oldKara) {
 			const changes = [];
 			desc += `
 
