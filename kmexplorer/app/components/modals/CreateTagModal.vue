@@ -57,28 +57,33 @@
 							>{{ $t('modal.create_tag.types') }}</label>
 						</div>
 						<div class="field-body">
-							<div class="field">
-								<div class="control">
-									<span class="select is-multiple">
-										<select
-											id="types"
-											v-model="types"
-											name="types"
-											autocomplete="off"
-											multiple
-											size="4"
-										>
-											<option
-												v-for="tagType in creatableTagTypes"
-												:key="tagType.type"
-												:value="tagType.type"
-												:class="{'is-active': types.includes(tagType.type as number)}"
-											>
-												{{ $t(`kara.tagtypes.${tagType.name}`) }}
-											</option>
-										</select>
-									</span>
-								</div>
+							<div class="control">
+								<o-dropdown  
+									v-model="types"
+									aria-role="list"
+									multiple
+									scrollable
+									:teleport="true"
+								>
+									<template #trigger="{ openTagTypes }">
+										<button class="button" type="button">
+											<font-awesome-icon
+												fixed-width
+												:icon="['fas', openTagTypes ? 'chevron-up':'chevron-down']"
+											/>
+											{{ $t('modal.create_tag.types') }}
+										</button>
+									</template>
+									<o-dropdown-item
+										v-for="tagType in creatableTagTypes"
+										:key="tagType.type"
+										:value="tagType.type"
+										aria-role="listitem"
+										class="label-option"
+									>
+										{{ $t(`kara.tagtypes.${tagType.name}`) }}
+									</o-dropdown-item>
+								</o-dropdown>
 							</div>
 						</div>
 					</div>
@@ -170,11 +175,7 @@
 		color: red;
 	}
 
-	.select select option {
-		color: #dbdee0;
-		&.is-active {
-			background-color: #3ee4c4;
-			color: rgba(0,0,0,.7);
-		}
+	.label-option {
+		user-select: none;
 	}
 </style>

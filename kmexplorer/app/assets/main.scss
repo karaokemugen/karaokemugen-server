@@ -135,3 +135,9 @@ body.has-navbar-fixed-top, html.has-navbar-fixed-top {
 }
 
 @import '@oruga-ui/theme-bulma/dist/scss/bulma';
+
+.modal .dropdown-content {
+	position: fixed;
+	top: 55%;
+	left: 40%;
+}
