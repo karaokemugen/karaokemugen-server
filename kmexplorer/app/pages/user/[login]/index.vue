@@ -228,7 +228,7 @@
 				</h1>
 				<div
 					v-if="viewingSelf"
-					class="title is-4 with-button"
+					class="title is-4 with-button favorite-button"
 				>
 					<button
 						class="button"
@@ -505,5 +505,12 @@
 	.title.with-button {
 		padding: 1rem .5rem;
 		margin-bottom: .5rem;
+	}
+
+	@media screen and (max-width: 768px) {
+		.favorite-button {
+			white-space: wrap;
+			height: 3.5em;
+		}
 	}
 </style>

@@ -968,4 +968,15 @@
 	.field-label.long {
 		flex-basis: 45%;
 	}
+	
+	@media screen and (max-width: 768px) {
+		.modal {
+			align-items: stretch;
+
+			.modal-card {
+				width: calc(100vw - 0.5em);
+				margin: 0 0.25em;
+			}
+		}
+	}
 </style>
