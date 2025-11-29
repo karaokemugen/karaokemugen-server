@@ -129,6 +129,7 @@ const nuxtConfig = defineNuxtConfig({
 		'pinia-plugin-persistedstate/nuxt',
 		'@vite-pwa/nuxt',
 		'@nuxt/eslint',
+		'@sentry/nuxt/module'
 	],
 
 	css: ['assets/main.scss'],

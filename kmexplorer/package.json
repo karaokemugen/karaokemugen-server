@@ -21,6 +21,7 @@
     "@oruga-ui/oruga-next": "^0.7.0",
     "@oruga-ui/theme-bulma": "^0.2.11",
     "@pinia/nuxt": "0.11.2",
+    "@sentry/nuxt": "^10.27.0",
     "bulma": "^0.9.4",
     "bulmaswatch": "^0.8.1",
     "dayjs": "^1.11.18",
