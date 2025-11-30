@@ -673,7 +673,7 @@
 						{{ t('kara.import.submit') }}
 					</button>
 					<span
-						v-if="!subfile && !subfile_error"
+						v-if="!subfile && !subfile_error && mediafile"
 						class="help is-warning"
 					>{{ t('kara.import.lyrics_file_missing') }}</span>
 				</div>
