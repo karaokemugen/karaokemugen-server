@@ -12851,7 +12851,7 @@ __metadata:
     mal-scraper: ^2.13.2
     multer: 2.0.2
     node-schedule: ^2.1.1
-    nodemailer: ^7.0.6
+    nodemailer: ^7.0.11
     nuxi: ^3.28.0
     os-locale: ^6.0.2
     p-cancelable: ^4.0.1
@@ -14272,10 +14272,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nodemailer@npm:^7.0.6":
-  version: 7.0.6
-  resolution: "nodemailer@npm:7.0.6"
-  checksum: d3829aa45c2270942e6fd90a1ac670a93082c00c128f6396c68bee19d94e574a4a2efa14af1d65b05a6d2d8c84aea4ff0b999ed5ca6fd28f11eaef0b409f0c6b
+"nodemailer@npm:^7.0.11":
+  version: 7.0.11
+  resolution: "nodemailer@npm:7.0.11"
+  checksum: 02940a5a620e219522c049f54f69af7abdc99c2ec168f592d3c67e26980a9857d7c45c65989cbd835af2c0ffabc66c20198aff484197566385594b2653069cb8
   languageName: node
   linkType: hard
 

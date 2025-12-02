@@ -98,7 +98,7 @@
     "mal-scraper": "^2.13.2",
     "multer": "2.0.2",
     "node-schedule": "^2.1.1",
-    "nodemailer": "^7.0.6",
+    "nodemailer": "^7.0.11",
     "nuxi": "^3.28.0",
     "os-locale": "^6.0.2",
     "p-cancelable": "^4.0.1",
