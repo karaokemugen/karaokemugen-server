@@ -19,7 +19,6 @@ import { asyncCheckOrMkdir } from './lib/utils/files.js';
 import { enableProfiling } from './lib/utils/logger.js';
 import { initGitRepos } from './services/git.js';
 import { generate } from './services/kara.js';
-import { promoteToken } from './services/remote.js';
 import { initRepos } from './services/repo.js';
 import { banServer, initUplink } from './services/server.js';
 import { createUser, initUsers } from './services/user.js';
