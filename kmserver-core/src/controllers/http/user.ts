@@ -7,7 +7,7 @@ import { getConfig } from '../../lib/utils/config.js';
 import { unescape } from '../../lib/utils/validators.js';
 import { refreshAnimeList } from '../../services/animeList.js';
 import { getInbox } from '../../services/inbox.js';
-import { addBan, createUser, editUser, findUserByName, getAllUsers, getBans, removeBan, removeUser, resetPassword, resetPasswordRequest, setUserContributorTrustLevel } from '../../services/user.js';
+import { addBan, changePassword, createUser, editUser, findUserByName, getAllUsers, getBans, removeBan, removeUser, resetPassword, resetPasswordRequest, setUserContributorTrustLevel } from '../../services/user.js';
 import { BanType, UserOptions } from '../../types/user.js';
 import { getState } from '../../utils/state.js';
 import { optionalAuth, requireAdmin, requireAuth, requireMaintainer, requireValidUser, updateLoginTime } from '../middlewares/auth.js';
@@ -130,6 +130,15 @@ export default function userController(router: Router) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		})
+	router.route('/users/:user/changepassword')
+		.post(requireAuth, requireValidUser, requireAdmin, async (req, res) => {
+			try {
+				await changePassword(req.params.user, req.body.password);
+				res.status(200).json();
+			} catch (err) {
+				res.status(err.code || 500).json(APIMessage(err.message));
+			}
+		});
 	router.route('/users/:user/resetpassword')
 		.post(async (req, res) => {
 			try {

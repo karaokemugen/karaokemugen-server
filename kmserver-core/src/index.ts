@@ -23,7 +23,7 @@ import { promoteToken } from './services/remote.js';
 import { initRepos } from './services/repo.js';
 import { banServer, initUplink } from './services/server.js';
 import { addSuggestionsFromFile } from './services/suggestions.js';
-import { changePassword, createUser, initUsers } from './services/user.js';
+import { createUser, initUsers } from './services/user.js';
 import { initConfig, resolvedPathRemoteRoot } from './utils/config.js';
 import { initHardsubGeneration } from './utils/hardsubs.js';
 import { initMailer } from './utils/mailer.js';
@@ -143,12 +143,7 @@ async function main() {
 		}, {admin: true});
 		exit(0);
 	}
-
-	if (argv.opts().changePassword) {
-		await changePassword(argv.opts().changePassword[0], argv.opts().changePassword[1]);
-		exit(0);
-	}
-
+	
 	if (argv.opts().promoteToken) {
 		await promoteToken(argv.opts().promoteToken[0], argv.opts().promoteToken[1]);
 		logger.info('Token was promoted to permanent token. Restart the app to see changes.', {service: 'Remote'});
@@ -213,9 +208,6 @@ function parseArgs() {
 		.option('--banSession', 'ban a session SEID')
 		.option('--unbanSession', 'ban a session SEID')
 		.option('--createAdmin [user],[password]', 'Create a new admin user', login)
-		.option('--changePassword [user],[password]', 'Change a user password', login)
-		.option('--addUserRole [user],[role]', 'Add role to user', login)
-		.option('--removeUserRole [user],[role]', 'Remove role from user', login)
 		.option('--promoteToken [token],[newcode]', 'Promote a remote token to a permanent one', login)
 		.option('--build', 'Build KMExplorer (required in production environments)')
 		.option('--importSuggestionsFrom [file]', 'Import suggestions from CSV file')
