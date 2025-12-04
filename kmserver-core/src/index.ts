@@ -137,16 +137,6 @@ async function main() {
 		exit(0);
 	}
 	
-	if (argv.opts().banSession) {
-		await updateBanSession(argv.opts().banSession[0], true);
-		exit(0);
-	}
-
-	if (argv.opts().unbanSession) {
-		await updateBanSession(argv.opts().banSession[0], false);
-		exit(0);
-	}
-
 	if (argv.opts().createAdmin) {
 		await createUser({
 			login: argv.opts().createAdmin[0],
