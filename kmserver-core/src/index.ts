@@ -17,20 +17,19 @@ import { initFrontend } from './frontend.js';
 import { buildKMExplorer, updateWebmanifest } from './kmexplorer.js';
 import { configureLocale, getConfig, resolvedPath } from './lib/utils/config.js';
 import { asyncCheckOrMkdir } from './lib/utils/files.js';
-import { createImagePreviews } from './lib/utils/previews.js';
+import { enableProfiling } from './lib/utils/logger.js';
 import { initGitRepos } from './services/git.js';
-import { generate, getAllKaras } from './services/kara.js';
+import { generate } from './services/kara.js';
 import { promoteToken } from './services/remote.js';
 import { initRepos } from './services/repo.js';
 import { banServer, initUplink } from './services/server.js';
 import { addSuggestionsFromFile } from './services/suggestions.js';
-import { addRoleToUser, changePassword, createUser, initUsers, removeRoleFromUser } from './services/user.js';
+import { changePassword, createUser, initUsers } from './services/user.js';
 import { initConfig, resolvedPathRemoteRoot } from './utils/config.js';
-import { generateHardsubs, hardsubsDone, initHardsubGeneration } from './utils/hardsubs.js';
+import { initHardsubGeneration } from './utils/hardsubs.js';
 import { initMailer } from './utils/mailer.js';
 import sentry from './utils/sentry.js';
 import { getState, setState } from './utils/state.js';
-import { enableProfiling } from './lib/utils/logger.js';
 
 sourceMapSupport.install();
 
@@ -131,36 +130,13 @@ async function main() {
 
 	await initDB(getState().opt.sql);
 	await initUsers();
-
-	if (argv.opts().createPreviews) {
-		const karas = await getAllKaras({ ignoreCollections: true }, undefined, true);
-		await createImagePreviews(karas, 'full', 1280);
-		exit(0);
-	}
-
+	
 	if (argv.opts().generate) {
 		setState({ opt: { generateDB: true }});
 		await generate();
 		exit(0);
 	}
-
-	if (argv.opts().processHardsubs) {
-		await initHardsubGeneration(true);
-		const hardsubsCount = await generateHardsubs(await getAllKaras({}));
-		if (hardsubsCount > 0) await hardsubsDone();
-		exit(0);
-	}
-
-	if (argv.opts().addUserRole) {
-		await addRoleToUser(argv.opts().addUserRole[0], argv.opts().addUserRole[1]);
-		exit(0);
-	}
-
-	if (argv.opts().removeUserRole) {
-		await removeRoleFromUser(argv.opts().removeUserRole[0], argv.opts().removeUserRole[1]);
-		exit(0);
-	}
-
+	
 	if (argv.opts().banSession) {
 		await updateBanSession(argv.opts().banSession[0], true);
 		exit(0);
@@ -242,14 +218,12 @@ function parseArgs() {
 		.version(pjson.version)
 		.option('--port [port]', 'specify which port to listen to', 'port')
 		.option('--generate', 'generate karaoke database')
-		.option('--processHardsubs', 'process any missing hardsubs')
 		.option('--sql', 'display SQL queries (in debug)')
 		.option('--debug', 'display debug messages')
 		.option('--profiling', 'enable profiling in logs')
 		.option('--staticServe', 'serve static files via NodeJS')
 		.option('--banSession', 'ban a session SEID')
 		.option('--unbanSession', 'ban a session SEID')
-		.option('--createPreviews', 'generate image previews')
 		.option('--createAdmin [user],[password]', 'Create a new admin user', login)
 		.option('--changePassword [user],[password]', 'Change a user password', login)
 		.option('--addUserRole [user],[role]', 'Add role to user', login)
