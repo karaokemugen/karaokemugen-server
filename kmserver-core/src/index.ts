@@ -12,7 +12,6 @@ import { register } from 'ts-node';
 import logger from 'winston';
 
 import { initDB } from './dao/database.js';
-import { updateBanSession } from './dao/stats.js';
 import { initFrontend } from './frontend.js';
 import { buildKMExplorer, updateWebmanifest } from './kmexplorer.js';
 import { configureLocale, getConfig, resolvedPath } from './lib/utils/config.js';
