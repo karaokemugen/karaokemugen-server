@@ -168,7 +168,7 @@ async function main() {
 
 	// Normal start here.
 
-	const port = +argv.opts().port || conf.Frontend.Port;
+	const port = conf.Frontend.Port;
 	try {
 		await detect(port);
 	} catch (err) {
@@ -206,7 +206,6 @@ function parseArgs() {
 		.command('kmserver.sh')
 		.description('Starts Karaoke Mugen Server')
 		.version(pjson.version)
-		.option('--port [port]', 'specify which port to listen to', 'port')
 		.option('--generate', 'generate karaoke database')
 		.option('--sql', 'display SQL queries (in debug)')
 		.option('--debug', 'display debug messages')
