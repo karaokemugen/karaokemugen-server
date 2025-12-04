@@ -199,8 +199,6 @@ function parseArgs() {
 		.option('--debug', 'display debug messages')
 		.option('--profiling', 'enable profiling in logs')
 		.option('--staticServe', 'serve static files via NodeJS')
-		.option('--banSession', 'ban a session SEID')
-		.option('--unbanSession', 'ban a session SEID')
 		.option('--createAdmin [user],[password]', 'Create a new admin user', login)
 		.option('--build', 'Build KMExplorer (required in production environments)')
 		.option('--importSuggestionsFrom [file]', 'Import suggestions from CSV file')
