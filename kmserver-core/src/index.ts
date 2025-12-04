@@ -144,12 +144,6 @@ async function main() {
 		exit(0);
 	}
 	
-	if (argv.opts().promoteToken) {
-		await promoteToken(argv.opts().promoteToken[0], argv.opts().promoteToken[1]);
-		logger.info('Token was promoted to permanent token. Restart the app to see changes.', {service: 'Remote'});
-		exit(0);
-	}
-
 	if (argv.opts().suggestionSource && argv.opts().importSuggestionsFrom) {
 		await addSuggestionsFromFile(argv.opts().importSuggestionsFrom, argv.opts().suggestionSource);
 		exit(0);
@@ -208,7 +202,6 @@ function parseArgs() {
 		.option('--banSession', 'ban a session SEID')
 		.option('--unbanSession', 'ban a session SEID')
 		.option('--createAdmin [user],[password]', 'Create a new admin user', login)
-		.option('--promoteToken [token],[newcode]', 'Promote a remote token to a permanent one', login)
 		.option('--build', 'Build KMExplorer (required in production environments)')
 		.option('--importSuggestionsFrom [file]', 'Import suggestions from CSV file')
 		.option('--suggestionSource [source]', 'Name the source of your inported sugggestion CSV file')
