@@ -6,7 +6,7 @@ import {requireAdmin, requireAuth, requireValidUser} from '../middlewares/auth.j
 
 export default function suggestionsController(router: Router) {
 	router.route('/suggestions/import')
-		.post(async (req: any, res) => {
+		.post(requireAuth, requireValidUser, requireAdmin, async (req: any, res) => {
 			try {
 				await addSuggestionsFromFile(req.body.fileData, req.body.source);
 				res.status(200).json();
