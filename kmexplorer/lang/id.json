@@ -1,4 +1,7 @@
 {
+	"actions": {
+		"choose_file": "Pilih berkas"
+	},
 	"kara": {
 		"live_unavailable": "Kamu tidak bisa memutar karaoke ini di perambanmu. Entah videonya merupakan format tak terdukung di peramban atau sudah dinonaktifkan untuk alasan hukum.",
 		"phrase": "{songtype} dari {series}",
@@ -82,7 +85,6 @@
 			"license_link": "Ketahui lebih lanjut tentang lisensi ini dengan mengklik di sini.",
 			"add": "Tambah",
 			"create": "Buat",
-			"choose_file": "Pilih berkas",
 			"add_file_media_error": "{name} bukanlah berkas media",
 			"add_file_lyrics_error": "{name} bukanlah berkas takarir",
 			"add_file_success": "berkas {name} berhasil ditambahkan",

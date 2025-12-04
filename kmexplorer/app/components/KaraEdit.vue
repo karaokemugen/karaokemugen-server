@@ -33,7 +33,7 @@
 									:fixed-width="true"
 								/>
 							</span>
-							<span class="file-label">{{ t('kara.import.choose_file') }}</span>
+							<span class="file-label">{{ t('actions.choose_file') }}</span>
 						</span>
 						<span class="file-name">{{ mediafile }}</span>
 					</label>
@@ -88,7 +88,7 @@
 									:fixed-width="true"
 								/>
 							</span>
-							<span class="file-label">{{ t('kara.import.choose_file') }}</span>
+							<span class="file-label">{{ t('actions.choose_file') }}</span>
 						</span>
 						<span class="file-name">{{ subfile }}</span>
 					</label>

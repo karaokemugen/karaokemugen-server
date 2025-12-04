@@ -1,4 +1,7 @@
 {
+	"actions": {
+		"choose_file": "Wybierz plik"
+	},
 	"error": {
 		"generic": "Błąd",
 		"private_profile": "Profil jest prywatny.",
@@ -111,7 +114,6 @@
 			"license_reminder": "Twoje karaoke zostanie opublikowane z licencją {name}",
 			"add": "Dodać",
 			"create": "Stwórz",
-			"choose_file": "Wybierz plik",
 			"add_file_lyrics_error": "{name} nie jest plikiem z napisami",
 			"add_file_success": "Plik {name} został dodany pomyślnie",
 			"comment": "Zostawić komentarz?",

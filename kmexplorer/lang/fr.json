@@ -1,4 +1,8 @@
 {
+	"actions": {
+		"import": "Importer",
+		"choose_file": "Choisissez un fichier"
+	},
 	"error": {
 		"generic": "Erreur",
 		"private_profile": "Le profil est privé.",
@@ -123,7 +127,6 @@
 			"add": "Ajout",
 			"create": "Créer",
 			"show_hide": "Montrer / Cacher",
-			"choose_file": "Choisissez un fichier",
 			"add_file_media_error": "{name} n'est pas un fichier média",
 			"add_file_media_not_supported_error": "{name} n'est pas un fichier média supporté, convertissez-le dans un des formats suivants : {formats}",
 			"add_file_lyrics_error": "{name} n'est pas un fichier de sous-titres",
@@ -542,6 +545,11 @@
 				"close": "Fermer"
 			}
 		},
+		"import_suggestion": {
+			"subtitle": "Le fichier doit être un fichier csv séparé par point virgule avec des valeurs sur le format chanteur;titre;langue (au format ISO 639-2 pour la langue).",
+			"source": "Source",
+			"file": "Fichier"
+		},
 		"download": {
 			"label": "Télécharger le karaoké",
 			"cancel": "Annuler",
@@ -695,7 +703,8 @@
 			"purpose": "Voici des karaokés qui sont prêts à être importés. Vous pouvez chercher une chanson en particulier ou appuyer sur le bouton “Choisir aléatoirement d'autres chansons”. Vous pouvez soutenir un karaoké en appuyant sur “Oui !”.",
 			"suggestion": "Si vous ne trouvez toujours pas la chanson que vous cherchez, cliquez sur “Envoyer une suggestion”.",
 			"random_selection": "Choisir aléatoirement d'autres chansons",
-			"send_suggestion": "Envoyer une suggestion"
+			"send_suggestion": "Envoyer une suggestion",
+			"import_suggestion": "Importer un fichier de suggestions"
 		},
 		"modal": {
 			"welcome": {

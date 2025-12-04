@@ -13,6 +13,7 @@ export type ModalType = 'auth' |
 	'createEditPlaylist' |
 	'deletePlaylist' |
 	'addDuplicateInPlaylist' |
+	'importSuggest' |
 	'addBans';
 
 export type modalStoreType = {
@@ -23,6 +24,7 @@ export type modalStoreType = {
 	joinKara: boolean;
 	stats: boolean;
 	karaSuggest: boolean;
+	importSuggest: boolean;
 	download: boolean;
 	banner: boolean;
 	createTag: boolean;
@@ -42,6 +44,7 @@ export const useModalStore = defineStore('modal', {
 			deleteAccount: false,
 			joinKara: false,
 			karaSuggest: false,
+			importSuggest: false,
 			download: false,
 			banner: false,
 			createTag: false,
@@ -67,6 +70,7 @@ export const useModalStore = defineStore('modal', {
 			this.deleteAccount = false;
 			this.joinKara = false;
 			this.karaSuggest = false;
+			this.importSuggest = false;
 			this.download = false;
 			this.banner = false;
 			this.createTag = false;

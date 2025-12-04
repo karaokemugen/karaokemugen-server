@@ -1,4 +1,7 @@
 {
+	"actions": {
+		"choose_file": "Datei auswählen"
+	},
 	"menu": {
 		"songtypes": "Songtypen",
 		"misc": "Verschiedene Tags",
@@ -44,7 +47,6 @@
 	},
 	"kara": {
 		"import": {
-			"choose_file": "Datei auswählen",
 			"series_tooltip": "TV Serie, Filmtitel, Spieltitel, etc.",
 			"songtypes_required": "Songtyp ist erforderlich",
 			"add_file_success": "{name} Datei erfolgreich hinzugefügt",

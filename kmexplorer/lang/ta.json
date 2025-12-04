@@ -1,4 +1,7 @@
 {
+	"actions": {
+		"choose_file": "ஒரு கோப்பைத் தேர்வுசெய்க"
+	},
 	"kara": {
 		"import": {
 			"desc": {
@@ -37,7 +40,6 @@
 			"add": "கூட்டு",
 			"create": "உருவாக்கு",
 			"show_hide": "காட்டு/மறைக்க",
-			"choose_file": "ஒரு கோப்பைத் தேர்வுசெய்க",
 			"add_file_media_error": "{name} என்பது ஊடக கோப்பு அல்ல",
 			"add_file_media_not_supported_error": "{name} என்பது ஒரு உதவி ஊடக கோப்பு அல்ல, அதை பின்வரும் வடிவங்களில் ஒன்றாக மாற்றவும்: {formats}",
 			"add_file_lyrics_error": "{name} ஒரு வசன கோப்பு அல்ல",

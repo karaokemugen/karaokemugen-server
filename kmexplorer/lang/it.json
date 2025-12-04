@@ -1,4 +1,7 @@
 {
+	"actions": {
+		"choose_file": "Scegli un file"
+	},
 	"kara": {
 		"notfound": "Karaoke non trovato",
 		"tagtypes": {
@@ -100,7 +103,6 @@
 			"created_at": "Data creazione",
 			"documentation_link": "Si prega di leggere le regole {instance} prima di inviare un brano!",
 			"lyrics_file_tooltip": "Formati supportati: {formats}",
-			"choose_file": "Scegli un file",
 			"add_file_success": "Il file {name} è stato aggiunto correttamente",
 			"license_reminder": "Il tuo karaoke sarà pubblicato con licenza {name}",
 			"description": "Questo modulo ti permette di inviare un karaoke al team di {instance}. Non verrà integrato subito al database perché è necessario convalidarlo. Si prega di essere pazienti. Il tuo karaoke potrebbe ricevere modifiche se non rispetta il regolamento del team.",

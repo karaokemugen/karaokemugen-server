@@ -38,6 +38,14 @@
 						<span class="icon"><font-awesome-icon :icon="['fas', 'plus']" /></span>
 						<span>{{ $t('suggestions.header.send_suggestion') }}</span>
 					</button>
+					<button
+						v-if="user?.roles?.admin"
+						class="button m-1"
+						@click="() => openModal('importSuggest')"
+					>
+						<span class="icon"><font-awesome-icon :icon="['fas', 'upload']" /></span>
+						<span>{{ $t('suggestions.header.import_suggestion') }}</span>
+					</button>
 				</div>
 			</div>
 		</section>
@@ -70,6 +78,14 @@
 			:active="karaSuggest"
 			@close="() => closeModal('karaSuggest')"
 		/>
+		<import-suggest-modal 
+			v-if="!loading && user?.roles?.admin"
+			:active="importSuggest"
+			@close="() => {
+				closeModal('importSuggest');
+				setPage(1);
+			}"
+		/>
 	</div>
 </template>
 
@@ -80,6 +96,7 @@
 	import { useLocalStorageStore } from '~/store/localStorage';
 	import type { Suggestion } from '~/../kmserver-core/src/types/suggestions';
 	import { useConfigStore } from '~/store/config';
+	import { useAuthStore } from '~/store/auth';
 
 	type SuggestList = {
 		content: Suggestion[]
@@ -104,10 +121,10 @@
 	const { setSearch } = useMenubarStore();
 	const { hideSuggestionModal } = storeToRefs(useLocalStorageStore());
 	const { setHideSuggestionModal, openHideSuggestionModal } = useLocalStorageStore();
-	const { karaSuggest } = storeToRefs(useModalStore());
+	const { karaSuggest, importSuggest } = storeToRefs(useModalStore());
 	const { closeModal, openModal } = useModalStore();
 	const { config } = storeToRefs(useConfigStore());
-
+	const { user } = storeToRefs(useAuthStore());
 
 	const route = useRoute();
 

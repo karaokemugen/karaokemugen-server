@@ -1,4 +1,7 @@
 {
+	"actions": {
+		"choose_file": "Dibabit ur restr"
+	},
 	"kara": {
 		"tagtypes": {
 			"langs": "Yezh|Yezhoù",
@@ -67,7 +70,6 @@
 			},
 			"add": "Ouzhpennañ",
 			"show_hide": "Diskouez / Kuzhat",
-			"choose_file": "Dibabit ur restr",
 			"add_file_media_error": "N'eo ket ur restr media {name}",
 			"add_file_lyrics_error": "N'eo ket restr an istitloù {name}",
 			"add_file_success": "Ouzhpennet eo bet gant berzh ar restr {name}",

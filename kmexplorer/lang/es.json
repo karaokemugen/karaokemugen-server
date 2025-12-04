@@ -1,4 +1,7 @@
 {
+	"actions": {
+		"choose_file": "Elige un archivo"
+	},
 	"menu": {
 		"discord": "Discord",
 		"anime_list": "Mis animes",
@@ -148,7 +151,6 @@
 			"title_required": "Por favor ingresa un título",
 			"created_at": "Fecha de creación",
 			"lyrics_file_tooltip": "Archivo de letras soportado: {formats}",
-			"choose_file": "Elige un archivo",
 			"add_file_success": "Archivo {name} fue añadido exitosamente",
 			"titles_aliases": "Aliases",
 			"songtypes_required": "Tipo de canción es requerido",

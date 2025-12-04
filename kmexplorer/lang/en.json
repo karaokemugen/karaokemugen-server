@@ -1,4 +1,8 @@
 {
+	"actions": {
+		"import": "Import",
+		"choose_file": "Choose a file"
+	},
 	"error": {
 		"generic": "Error",
 		"private_profile": "Profile is private.",
@@ -123,7 +127,6 @@
 			"add": "Add",
 			"create": "Create",
 			"show_hide": "Show/Hide",
-			"choose_file": "Choose a file",
 			"add_file_media_error": "{name} is not a media file",
 			"add_file_media_not_supported_error": "{name} is not a supported media file, convert it to one of the following formats: {formats}",
 			"add_file_lyrics_error": "{name} is not a subtitle file",
@@ -542,6 +545,11 @@
 				"close": "Close"
 			}
 		},
+		"import_suggestion": {
+			"subtitle": "The file must be a semicolon-separated CSV file with values in the format singer;title;language (in ISO 639-2 format for the language).",
+			"source": "Source",
+			"file": "File"
+		},
 		"download": {
 			"label": "Download karaoke",
 			"cancel": "Cancel",
@@ -695,7 +703,8 @@
 			"purpose": "Here are some karaoke songs that are ready to be imported. You can search for a particular song or press the \"Randomly select other songs\" button. You can endorse a karaoke song by pressing \"Yes!\".",
 			"suggestion": "If you still can't find the song you're looking for, click \"Send Suggestion\".",
 			"random_selection": "Randomly select other songs",
-			"send_suggestion": "Send suggestion"
+			"send_suggestion": "Send suggestion",
+			"import_suggestion": "Import suggestions file"
 		},
 		"modal": {
 			"welcome": {

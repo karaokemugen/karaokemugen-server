@@ -1,4 +1,7 @@
 {
+	"actions": {
+		"choose_file": "Escolha um ficheiro"
+	},
 	"error": {
 		"generic": "Erro",
 		"private_profile": "Perfil é privado.",
@@ -86,7 +89,6 @@
 			"license_reminder": "O seu karaokê será publicado com a licença {name}",
 			"license_link": "Saiba mais sobre esta licença, clicando aqui.",
 			"add": "Adicionar",
-			"choose_file": "Escolha um ficheiro",
 			"add_file_media_error": "{name} não é um ficheiro de mídia",
 			"add_file_media_not_supported_error": "{name} não é um ficheiro multimédia suportado, converta-o para um dos seguintes formatos: {formats}",
 			"add_file_lyrics_error": "{name} não é um ficheiro de subtítulos",
