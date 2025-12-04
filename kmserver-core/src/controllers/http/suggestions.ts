@@ -1,10 +1,20 @@
 import { Router } from 'express';
 
 import { APIMessage } from '../../lib/services/frontend.js';
-import { getSuggestions, getSuggestionsLanguages, removeSuggestion, updateLike } from '../../services/suggestions.js';
+import { addSuggestionsFromFile, getSuggestions, getSuggestionsLanguages, removeSuggestion, updateLike } from '../../services/suggestions.js';
 import {requireAdmin, requireAuth, requireValidUser} from '../middlewares/auth.js';
 
 export default function suggestionsController(router: Router) {
+	router.route('/suggestions/import')
+		.post(async (req: any, res) => {
+			try {
+				await addSuggestionsFromFile(req.body.fileData, req.body.source);
+				res.status(200).json();
+			} catch (err) {
+				res.status(err.code || 500).json(APIMessage(err.message));
+			}
+		});
+	
 	router.route('/suggestions/:id')
 		.post(async (req: any, res) => {
 			try {

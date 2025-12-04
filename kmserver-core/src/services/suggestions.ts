@@ -1,5 +1,3 @@
-import fs from 'fs/promises';
-
 import { addLikeToSuggestion, deleteSuggestion, insertSuggestion, selectSuggestions, selectSuggestionsLanguages, updateSuggestionSearchVector } from '../dao/suggestions.js';
 import { ErrorKM } from '../lib/utils/error.js';
 import logger from '../lib/utils/logger.js';
@@ -66,9 +64,8 @@ async function addSuggestion(suggestions: Suggestion[]) {
 	}
 }
 
-export async function addSuggestionsFromFile(file: string, source: string) {
+export async function addSuggestionsFromFile(fileData: string, source: string) {
 	logger.info('Importing suggestions from CSV file...', {service});
-	const fileData = await fs.readFile(file, 'utf-8');
 	const data = fileData.split('\n').map(l => {
 		const line = l.split(';');
 		return {

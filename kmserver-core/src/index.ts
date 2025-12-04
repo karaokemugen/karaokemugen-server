@@ -22,7 +22,6 @@ import { generate } from './services/kara.js';
 import { promoteToken } from './services/remote.js';
 import { initRepos } from './services/repo.js';
 import { banServer, initUplink } from './services/server.js';
-import { addSuggestionsFromFile } from './services/suggestions.js';
 import { createUser, initUsers } from './services/user.js';
 import { initConfig, resolvedPathRemoteRoot } from './utils/config.js';
 import { initHardsubGeneration } from './utils/hardsubs.js';
@@ -143,12 +142,7 @@ async function main() {
 		}, {admin: true});
 		exit(0);
 	}
-	
-	if (argv.opts().suggestionSource && argv.opts().importSuggestionsFrom) {
-		await addSuggestionsFromFile(argv.opts().importSuggestionsFrom, argv.opts().suggestionSource);
-		exit(0);
-	}
-
+		
 	if (argv.opts().banServer) {
 		await banServer(argv.opts().banServer);
 		exit(0);
