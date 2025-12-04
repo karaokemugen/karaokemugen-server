@@ -3,7 +3,7 @@ import { Router } from 'express';
 import { updateBanSession } from '../../dao/stats.js';
 import { APIMessage } from '../../lib/services/frontend.js';
 import { addPlayed, processStatsPayload} from '../../services/stats.js';
-import { optionalAuth, requireAdmin, requireAuth } from '../middlewares/auth.js';
+import { optionalAuth, requireAdmin, requireAuth, requireValidUser } from '../middlewares/auth.js';
 
 export default function statsController(router: Router) {
 	router.post('/stats', async (req, res) => {
@@ -24,7 +24,7 @@ export default function statsController(router: Router) {
 		}
 	});
 	router.route('/stats/session/:seid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})')
-	.post(requireAuth, requireAdmin, async (req: any, res) => {
+	.post(requireAuth, requireValidUser, requireAdmin, async (req: any, res) => {
 		try {
 			await updateBanSession(req.params.seid, req.body.action);
 			res.status(200).json();
