@@ -537,7 +537,7 @@
 									v-model="editedUser.flag_contributor_emails"
 									type="checkbox"
 								>
-								{{ $t('modal.profile.fields.contributor_emails.checkbox') }}
+								{{ $t('modal.profile.fields.flag_contributor_emails.checkbox') }}
 							</label>
 						</div>
 					</div>
