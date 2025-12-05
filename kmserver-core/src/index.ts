@@ -121,7 +121,7 @@ async function main() {
 		exit(0);
 	}
 
-	if (argv.opts().sql) setState({ opt: {sql: true }});
+	if (argv.opts().sql || process.env.SQL) setState({ opt: {sql: true }});
 	if (argv.opts().staticServe) setState({opt: {staticServe: true}});
 	if (argv.opts().profiling) enableProfiling();
 

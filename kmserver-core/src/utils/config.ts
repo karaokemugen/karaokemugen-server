@@ -70,7 +70,7 @@ export function resolvedPathRemoteRoot() {
 export async function initConfig(argv: any) {
 	const dataPath = getState().dataPath;
 	setConfigConstraints(configConstraints);
-	await configureLogger(!!argv.debug, true);
+	await configureLogger(!!argv.debug || !!process.env.DEBUG, true);
 	await configureLocale();
 	await loadConfigFiles(dataPath, argv.config, defaults, getState().appPath);
 	const conf = getConfig();
