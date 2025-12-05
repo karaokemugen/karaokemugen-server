@@ -100,7 +100,7 @@ function prepareKaraQuery(params: KaraParams) {
 	if (params.safeOnly) {
 		q.withCTEs.push(`warning_tags AS (SELECT array_agg(pk_tid || '~${tagTypes.warnings}') tid FROM tag t WHERE t.types @> ARRAY[${tagTypes.warnings}])`);
 		q.fromClauses.push('warning_tags wt');
-		q.whereClauses.push('NOT wt.tid && ak.tid');
+		q.whereClauses.push('(wt.tid IS NULL OR NOT wt.tid && ak.tid)');
 	}
 	if (params.userAnimeList) {
 		q.withCTEs.push(
