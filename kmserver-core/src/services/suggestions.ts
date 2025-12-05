@@ -66,14 +66,17 @@ async function addSuggestion(suggestions: Suggestion[]) {
 
 export async function addSuggestionsFromFile(fileData: string, source: string) {
 	logger.info('Importing suggestions from CSV file...', {service});
-	const data = fileData.split('\n').map(l => {
-		const line = l.split(';');
-		return {
-			song: `${line[0]}${line[1] ? ` - ${line[1]}` : ''}`,
-			language: line[2],
-			source
-		};
-	});
+	const data = fileData
+		.replaceAll('\r', '')
+		.split('\n')
+		.map(l => {
+			const line = l.split(';');
+			return {
+				song: `${line[0]}${line[1] ? ` - ${line[1]}` : ''}`,
+				language: line[2],
+				source
+			};
+		});
 	await addSuggestion(data);
 	await updateSuggestionSearchVector();
 	logger.info('Imported suggestions!', {service});
