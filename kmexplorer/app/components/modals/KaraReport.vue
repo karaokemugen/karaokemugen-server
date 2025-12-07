@@ -87,6 +87,14 @@
 						</h5>
 						<div class="field is-horizontal">
 							<div class="field-label is-normal">
+								<label>{{ $t('kara.problem.form.song') }}</label>
+							</div>
+							<div class="field-body label">
+								<div>{{ buildKaraTitle(karaokeOpen) }}</div>
+							</div>
+						</div>
+						<div class="field is-horizontal">
+							<div class="field-label is-normal">
 								<label
 									for="type"
 									class="label"
@@ -201,6 +209,7 @@
 	const loading = ref(false);
 	const submitted = ref(false);
 	const gitlabUrl = ref('');
+	const karaokeOpen = ref<DBKara>(props.karaoke);
 	const formData = ref<{
 		type: ProblemsType,
 		comment: string,
@@ -212,7 +221,12 @@
 	});
 
 	watch(() => props.karaoke, (now, old) => {
+		if (!active.value) karaokeOpen.value = now;
 		if(now.kid !== old.kid) submitted.value = false;
+	});
+
+	watchEffect(() => {
+		if (!active.value) karaokeOpen.value = props.karaoke
 	});
 
 	const { config } = storeToRefs(useConfigStore());
@@ -226,7 +240,7 @@
 	}
 	async function submitProblem() {
 		loading.value = true;
-		gitlabUrl.value = await useCustomFetch<string>(`/api/karas/${props.karaoke.kid}/problem`, {
+		gitlabUrl.value = await useCustomFetch<string>(`/api/karas/${karaokeOpen.value.kid}/problem`, {
 			method: 'POST',
 			body: formData.value
 		});
@@ -246,5 +260,9 @@
 
 	.select select option {
 		color: #dbdee0;
+	}
+
+	.field-body.label {
+		align-items: end;
 	}
 </style>

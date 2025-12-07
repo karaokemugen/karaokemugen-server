@@ -77,6 +77,7 @@
 			"form": {
 				"title": "Signaler un problème",
 				"subtitle": "Nous faisons de notre mieux pour avoir une base de karaokés sans lacunes, cependant il en reste sûrement encore à certains endroits. Merci de votre aide !",
+				"song": "Chanson",
 				"type": {
 					"label": "Type du problème",
 					"media": "Problème avec le média",

@@ -77,6 +77,7 @@
 			"form": {
 				"title": "Report a problem",
 				"subtitle": "We do our best to have a high-quality database, but sometimes some issues are still there. Thanks for your help!",
+				"song": "Song",
 				"type": {
 					"label": "Problem type",
 					"media": "Media issue",
