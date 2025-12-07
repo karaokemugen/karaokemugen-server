@@ -1225,7 +1225,7 @@
 	});
 
 	const tagType = computed(() => params?.id && (params?.id as string).substring(36));
-	const onKaraTagUserListView = computed(() => ['types-id', 'search-query', 'user-login', 'users', 'suggest'].includes(name as string));
+	const onKaraTagUserListView = computed(() => ['types-id', 'search-query', 'user-login', 'users', 'suggest', 'index'].includes(name as string));
 	const availableLocales = computed(() => locales.value?.filter((i: LocaleObject) => i.code && i.code !== locale.value));
 
 	onMounted(() => {
