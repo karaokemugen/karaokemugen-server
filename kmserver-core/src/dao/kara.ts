@@ -115,14 +115,9 @@ function prepareKaraQuery(params: KaraParams) {
 		)`);
 		q.params.username_anime_list = params.userAnimeList;
 	}
-	// If we're asking for random songs, here we modify the query to get them.
-	if (params.random > 0) {
-		q.orderClauses.push('RANDOM()');
-		q.limitClause = `LIMIT ${params.random}`;
-	}
 	if (params.order === 'recent') {
 		q.orderClauses.push(`created_at ${params.direction === 'asc' ? '' : 'DESC'}`);
-	}else if (params.order === 'played') {
+	 }else if (params.order === 'played') {
 		q.orderClauses.push(`ks.played ${params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
 		q.selectClause += 'COALESCE(ks.played, 0) AS played,';
 		q.groupClauses.push('ks.played');
@@ -155,11 +150,18 @@ function prepareKaraQuery(params: KaraParams) {
 		q.joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
 		q.whereClauses.push('ks.requested_recently > 0');
 	} else {
-		// Build order here from config
-		params.direction = 'asc';
-		const config = getKaraLineSortOrder(params.direction);
-		q.orderClauses.push(...config.orderBy);
-		q.groupClauses.push(...config.groupBy);
+		if (!params.random) {
+			// Build order here from config, only if not random.
+			params.direction = 'asc';
+			const config = getKaraLineSortOrder(params.direction);
+			q.orderClauses.push(...config.orderBy);
+			q.groupClauses.push(...config.groupBy);
+		}
+	}
+	// If we're asking for random songs, here we modify the query to get them. We reset orderBy here because RANDOM() make all other criterias useless.
+	if (params.random > 0) {
+		q.orderClauses = ['RANDOM()'];
+		q.limitClause = `LIMIT ${params.random}`;
 	}
 	if (params.from > 0) q.offsetClause = `OFFSET ${params.from} `;
 	if (params.size > 0) q.limitClause = `LIMIT ${params.size} `;
@@ -176,7 +178,7 @@ function prepareKaraQuery(params: KaraParams) {
 
 export async function selectAllKaras(params: KaraParams, includeStaging = false): Promise<DBKara[]> {
 	const q = prepareKaraQuery(params);
-	const query = sql.getAllKaras(
+	const query = sql.selectAllKaras(
 		q.sql,
 		q.orderClauses,
 		q.limitClause,
@@ -191,7 +193,8 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 		q.collectionClauses,
 		q.withCTEs,
 		params.forPlayer,
-		getHardsubsBeingProcessed()
+		getHardsubsBeingProcessed(),
+		params.random
 	);
 	const countQuery = sql.getAllKarasCount(
 		q.sql,
