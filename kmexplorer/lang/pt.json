@@ -463,7 +463,8 @@
 				},
 				"username": {
 					"label": "Nome de utilizador",
-					"placeholder": "LoveLiveFan93"
+					"placeholder": "LoveLiveFan93",
+					"char_not_allowed": "O personagem '{char}' não é permitido"
 				}
 			},
 			"passwords_mismatch": "As senhas não coincidem",

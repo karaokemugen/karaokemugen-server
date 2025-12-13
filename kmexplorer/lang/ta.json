@@ -447,7 +447,8 @@
 			"fields": {
 				"username": {
 					"label": "பயனர்பெயர்",
-					"placeholder": "லவ்லைவ்ஃபான் 93"
+					"placeholder": "லவ்லைவ்ஃபான் 93",
+					"char_not_allowed": "'{char}' எழுத்து அனுமதிக்கப்படவில்லை"
 				},
 				"password": {
 					"label": "கடவுச்சொல்",

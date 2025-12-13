@@ -270,7 +270,8 @@
 				},
 				"username": {
 					"placeholder": "LoveLiveFan93",
-					"label": "Benutzername"
+					"label": "Benutzername",
+					"char_not_allowed": "Das Zeichen '{char}' ist nicht erlaubt"
 				},
 				"password_confirmation": {
 					"label": "Passwort bestätigen",

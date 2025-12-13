@@ -446,7 +446,8 @@
 				},
 				"username": {
 					"label": "Nazwa użytkownika",
-					"placeholder": "LubięPlacki93"
+					"placeholder": "LubięPlacki93",
+					"char_not_allowed": "Znak \"{char}\" jest niedozwolony"
 				},
 				"password_confirmation": {
 					"placeholder": "ActuallyIdolM{'@'}sterIsBetter",

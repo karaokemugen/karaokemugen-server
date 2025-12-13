@@ -305,6 +305,10 @@
 		try {
 			loading.value = true;
 			if (mode.value === 'signup') {
+				if (login.value.username.includes('@')) {
+					toast.error(t('modal.signup.fields.username.char_not_allowed', { char: '@' }))
+					return;
+				}
 				const signup = { ...login.value, password_confirmation: undefined };
 				signup.login = login.value.username;
 				signup.language = locale.value;

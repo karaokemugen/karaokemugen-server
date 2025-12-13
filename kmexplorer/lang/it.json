@@ -349,7 +349,8 @@
 				},
 				"username": {
 					"label": "Nome utente",
-					"placeholder": "LoveLiveFan93"
+					"placeholder": "LoveLiveFan93",
+					"char_not_allowed": "Il carattere \"{char}\" non è consentito"
 				}
 			},
 			"submit": "Registrati",

@@ -260,7 +260,8 @@
 			"fields": {
 				"username": {
 					"label": "Nama pengguna",
-					"placeholder": "SukaRocknRoll"
+					"placeholder": "SukaRocknRoll",
+					"char_not_allowed": "Karakter '{char}' tidak diperbolehkan"
 				},
 				"password": {
 					"label": "Kata sandi",

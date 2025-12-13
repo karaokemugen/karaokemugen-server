@@ -364,7 +364,8 @@
 			"fields": {
 				"username": {
 					"label": "Username",
-					"placeholder": "LoveLiveFan93"
+					"placeholder": "LoveLiveFan93",
+					"char_not_allowed": "The character '{char}' is not allowed"
 				},
 				"password": {
 					"label": "Password",
