@@ -122,7 +122,7 @@
 			"songwriters_tooltip": "Komposer, Pengaransemen, dan Penulis Lirik.",
 			"creators_tooltip": "Entitas yang membuat serial. Bisa studio animasi, studio film, atau studio permainan.",
 			"parents": "Induk",
-			"parents_tooltip": "Jika induk ditentukan, karaoke ini akan ditampilkan sebagai alternatif kepada karaoke dipilih di induk. Harap diingat untuk memilih repositori yang bagus sebelum mengisi array ini untuk menghindari menambahkan karaoke dari repositori lain.",
+			"parents_tooltip": "Jika induk ditentukan, karaoke ini akan ditampilkan sebagai alternatif kepada karaoke dipilih di induk.",
 			"i18n_select": "Tambahkan sebuah bahasa",
 			"contact_infos_tooltip": "Masukkan detail kontakmu, sehingga kami bisa berhubungan dengan kamu jika kamu memiliki pertanyaan tentang karaoke ini.",
 			"i18n_delete": "Hapus bahasa",
