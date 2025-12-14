@@ -324,9 +324,6 @@
 				"name": {
 					"placeholder": "Anonimo magico",
 					"label": "Il tuo nome"
-				},
-				"type": {
-					"label": "Tipo"
 				}
 			},
 			"subtitle": "Non hai trovato quello che cercavi? Puoi inviare un suggerimento.",

@@ -526,11 +526,17 @@
 				"singer": {
 					"label": "Singer"
 				},
-				"type": {
-					"label": "Type"
+				"version": {
+					"label": "Version"
 				},
 				"link": {
-					"label": "Link"
+					"label": "Media link"
+				},
+				"lyrics_link": {
+					"label": "Lyrics link"
+				},
+				"comment": {
+					"label": "Comment"
 				},
 				"name": {
 					"label": "Your name",

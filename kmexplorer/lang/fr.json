@@ -526,11 +526,17 @@
 				"singer": {
 					"label": "Chanteur"
 				},
-				"type": {
-					"label": "Type"
+				"version": {
+					"label": "Version"
 				},
 				"link": {
-					"label": "Lien"
+					"label": "Lien vers le média"
+				},
+				"lyrics_link": {
+					"label": "Lien vers les paroles"
+				},
+				"comment": {
+					"label": "Commentaire"
 				},
 				"name": {
 					"label": "Votre nom",

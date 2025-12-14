@@ -324,9 +324,6 @@
 				"title": {
 					"label": "Tytuł"
 				},
-				"type": {
-					"label": "Typ"
-				},
 				"link": {
 					"label": "Link"
 				},

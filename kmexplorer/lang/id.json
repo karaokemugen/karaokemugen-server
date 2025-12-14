@@ -440,9 +440,6 @@
 				"singer": {
 					"label": "Penyanyi"
 				},
-				"type": {
-					"label": "Jenis"
-				},
 				"link": {
 					"label": "Tautan"
 				},

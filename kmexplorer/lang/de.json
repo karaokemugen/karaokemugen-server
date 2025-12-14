@@ -437,9 +437,6 @@
 				},
 				"title": {
 					"label": "Titel"
-				},
-				"type": {
-					"label": "Typ"
 				}
 			},
 			"submitted": {
