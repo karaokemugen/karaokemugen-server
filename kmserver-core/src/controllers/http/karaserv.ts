@@ -146,7 +146,7 @@ export default function KSController(router: Router) {
 		.post(async (req, res) => {
 			try {
 				if (getConfig().Gitlab.Enabled) {
-					const url = await createSuggestionIssue(req.body.title, req.body.serie, req.body.singer, req.body.type, req.body.link, req.body.username,);
+					const url = await createSuggestionIssue(req.body);
 					res.json(url);
 				} else {
 					res.status(403).json(APIMessage('GITLAB_DISABLED'));

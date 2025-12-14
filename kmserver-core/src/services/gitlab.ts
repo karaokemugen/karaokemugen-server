@@ -12,6 +12,7 @@ import { EditElement } from '../types/karaImport.js';
 import sentry from '../utils/sentry.js';
 import { getAllKaras, getKara } from './kara.js';
 import { findUserByName } from './user.js';
+import { SuggestionIssue } from '../types/suggestions.js';
 
 const service = 'Gitlab';
 
@@ -182,26 +183,28 @@ async function gitlabCreateIssue(title: string, desc: string, labels: string[]):
 	}
 }
 
-export async function createSuggestionIssue(title: string, serie:string, singer: string, type:string, link:string, username: string): Promise<string> {
+export async function createSuggestionIssue(suggestion: SuggestionIssue): Promise<string> {
 	try {
 		const conf = getConfig().Gitlab.IssueTemplate;
 		let titleIssue = conf?.Suggestion?.Title
 			? conf.Suggestion.Title
 			: '[suggestion] $displaytype - $type - $title';
-		titleIssue = titleIssue.replace('$title', title);
-		titleIssue = titleIssue.replace('$type', type);
-		const displaytype = singer && serie ? `${serie} / ${singer}` : `${serie || ''}${singer}`;
+		titleIssue = titleIssue.replace('$title', suggestion.title);
+		titleIssue = titleIssue.replace('$version', suggestion.version);
+		const displaytype = suggestion.singer && suggestion.serie ? `${suggestion.serie} / ${suggestion.singer}` : `${suggestion.serie || ''}${suggestion.singer}`;
 		titleIssue = titleIssue.replace('$displaytype', displaytype);
 		let desc = conf?.Suggestion?.Description
 			? conf.Suggestion.Description
 			: 'From $username : it would be nice if someone could time this!';
-		const user = await findUserByName(username);
-		desc = desc.replace('$username', user ? user.nickname : username);
-		desc = desc.replace('$title', title);
-		desc = desc.replace('$series', serie || '');
-		desc = desc.replace('$singer', singer);
-		desc = desc.replace('$type', type);
-		desc = desc.replace('$link', link);
+		const user = await findUserByName(suggestion.username);
+		desc = desc.replace('$username', user ? user.nickname : suggestion.username);
+		desc = desc.replace('$title', suggestion.title);
+		desc = desc.replace('$series', suggestion.serie || '');
+		desc = desc.replace('$singer', suggestion.singer);
+		desc = desc.replace('$version', suggestion.version);
+		desc = desc.replace('$link', suggestion.link);
+		desc = desc.replace('$lyricsLink', suggestion.lyricsLink);
+		desc = desc.replace('$comment', suggestion.comment);
 		return await gitlabCreateIssue(titleIssue, desc, conf.Suggestion.Labels);
 	} catch (err) {
 		logger.error('Unable to post new suggestion to gitlab', { service, obj: err });

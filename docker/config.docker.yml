@@ -215,7 +215,7 @@ Gitlab:
 
         **Comment** : $comment
     Suggestion:
-      Title: '[Suggestion] $displaytype - $type - $title'
+      Title: '[Suggestion] $displaytype - $title ~ $version Vers.'
       Labels:
         - suggestion
       Description: >
@@ -234,10 +234,16 @@ Gitlab:
         **Series** : $series
 
 
-        **Type** : $type
+        **Version** : $version
 
 
-        **Link** : $link
+        **Media link** : $link
+
+
+        **Lyrics link** : $lyricsLink
+
+
+        **Comment** : $comment
     KaraProblem:
       Media:
         Title: '[Media issue] $kara'

@@ -101,29 +101,28 @@
 							</div>
 						</div>
 					</div>
-					<div class="field is-horizontal">
+					<div v-if="versions.length > 0" class="field is-horizontal">
 						<div class="field-label is-normal">
 							<label
-								for="type"
+								for="version"
 								class="label"
-							>{{ $t('modal.suggest.fields.type.label') }}</label>
+							>{{ $t('modal.suggest.fields.version.label') }}</label>
 						</div>
 						<div class="field-body">
 							<div class="control">
 								<div class="select">
 									<select
-										id="type"
-										v-model="formData.type"
-										name="type"
+										id="version"
+										v-model="formData.version"
+										name="version"
 										autocomplete="off"
-										required
 									>
 										<option
-											v-for="songtype in Object.keys(songtypes)"
-											:key="songtype"
-											:value="songtype"
+											v-for="version in versions"
+											:key="version.tid"
+											:value="version.name"
 										>
-											{{ songtypes[songtype][localeIn3B] || songtypes[songtype]['eng'] || songtype }}
+											{{ getTagInLocale(version) }}
 										</option>
 									</select>
 								</div>
@@ -150,6 +149,51 @@
 										:placeholder="$t('modal.suggest.fields.link.label')"
 										autocomplete="off"
 									>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="field is-horizontal">
+						<div class="field-label is-normal">
+							<label
+								for="lyrics_link"
+								class="label"
+							>{{ $t('modal.suggest.fields.lyrics_link.label') }}</label>
+						</div>
+						<div class="field-body">
+							<div class="field">
+								<div class="control">
+									<input
+										id="lyrics_link"
+										v-model="formData.lyricsLink"
+										type="url"
+										name="lyrics_link"
+										class="input"
+										:placeholder="$t('modal.suggest.fields.lyrics_link.label')"
+										autocomplete="off"
+									>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="field is-horizontal">
+						<div class="field-label is-normal">
+							<label
+								for="comment"
+								class="label"
+							>{{ $t('modal.suggest.fields.comment.label') }}</label>
+						</div>
+						<div class="field-body">
+							<div class="field">
+								<div class="control">
+									<textarea
+										id="comment"
+										v-model="formData.comment"
+										name="comment"
+										class="textarea"
+										:placeholder="$t('modal.suggest.fields.comment.label')"
+										autocomplete="off"
+									/>
 								</div>
 							</div>
 						</div>
@@ -203,6 +247,7 @@
 					<button
 						v-if="!submitted"
 						class="button is-success"
+						:disabled="!formData.title || !formData.singer || !formData.link"
 						:class="{'is-loading': loading}"
 						type="submit"
 					>
@@ -226,7 +271,8 @@
 	import { storeToRefs } from 'pinia';
 	import type { TagList } from '%/lib/types/tag';
 	import { useAuthStore } from '~/store/auth';
-	import { useI18n } from 'vue-i18n'
+	import type { DBTag } from '%/lib/types/database/tag';
+	import type { SuggestionIssue } from '%/types/suggestions';
 
 	defineProps<{
 		active: boolean
@@ -235,26 +281,21 @@
 	const loading = ref(false);
 	const submitted = ref(false);
 	const gitlabUrl = ref('');
-	const songtypes = ref<Record<string, Record<string, string>>>({});
-	const formData = ref<{
-		title: string,
-		serie: string,
-		singer: string,
-		type: string,
-		link: string,
-		username: string
-	}>({
+	const versions = ref<DBTag[]>([]);
+	const formData = ref<SuggestionIssue>({
 		title: '',
 		serie: '',
 		singer: '',
-		type: 'OP',
+		version: '',
 		link: '',
+		lyricsLink: '',
+		comment: '',
 		username: ''
 	});
 
 	const emit = defineEmits<{(e: 'close'): void}>();
 	const { loggedIn, user } = storeToRefs(useAuthStore());
-	const { locale } = useI18n();
+
 	onMounted(() => {
 		// Prefill the username field if user is logged in
 		if (loggedIn.value && user?.value?.nickname) {
@@ -268,15 +309,11 @@
 		const res = await useCustomFetch<TagList>('/api/karas/tags', {
 			params: { 
 				stripEmpty: true,
-				type: 3
+				type: 14
 			}
 		});
 		if (res) {
-			const songtypesUpdated: Record<string, Record<string, string>> = {};
-			for (const songtype of res.content) {
-				songtypesUpdated[songtype.name] = songtype.i18n as Record<string, string>;
-			}
-			songtypes.value = songtypesUpdated;
+			versions.value = res.content;
 		}
 	}
 
@@ -300,13 +337,14 @@
 				title: '',
 				serie: '',
 				singer: '',
-				type: 'OP',
+				version: '',
 				link: '',
+				lyricsLink: '',
+				comment: '',
 				username: ''
 			};
 		}
 	}
-	const localeIn3B = computed(() =>  getLanguageIn3B(locale.value));
 </script>
 
 <style scoped lang="scss">

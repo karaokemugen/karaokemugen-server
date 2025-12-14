@@ -21,3 +21,14 @@ export interface SuggestionParams {
 	order?: SuggestionOrderParam;
 	languages?: string[]
 }
+
+export interface SuggestionIssue {
+	title: string;
+	serie?:string;
+	singer: string;
+	version?:string;
+	link:string;
+	lyricsLink?: string;
+	comment?: string;
+	username: string;
+}
