@@ -242,10 +242,6 @@
 		"placeholder": {
 			"kara": "作品、歌手、名前⋯"
 		},
-		"types": {
-			"karaokes": "曲",
-			"favorites": "ユーザーのお気に入り"
-		},
 		"sort": {
 			"most_favorites": "最もお気に入り"
 		}
