@@ -62,7 +62,7 @@
 		"not_found_playlist": "No se pudo encontrar esta lista de reproducción",
 		"not_found_tag": "No se ha encontrado esta etiqueta",
 		"remote": "Error al cargar listas remotas",
-		"bans": ""
+		"bans": "Ha ocurrido un error al cargar la lista de canciones bloqueadas"
 	},
 	"toast": {
 		"USER_DELETED": "Usuario eliminado correctamente"
