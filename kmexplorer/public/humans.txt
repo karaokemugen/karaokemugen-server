@@ -5,7 +5,7 @@ Florent Berthelot - Frontend
 
 Leon Lozahic - Frontend
 
-See <https://gitlab.com/karaokemugen/code/karaokemugen-server/-/graphs/master> for more.
+See <https://gitlab.com/karaokemugen/code/karaokemugen-server/-/graphs/main> for more.
 
 Thanks to our users helping us find bugs and improve our software! You're all awesome <3.
 

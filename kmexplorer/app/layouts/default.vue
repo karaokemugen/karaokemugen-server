@@ -1147,7 +1147,7 @@
 				</p>
 				<p class="column">
 					{{ $t('footer.software_under_license') }}
-					<nuxt-link href="https://gitlab.com/karaokemugen/code/karaokemugen-server/-/blob/master/LICENSE.md">
+					<nuxt-link href="https://gitlab.com/karaokemugen/code/karaokemugen-server/-/blob/main/LICENSE.md">
 						MIT
 					</nuxt-link>
 					<template v-if="manifest?.license">
