@@ -1,6 +1,7 @@
 {
 	"actions": {
-		"choose_file": "Dibabit ur restr"
+		"choose_file": "Dibabit ur restr",
+		"import": "Enporzhiañ"
 	},
 	"kara": {
 		"tagtypes": {
