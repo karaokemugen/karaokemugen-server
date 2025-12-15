@@ -53,7 +53,12 @@
 						/>
 					</nuxt-link>
 				</div>
-				<div class="navbar-item has-dropdown is-hidden-desktop">
+				
+				<div
+				v-if="loggedIn 
+				&& (user?.roles?.admin || 
+				(user?.roles?.maintainer && config?.Frontend.Import.LoginNeeded && config?.Frontend.Import.ContributorTrustLevels))"
+				class="navbar-item has-dropdown is-hidden-desktop">
 					<nuxt-link
 						class="navbar-link"
 						@click="openMenu('administration')"
@@ -182,7 +187,9 @@
 			</div>
 
 			<div
-				v-if="menuOpen === 'administration' && loggedIn && (user?.roles?.admin || user?.roles?.maintainer)"
+ 				v-if="menuOpen === 'administration' && loggedIn 
+				&& (user?.roles?.admin || 
+				(user?.roles?.maintainer && config?.Frontend.Import.LoginNeeded && config?.Frontend.Import.ContributorTrustLevels))"
 				class="navbar-dropdown"
 			>
 				<client-only>
@@ -937,10 +944,18 @@
 						</nuxt-link>
 					</li>
 				</ul>
-				<p class="menu-label" v-if="loggedIn && (user?.roles?.admin || user?.roles?.maintainer)">
+				<p
+					v-if="loggedIn 
+					&& (user?.roles?.admin 
+					|| (user?.roles?.maintainer && config?.Frontend.Import.LoginNeeded && config?.Frontend.Import.ContributorTrustLevels))"
+					class="menu-label">
 					{{ $t('menu.administration') }}
 				</p>
-				<ul class="menu-list" v-if="loggedIn && (user?.roles?.admin || user?.roles?.maintainer)">
+				<ul
+					v-if="loggedIn 
+					&& (user?.roles?.admin 
+					|| (user?.roles?.maintainer && config?.Frontend.Import.LoginNeeded && config?.Frontend.Import.ContributorTrustLevels))"
+					class="menu-list">
 					<li>
 						<client-only>
 							<nuxt-link
