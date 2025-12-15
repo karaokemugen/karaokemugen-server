@@ -1,9 +1,27 @@
+# 2025.12.15
+
+This is a hotfix release
+
+## Changes
+
+- Reworked suggestion modal
+- Improved performance on random song queries
+- Translations: Updated breton
+
+## Fixes
+
+- No @ allowed in usernames. Administrators need to manually update existing username that have @.
+- Fixed the filter by user in submissions page
+- Fixed dashboard to be display only if necessary for maintainer
+
 # 2025.12.08
 
 ## Added
 
 - Admins can now import song suggestion CSVs to add to the list of suggestions easily importable
-- Added a new page for users "My submissions" allowing them to see which songs they've sent for approval and which got refused/accepted, and follow the review progress
+- Added a new page for users "My submissions" allowing them to see which songs they've sent for approval and which got refused/accepted, and follow the review progress.
+  - `Frontend.Import.MaxPerUser` is removed
+  - `Frontend.Import.ContributorTrustLevels` and `Frontend.Import.CleanupDays` are added
 
 ## Changes
 
@@ -16,6 +34,7 @@
   - promoteToken (now has its own interface in admin panel)
   - changePassword (removed, no use anymore)
   - port (use the port config option instead)
+- Rename `Frontend.DiscourseURL` to `Frontend.ForumURL`
 
 ## Fixes
 

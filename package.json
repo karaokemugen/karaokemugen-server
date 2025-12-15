@@ -1,6 +1,6 @@
 {
    "name": "karaokemugen-server",
-   "version": "4.0.0",
+   "version": "2025.12.15",
    "description": "Karaoke Mugen online server",
    "main": "kmserver-core/dist/index.js",
    "repository": "https://gitlab.com/karaokemugen/code/karaokemugen-server.git",
