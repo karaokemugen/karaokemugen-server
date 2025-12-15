@@ -45,7 +45,8 @@
 				"thanks": {
 					"btn": "Serriñ"
 				},
-				"title": "Kemenn ur gudenn"
+				"title": "Kemenn ur gudenn",
+				"song": "Kanaouenn"
 			},
 			"btn": {
 				"lyrics": "Kudenn gant ar pozioù",
@@ -207,7 +208,8 @@
 		"versions": "Handelvoù",
 		"administration": "Mererezh",
 		"origins": "Orinoù",
-		"series": "Oberennoù"
+		"series": "Oberennoù",
+		"dashboard": "Panell-stur"
 	},
 	"profile": {
 		"favorites": "Pennroll",
@@ -245,7 +247,11 @@
 			"playlist": "Anvioù, implijerien…",
 			"user": "Anvioù implijer…",
 			"kara": "Oberennoù, kanerien, anvioù…",
-			"tag": "Anvioù an dikedennoù…"
+			"tag": "Anvioù an dikedennoù…",
+			"submissions": "Anvioù"
+		},
+		"types": {
+			"languages": "Yezhoù"
 		}
 	},
 	"modal": {
@@ -420,10 +426,19 @@
 					"label": "Kaner"
 				},
 				"link": {
-					"label": "Liamm"
+					"label": "Liamm war-du ar media"
 				},
 				"series": {
 					"label": "Oberenn"
+				},
+				"comment": {
+					"label": "Evezhiadenn"
+				},
+				"lyrics_link": {
+					"label": "Liamm war-du ar pozioù"
+				},
+				"version": {
+					"label": "Handelv"
 				}
 			},
 			"submitted": {
@@ -488,6 +503,10 @@
 			"cancel": "Nullañ",
 			"label": "Emañ ar c'haraoke er roll-lenn '{name}' dija.",
 			"add": "Ouzhpennañ memes tra"
+		},
+		"import_suggestion": {
+			"file": "Restr",
+			"source": "Tarzh"
 		}
 	},
 	"titles": {
@@ -580,5 +599,16 @@
 	"roles": {
 		"contributor": "Kenlabourer·ez",
 		"admin": "Merour·ez"
+	},
+	"submissions": {
+		"email": "Postel",
+		"forum": "Forom",
+		"discord": "Discord",
+		"modified_at": "Cheñchet d'an {date}",
+		"status": {
+			"rejected": "Nac'het",
+			"accepted": "Aotret",
+			"sent": "Kaset"
+		}
 	}
 }
