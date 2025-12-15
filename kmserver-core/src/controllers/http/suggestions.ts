@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import { APIMessage } from '../../lib/services/frontend.js';
 import { addSuggestionsFromFile, getSuggestions, getSuggestionsLanguages, removeSuggestion, updateLike } from '../../services/suggestions.js';
-import {requireAdmin, requireAuth, requireValidUser} from '../middlewares/auth.js';
+import {requireAdmin, requireAuth, requireMaintainer, requireValidUser} from '../middlewares/auth.js';
 
 export default function suggestionsController(router: Router) {
 	router.route('/suggestions/import')
@@ -24,7 +24,7 @@ export default function suggestionsController(router: Router) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		})
-		.delete(requireAuth, requireValidUser, requireAdmin, async (req: any, res) => {
+		.delete(requireAuth, requireValidUser, requireMaintainer, async (req: any, res) => {
 			try {
 				await removeSuggestion(req.params.id);
 				res.status(200).json();
