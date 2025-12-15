@@ -62,7 +62,7 @@ export default function inboxController(router: Router) {
 	router.route('/inbox')
 		.get(optionalAuth, async (req: any, res) => {
 			try {
-				const inbox = await getInbox(req.authToken?.roles?.admin || req.authToken?.roles?.maintainer, req.body.byUser);
+				const inbox = await getInbox(req.authToken?.roles?.admin || req.authToken?.roles?.maintainer, req.query.byUser);
 				res.status(200).json(inbox);
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));

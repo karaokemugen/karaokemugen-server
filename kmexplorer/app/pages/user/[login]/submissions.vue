@@ -66,10 +66,6 @@ const { config } = storeToRefs(useConfigStore());
 const { sort, search } = storeToRefs(useMenubarStore());
 const route = useRoute();
 
-if (!config?.value?.Users.Enabled || !user?.value) {
-	throw createError({ statusCode: 404 });
-}
-
 const inboxList = ref<Inbox[]>([]);
 const inboxListToDisplay = ref<Inbox[]>([]);
 const loading = ref(true);
@@ -79,6 +75,10 @@ watch(search, () => inboxListToDisplay.value = inboxList.value
 watch(sort, () => inboxListToDisplay.value.sort(sortInbox), { deep: true });
 
 async function fetch(withLoading = true) {
+	if (!config?.value?.Users?.Enabled || !user?.value) {
+		throw createError({ statusCode: 404 });
+	}
+
 	if (withLoading) loading.value = true;
 
 	inboxList.value = await useCustomFetch<Inbox[]>('/api/inbox', {
