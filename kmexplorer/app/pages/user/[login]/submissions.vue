@@ -31,7 +31,7 @@
 					</nuxt-link>
 				</li>
 				<li>
-					<nuxt-link v-if="config?.Frontend.AdminEmail" :href="config?.Frontend.AdminEmail">
+					<nuxt-link v-if="config?.Frontend.AdminEmail" :href="`mailto:${config?.Frontend.AdminEmail}`">
 						<font-awesome-icon :icon="['fa', 'at']" :fixed-width="true" />
 						{{ $t('submissions.email') }}
 					</nuxt-link>
