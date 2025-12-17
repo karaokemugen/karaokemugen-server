@@ -122,13 +122,11 @@ function prepareKaraQuery(params: KaraParams) {
 		q.selectClause += 'COALESCE(ks.played, 0) AS played,';
 		q.groupClauses.push('ks.played');
 		q.joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
-		q.whereClauses.push('ks.played > 0');
 	} else if (params.order === 'playedRecently') {
 		q.orderClauses.push(`ks.played_recently ${params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
 		q.selectClause += 'COALESCE(ks.played_recently, 0) AS played,';
 		q.groupClauses.push('ks.played_recently');
 		q.joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
-		q.whereClauses.push('ks.played_recently > 0');
 	} else if (params.order === 'user_favorites') {
 		q.orderClauses.push(`f.favorited_at ${params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
 	} else if (params.order === 'favorited') {
@@ -136,19 +134,16 @@ function prepareKaraQuery(params: KaraParams) {
 		q.selectClause += 'COALESCE(ks.favorited, 0) AS favorited,';
 		q.groupClauses.push('ks.favorited');
 		q.joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
-		q.whereClauses.push('ks.favorited > 0');
 	} else if (params.order === 'requested') {
 		q.orderClauses.push(`ks.requested ${params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
 		q.selectClause += 'COALESCE(ks.requested, 0) AS requested,';
 		q.groupClauses.push('ks.requested');
 		q.joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
-		q.whereClauses.push('ks.requested > 0');
 	} else if (params.order === 'requestedRecently') {
 		q.orderClauses.push(`ks.requested_recently ${params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
 		q.selectClause += 'COALESCE(ks.requested_recently, 0) AS requested,';
 		q.groupClauses.push('ks.requested_recently');
 		q.joinClause += ' LEFT OUTER JOIN kara_stats ks ON ks.fk_kid = ak.pk_kid ';
-		q.whereClauses.push('ks.requested_recently > 0');
 	} else {
 		if (!params.random) {
 			// Build order here from config, only if not random.
