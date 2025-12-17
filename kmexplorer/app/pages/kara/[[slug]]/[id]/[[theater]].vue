@@ -147,7 +147,7 @@
 		try {
 			const res = await useCustomFetch<DBKara>(`/api/karas/${kid}`);
 			const karaSlug = slug(res.titles[res.titles_default_language || 'eng'] || '');
-			if (karaSlug !== oldKaraSlug) {
+			if (import.meta.client && karaSlug !== oldKaraSlug) {
 				navigateTo({ params: { id: kid, slug: karaSlug, theater: theater }, query: route.query }, { replace: true });
 			}
 			res.songtypes = sortAndHideTags(res.songtypes, true);
