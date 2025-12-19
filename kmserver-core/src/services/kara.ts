@@ -277,12 +277,9 @@ export async function getAllKaras(params: KaraParams, token?: JWTTokenWithRoles,
 				}
 			}
 		}
-		logger.profile('selectAllKaras1');
 		let pl = await selectAllKaras(params, includeStaging);
-		logger.profile('selectAllKaras1');
 		// If params.random is used, selectAlLKaras will return only KIDs to make the query faster. So we rerun selectALlKaras but with a list of KIDs this time
 		if (params.random) {
-			logger.profile('selectAllKaras2');
 			// Removing random parameter since we already have a list of randomized songs to fetch
 			delete params.random;
 			// We need to keep the params.q parameter somehow, but we need to replace the k: parameter if any while keeping the other ones
@@ -294,7 +291,6 @@ export async function getAllKaras(params: KaraParams, token?: JWTTokenWithRoles,
 			queryArr.push(`k:${pl.map(plc => plc.kid).join(',')}`);
 			params.q = queryArr.join('!');
 			pl = await selectAllKaras(params, includeStaging);
-			logger.profile('selectAllKaras2');
 		}
 		return formatKaraList(pl, +params.from, pl[0]?.count || 0);
 	} catch (err) {
