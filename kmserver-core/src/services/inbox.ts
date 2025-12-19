@@ -173,6 +173,8 @@ export async function markKaraInboxAsDownloaded(inid: string, username: string) 
 		if (!inbox) throw new ErrorKM('INBOX_UNKNOWN_ERROR', 404, false);
 		await updateInboxDownloaded(username, inid);
 		await setInboxStatus(inid, 'in_review');
+		const repo = getRepos()[0];
+		await assignIssue(getGitlabIssueNumber(inbox.gitlab_issue), repo.Name)
 	} catch (err) {
 		logger.error(`Failed to mark inbox item ${inid} as downloaded by ${username}`, {service, obj: err});
 		sentry.error(err);
