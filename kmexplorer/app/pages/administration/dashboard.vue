@@ -69,6 +69,8 @@ const { config } = storeToRefs(useConfigStore());
 
 const contributors = ref<DBUser[]>([]);
 
+if (import.meta.client && !user?.value?.roles?.admin && !user?.value?.roles?.maintainer) throw createError({ statusCode: 404 });
+
 async function updateGit() {
 	await useCustomFetch('/api/git/update', { method: 'POST' });
 	toast.success(t('dashboard.update_git_triggered'));
