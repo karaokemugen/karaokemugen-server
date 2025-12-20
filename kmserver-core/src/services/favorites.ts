@@ -1,4 +1,5 @@
 import { deleteFavorite, insertFavorite, selectFavorites } from '../dao/favorites.js';
+import { formatKaraList } from '../lib/services/kara.js';
 import { JWTTokenWithRoles } from '../lib/types/user.js';
 import { ErrorKM } from '../lib/utils/error.js';
 import logger from '../lib/utils/logger.js';
@@ -26,7 +27,7 @@ export async function compareFavorites(username1: string, username2: string) {
 		getFavorites(username2)
 	]);
 	const kids = favorites1.filter(f => favorites2.find(f2 => f2.kid === f.kid)).map(f => f.kid);
-	return getAllKaras({ q: `k:${kids.join(',')}`}, adminToken, false);
+	return kids.length > 0 ? getAllKaras({ q: `k:${kids.join(',')}`}, adminToken, false) : formatKaraList([], 0, 0);
 }
 
 export async function getFavorites(username: string) {
