@@ -149,7 +149,7 @@
 	});
 
 	const title = computed((): string => {
-		return getTitleInLocale(props.karaoke.titles, props.karaoke.titles_default_language);
+		return getTitleInLocale(props.karaoke.titles, props.karaoke.titles_default_language) || '';
 	});
 	const images = computed((): string[] => {
 		return supportedFiles?.value?.audio.some(extension => props.karaoke.mediafile.endsWith(extension))
@@ -160,7 +160,7 @@
 			];
 	});
 	const getSlug = computed((): string => {
-		return slug(props.karaoke.titles[props.karaoke.titles_default_language || 'eng']);
+		return slug(props.karaoke.titles[props.karaoke.titles_default_language || 'eng'] || '');
 	});
 	const tagTypesSorted = computed((): object => {
 		const tagTypesSorted = { ...tagTypes };

@@ -79,6 +79,13 @@
 						</div>
 						<client-only>
 							<div class="is-flex is-justify-content-flex-end">
+								<nuxt-link
+									v-if="loggedIn && !viewingSelf && userConnected?.flag_displayfavorites && user.flag_displayfavorites"
+									class="button"
+									:href="`/users/favorites?username1=${userConnected?.login.toLowerCase()}&username2=${user.login.toLowerCase()}`">
+									<font-awesome-icon :icon="['fas', 'masks-theater']" />
+									{{ $t('profile.shared_favorites') }}
+								</nuxt-link>
 								<button
 									v-if="edit"
 									class="button is-success"
@@ -387,7 +394,6 @@
 
 	.user-box {
 		flex-grow: 1;
-		// margin-right: 0.75rem;
 		display: flex;
 		justify-content: center;
 		border-radius: $user-box-radius;
@@ -457,7 +463,6 @@
 						font-size: 1.75em;
 						font-weight: bold;
 						max-height: 2em;
-						// Dans ta gueule le mec avec son psuedo de 2 mètres !
 						overflow-wrap: anywhere;
 						overflow: hidden;
 

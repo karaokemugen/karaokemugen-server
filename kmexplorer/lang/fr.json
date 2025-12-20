@@ -288,6 +288,8 @@
 		"favorites": "Favoris",
 		"you": " (c'est vous !)",
 		"edit": "Éditer le profil",
+		"shared_favorites": "Favoris en commun",
+		"shared_favorites_number": "{count} favori en commun | {count} favoris en commun",
 		"private": "Votre profil est privé, vous êtes le seul à pouvoir le voir.",
 		"favorites_count": "{count} favori | {count} favoris",
 		"playlists_count": "{count} liste de lecture | {count} listes de lecture",

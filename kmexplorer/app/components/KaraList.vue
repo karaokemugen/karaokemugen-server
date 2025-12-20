@@ -70,14 +70,15 @@
 	import { storeToRefs } from 'pinia';
 	import type { KaraList } from '%/lib/types/kara';
 	import { useAuthStore } from '~/store/auth';
-	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
+	import type { DBKara } from '%/lib/types/database/kara';
+	import type { DBPL } from '%/types/database/playlist';
 
 	const props = withDefaults(defineProps<{
-		karaokes: KaraList
+		karaokes: KaraList<DBKara>
 		playlists: DBPL[]
 		loading: boolean
-		favorites: string
-		withSuggest: boolean
+		favorites?: string
+		withSuggest?: boolean
 	}>(), {
 		favorites: '',
 		withSuggest: true
