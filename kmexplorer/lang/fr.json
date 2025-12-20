@@ -478,7 +478,7 @@
 				"flag_contributor_emails": {
 					"label": "Mes contributions",
 					"checkbox": "Envoyer des emails sur l'état de mes contributions",
-					"desc": "En cochant cette case, vous recevrez des emails lorsqu'un changement d'état (accepté, refusé, changements requis, etc.) aura lieu sur vos chansons envoyées pour évaluation auprès de l'équipe qui gère la base de données."
+					"desc": "En cochant cette case, vous recevrez des emails lorsqu'un changement d'état (acceptée, refusée, changements requis, etc.) aura lieu sur vos chansons envoyées pour évaluation auprès de l'équipe qui gère la base de données."
 				},
 				"flag_displayfavorites": {
 					"label": "Favoris",
