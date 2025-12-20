@@ -95,7 +95,7 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 			details: reason,
 			datetime: new Date()
 		});
-		await updateInboxStatus(inid, status, inbox.history, status === 'rejected' ? reason : null);
+		await updateInboxStatus(inid, status, inbox.history, (status === 'rejected' || status === 'changes_requested') ? reason : null);
 
 		// What to do with the different statuses
 		const user = await findUserByName(inbox.username, { contact: true });
