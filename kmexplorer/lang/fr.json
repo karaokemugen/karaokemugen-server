@@ -478,7 +478,7 @@
 				"flag_contributor_emails": {
 					"label": "Mes contributions",
 					"checkbox": "Envoyer des emails sur l'état de mes contributions",
-					"desc": "En cochant cette case, vous recevrez des emails lorsqu'un changement d'état (accepté, refusé, demande de changements, etc.) aura lieu sur vos chansons envoyées pour évaluation auprès de l'équipe qui gère la base de données."
+					"desc": "En cochant cette case, vous recevrez des emails lorsqu'un changement d'état (accepté, refusé, changements requis, etc.) aura lieu sur vos chansons envoyées pour évaluation auprès de l'équipe qui gère la base de données."
 				},
 				"flag_displayfavorites": {
 					"label": "Favoris",
@@ -535,7 +535,7 @@
 					"label": "Lien vers le média"
 				},
 				"lyrics_link": {
-					"label": "Lien vers les paroles"
+					"label": "Paroles (lien)"
 				},
 				"comment": {
 					"label": "Commentaire"
@@ -751,7 +751,7 @@
 		"available_trust_levels": "Niveaux de confiance disponibles :",
 		"trust_level_submissions": "Niveau {level} : {songs} contributions",
 		"trust_level": "Niveau {level}",
-		"submissions_status": "Uniquement les contributions aux statuts 'Envoyée', 'En revue' et 'Changement Requis' sont prises en compte dans le quota."
+		"submissions_status": "Uniquement les contributions aux statuts 'Envoyée', 'En revue' et 'Changements Requis' sont prises en compte dans le quota."
 	},
 	"playlists": {
 		"create": "Créer une nouvelle liste de lecture",
@@ -799,12 +799,12 @@
 		},
 		"modified_at": "Modifiée le {date}",
 		"rejected_reason_button": "Raison du refus",
-		"rejected_reason": "Raison du refus : {reason}",
+		"rejected_reason": "Raison du refus : {reason}",
 		"cleanup": "Les contributions aux statuts 'Refusée', 'Acceptée' ou 'Changements requis' datant de plus de {days} jours sont automatiquement supprimées.",
 		"contact_maintainers": "Si vous avez besoin de contacter les mainteneurs, vous pouvez les joindre via :",
 		"email": "Email",
 		"forum": "Forum",
 		"discord": "Discord",
-		"quota": "Vous pouvez envoyer { songs } / { quota } chansons."
+		"quota": "Vous pouvez encore envoyer { songs } / { quota } chansons."
 	}
 }
