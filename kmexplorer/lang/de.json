@@ -1,6 +1,7 @@
 {
 	"actions": {
-		"choose_file": "Datei auswählen"
+		"choose_file": "Datei auswählen",
+		"import": "Import"
 	},
 	"menu": {
 		"songtypes": "Songtypen",
@@ -43,7 +44,9 @@
 		"bans": "Sperrungen",
 		"play_random_song": "Spiele einen zufälligen Song",
 		"remotes": "Standorte",
-		"administration": "Administration"
+		"administration": "Administration",
+		"dashboard": "Dashboard",
+		"submissions": "Meine Einsendungen"
 	},
 	"kara": {
 		"import": {
@@ -187,7 +190,8 @@
 				"comment": {
 					"label": "Kommentar",
 					"placeholder": "Nach 2 Minuten ist der Untertitel nicht mehr synchron."
-				}
+				},
+				"song": "Lied"
 			},
 			"title": "Ein Problem mit {title}?"
 		},
@@ -382,6 +386,11 @@
 				"gitlab": {
 					"label": "Gitlab",
 					"placeholder": "karaokemugen"
+				},
+				"flag_contributor_emails": {
+					"label": "Meine Beiträge",
+					"checkbox": "Per E-Mail benachrichtigen bei Statusänderungen meiner Beiträge",
+					"desc": "Bei Aktivierung erhältst du jedes Mal eine E-Mail, wenn sich der Status deiner eingereichten Lieder ändert (angenommen, abgelehnt, Änderungen erforderlich etc.). Status-Änderungen ergeben sich, wenn sich ein Datenbank-Maintainer deine eingereichten Lieder ansieht."
 				}
 			},
 			"delete": "Benutzerkonto löschen",
@@ -433,10 +442,19 @@
 					"placeholder": "Magischer anonymer"
 				},
 				"link": {
-					"label": "Link"
+					"label": "Medien-Link"
 				},
 				"title": {
 					"label": "Titel"
+				},
+				"version": {
+					"label": "Version"
+				},
+				"lyrics_link": {
+					"label": "Liedtext(-Link)"
+				},
+				"comment": {
+					"label": "Kommentar"
 				}
 			},
 			"submitted": {
@@ -529,6 +547,11 @@
 			"submit": "Speichern",
 			"types": "Tag-Typen",
 			"name": "Name"
+		},
+		"import_suggestion": {
+			"subtitle": "Die Datei muss eine Semikolon-separierte CSV-Datei sein mit Angaben im Format Sänger;Titel;Sprache (ISO 639-2-Format für Sprachen).",
+			"source": "Quelle",
+			"file": "Datei"
 		}
 	},
 	"search": {
@@ -545,19 +568,26 @@
 			"most_played_recently": "Am häufigsten gespielt (kürzlich)",
 			"most_requested_recently": "Am häufigsten gewünscht (kürzlich)",
 			"username": "Nach Benutzernamen",
-			"duration": "Nach Dauer"
+			"duration": "Nach Dauer",
+			"recent_modified": "Nach Änderungsdatum",
+			"status": "Nach Status"
 		},
 		"placeholder": {
 			"kara": "Serien, Sänger, Namen…",
 			"tag": "Tag-Namen…",
 			"user": "Benutzernamen …",
-			"playlist": "Namen, Benutzer…"
+			"playlist": "Namen, Benutzer…",
+			"submissions": "Namen"
 		},
 		"previous": "Vorherige Seite",
 		"aria": {
 			"sort": "Sortieren nach",
 			"goto": "Zu Seite {0}",
 			"page": "Seite {0}"
+		},
+		"types": {
+			"collections": "Sammlungen",
+			"languages": "Sprachen"
 		}
 	},
 	"profile": {
@@ -569,7 +599,8 @@
 		"you": " (das bist du!)",
 		"private": "Dein Profil ist privat, nur du kannst es einsehen.",
 		"public_favorites": "Deine Favoriten sind öffentlich sichtbar. Klicke um diese zu verbergen.",
-		"private_favorites": "Deine Favoriten sind privat. Klicke hier um diese öffentlich zu teilen."
+		"private_favorites": "Deine Favoriten sind privat. Klicke hier um diese öffentlich zu teilen.",
+		"submissions": "Meine Einsendungen"
 	},
 	"toast": {
 		"GENERATED_KARA": "Karaoke erfolgreich eingereicht.",
@@ -635,7 +666,8 @@
 		"GET_KARA_ERROR": "Fehler beim abrufen des Songs",
 		"NEW_KARA_ISSUE_ERROR": "Problem kann nicht erstellt werden",
 		"BANNER_BANNED": "Dieses Banner kann nicht benutzt werden",
-		"PL_SHUFFLE_ERROR": "Fehler beim Mischen der Playlist"
+		"PL_SHUFFLE_ERROR": "Fehler beim Mischen der Playlist",
+		"USER_INBOX_QUOTA_REACHED": "Du hast dein Kontingent ausgeschöpft."
 	},
 	"suggestions": {
 		"kara": {
@@ -649,7 +681,8 @@
 			"description": "Was ist das?",
 			"send_suggestion": "Vorschlag senden",
 			"purpose": "Hier sind einige Karaoke-Songs, die importiert werden können. Du kannst nach einem bestimmten Lied suchen oder auf die Schaltfläche „Andere Lieder zufällig auswählen“ klicken. Du kannst einen Karaoke-Song unterstützen, indem du auf „Ja!“ klickst.",
-			"suggestion": "Wenn du das gesuchte Lied immer noch nicht finden kannst, klicke auf „Vorschlag senden“."
+			"suggestion": "Wenn du das gesuchte Lied immer noch nicht finden kannst, klicke auf „Vorschlag senden“.",
+			"import_suggestion": "Datei mit Vorschlägen importieren"
 		},
 		"modal": {
 			"welcome": {
@@ -746,6 +779,29 @@
 		"update_git": "Git-Repository updaten",
 		"update_git_triggered": "Das Update wurde gestartet.",
 		"generate_previews": "Vorschau generieren",
-		"generate_hardsubs": "Hardsubs generieren"
+		"generate_hardsubs": "Hardsubs generieren",
+		"trust_levels": "Beitrags-Level",
+		"available_trust_levels": "Zur Verfügung stehendes Level:",
+		"trust_level_submissions": "Level {level} : {songs} Einsendungen",
+		"trust_level": "Level {level}",
+		"submissions_status": "Nur Einsendungen mit Status „Gesendet“, „In Begutachtung“ und „Änderungen erforderlich“ werden auf dein Kontingent angerechnet."
+	},
+	"submissions": {
+		"status": {
+			"sent": "Gesendet",
+			"in_review": "In Begutachtung",
+			"changes_requested": "Änderungen erforderlich",
+			"accepted": "Angenommen",
+			"rejected": "Abgelehnt"
+		},
+		"modified_at": "Geändert am {date}",
+		"rejected_reason_button": "Ablehnungsgrund",
+		"rejected_reason": "Ablehnungsgrund: {reason}",
+		"cleanup": "Einsendungen mit Status „Abgelehnt“, „Angenommen“ oder „Änderungen erforderlich“, die älter sind als {days} Tage werden automatisch gelöscht.",
+		"contact_maintainers": "Wenn du dich mit dem Maintainer in Verbindung setzen willst, kannst du das über folgende Wege tun:",
+		"email": "E-Mail",
+		"forum": "Forum",
+		"discord": "Discord",
+		"quota": "Du kannst noch { songs } / { quota } Liedern einsenden."
 	}
 }
