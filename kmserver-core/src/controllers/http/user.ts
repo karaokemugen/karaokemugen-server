@@ -152,7 +152,7 @@ export default function userController(router: Router) {
 		.put(requireAuth, requireValidUser, requireMaintainer, async (req, res) => {
 			try {
 				await setUserContributorTrustLevel(req.params.user, req.body.level);
-				res.status(200).json();
+				res.status(200).json(APIMessage('CONTRIBUTOR_TRUST_LEVEL_UPDATED'));
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}

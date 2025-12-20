@@ -691,7 +691,8 @@
 		"PL_SHARE_CLIPBOARD_SUCCESS": "Lien de la liste de lecture copié dans le presse-papier",
 		"PL_SHARE_CLIPBOARD_FAIL": "Lien de la liste de lecture n'a pas pu être copié dans le presse-papier",
 		"PL_SHUFFLE_ERROR": "Erreur lors du mélange de la liste de lecture",
-		"USER_INBOX_QUOTA_REACHED": "Vous avez atteint votre quota."
+		"USER_INBOX_QUOTA_REACHED": "Vous avez atteint votre quota.",
+		"CONTRIBUTOR_TRUST_LEVEL_UPDATED": "Le niveau de confiance du contributeur a été mis à jour."
 	},
 	"roles": {
 		"donator": "Donateur(-ice)",

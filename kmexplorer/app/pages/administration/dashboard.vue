@@ -36,11 +36,12 @@
 				<div v-for="contributor in contributors" :key="contributor.login" class="tile">
 					<div class="box is-flex is-justify-content-space-between">
 						{{ contributor.nickname }}
-						<select :selected="contributor.contributor_trust_level" @change="(event) => updateContributorLevel(event, contributor)">
+						<select @change="(event) => updateContributorLevel(event, contributor)">
 							<option
 								v-for="key in Object.keys(config?.Frontend.Import.ContributorTrustLevels)"
 								:key="key"
 								:value="key"
+								:selected="Number(key) === contributor.contributor_trust_level" 
 							>
 								{{ $t('dashboard.trust_level', { level: key }) }}
 							</option>

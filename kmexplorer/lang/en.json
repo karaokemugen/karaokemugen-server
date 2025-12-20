@@ -691,7 +691,8 @@
 		"PL_SHARE_CLIPBOARD_SUCCESS": "Playlist link copied in clipboard",
 		"PL_SHARE_CLIPBOARD_FAIL": "Couldn't write playlist link to clipboard",
 		"PL_SHUFFLE_ERROR": "Error shuffling playlist",
-		"USER_INBOX_QUOTA_REACHED": "You reached your quota."
+		"USER_INBOX_QUOTA_REACHED": "You reached your quota.",
+		"CONTRIBUTOR_TRUST_LEVEL_UPDATED": "Contributor trust level updated."
 	},
 	"roles": {
 		"donator": "Donator",
