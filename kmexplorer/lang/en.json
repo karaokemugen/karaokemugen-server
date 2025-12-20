@@ -478,7 +478,7 @@
 				"flag_contributor_emails": {
 					"label": "My Contributions",
 					"checkbox": "Send mails on your contributions' status changes",
-					"desc": "By enabling this, you'll receive emails each time your submitted songs change status (accepted, refused, requesting changes, etc.) Status changes occur when a database maintainer reviews your submitted songs."
+					"desc": "By enabling this, you'll receive emails each time your submitted songs change status (accepted, refused, changes requested, etc.). Status changes occur when a database maintainer reviews your submitted songs."
 				},
 				"flag_displayfavorites": {
 					"label": "Favorites",
@@ -535,7 +535,7 @@
 					"label": "Media link"
 				},
 				"lyrics_link": {
-					"label": "Lyrics link"
+					"label": "Lyrics (link)"
 				},
 				"comment": {
 					"label": "Comment"
@@ -751,7 +751,7 @@
 		"available_trust_levels": "Trust level available:",
 		"trust_level_submissions": "Level {level} : {songs} submissions",
 		"trust_level": "Level {level}",
-		"submissions_status": "Only submissions with the statuses 'Sent', 'Under Review', and 'Change Required' are counted toward the quota."
+		"submissions_status": "Only submissions with the statuses 'Sent', 'In Review', and 'Changes requested' are counted toward the quota."
 	},
 	"playlists": {
 		"create": "Create new playlist",
@@ -798,13 +798,13 @@
 			"rejected": "Rejected"
 		},
 		"modified_at": "Modified at {date}",
-		"rejected_reason_button": "Rejected reason",
-		"rejected_reason": "Rejected reason: {reason}",
-		"cleanup": "Submissions with the status 'Rejected', 'Accepted', or 'Changes required' that are older than {days} days are automatically deleted.",
+		"rejected_reason_button": "Reason for rejection",
+		"rejected_reason": "Reason for rejection: {reason}",
+		"cleanup": "Submissions with the status 'Rejected', 'Accepted', or 'Changes requested' that are older than {days} days are automatically deleted.",
 		"contact_maintainers": "If you need to contact the maintainers, you can reach them via:",
 		"email": "Email",
 		"forum": "Forum",
 		"discord": "Discord",
-		"quota": "You can sent { songs } / { quota } songs."
+		"quota": "You can still send { songs } / { quota } songs."
 	}
 }
