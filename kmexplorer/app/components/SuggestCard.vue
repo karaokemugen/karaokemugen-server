@@ -10,7 +10,7 @@
 				<tag
 					v-if="kara.language"
 					type="langs"
-					class="mr-1"
+					class="m-1"
 					:tag="{name : getLanguagesFromCode(kara.language)}"
 					:staticheight="false"
 					icon
@@ -20,7 +20,7 @@
 				<tag
 					v-if="kara.source && canSeeSourceAndDelete"
 					type="groups"
-					class="ml-1"
+					class="m-1"
 					:tag="{name : kara.source}"
 					:staticheight="false"
 					icon
@@ -30,7 +30,7 @@
 			<div class="media-right">
 				<button
 					v-if="canSeeSourceAndDelete"
-					class="button is-danger mr-1"
+					class="button is-danger m-1"
 					:disabled="done_delete"
 					:class="{'is-loading': loading}"
 					@click="deleteLike"
@@ -38,7 +38,7 @@
 					{{ $t('suggestions.kara.remove') }}
 				</button>
 				<button
-					class="button is-success ml-1"
+					class="button is-success m-1"
 					:disabled="done_vote"
 					:class="{'is-loading': loading}"
 					@click="addLike()"
