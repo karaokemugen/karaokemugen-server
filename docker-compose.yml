@@ -6,10 +6,6 @@ services:
     hostname: kmserver
     restart: always
     # Change this in your .env
-    environment:
-      TAG: latest
-      PUID: 1000
-      PGID: 1000
     ports:
       - ${PORT:-1350}:80
     volumes:
