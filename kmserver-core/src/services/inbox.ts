@@ -153,6 +153,7 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 						lng: getUserLanguage(user),
 						username: inbox.username,
 						songname: inbox.name,
+						instance: repoName,
 						reason,
 					}) +
 						discordURL +
