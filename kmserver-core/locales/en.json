@@ -7,6 +7,28 @@
 		"RESET_PASSWORD_DONE": {
 			"SUBJECT": "Karaoke Mugen Password has been reset",
 			"BODY": "Hello {{username}},\n\nYour password has been successfully reset at {{host}}.\n\n\n\nYou should be able to login using your new password now."
+		},
+		"INBOX": {
+            "IN_REVIEW": {
+                "SUBJECT": "[{{instance}}] Song pending approval: {{songname}}",
+                "BODY": "Hello {{username}},\n\nYour song {{songname}} is currently being reviewed by the {{instance}} team.\n\nIt may be:\n- Accepted\n- Rejected\n- Requiring changes on your part before being accepted.\n\nIn the latter two cases, you will receive another notification with the reasons for the temporary or permanent rejection."
+            },
+            "CHANGES_REQUESTED": {
+                "SUBJECT": " [{{instance}}] Changes are required to your karaoke: {{songname}}",
+                "BODY": "Hello {{username}},\n\nAfter review, changes are required to your song {{songname}}:\n\n{{reason}}\n\nYou can contact the {{instance}} team via:"
+            },
+            "ACCEPTED": {
+                "SUBJECT": "[{{instance}}] Song added to the database: {{songname}}",
+                "BODY": "Hello {{username}},\n\nCongratulations, your song {{songname}} has been accepted! It will be added to the {{instance}} database shortly."
+            },
+            "REJECTED": {
+                "SUBJECT": "[{{instance}}] Song rejected: {{songname}}",
+                "BODY": "Hello {{username}},\n\nYour song {{songname}} has been rejected. Here are the reasons:\n\n{{reason}}\n\nIf you would like to discuss this, please feel free to contact us via:"
+			},
+            "DISCORD": "\n- Discord: {{url}}\n",
+            "FORUM": "\n- Forum: {{url}}\n",
+            "GITLAB": "\n- Gitlab: {{url}}\n",
+            "CLEANUP_DAYS_ALERT": "\n\nIf you do not respond to this email, your song will be deleted after {{days}} days."
 		}
 	}
 }

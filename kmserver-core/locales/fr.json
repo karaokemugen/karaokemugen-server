@@ -7,6 +7,28 @@
         "RESET_PASSWORD_DONE": {
             "SUBJECT": "Mot de passe Karaoke Mugen réinitialisé",
             "BODY": "Bonjour {{username}},\n\nVotre mot de passe sur {{host}} a bien été réinitialisé.\n\n\n\nVous devriez pouvoir vous connecter avec votre nouveau mot de passe."
+        },
+        "INBOX": {
+            "IN_REVIEW": {
+                "SUBJECT": "[{{instance}}] Chanson en cours de validation : {{songname}}",
+                "BODY": "Bonjour {{username}},\n\nVotre chanson {{songname}} est en cours de validation par l'équipe de {{instance}}.\n\nElle peut soit être :\n- Acceptée\n- Rejetée\n- Nécessitant des changements de votre part avant d'être acceptée.\n\nDans les deux derniers cas vous recevrez une autre notification avec les raisons du refus temporaire ou définitif."
+            },
+            "CHANGES_REQUESTED": {
+                "SUBJECT": " [{{instance}}] Des changements sont requis sur votre karaoké : {{songname}}",
+                "BODY": "Bonjour {{username}},\n\nAprès une relecture, des changements sont nécessaires pour votre chanson {{songname}} :\n\n{{reason}}\n\nVous pouvez prendre contact avec l'équipe de {{instance}} via :"
+            },
+            "ACCEPTED": {
+                "SUBJECT": "[{{instance}}] Chanson ajoutée à la base : {{songname}}",
+                "BODY": "Bonjour {{username}},\n\nFélicitations, votre chanson {{songname}} a été acceptée ! Elle sera rapidement ajoutée dans la base de données de {{instance}}."
+            },
+            "REJECTED": {
+                "SUBJECT": "[{{instance}}] Chanson refusée : {{songname}}",
+                "BODY": "Bonjour {{username}},\n\nVotre chanson {{songname}} a été rejetée. Voici la ou les raisons :\n\n{{reason}}\n\nSi vous souhaitez en discuter, n'hésitez pas à prendre contact avec l'équipe de {{instance}} via :"
+            },
+            "DISCORD": "\n- Discord : {{url}}\n",
+            "FORUM": "\n- Forum : {{url}}\n",
+            "GITLAB": "\n- Gitlab : {{url}}\n",
+            "CLEANUP_DAYS_ALERT": "\n\nSi vous ne donnez pas suite à ce mail, votre chanson sera supprimé après {{days}} jours."
         }
     }
 }
