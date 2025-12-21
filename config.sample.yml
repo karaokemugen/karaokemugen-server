@@ -237,7 +237,7 @@ Gitlab:
 
         **Comment** : $comment
     Suggestion:
-      Title: "[Suggestion] $displaytype - $title ~ $version Vers."
+      Title: "[Suggestion] $displaytype - $title $version"
       Labels:
         - suggestion
       Description: >

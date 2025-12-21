@@ -188,10 +188,13 @@ export async function createSuggestionIssue(suggestion: SuggestionIssue): Promis
 		const conf = getConfig().Gitlab.IssueTemplate;
 		let titleIssue = conf?.Suggestion?.Title
 			? conf.Suggestion.Title
-			: '[suggestion] $displaytype - $type - $title';
+			: '[suggestion] $displaytype - $title $version';
 		titleIssue = titleIssue.replace('$title', suggestion.title);
-		titleIssue = titleIssue.replace('$version', suggestion.version);
-		const displaytype = suggestion.singer && suggestion.serie ? `${suggestion.serie} / ${suggestion.singer}` : `${suggestion.serie || ''}${suggestion.singer}`;
+		titleIssue = titleIssue.replace('$version', suggestion.version ? `~ ${suggestion.version} Vers.` : '');
+		const displaytype =
+			suggestion.singer && suggestion.serie
+				? `${suggestion.serie} / ${suggestion.singer}`
+				: `${suggestion.serie || ''}${suggestion.singer}`;
 		titleIssue = titleIssue.replace('$displaytype', displaytype);
 		let desc = conf?.Suggestion?.Description
 			? conf.Suggestion.Description

@@ -224,7 +224,7 @@ A new karaoke has been sent to the inbox.
 **Comment** : $comment`
 			},
 			Suggestion: {
-				Title: '[Suggestion] $displaytype - $title ~ $version Vers.',
+				Title: '[Suggestion] $displaytype - $title $version',
 				Labels: ['suggestion'],
 				Description: `
 # Karaoke suggestion
