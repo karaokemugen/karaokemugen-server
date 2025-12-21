@@ -3,8 +3,8 @@
 # Use linuxserver hack to downgrade to user node
 USERHOME=$(grep node /etc/passwd | cut -d ":" -f6)
 usermod -d "/root" node
-groupmod -o -g "${PGID}" node
-usermod -o -u "${PUID}" node
+groupmod -o -g "${PGID:-1000}" node
+usermod -o -u "${PUID:-1000}" node
 usermod -d "${USERHOME}" node
 chown -R node: /srv/kmserver/km*
 
