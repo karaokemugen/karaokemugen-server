@@ -177,7 +177,8 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 				);
 			}
 		} else if (status === 'in_review') {
-			if (user?.flag_contributor_emails)
+			// Only sent the in review mail the first time
+			if (user?.flag_contributor_emails && inbox.status === 'sent')
 				await sendMail(
 					i18n.t('MAIL.INBOX.IN_REVIEW.SUBJECT', {
 						lng: getUserLanguage(user),
