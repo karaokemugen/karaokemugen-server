@@ -444,7 +444,8 @@
 			},
 			"submitted": {
 				"here": "amañ",
-				"close": "Serriñ"
+				"close": "Serriñ",
+				"subtitle": "Kemenn resevet !"
 			},
 			"submit": "Kas",
 			"title": "Kinnigoù"
@@ -607,9 +608,11 @@
 		"discord": "Discord",
 		"modified_at": "Cheñchet d'an {date}",
 		"status": {
-			"rejected": "Nac'het",
+			"rejected": "Distaolet",
 			"accepted": "Aotret",
 			"sent": "Kaset"
-		}
+		},
+		"rejected_reason_button": "Abeg an distaol",
+		"rejected_reason": "Abeg an distaol : {reason}"
 	}
 }
