@@ -207,7 +207,15 @@ export async function addKaraToPlaylist(kids: string[], plaid: string, token: JW
 		if (!pl) throw new ErrorKM('UNKNOWN_PLAYLIST', 404, false);
 		const user: User = await findUserByName(token.username);
 
-		if (karas.content.length !== kids.length) throw new ErrorKM('UNKNOWN_SONG', 404, false);
+		if (karas.content.length !== new Set(kids).size) throw new ErrorKM('UNKNOWN_SONG', 404, false);
+
+		// Find duplicate kids
+		const duplicates = kids.filter((item, index) => kids.indexOf(item) !== index);
+		const duplicatesKaras = [];
+		// get karaoke content for every duplicate kid
+		duplicates.forEach(kid => duplicatesKaras.push(karas.content.find(kara => kara.kid === kid)));
+		// add them to existing kara list
+		karas.content.push(...duplicatesKaras);
 
 		logger.debug(`Adding ${kids.length} karaokes to playlist ${pl.name || 'unknown'} by ${token.username}...`, { service });
 
