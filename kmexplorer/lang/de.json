@@ -600,7 +600,9 @@
 		"private": "Dein Profil ist privat, nur du kannst es einsehen.",
 		"public_favorites": "Deine Favoriten sind öffentlich sichtbar. Klicke um diese zu verbergen.",
 		"private_favorites": "Deine Favoriten sind privat. Klicke hier um diese öffentlich zu teilen.",
-		"submissions": "Meine Einsendungen"
+		"submissions": "Meine Einsendungen",
+		"shared_favorites": "Geteilte Favoriten",
+		"shared_favorites_number": "{count} geteiler Favorit | {count} geteilte Favoriten"
 	},
 	"toast": {
 		"GENERATED_KARA": "Karaoke erfolgreich eingereicht.",
@@ -667,7 +669,8 @@
 		"NEW_KARA_ISSUE_ERROR": "Problem kann nicht erstellt werden",
 		"BANNER_BANNED": "Dieses Banner kann nicht benutzt werden",
 		"PL_SHUFFLE_ERROR": "Fehler beim Mischen der Playlist",
-		"USER_INBOX_QUOTA_REACHED": "Du hast dein Kontingent ausgeschöpft."
+		"USER_INBOX_QUOTA_REACHED": "Du hast dein Kontingent ausgeschöpft.",
+		"CONTRIBUTOR_TRUST_LEVEL_UPDATED": "Beitrags-Level aktualisiert."
 	},
 	"suggestions": {
 		"kara": {
