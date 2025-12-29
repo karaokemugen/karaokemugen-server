@@ -6,7 +6,29 @@
         },
         "RESET_PASSWORD_DONE": {
             "SUBJECT": "Dein Karaoke Mugen Passwort wurde erneut versendet",
-            "BODY": "Hallo {{username}},\n\nDein Passwort wurde erfolgreich zurückgesetzt bei {{host}}.\n\n\n\nDu kannst dich ab jetzt mit deinem neuen Passwort anmelden."
+            "BODY": "Hallo {{username}},\n\ndein Passwort wurde erfolgreich zurückgesetzt bei {{host}}.\n\n\n\nDu kannst dich ab jetzt mit deinem neuen Passwort anmelden."
+        },
+        "INBOX": {
+            "IN_REVIEW": {
+                "SUBJECT": "[{{instance}}] ausstehende Liedbestätigung: {{songname}}",
+                "BODY": "Hallo {{username}},\n\ndein Lied {{songname}} wird aktuell vom {{instance}}-Team überprüft.\n\nEs kann:\n- angenommen werden\n- abgelehnt werden\n- sein, dass Änderungen erforderlich sind, bevor es angenommen werden kann.\n\nIn den beiden letzten Fällen bekommst du eine Benachrichtigung mit den Gründen für die vorübergehende oder endgültige Ablehnung."
+            },
+            "CHANGES_REQUESTED": {
+                "SUBJECT": " [{{instance}}] Es sind Änderungen an deinem Lied erforderlich: {{songname}}",
+                "BODY": "Hallo {{username}},\n\nnach Begutachtung deines Liedes sind Änderungen erforderlich {{songname}}:\n\n{{reason}}\n\nDu kannst dich mit dem {{instance}}-Team in Verbindung setzten über:"
+            },
+            "ACCEPTED": {
+                "SUBJECT": "[{{instance}}] Lied der Datenbank hinzugefügt: {{songname}}",
+                "BODY": "Hallo {{username}},\n\nherzlichen Glückwunsch, dein Lied {{songname}} wurde angenommen! Es wird in Kürze der {{instance}}-Datenbank hinzugefügt.\nVielen Dank, dass du an der {{instance}}-Datenbank mitgewirkt hast!"
+            },
+            "REJECTED": {
+                "SUBJECT": "[{{instance}}] Lied abgelehnt: {{songname}}",
+                "BODY": "{{songname}}Hallo {{username}},\n\ndein Lied {{songname}} wurde abgelehnt. Dies sind die Gründe dafür:\n\n{{reason}}\n\nWenn du dich darüber austauschen möchtest, erreichst du uns unter:"
+            },
+            "DISCORD": "\n- Discord: {{url}}\n",
+            "FORUM": "\n- Forum: {{url}}\n",
+            "GITLAB": "\n- Gitlab: {{url}}\n",
+            "CLEANUP_DAYS_ALERT": "\n\nWenn du auf diese E-Mail nicht antwortest, wird dein Lied nach {{days}} Tagen gelöscht."
         }
     }
 }
