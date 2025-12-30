@@ -2,7 +2,7 @@
     "MAIL": {
         "RESET_PASSWORD_REQUEST": {
             "SUBJECT": "Réinitialisation du mot de passe Karaoke Mugen",
-            "BODY": "Bonjour {{username}},\n\nVous (ou quelqu'un) a demandé une réinitialisation de mot de passe pour votre compte sur {{host}}. Si vous n'avez pas demandé cela, veuillez ignorer ce mail.\n\nCliquez sur le lien suivant pour définir un nouveau mot de passe :\n\n{{url}}\n\nCe lien expirera dans deux heures.."
+            "BODY": "Bonjour {{username}},\n\nVous (ou quelqu'un) a demandé une réinitialisation de mot de passe pour votre compte sur {{host}}. Si vous n'avez pas demandé cela, veuillez ignorer ce mail.\n\nCliquez sur le lien suivant pour définir un nouveau mot de passe :\n\n{{url}}\n\nCe lien expirera dans deux heures.."
         },
         "RESET_PASSWORD_DONE": {
             "SUBJECT": "Mot de passe Karaoke Mugen réinitialisé",
@@ -11,19 +11,19 @@
         "INBOX": {
             "IN_REVIEW": {
                 "SUBJECT": "[{{instance}}] Chanson en cours de validation : {{songname}}",
-                "BODY": "Bonjour {{username}},\n\nVotre chanson {{songname}} est en cours de validation par l'équipe de {{instance}}.\n\nElle peut soit être :\n- Acceptée\n- Rejetée\n- Nécessitant des changements de votre part avant d'être acceptée.\n\nDans les deux derniers cas vous recevrez une autre notification avec les raisons du refus temporaire ou définitif."
+                "BODY": "Bonjour {{username}},\n\nVotre chanson {{songname}} est en cours de validation par l'équipe de {{instance}}.\n\nElle peut soit être :\n- Acceptée\n- Rejetée\n- Nécessitant des changements de votre part avant d'être acceptée.\n\nDans les deux derniers cas vous recevrez une autre notification avec les raisons du refus temporaire ou définitif."
             },
             "CHANGES_REQUESTED": {
-                "SUBJECT": " [{{instance}}] Des changements sont requis sur votre karaoké : {{songname}}",
-                "BODY": "Bonjour {{username}},\n\nAprès une relecture, des changements sont nécessaires pour votre chanson {{songname}} :\n\n{{reason}}\n\nVous pouvez prendre contact avec l'équipe de {{instance}} via :"
+                "SUBJECT": " [{{instance}}] Des changements sont requis sur votre chanson : {{songname}}",
+                "BODY": "Bonjour {{username}},\n\nAprès une relecture, des changements sont nécessaires pour votre chanson {{songname}} :\n\n{{reason}}\n\nVous pouvez prendre contact avec l'équipe de {{instance}} via :"
             },
             "ACCEPTED": {
                 "SUBJECT": "[{{instance}}] Chanson ajoutée à la base : {{songname}}",
-                "BODY": "Bonjour {{username}},\n\nFélicitations, votre chanson {{songname}} a été acceptée ! Elle sera rapidement ajoutée dans la base de données de {{instance}}."
+                "BODY": "Bonjour {{username}},\n\nFélicitations, votre chanson {{songname}} a été acceptée ! Elle sera rapidement ajoutée dans la base de données de {{instance}}.\nMerci d'avoir contribué à la base de données {{instance}} !"
             },
             "REJECTED": {
                 "SUBJECT": "[{{instance}}] Chanson refusée : {{songname}}",
-                "BODY": "Bonjour {{username}},\n\nVotre chanson {{songname}} a été rejetée. Voici la ou les raisons :\n\n{{reason}}\n\nSi vous souhaitez en discuter, n'hésitez pas à prendre contact avec l'équipe de {{instance}} via :"
+                "BODY": "Bonjour {{username}},\n\nVotre chanson {{songname}} a été rejetée. Voici la ou les raisons :\n\n{{reason}}\n\nSi vous souhaitez en discuter, n'hésitez pas à nous contacter via :"
             },
             "DISCORD": "\n- Discord : {{url}}\n",
             "FORUM": "\n- Forum : {{url}}\n",
