@@ -667,7 +667,7 @@
 					<button
 						class="button is-link"
 						:class="{'is-loading': loading}"
-						:disabled="submitDisabled()"
+						:disabled="submitDisabled"
 						@click="submit"
 					>
 						{{ t('kara.import.submit') }}
@@ -721,6 +721,7 @@
 	const karaSearch = ref<{ label: string; value: string }[]>([]);
 	const tagsCheckbox = ref<Map<number, DBTag[]>>(new Map());
 	const tagsToCreateList = ref<DBTag[]>([]);
+	const submitDisabled = ref(true);
 
 	const debouncedGetAsyncData = ref();
 	const mediafileInput = ref<HTMLInputElement>();
@@ -736,14 +737,18 @@
 	const { openModal } = useModalStore();
 	const { t } = useI18n();
 	const toast = useToast();
-	const supportedMedias = 
+	const supportedMedias = computed(() =>
 			config?.value?.Frontend.SupportedMedias && config?.value?.Frontend.SupportedMedias?.length > 0
 				? config?.value?.Frontend.SupportedMedias
-				: ([] as string[]).concat(supportedFiles?.value?.video ?? [], supportedFiles?.value?.audio ?? []);
+				: ([] as string[]).concat(supportedFiles?.value?.video ?? [], supportedFiles?.value?.audio ?? []));
 
 	if (config?.value && config.value.Frontend.Import.LoginNeeded && !loggedIn.value) {
 		displayAuthIfLoginIsRequired();
 	}
+
+	useConfigStore().$subscribe(() => {
+		submitDisabled.value = IsSubmitDisabled()
+	});
 
 	onMounted(async () => {
 		debouncedGetAsyncData.value = _.debounce(getAsyncData, 500, { leading: true, trailing: true, maxWait: 750 });
@@ -862,7 +867,7 @@
 		}
 	}
 
-	function submitDisabled(): boolean {
+	function IsSubmitDisabled(): boolean {
 		return Boolean(
 			(!params.id && !mediafile.value) ||
 				karaoke.value.medias.length === 0 ||
@@ -907,7 +912,7 @@
 					'kara.import.add_file_media_not_supported_error',
 					{
 						name: file?.name,
-						formats: supportedMedias.join(', ')
+						formats: supportedMedias.value.join(', ')
 					}
 				) as string;
 			} else if (!file || !isSupportedMediaFile(file.name)) {
@@ -1000,7 +1005,7 @@
 	}
 	function isSupportedMediaFile(filename: string) {
 		return new RegExp(
-			`^.+\\.(${supportedMedias.join('|')})$`
+			`^.+\\.(${supportedMedias.value.join('|')})$`
 		).test(filename);
 	}
 	function isSupportedLyricsFile(filename: string) {
