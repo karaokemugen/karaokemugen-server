@@ -879,7 +879,8 @@
 					karaoke.value.data.tags.singers?.length === 0) ||
 				karaoke.value.data.tags.songtypes?.length === 0 ||
 				karaoke.value.data.tags.langs?.length === 0 ||
-				karaoke.value.data.tags.collections?.length === 0 ||
+				((tagsCheckbox.value.get(16)?.length ?? 0) > 0 &&
+					karaoke.value.data.tags.collections?.length === 0) ||
 				!karaoke.value.data.year ||
 				karaoke.value.data.year < 1800 ||
 				karaoke.value.data.year > new Date().getFullYear() ||
