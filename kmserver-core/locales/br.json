@@ -7,6 +7,17 @@
         "RESET_PASSWORD_DONE": {
             "SUBJECT": "Adkoret eo bet ar ger-tremen Karaoke Mugen",
             "BODY": "Demat {{username}},\n\nAdkoret eo bet gant berzh ho ker-tremen e {{host}}.\n\n\n\nGallout a rafec'h kevreañ gant ho ker-tremen nevez."
+        },
+        "INBOX": {
+            "IN_REVIEW": {
+                "SUBJECT": "[{{instance}}] Kanaouenn o kadarnaat : {{songname}}"
+            },
+            "DISCORD": "\n- Discord : {{url}}\n",
+            "FORUM": "\n- Forom : {{url}}\n",
+            "GITLAB": "\n- Gitlab : {{url}}\n",
+            "ACCEPTED": {
+                "SUBJECT": "[{{instance}}] Kanaouenn a oa bet ouzhpennet d'an dastumad : {{songname}}"
+            }
         }
     }
 }
