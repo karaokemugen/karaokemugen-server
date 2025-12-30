@@ -23,7 +23,7 @@
             },
             "REJECTED": {
                 "SUBJECT": "[{{instance}}] Lied abgelehnt: {{songname}}",
-                "BODY": "{{songname}}Hallo {{username}},\n\ndein Lied {{songname}} wurde abgelehnt. Dies sind die Gründe dafür:\n\n{{reason}}\n\nWenn du dich darüber austauschen möchtest, erreichst du uns unter:"
+                "BODY": "Hallo {{username}},\n\ndein Lied {{songname}} wurde abgelehnt. Dies sind die Gründe dafür:\n\n{{reason}}\n\nWenn du dich darüber austauschen möchtest, erreichst du uns unter:"
             },
             "DISCORD": "\n- Discord: {{url}}\n",
             "FORUM": "\n- Forum: {{url}}\n",
