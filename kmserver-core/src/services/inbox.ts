@@ -111,7 +111,7 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 			inid,
 			status,
 			inbox.history,
-			status === 'rejected' || status === 'changes_requested' ? reason : null,
+			status === 'rejected' || status === 'changes_requested' || status === 'accepted' ? reason : null,
 		);
 
 		// What to do with the different statuses
@@ -215,13 +215,15 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 						username: inbox.username,
 						songname: inbox.name,
 						instance: repoName,
+						reason: reason ? i18n.t('MAIL.INBOX.ACCEPTED.REASON', { reason }) : '',
 					}),
 					user.login,
 					user.email,
 				);
 			if (inbox.gitlab_issue) {
 				const issueNumber = getGitlabIssueNumber(inbox.gitlab_issue);
-				await postNoteToIssue(issueNumber, repoName, `Upload was ACCEPTED by ${inbox.username_downloaded}`);
+				await postNoteToIssue(issueNumber, repoName, `Upload was ACCEPTED by ${inbox.username_downloaded}.` + reason ? ` Notes from reviewer:
+				${reason}` : '');
 				await closeIssue(issueNumber, repoName);
 			}
 		} else if (status === 'rejected') {
