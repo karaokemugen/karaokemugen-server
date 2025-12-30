@@ -20,7 +20,7 @@
             "ACCEPTED": {
                 "SUBJECT": "[{{instance}}] Song added to the database: {{songname}}",
                 "BODY": "Hello {{username}},\n\ncongratulations, your song {{songname}} has been accepted! It will be added to the {{instance}} database shortly.\n{{reason}}\nThank you for contributing to the {{instance}} database!",
-                "REASON": "\nA message regarding your song has been left by the maintenance team: {{reason}}\n"
+                "REASON": "\nA message regarding your song has been left by the maintenance team:\n\n{{reason}}\n"
             },
             "REJECTED": {
                 "SUBJECT": "[{{instance}}] Song rejected: {{songname}}",
