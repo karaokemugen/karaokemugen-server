@@ -27,7 +27,7 @@ export async function updateInboxStatus(inid: string, status: InboxActions, inbo
 }
 
 export async function updateInboxGitlabIssue(inid: string, gitlab_issue: string) {
-	return db().query(sql.updateInboxStatus, [
+	return db().query(sql.updateInboxGitlabIssue, [
 		inid,
 		gitlab_issue
 	]);
