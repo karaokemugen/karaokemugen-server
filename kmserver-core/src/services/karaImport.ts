@@ -7,6 +7,7 @@ import { basename, resolve } from 'path';
 import { v4 as UUIDv4 } from 'uuid';
 import logger from 'winston';
 
+import { updateInboxGitlabIssue } from '../dao/inbox.js';
 import { insertKara, updateKaraParents } from '../dao/kara.js';
 import { refreshAllKaraTag } from '../dao/tag.js';
 import { applyKaraHooks, refreshHooks } from '../lib/dao/hook.js';
@@ -48,7 +49,7 @@ async function preflight(kara: KaraFileV4): Promise<KaraFileV4> {
 }
 
 // Common work between edits and creations
-async function heavyLifting(kara: KaraFileV4, contact: {name: string, login?: string}, edit?: EditElement): Promise<KaraFileV4> {
+async function heavyLifting(kara: KaraFileV4, contact: {name: string, login?: string}, edit?: EditElement): Promise<string> {
 	const conf = getConfig();
 	try {
 		// Refresh hooks at every kara we get.
@@ -111,7 +112,6 @@ async function heavyLifting(kara: KaraFileV4, contact: {name: string, login?: st
 		await refreshKarasAfterDBChange('ADD', [kara.data]);
 		await refreshAllKaraTag();
 		logger.debug('Kara', { service, obj: kara });
-		let issueURL: string;
 		if (conf.Gitlab.Enabled) {
 			if (edit) {
 				edit.oldKara = await getKara({
@@ -122,7 +122,7 @@ async function heavyLifting(kara: KaraFileV4, contact: {name: string, login?: st
 
 		}
 		const inboxes = await getInbox(true);
-		const newInid = await addKaraInInbox(kara, contact, issueURL, edit ? edit.kid : undefined, edit?.inid);
+		const newInid = await addKaraInInbox(kara, contact, edit ? edit.kid : undefined, edit?.inid);
 		if (edit?.inid) {
 			const inbox = inboxes.find(i => i.inid === edit.inid);
 			let status: InboxActions = 'sent';
@@ -132,7 +132,7 @@ async function heavyLifting(kara: KaraFileV4, contact: {name: string, login?: st
 			setInboxStatus(newInid, 'sent');
 		}
 		consolidateTagsInRepo(kara);
-		return kara;
+		return newInid ;
 	} catch (err) {
 		logger.error('Error importing kara', { service, obj: JSON.stringify(err) });
 		sentry.addErrorInfo('Kara', JSON.stringify(kara, null, 2));
@@ -180,7 +180,7 @@ export async function editKara(editedKara: EditedKara, contact: string, login?: 
 			modifiedMedia: editedKara.modifiedMedia,
 			inid,
 		};
-		await heavyLifting(kara, {
+		const newInid = await heavyLifting(kara, {
 			name: contact,
 			login
 		}, edit);
@@ -196,6 +196,7 @@ export async function editKara(editedKara: EditedKara, contact: string, login?: 
 				}
 			} else {
 				issueURL = await createInboxIssue(kara.data.kid, edit);
+				updateInboxGitlabIssue(newInid, issueURL);
 			}
 		} catch (err) {
 			logger.error(`Unable to post to Gitlab a new inbox issue: ${err}`, { service, obj: err });
@@ -221,10 +222,11 @@ export async function createKara(editedKara: KaraFileV4, contact: string, login?
 		}
 		let kara = trimKaraData(editedKara);
 		kara = await preflight(kara);
-		await heavyLifting(kara, {name: contact, login});
+		const newInid = await heavyLifting(kara, {name: contact, login});
 		let issueURL = '';
 		try {
 			issueURL = await createInboxIssue(kara.data.kid);
+			updateInboxGitlabIssue(newInid, issueURL);
 		} catch (err) {
 			logger.error(`Unable to post to Gitlab a new inbox issue: ${err}`, { service, obj: err });
 			// Non fatal.

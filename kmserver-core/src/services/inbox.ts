@@ -322,7 +322,6 @@ export async function markKaraInboxAsUnassigned(inid: string, username: string) 
 export async function addKaraInInbox(
 	kara: KaraFileV4,
 	contact: { name: string; login?: string },
-	issue?: string,
 	edited_kid?: string,
 	inid?: string,
 ) {
@@ -332,7 +331,6 @@ export async function addKaraInInbox(
 			inid,
 			name: kara.data.songname,
 			created_at: new Date(),
-			gitlab_issue: issue,
 			contact: contact.name,
 			kid: kara.data.kid,
 			edited_kid,

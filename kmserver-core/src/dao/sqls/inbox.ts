@@ -31,7 +31,6 @@ export const insertInbox = `
 		pk_inid,
 		name,
 		created_at,
-		gitlab_issue,
 		contact,
 		fk_kid,
 		edited_kid,
@@ -42,7 +41,6 @@ export const insertInbox = `
 		:inid,
 		:name,
 		:created_at,
-		:gitlab_issue,
 		:contact,
 		:kid,
 		:edited_kid,
@@ -54,7 +52,6 @@ export const insertInbox = `
 		pk_inid = :inid,
 		name = :name,
 		created_at = :created_at,
-		gitlab_issue = :gitlab_issue,
 		contact = :contact,
 		fk_kid = :kid,
 		edited_kid = :edited_kid,
@@ -65,6 +62,10 @@ export const insertInbox = `
 
 export const updateInboxStatus = `
 	UPDATE inbox SET status = $2, history = $3, reject_reason = $4, modified_at = NOW() WHERE pk_inid = $1
+`;
+
+export const updateInboxGitlabIssue = `
+	UPDATE inbox SET gitlab_issue = $2 WHERE pk_inid = $1
 `;
 
 export const updateInboxUnassign = `
