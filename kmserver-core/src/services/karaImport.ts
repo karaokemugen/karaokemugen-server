@@ -157,6 +157,7 @@ export async function editKara(editedKara: EditedKara, contact: string, login?: 
 			const inboxes = await getInbox(false);
 			inbox = inboxes.filter(i => i.inid === inid)[0];
 			if (!inbox) throw new ErrorKM('INBOX_UNKNOWN_ERROR', 404, false);
+			kara.data.kid = inbox.kid;
 		}
 		// Before the heavy lifting (tm), we should make copies of media and/or lyrics if they were not edited.
 		if (!editedKara.modifiedLyrics && kara.medias[0].lyrics.length > 0) {
