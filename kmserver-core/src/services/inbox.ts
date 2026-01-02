@@ -107,13 +107,6 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 			details: reason,
 			datetime: new Date(),
 		});
-		await updateInboxStatus(
-			inid,
-			status,
-			inbox.history,
-			status === 'rejected' || status === 'changes_requested' || status === 'accepted' ? reason : null,
-		);
-
 		// What to do with the different statuses
 		const user = inbox.username ? await findUserByName(inbox.username, { contact: true }) : undefined;
 		const repoName = getConfig().System.Repositories[0].Name;
@@ -176,6 +169,8 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 				`,
 				);
 			}
+		} else if (status === 'sent') {
+			// Do nothing
 		} else if (status === 'in_review' && inbox.status === 'sent') {
 			// Only sent the in review mail and note in issue the first time
 			if (user?.flag_contributor_emails)
@@ -275,7 +270,16 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 				);
 				await closeIssue(issueNumber, repoName);
 			}
+		} else {
+			// Unknown status, return error.
+			throw new ErrorKM('UNKNOWN_STATUS', 400, false);
 		}
+		await updateInboxStatus(
+			inid,
+			status,
+			inbox.history,
+			status === 'rejected' || status === 'changes_requested' || status === 'accepted' ? reason : null,
+		);		
 	} catch (err) {
 		logger.error(`Failed to set inbox item ${inid} status to ${status}`, { service, obj: err });
 		sentry.error(err);
