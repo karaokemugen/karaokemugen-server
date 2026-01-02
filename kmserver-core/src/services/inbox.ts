@@ -279,7 +279,7 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 			status,
 			inbox.history,
 			status === 'rejected' || status === 'changes_requested' || status === 'accepted' ? reason : null,
-		);		
+		);
 	} catch (err) {
 		logger.error(`Failed to set inbox item ${inid} status to ${status}`, { service, obj: err });
 		sentry.error(err);
@@ -451,10 +451,10 @@ export async function clearProcessedInboxes(karas: KaraFileV4[]) {
 	logger.info('Removing possible processed inbox items if they are present in main repository', { service });
 	const inbox = await getInbox(false);
 	// Get a list of KIDs from the main repository (not including Staging then)
-	const kids = new Set(karas.filter((k) => k.data.repository !== 'Staging').map((k) => k.data.kid));
+	const kids = new Set(karas.filter((k) => k.data.repository !== 'Staging').map(k => k.data.kid));
 	for (const inboxItem of inbox) {
 		if (kids.has(inboxItem.kid)) {
-			await removeKaraFromInbox(inboxItem.inid, adminToken);
+			await setInboxStatus(inboxItem.inid, 'accepted');
 		}
 	}
 }
