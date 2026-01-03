@@ -373,26 +373,22 @@ export async function removeKaraFromInbox(inid: string, authToken: JWTTokenWithR
 				service,
 			});
 		}
-		const promises = [];
-		promises.push(
-			removeInboxFiles(
+		await deleteInbox(inid);
+		await removeInboxFiles(
 				inbox.edited_kid || inbox.kid,
 				inbox.karafile,
 				inbox.mediafile,
 				inbox.lyrics_infos ? inbox.lyrics_infos[0]?.filename : null,
-			),
 		);
-		promises.push(deleteInbox(inid));
 		if (inbox.gitlab_issue) {
 			const numberIssue = getGitlabIssueNumber(inbox.gitlab_issue);
 			const repoName = getConfig().System.Repositories[0].Name;
 			if (inbox.username === authToken.username)
-				promises.push(postNoteToIssue(numberIssue, repoName, 'Closing by request of original uploader'));
-			promises.push(closeIssue(numberIssue, repoName));
+				await postNoteToIssue(numberIssue, repoName, 'Closing by request of original uploader');
+			await closeIssue(numberIssue, repoName);
 		}
-		await Promise.all(promises);
 	} catch (err) {
-		logger.error(`Failed to delete inbox item ${inid}`, { service, obj: err });
+		logger.error(`Failed to delete inbox item ${inid} : ${err}`, { service, obj: err });
 		sentry.error(err);
 		throw new ErrorKM('DELETE_INBOX_ERROR');
 	}
