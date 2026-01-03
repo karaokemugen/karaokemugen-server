@@ -220,7 +220,28 @@ VALUES(
 	:from_display_type,
 	:songname,
 	:lyrics_infos
-);
+)
+ON CONFLICT (pk_kid) DO UPDATE SET
+    titles = :titles,
+	titles_aliases = :titles_aliases,
+	titles_default_language = :titles_default_language,
+	year = :year,
+	songorder = :songorder,
+	mediafile = :mediafile,
+	duration = :duration,
+	loudnorm = :loudnorm,
+	modified_at = :modified_at,
+	created_at = :created_at,
+	karafile = :karafile,
+	repository = :repository,
+	mediasize = :mediasize,
+	download_status = :download_status,
+	comment = :comment,
+	ignore_hooks = :ignore_hooks,
+	from_display_type = :from_display_type,
+	songname = :songname,
+	lyrics_infos = :lyrics_infos
+;
 `;
 
 export const deleteKara = `
