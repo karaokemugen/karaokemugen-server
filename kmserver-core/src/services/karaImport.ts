@@ -192,7 +192,7 @@ export async function editKara(editedKara: EditedKara, contact: string, login?: 
 				if (inbox.status === 'changes_requested') await setInboxStatus(inid, 'in_review');
 				if (issueURL) {
 					const numberIssue = getGitlabIssueNumber(issueURL);
-					await postNoteToIssue(numberIssue, repoName, 'Song has been modified by original uploader: ');
+					await postNoteToIssue(numberIssue, repoName, 'Song has been modified by original uploader');
 					await editInboxIssue(kara.data.kid, numberIssue, edit);
 				}
 			} else {
