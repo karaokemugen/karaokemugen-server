@@ -237,7 +237,7 @@ ON CONFLICT (pk_kid) DO UPDATE SET
 	mediasize = :mediasize,
 	download_status = :download_status,
 	comment = :comment,
-	ignore_hooks = :ignore_hooks,
+	ignore_hooks = :ignoreHooks,
 	from_display_type = :from_display_type,
 	songname = :songname,
 	lyrics_infos = :lyrics_infos
