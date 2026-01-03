@@ -2,7 +2,7 @@
     "MAIL": {
         "RESET_PASSWORD_REQUEST": {
             "SUBJECT": "Adkorañ ar ger-tremen Karaoke Mugen",
-            "BODY": "Demat {{username}},\n\nUn adkoradur ar ger-tremen zo bet goulennet gant c'hwi (pe unan bennak) evit ho kont e {{host}}. Ma n'hoc'h eus ket goulennet kement-se, dianavit ar postel-mañ.\n\nKlikit war al liamm-mañ evit krouiñ ur ger-tremen nevez.\n\n{{url}}\n\nA-benn div eurvezh e vo tremenet al liamm-mañ."
+            "BODY": "Demat {{username}},\n\nUn adkoradur ar ger-tremen zo bet goulennet ganeoc'h (pe unan bennak) evit ho kont e {{host}}. Ma n'hoc'h eus ket goulennet kement-se, dianavit ar postel-mañ.\n\nKlikit war al liamm-mañ evit krouiñ ur ger-tremen nevez :\n\n{{url}}\n\nA-benn div eurvezh e vo tremenet al liamm-mañ."
         },
         "RESET_PASSWORD_DONE": {
             "SUBJECT": "Adkoret eo bet ar ger-tremen Karaoke Mugen",
@@ -17,6 +17,10 @@
             "GITLAB": "\n- Gitlab : {{url}}\n",
             "ACCEPTED": {
                 "SUBJECT": "[{{instance}}] Kanaouenn a oa bet ouzhpennet d'an dastumad : {{songname}}"
+            },
+            "REJECTED": {
+                "SUBJECT": "[{{instance}}] Kanaouenn distaolet : {{songname}}",
+                "BODY": "Demat {{username}},\n\nDistaolet eo bet ho kanaouenn {{songname}}. Setu an abegoù :\n\n{{reason}}\n\nMa fell deoc'h breutaat diwar-benn an dra-se, kit da darempred war :"
             }
         }
     }
