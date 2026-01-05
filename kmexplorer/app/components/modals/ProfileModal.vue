@@ -215,7 +215,7 @@
 										type="text"
 										name="mastodon"
 										class="input"
-										pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
+										pattern="^[a-zA-Z0-9.!#$%&'*+\/=?^_`\{\|\}~\-]+@[a-zA-Z0-9\-]+(?:\.[a-zA-Z0-9\-]+)*$"
 										:placeholder="$t('modal.profile.fields.mastodon.placeholder')"
 									>
 								</div>
@@ -241,7 +241,7 @@
 										type="text"
 										name="bluesky"
 										class="input"
-										pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
+										pattern="^[a-zA-Z0-9.!#$%&'*+\/=?^_`\{\|\}~\-]+@[a-zA-Z0-9\-]+(?:\.[a-zA-Z0-9\-]+)*$"
 										:placeholder="$t('modal.profile.fields.bluesky.placeholder')"
 									>
 								</div>
