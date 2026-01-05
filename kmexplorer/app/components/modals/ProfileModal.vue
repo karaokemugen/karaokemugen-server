@@ -319,7 +319,7 @@
 										type="text"
 										name="myanimelist"
 										class="input"
-										pattern="[A-Za-z0-9_-]{2,16}"
+										pattern="[A-Za-z0-9_\-]{2,16}"
 										:placeholder="$t('modal.profile.fields.myanimelist.placeholder')"
 									>
 								</div>
