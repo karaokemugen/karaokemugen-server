@@ -1,7 +1,7 @@
 services:
   kmserver:
     build: .
-    image: registry.gitlab.com/karaokemugen/code/karaokemugen-server:${TAG:-latest}
+    image: registry.gitlab.com/karaokemugen/code/karaokemugen-server:test
     container_name: kmserver
     hostname: kmserver
     restart: always
