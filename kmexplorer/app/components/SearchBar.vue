@@ -77,7 +77,7 @@
 	});
 
 	const canCount = computed(() => ['types-id', 'types-years', 'search-query', 'user-login', 'user-login-animelist', 'users', 'suggest', 'playlists'].includes(route.name as string));
-	const canSearch = computed(() => ['types-id', 'types-years', 'search-query', 'user-login', 'user-login-animelist', 'users', 'suggest', 'playlists', 'playlist-slug', 'user-login-submissions'].includes(route.name as string));
+	const canSearch = computed(() => ['kara-slug-id-theater', 'types-id', 'types-years', 'search-query', 'user-login', 'user-login-animelist', 'users', 'suggest', 'playlists', 'playlist-slug', 'user-login-submissions'].includes(route.name as string));
 
 	const placeholder = computed((): string => {
 		if (route.name === 'users') {

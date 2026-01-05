@@ -1240,7 +1240,7 @@
 	});
 
 	const tagType = computed(() => params?.id && (params?.id as string).substring(36));
-	const onKaraTagUserListView = computed(() => ['types-id', 'types-years', 'search-query', 'user-login', 'user-login-animelist', 'users', 'suggest', 'playlists', 'playlist-slug', 'user-login-submissions', 'index'].includes(name as string));
+	const onKaraTagUserListView = computed(() => ['kara-slug-id-theater', 'types-id', 'types-years', 'search-query', 'user-login', 'user-login-animelist', 'users', 'suggest', 'playlists', 'playlist-slug', 'user-login-submissions', 'index'].includes(name as string));
 	const availableLocales = computed(() => locales.value?.filter((i: LocaleObject) => i.code && i.code !== locale.value));
 
 	onMounted(() => {

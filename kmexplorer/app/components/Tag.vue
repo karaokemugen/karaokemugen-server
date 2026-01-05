@@ -65,7 +65,7 @@
 			}
 			if (pushToLink) addTag(payload);
 			let search = undefined;
-			if (['kara-slug-id', 'types-id', 'types-years'].includes(route.name as string)) {
+			if (['kara-slug-id-theater', 'types-id', 'types-years'].includes(route.name as string)) {
 				if (pushToLink) {
 					setSearch('');
 				} else {
