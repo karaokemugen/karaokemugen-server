@@ -31,7 +31,7 @@ dast:
     site_profile: "mugen.re"
     scanner_profile: "mugen.re"
   rules:
-    - if: $CI_COMMIT_BRANCH == "dev"
+    - if: $CI_COMMIT_BRANCH == "test"
     - when: never
 sast:
   variables:
@@ -43,7 +43,7 @@ semgrep-sast:
   tags:
     - $RUNNER_LINUX
   rules:
-    - if: $CI_COMMIT_BRANCH == "dev"
+    - if: $CI_COMMIT_BRANCH == "test"
     - when: never
 secret_detection:
   interruptible: true
@@ -53,7 +53,7 @@ secret_detection:
   variables:
     SECRET_DETECTION_EXCLUDED_PATHS: 'node_modules kmexplorer/node_modules dist'
   rules:
-    - if: $CI_COMMIT_BRANCH == "dev"
+    - if: $CI_COMMIT_BRANCH == "test"
     - when: never
 
 docker:
@@ -75,7 +75,7 @@ docker:
       fi
   only:
     - main
-    - dev
+    - test
 
 update_sentry:
   stage: deploy
@@ -95,7 +95,7 @@ update_sentry:
     - yarn workspace kmserver-core sentry:sourcemaps
   only:
     - main
-    - dev
+    - test
 
 deploy_dev:
   stage: deploy
@@ -117,4 +117,4 @@ deploy_dev:
     name: dev
     url: https://mugen.re
   only:
-  - dev
+  - test
