@@ -30,8 +30,9 @@ export async function selectAllUsers(searchParams?: UserParams): Promise<DBUser[
 		const rolesClauses = [];
 		for (const role of Object.keys(searchParams.roles)) {
 			if (searchParams.roles[role] === true) rolesClauses.push(`roles @> '{ "${role}": true }'`);
+			if (searchParams.roles[role] === false) rolesClauses.push(` (NOT (roles ? '${role}') OR roles @> '{"${role}": false}')`)
 		}
-		if (rolesClauses.length > 0) whereClauses.push(`(${rolesClauses.join(' OR ')})`);
+		if (rolesClauses.length > 0) whereClauses.push(`(${rolesClauses.join(' AND ')})`);
 	}
 	if (searchParams?.filter) {
 		searchParams.filter = paramWords(searchParams.filter).join(' & ')

@@ -74,11 +74,20 @@ export default function userController(router: Router) {
 	router.route('/users')
 		.get(optionalAuth, async (req: any, res) => {
 			try {
-				const role = {};
-				if (req.query.role) role[req.query.role] = true;
+				const roles = {};
+				if (req.query.roles) {
+				const arrRoles = req.query.roles.split(',');
+					for (const role of arrRoles) {
+						if (role.startsWith('+') || role.startsWith('-')) {
+							const val = role.startsWith('+');
+							const strRole = role.substring(1);
+							roles[strRole] = val;
+						}
+					}
+				}
 				const info = await getAllUsers({
 					publicOnly: !req.authToken?.roles?.admin,
-					roles: role,
+					roles,
 					filter: req.query.filter as string,
 					from: +req.query.from,
 					size: +req.query.size
