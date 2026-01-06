@@ -610,7 +610,8 @@
 		"status": {
 			"rejected": "Distaolet",
 			"accepted": "Aotret",
-			"sent": "Kaset"
+			"sent": "Kaset",
+			"changes_requested": "Cheñchamantoù goulennet"
 		},
 		"rejected_reason_button": "Abeg an distaol",
 		"rejected_reason": "Abeg an distaol : {reason}"
