@@ -95,7 +95,7 @@ async function generateHardsubs() {
 async function getContributors() {
 	contributors.value = (await useCustomFetch<UserList>('/api/users', {
 		query: {
-			role: 'contributor'
+			roles: '+contributor,-maintainer,-admin'
 		}
 	})).content;
 }
