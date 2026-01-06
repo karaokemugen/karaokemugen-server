@@ -41,11 +41,11 @@
 		<p
 			v-if="config?.Frontend.Import.LoginNeeded && config?.Frontend.Import.ContributorTrustLevels &&
 			user?.contributor_trust_level" class="has-text-justified">
-			{{$t('submissions.quota', {
+			{{ $t('submissions.quota', {
 				songs: (config.Frontend.Import.ContributorTrustLevels[user.contributor_trust_level] || 0) -
-					inboxList.filter(i => !i.edited_kid).length,
+					inboxList.length,
 				quota: config.Frontend.Import.ContributorTrustLevels[user.contributor_trust_level]
-			})}}
+			}) }}
 		</p>
 		<div v-for="inbox in inboxListToDisplay" :key="inbox.inid" class="tile is-parent">
 			<inbox-card :inbox="inbox" @refresh="() => fetch(false)" />
