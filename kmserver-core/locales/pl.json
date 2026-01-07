@@ -2,11 +2,34 @@
     "MAIL": {
         "RESET_PASSWORD_REQUEST": {
             "SUBJECT": "Resetowanie hasła Karaoke Mugen",
-            "BODY": "Witaj ${{username}},\n\nTy (lub ktoś) poprosiłeś o zresetowanie hasła do swojego konta na {{host}}. Jeśli o to nie prosiłeś, zignoruj tę wiadomość e-mail.\n\nKliknij poniższy link, aby utworzyć nowe hasło:\n\n{{url}}\n\nTen link wygaśnie za dwie godziny."
+            "BODY": "Witaj ${{username}},\n\nty (lub ktoś) poprosiłeś o zresetowanie hasła do swojego konta na {{host}}. Jeśli o to nie prosiłeś, zignoruj tę wiadomość e-mail.\n\nKliknij poniższy link, aby utworzyć nowe hasło:\n\n{{url}}\n\nTen link wygaśnie za dwie godziny."
         },
         "RESET_PASSWORD_DONE": {
             "SUBJECT": "Hasło Karaoke Mugen zostało zresetowane",
-            "BODY": "Witaj {{username}},\n\nTwoje hasło zostało pomyślnie zresetowane w {{host}}.\n\n\n\nPowinieneś być teraz w stanie zalogować się przy użyciu nowego hasła."
+            "BODY": "Witaj {{username}},\n\ntwoje hasło zostało pomyślnie zresetowane w {{host}}.\n\n\n\nPowinieneś być teraz w stanie zalogować się przy użyciu nowego hasła."
+        },
+        "INBOX": {
+            "IN_REVIEW": {
+                "SUBJECT": "[{{instance}}] Piosenka oczekująca na zatwierdzenie: {{songname}}",
+                "BODY": "Witaj {{username}},\n\nTwój utwór {{songname}} jest obecnie sprawdzany przez zespół {{instance}}.\n\nMoże on zostać:\n- Zaakceptowany\n- Odrzucony\n- Wymagający wprowadzenia zmian przed zaakceptowaniem.\n\nW dwóch ostatnich przypadkach otrzymasz kolejne powiadomienie z przyczynami tymczasowego lub trwałego odrzucenia."
+            },
+            "CHANGES_REQUESTED": {
+                "SUBJECT": " [{{instance}}] Wymagane są zmiany w utworze: {{songname}}",
+                "BODY": "Witaj {{username}},\n\nPo sprawdzeniu, konieczne są zmiany w Twoim utworze {{songname}}:\n\n{{reason}}\n\nMożesz skontaktować się z zespołem {{instance}} za pośrednictwem:"
+            },
+            "ACCEPTED": {
+                "SUBJECT": "[{{instance}}] Piosenka dodana do bazy danych: {{songname}}",
+                "BODY": "Witaj {{username}},\n\nGratulacje, Twój utwór {{songname}} został zaakceptowany! Wkrótce zostanie dodany do bazy danych {{instance}}.\n{{reason}}\nDziękujemy za dodanie do bazy danych {{instance}}!",
+                "REASON": "\nZespół konserwacyjny zostawił wiadomość dotyczącą Twojego utworu:\n\n{{reason}}\n"
+            },
+            "REJECTED": {
+                "SUBJECT": "[{{instance}}] Odrzucono piosenkę: {{songname}}",
+                "BODY": "Witaj {{username}},\n\ntwój utwór {{songname}} został odrzucony. Oto powody:\n\n{{reason}}\n\njeśli chcesz o tym porozmawiać, skontaktuj się z nami za pośrednictwem:"
+            },
+            "DISCORD": "\n- Discord: {{url}}\n",
+            "FORUM": "\n- Forum: {{url}}\n",
+            "GITLAB": "\n- Gitlab: {{url}}\n",
+            "CLEANUP_DAYS_ALERT": "\n\nJeżeli nie odpowiesz na tego e-maila, Twoja piosenka zostanie usunięta po {{days}} dniach."
         }
     }
 }
