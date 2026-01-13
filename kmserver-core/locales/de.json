@@ -19,7 +19,8 @@
             },
             "ACCEPTED": {
                 "SUBJECT": "[{{instance}}] Lied der Datenbank hinzugefügt: {{songname}}",
-                "BODY": "Hallo {{username}},\n\nherzlichen Glückwunsch, dein Lied {{songname}} wurde angenommen! Es wird in Kürze der {{instance}}-Datenbank hinzugefügt.\n{{reason}}\nVielen Dank, dass du an der {{instance}}-Datenbank mitgewirkt hast!"
+                "BODY": "Hallo {{username}},\n\nherzlichen Glückwunsch, dein Lied {{songname}} wurde angenommen! Es wird in Kürze der {{instance}}-Datenbank hinzugefügt.\n{{reason}}\nVielen Dank, dass du an der {{instance}}-Datenbank mitgewirkt hast!",
+                "REASON": "\nDas Maintenance-Team hat eine Nachricht zu deinem Lied hinterlassen:\n\n{{reason}}\n"
             },
             "REJECTED": {
                 "SUBJECT": "[{{instance}}] Lied abgelehnt: {{songname}}",
