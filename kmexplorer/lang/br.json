@@ -412,7 +412,8 @@
 		"delete_account": {
 			"add": "Dilemel ar gont",
 			"cancel": "Nullañ",
-			"label": "Sur oc'h e fell deoc'h dilemel ho kont ?"
+			"label": "Sur oc'h e fell deoc'h dilemel ho kont ?",
+			"label_admin": "Ha sur oc'h hoc'h eus c'hoant da zilemel ar gont-mañ ?"
 		},
 		"suggest": {
 			"fields": {
