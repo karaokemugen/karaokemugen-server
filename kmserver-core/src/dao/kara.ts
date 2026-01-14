@@ -346,3 +346,8 @@ export async function updateKaraParents(kara: Kara) {
 		);
 	}
 }
+
+export async function selectOtherLikedKIDs(kid: string, limit: number) {
+	const res = await db().query(sql.selectOtherLikedKIDs, [kid, limit || 3]);
+	return res.rows;
+}

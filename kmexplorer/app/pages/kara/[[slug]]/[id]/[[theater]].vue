@@ -103,6 +103,15 @@
 					:chunk-size="10"
 				/>
 			</div>
+			<template v-if="otherLikedKIDs.length > 0">
+				<kara-query
+					:kids="otherLikedKIDs"
+					:with-suggest="false"
+					:with-search="false"
+					:ignore-filter="true"
+					:title="t('kara.other_liked')"
+				/>
+			</template>
 		</div>
 	</div>
 </template>
@@ -117,6 +126,7 @@
 	const karaoke = ref<DBKara>();
 	const videoOpened = ref(false);
 	const playlists = ref<DBPL[]>([]);
+	const otherLikedKIDs = ref<string[]>([]);
 
 	const { config, supportedFiles } = storeToRefs(useConfigStore());
 	const url = useRequestURL();
@@ -187,6 +197,7 @@
 	async function refresh() {
 		await fetch();
 		getPlaylists();
+		getOtherLikedKIDs();
 	}
 
 	async function getPlaylists() {
@@ -195,6 +206,10 @@
 				containsKID: karaoke.value?.kid
 			}
 		});
+	}
+
+	async function getOtherLikedKIDs() {
+		otherLikedKIDs.value = (await useCustomFetch<{kid: string, favcount: number}[]>(`/api/karas/${karaoke.value?.kid}/otherlikedsongs`)).map(r => r.kid);
 	}
 
 	function placeForVideo() {
