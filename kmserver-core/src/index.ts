@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { readFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 
 import { program } from 'commander';
@@ -36,7 +36,7 @@ const resourcePath = resolve(appPath, 'kmserver-core/');
 
 const acceptedLanguages = ['en', 'fr', 'es', 'id', 'de', 'pt', 'it', 'pl', 'ta', 'br', 'ja'];
 
-const pjson = JSON.parse(readFileSync(resolve(appPath, 'kmserver-core/package.json'), 'utf-8'));
+const pjson = JSON.parse(await readFile(resolve(resourcePath, 'package.json'), 'utf-8'));
 
 const service = 'Launcher';
 
@@ -83,12 +83,31 @@ main().catch(err => {
 async function main() {
 	if (!process.env.ROOT_OVERRIDE && process.platform !== 'win32') sudoBlock('You should not run Karaoke Mugen Server with root permissions, it\'s dangerous.');
 	const argv = parseArgs();
+	let buildInfo = {
+		date: '',
+		commit: '',
+		tag: ''
+	};
+	try {
+		buildInfo = {
+			date: await readFile(resolve(resourcePath, 'builddate.txt'), 'utf-8'),
+			commit: await readFile(resolve(resourcePath, 'commit.txt'), 'utf-8'),
+			tag: await readFile(resolve(resourcePath, 'tag.txt'), 'utf-8')
+		}
+	} catch (err) {
+		// Non-fatal.
+	}
 	setState({
 		appPath,
 		dataPath,
 		resourcePath,
 		originalAppPath: appPath,
-		electron: false
+		electron: false,
+		version: {
+			tag: buildInfo.tag,
+			sha: buildInfo.commit,
+			date: buildInfo.date
+		}
 	});
 	await initConfig(argv.opts());
 	updateWebmanifest();
@@ -96,6 +115,9 @@ async function main() {
 	const conf = getConfig();
 	console.log('--------------------------------------------------------------------');
 	console.log(`Karaoke Mugen Server ${pjson.version}`);
+	console.log(`Build date : ${buildInfo.date}`);
+	console.log(`Tag        : ${buildInfo.tag}`);
+	console.log(`Commit     : ${buildInfo.commit}`);
 	console.log('--------------------------------------------------------------------');
 	console.log('\n');
 	const paths = conf.System.Path;

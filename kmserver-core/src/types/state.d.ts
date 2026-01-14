@@ -14,6 +14,8 @@ export interface State {
 		number?: string,
 		name?: string,
 		sha?: string,
+		date?: string,
+		tag?: string,
 	},
 	binPath?: {
 		ffmpeg?: string,

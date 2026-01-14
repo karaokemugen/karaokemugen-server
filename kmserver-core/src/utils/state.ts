@@ -26,7 +26,9 @@ let state: State = {
 	version: {
 		number: pjson.version,
 		name: pjson.name,
-		sha: ''
+		sha: '',
+		date: '',
+		tag: ''
 	}
 };
 

@@ -4,9 +4,10 @@ import { supportedAudioCodecs, supportedFiles, supportedVideoCodecs, supportedVi
 import { updateGit } from '../../services/git.js';
 import { createHardsubs, createPreviews, generate, updateRepo } from '../../services/kara.js';
 import { getPublicConfig } from '../../utils/config.js';
-import {requireAdmin, requireAuth, requireValidUser} from '../middlewares/auth.js';
+import { getState } from '../../utils/state.js';
+import { requireAdmin, requireAuth, requireValidUser } from '../middlewares/auth.js';
 
-export default async function adminController(router: Router) {
+export default async function adminController(router: Router) {	
 	router.post('/generate', requireAuth, requireValidUser, requireAdmin, async (_, res) => {
 		generate();
 		res.status(200).send('Generation triggered');
@@ -29,6 +30,9 @@ export default async function adminController(router: Router) {
 	});
 	router.get('/config', async (_, res) => {
 		res.status(200).json(getPublicConfig());
+	});
+	router.get('/state', requireAuth, requireValidUser, requireAdmin, async (_, res) => {
+		res.status(200).json(getState());
 	});
 	router.get('/supportedStuff', async (_, res) => {
 		res.status(200).json({

@@ -66,6 +66,9 @@ docker:
   script:
     - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
     - docker pull $IMAGE_TAG || true
+    - echo "$CI_COMMIT_SHA" >kmserver-core/commit.txt
+    - echo "$IMAGE_TAG" >kmserver-core/tag.txt
+    - echo $(date +"%Y-%m-%dT%H:%M:%S%z") >kmserver-core/builddate.txt
     - docker build --cache-from $IMAGE_TAG -t $IMAGE_TAG .
     - docker push $IMAGE_TAG
     - |
