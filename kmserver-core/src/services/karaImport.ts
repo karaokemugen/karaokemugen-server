@@ -191,10 +191,11 @@ export async function editKara(editedKara: EditedKara, contact: string, login?: 
 				issueURL = inbox.gitlab_issue;
 				if (inbox.status === 'changes_requested') await setInboxStatus(inid, 'in_review');
 				if (issueURL) {
+					const {description} = await buildIssue(kara.data.kid, edit);
 					const numberIssue = getGitlabIssueNumber(issueURL);
 					await postNoteToIssue(numberIssue, repoName, `Song has been modified by original uploader : 
 						
-					${buildIssue(kara.data.kid, edit)}`);
+					${ description }`);
 				}
 			} else {
 				issueURL = await createInboxIssue(kara.data.kid, edit);
