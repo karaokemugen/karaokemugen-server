@@ -138,7 +138,7 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 							days: conf.Frontend.Import.CleanupDays,
 						})
 					: '';
-				await sendMail(
+				sendMail(
 					i18n.t('MAIL.INBOX.CHANGES_REQUESTED.SUBJECT', {
 						lng: getUserLanguage(user),
 						instance: repoName,
@@ -157,7 +157,7 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 						cleanupDays,
 					user.login,
 					user.email,
-				);
+				).catch();
 			}
 			if (inbox.gitlab_issue) {
 				const issueNumber = getGitlabIssueNumber(inbox.gitlab_issue);
@@ -174,7 +174,7 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 		} else if (status === 'in_review' && inbox.status === 'sent') {
 			// Only sent the in review mail and note in issue the first time
 			if (user?.flag_contributor_emails)
-				await sendMail(
+				sendMail(
 					i18n.t('MAIL.INBOX.IN_REVIEW.SUBJECT', {
 						lng: getUserLanguage(user),
 						instance: repoName,
@@ -188,7 +188,7 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 					}),
 					user.login,
 					user.email,
-				);
+				).catch();
 			if (inbox.gitlab_issue) {
 				const issueNumber = getGitlabIssueNumber(inbox.gitlab_issue);
 				await postNoteToIssue(
@@ -199,7 +199,7 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 			}
 		} else if (status === 'accepted') {
 			if (user?.flag_contributor_emails)
-				await sendMail(
+				sendMail(
 					i18n.t('MAIL.INBOX.ACCEPTED.SUBJECT', {
 						lng: getUserLanguage(user),
 						instance: repoName,
@@ -214,7 +214,7 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 					}),
 					user.login,
 					user.email,
-				);
+				).catch();
 			if (inbox.gitlab_issue) {
 				const issueNumber = getGitlabIssueNumber(inbox.gitlab_issue);
 				await postNoteToIssue(issueNumber, repoName, `Upload was ACCEPTED by ${inbox.username_downloaded}.` + reason ? ` Notes from reviewer:
@@ -241,7 +241,7 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 							url: inbox.gitlab_issue,
 						})
 					: '';
-				await sendMail(
+				sendMail(
 					i18n.t('MAIL.INBOX.REJECTED.SUBJECT', {
 						lng: getUserLanguage(user),
 						instance: repoName,
@@ -259,7 +259,7 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 						gitlabURL,
 					user.login,
 					user.email,
-				);
+				).catch();
 			}
 			if (inbox.gitlab_issue) {
 				const issueNumber = getGitlabIssueNumber(inbox.gitlab_issue);
