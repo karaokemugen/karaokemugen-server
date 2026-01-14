@@ -115,6 +115,7 @@ export async function updateUser(user: User): Promise<DBUser> {
 
 export async function deleteInactiveUsers() {
 	// GDPR demands users without activity for 3 years be deleted
+	if (process.env.DISABLE_INACTIVE_USER_DELETION) return;
 	const inactiveDate = new Date(new Date().setFullYear(new Date().getFullYear() - 3));
 	const res = await db().query(sql.deleteInactiveUsers, [inactiveDate.toISOString()]);
 	const deletedUsers = Array.from(Object.values(res.rows)).map((u: User) => u.login);
