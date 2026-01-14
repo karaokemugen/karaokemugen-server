@@ -24,7 +24,7 @@ import { postNoteToIssue } from '../lib/utils/gitlab.js';
 import { removeControlCharsInObject, sortJSON } from '../lib/utils/objectHelpers.js';
 import { EditElement } from '../types/karaImport.js';
 import sentry from '../utils/sentry.js';
-import { createInboxIssue, editInboxIssue } from './gitlab.js';
+import { buildIssue, createInboxIssue } from './gitlab.js';
 import { addKaraInInbox, getGitlabIssueNumber, getInbox, setInboxStatus } from './inbox.js';
 import { getKara } from './kara.js';
 import { canSubmitInbox } from './user.js';
@@ -192,8 +192,9 @@ export async function editKara(editedKara: EditedKara, contact: string, login?: 
 				if (inbox.status === 'changes_requested') await setInboxStatus(inid, 'in_review');
 				if (issueURL) {
 					const numberIssue = getGitlabIssueNumber(issueURL);
-					await postNoteToIssue(numberIssue, repoName, 'Song has been modified by original uploader');
-					await editInboxIssue(kara.data.kid, numberIssue, edit);
+					await postNoteToIssue(numberIssue, repoName, `Song has been modified by original uploader : 
+						
+					${buildIssue(kara.data.kid, edit)}`);
 				}
 			} else {
 				issueURL = await createInboxIssue(kara.data.kid, edit);
