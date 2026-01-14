@@ -741,6 +741,11 @@
 		"no": "Non"
 	},
 	"dashboard": {
+		"version": {
+			"tag": "Tag de Karaoke Mugen Server : {tag}",
+			"date": "Date de construction : {date}",
+			"commit": "Commit : {commit}"
+		},
 		"update_git": "Mettre à jour le dépôt Git",
 		"update_git_triggered": "La mise à jour a été lancée.",
 		"generate_database": "Générer la base de données",

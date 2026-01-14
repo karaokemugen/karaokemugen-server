@@ -48,3 +48,6 @@ kmserver-core/dist/
 !.yarn/versions
 .pnp.*
 .next
+kmserver-core/builddate.txt
+kmserver-core/commit.txt
+kmserver-core/tag.txt

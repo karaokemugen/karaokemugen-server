@@ -741,6 +741,11 @@
 		"no": "No"
 	},
 	"dashboard": {
+		"version": {
+			"tag": "Karaoke Mugen Server Tag: {tag}",
+			"date": "Build date: {date}",
+			"commit": "Commit: {commit}"
+		},
 		"update_git": "Update Git repository",
 		"update_git_triggered": "Update has been triggered.",
 		"generate_database": "Generate database",

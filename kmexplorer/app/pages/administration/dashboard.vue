@@ -1,22 +1,29 @@
 <template>
 	<div>
-		<div v-if="user?.roles?.admin" class="is-flex">
-			<button class="button" @click="updateGit">
-				<font-awesome-icon fixed-width :icon="['fab', 'git-alt']" />
-				{{ $t('dashboard.update_git') }}
-			</button>
-			<button class="button has-background-info" @click="generate">
-				<font-awesome-icon fixed-width :icon="['fas', 'database']" />
-				{{ $t('dashboard.generate_database') }}
-			</button>
-			<button class="button" @click="generatePreviews">
-				<font-awesome-icon fixed-width :icon="['fas', 'images']" />
-				{{ $t('dashboard.generate_previews') }}
-			</button>
-			<button v-if="config?.Hardsub.Enabled" class="button" @click="generateHardsubs">
-				<font-awesome-icon fixed-width :icon="['fas', 'file-video']" />
-				{{ $t('dashboard.generate_hardsubs') }}
-			</button>
+		<div v-if="user?.roles?.admin">
+			<div v-if="state?.version?.tag" class="mb-3">
+				<div >{{ $t('dashboard.version.tag', { tag: state.version.tag }) }}</div>
+				<div>{{ $t('dashboard.version.date', { date: state.version.date }) }}</div>
+				<div>{{ $t('dashboard.version.commit', { commit: state.version.sha }) }}</div>
+			</div>
+			<div class="is-flex">
+				<button class="button" @click="updateGit">
+					<font-awesome-icon fixed-width :icon="['fab', 'git-alt']" />
+					{{ $t('dashboard.update_git') }}
+				</button>
+				<button class="button has-background-info" @click="generate">
+					<font-awesome-icon fixed-width :icon="['fas', 'database']" />
+					{{ $t('dashboard.generate_database') }}
+				</button>
+				<button class="button" @click="generatePreviews">
+					<font-awesome-icon fixed-width :icon="['fas', 'images']" />
+					{{ $t('dashboard.generate_previews') }}
+				</button>
+				<button v-if="config?.Hardsub.Enabled" class="button" @click="generateHardsubs">
+					<font-awesome-icon fixed-width :icon="['fas', 'file-video']" />
+					{{ $t('dashboard.generate_hardsubs') }}
+				</button>
+			</div>
 		</div>
 		<div v-if="config?.Frontend.Import.LoginNeeded && config?.Frontend.Import.ContributorTrustLevels" class="mt-5">
 			<div class="title-box">
@@ -55,6 +62,7 @@
 
 <script setup lang="ts">
 import type { DBUser } from '%/lib/types/database/user';
+import type { State } from '%/types/state';
 import type { UserList } from '%/types/user';
 import * as Toast from 'vue-toastification';
 import { useAuthStore } from '~/store/auth';
@@ -69,6 +77,7 @@ const toast = useToast();
 const { config } = storeToRefs(useConfigStore());
 
 const contributors = ref<DBUser[]>([]);
+const state = ref<State>();
 
 if (import.meta.client && !user?.value?.roles?.admin && !user?.value?.roles?.maintainer) throw createError({ statusCode: 404 });
 
@@ -109,7 +118,12 @@ async function updateContributorLevel(event: Event, contributor: DBUser) {
 	});
 }
 
+async function getState() {
+	state.value = await useCustomFetch('/api/state');
+}
+
 getContributors();
+if(import.meta.client && user?.value?.roles?.admin) getState()
 </script>
 
 <style lang="scss">
