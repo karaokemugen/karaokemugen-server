@@ -5,7 +5,7 @@ import { promises as fs } from 'fs';
 import parallel from 'p-map';
 import { parse, resolve } from 'path';
 
-import { refreshKaraStats, selectAllKaras, selectAllMedias, selectAllYears, selectBaseStats} from '../dao/kara.js';
+import { refreshKaraStats, selectAllKaras, selectAllMedias, selectAllYears, selectBaseStats, selectOtherLikedKIDs} from '../dao/kara.js';
 import { refreshAllKaraTag } from '../dao/tag.js';
 import { copyFromData } from '../lib/dao/database.js';
 import { getLyrics } from '../lib/dao/karafile.js';
@@ -299,4 +299,8 @@ export async function getAllKaras(params: KaraParams, token?: JWTTokenWithRoles,
 		sentry.error(err);
 		throw err instanceof ErrorKM ? err : new ErrorKM('GET_KARAS_ERROR');
 	}
+}
+
+export async function getOtherLikedKIDs(kid: string, limit: number) {
+	return selectOtherLikedKIDs(kid, limit);
 }

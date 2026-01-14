@@ -1,6 +1,6 @@
 <template>
 	<div v-if="title && karaokes.infos.count > 0" class="title-box">
-		<h1 class="title">
+		<h1 class="title mb-1">
 			{{ title }}
 		</h1>
 	</div>

@@ -397,3 +397,18 @@ VALUES(
 	:child_kid
 );
 `;
+
+export const selectOtherLikedKIDs = `
+WITH users_with_fav AS 
+	(SELECT fk_login FROM users_favorites WHERE fk_kid = $1)
+SELECT 
+	f.fk_kid AS kid
+FROM users_favorites f
+LEFT JOIN users_with_fav f2 ON f2.fk_login = f.fk_login
+WHERE 
+	 f.fk_kid != $1
+ AND f.fk_login IN (SELECT * FROM users_with_fav) 
+GROUP BY f.fk_kid
+ORDER BY RANDOM() 
+LIMIT $2;
+`;

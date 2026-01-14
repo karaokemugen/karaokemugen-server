@@ -188,6 +188,7 @@
 		"siblings": "Similar songs",
 		"childrens": "Children songs",
 		"parents": "Parent songs",
+		"other_liked": "People who liked this also liked…",
 		"player": {
 			"previous": "Previous song (B)",
 			"next": "Next song (N)",

@@ -8,7 +8,7 @@ import { RepositoryManifest } from '../../lib/types/repo.js';
 import {getConfig} from '../../lib/utils/config.js';
 import { getGitDiff, getLatestGitCommit } from '../../services/git.js';
 import { createKaraIssue, createSuggestionIssue } from '../../services/gitlab.js';
-import {getAllKaras, getAllMedias, getAllYears, getBaseStats, getHardsubsCache, getKara} from '../../services/kara.js';
+import {getAllKaras, getAllMedias, getAllYears, getBaseStats, getHardsubsCache, getKara, getOtherLikedKIDs} from '../../services/kara.js';
 import {getTag, getTags} from '../../services/tag.js';
 import { getState } from '../../utils/state.js';
 import { optionalAuth } from '../middlewares/auth.js';
@@ -80,6 +80,15 @@ export default function KSController(router: Router) {
 			try {
 				const url = await createKaraIssue(req.params.kid, req.body.type, req.body.comment, req.body.username);
 				res.status(200).json(url);
+			} catch (err) {
+				res.status(err.code || 500).json(APIMessage(err.message));
+			}
+		});
+	router.route('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/otherlikedsongs')
+		.get(async (req: any, res) => {
+			try {
+				const kids = await getOtherLikedKIDs(req.params.kid, req.query.limit);
+				res.status(200).json(kids);
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
