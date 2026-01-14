@@ -8,6 +8,8 @@ import logger from '../lib/utils/logger.js';
 import sentry from '../utils/sentry.js';
 import { getState } from '../utils/state.js';
 
+const service = 'PlaylistMedias';
+
 export async function getPlaylistMedias(type: PlaylistMediaType): Promise<PlaylistMediaFile[]> {
 	try {
 		if (!playlistMediaTypes.includes(type)) throw new ErrorKM('INVALID_PLAYLIST_MEDIA_TYPE', 400, false);
@@ -20,7 +22,7 @@ export async function getPlaylistMedias(type: PlaylistMediaType): Promise<Playli
 		}
 		return medias;
 	} catch (err) {
-		logger.error(`Unable to get playlist medias for type ${type}`);
+		logger.error(`Unable to get playlist medias for type ${type}`, { service, obj: err });
 		sentry.error(err);
 		throw err instanceof ErrorKM ? err : new ErrorKM('GET_PLMEDIAS_ERROR');
 	}
