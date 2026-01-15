@@ -449,13 +449,18 @@ export async function clearInactiveInboxEntries() {
  */
 export async function clearProcessedInboxes(karas: KaraFileV4[]) {
 	logger.info('Removing possible processed inbox items if they are present in main repository', { service });
-	const inbox = await getInbox(false);
-	// Get a list of KIDs from the main repository (not including Staging then)
-	const kids = new Set(karas.filter((k) => k.data.repository !== 'Staging').map(k => k.data.kid));
-	for (const inboxItem of inbox) {
-		if (kids.has(inboxItem.kid)) {
-			await setInboxStatus(inboxItem.inid, 'accepted');
+	try {
+		const inbox = await getInbox(false);
+		// Get a list of KIDs from the main repository (not including Staging then)
+		const kids = new Set(karas.filter((k) => k.data.repository !== 'Staging').map(k => k.data.kid));
+		for (const inboxItem of inbox) {
+			if (kids.has(inboxItem.kid)) {
+				await setInboxStatus(inboxItem.inid, 'accepted');
+			}
 		}
+	} catch (err) {
+		// Non fatal
+		logger.error(`Failed to clear processed inboxes : ${err}`, { service, obj: err });
 	}
 }
 
