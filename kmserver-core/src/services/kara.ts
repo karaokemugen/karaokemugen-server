@@ -128,7 +128,7 @@ export async function generate() {
 		promises.push(refreshKaraStats());
 		promises.push(refreshAllKaraTag());
 		await Promise.all(promises);
-		createBaseDumps();
+		await createBaseDumps();
 	} catch (err) {
 		logger.error('Generation failed', {service, obj: err});
 		sentry.error(err, 'fatal');
