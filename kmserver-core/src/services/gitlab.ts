@@ -228,8 +228,9 @@ export async function createKaraIssue(kid: string, type: 'Media' | 'Metadata' | 
 		logger.debug('Kara:', {service: 'GitLab', obj: kara});
 		const serieOrSingergroupOrSinger = getSongSeriesSingers(kara);
 		const langs = (kara.langs.length > 0 && kara.langs[0].name.toUpperCase()) || '';
+		const versions = (kara.versions.length > 0 &&  ` ~ ${kara.versions.map(v => v.name).join(' ')} Vers.`) || '';
 		const songtype = (kara.songtypes.length > 0 && kara.songtypes[0].name) || '';
-		const karaName = `${langs} - ${serieOrSingergroupOrSinger} - ${songtype}${kara.songorder || ''} - ${kara.titles[kara.titles_default_language]}`;
+		const karaName = `${langs} - ${serieOrSingergroupOrSinger} - ${songtype}${kara.songorder || ''} - ${kara.titles[kara.titles_default_language]}${versions}`;
 		const conf = getConfig();
 		const issueTemplate = conf.Gitlab.IssueTemplate.KaraProblem[type];
 		let title = issueTemplate.Title || '$kara';
