@@ -232,7 +232,7 @@
 			"most_played": "Sonet ar muiañ",
 			"most_played_recently": "Sonet ar muiañ (nevez zo)",
 			"recent": "Dre devezh ouzhpennet",
-			"most_favorites": "Ar gwellañ pennrollet",
+			"most_favorites": "Ar muiañ pennrollet",
 			"most_requested": "Ar muiañ goulennet",
 			"most_requested_recently": "Ar muiañ goulennet (nevez zo)",
 			"username": "Dre anvioù implijer"
@@ -437,7 +437,7 @@
 					"label": "Evezhiadenn"
 				},
 				"lyrics_link": {
-					"label": "Liamm war-du ar pozioù"
+					"label": "Pozioù (liamm)"
 				},
 				"version": {
 					"label": "Handelv"
