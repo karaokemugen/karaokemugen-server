@@ -43,7 +43,7 @@
 			user?.contributor_trust_level" class="has-text-justified">
 			{{ $t('submissions.quota', {
 				songs: (config.Frontend.Import.ContributorTrustLevels[user.contributor_trust_level] || 0) -
-					inboxList.length,
+					inboxList.filter(i => i.status !== 'accepted' && i.status !== 'rejected').length,
 				quota: config.Frontend.Import.ContributorTrustLevels[user.contributor_trust_level]
 			}) }}
 		</p>

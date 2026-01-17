@@ -699,7 +699,7 @@
 
 	const props = defineProps<{
 		kara?: DBKara
-		repositoryManifest: RepositoryManifestV2
+		repositoryManifest?: RepositoryManifestV2
 	}>();
 
 	// @ts-expect-error vue-toastification is not typed

@@ -51,8 +51,10 @@
 	import type { DBKara } from '%/lib/types/database/kara';
 	import type { DBInbox } from '%/lib/types/inbox';
 	import type { RepositoryManifestV2 } from '%/lib/types/repo';
+	import { useAuthStore } from '~/store/auth';
 	import { useConfigStore } from '~/store/config';
 
+	const { user } = storeToRefs(useAuthStore());
 	const { config } = storeToRefs(useConfigStore());
 
 	const route = useRoute();
@@ -75,7 +77,7 @@
 		try {
 			const data = await useCustomFetch<DBKara>(`/api/karas/${route.params.id}`);
 			kara.value = data;
-		} catch (e) {
+		} catch (_) {
 			throw createError({ statusCode: 404, message: t('kara.notfound') });
 		}
 	}
@@ -83,11 +85,11 @@
 	const data = await useCustomFetch<{ Manifest: RepositoryManifestV2 }>('/api/karas/repository');
 	manifest.value = data.Manifest;
 
-	if (config?.value && config.value.Frontend.Import.LoginNeeded && config.value.Frontend.Import.MaxPerUser) {
+	if (config?.value && config.value.Frontend.Import.LoginNeeded && config.value.Frontend.Import.ContributorTrustLevels && user?.value?.contributor_trust_level) {
 		const submissionInfo = await useCustomFetch<DBInbox[]>('/api/myaccount/inbox/submitted', {
 			method: 'POST',
 		});
-		inboxCount.value = config.value.Frontend.Import.MaxPerUser - submissionInfo.filter(inbox => !inbox.fix).length;
+		inboxCount.value = (config.value.Frontend.Import.ContributorTrustLevels[user.value.contributor_trust_level] || 0) - submissionInfo.filter(i => i.status !== 'accepted' && i.status !== 'rejected').length;
 		if (inboxCount.value === 0) {
 			showError({
 				statusCode: 403,
