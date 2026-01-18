@@ -24,7 +24,7 @@ import { postNoteToIssue } from '../lib/utils/gitlab.js';
 import { removeControlCharsInObject, sortJSON } from '../lib/utils/objectHelpers.js';
 import { EditElement } from '../types/karaImport.js';
 import sentry from '../utils/sentry.js';
-import { buildIssue, createInboxIssue } from './gitlab.js';
+import { createInboxIssue, editInboxIssue } from './gitlab.js';
 import { addKaraInInbox, getGitlabIssueNumber, getInbox, setInboxStatus } from './inbox.js';
 import { getKara } from './kara.js';
 import { canSubmitInbox } from './user.js';
@@ -122,7 +122,7 @@ async function heavyLifting(kara: KaraFileV4, contact: {name: string, login?: st
 
 		}
 		const inboxes = await getInbox(true);
-		const newInid = await addKaraInInbox(kara, contact, edit ? edit.kid : undefined, edit?.inid);
+		const newInid = await addKaraInInbox(kara, contact, edit ? edit.kid : undefined, edit?.inid, edit?.fix);
 		if (edit?.inid) {
 			const inbox = inboxes.find(i => i.inid === edit.inid);
 			let status: InboxActions = 'sent';
@@ -153,11 +153,14 @@ export async function editKara(editedKara: EditedKara, contact: string, login?: 
 		const edited_kid = kara.data.kid;
 		kara = await preflight(kara);
 		let inbox: DBInbox;
+		let fix = true;
 		if (inid) {
 			const inboxes = await getInbox(false);
 			inbox = inboxes.filter(i => i.inid === inid)[0];
 			if (!inbox) throw new ErrorKM('INBOX_UNKNOWN_ERROR', 404, false);
 			kara.data.kid = inbox.kid;
+			// If an inbox id is set when calling, this isn't a fix of an existing song
+			fix = false;
 		}
 		// Before the heavy lifting (tm), we should make copies of media and/or lyrics if they were not edited.
 		if (!editedKara.modifiedLyrics && kara.medias[0].lyrics.length > 0) {
@@ -180,6 +183,7 @@ export async function editKara(editedKara: EditedKara, contact: string, login?: 
 			modifiedLyrics: editedKara.modifiedLyrics,
 			modifiedMedia: editedKara.modifiedMedia,
 			inid,
+			fix
 		};
 		const newInid = await heavyLifting(kara, {
 			name: contact,
@@ -191,11 +195,9 @@ export async function editKara(editedKara: EditedKara, contact: string, login?: 
 				issueURL = inbox.gitlab_issue;
 				if (inbox.status === 'changes_requested') await setInboxStatus(inid, 'in_review');
 				if (issueURL) {
-					const {description} = await buildIssue(kara.data.kid, edit);
 					const numberIssue = getGitlabIssueNumber(issueURL);
-					await postNoteToIssue(numberIssue, repoName, `Song has been modified by original uploader : 
-						
-					${ description }`);
+					await postNoteToIssue(numberIssue, repoName, 'Song has been modified by original uploader');
+					await editInboxIssue(kara.data.kid, numberIssue, edit);
 				}
 			} else {
 				issueURL = await createInboxIssue(kara.data.kid, edit);

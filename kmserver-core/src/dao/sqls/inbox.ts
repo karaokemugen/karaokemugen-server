@@ -13,7 +13,7 @@ export const selectInbox = (uniqueKara: string, byUser: string) => `
 		i.gitlab_issue,
 		i.contact,
 		i.edited_kid,
-		i.edited_kid is not null as fix,
+		i.flag_fix,
 		i.fk_login as username,
 		i.modified_at,
 		i.status,
@@ -36,6 +36,7 @@ export const insertInbox = `
 		edited_kid,
 		fk_login,
 		modified_at,
+		flag_fix,
 		status
 	) VALUES(
 		:inid,
@@ -46,6 +47,7 @@ export const insertInbox = `
 		:edited_kid,
 		:username,
 		NOW(),
+		:flag_fix,
 		'sent'
 	)
 	ON CONFLICT(pk_inid) DO UPDATE SET
