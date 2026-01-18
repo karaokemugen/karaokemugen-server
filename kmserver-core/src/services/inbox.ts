@@ -217,8 +217,11 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 				).catch();
 			if (inbox.gitlab_issue) {
 				const issueNumber = getGitlabIssueNumber(inbox.gitlab_issue);
-				await postNoteToIssue(issueNumber, repoName, `Upload was ACCEPTED by ${inbox.username_downloaded}.` + reason ? ` Notes from reviewer:
-				${reason}` : '');
+				await postNoteToIssue(
+					issueNumber,
+					repoName,
+					`Upload was ACCEPTED by ${inbox.username_downloaded}.${reason ? ` Notes from reviewer: ${reason}` : ''}`,
+				);
 				await closeIssue(issueNumber, repoName);
 			}
 		} else if (status === 'rejected') {
