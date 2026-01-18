@@ -47,7 +47,8 @@ export async function getKaraInbox(inid: string): Promise<Inbox> {
 			subPath = resolve(resolvedPathRepos('Lyrics', 'Staging')[0], inbox.lyrics_infos[0].filename);
 		const karaData: KaraFileV4 = JSON.parse(await fs.readFile(karaPath, 'utf-8'));
 		karaData.data.repository = onlineRepo;
-		if (inbox.fix) {
+		// We're doing this so KM App overwrites the song in its local version of its repository when downloading it
+		if (inbox.flag_fix) {
 			karaData.data.kid = inbox.edited_kid;
 		}
 		const kara: KaraMetaFile = {
@@ -331,6 +332,7 @@ export async function addKaraInInbox(
 	contact: { name: string; login?: string },
 	edited_kid?: string,
 	inid?: string,
+	flag_fix?: boolean,
 ) {
 	try {
 		inid = inid || uuidV4();
@@ -343,6 +345,7 @@ export async function addKaraInInbox(
 			edited_kid,
 			username: contact.login ?? null,
 			mediafile: kara.medias[0].filename,
+			flag_fix: flag_fix || false
 		});
 		return inid;
 	} catch (err) {

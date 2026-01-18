@@ -6,4 +6,5 @@ export interface EditElement {
 	modifiedMedia: boolean,
 	oldKara?: DBKara,
 	inid?: string,
+	fix?: boolean,
 }

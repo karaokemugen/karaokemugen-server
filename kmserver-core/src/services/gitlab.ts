@@ -9,10 +9,10 @@ import { ErrorKM } from '../lib/utils/error.js';
 import HTTP from '../lib/utils/http.js';
 import logger from '../lib/utils/logger.js';
 import { EditElement } from '../types/karaImport.js';
-import { SuggestionIssue } from '../types/suggestions.js';
 import sentry from '../utils/sentry.js';
 import { getAllKaras, getKara } from './kara.js';
 import { findUserByName } from './user.js';
+import { SuggestionIssue } from '../types/suggestions.js';
 
 const service = 'Gitlab';
 
