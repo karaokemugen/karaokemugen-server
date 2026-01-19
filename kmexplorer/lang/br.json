@@ -616,5 +616,10 @@
 		},
 		"rejected_reason_button": "Abeg an distaol",
 		"rejected_reason": "Abeg an distaol : {reason}"
+	},
+	"dashboard": {
+		"version": {
+			"commit": "Commit : {commit}"
+		}
 	}
 }
