@@ -231,7 +231,8 @@
 			"fullscreen": "Vollbild (F)",
 			"loop": "Schleife",
 			"description": "Dieses Video wird zur Verfügung gestellt von {instance}. Bitte zieh die App in Betracht, falls du ein Event oder einen Stream planst!"
-		}
+		},
+		"other_liked": "Könnte dir ebenso gefallen …"
 	},
 	"error": {
 		"private_profile": "Profil ist privat.",
@@ -787,7 +788,12 @@
 		"available_trust_levels": "Zur Verfügung stehendes Level:",
 		"trust_level_submissions": "Level {level} : {songs} Einsendungen",
 		"trust_level": "Level {level}",
-		"submissions_status": "Nur Einsendungen mit Status „Gesendet“, „In Begutachtung“ und „Änderungen erforderlich“ werden auf dein Kontingent angerechnet."
+		"submissions_status": "Nur Einsendungen mit Status „Gesendet“, „In Begutachtung“ und „Änderungen erforderlich“ werden auf dein Kontingent angerechnet.",
+		"version": {
+			"tag": "Karaoke-Mugen-Server-Tag: {tag}",
+			"date": "Erstellungsdatum: {date}",
+			"commit": "Commit: {commit}"
+		}
 	},
 	"submissions": {
 		"status": {
