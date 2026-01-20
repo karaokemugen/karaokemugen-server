@@ -28,7 +28,6 @@
 </template>
 
 <script setup lang="ts">
-	import type { DBTag } from '%/lib/types/database/tag';
 	import type { TagList } from '%/lib/types/tag';
 	import { storeToRefs } from 'pinia';
 	import { useLocalStorageStore } from '~/store/localStorage';
@@ -38,16 +37,12 @@
 
 	const url = useRequestURL();
 
-	const { data: collections } = await useCustomFetchAsync('/api/karas/tags', {
+	const collections = (await useCustomFetch<TagList>('/api/karas/tags', {
 		query: {
 			type: 16
 		},
-		transform: (data: TagList) => {
-			return data.content;
-		},
-		default: () => [] as DBTag[]
-	});
-
+	})).content;
+	
 	const enabledCollectionsModel = computed({
 		get(): string[] {
 			return enabledCollections.value;
