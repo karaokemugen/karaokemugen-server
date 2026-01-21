@@ -2,7 +2,7 @@
 	<div class="is-ancestor">
 		<div v-if="inboxCount" class="description notification is-info">
 			<font-awesome-icon fixed-width :icon="['fas', 'circle-info']" />
-			<i18n-t keypath="kara.import.quota_count">
+			<i18n-t keypath="kara.import.quota_count" :plural="inboxCount">
 				<template #count>
 					<span class="has-text-weight-bold">{{ inboxCount }}</span>
 				</template>
