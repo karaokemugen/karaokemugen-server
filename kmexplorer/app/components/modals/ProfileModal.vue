@@ -852,6 +852,10 @@
 			reader.onload = (re) => {
 				image.value = re.target?.result as string;
 				crop_modal.value = e.target.id;
+				
+				if (e.target.files[0].type === 'image/gif') {
+					uploadImage(image.value)
+				}
 			};
 			reader.readAsDataURL(e.target.files[0]);
 		}
