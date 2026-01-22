@@ -102,7 +102,7 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 		if (!inbox) throw new ErrorKM('INBOX_UNKNOWN_ERROR', 404, false);
 		if (!Array.isArray(inbox.history)) inbox.history = [];
 		// status already set
-		if (inbox.status === status && inbox.reject_reason === reason) return;
+		if (inbox.status === status && (!reason || inbox.reject_reason === reason)) return;
 		inbox.history.push({
 			action: status,
 			details: reason,
