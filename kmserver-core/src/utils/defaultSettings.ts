@@ -336,7 +336,7 @@ Someone suggested a karaoke edit. You will find all the new files in the inbox.
 # Media issue
 
 
-**Kara URL** : $url
+**Song URL** : $url
 
 
 **Issue author** : $username
@@ -351,7 +351,7 @@ Someone suggested a karaoke edit. You will find all the new files in the inbox.
 # Metadata issue
 
 
-**Kara URL** : $url
+**Song URL** : $url
 
 
 **Issue author** : $username
@@ -366,7 +366,7 @@ Someone suggested a karaoke edit. You will find all the new files in the inbox.
 # Lyrics issue
 
 
-**Kara URL** : $url
+**Song URL** : $url
 
 
 **Issue author** : $username
