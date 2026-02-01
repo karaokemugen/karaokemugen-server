@@ -77,6 +77,7 @@ export interface Config {
 		Enabled?: boolean,
 		Labels?: {
 			ChangesRequested?: string,
+			NewContributor?: string,
 		}
 		IssueTemplate?: {
 			Import?: GitlabTemplate

@@ -93,6 +93,7 @@ Gitlab:
   Host: https://gitlab.com
   Labels:
     ChangesRequested: Changes required
+    NewContributor: New contributor
   IssueTemplate:
     Import:
       Title: "[Inbox] $kara"

@@ -12,7 +12,7 @@ import { EditElement } from '../types/karaImport.js';
 import { SuggestionIssue } from '../types/suggestions.js';
 import sentry from '../utils/sentry.js';
 import { getAllKaras, getKara } from './kara.js';
-import { findUserByName } from './user.js';
+import { findUserByName, getAllUsers } from './user.js';
 
 const service = 'Gitlab';
 
@@ -112,10 +112,15 @@ export async function buildIssue(kid: string, edit?: EditElement) {
 }
 
 /** Use the appropriate template and post an inbox element to GitLab * */
-export async function createInboxIssue(kid: string, edit?: EditElement) {
+export async function createInboxIssue(kid: string, edit?: EditElement, username?: string) {
 	const conf = getConfig();
 	const issueTemplate = edit ? conf.Gitlab.IssueTemplate.Edit : conf.Gitlab.IssueTemplate.Import;
 	const issue = await buildIssue(kid, edit);
+	const user = await getAllUsers({ username });
+	// User is a new contributor 
+	if (username && conf.Gitlab.Labels.NewContributor && !user.content[0].roles.contributor) {
+		issueTemplate.Labels.push(conf.Gitlab.Labels.NewContributor)
+	}
 	return gitlabCreateIssue(issue.title, issue.description, issueTemplate.Labels);
 }
 
