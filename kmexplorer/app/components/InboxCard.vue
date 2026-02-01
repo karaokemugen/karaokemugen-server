@@ -12,7 +12,7 @@
 					</i18n-t>
 				</div>
 			</div>
-			<div :class="`mt-1 tag ${getClassByStatus()}`">
+			<div :class="`ml-1 mt-1 tag ${getClassByStatus()}`">
 				{{ $t(`submissions.status.${inbox.status}`) }}
 			</div>
 			<button v-if="inbox.reject_reason" class="button" @click="rejectReasonOpen = !rejectReasonOpen">
