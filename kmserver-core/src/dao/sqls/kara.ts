@@ -35,6 +35,7 @@ export const selectAllKaras = (
 	additionalFrom: string[],
 	includeStaging: boolean,
 	collectionClauses: string[],
+	sensitiveTagsClause: string,
 	withCTE: string[],
 	forPlayer: boolean,
 	hardsubsInProgress: string[],
@@ -70,6 +71,7 @@ SELECT
 		ak.from_display_type AS from_display_type,
 		ksub.subchecksum AS subchecksum,
 		ak.songname as songname,
+		${sensitiveTagsClause} AS flag_sensitive_content,
 		array_remove(array_agg(DISTINCT plc.fk_plaid), null) AS playlists,
 		array_remove(array_agg(DISTINCT krc.fk_kid_parent), null) AS parents,
 		array_remove(array_agg(DISTINCT krp.fk_kid_child), null) AS children,
@@ -118,6 +120,7 @@ GROUP BY ${groupClauses.length > 0 ? `${groupClauses.join(',\n')},` : ''}
 		ak.songname,
 
 		${forPlayer ? 'dummy' : `
+		ak.tid,
 		ak.titles_aliases,
 		ak.songorder,
 		ak.tags,

@@ -40,6 +40,9 @@ Frontend:
   Port: 1350
   Host: localhost
   Secure: false
+  # Tag~types in this array will blur song thumbnails and display a warning on songs impacted. If not present, default behavior is to use tags in the "warning" type from the database. If present but empty, no songs will be blurred.
+  SensitiveTags: 
+    - e2b8419f-1d5a-44ad-a62c-d7765493190d~15 
   Import:
     Enabled: true
     LoginNeeded: true

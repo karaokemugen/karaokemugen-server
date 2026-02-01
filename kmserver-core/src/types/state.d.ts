@@ -10,6 +10,7 @@ export interface State {
 	wsLogNamespace?: string,
 	isTest?: boolean,
 	acceptedLanguages?: string[],
+	sensitiveTags?: string[],
 	version?: {
 		number?: string,
 		name?: string,

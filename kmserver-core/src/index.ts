@@ -21,6 +21,7 @@ import { initGitRepos } from './services/git.js';
 import { generate } from './services/kara.js';
 import { initRepos } from './services/repo.js';
 import { banServer, initUplink } from './services/server.js';
+import { setSensitiveTags } from './services/tag.js';
 import { createUser, initUsers } from './services/user.js';
 import { initConfig, resolvedPathRemoteRoot } from './utils/config.js';
 import { initHardsubGeneration } from './utils/hardsubs.js';
@@ -198,6 +199,7 @@ async function main() {
 	configureLocale(acceptedLanguages);
 	initRepos();
 	initUplink();
+	setSensitiveTags();
 }
 
 function parseArgs() {

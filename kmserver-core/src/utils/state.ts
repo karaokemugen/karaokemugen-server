@@ -29,7 +29,8 @@ let state: State = {
 		sha: '',
 		date: '',
 		tag: ''
-	}
+	},
+	sensitiveTags: []
 };
 
 export function getState() {
