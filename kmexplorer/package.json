@@ -1,7 +1,7 @@
 {
   "name": "kmexplorer",
   "private": true,
-  "version": "2025.12.15",
+  "version": "2026.02.01",
   "scripts": {
     "build": "nuxt build",
     "watch": "nuxt dev",

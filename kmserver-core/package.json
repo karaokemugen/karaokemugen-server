@@ -1,6 +1,6 @@
 {
   "name": "kmserver-core",
-  "version": "2025.12.15",
+  "version": "2026.02.01",
   "description": "API Server for KMServer",
   "exports": "./src/index.js",
   "type": "module",

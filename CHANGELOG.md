@@ -1,3 +1,58 @@
+# 2026.02.01
+
+## Changes
+
+- Updated dependencies
+- Translations: Updated german, french, english, polish and breton
+- Display shared favorites between user logged in and another user (#175)
+- Be able to send a reason for accepted inbox status (#441)
+- Properly error out on unknown status change (#431)
+- Remove maintainer and admin from trust level dashboard (#432)
+- Update guest avatars
+- Send mails asynchronously for inbox changes (#447)
+- Display build date, tag and commit in admin dashboard (#446)
+- Added the section “People who liked this also liked” (#97)
+- gif avatar is now working again (#437)
+- Add ReplyTo config item for mailer (#460)
+  - `Mail.ReplyTo` is added in configuration.
+- Automatically detect and label new contributors submissions (#456)
+  - `Gitlab.Labels.NewContributor` is added in configuration.
+- Add some gitlab issue metadata (label, due time) to better track karaokes with changes required (#455)
+  - `Gitlab.Labels.ChangesRequested` is added in configuration.
+- Blur for video preview only on some tags (#381)
+  - `Frontend.SensitiveTags` is added in configuration. See config.sample.yml for the format.
+- To avoid spam, suggestions liked now require to be logged (#435)
+- Allow sorting by added date in favorite (#426)
+
+## Fixes
+
+- Fixed "mail to" link for admin email
+- Fixed /kara/xxx/:kid links
+- Fixed assign issue to maintainer when downloading a song
+- Removed WHERE clauses on sorted results for played/requested/favorited
+- Fixed display of dashboard to only admin and maintainer
+- Fixed contributor trust level select init
+- Fixed reason add also for changes_requested status
+- Fixed margin on suggest card
+- Fixed missing i18n for inbox status change mail
+- Fixed version in issue title
+- Fixed multiple email sent for the same status
+- Fixed sent review mail and note only the first time
+- Fixed puid / guid definition in docker compose
+- Fixed routing to playlist
+- Fixed import playlist with duplicate songs
+- Fixed submit karaoke without collections
+- Fixed issues not linked in the inbox
+- Fixed set inboxes to accepted instead of removing them
+- Fixed regexp for myanimelist, bluesky and mastodon account
+- Fixed quota display
+- Fixed dump creation
+- Fixed throw errors when clearing inbox
+- Fixed accepted note display in issue
+- Fixed type of submission is updated from "Creation" to "Modification"
+- Fixed when accessing a karaoke page using a direct link, the collection selector is not displayed
+- Fixed markdown list in gitlab comment
+
 # 2025.12.15
 
 This is a hotfix release
