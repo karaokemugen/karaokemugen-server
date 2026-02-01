@@ -91,6 +91,8 @@ Stats:
 Gitlab:
   Enabled: true
   Host: https://gitlab.com
+  Labels:
+    ChangesRequested: Changes required
   IssueTemplate:
     Import:
       Title: "[Inbox] $kara"

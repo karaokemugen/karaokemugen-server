@@ -29,6 +29,7 @@ import logger from '../lib/utils/logger.js';
 import { adminToken } from '../utils/constants.js';
 import { sendMail } from '../utils/mailer.js';
 import sentry from '../utils/sentry.js';
+import { gitlabEditIssue } from './gitlab.js';
 import { getKara } from './kara.js';
 import { getRepos } from './repo.js';
 import { getTag } from './tag.js';
@@ -94,6 +95,13 @@ export async function getInbox(isMaintainer: boolean, byUser?: string): Promise<
 	const listInbox = await selectInbox(undefined, byUser);
 	if (!isMaintainer) listInbox.forEach((inbox) => delete inbox.contact);
 	return listInbox;
+}
+
+async function removeDueDateAndLabelsFromIssue(issueNumber: number) {
+	await gitlabEditIssue(issueNumber, {
+		due_date: null,
+		remove_labels: getConfig().Gitlab.Labels?.ChangesRequested,
+	})
 }
 
 export async function setInboxStatus(inid: string, status: InboxActions, reason?: string) {
@@ -167,6 +175,17 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 					repoName,
 					`Waiting for changes by original uploader. Notes from reviewer: \n\n${reason}`,
 				);
+				let dueDate: string;
+				const cleanupDays = conf.Frontend.Import.CleanupDays;
+				if (cleanupDays) {
+					const date = new Date();
+					date.setDate(date.getDate() + +cleanupDays);
+					dueDate = date.toISOString().split('T')[0];
+				}
+				await gitlabEditIssue(issueNumber, {
+					due_date: dueDate,
+					add_labels: conf.Gitlab.Labels?.ChangesRequested,
+				})
 			}
 		} else if (status === 'sent') {
 			// Do nothing
@@ -195,6 +214,7 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 					repoName,
 					`Upload is being reviewed by ${inbox.username_downloaded}`,
 				);
+				await removeDueDateAndLabelsFromIssue(issueNumber);
 			}
 		} else if (status === 'accepted') {
 			if (user?.flag_contributor_emails)
@@ -221,6 +241,7 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 					repoName,
 					`Upload was ACCEPTED by ${inbox.username_downloaded}.${reason ? `\nNotes from reviewer: \n\n${reason}` : ''}`,
 				);
+				await removeDueDateAndLabelsFromIssue(issueNumber);
 				await closeIssue(issueNumber, repoName);
 			}
 		} else if (status === 'rejected') {
@@ -270,6 +291,7 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 					repoName,
 					`Upload was REJECTED by ${inbox.username_downloaded}:\n\n${reason}`,
 				);
+				await removeDueDateAndLabelsFromIssue(issueNumber);
 				await closeIssue(issueNumber, repoName);
 			}
 		} else {

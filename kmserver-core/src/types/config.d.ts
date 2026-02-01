@@ -33,7 +33,7 @@ export interface Config {
 			LimitedTagTypes: TagTypeNum[],
 			LoginNeeded: boolean,
 			ContributorTrustLevels?: Record<number, number>
-			CleanupDays?: number,
+			CleanupDays?: number
 		},
 		Suggestions: boolean,
 		InProgressSongsList?: string,
@@ -75,6 +75,9 @@ export interface Config {
 	},
 	Gitlab?: {
 		Enabled?: boolean,
+		Labels?: {
+			ChangesRequested?: string,
+		}
 		IssueTemplate?: {
 			Import?: GitlabTemplate
 			Suggestion?: GitlabTemplate

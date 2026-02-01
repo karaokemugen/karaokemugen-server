@@ -9,10 +9,10 @@ import { ErrorKM } from '../lib/utils/error.js';
 import HTTP from '../lib/utils/http.js';
 import logger from '../lib/utils/logger.js';
 import { EditElement } from '../types/karaImport.js';
+import { SuggestionIssue } from '../types/suggestions.js';
 import sentry from '../utils/sentry.js';
 import { getAllKaras, getKara } from './kara.js';
 import { findUserByName } from './user.js';
-import { SuggestionIssue } from '../types/suggestions.js';
 
 const service = 'Gitlab';
 
@@ -119,18 +119,27 @@ export async function createInboxIssue(kid: string, edit?: EditElement) {
 	return gitlabCreateIssue(issue.title, issue.description, issueTemplate.Labels);
 }
 
+/** Edit issue and rebuild description and title if needed */
 export async function editInboxIssue(kid: string, issueID: number, edit?: EditElement) {
 	const issue = await buildIssue(kid, edit);
-	return gitlabEditIssue(issueID, issue.title, issue.description);
+	return gitlabEditIssue(issueID, issue);
 }
 
-async function gitlabEditIssue(issueID: number, title: string, desc: string) {
+export async function gitlabEditIssue(issueID: number, changes: {
+	title?: string,
+	desc?: string,
+	add_labels?: string,
+	due_date?: string,
+	remove_labels?: string,
+}) {
 	const conf = getConfig();
 	if (!conf.System.Repositories[0].Git?.ProjectID) return;
 	const params = {
-		title,
+		title: changes.title,
 		// Tildes are often found in japanese names and can cause strikeout text in markdown once rendered.
-		description: desc.replaceAll('~', '\\~'),
+		description: changes.desc?.replaceAll('~', '\\~'),
+		add_labels: changes.add_labels,
+		due_date: changes.due_date
 	};
 	const url = new URL(conf.System.Repositories[0].Git.URL);
 	try {
@@ -143,8 +152,7 @@ async function gitlabEditIssue(issueID: number, title: string, desc: string) {
 		});
 	} catch(err) {
 		logger.error(`Unable to update issue ${issueID}`, {service, obj: err?.response?.data?.message?.error || err});
-		sentry.addErrorInfo('Issue title', title);
-		sentry.addErrorInfo('Issue body', desc);
+		sentry.addErrorInfo('Issue changes', JSON.stringify(changes, null, 2));
 		sentry.error(err);
 		throw err;
 	}
