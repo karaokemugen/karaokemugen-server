@@ -221,7 +221,7 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 				await postNoteToIssue(
 					issueNumber,
 					repoName,
-					`Upload was ACCEPTED by ${inbox.username_downloaded}.${reason ? ` Notes from reviewer: ${reason}` : ''}`,
+					`Upload was ACCEPTED by ${inbox.username_downloaded}.${reason ? `\nNotes from reviewer: \n${reason}` : ''}`,
 				);
 				await closeIssue(issueNumber, repoName);
 			}
