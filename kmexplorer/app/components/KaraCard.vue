@@ -8,7 +8,7 @@
 			<nuxt-link
 				:to="`/kara/${getSlug}/${karaoke.kid}`"
 				class="images"
-				:class="{blur: karaoke.warnings.length > 0}"
+				:class="{ blur: karaoke.flag_sensitive_content }"
 			>
 				<img
 					:src="images[0]"
@@ -73,7 +73,7 @@
 			<div class="tags are-medium">
 				<tag
 					v-for="tag in tags"
-					:key="`${karaoke.kid}-${tag.tag.tid}~${tagTypes[tag.type].type}`"
+					:key="`${karaoke.kid}-${tag.tag.tid}~${tagTypes[tag.type]?.type}`"
 					:type="tag.type"
 					:tag="tag.tag"
 					:i18n="karaokesI18n && karaokesI18n[tag.tag.tid]"

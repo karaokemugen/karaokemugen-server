@@ -28,6 +28,7 @@ import sentry from '../utils/sentry.js';
 import { getState } from '../utils/state.js';
 import { updateGit } from './git.js';
 import { clearProcessedInboxes, clearUnusedStagingTags } from './inbox.js';
+import { setSensitiveTags } from './tag.js';
 import { findUserByName } from './user.js';
 
 const service = 'Kara';
@@ -128,6 +129,7 @@ export async function generate() {
 		promises.push(refreshKaraStats());
 		promises.push(refreshAllKaraTag());
 		await Promise.all(promises);
+		await setSensitiveTags();
 		await createBaseDumps();
 	} catch (err) {
 		logger.error('Generation failed', {service, obj: err});

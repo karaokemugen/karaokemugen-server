@@ -2,7 +2,7 @@
 	<div class="box">
 		<div
 			class="images"
-			:class="{ blur: karaoke.warnings.length > 0 }"
+			:class="{ blur: karaoke.flag_sensitive_content }"
 			@click="() => playable && $emit('updatePlayer', karaoke)"
 		>
 			<button
@@ -31,7 +31,7 @@
 			/>
 			<tag
 				v-for="tag in tags"
-				:key="`${karaoke.kid}-${tag.tag.tid}~${tagTypes[tag.type].type}`"
+				:key="`${karaoke.kid}-${tag.tag.tid}~${tagTypes[tag.type]?.type}`"
 				:type="tag.type"
 				:tag="tag.tag"
 				:i18n="karaokesI18n && karaokesI18n[tag.tag.tid]"
@@ -51,8 +51,8 @@
 
 <script setup lang="ts">
 	import { storeToRefs } from 'pinia';
-	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
-	import type { DBPLC } from 'kmserver-core/src/lib/types/database/playlist';
+	import type { DBPL } from '%/types/database/playlist';
+	import type { DBPLC } from '%/lib/types/database/playlist';
 	import slug from 'slug';
 	import { tagTypes } from '~/assets/constants';
 	import { useAuthStore } from '~/store/auth';
@@ -76,7 +76,6 @@
 	const url = useRequestURL();
 	const hardsubUrl = config?.value?.Hardsub?.Url ?? url.origin;
 
-
 	const canEditPlaylist = computed(() =>
 		loggedIn?.value &&
 		user?.value &&
@@ -84,7 +83,7 @@
 	);
 
 	const title = computed((): string => {
-		return getTitleInLocale(props.karaoke.titles, props.karaoke.titles_default_language);
+		return getTitleInLocale(props.karaoke.titles, props.karaoke.titles_default_language) || '';
 	});
 	const images = computed((): string[] => {
 		return supportedFiles?.value?.audio.some(extension => props.karaoke.mediafile.endsWith(extension))
@@ -95,7 +94,7 @@
 			];
 	});
 	const getSlug = computed((): string => {
-		return slug(props.karaoke.titles[props.karaoke.titles_default_language || 'eng']);
+		return slug(props.karaoke.titles[props.karaoke.titles_default_language || 'eng'] || '');
 	});
 
 	const tags = computed((): TagExtend[] => {

@@ -10,6 +10,7 @@ import {getTagTypeName, tagTypes} from '../lib/utils/constants.js';
 import logger from '../lib/utils/logger.js';
 import { DBStats } from '../types/database/kara.js';
 import { getHardsubsBeingProcessed } from '../utils/hardsubs.js';
+import { getState } from '../utils/state.js';
 import * as sql from './sqls/kara.js';
 
 const service = 'DB';
@@ -78,8 +79,15 @@ function prepareKaraQuery(params: KaraParams) {
 		fromClauses: [],
 		whereClauses: [],
 		withCTEs: ['blank AS (SELECT true)'],
-		collectionClauses: []
+		collectionClauses: [],
+		sensitiveTagsClause: '',
 	};
+	if (getState().sensitiveTags.length > 0) {
+		q.sensitiveTagsClause = `ARRAY[${getState().sensitiveTags.map(t => `'${t}'`).join(',')}] && ak.tid`;
+	} else {
+		// No sensitive tags ever? All songs are flagged as not sensitive
+		q.sensitiveTagsClause = 'false';
+	}
 	if (params.username) {
 		q.selectClause = `
 			(CASE WHEN f.fk_kid IS NULL
@@ -186,6 +194,7 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 		q.additionalFrom,
 		includeStaging,
 		q.collectionClauses,
+		q.sensitiveTagsClause,
 		q.withCTEs,
 		params.forPlayer,
 		getHardsubsBeingProcessed(),
