@@ -634,6 +634,7 @@
 		"GENERATED_KARA": "Karaoké envoyé avec succès.",
 		"EDITED_KARA": "Modification envoyée avec succès.",
 		"IMPORT_KARA_ERROR": "Impossible d'envoyer le karaoké.",
+		"USER_ALREADY_LIKED_SUGGESTION": "Vous avez déjà voté pour cette suggestion.",
 		"EDIT_KARA_ERROR": "Impossible d'envoyer la modification.",
 		"FILE_UPLOADED": "Fichier mis en ligne.",
 		"USER_EDITED": "Utilisateur édité avec succès",

@@ -44,3 +44,13 @@ export const deleteSuggestion = `
 DELETE FROM suggestions
 WHERE pk_id_suggest = $1
 `;
+
+export const selectUsersSuggestion = `
+SELECT fk_login AS username
+FROM users_suggestions_liked
+WHERE fk_id_suggest = $1
+`;
+
+export const insertUsersSuggestion = `
+INSERT INTO users_suggestions_liked VALUES($1, $2)
+`;

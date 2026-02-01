@@ -1,4 +1,5 @@
-import { addLikeToSuggestion, deleteSuggestion, insertSuggestion, selectSuggestions, selectSuggestionsLanguages, updateSuggestionSearchVector } from '../dao/suggestions.js';
+import { addLikeToSuggestion, addUsersSuggestion, deleteSuggestion, getSuggestionByID, insertSuggestion, selectSuggestions, selectSuggestionsLanguages, updateSuggestionSearchVector } from '../dao/suggestions.js';
+import { JWTTokenWithRoles } from '../lib/types/user.js';
 import { ErrorKM } from '../lib/utils/error.js';
 import logger from '../lib/utils/logger.js';
 import { Suggestion, SuggestionParams } from '../types/suggestions.js';
@@ -42,14 +43,20 @@ export async function getSuggestionsLanguages() {
 	}
 }
 
-export async function updateLike(id: number) {
+export async function updateLike(id: number, token: JWTTokenWithRoles) {
 	try {
+		const username = token.username;
+		const usersWhoLiked = await getSuggestionByID(id);
+		if (usersWhoLiked.rows.some(s => s.username === username)) {
+			throw new ErrorKM('USER_ALREADY_LIKED_SUGGESTION', 409, false);
+		}
 		await addLikeToSuggestion(id);
+		await addUsersSuggestion(id, username);
 		return true;
 	} catch (err) {
 		logger.error(`Unable to update like to suggestion ${id}`, {service, obj: err});
 		sentry.error(err);
-		throw new ErrorKM('UPDATE_SUGGESTION_LIKE_ERROR');
+		throw err instanceof ErrorKM ? err : new ErrorKM('UPDATE_SUGGESTION_LIKE_ERROR');
 	}
 }
 
