@@ -200,7 +200,7 @@ export async function editKara(editedKara: EditedKara, contact: string, login?: 
 					await editInboxIssue(kara.data.kid, numberIssue, edit);
 				}
 			} else {
-				issueURL = await createInboxIssue(kara.data.kid, edit);
+				issueURL = await createInboxIssue(kara.data.kid, edit, login);
 				updateInboxGitlabIssue(newInid, issueURL);
 			}
 		} catch (err) {
@@ -230,7 +230,7 @@ export async function createKara(editedKara: KaraFileV4, contact: string, login?
 		const newInid = await heavyLifting(kara, {name: contact, login});
 		let issueURL = '';
 		try {
-			issueURL = await createInboxIssue(kara.data.kid);
+			issueURL = await createInboxIssue(kara.data.kid, null, login);
 			updateInboxGitlabIssue(newInid, issueURL);
 		} catch (err) {
 			logger.error(`Unable to post to Gitlab a new inbox issue: ${err}`, { service, obj: err });
