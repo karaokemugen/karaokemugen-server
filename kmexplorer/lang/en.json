@@ -694,7 +694,8 @@
 		"PL_SHARE_CLIPBOARD_FAIL": "Couldn't write playlist link to clipboard",
 		"PL_SHUFFLE_ERROR": "Error shuffling playlist",
 		"USER_INBOX_QUOTA_REACHED": "You reached your quota.",
-		"CONTRIBUTOR_TRUST_LEVEL_UPDATED": "Contributor trust level updated."
+		"CONTRIBUTOR_TRUST_LEVEL_UPDATED": "Contributor trust level updated.",
+		"DELETE_INBOX_ERROR": "Error deleting inbox"
 	},
 	"roles": {
 		"donator": "Donator",
