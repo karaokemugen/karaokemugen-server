@@ -310,7 +310,7 @@
 		"sort": {
 			"a_z": "A-Z",
 			"kara_count": "Karaoke count",
-			"recent": "By added date",
+			"recent": "By created date",
 			"most_played": "Most played",
 			"most_played_recently": "Most played (recently)",
 			"most_favorites": "Most favorites",
@@ -321,7 +321,8 @@
 			"duration": "By durations",
 			"username": "By usernames",
 			"recent_modified": "By modified date",
-			"status": "By status"
+			"status": "By status",
+			"added_at": "By added date"
 		},
 		"next": "Next page",
 		"previous": "Previous page",

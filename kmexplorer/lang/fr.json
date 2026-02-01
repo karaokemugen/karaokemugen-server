@@ -310,7 +310,7 @@
 		"sort": {
 			"a_z": "De A à Z",
 			"kara_count": "Nombre de chansons",
-			"recent": "Par date d'ajout",
+			"recent": "Par date de création",
 			"most_played": "Plus joués",
 			"most_played_recently": "Plus joués (récents)",
 			"most_favorites": "Plus favoris",
@@ -321,7 +321,8 @@
 			"duration": "Par durées",
 			"username": "Par noms d'utilisateur",
 			"recent_modified": "Par date de modification",
-			"status": "Par statut"
+			"status": "Par statut",
+			"added_at": "Par date d'ajout"
 		},
 		"next": "Page suivante",
 		"previous": "Page précédente",

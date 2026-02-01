@@ -78,7 +78,7 @@
 							</div>
 						</div>
 						<client-only>
-							<div class="is-flex is-justify-content-flex-end">
+							<div class="is-flex is-justify-content-flex-end mr-1">
 								<nuxt-link
 									v-if="loggedIn && !viewingSelf && userConnected?.flag_displayfavorites && user.flag_displayfavorites"
 									class="button"
