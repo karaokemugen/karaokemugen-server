@@ -165,9 +165,7 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 				await postNoteToIssue(
 					issueNumber,
 					repoName,
-					`Waiting for changes by original uploader. Notes from reviewer:
-				${reason}
-				`,
+					`Waiting for changes by original uploader. Notes from reviewer: \n\n${reason}`,
 				);
 			}
 		} else if (status === 'sent') {
@@ -221,7 +219,7 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 				await postNoteToIssue(
 					issueNumber,
 					repoName,
-					`Upload was ACCEPTED by ${inbox.username_downloaded}.${reason ? `\nNotes from reviewer: \n${reason}` : ''}`,
+					`Upload was ACCEPTED by ${inbox.username_downloaded}.${reason ? `\nNotes from reviewer: \n\n${reason}` : ''}`,
 				);
 				await closeIssue(issueNumber, repoName);
 			}
@@ -270,7 +268,7 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 				await postNoteToIssue(
 					issueNumber,
 					repoName,
-					`Upload was REJECTED by ${inbox.username_downloaded}: ${reason}`,
+					`Upload was REJECTED by ${inbox.username_downloaded}:\n\n${reason}`,
 				);
 				await closeIssue(issueNumber, repoName);
 			}
