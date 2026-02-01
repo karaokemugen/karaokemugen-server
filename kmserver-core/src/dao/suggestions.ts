@@ -84,3 +84,11 @@ export async function addLikeToSuggestion(id: number) {
 export async function deleteSuggestion(id: number) {
 	return db().query(sql.deleteSuggestion, [id]);
 }
+
+export async function getSuggestionByID(id: number) {
+	return db().query(sql.selectUsersSuggestion, [id]);
+}
+
+export async function addUsersSuggestion(id: number, username: string) {
+	return db().query(sql.insertUsersSuggestion, [id, username])
+}

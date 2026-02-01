@@ -16,9 +16,9 @@ export default function suggestionsController(router: Router) {
 		});
 	
 	router.route('/suggestions/:id')
-		.post(async (req: any, res) => {
+		.post(requireAuth, requireValidUser, async (req: any, res) => {
 			try {
-				await updateLike(req.params.id);
+				await updateLike(req.params.id, req.authToken);
 				res.status(200).json();
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));

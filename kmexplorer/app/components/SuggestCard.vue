@@ -56,6 +56,7 @@
 	import { useAuthStore } from '~/store/auth';
 	import { useLocalStorageStore } from '~/store/localStorage';
 	import { useMenubarStore } from '~/store/menubar';
+	import { useModalStore } from '~/store/modal';
 
 	const props = defineProps<{
 		kara: Suggestion
@@ -71,6 +72,7 @@
 	const { addKara } = useLocalStorageStore();
 	const { addEnabledLanguage } = useMenubarStore();
 	const { locale } = useI18n();
+	const { openModal } = useModalStore();
 
 	const canSeeSourceAndDelete = computed(() => loggedIn.value && (!!user?.value?.roles?.admin || !!user?.value?.roles?.maintainer));
 
@@ -81,14 +83,18 @@
 	});
 
 	async function addLike() {
-		loading.value = true;
-		await useCustomFetch(`/api/suggestions/${props.kara.id}`, {
-			method: 'POST'
-		});
-		if (props.kara.id) addKara(props.kara.id);
-		loading.value = false;
-		done_vote.value = true;
-		likes.value++;
+		if (!loggedIn.value) {
+			openModal('auth');
+		} else {
+			loading.value = true;
+			await useCustomFetch(`/api/suggestions/${props.kara.id}`, {
+				method: 'POST'
+			});
+			if (props.kara.id) addKara(props.kara.id);
+			loading.value = false;
+			done_vote.value = true;
+			likes.value++;
+		}
 	}
 	async function deleteLike() {
 		loading.value = true;
