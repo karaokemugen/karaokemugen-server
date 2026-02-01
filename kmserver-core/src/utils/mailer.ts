@@ -24,6 +24,7 @@ export function initMailer() {
 
 	mailOptions = {
 		from: `"${conf.From}" <${conf.FromMail}>`,
+		replyTo: conf.ReplyTo,
 	};
 }
 

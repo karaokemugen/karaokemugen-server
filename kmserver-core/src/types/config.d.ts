@@ -138,7 +138,8 @@ export interface Config {
 		User?: string,
 		Password?: string,
 		From?: string,
-		FromMail?: string
+		FromMail?: string,
+		ReplyTo?: string,
 	},
 	Online: {
 		ErrorTracking?: boolean,
