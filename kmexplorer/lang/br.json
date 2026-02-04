@@ -86,7 +86,9 @@
 			"titles_aliases_tooltip": "Anvioù berr pe eil, implijet evit an enklask.",
 			"songorder": "Niverenn ganaouenn",
 			"contact_infos": "Titouroù darempred",
-			"songwriters_tooltip": "Sonazourien, kempennerien ha saverien pozioù."
+			"songwriters_tooltip": "Sonazourien, kempennerien ha saverien pozioù.",
+			"login_required": "Ret eo deoc'h kevreañ da gas ur ganaouenn.",
+			"parents": "Kerent"
 		},
 		"player": {
 			"next": "Kanaouenn war-lerc'h (N)",
@@ -231,11 +233,12 @@
 			"duration": "Dre padelezhioù",
 			"most_played": "Sonet ar muiañ",
 			"most_played_recently": "Sonet ar muiañ (nevez zo)",
-			"recent": "Dre devezh ouzhpennet",
+			"recent": "Dre zeiziad krouiñ",
 			"most_favorites": "Ar muiañ pennrollet",
 			"most_requested": "Ar muiañ goulennet",
 			"most_requested_recently": "Ar muiañ goulennet (nevez zo)",
-			"username": "Dre anvioù implijer"
+			"username": "Dre anvioù implijer",
+			"added_at": "Dre zeiziad ouzhpennañ"
 		},
 		"next": "Pajenn war-lerc'h",
 		"previous": "Pajenn a-raok",
@@ -286,7 +289,8 @@
 				},
 				"username": {
 					"placeholder": "LoveLiveFan93",
-					"label": "Anv implijer"
+					"label": "Anv implijer",
+					"char_not_allowed": "N'eo ket aotreet an arouezenn '{char}'"
 				},
 				"password": {
 					"label": "Ger-tremen",
@@ -601,7 +605,8 @@
 	},
 	"roles": {
 		"contributor": "Kenlabourer·ez",
-		"admin": "Merour·ez"
+		"admin": "Merour·ez",
+		"donator": "Donezoner(-ez)"
 	},
 	"submissions": {
 		"email": "Postel",
@@ -615,11 +620,13 @@
 			"changes_requested": "Cheñchamantoù goulennet"
 		},
 		"rejected_reason_button": "Abeg an distaol",
-		"rejected_reason": "Abeg an distaol : {reason}"
+		"rejected_reason": "Abeg an distaol : {reason}",
+		"quota": "Gallout a rit kas { songs } / { quota } a ganaouennoù c'hoazh."
 	},
 	"dashboard": {
 		"version": {
 			"commit": "Commit : {commit}"
-		}
+		},
+		"trust_level": "Live {level}"
 	}
 }
