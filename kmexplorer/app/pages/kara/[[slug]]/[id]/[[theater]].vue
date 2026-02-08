@@ -103,7 +103,7 @@
 					:chunk-size="10"
 				/>
 			</div>
-			<template v-if="otherLikedKIDs.length > 0">
+			<div v-if="otherLikedKIDs.length > 0" class="mt-3">
 				<kara-query
 					:kids="otherLikedKIDs"
 					:with-suggest="false"
@@ -111,7 +111,7 @@
 					:ignore-filter="true"
 					:title="t('kara.other_liked')"
 				/>
-			</template>
+			</div>
 		</div>
 	</div>
 </template>
