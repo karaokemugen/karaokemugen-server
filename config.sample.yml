@@ -42,7 +42,7 @@ Frontend:
   Secure: false
   # Tag~types in this array will blur song thumbnails and display a warning on songs impacted. If not present, default behavior is to use tags in the "warning" type from the database. If present but empty, no songs will be blurred.
   SensitiveTags: 
-    - e2b8419f-1d5a-44ad-a62c-d7765493190d~15 
+    - e82ce681-6d7b-4fb6-abe4-daa8aaa9bbf9~15
   Import:
     Enabled: true
     LoginNeeded: true
