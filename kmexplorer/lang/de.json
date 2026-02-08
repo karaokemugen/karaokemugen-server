@@ -571,7 +571,8 @@
 			"username": "Nach Benutzernamen",
 			"duration": "Nach Dauer",
 			"recent_modified": "Nach Änderungsdatum",
-			"status": "Nach Status"
+			"status": "Nach Status",
+			"added_at": "Nach Erstalldatum"
 		},
 		"placeholder": {
 			"kara": "Serien, Sänger, Namen…",
@@ -671,7 +672,9 @@
 		"BANNER_BANNED": "Dieses Banner kann nicht benutzt werden",
 		"PL_SHUFFLE_ERROR": "Fehler beim Mischen der Playlist",
 		"USER_INBOX_QUOTA_REACHED": "Du hast dein Kontingent ausgeschöpft.",
-		"CONTRIBUTOR_TRUST_LEVEL_UPDATED": "Beitrags-Level aktualisiert."
+		"CONTRIBUTOR_TRUST_LEVEL_UPDATED": "Beitrags-Level aktualisiert.",
+		"USER_ALREADY_LIKED_SUGGESTION": "Du hast für diesen Vorschlag bereits abgestimmt.",
+		"DELETE_INBOX_ERROR": "Fehler beim Löschen des Posteingangs"
 	},
 	"suggestions": {
 		"kara": {
