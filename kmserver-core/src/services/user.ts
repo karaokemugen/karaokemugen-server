@@ -36,7 +36,7 @@ const passwordResetRequests = new Map();
 
 export function getUserLanguage(user: User): string {
 	// Fallback to english if no user language recognized
-	return getState().acceptedLanguages.includes(user.language) ? user.language : 'en';
+	return user?.language && getState().acceptedLanguages?.includes(user.language) ? user.language : 'en';
 }
 
 export async function resetPasswordRequest(username: string) {

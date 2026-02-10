@@ -108,7 +108,8 @@ async function main() {
 			tag: buildInfo.tag,
 			sha: buildInfo.commit,
 			date: buildInfo.date
-		}
+		},
+		acceptedLanguages
 	});
 	await initConfig(argv.opts());
 	updateWebmanifest();
@@ -195,7 +196,6 @@ async function main() {
 
 	if (conf.Hardsub.Enabled) initHardsubGeneration();
 
-	setState({ acceptedLanguages });
 	configureLocale(acceptedLanguages);
 	initRepos();
 	initUplink();
