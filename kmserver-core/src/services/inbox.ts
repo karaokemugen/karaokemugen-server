@@ -306,6 +306,7 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 		);
 	} catch (err) {
 		logger.error(`Failed to set inbox item ${inid} status to ${status}: ${err}`, { service, obj: err });
+		logger.error(err?.stack);
 		sentry.error(err);
 		throw err instanceof ErrorKM ? err : new ErrorKM('SET_INBOX_STATUS_ERROR');
 	}
