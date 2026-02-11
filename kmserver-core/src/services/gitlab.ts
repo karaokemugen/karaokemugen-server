@@ -114,14 +114,14 @@ export async function buildIssue(kid: string, edit?: EditElement) {
 /** Use the appropriate template and post an inbox element to GitLab * */
 export async function createInboxIssue(kid: string, edit?: EditElement, username?: string) {
 	const conf = getConfig();
-	const issueTemplate = edit ? conf.Gitlab.IssueTemplate.Edit : conf.Gitlab.IssueTemplate.Import;
 	const issue = await buildIssue(kid, edit);
 	const user = await getAllUsers({ username });
-	// User is a new contributor 
+	// User is a new contributor
+	const labels = edit ? [...conf.Gitlab.IssueTemplate.Edit.Labels] : [...conf.Gitlab.IssueTemplate.Import.Labels];
 	if (username && conf.Gitlab.Labels.NewContributor && !user.content[0].roles.contributor) {
-		issueTemplate.Labels.push(conf.Gitlab.Labels.NewContributor)
+		labels.push(conf.Gitlab.Labels.NewContributor)
 	}
-	return gitlabCreateIssue(issue.title, issue.description, issueTemplate.Labels);
+	return gitlabCreateIssue(issue.title, issue.description, labels);
 }
 
 /** Edit issue and rebuild description and title if needed */
