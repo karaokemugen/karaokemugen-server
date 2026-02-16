@@ -58,7 +58,7 @@
 	const { config } = storeToRefs(useConfigStore());
 
 	const { t } = useI18n();
-	const { params, query } = useRoute();
+	const { params } = useRoute();
 
 	const url = useRequestURL();
 
@@ -85,7 +85,7 @@
 	const data = await useCustomFetch<{ Manifest: RepositoryManifestV2 }>('/api/karas/repository');
 	manifest.value = data.Manifest;
 
-	if (!query.inid && config?.value && config.value.Frontend.Import.LoginNeeded && config.value.Frontend.Import.ContributorTrustLevels && user?.value?.contributor_trust_level) {
+	if (!params?.id && config?.value && config.value.Frontend.Import.LoginNeeded && config.value.Frontend.Import.ContributorTrustLevels && user?.value?.contributor_trust_level) {
 		const submissionInfo = await useCustomFetch<DBInbox[]>('/api/myaccount/inbox/submitted', {
 			method: 'POST',
 		});
