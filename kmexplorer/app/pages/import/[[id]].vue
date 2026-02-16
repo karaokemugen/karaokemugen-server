@@ -57,8 +57,8 @@
 	const { user } = storeToRefs(useAuthStore());
 	const { config } = storeToRefs(useConfigStore());
 
-	const route = useRoute();
 	const { t } = useI18n();
+	const { params, query } = useRoute();
 
 	const url = useRequestURL();
 
@@ -73,9 +73,9 @@
 		})
 	}
 
-	if (route.params?.id) {
+	if (params?.id) {
 		try {
-			const data = await useCustomFetch<DBKara>(`/api/karas/${route.params.id}`);
+			const data = await useCustomFetch<DBKara>(`/api/karas/${params.id}`);
 			kara.value = data;
 		} catch (_) {
 			throw createError({ statusCode: 404, message: t('kara.notfound') });
@@ -85,7 +85,7 @@
 	const data = await useCustomFetch<{ Manifest: RepositoryManifestV2 }>('/api/karas/repository');
 	manifest.value = data.Manifest;
 
-	if (config?.value && config.value.Frontend.Import.LoginNeeded && config.value.Frontend.Import.ContributorTrustLevels && user?.value?.contributor_trust_level) {
+	if (!query.inid && config?.value && config.value.Frontend.Import.LoginNeeded && config.value.Frontend.Import.ContributorTrustLevels && user?.value?.contributor_trust_level) {
 		const submissionInfo = await useCustomFetch<DBInbox[]>('/api/myaccount/inbox/submitted', {
 			method: 'POST',
 		});
