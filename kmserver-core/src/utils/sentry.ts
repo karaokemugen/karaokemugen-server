@@ -1,13 +1,13 @@
 import * as SentryNode from '@sentry/node';
 import Transport from 'winston-transport';
 
+import { getConfig } from '../lib/utils/config.js';
 import SentryLogger from '../lib/utils/sentry.js';
 import { getState } from './state.js';
-import { getConfig } from '../lib/utils/config.js';
 
 class NodeSentryLogger extends SentryLogger {
 	init() {
-		if (process.env.CI_SERVER || process.env.SENTRY_TEST) {
+		if (process.env.CI_SERVER || process.env.SENTRY_TEST === 'true') {
 			console.log('CI detected/SENTRY_TEST present - Sentry disabled');
 			console.log("Have a nice day, sentries won't fire at you~");
 			return;
