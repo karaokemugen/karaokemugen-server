@@ -42,7 +42,7 @@ const nuxtConfig = defineNuxtConfig({
 	runtimeConfig: {
 		public: {
 			sentry: {
-				disabled: Boolean(process.env.SENTRY_TEST),
+				disabled: process.env.SENTRY_TEST === 'true',
 				dsn: process.env.SENTRY_DSN || sentryDSN,
 				publishRelease: false,
 				tracing: {
