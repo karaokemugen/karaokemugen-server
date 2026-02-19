@@ -281,7 +281,7 @@ export async function createUser(user: User, opts: any = {}) {
 		const args: any = arguments;
 		delete args[0].password;
 		sentry.addErrorInfo('args', JSON.stringify(args, null, 2));
-		sentry.error(new Error(err.err));
+		sentry.error(err);
 		throw err instanceof ErrorKM ? err : new ErrorKM('CREATE_USER_ERROR');
 	}
 }
