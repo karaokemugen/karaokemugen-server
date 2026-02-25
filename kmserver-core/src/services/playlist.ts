@@ -398,6 +398,7 @@ export async function exportPlaylist(plaid: string, token: JWTTokenWithRoles) {
 		playlist.PlaylistInformation = plExport;
 		playlist.PlaylistContents = plContents.content as any;
 		playlist.Server = getConfig().Frontend.Host;
+		playlist.PlaylistContributors = pl.contributors.map(c => c.username);
 		return playlist;
 	} catch (err) {
 		logger.error(`Error exporting playlist ${plaid} : ${err}`, { service });
@@ -484,6 +485,20 @@ export async function importPlaylist(playlist: PlaylistExport, token: JWTTokenWi
 		if (pl) {
 			await emptyPlaylist(playlist.PlaylistInformation.plaid, token);
 			pl = await editPlaylist(playlist.PlaylistInformation.plaid, playlist.PlaylistInformation, token);
+			// Only allow contributor editing for playlist owners
+			if (token.username === pl.username && playlist.PlaylistContributors) {
+				// Determine if we have new or removed contributors
+				for (const importedContributor of playlist.PlaylistContributors) {
+					if (!pl.contributors.find(c => c.username === importedContributor)) {
+						await addContributorToPlaylist(playlist.PlaylistInformation.plaid, importedContributor, token);
+					}
+				}
+				for (const contributor of pl.contributors) {
+					if (!playlist.PlaylistContributors.includes(contributor.username)) {
+						await removeContributorToPlaylist(playlist.PlaylistInformation.plaid, contributor.username, token);
+					}
+				}
+			}
 		} else {
 			pl = await createPlaylist(playlist.PlaylistInformation, token);
 		}
