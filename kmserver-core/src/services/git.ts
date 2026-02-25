@@ -60,7 +60,7 @@ export async function getLatestGitCommit(repoDir: string, branch = 'master'): Pr
 	} catch (err) {
 		logger.error('Unable to get latest commit', {service, obj: err});
 		sentry.error(err);
-		throw new ErrorKM('LATEST_COMMIT_ERROR');
+		throw new ErrorKM('LATEST_COMMIT_ERROR', 500, false);
 	}
 }
 
