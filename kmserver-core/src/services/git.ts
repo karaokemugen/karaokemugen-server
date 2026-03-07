@@ -67,7 +67,9 @@ export async function getLatestGitCommit(repoDir: string, branch = 'master'): Pr
 export async function updateGit() {
 	try {
 		const repo = getConfig().System.Repositories.find(r => r.Name !== 'Staging');
+		logger.info('Pulling repo updates from git...', { service });
 		await gitPull(resolve(getState().dataPath, repo.BaseDir));
+		logger.info('Pulling successful', { service });
 	} catch (err) {
 		logger.error('Unable to pull git repo', {service, obj: err});
 		sentry.error(err);

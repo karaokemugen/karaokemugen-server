@@ -67,10 +67,12 @@ export async function updateRepo() {
 	}
 	try {
 		generationInProgress = true;
+		logger.info('Starting separate generation process...', { service });
 		await execa('yarn', ['start', '--generate'], {
 			cwd: resolve(),
 			cancelSignal: generationAbortController.signal
 		});
+		logger.info('Separate generation process successful', { service });
 	} catch (err) {
 		if (err.isCanceled) {
 			logger.error('Generation aborted', { service });
