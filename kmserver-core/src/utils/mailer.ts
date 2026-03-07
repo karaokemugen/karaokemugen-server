@@ -30,7 +30,7 @@ export function initMailer() {
 
 export async function sendMail(subject: string, message: string, to: string, toMail: string) {
 	try {
-		if (transporter) {
+		if (transporter && toMail) {
 			const info = await transporter.sendMail({ ...mailOptions, subject, text: message, to: `"${to}" <${toMail}>` });
 			logger.debug('Sent mail', { service, obj: info });
 		}
