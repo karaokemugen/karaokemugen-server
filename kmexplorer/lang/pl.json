@@ -798,8 +798,8 @@
 			"rejected": "Odrzucony"
 		},
 		"modified_at": "Zmodyfikowano w dniu {date}",
-		"rejected_reason_button": "Powód odrzucenia",
-		"rejected_reason": "Powód odrzucenia: {reason}",
+		"reason_button": "Powód odrzucenia",
+		"reason": "Powód odrzucenia: {reason}",
 		"cleanup": "Zgłoszenia ze statusem „Odrzucone”, „Zaakceptowane” lub „Zażądano zmian” starsze niż {days} dni są automatycznie usuwane.",
 		"contact_maintainers": "Jeśli chcesz skontaktować się z osobami odpowiedzialnymi za utrzymanie strony, możesz to zrobić za pośrednictwem:",
 		"email": "Email",

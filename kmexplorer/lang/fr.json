@@ -807,8 +807,8 @@
 			"rejected": "Rejetée"
 		},
 		"modified_at": "Modifiée le {date}",
-		"rejected_reason_button": "Raison du refus",
-		"rejected_reason": "Raison du refus : {reason}",
+		"reason_button": "Commentaires du mainteneur",
+		"reason": "Commentaires du mainteneur : {reason}",
 		"cleanup": "Les contributions aux statuts 'Refusée', 'Acceptée' ou 'Changements requis' datant de plus de {days} jours sont automatiquement supprimées.",
 		"contact_maintainers": "Si vous avez besoin de contacter les mainteneurs, vous pouvez les joindre via :",
 		"email": "Email",

@@ -5,7 +5,7 @@
 				{{ inbox.name }}
 				<div v-if="inbox.modified_at" class="subtitle">
 					{{ $t('submissions.modified_at', { date : new Date(inbox.modified_at).toLocaleString() }) }}
-					<i18n-t v-if="rejectReasonOpen" keypath="submissions.rejected_reason" tag="div">
+					<i18n-t v-if="reasonOpen" keypath="submissions.reason" tag="div">
 						<template #reason>
 							<span class="has-text-weight-bold">{{ inbox.reject_reason }}</span>
 						</template>
@@ -15,8 +15,8 @@
 			<div :class="`ml-1 mt-1 tag ${getClassByStatus()}`">
 				{{ $t(`submissions.status.${inbox.status}`) }}
 			</div>
-			<button v-if="inbox.reject_reason" class="button" @click="rejectReasonOpen = !rejectReasonOpen">
-				{{ $t('submissions.rejected_reason_button') }}
+			<button v-if="inbox.reject_reason" class="button" @click="reasonOpen = !reasonOpen">
+				{{ $t('submissions.reason_button') }}
 			</button>
 		</div>
 		<div class="is-flex is-justify-content-space-between">
@@ -45,7 +45,7 @@ const props = defineProps<{
 	inbox: Inbox
 }>();
 
-const rejectReasonOpen = ref(false);
+const reasonOpen = ref(false);
 const emit = defineEmits<{ (e: 'refresh'): void }>();
 
 async function deleteInbox() {

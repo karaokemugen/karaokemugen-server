@@ -807,8 +807,8 @@
 			"rejected": "Abgelehnt"
 		},
 		"modified_at": "Geändert am {date}",
-		"rejected_reason_button": "Ablehnungsgrund",
-		"rejected_reason": "Ablehnungsgrund: {reason}",
+		"reason_button": "Ablehnungsgrund",
+		"reason": "Ablehnungsgrund: {reason}",
 		"cleanup": "Einsendungen mit Status „Abgelehnt“, „Angenommen“ oder „Änderungen erforderlich“, die älter sind als {days} Tage werden automatisch gelöscht.",
 		"contact_maintainers": "Wenn du dich mit dem Maintainer in Verbindung setzen willst, kannst du das über folgende Wege tun:",
 		"email": "E-Mail",

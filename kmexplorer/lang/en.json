@@ -807,8 +807,8 @@
 			"rejected": "Rejected"
 		},
 		"modified_at": "Modified at {date}",
-		"rejected_reason_button": "Reason for rejection",
-		"rejected_reason": "Reason for rejection: {reason}",
+		"reason_button": "Comments from maintainer",
+		"reason": "Comments from maintainer: {reason}",
 		"cleanup": "Submissions with the status 'Rejected', 'Accepted', or 'Changes requested' that are older than {days} days are automatically deleted.",
 		"contact_maintainers": "If you need to contact the maintainers, you can reach them via:",
 		"email": "Email",

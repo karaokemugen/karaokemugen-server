@@ -620,8 +620,8 @@
 			"sent": "Kaset",
 			"changes_requested": "Cheñchamantoù goulennet"
 		},
-		"rejected_reason_button": "Abeg an distaol",
-		"rejected_reason": "Abeg an distaol : {reason}",
+		"reason_button": "Abeg an distaol",
+		"reason": "Abeg an distaol : {reason}",
 		"quota": "Gallout a rit kas { songs } / { quota } a ganaouennoù c'hoazh."
 	},
 	"dashboard": {
