@@ -1,7 +1,7 @@
 import { promises as fs } from 'node:fs';
 import { resolve } from 'node:path';
 import findWorkspaceRoot from 'find-yarn-workspace-root';
-import SentryCli from '@sentry/cli';
+import { SentryCli } from '@sentry/cli';
 
 const { version } = JSON.parse(await fs.readFile(resolve(findWorkspaceRoot(), 'package.json'), 'utf-8'));
 
