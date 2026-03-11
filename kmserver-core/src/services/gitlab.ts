@@ -2,6 +2,7 @@ import { cloneDeep, isEqual } from 'lodash';
 
 import { selectAllKaras } from '../dao/kara.js';
 import { getSongSeriesSingers } from '../lib/services/kara.js';
+import { DBUser } from '../lib/types/database/user.js';
 import { getConfig } from '../lib/utils/config.js';
 import { tagTypes } from '../lib/utils/constants.js';
 import { duration } from '../lib/utils/date.js';
@@ -16,7 +17,7 @@ import { findUserByName, getAllUsers } from './user.js';
 
 const service = 'Gitlab';
 
-export async function buildIssue(kid: string, edit?: EditElement) {
+export async function buildIssue(kid: string, edit?: EditElement, username?: string) {
 	const conf = getConfig();
 	let kara = await getKara({
 		q: `k:${kid}`
@@ -40,7 +41,12 @@ export async function buildIssue(kid: string, edit?: EditElement) {
 	}
 	const title = (issueTemplate.Title || `Inbox ${edit ? 'edit' : 'creation'}: $kara`)
 		.replace('$kara', kara.songname);
+	let user: DBUser;
+	if (username) {
+		user = await findUserByName(username);
+	}
 	let desc = (issueTemplate.Description || '')
+		.replace('$username', user ? user.nickname || username : 'Anonymous')
 		.replace('$instance', conf.Frontend.Host)
 		.replace('$songname', kara.songname)
 		.replace('$newSub', edit ? edit.modifiedLyrics.toString() : 'N/A')
@@ -114,7 +120,7 @@ export async function buildIssue(kid: string, edit?: EditElement) {
 /** Use the appropriate template and post an inbox element to GitLab * */
 export async function createInboxIssue(kid: string, edit?: EditElement, username?: string) {
 	const conf = getConfig();
-	const issue = await buildIssue(kid, edit);
+	const issue = await buildIssue(kid, edit, username);
 	const user = await getAllUsers({ username });
 	// User is a new contributor
 	const labels = edit ? [...conf.Gitlab.IssueTemplate.Edit.Labels] : [...conf.Gitlab.IssueTemplate.Import.Labels];
@@ -125,8 +131,8 @@ export async function createInboxIssue(kid: string, edit?: EditElement, username
 }
 
 /** Edit issue and rebuild description and title if needed */
-export async function editInboxIssue(kid: string, issueID: number, edit?: EditElement) {
-	const issue = await buildIssue(kid, edit);
+export async function editInboxIssue(kid: string, issueID: number, edit?: EditElement, username?: string) {
+	const issue = await buildIssue(kid, edit, username);
 	return gitlabEditIssue(issueID, issue);
 }
 
@@ -249,7 +255,8 @@ export async function createKaraIssue(kid: string, type: 'Media' | 'Metadata' | 
 		let title = issueTemplate.Title || '$kara';
 		title = title.replace('$kara', karaName);
 		let desc = issueTemplate.Description || '';
-		desc = desc.replace('$username', username)
+		const user = await findUserByName(username);
+		desc = desc.replace('$username', user ? user.nickname || username : 'Anonymous')
 			.replace('$comment', comment)
 			.replace('$url', `https://${getConfig().Frontend.Host}/kara/xxx/${kid}`);
 		if (conf.Gitlab.Enabled) return await gitlabCreateIssue(title, desc, issueTemplate.Labels);

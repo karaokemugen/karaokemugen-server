@@ -158,7 +158,7 @@ export const defaults: Config = {
 				Title: '[Inbox] $kara',
 				Labels: ['To Add'],
 				Description: `
-A new karaoke has been sent to the inbox.
+A new karaoke has been sent to the inbox by $username
 
 
 # Karaoke data
@@ -257,7 +257,7 @@ A new karaoke has been sent to the inbox.
 				Title: '[Correction] $kara',
 				Labels: ['To Add'],
 				Description: `
-Someone suggested a karaoke edit. You will find all the new files in the inbox.
+$username suggested a karaoke edit. You will find all the new files in the inbox.
 
 
 # Karaoke data

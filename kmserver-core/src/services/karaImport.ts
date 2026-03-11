@@ -183,7 +183,8 @@ export async function editKara(editedKara: EditedKara, contact: string, login?: 
 			modifiedLyrics: editedKara.modifiedLyrics,
 			modifiedMedia: editedKara.modifiedMedia,
 			inid,
-			fix
+			fix,
+			username: login,
 		};
 		const newInid = await heavyLifting(kara, {
 			name: contact,
@@ -197,7 +198,7 @@ export async function editKara(editedKara: EditedKara, contact: string, login?: 
 				if (issueURL) {
 					const numberIssue = getGitlabIssueNumber(issueURL);
 					await postNoteToIssue(numberIssue, repoName, 'Song has been modified by original uploader');
-					await editInboxIssue(kara.data.kid, numberIssue, edit);
+					await editInboxIssue(kara.data.kid, numberIssue, edit, login);
 				}
 			} else {
 				issueURL = await createInboxIssue(kara.data.kid, edit, login);
