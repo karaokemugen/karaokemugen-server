@@ -63,7 +63,7 @@
     "agentkeepalive": "^4.6.0",
     "anilist-node": "^1.14.1",
     "ass-compiler": "^0.1.15",
-    "axios": "^1.11.0",
+    "axios": "^1.13.5",
     "bcryptjs": "^3.0.2",
     "commander": "^14.0.0",
     "compression": "^1.8.1",
