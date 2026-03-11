@@ -29,7 +29,9 @@ export async function buildIssue(kid: string, edit?: EditElement, username?: str
 		});
 		newParents = parents.content.map(k => k.songname);
 	}
-	const issueTemplate = edit ? conf.Gitlab.IssueTemplate.Edit : conf.Gitlab.IssueTemplate.Import;
+	// If edit.fix === true then it's a real edit from an existing kara. If not it's an edit of a currently imported karaoke.
+	// FIXME: Please make this less nightmarish in the future.
+	const issueTemplate = edit && edit.fix === true ? conf.Gitlab.IssueTemplate.Edit : conf.Gitlab.IssueTemplate.Import;
 	// Trim tags if there's more than 5 elements.
 	// Save original array somewhere
 	const fullKara = cloneDeep(kara);
