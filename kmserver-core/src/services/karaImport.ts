@@ -178,13 +178,12 @@ export async function editKara(editedKara: EditedKara, contact: string, login?: 
 			);
 		}
 		// And now for the fun part
-		const edit = {
+		const edit: EditElement = {
 			kid: edited_kid,
 			modifiedLyrics: editedKara.modifiedLyrics,
 			modifiedMedia: editedKara.modifiedMedia,
 			inid,
 			fix,
-			username: login,
 		};
 		const newInid = await heavyLifting(kara, {
 			name: contact,
