@@ -336,6 +336,7 @@ export async function markKaraInboxAsUnassigned(inid: string, username: string) 
 		const inbox = (await selectInbox(inid))[0];
 		if (!inbox) throw new ErrorKM('INBOX_UNKNOWN_ERROR', 404, false);
 		await updateInboxUnassign(inid);
+		await setInboxStatus(inid, 'sent');
 		const user = await findUserByName(username, { public: false });
 		if (user.social_networks.gitlab && inbox.gitlab_issue) {
 			// This will hurt when we have multiple repositories in KM Server
