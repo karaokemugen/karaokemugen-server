@@ -99,7 +99,6 @@
     "multer": "2.1.1",
     "node-schedule": "^2.1.1",
     "nodemailer": "^8.0.2",
-    "nuxi": "^3.28.0",
     "os-locale": "^8.0.0",
     "p-cancelable": "^4.0.1",
     "pg": "^8.20.0",

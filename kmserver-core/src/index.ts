@@ -13,7 +13,7 @@ import logger from 'winston';
 
 import { initDB } from './dao/database.js';
 import { initFrontend } from './frontend.js';
-import { buildKMExplorer, updateWebmanifest } from './kmexplorer.js';
+import { updateWebmanifest } from './kmexplorer.js';
 import { configureLocale, getConfig, resolvedPath } from './lib/utils/config.js';
 import { asyncCheckOrMkdir } from './lib/utils/files.js';
 import { enableProfiling } from './lib/utils/logger.js';
@@ -140,11 +140,6 @@ async function main() {
 
 	await Promise.all(checks);
 
-	if (argv.opts().build) {
-		await buildKMExplorer();
-		exit(0);
-	}
-
 	if (argv.opts().sql || process.env.SQL) setState({ opt: {sql: true }});
 	if (argv.opts().staticServe) setState({opt: {staticServe: true}});
 	if (argv.opts().profiling) enableProfiling();
@@ -217,7 +212,6 @@ function parseArgs() {
 		.option('--profiling', 'enable profiling in logs')
 		.option('--staticServe', 'serve static files via NodeJS')
 		.option('--createAdmin [user],[password]', 'Create a new admin user', login)
-		.option('--build', 'Build KMExplorer (required in production environments)')
 		.option('--importSuggestionsFrom [file]', 'Import suggestions from CSV file')
 		.option('--suggestionSource [source]', 'Name the source of your inported sugggestion CSV file')
 		.parse(argv);

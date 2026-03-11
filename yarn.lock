@@ -13149,7 +13149,6 @@ __metadata:
     multer: 2.1.1
     node-schedule: ^2.1.1
     nodemailer: ^8.0.2
-    nuxi: ^3.28.0
     os-locale: ^8.0.0
     p-cancelable: ^4.0.1
     pg: ^8.20.0
@@ -14685,18 +14684,6 @@ __metadata:
   dependencies:
     boolbase: ^1.0.0
   checksum: 5afc3dafcd1573b08877ca8e6148c52abd565f1d06b1eb08caf982e3fa289a82f2cae697ffb55b5021e146d60443f1590a5d6b944844e944714a5b549675bcd3
-  languageName: node
-  linkType: hard
-
-"nuxi@npm:^3.28.0":
-  version: 3.28.0
-  resolution: "nuxi@npm:3.28.0"
-  bin:
-    nuxi: bin/nuxi.mjs
-    nuxi-ng: bin/nuxi.mjs
-    nuxt: bin/nuxi.mjs
-    nuxt-cli: bin/nuxi.mjs
-  checksum: 366858d3e2ff73b6ed3e408b9d60ffaf4d744cc17e970d2aac14d3f50ee383a5db7f41d6f39247e8559fca7b44f6620875d9292162b3cfb2f0493c0c0bb74dab
   languageName: node
   linkType: hard
 
