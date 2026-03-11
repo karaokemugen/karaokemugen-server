@@ -188,7 +188,11 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 				})
 			}
 		} else if (status === 'sent') {
-			// Do nothing
+			// Remove changes requested labels (if it was previously set)
+			if (inbox.gitlab_issue) {
+				const issueNumber = getGitlabIssueNumber(inbox.gitlab_issue);
+				await removeDueDateAndLabelsFromIssue(issueNumber);
+			}
 		} else if (status === 'in_review' && inbox.status === 'sent') {
 			// Only sent the in review mail and note in issue the first time
 			if (user?.flag_contributor_emails)
