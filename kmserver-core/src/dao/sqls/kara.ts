@@ -29,7 +29,6 @@ export const selectAllKaras = (
 	offsetClause: string,
 	selectClause: string,
 	joinClause: string,
-	groupClauses: string[],
 	whereClauses: string[],
 	fromClauses: string[],
 	additionalFrom: string[],
@@ -40,14 +39,56 @@ export const selectAllKaras = (
 	forPlayer: boolean,
 	hardsubsInProgress: string[],
 	random: number,
+	favoritedBy: string,
 ) => `
-WITH ${withCTE.join(', \n')}
+WITH 
+favorited AS (
+    SELECT fk_kid 
+	FROM users_favorites
+	WHERE fk_login ${favoritedBy ? '= :username' : 'IS NULL'}
+),
+-- Parents de chaque kara
+parents_agg AS (
+    SELECT fk_kid_child AS pk_kid,
+           array_agg(DISTINCT fk_kid_parent) AS parent_ids
+    FROM kara_relation
+    GROUP BY fk_kid_child
+),
+-- Enfants de chaque kara
+children_agg AS (
+    SELECT fk_kid_parent AS pk_kid,
+           array_agg(DISTINCT fk_kid_child) AS child_ids
+    FROM kara_relation
+    GROUP BY fk_kid_parent
+),
+-- Siblings : enfants des parents, sans soi-même
+siblings_agg AS (
+    SELECT p.pk_kid,
+           array_remove(array_agg(DISTINCT kr2.fk_kid_child), p.pk_kid) AS sibling_ids
+    FROM parents_agg p
+    JOIN kara_relation kr2 ON kr2.fk_kid_parent = ANY(p.parent_ids)
+    GROUP BY p.pk_kid
+),
+-- Playlists par kara
+playlists_agg AS (
+    SELECT fk_kid AS pk_kid,
+           array_agg(DISTINCT fk_plaid) AS playlist_ids
+    FROM playlist_content
+    GROUP BY fk_kid
+),
+${withCTE.join(', \n')}
+
 SELECT
   ak.pk_kid AS kid,
   ${random ? 'true as dummy' : `
 	ak.titles AS titles,
 	ak.titles_default_language as titles_default_language,
 	ak.pk_kid || '.' || ak.mediasize::text || '.' || COALESCE(ksub.subchecksum, 'no_ass_file') || '.mp4' AS hardsubbed_mediafile,
+	COALESCE(ks.requested, 0)                        AS requested,
+	COALESCE(ks.requested_recently, 0)               AS requested_recently,
+	COALESCE(ks.played, 0)                        AS played,
+	COALESCE(ks.played_recently, 0)               AS played_recently,
+	COALESCE(ks.favorited, 0)                     AS favorited,
 	${selectClause}
 	${forPlayer ? 'true as dummy' : `
 		ak.tags AS tags,
@@ -72,10 +113,10 @@ SELECT
 		ksub.subchecksum AS subchecksum,
 		ak.songname as songname,
 		${sensitiveTagsClause} AS flag_sensitive_content,
-		array_remove(array_agg(DISTINCT plc.fk_plaid), null) AS playlists,
-		array_remove(array_agg(DISTINCT krc.fk_kid_parent), null) AS parents,
-		array_remove(array_agg(DISTINCT krp.fk_kid_child), null) AS children,
-		COALESCE(array_remove((SELECT array_agg(DISTINCT fk_kid_child) FROM kara_relation WHERE fk_kid_parent = ANY (array_remove(array_agg(DISTINCT krc.fk_kid_parent), null))), ak.pk_kid), array[]::uuid[]) AS siblings
+		COALESCE(pl.playlist_ids,  array[]::uuid[])      AS playlists,
+    	COALESCE(pa.parent_ids,    array[]::uuid[])      AS parents,
+    	COALESCE(ca.child_ids,     array[]::uuid[])      AS children,
+    	COALESCE(sa.sibling_ids,   array[]::uuid[])      AS siblings
 	`}
   `}
 FROM ${fromClauses.join(', ')}
@@ -83,9 +124,11 @@ ${random ? '' : `
 	LEFT JOIN kara_subchecksum ksub ON ksub.fk_kid = ak.pk_kid
 	LEFT OUTER JOIN all_karas_sortable AS aks ON aks.fk_kid = ak.pk_kid
 	${forPlayer ? '' : `
-		LEFT OUTER JOIN kara_relation krp ON krp.fk_kid_parent = ak.pk_kid
-		LEFT OUTER JOIN kara_relation krc ON krc.fk_kid_child = ak.pk_kid
-	LEFT JOIN playlist_content plc ON plc.fk_kid = ak.pk_kid
+		LEFT JOIN kara_stats         ks   ON ks.fk_kid  = ak.pk_kid
+		LEFT JOIN parents_agg        pa   ON pa.pk_kid   = ak.pk_kid
+		LEFT JOIN children_agg       ca   ON ca.pk_kid   = ak.pk_kid
+		LEFT JOIN siblings_agg       sa   ON sa.pk_kid   = ak.pk_kid
+		LEFT JOIN playlists_agg      pl   ON pl.pk_kid   = ak.pk_kid
 	`}
   `}
 ${joinClause}
@@ -110,37 +153,6 @@ WHERE ${includeStaging ? 'TRUE' : 'ak.repository != \'Staging\''}
 	${filterClauses.map(clause => `AND (${clause})`).reduce((a, b) => (`${a} ${b}`), '')}
 	${whereClauses.length > 0 ? `AND ${whereClauses.join('\nAND ')}` : ''}
 
-GROUP BY ${groupClauses.length > 0 ? `${groupClauses.join(',\n')},` : ''}
-	ak.pk_kid
-	${random ? '' : `,
-		ak.titles,
-		ak.titles_default_language,
-		ak.mediasize,
-		ksub.subchecksum,
-		ak.songname,
-
-		${forPlayer ? 'dummy' : `
-		ak.tid,
-		ak.titles_aliases,
-		ak.songorder,
-		ak.tags,
-		ak.lyrics_infos,
-		ak.year,
-		ak.mediafile,
-		ak.karafile,
-		ak.duration,
-		ak.loudnorm,
-		ak.created_at,
-		ak.modified_at,
-		ak.repository,
-		ak.comment,
-		ak.ignore_hooks,
-		ak.kitsu_ids,
-		ak.anilist_ids,
-		ak.from_display_type,
-		ak.myanimelist_ids
-		`}
-	`}
 ORDER BY ${orderClauses.join(',\n')}
 ${limitClause}
 ${offsetClause}
