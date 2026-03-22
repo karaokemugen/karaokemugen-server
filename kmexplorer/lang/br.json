@@ -607,7 +607,8 @@
 	"roles": {
 		"contributor": "Kenlabourer·ez",
 		"admin": "Merour·ez",
-		"donator": "Donezoner(-ez)"
+		"donator": "Donezoner(-ez)",
+		"maintainer": "Trezalc'her·ez"
 	},
 	"submissions": {
 		"email": "Postel",
@@ -620,8 +621,8 @@
 			"sent": "Kaset",
 			"changes_requested": "Cheñchamantoù goulennet"
 		},
-		"reason_button": "Abeg an distaol",
-		"reason": "Abeg an distaol : {reason}",
+		"reason_button": "Evezhiadennoù eus an trezalc'her",
+		"reason": "Evezhiadennoù eus an trezalc'her : {reason}",
 		"quota": "Gallout a rit kas { songs } / { quota } a ganaouennoù c'hoazh."
 	},
 	"dashboard": {
