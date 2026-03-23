@@ -1,3 +1,4 @@
+import { logger } from '@sentry/node';
 import { Router } from 'express';
 import multer from 'multer';
 import {resolve} from 'path';
@@ -9,6 +10,8 @@ import {createKara, editKara} from '../../services/karaImport.js';
 import { addTag } from '../../services/tag.js';
 import { getState } from '../../utils/state.js';
 import { optionalAuth } from '../middlewares/auth.js';
+
+const service = 'KIController';
 
 export default function KIController(router: Router) {
 	const conf = getConfig();
@@ -52,6 +55,7 @@ export default function KIController(router: Router) {
 				res.status(400).json(APIMessage('MISSING_FILE'));
 			}
 		} catch (err) {
+			logger.error(`Error when uploading file: ${err}`, { service });
 			res.status(err.code || 500).json(APIMessage(err.message));
 		}
 	});
