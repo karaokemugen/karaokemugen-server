@@ -43,6 +43,7 @@ async function gitPull(gitDir: string): Promise<string> {
 		encoding: 'utf8',
 		cwd: gitDir
 	});
+	logger.info(`Git pull log : ${res.stdout}`, { service });
 	return res.stdout;
 }
 
