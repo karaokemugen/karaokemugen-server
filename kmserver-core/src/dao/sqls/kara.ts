@@ -47,21 +47,18 @@ favorited AS (
 	FROM users_favorites
 	WHERE fk_login ${favoritedBy ? '= :username' : 'IS NULL'}
 ),
--- Parents de chaque kara
 parents_agg AS (
     SELECT fk_kid_child AS pk_kid,
            array_agg(DISTINCT fk_kid_parent) AS parent_ids
     FROM kara_relation
     GROUP BY fk_kid_child
 ),
--- Enfants de chaque kara
 children_agg AS (
     SELECT fk_kid_parent AS pk_kid,
            array_agg(DISTINCT fk_kid_child) AS child_ids
     FROM kara_relation
     GROUP BY fk_kid_parent
 ),
--- Siblings : enfants des parents, sans soi-même
 siblings_agg AS (
     SELECT p.pk_kid,
            array_remove(array_agg(DISTINCT kr2.fk_kid_child), p.pk_kid) AS sibling_ids
@@ -69,7 +66,6 @@ siblings_agg AS (
     JOIN kara_relation kr2 ON kr2.fk_kid_parent = ANY(p.parent_ids)
     GROUP BY p.pk_kid
 ),
--- Playlists par kara
 playlists_agg AS (
     SELECT fk_kid AS pk_kid,
            array_agg(DISTINCT fk_plaid) AS playlist_ids
@@ -91,7 +87,7 @@ SELECT
 		COALESCE(ks.requested_recently, 0)               AS requested_recently,
 		COALESCE(ks.played, 0)                        AS played,
 		COALESCE(ks.played_recently, 0)               AS played_recently,
-		COALESCE(ks.favorited, 0)                     AS favorited,		
+		COALESCE(ks.favorited, 0)                     AS favorited,
 		ak.titles_aliases AS titles_aliases,
 		ak.songorder AS songorder,
 		ak.lyrics_infos AS lyrics_infos,

@@ -89,7 +89,7 @@ function prepareKaraQuery(params: KaraParams) {
 		q.sensitiveTagsClause = 'false';
 	}
 	if (params.username) {
-		q.favoritedBy = params.username;
+		q.favoritedBy = q.params.username = params.username;
 	}
 	if (params.favorites) {
 		q.joinClause += ' LEFT JOIN users_favorites AS fv ON fv.fk_kid = ak.pk_kid';
