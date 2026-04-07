@@ -82,7 +82,7 @@
 				/>
 			</div>
 			<i18n-t
-				v-if="karaoke.favorited"
+				v-if="karaoke.favorited && sort['search-query'] === 'favorited'"
 				keypath="kara.stats.favorited"
 				tag="div"
 				class="box stats"
@@ -92,7 +92,7 @@
 				</template>
 			</i18n-t>
 			<i18n-t
-				v-if="karaoke.requested"
+				v-if="karaoke.requested && sort['search-query'] && ['requested', 'requestedRecently'].includes(sort['search-query'])"
 				keypath="kara.stats.requested"
 				tag="div"
 				class="box stats blue"
@@ -102,7 +102,7 @@
 				</template>
 			</i18n-t>
 			<i18n-t
-				v-if="karaoke.played"
+				v-if="karaoke.played && sort['search-query'] && ['played', 'playedRecently'].includes(sort['search-query'])"
 				keypath="kara.stats.played"
 				tag="div"
 				class="box stats blue"
@@ -123,7 +123,7 @@
 	import { tagTypes } from '~/assets/constants';
 	import { useAuthStore } from '~/store/auth';
 	import { useConfigStore } from '~/store/config';
-	import type { TagExtend } from '~/store/menubar';
+	import { useMenubarStore, type TagExtend } from '~/store/menubar';
 	import { useModalStore } from '~/store/modal';
 
 	const props = defineProps<{
@@ -137,6 +137,7 @@
 	const { openModal } = useModalStore();
 	const { loggedIn } = storeToRefs(useAuthStore());
 	const { config, supportedFiles } = storeToRefs(useConfigStore());
+	const { sort } = storeToRefs(useMenubarStore());
 	const url = useRequestURL();
 	const hardsubUrl = config?.value?.Hardsub?.Url ?? url.origin;
 
