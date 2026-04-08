@@ -208,7 +208,6 @@
 			"btn": "Usar como banner de perfil",
 			"forbidden_label": "No se puede usar este karaoke como tu banner de perfil."
 		},
-		"live_unavailable": "Este karaoke no puede ser reproducido en tu explorador. El formato del mismo no es soportado por exploradores, ó se ha deshabilitado por razones legales.",
 		"phrase": "{songtype} de {series}",
 		"songwriters_by": "Compuesta por"
 	},

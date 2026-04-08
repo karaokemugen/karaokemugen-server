@@ -47,7 +47,6 @@
 		"duration": "Czas trwania ",
 		"created_at": "Utworzono ",
 		"download": "Pobierz",
-		"live_unavailable": "Nie możesz odtworzyć tego karaoke w przeglądarce. Albo film jest w formacie nieobsługiwanym przez przeglądarki, albo został wyłączony z powodów prawnych, licencyjnych.",
 		"lyrics": {
 			"show": "Pokaż teksty",
 			"hide": "Ukryj tekst"

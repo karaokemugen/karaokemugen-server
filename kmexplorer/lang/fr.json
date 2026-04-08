@@ -47,7 +47,7 @@
 		"duration": "Durée ",
 		"created_at": "Création ",
 		"download": "Télécharger",
-		"live_unavailable": "Vous ne pouvez pas lire ce karaoké sur votre navigateur. La vidéo est soit dans un format non supporté par les navigateurs ou indisponible pour des raisons légales.",
+		"not_playable": "Le site {instance} ne permet pas de lire ce karaoké sur votre navigateur.",
 		"lyrics": {
 			"show": "Afficher les paroles",
 			"hide": "Masquer les paroles"

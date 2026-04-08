@@ -105,7 +105,7 @@
 		</div>
 		<div class="buttons">
 			<button
-				v-if="rubyfiedLyrics && live"
+				v-if="rubyfiedLyrics && playable"
 				class="button is-info"
 				@click="toggleLyrics"
 			>
@@ -161,7 +161,7 @@
 	import { useModalStore } from '~/store/modal';
 	import { useAuthStore } from '~/store/auth';
 	import DOMPurify from 'isomorphic-dompurify';
-	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
+	import type { DBPL } from '%/types/database/playlist';
 	import { useConfigStore } from '~/store/config';
 
 	const props = defineProps<{
@@ -182,7 +182,7 @@
 	const { push } = useRouter();
 	const { config } = storeToRefs(useConfigStore());
 
-	const live = computed(() => isPlayable(props.karaoke, user?.value?.roles?.admin));
+	const playable = computed(() => isPlayable(props.karaoke, user?.value?.roles?.admin));
 	const title = computed(() => getTitleInLocale(props.karaoke.titles, props.karaoke.titles_default_language));
 	const tagTypesSorted = computed(() => {
 		const tagTypesUpdated = { ...tagTypes };

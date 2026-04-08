@@ -3,7 +3,6 @@
 		"choose_file": "Pilih berkas"
 	},
 	"kara": {
-		"live_unavailable": "Kamu tidak bisa memutar karaoke ini di perambanmu. Entah videonya merupakan format tak terdukung di peramban atau sudah dinonaktifkan untuk alasan hukum.",
 		"phrase": "{songtype} dari {series}",
 		"meta": "{songtitle} dari {serieSinger}",
 		"notfound": "Karaoke tidak ditemukan",

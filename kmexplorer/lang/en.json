@@ -47,7 +47,7 @@
 		"duration": "Duration ",
 		"created_at": "Created ",
 		"download": "Download",
-		"live_unavailable": "You cannot play this karaoke in your browser. Either the video is in an unsupported format for browsers, or it has been disabled for legal reasons.",
+		"not_playable": "The {instance} site does not support playing this karaoke in your browser.",
 		"lyrics": {
 			"show": "Show lyrics",
 			"hide": "Hide lyrics"

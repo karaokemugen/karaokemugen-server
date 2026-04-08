@@ -177,7 +177,6 @@
 			"btn": "Usa come banner del profilo",
 			"forbidden_label": "Non puoi usare questo karaoke come banner del profilo."
 		},
-		"live_unavailable": "Non puoi riprodurre questo karaoke nel tuo browser. Il formato del video potrebbe essere non supportato dal browser o è stato disabilitato per motivi legali.",
 		"created_at": "Creato ",
 		"parents": "Brano principale",
 		"phrase": "{songtype} di {series}"

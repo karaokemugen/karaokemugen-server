@@ -203,7 +203,6 @@
 		"authors_by": "Karaoke erstellt durch",
 		"duration": "Dauer ",
 		"created_at": "Erstellt ",
-		"live_unavailable": "Dieses Karaoke kann nicht in diesem Browser abgespielt werden. Entweder ist das Video in einem Format, welches vom Browser nicht unterstützt wird, oder es wurde aus rechtlichen Gründen deaktiviert.",
 		"lyrics": {
 			"show": "Text anzeigen",
 			"hide": "Text ausblenden"

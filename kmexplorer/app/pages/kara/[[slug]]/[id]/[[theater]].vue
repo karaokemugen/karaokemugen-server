@@ -12,7 +12,7 @@
 			</div>
 			<div class="tile is-4-desktop-only is-parent is-vertical">
 				<div
-					v-if="live"
+					v-if="playable"
 					class="tile is-child"
 				>
 					<live-player
@@ -32,7 +32,7 @@
 						>
 						<div class="message is-info">
 							<div class="message-body">
-								{{ t('kara.live_unavailable') }}
+								{{ t('kara.not_playable', { instance : url.hostname }) }}
 							</div>
 						</div>
 					</div>
@@ -118,7 +118,7 @@
 
 <script setup lang="ts">
 	import type { DBKara } from '%/lib/types/database/kara';
-	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
+	import type { DBPL } from '%/types/database/playlist';
 	import slug from 'slug';
 	import { useAuthStore } from '~/store/auth';
 	import { useConfigStore } from '~/store/config';
@@ -182,13 +182,13 @@
 			{ key: 'twitter:image', name: 'twitter:image', content: karaoke.value?.warnings?.length ? `${url.origin}/banners/cropped.jpg` : `${hardsubUrl}/previews/${karaoke.value?.kid}.${karaoke.value?.mediasize}.25.jpg` },
 			// hardsub compatibility for apps that use youtube-dl for direct streaming (without breaking the card view as with og:type video) 
 			// twitter:player:stream assumes a raw stream and is checked before twitter:player https://github.com/ytdl-org/youtube-dl/blob/master/youtube_dl/extractor/generic.py#L3662
-			{ key: 'twitter:player:stream', name: 'twitter:player:stream', content: karaoke.value?.hardsubbed_mediafile && live.value ? `${hardsubUrl}/hardsubs/${karaoke.value?.hardsubbed_mediafile}` : '' },
+			{ key: 'twitter:player:stream', name: 'twitter:player:stream', content: karaoke.value?.hardsubbed_mediafile && playable.value ? `${hardsubUrl}/hardsubs/${karaoke.value?.hardsubbed_mediafile}` : '' },
 		// The rest of meta tags is handled by KaraFullInfo.vue
 		])
 	});
 
 	const mp3 = computed(() => supportedFiles?.value?.audio.some(extension => karaoke.value?.mediafile.endsWith(extension)));
-	const live = computed(() => karaoke.value && isPlayable(karaoke.value, user?.value?.roles?.admin));
+	const playable = computed(() => karaoke.value && isPlayable(karaoke.value, user?.value?.roles?.admin));
 
 	watch(() => [route.query, route.params], refresh);
 	

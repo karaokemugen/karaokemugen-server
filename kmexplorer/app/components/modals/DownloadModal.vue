@@ -35,7 +35,7 @@
 						{{ $t('modal.download.subtitles', {format: subtitlesExtension}) }}
 					</nuxt-link>
 					<nuxt-link
-						v-if="live"
+						v-if="playable"
 						:href="mediaUrl"
 						class="button"
 						:download="`${karaoke.songname}.${mediaExtension}`"
@@ -48,7 +48,7 @@
 						{{ $t('modal.download.media', {format: mediaExtension}) }}
 					</nuxt-link>
 					<nuxt-link
-						v-if="live"
+						v-if="playable"
 						:href="mediaHardsubUrl"
 						class="button"
 						:download="`${karaoke.songname}_hardsub.mp4`"
@@ -108,7 +108,7 @@
 	const subtitlesUrl = computed(() => {
 		return `${url.origin}/downloads/lyrics/${encodeURIComponent(props.karaoke.lyrics_infos[0].filename)}`;
 	});
-	const live = computed(() => isPlayable(props.karaoke, user?.value?.roles?.admin));
+	const playable = computed(() => isPlayable(props.karaoke, user?.value?.roles?.admin));
 
 	function closeModal(): void {
 		emit('close');
