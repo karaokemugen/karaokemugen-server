@@ -120,8 +120,8 @@ function prepareKaraQuery(params: KaraParams) {
 		q.orderClauses.push(`ks.played ${params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
 	} else if (params.order === 'playedRecently') {
 		q.orderClauses.push(`ks.played_recently ${params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
-	} else if (params.order === 'user_favorites') {
-		q.orderClauses.push(`f.favorited_at ${params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
+	} else if (params.order === 'favorited_at') {
+		q.orderClauses.push(`fv.favorited_at ${params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
 	} else if (params.order === 'favorited') {
 		q.orderClauses.push(`ks.favorited ${params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
 	} else if (params.order === 'requested') {

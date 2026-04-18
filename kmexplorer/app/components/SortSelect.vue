@@ -28,7 +28,7 @@
 					<option value="username">{{ $t('search.sort.username') }}</option>
 				</template>
 				<template v-else-if="route.name === 'user-login'">
-					<option value="user_favorites" selected>{{ $t('search.sort.added_at') }}</option>
+					<option value="favorited_at" selected>{{ $t('search.sort.added_at') }}</option>
 					<option value="az">{{ $t('search.sort.a_z') }}</option>
 					<option value="recent">{{ $t('search.sort.recent') }}</option>
 					<option value="played">{{ $t('search.sort.most_played') }}</option>
