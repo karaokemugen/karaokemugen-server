@@ -197,6 +197,7 @@
 
 <script setup lang="ts">
 	import type { DBKara } from '%/lib/types/database/kara';
+	import { useAuthStore } from '~/store/auth';
 	import { useConfigStore } from '~/store/config';
 
 	type ProblemsType = 'Media' | 'Metadata' | 'Lyrics';
@@ -229,6 +230,14 @@
 		if (!active.value) karaokeOpen.value = props.karaoke
 	});
 
+	onMounted(() => {
+		// Prefill the username field if user is logged in
+		if (loggedIn.value && user?.value?.nickname) {
+			formData.value.username = user.value.nickname;
+		}
+	});
+
+	const { loggedIn, user } = storeToRefs(useAuthStore());
 	const { config } = storeToRefs(useConfigStore());
 	const title = computed(() => getTitleInLocale(props.karaoke.titles, props.karaoke.titles_default_language));
 
