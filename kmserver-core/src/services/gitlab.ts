@@ -48,7 +48,7 @@ export async function buildIssue(kid: string, edit?: EditElement, username?: str
 		user = await findUserByName(username);
 	}
 	let desc = (issueTemplate.Description || '')
-		.replace('$username', user ? user.nickname || username : 'Anonymous')
+		.replace('$username', user ? user.nickname : (username || 'Anonymous'))
 		.replace('$instance', conf.Frontend.Host)
 		.replace('$songname', kara.songname)
 		.replace('$newSub', edit ? edit.modifiedLyrics.toString() : 'N/A')
@@ -221,7 +221,7 @@ export async function createSuggestionIssue(suggestion: SuggestionIssue): Promis
 			? conf.Suggestion.Description
 			: 'From $username : it would be nice if someone could time this!';
 		const user = await findUserByName(suggestion.username);
-		desc = desc.replace('$username', user ? user.nickname : suggestion.username);
+		desc = desc.replace('$username', user ? user.nickname : (suggestion.username || 'Anonymous'));
 		desc = desc.replace('$title', suggestion.title);
 		desc = desc.replace('$series', suggestion.serie || '');
 		desc = desc.replace('$singer', suggestion.singer);
@@ -258,7 +258,7 @@ export async function createKaraIssue(kid: string, type: 'Media' | 'Metadata' | 
 		title = title.replace('$kara', karaName);
 		let desc = issueTemplate.Description || '';
 		const user = await findUserByName(username);
-		desc = desc.replace('$username', user ? user.nickname || username : 'Anonymous')
+		desc = desc.replace('$username', user ? user.nickname : (username || 'Anonymous'))
 			.replace('$comment', comment)
 			.replace('$url', `https://${getConfig().Frontend.Host}/kara/xxx/${kid}`);
 		if (conf.Gitlab.Enabled) return await gitlabCreateIssue(title, desc, issueTemplate.Labels);
