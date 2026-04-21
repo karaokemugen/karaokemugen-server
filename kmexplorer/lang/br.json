@@ -19,7 +19,8 @@
 			"default": "Dre ziouer",
 			"genres": "Doare | Doareoù",
 			"warnings": "Diwall | Diwalloù",
-			"versions": "Handelv"
+			"versions": "Handelv",
+			"collections": "Dastumad | Dastumadoù"
 		},
 		"creators_by": "Krouet gant",
 		"authors_by": "Karaoke krouet gant",
@@ -255,7 +256,8 @@
 			"submissions": "Anvioù"
 		},
 		"types": {
-			"languages": "Yezhoù"
+			"languages": "Yezhoù",
+			"collections": "Dastumadoù"
 		}
 	},
 	"modal": {
