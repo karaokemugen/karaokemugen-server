@@ -231,7 +231,8 @@
 			"loop": "Schleife",
 			"description": "Dieses Video wird zur Verfügung gestellt von {instance}. Bitte zieh die App in Betracht, falls du ein Event oder einen Stream planst!"
 		},
-		"other_liked": "Könnte dir ebenso gefallen …"
+		"other_liked": "Könnte dir ebenso gefallen …",
+		"not_playable": "Die Seite von {instance} unterstützt dieses Lied nicht in deinem Browser."
 	},
 	"error": {
 		"private_profile": "Profil ist privat.",
