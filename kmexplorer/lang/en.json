@@ -47,7 +47,7 @@
 		"duration": "Duration ",
 		"created_at": "Created ",
 		"download": "Download",
-		"not_playable": "The {instance} site does not support playing this karaoke in your browser.",
+		"not_playable": "The {instance} site does not support playing this song in your browser.",
 		"lyrics": {
 			"show": "Show lyrics",
 			"hide": "Hide lyrics"
