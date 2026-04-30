@@ -264,7 +264,11 @@ export async function createUser(user: User, opts: any = {}) {
 		if (!user.login) throw new ErrorKM('USER_EMPTY_LOGIN', 400, false);
 		user.login = user.login.toLowerCase();
 		// Check if login or nickname already exists.
-		if ((await selectAllUsers({ username: user.login }))[0] || (await selectAllUsers({ nickname: user.login }))[0]) {
+		const [usersWithLogin, usersWithNickname] = await Promise.all([
+			selectAllUsers({ username: user.login }),
+			selectAllUsers({ nickname: user.login })
+		]);
+		if (usersWithLogin.length > 0 || usersWithNickname.length > 0) {
 			logger.error(`User/nickname ${user.login} already exists, cannot create it`, { service });
 			throw new ErrorKM('USER_ALREADY_EXISTS', 409, false);
 		}
