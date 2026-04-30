@@ -66,7 +66,7 @@ export async function processStatsPayload(payload: any) {
 		if (payload.payloadVersion < 3) return;
 
 		const validationErrors = check(payload, payloadConstraints);
-		if (validationErrors) throw new ErrorKM(`Payload is not valid: ${JSON.stringify(validationErrors)}`, 400);
+		if (validationErrors) throw new ErrorKM(`Payload is not valid: ${JSON.stringify(validationErrors)}`, 400, false);
 		await wipeInstance(payload.instance.instance_id);
 		await upsertInstance(payload.instance);
 		await upsertSessions(payload.instance.instance_id, payload.sessions);
