@@ -311,7 +311,7 @@ async function replaceAvatar(oldImageFile: string, avatar: Express.Multer.File) 
 		logger.error(`Unable to replace avatar ${oldImageFile} with ${avatar.path}`, { service, obj: err });
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
 		sentry.error(err);
-		throw err instanceof ErrorKM ? err : new ErrorKM('AVATAR_ERROR');
+		throw err instanceof ErrorKM ? err : new ErrorKM('AVATAR_ERROR', 500, false);
 	}
 }
 
