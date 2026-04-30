@@ -42,6 +42,7 @@ export async function getKaraInbox(inid: string): Promise<Inbox> {
 		const conf = getConfig();
 		const onlineRepo = conf.System.Repositories.find((r) => r.Name !== 'Staging').Name;
 		const inbox = (await selectInbox(inid))[0];
+		if (!inbox) throw new ErrorKM('INBOX_UNKNOWN', 404, false);
 		const karaPath = resolve(resolvedPathRepos('Karaokes', 'Staging')[0], inbox.karafile);
 		let subPath: string;
 		if (inbox.lyrics_infos[0])
