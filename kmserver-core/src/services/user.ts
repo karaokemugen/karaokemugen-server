@@ -304,7 +304,13 @@ async function replaceAvatar(oldImageFile: string, avatar: Express.Multer.File) 
 		const newAvatarPath = resolve(avatarPath, newAvatarFile);
 		const oldAvatarPath = resolve(avatarPath, oldImageFile);
 		if (await fileExists(oldAvatarPath) &&
-			oldImageFile !== 'blank.png') await fs.unlink(oldAvatarPath);
+			oldImageFile !== 'blank.png') {
+				try {
+					await fs.unlink(oldAvatarPath);
+				} catch (err) {
+					// This is allowed to fail.
+				}
+			}
 		await smartMove(avatar.path, newAvatarPath);
 		return newAvatarFile;
 	} catch (err) {
