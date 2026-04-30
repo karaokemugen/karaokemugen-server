@@ -106,8 +106,9 @@ export async function selectPlaylists(params: PLParams): Promise<DBPL[]> {
 
 	if (params.byUsername) {
 		params.includeUserAsContributor
-			? whereClauses.push(` (p.fk_login = '${params.byUsername}' OR pco.fk_login = '${params.byUsername}') `)
-			: whereClauses.push(` p.fk_login = '${params.byUsername}' `);
+			? whereClauses.push(` (p.fk_login = :byUsername OR pco.fk_login = :byUsername `)
+			: whereClauses.push(` p.fk_login = :byUsername `);
+		yesqlPayload.params.byUsername = params.byUsername;
 	}
 	if (params.username) {
 		selectClauses.push(`
@@ -126,14 +127,17 @@ export async function selectPlaylists(params: PLParams): Promise<DBPL[]> {
 		whereClauses.push(' fv.fk_login = :username_favs');
 	}
 	if (params.plaid) {
-		whereClauses.push(` p.pk_plaid = '${params.plaid}' `);
+		whereClauses.push(` p.pk_plaid = :plaid `);
+		yesqlPayload.params.plaid = params.plaid;
 	}
 	if (params.slug) {
-		whereClauses.push(` p.slug = '${params.slug}' `);
+		whereClauses.push(` p.slug = :slug `);
+		yesqlPayload.params.slug = params.slug;
 	}
 	if (params.containsKID) {
 		joinClauses.push('LEFT JOIN playlist_content pc ON pc.fk_plaid = p.pk_plaid');
-		whereClauses.push(` pc.fk_kid = '${params.containsKID}'`);
+		whereClauses.push(` pc.fk_kid = :containsKID `);
+		yesqlPayload.params.containsKID = params.containsKID;
 	}
 	const query = sql.selectPlaylists(joinClauses, whereClauses, filterClauses.sql, filterClauses.additionalFrom.join(''), orderClause, selectClauses, groupClauses);
 	const res = await db().query(
