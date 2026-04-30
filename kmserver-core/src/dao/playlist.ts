@@ -106,7 +106,7 @@ export async function selectPlaylists(params: PLParams): Promise<DBPL[]> {
 
 	if (params.byUsername) {
 		params.includeUserAsContributor
-			? whereClauses.push(` (p.fk_login = :byUsername OR pco.fk_login = :byUsername `)
+			? whereClauses.push(` (p.fk_login = :byUsername OR pco.fk_login = :byUsername ) `)
 			: whereClauses.push(` p.fk_login = :byUsername `);
 		yesqlPayload.params.byUsername = params.byUsername;
 	}
