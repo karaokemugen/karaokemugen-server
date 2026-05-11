@@ -6,7 +6,7 @@ export interface TagExtend {
 }
 
 export type sortTypes = 'az' | 'karacount' | 'recent' | 'played' | 'favorited' |
-	'requested' | 'likes' | 'language' | 'recentModified' | 'status';
+	'requested' | 'requestedRecently' | 'playedRecently' | 'likes' | 'language' | 'recentModified' | 'status';
 
 export type menubarStoreType = {
 	tags: TagExtend[];

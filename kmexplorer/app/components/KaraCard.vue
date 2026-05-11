@@ -92,7 +92,7 @@
 				</template>
 			</i18n-t>
 			<i18n-t
-				v-if="karaoke.requested && sort['search-query'] && ['requested', 'requestedRecently'].includes(sort['search-query'])"
+				v-if="karaoke.requested && sort['search-query'] === 'requested'"
 				keypath="kara.stats.requested"
 				tag="div"
 				class="box stats blue"
@@ -102,13 +102,33 @@
 				</template>
 			</i18n-t>
 			<i18n-t
-				v-if="karaoke.played && sort['search-query'] && ['played', 'playedRecently'].includes(sort['search-query'])"
+				v-if="karaoke.played && sort['search-query'] === 'played'"
 				keypath="kara.stats.played"
 				tag="div"
 				class="box stats blue"
 			>
 				<template #number>
 					<span class="nb">{{ karaoke.played }}</span>
+				</template>
+			</i18n-t>
+			<i18n-t
+				v-if="karaoke.requested_recently && sort['search-query'] === 'requestedRecently'"
+				keypath="kara.stats.requested"
+				tag="div"
+				class="box stats blue"
+			>
+				<template #number>
+					<span class="nb">{{ karaoke.requested_recently }}</span>
+				</template>
+			</i18n-t>
+			<i18n-t
+				v-if="karaoke.played_recently && sort['search-query'] === 'playedRecently'"
+				keypath="kara.stats.played"
+				tag="div"
+				class="box stats blue"
+			>
+				<template #number>
+					<span class="nb">{{ karaoke.played_recently }}</span>
 				</template>
 			</i18n-t>
 		</div>
