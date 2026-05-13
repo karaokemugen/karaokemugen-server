@@ -193,7 +193,7 @@ export async function getPlaylistContents(plaid: string, token: JWTTokenWithRole
 }
 
 /** Add song to playlist */
-export async function addKaraToPlaylist(kids: string[], plaid: string, token: JWTTokenWithRoles, pos?: number) {
+export async function addKaraToPlaylist(kids: string[], plaid: string, token: JWTTokenWithRoles, pos?: number, refresh = true) {
 	try {
 		token.username = token.username.toLowerCase();
 		const [pls, karas] = await Promise.all([
@@ -238,7 +238,6 @@ export async function addKaraToPlaylist(kids: string[], plaid: string, token: JW
 
 		// Find out position of currently playing karaoke
 		// If no flag_playing is found, we'll add songs at the end of playlist.
-		// -1 means the admin right-clicked and the song is to be added after the current playing song
 		if (pos) {
 			await shiftPosInPlaylist(plaid, pos, karaList.length);
 		} else {
@@ -249,18 +248,25 @@ export async function addKaraToPlaylist(kids: string[], plaid: string, token: JW
 		// Adding song to playlist at long last!
 		await insertKaraIntoPlaylist(karaList);
 
-		await Promise.all([
-			updatePlaylistLastEditTime(plaid),
-			updatePlaylistDuration(plaid),
-			updatePlaylistKaraCount(plaid)
-		]);
-		emitWS('playlistContentsUpdated', plaid);
-		emitWS('playlistInfoUpdated', plaid);
+		if (refresh) {
+			refreshPlaylist(plaid);
+		}
 	} catch (err) {
 		logger.error(`Error adding songs ${kids.join(', ')} to playlist ${plaid} : ${err}`, { service });
 		sentry.error(err);
 		throw err instanceof ErrorKM ? err : new ErrorKM('PL_ADD_SONG_ERROR');
 	}
+}
+
+export async function refreshPlaylist(plaid: string) {
+	await Promise.all([
+		updatePlaylistLastEditTime(plaid),
+		updatePlaylistDuration(plaid),
+		updatePlaylistKaraCount(plaid)
+	]);
+	emitWS('playlistsUpdated');
+	emitWS('playlistContentsUpdated', plaid);
+	emitWS('playlistInfoUpdated', plaid);
 }
 
 /** Remove song from a playlist */
@@ -477,7 +483,7 @@ export async function importPlaylist(playlist: PlaylistExport, token: JWTTokenWi
 			}
 		}
 		if (playlist.PlaylistContents?.length === 0) {
-			logger.error('Imported playlist has no items', { service });
+			logger.error(`Imported playlist "${playlist.PlaylistInformation.name}"  has no items`, { service });
 			throw new ErrorKM('INVALID_DATA', 400, false);
 		}
 		// We need to empty the playlist first.
@@ -502,14 +508,10 @@ export async function importPlaylist(playlist: PlaylistExport, token: JWTTokenWi
 		} else {
 			pl = await createPlaylist(playlist.PlaylistInformation, token);
 		}
-		await addKaraToPlaylist(playlist.PlaylistContents.map(plc => plc.kid), pl.plaid, token);
-		await Promise.all([
-			updatePlaylistKaraCount(pl.plaid),
-			updatePlaylistDuration(pl.plaid)
-		]);
-		emitWS('playlistsUpdated');
-		emitWS('playlistContentsUpdated', pl.plaid);
-		emitWS('playlistInfoUpdated', pl.plaid);
+		for (const plc of playlist.PlaylistContents.sort((a,b) => a.pos - b.pos)) {
+			await addKaraToPlaylist([plc.kid], pl.plaid, token, null, false);
+		}
+		await refreshPlaylist(pl.plaid);
 		return {
 			plaid: pl.plaid,
 		};
