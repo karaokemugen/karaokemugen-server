@@ -16,14 +16,14 @@ function isGit(path: string) {
 	return fileExists(resolve(path, '.git'));
 }
 
-async function gitDiff(commit1: string, commit2: string, gitDir: string): Promise<string> {
+async function gitDiff(source: string, dest: string, gitDir: string, type: 'commits' | 'files' = 'commits'): Promise<string> {
 	const res = await execa(getState().binPath.git, [
 		'diff',
 		'-p',
 		'--minimal',
 		'--no-renames',
 		'-U0',
-		`${commit1}..${commit2}`,
+		type === 'commits' ? `${source}..${dest}` : `"${source}" "${dest}"`,
 	], {
 		encoding: 'utf8',
 		cwd: gitDir
@@ -74,6 +74,16 @@ export async function updateGit() {
 	} catch (err) {
 		logger.error('Unable to pull git repo', {service, obj: err});
 		sentry.error(err);
+		throw err;
+	}
+}
+
+export async function getGitFileDiff(gitFile: string, modifiedFile: string) {
+	try {
+		const diff = await gitDiff(gitFile, modifiedFile, resolve(getState().dataPath, getConfig().System.Repositories[0].BaseDir), 'files');
+		return diff;
+	} catch (err) {
+		logger.error(`Unable to git diff two files : ${gitFile} and ${modifiedFile}`);
 		throw err;
 	}
 }

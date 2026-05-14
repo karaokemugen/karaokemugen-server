@@ -29,6 +29,7 @@ import logger from '../lib/utils/logger.js';
 import { adminToken } from '../utils/constants.js';
 import { sendMail } from '../utils/mailer.js';
 import sentry from '../utils/sentry.js';
+import { getGitFileDiff } from './git.js';
 import { gitlabEditIssue } from './gitlab.js';
 import { getKara } from './kara.js';
 import { getRepos } from './repo.js';
@@ -90,6 +91,17 @@ export async function getKaraInbox(inid: string): Promise<Inbox> {
 		sentry.error(err);
 		throw new ErrorKM('GET_INBOX_ERROR');
 	}
+}
+
+export async function getLyricsDiffFromInbox(inid: string) {
+	const inbox = await getKaraInbox(inid);
+	if (!inbox) throw new ErrorKM('INBOX_UNKNOWN', 404, false);
+	const repoSubPath = resolvedPathRepos('Lyrics', getConfig().System.Repositories[0].Name);
+	const repoSubfile = resolve(repoSubPath[0], inbox.kara.data.medias[0].lyrics[0].filename);;
+	const stagingSubPath = resolvedPathRepos('Lyrics', 'Staging');
+	const stagingSubFile = resolve(stagingSubPath[0], inbox.lyrics_infos[0].filename);
+	const diff = await getGitFileDiff(repoSubfile, stagingSubFile);
+	return diff;
 }
 
 export async function getInbox(isMaintainer: boolean, byUser?: string): Promise<DBInbox[]> {
