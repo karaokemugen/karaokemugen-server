@@ -152,6 +152,7 @@ export async function gitlabEditIssue(issueID: number, changes: {
 		// Tildes are often found in japanese names and can cause strikeout text in markdown once rendered.
 		description: changes.desc?.replaceAll('~', '\\~'),
 		add_labels: changes.add_labels,
+		remove_labels: changes.remove_labels,
 		due_date: changes.due_date
 	};
 	const url = new URL(conf.System.Repositories[0].Git.URL);
