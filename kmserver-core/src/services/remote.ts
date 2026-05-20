@@ -181,7 +181,8 @@ frontend,
 resolve(getState().appPath, 'assets/guestAvatars'),
 		{ index: false, fallthrough: false }
 ));
-	app.get('/*', async (req: any, res) => {
+	// Path-to-regex is a bitch
+	app.get('/*path', async (req: any, res) => {
 		if (remotes.has(req.vhost[0])) {
 			const frontend = getVersion(remotesVersions.get(req.vhost[0]));
 			if (frontend) {

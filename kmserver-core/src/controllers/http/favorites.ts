@@ -3,10 +3,11 @@ import { Router } from 'express';
 import { APIMessage } from '../../lib/services/frontend.js';
 import { addFavorite, compareFavorites, getFavorites, removeFavorite } from '../../services/favorites.js';
 import {requireAuth, requireValidUser, updateLoginTime} from '../middlewares/auth.js';
+import { validateUUID } from '../middlewares/validation.js';
 
 export default function favoritesController(router: Router) {
-	router.route('/favorites/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})')
-		.post(requireAuth, requireValidUser, updateLoginTime, async (req: any, res) => {
+	router.route('/favorites/:kid')
+		.post(validateUUID('kid'), requireAuth, requireValidUser, updateLoginTime, async (req: any, res) => {
 			try {
 				await addFavorite(req.authToken, req.params.kid, req.body?.faovrited_at);
 				res.status(200).json();

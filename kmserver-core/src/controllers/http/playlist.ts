@@ -4,6 +4,7 @@ import { APIMessage } from '../../lib/services/frontend.js';
 import { addContributorToPlaylist, addKaraToPlaylist, addPlaylistToFavorites, createPlaylist, editPlaylist, editPLC, emptyPlaylist, exportPlaylist, getPlaylistContents, getPlaylists, importPlaylist, removeContributorToPlaylist, removeKaraFromPlaylist, removePlaylist, removePlaylistFromFavorites, shufflePlaylist } from '../../services/playlist.js';
 import { optionalAuth, requireAuth, requireValidUser } from '../middlewares/auth.js';
 import { getLang } from '../middlewares/lang.js';
+import { validateUUID } from '../middlewares/validation.js';
 
 export default function PLController(router: Router) {
 	router.route('/playlist')
@@ -54,8 +55,8 @@ export default function PLController(router: Router) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
-	router.route('/playlist/:plaid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/export')
-		.get(optionalAuth, getLang, async (req: any, res) => {
+	router.route('/playlist/:plaid/export')
+		.get(validateUUID('plaid'), optionalAuth, getLang, async (req: any, res) => {
 			try {
 				const pl = await exportPlaylist(req.params.plaid, req.authToken);
 				res.json(pl);
@@ -63,8 +64,8 @@ export default function PLController(router: Router) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
-	router.route('/playlist/:plaid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/shuffle')
-		.get(requireAuth, requireValidUser, getLang, async (req: any, res) => {
+	router.route('/playlist/:plaid/shuffle')
+		.get(validateUUID('plaid'), requireAuth, requireValidUser, getLang, async (req: any, res) => {
 			try {
 				await shufflePlaylist(req.params.plaid, req.authToken);
 				res.json();
@@ -72,8 +73,8 @@ export default function PLController(router: Router) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
-	router.route('/playlist/:plaid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/empty')
-		.post(requireAuth, requireValidUser, getLang, async (req: any, res) => {
+	router.route('/playlist/:plaid/empty')
+		.post(validateUUID('plaid'), requireAuth, requireValidUser, getLang, async (req: any, res) => {
 			try {
 				await emptyPlaylist(req.params.plaid, req.authToken);
 				res.json();
@@ -81,8 +82,8 @@ export default function PLController(router: Router) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
-	router.route('/playlist/:plaid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/favorite')
-		.post(requireAuth, requireValidUser, getLang, async (req: any, res) => {
+	router.route('/playlist/:plaid/favorite')
+		.post(validateUUID('plaid'), requireAuth, requireValidUser, getLang, async (req: any, res) => {
 			try {
 				await addPlaylistToFavorites(req.params.plaid, req.authToken);
 				res.json();
@@ -107,8 +108,8 @@ export default function PLController(router: Router) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
-	router.route('/playlist/:plaid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})')
-		.get(optionalAuth, getLang, async (req: any, res) => {
+	router.route('/playlist/:plaid')
+		.get(validateUUID('plaid'), optionalAuth, getLang, async (req: any, res) => {
 			try {
 				const pl = await getPlaylistContents(req.params.plaid, req.authToken, req.query.filter, req.lang, +req.query.from, +req.query.size);
 				res.json(pl);
@@ -140,8 +141,8 @@ export default function PLController(router: Router) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
-	router.route('/playlist/:plaid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/contributor/:username')
-		.delete(requireAuth, requireValidUser, async (req: any, res) => {
+	router.route('/playlist/:plaid/contributor/:username')
+		.delete(validateUUID('plaid'), requireAuth, requireValidUser, async (req: any, res) => {
 			try {
 				await removeContributorToPlaylist(req.params.plaid, req.params.username, req.authToken);
 				res.json();

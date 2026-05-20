@@ -10,6 +10,7 @@ import {createKara, editKara} from '../../services/karaImport.js';
 import { addTag } from '../../services/tag.js';
 import { getState } from '../../utils/state.js';
 import { optionalAuth } from '../middlewares/auth.js';
+import { validateUUID } from '../middlewares/validation.js';
 
 const service = 'KIController';
 
@@ -26,8 +27,8 @@ export default function KIController(router: Router) {
 			res.status(err.code || 500).json(APIMessage(err.message));
 		}
 	});
-	router.route('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})')
-		.put(optionalAuth, async (req: any, res: any) => {
+	router.route('/karas/:kid')
+		.put(validateUUID('kid'), optionalAuth, async (req: any, res: any) => {
 		try {
 			const url = await editKara(req.body, req.body.contact, req.authToken?.username.toLowerCase(), req.body.inid);
 			res.status(200).json(APIMessage('EDITED_KARA', url || ''));

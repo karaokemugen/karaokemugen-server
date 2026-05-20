@@ -4,10 +4,11 @@ import { APIMessage } from '../../lib/services/frontend.js';
 import { assignIssue } from '../../lib/utils/gitlab.js';
 import { getInbox, getKaraInbox, getLyricsDiffFromInbox, markKaraInboxAsDownloaded, markKaraInboxAsUnassigned, removeKaraFromInbox, setInboxStatus } from '../../services/inbox.js';
 import {optionalAuth, requireAuth, requireMaintainer, requireValidUser, updateLoginTime} from '../middlewares/auth.js';
+import { validateUUID } from '../middlewares/validation.js';
 
 export default function inboxController(router: Router) {
-	router.route('/inbox/:inid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})')
-		.get(requireAuth, requireValidUser, requireMaintainer, updateLoginTime, async (req: any, res) => {
+	router.route('/inbox/:inid')
+		.get(validateUUID('inid'), requireAuth, requireValidUser, requireMaintainer, updateLoginTime, async (req: any, res) => {
 			try {
 				const ret = await getKaraInbox(req.params.inid);
 				res.status(200).json(ret);
@@ -23,8 +24,8 @@ export default function inboxController(router: Router) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
-	router.route('/inbox/:inid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/downloaded')
-		.post(requireAuth, requireValidUser, requireMaintainer, updateLoginTime, async (req: any, res) => {
+	router.route('/inbox/:inid/downloaded')
+		.post(validateUUID('inid'), requireAuth, requireValidUser, requireMaintainer, updateLoginTime, async (req: any, res) => {
 			try {
 				await markKaraInboxAsDownloaded(req.params.inid, req.authToken.username);
 				res.status(200).json();
@@ -32,8 +33,8 @@ export default function inboxController(router: Router) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
-	router.route('/inbox/:inid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/unassign')
-		.post(requireAuth, requireValidUser, requireMaintainer, updateLoginTime, async (req: any, res) => {
+	router.route('/inbox/:inid/unassign')
+		.post(validateUUID('inid'), requireAuth, requireValidUser, requireMaintainer, updateLoginTime, async (req: any, res) => {
 			try {
 				await markKaraInboxAsUnassigned(req.params.inid, req.authToken.username);
 				res.status(200).json();
@@ -41,8 +42,8 @@ export default function inboxController(router: Router) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
-	router.route('/inbox/:inid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/assignToUser')
-		.post(requireAuth, requireValidUser, requireMaintainer, updateLoginTime, async (req: any, res) => {
+	router.route('/inbox/:inid/assignToUser')
+		.post(validateUUID('inid'), requireAuth, requireValidUser, requireMaintainer, updateLoginTime, async (req: any, res) => {
 			try {
 				await assignIssue(req.body.issue, req.body.repoName, req.body.gitlabUsername);
 				res.status(200).json();
@@ -50,8 +51,8 @@ export default function inboxController(router: Router) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
-	router.route('/inbox/:inid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/status')
-		.post(requireAuth, requireValidUser, requireMaintainer, updateLoginTime, async (req: any, res) => {
+	router.route('/inbox/:inid/status')
+		.post(validateUUID('inid'), requireAuth, requireValidUser, requireMaintainer, updateLoginTime, async (req: any, res) => {
 			try {
 				await setInboxStatus(req.params.inid, req.body.status, req.body.reject_reason);
 				res.status(200).json();
@@ -59,8 +60,8 @@ export default function inboxController(router: Router) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
-	router.route('/inbox/:inid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/lyricsDiff')
-		.get(requireAuth, requireValidUser, requireMaintainer, updateLoginTime, async (req: any, res) => {
+	router.route('/inbox/:inid/lyricsDiff')
+		.get(validateUUID('inid'), requireAuth, requireValidUser, requireMaintainer, updateLoginTime, async (req: any, res) => {
 			try {
 				const diff = await getLyricsDiffFromInbox(req.params.inid);
 				res.status(200).send(diff);

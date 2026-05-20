@@ -23,7 +23,6 @@
 		"outDir": "dist/",
 		"pretty": true,
 		"removeComments": true,
-		"downlevelIteration": true,
 		"noUnusedParameters": true,
 		"noUnusedLocals": true,
 		"skipLibCheck": true

@@ -55,7 +55,7 @@ export default ts.config(
 			'no-throw-literal': 0,
 			'no-trailing-spaces': 0,
 			'no-underscore-dangle': 0,
-			'no-unsafe-finally': 0,
+			'no-unsafe-finally': 0,			
 			'no-unsafe-optional-chaining': [
 				'error',
 				{
@@ -78,6 +78,7 @@ export default ts.config(
 			'@typescript-eslint/no-explicit-any': 0,
 			'@typescript-eslint/no-this-alias': 0,
 			'@typescript-eslint/no-unused-expressions': 0,
+			'@typescript-eslint/no-unsafe-function-type': 0,
 			'@typescript-eslint/no-unused-vars': [
 				'error',
 				{

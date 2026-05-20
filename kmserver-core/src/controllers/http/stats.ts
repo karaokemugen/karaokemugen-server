@@ -4,6 +4,7 @@ import { updateBanSession } from '../../dao/stats.js';
 import { APIMessage } from '../../lib/services/frontend.js';
 import { addPlayed, processStatsPayload} from '../../services/stats.js';
 import { optionalAuth, requireAdmin, requireAuth, requireValidUser } from '../middlewares/auth.js';
+import { validateUUID } from '../middlewares/validation.js';
 
 export default function statsController(router: Router) {
 	router.post('/stats', async (req, res) => {
@@ -14,8 +15,8 @@ export default function statsController(router: Router) {
 			res.status(err.code || 500).json(APIMessage(err.message));
 		}
 	});
-	router.route('/stats/kara/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/played')
-	.post(optionalAuth, async (req: any, res) => {
+	router.route('/stats/kara/:kid/played')
+	.post(validateUUID('kid'), optionalAuth, async (req: any, res) => {
 		try {
 			await addPlayed(req.params.kid, req.ip, req.authToken);
 			res.status(200).json();
@@ -23,8 +24,8 @@ export default function statsController(router: Router) {
 			res.status(err.code || 500).json(APIMessage(err.message));
 		}
 	});
-	router.route('/stats/session/:seid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})')
-	.post(requireAuth, requireValidUser, requireAdmin, async (req: any, res) => {
+	router.route('/stats/session/:seid')
+	.post(validateUUID('seid'), requireAuth, requireValidUser, requireAdmin, async (req: any, res) => {
 		try {
 			await updateBanSession(req.params.seid, req.body.action);
 			res.status(200).json();

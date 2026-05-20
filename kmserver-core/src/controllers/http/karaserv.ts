@@ -12,6 +12,7 @@ import {getAllKaras, getAllMedias, getAllYears, getBaseStats, getHardsubsCache, 
 import {getTag, getTags} from '../../services/tag.js';
 import { getState } from '../../utils/state.js';
 import { optionalAuth } from '../middlewares/auth.js';
+import { validateUUID } from '../middlewares/validation.js';
 
 export default function KSController(router: Router) {
 	router.route('/karas/lastUpdate')
@@ -54,8 +55,8 @@ export default function KSController(router: Router) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
-	router.route('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})')
-		.get(optionalAuth, async (req: any, res) => {
+	router.route('/karas/:kid')
+		.get(validateUUID('kid'), optionalAuth, async (req: any, res) => {
 			try {
 				const kara = await getKara({
 					q: `k:${req.params.kid}`,
@@ -68,15 +69,15 @@ export default function KSController(router: Router) {
 		});
 	// Hardsubs helper route
 	// This is to simplify queries to get hardsubs simply by their KIDs
-	router.route('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/hardsub')
-		.get((req, res) => {
+	router.route('/karas/:kid/hardsub')
+		.get(validateUUID('kid'), (req, res) => {
 			const hardsubbedMediafile = getHardsubsCache().get(req.params.kid);
 			hardsubbedMediafile
 				? res.redirect(301, `/hardsubs/${hardsubbedMediafile}`)
 				: res.status(404).send();
 	});
-	router.route('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/problem')
-		.post(async (req: any, res) => {
+	router.route('/karas/:kid/problem')
+		.post(validateUUID('kid'), async (req: any, res) => {
 			try {
 				const url = await createKaraIssue(req.params.kid, req.body.type, req.body.comment, req.body.username);
 				res.status(200).json(url);
@@ -84,8 +85,8 @@ export default function KSController(router: Router) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
-	router.route('/karas/:kid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/otherlikedsongs')
-		.get(async (req: any, res) => {
+	router.route('/karas/:kid/otherlikedsongs')
+		.get(validateUUID('kid'), async (req: any, res) => {
 			try {
 				const kids = await getOtherLikedKIDs(req.params.kid, req.query.limit);
 				res.status(200).json(kids);
@@ -93,8 +94,8 @@ export default function KSController(router: Router) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
-	router.route('/karas/tags/:tid([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})')
-		.get(async (req: any, res) => {
+	router.route('/karas/tags/:tid')
+		.get(validateUUID('tid'), async (req: any, res) => {
 			try {
 				const tag = await getTag(req.params.tid);
 				if (tag) res.json(tag);
@@ -122,15 +123,6 @@ export default function KSController(router: Router) {
 			}
 		});
 	router.route('/karas/medias')
-		// Remove when KM App 6.0 is deprecated. KM 7+ uses POST.
-		.get(async (_req, res) => {
-			try {
-				const medias = await getAllMedias();
-				res.json(medias);
-			} catch (err) {
-				res.status(err.code || 500).json(APIMessage(err.message));
-			}
-		})
 		.post(async (req, res) => {
 			try {
 				const medias = await getAllMedias(req.body.collections);
