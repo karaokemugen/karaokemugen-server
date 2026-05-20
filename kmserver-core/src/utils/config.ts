@@ -1,6 +1,6 @@
+import { randomUUID as uuidV4 } from 'crypto';
 import { cloneDeep } from 'lodash';
 import {resolve} from 'path';
-import { v4 as uuidV4 } from 'uuid';
 
 import {exit} from '../index.js';
 import { configureIDs, configureLocale, getConfig, loadConfigFiles, setConfigConstraints } from '../lib/utils/config.js';

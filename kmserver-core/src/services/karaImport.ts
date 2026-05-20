@@ -2,9 +2,9 @@
  * .kara files generation
  */
 
+import { randomUUID as UUIDv4 } from 'crypto';
 import { copy } from 'fs-extra';
 import { basename, resolve } from 'path';
-import { v4 as UUIDv4 } from 'uuid';
 import logger from 'winston';
 
 import { updateInboxGitlabIssue } from '../dao/inbox.js';

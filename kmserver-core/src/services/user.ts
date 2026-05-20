@@ -1,5 +1,5 @@
 import { compare, hash } from 'bcryptjs';
-import { createHash } from 'crypto';
+import { createHash, randomUUID as uuidV4 } from 'crypto';
 import { promises as fs } from 'fs';
 import { copy } from 'fs-extra';
 import i18n from 'i18next';
@@ -7,7 +7,6 @@ import { verify } from 'jsonwebtoken';
 import { cloneDeep, merge } from 'lodash';
 import { isAbsolute, resolve } from 'path';
 import randomstring from 'randomstring';
-import { v4 as uuidV4 } from 'uuid';
 
 import { createJwtToken } from '../controllers/http/auth.js';
 import { updatePlaylistSearchVector } from '../dao/playlist.js';

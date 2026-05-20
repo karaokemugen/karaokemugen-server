@@ -114,7 +114,6 @@
     "sudo-block": "^5.0.0",
     "ts-node": "^10.9.2",
     "ultrastar2ass": "^1.1.3",
-    "uuid": "14.0.0",
     "validate.js": "^0.13.1",
     "vhost": "^3.0.2",
     "winston": "^3.19.0",

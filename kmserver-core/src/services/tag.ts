@@ -1,4 +1,4 @@
-import { v4 as uuidV4 } from 'uuid';
+import { randomUUID as uuidV4 } from 'crypto';
 
 import {insertTag, selectTags} from '../dao/tag.js';
 import { refreshTags, updateTagSearchVector } from '../lib/dao/tag.js';

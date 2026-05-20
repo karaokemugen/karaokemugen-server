@@ -1,7 +1,7 @@
+import { randomUUID as uuidV4 } from 'crypto';
 import { promises as fs } from 'fs';
 import i18n from 'i18next';
 import { resolve } from 'path';
-import { v4 as uuidV4 } from 'uuid';
 
 import {
 	deleteInbox,

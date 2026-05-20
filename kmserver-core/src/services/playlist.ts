@@ -1,5 +1,5 @@
+import { randomUUID as uuidV4 } from 'crypto';
 import { shuffle } from 'lodash';
-import {v4 as uuidV4} from 'uuid';
 
 import { deleteContributor, deleteKaraFromPlaylist, deletePlaylist, deletePlaylistFromFavorites, getMaxPosInPlaylist, insertContributor, insertKaraIntoPlaylist, insertPlaylist, insertPlaylistToFavorites, refreshPlaylistStats, reorderPlaylist, replacePlaylist, selectPlaylistContents, selectPlaylists, selectPLCMini, setPos, shiftPosInPlaylist, truncatePlaylist, updatePlaylist, updatePlaylistDuration, updatePlaylistKaraCount, updatePlaylistLastEditTime, updatePLC } from '../dao/playlist.js';
 import { formatKaraList } from '../lib/services/kara.js';

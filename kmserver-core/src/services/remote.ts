@@ -1,9 +1,9 @@
+import { randomUUID as uuidV4 } from 'crypto';
 import express, { Express } from 'express';
 import { promises as fs } from 'fs';
 import { resolve } from 'path';
 import { generate } from 'randomstring';
 import { Socket } from 'socket.io';
-import { v4 as uuidV4 } from 'uuid';
 
 import {
 	deleteOldRemoteTokens,
