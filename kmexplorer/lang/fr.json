@@ -160,6 +160,7 @@
 			"year_tooltip": "Année de la diffusion de l'œuvre ou de la vidéo",
 			"year_required": "L'année de diffusion est obligatoire",
 			"year_invalid": "L'année de diffusion est invalide",
+			"comment_required": "Le commentaire est obligatoire",
 			"singergroups_tooltip": "Si les chanteurs listés appartiennent à un groupe de musique, indiquez-le(s). Le groupe sera affiché sur le lecteur vidéo et dans les listes au détriment des chanteurs individuels.",
 			"songwriters_tooltip": "Compositeurs, Arrangeurs et paroliers.",
 			"creators_tooltip": "Entité qui a créé l'œuvre ou le clip. Peut être un studio d'animation, de cinéma, de jeu vidéo, etc.",

@@ -7,7 +7,7 @@
 					class="label"
 					:title="t('kara.import.media_file_tooltip', {formats: supportedMedias.join(', ')})"
 				>
-					{{ $route.params.id ? t('kara.import.media_file_edit'):t('kara.import.media_file') }}
+					{{ params.id ? t('kara.import.media_file_edit'):t('kara.import.media_file') }}
 					<font-awesome-icon
 						:icon="['fas', 'question-circle']"
 						:fixed-width="true"
@@ -45,7 +45,7 @@
 					max="100"
 				/>
 				<p
-					v-if="!$route.params.id && !mediafile"
+					v-if="!params.id && !mediafile"
 					class="help is-danger"
 				>
 					{{ t('kara.import.media_file_required') }}
@@ -618,7 +618,14 @@
 						v-model="karaoke.data.comment"
 						class="input"
 						type="text"
+						:required="!!params.id"
 					>
+					<p
+						v-if="!!params.id && !karaoke.data.comment"
+						class="help is-danger"
+					>
+						{{ t('kara.import.comment_required') }}
+					</p>
 				</div>
 			</div>
 			<div class="field">
@@ -888,6 +895,7 @@
 				karaoke.value.data.tags.authors?.length === 0 ||
 				uploading_media.value ||
 				uploading_sub.value ||
+				(params.id && !karaoke.value.data.comment) ||
 				loading.value
 		);
 	}

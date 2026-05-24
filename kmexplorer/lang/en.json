@@ -160,6 +160,7 @@
 			"year_tooltip": "Year when the series was broadcasted or the video was produced",
 			"year_required": "Broadcast year is required",
 			"year_invalid": "Broadcast year is invalid",
+			"comment_required": "Comment is required",
 			"singergroups_tooltip": "If the singers belong to a music band, put them in here. The band will be displayed in the player and song lists instead of individual singers.",
 			"songwriters_tooltip": "Composers, Arrangers and Lyricists.",
 			"creators_tooltip": "Entity that created the series. Can be animation studio, movie studio, or game studio.",
