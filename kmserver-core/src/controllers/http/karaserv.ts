@@ -55,45 +55,6 @@ export default function KSController(router: Router) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
-	router.route('/karas/:kid')
-		.get(validateUUID('kid'), optionalAuth, async (req: any, res) => {
-			try {
-				const kara = await getKara({
-					q: `k:${req.params.kid}`,
-					ignoreCollections: true
-				}, req?.authToken);
-				res.json(kara);
-			} catch (err) {
-				res.status(err.code || 500).json(APIMessage(err.message));
-			}
-		});
-	// Hardsubs helper route
-	// This is to simplify queries to get hardsubs simply by their KIDs
-	router.route('/karas/:kid/hardsub')
-		.get(validateUUID('kid'), (req, res) => {
-			const hardsubbedMediafile = getHardsubsCache().get(req.params.kid);
-			hardsubbedMediafile
-				? res.redirect(301, `/hardsubs/${hardsubbedMediafile}`)
-				: res.status(404).send();
-	});
-	router.route('/karas/:kid/problem')
-		.post(validateUUID('kid'), async (req: any, res) => {
-			try {
-				const url = await createKaraIssue(req.params.kid, req.body.type, req.body.comment, req.body.username);
-				res.status(200).json(url);
-			} catch (err) {
-				res.status(err.code || 500).json(APIMessage(err.message));
-			}
-		});
-	router.route('/karas/:kid/otherlikedsongs')
-		.get(validateUUID('kid'), async (req: any, res) => {
-			try {
-				const kids = await getOtherLikedKIDs(req.params.kid, req.query.limit);
-				res.status(200).json(kids);
-			} catch (err) {
-				res.status(err.code || 500).json(APIMessage(err.message));
-			}
-		});
 	router.route('/karas/tags/:tid')
 		.get(validateUUID('tid'), async (req: any, res) => {
 			try {
@@ -187,4 +148,44 @@ export default function KSController(router: Router) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
-}
+
+	router.route('/karas/:kid')
+		.get(validateUUID('kid'), optionalAuth, async (req: any, res) => {
+			try {
+				const kara = await getKara({
+					q: `k:${req.params.kid}`,
+					ignoreCollections: true
+				}, req?.authToken);
+				res.json(kara);
+			} catch (err) {
+				res.status(err.code || 500).json(APIMessage(err.message));
+			}
+		});
+	// Hardsubs helper route
+	// This is to simplify queries to get hardsubs simply by their KIDs
+	router.route('/karas/:kid/hardsub')
+		.get(validateUUID('kid'), (req, res) => {
+			const hardsubbedMediafile = getHardsubsCache().get(req.params.kid);
+			hardsubbedMediafile
+				? res.redirect(301, `/hardsubs/${hardsubbedMediafile}`)
+				: res.status(404).send();
+	});
+	router.route('/karas/:kid/problem')
+		.post(validateUUID('kid'), async (req: any, res) => {
+			try {
+				const url = await createKaraIssue(req.params.kid, req.body.type, req.body.comment, req.body.username);
+				res.status(200).json(url);
+			} catch (err) {
+				res.status(err.code || 500).json(APIMessage(err.message));
+			}
+		});
+	router.route('/karas/:kid/otherlikedsongs')
+		.get(validateUUID('kid'), async (req: any, res) => {
+			try {
+				const kids = await getOtherLikedKIDs(req.params.kid, req.query.limit);
+				res.status(200).json(kids);
+			} catch (err) {
+				res.status(err.code || 500).json(APIMessage(err.message));
+			}
+		});
+	}
