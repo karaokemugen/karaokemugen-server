@@ -27,15 +27,7 @@ export default function KIController(router: Router) {
 			res.status(err.code || 500).json(APIMessage(err.message));
 		}
 	});
-	router.route('/karas/:kid')
-		.put(validateUUID('kid'), optionalAuth, async (req: any, res: any) => {
-		try {
-			const url = await editKara(req.body, req.body.contact, req.authToken?.username.toLowerCase(), req.body.inid);
-			res.status(200).json(APIMessage('EDITED_KARA', url || ''));
-		} catch (err) {
-			res.status(err.code || 500).json(APIMessage(err.message));
-		}
-	});
+	
 	router.post('/karas/importMedia', upload.single('file'), async (req, res) => {
 		try {
 			if (req.file) {
@@ -64,6 +56,15 @@ export default function KIController(router: Router) {
 		try {
 			await addTag(req.body, {forceRepo: 'Staging'});
 			res.status(200).json();
+		} catch (err) {
+			res.status(err.code || 500).json(APIMessage(err.message));
+		}
+	});
+	router.route('/karas/:kid')
+		.put(validateUUID('kid'), optionalAuth, async (req: any, res: any) => {
+		try {
+			const url = await editKara(req.body, req.body.contact, req.authToken?.username.toLowerCase(), req.body.inid);
+			res.status(200).json(APIMessage('EDITED_KARA', url || ''));
 		} catch (err) {
 			res.status(err.code || 500).json(APIMessage(err.message));
 		}

@@ -14,19 +14,19 @@ export default function remoteController(router: Router) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
-	router.route('/remote/:token')
-		.delete(requireAuth, requireValidUser, requireAdmin, updateLoginTime, async (req: any, res) => {
+	router.route('/remote/promote')
+		.put(requireAuth, requireValidUser, requireAdmin, updateLoginTime, async (req: any, res) => {
 			try {
-				await removeToken(req.params.token);
+				await promoteToken(req.body.token, req.body.code);
 				res.status(200).json();
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
-	router.route('/remote/promote')
-		.put(requireAuth, requireValidUser, requireAdmin, updateLoginTime, async (req: any, res) => {
+	router.route('/remote/:token')
+		.delete(requireAuth, requireValidUser, requireAdmin, updateLoginTime, async (req: any, res) => {
 			try {
-				await promoteToken(req.body.token, req.body.code);
+				await removeToken(req.params.token);
 				res.status(200).json();
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));

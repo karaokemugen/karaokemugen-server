@@ -6,23 +6,6 @@ import {requireAuth, requireValidUser, updateLoginTime} from '../middlewares/aut
 import { validateUUID } from '../middlewares/validation.js';
 
 export default function favoritesController(router: Router) {
-	router.route('/favorites/:kid')
-		.post(validateUUID('kid'), requireAuth, requireValidUser, updateLoginTime, async (req: any, res) => {
-			try {
-				await addFavorite(req.authToken, req.params.kid, req.body?.faovrited_at);
-				res.status(200).json();
-			} catch (err) {
-				res.status(err.code || 500).json(APIMessage(err.message));
-			}
-		})
-		.delete(requireAuth, requireValidUser, updateLoginTime, async (req: any, res) => {
-			try {
-				await removeFavorite(req.authToken, req.params.kid);
-				res.status(200).json();
-			} catch (err) {
-				res.status(err.code || 500).json(APIMessage(err.message));
-			}
-		});
 	router.route('/favorites/compare')
 		.post(async (req: any, res) => {
 			try {
@@ -41,4 +24,22 @@ export default function favoritesController(router: Router) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
+	router.route('/favorites/:kid')
+		.post(validateUUID('kid'), requireAuth, requireValidUser, updateLoginTime, async (req: any, res) => {
+			try {
+				await addFavorite(req.authToken, req.params.kid, req.body?.faovrited_at);
+				res.status(200).json();
+			} catch (err) {
+				res.status(err.code || 500).json(APIMessage(err.message));
+			}
+		})
+		.delete(requireAuth, requireValidUser, updateLoginTime, async (req: any, res) => {
+			try {
+				await removeFavorite(req.authToken, req.params.kid);
+				res.status(200).json();
+			} catch (err) {
+				res.status(err.code || 500).json(APIMessage(err.message));
+			}
+		});
+	
 }

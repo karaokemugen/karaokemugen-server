@@ -14,24 +14,6 @@ export default function suggestionsController(router: Router) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
-	
-	router.route('/suggestions/:id')
-		.post(requireAuth, requireValidUser, async (req: any, res) => {
-			try {
-				await updateLike(req.params.id, req.authToken);
-				res.status(200).json();
-			} catch (err) {
-				res.status(err.code || 500).json(APIMessage(err.message));
-			}
-		})
-		.delete(requireAuth, requireValidUser, requireMaintainer, async (req: any, res) => {
-			try {
-				await removeSuggestion(req.params.id);
-				res.status(200).json();
-			} catch (err) {
-				res.status(err.code || 500).json(APIMessage(err.message));
-			}
-		});
 	router.route('/suggestions/random')
 		.get(async (req: any, res) => {
 			try {
@@ -64,6 +46,23 @@ export default function suggestionsController(router: Router) {
 			try {
 				const suggestions = await getSuggestionsLanguages();
 				res.status(200).json(suggestions);
+			} catch (err) {
+				res.status(err.code || 500).json(APIMessage(err.message));
+			}
+		});
+	router.route('/suggestions/:id')
+		.post(requireAuth, requireValidUser, async (req: any, res) => {
+			try {
+				await updateLike(req.params.id, req.authToken);
+				res.status(200).json();
+			} catch (err) {
+				res.status(err.code || 500).json(APIMessage(err.message));
+			}
+		})
+		.delete(requireAuth, requireValidUser, requireMaintainer, async (req: any, res) => {
+			try {
+				await removeSuggestion(req.params.id);
+				res.status(200).json();
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}

@@ -55,6 +55,15 @@ export default function PLController(router: Router) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
+	router.route('/playlist/import')
+		.post(requireAuth, requireValidUser, getLang, async (req: any, res) => {
+			try {
+				const ret = await importPlaylist(req.body.pl, req.authToken);
+				res.json(ret);
+			} catch (err) {
+				res.status(err.code || 500).json(APIMessage(err.message));
+			}
+		});
 	router.route('/playlist/:plaid/export')
 		.get(validateUUID('plaid'), optionalAuth, getLang, async (req: any, res) => {
 			try {
@@ -95,15 +104,6 @@ export default function PLController(router: Router) {
 			try {
 				await removePlaylistFromFavorites(req.params.plaid, req.authToken);
 				res.json();
-			} catch (err) {
-				res.status(err.code || 500).json(APIMessage(err.message));
-			}
-		});
-	router.route('/playlist/import')
-		.post(requireAuth, requireValidUser, getLang, async (req: any, res) => {
-			try {
-				const ret = await importPlaylist(req.body.pl, req.authToken);
-				res.json(ret);
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
