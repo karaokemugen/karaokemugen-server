@@ -14,6 +14,7 @@ import { SuggestionIssue } from '../types/suggestions.js';
 import sentry from '../utils/sentry.js';
 import { getAllKaras, getKara } from './kara.js';
 import { findUserByName, getAllUsers } from './user.js';
+import { getRepoManifest } from '../lib/services/repo.js';
 
 const service = 'Gitlab';
 
@@ -146,7 +147,8 @@ export async function gitlabEditIssue(issueID: number, changes: {
 	remove_labels?: string,
 }) {
 	const conf = getConfig();
-	if (!conf.System.Repositories[0].Git?.ProjectID) return;
+	const manifest = getRepoManifest(conf.System.Repositories[0].Name);
+	if (!manifest?.projectID) return;
 	const params = {
 		title: changes.title,
 		// Tildes are often found in japanese names and can cause strikeout text in markdown once rendered.
@@ -157,7 +159,7 @@ export async function gitlabEditIssue(issueID: number, changes: {
 	};
 	const url = new URL(conf.System.Repositories[0].Git.URL);
 	try {
-		await HTTP.put(`${url.protocol}//${url.hostname}/api/v4/projects/${conf.System.Repositories[0].Git.ProjectID}/issues/${issueID}`, params, {
+		await HTTP.put(`${url.protocol}//${url.hostname}/api/v4/projects/${manifest.projectID}/issues/${issueID}`, params, {
 			headers: {
 				'PRIVATE-TOKEN': conf.System.Repositories[0].Git.Password,
 				'Content-Type': 'application/json'
@@ -177,17 +179,21 @@ export async function gitlabEditIssue(issueID: number, changes: {
 async function gitlabCreateIssue(title: string, desc: string, labels: string[]): Promise<string> {
 	try {
 		const conf = getConfig();
-		if (!conf.System.Repositories[0].Git?.ProjectID) return;
+		const manifest = getRepoManifest(conf.System.Repositories[0].Name);
+		if (!manifest?.projectID) {
+			logger.warn(`No gitlab issue was created due to project id missing`, {service});
+			return;
+		}
 		if (!labels) labels = [];
 		const params = {
-			id: `${conf.System.Repositories[0].Git.ProjectID}`,
+			id: `${manifest.projectID}`,
 			title,
 			// Tildes are often found in japanese names and can cause strikeout text in markdown once rendered.
 			description: desc.replaceAll('~', '\\~'),
 			labels: labels.join(',')
 		};
 		const url = new URL(conf.System.Repositories[0].Git.URL);
-		const res = await HTTP.post(`${url.protocol}//${url.hostname}/api/v4/projects/${conf.System.Repositories[0].Git.ProjectID}/issues`, params, {
+		const res = await HTTP.post(`${url.protocol}//${url.hostname}/api/v4/projects/${manifest.projectID}/issues`, params, {
 			headers: {
 				'PRIVATE-TOKEN': conf.System.Repositories[0].Git.Password,
 				'Content-Type': 'application/json'

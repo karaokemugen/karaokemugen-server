@@ -125,8 +125,7 @@ export default function KSController(router: Router) {
 				SourceArchiveURL: getConfig().System.Repositories[0].SourceArchiveURL,
 				LatestCommit: await getLatestGitCommit(resolve(getState().dataPath, getConfig().System.Repositories[0].BaseDir), getConfig().System.Repositories[0].Git?.Branch),
 				// Remove in KM 11.0 : ProjectID shouldn't be returned anymore
-				// And in KM Server we need to remove ProjectID from repository settings and put it into manifest damnit.
-				ProjectID: getConfig().System.Repositories[0].Git?.ProjectID,
+				ProjectID: getRepoManifest(getConfig().System.Repositories[0].Name)?.projectID,
 				Manifest: getRepoManifest(getConfig().System.Repositories[0].Name)
 			} as RepositoryManifest);
 		});
