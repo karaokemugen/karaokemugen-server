@@ -2,13 +2,12 @@ import {pg as yesql} from 'yesql';
 
 import {buildClauses, buildTypeClauses, db, transaction} from '../lib/dao/database.js';
 import { WhereClause } from '../lib/types/database.js';
-import { DBKara, DBMedia, DBYear } from '../lib/types/database/kara.js';
+import { DBKara, DBMedia, DBStats, DBYear } from '../lib/types/database/kara.js';
 import { DBPLC } from '../lib/types/database/playlist.js';
 import {Kara, KaraFileV4, KaraParams} from '../lib/types/kara.js';
 import {getConfig} from '../lib/utils/config.js';
 import {getTagTypeName, tagTypes} from '../lib/utils/constants.js';
 import logger from '../lib/utils/logger.js';
-import { DBStats } from '../types/database/kara.js';
 import { getHardsubsBeingProcessed } from '../utils/hardsubs.js';
 import { getState } from '../utils/state.js';
 import * as sql from './sqls/kara.js';
