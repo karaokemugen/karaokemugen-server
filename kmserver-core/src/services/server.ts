@@ -1,9 +1,9 @@
 import { selectServers, updateBanServer, upsertServer } from '../dao/server.js';
+import { KMServer } from '../lib/types/database/servers.js';
 import { getConfig } from '../lib/utils/config.js';
 import { ErrorKM } from '../lib/utils/error.js';
 import HTTP from '../lib/utils/http.js';
 import logger from '../lib/utils/logger.js';
-import { KMServer } from '../types/database/server.js';
 
 const service = 'KMServerUplink';
 

@@ -1,5 +1,5 @@
 import { db } from '../lib/dao/database.js';
-import { KMServer } from '../types/database/server.js';
+import { KMServer } from '../lib/types/database/servers.js';
 import * as sql from './sqls/server.js';
 
 export async function selectServers(publicView = false): Promise<KMServer[]> {
