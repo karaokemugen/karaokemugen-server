@@ -47,7 +47,7 @@
 				"thanks": {
 					"btn": "Serriñ"
 				},
-				"title": "Kemenn ur gudenn",
+				"title": "Danevelliñ ur gudenn",
 				"song": "Kanaouenn"
 			},
 			"btn": {
@@ -452,7 +452,7 @@
 			"submitted": {
 				"here": "amañ",
 				"close": "Serriñ",
-				"subtitle": "Kemenn resevet !"
+				"subtitle": "Kemennadenn resevet !"
 			},
 			"submit": "Kas",
 			"title": "Kinnigoù"
@@ -598,7 +598,7 @@
 		"delete": "Dilemel",
 		"value": "Talvoud",
 		"add": "Ouzhpennañ ur berz nevez",
-		"banned_at": "Berzet d'ar",
+		"banned_at": "Forbannet d'ar",
 		"type": "Seurt",
 		"reason": "Abeg"
 	},
