@@ -53,7 +53,6 @@ export const insertInbox = `
 	ON CONFLICT(pk_inid) DO UPDATE SET
 		pk_inid = :inid,
 		name = :name,
-		created_at = :created_at,
 		contact = :contact,
 		fk_kid = :kid,
 		edited_kid = :edited_kid,
