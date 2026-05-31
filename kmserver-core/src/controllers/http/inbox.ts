@@ -54,7 +54,7 @@ export default function inboxController(router: Router) {
 	router.route('/inbox/:inid/status')
 		.post(validateUUID('inid'), requireAuth, requireValidUser, requireMaintainer, updateLoginTime, async (req: any, res) => {
 			try {
-				await setInboxStatus(req.params.inid, req.body.status, req.body.reject_reason);
+				await setInboxStatus(req.params.inid, req.body.status, req.body.reject_reason, req.authToken.username);
 				res.status(200).json();
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));

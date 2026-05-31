@@ -117,7 +117,7 @@ async function removeDueDateAndLabelsFromIssue(issueNumber: number) {
 	})
 }
 
-export async function setInboxStatus(inid: string, status: InboxActions, reason?: string) {
+export async function setInboxStatus(inid: string, status: InboxActions, reason?: string, actor?: string) {
 	try {
 		const inbox = (await selectInbox(inid))[0];
 		if (!inbox) throw new ErrorKM('INBOX_UNKNOWN_ERROR', 404, false);
@@ -256,7 +256,7 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 				await postNoteToIssue(
 					issueNumber,
 					repoName,
-					`Upload was ACCEPTED by ${inbox.username_downloaded}.${reason ? `\nNotes from reviewer: \n\n${reason}` : ''}`,
+					`Upload was ACCEPTED by ${inbox.username_downloaded || actor || conf.System.Repositories[0].Name}.${reason ? `\nNotes from reviewer: \n\n${reason}` : ''}`,
 				);
 				await removeDueDateAndLabelsFromIssue(issueNumber);
 				await closeIssue(issueNumber, repoName);
@@ -306,7 +306,7 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 				await postNoteToIssue(
 					issueNumber,
 					repoName,
-					`Upload was REJECTED by ${inbox.username_downloaded}:\n\n${reason}`,
+					`Upload was REJECTED by ${inbox.username_downloaded || actor || conf.System.Repositories[0].Name}.${reason ? `\nNotes from reviewer: \n\n${reason}` : ''}`,
 				);
 				await removeDueDateAndLabelsFromIssue(issueNumber);
 				await closeIssue(issueNumber, repoName);
