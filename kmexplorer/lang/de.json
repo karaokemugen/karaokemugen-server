@@ -128,7 +128,8 @@
 			"login_required": "Du musst eingeloggt sein, um ein Lied einzusenden.",
 			"quota_count": "Du kannst noch {count} Lieder einsenden. | Du kannst noch {count} Lieder einsenden.",
 			"quota_reached": "Du hast zu viele Lieder eingesendet. Bitte warte bis einige davon angenommen oder abgelehnt worden, bis du ein weiteres einsendest.",
-			"contact_infos_warning": "Deine Kontaktdaten werden mit den Maintainern der Datenbank geteilt. Sie melden sich ggf. bei dir, falls sie Fragen zu deiner Einsendung haben."
+			"contact_infos_warning": "Deine Kontaktdaten werden mit den Maintainern der Datenbank geteilt. Sie melden sich ggf. bei dir, falls sie Fragen zu deiner Einsendung haben.",
+			"comment_required": "Kommentar erforderlich"
 		},
 		"tagtypes": {
 			"platforms": "Plattform | Plattformen",
