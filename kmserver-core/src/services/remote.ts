@@ -160,32 +160,42 @@ function deleteOldRemote() {
 	});
 }
 
-async function serveRemoteIndex(req: any, res: any) {
-    if (remotes.has(req.vhost[0])) {
-        const frontend = getVersion(remotesVersions.get(req.vhost[0]));
-        if (frontend) {
-            let kmfrontend = await fs.readFile(resolve(frontend, 'index.html'), 'utf-8');
-            kmfrontend = kmfrontend.toString().replace('NO-REMOTE', req.vhost[0]);
-            res.send(kmfrontend);
-        } else {
-            res.status(500).send('Cannot find KMFrontend required version.');
-            sentry.error(`Unknown KM App version ${remotesVersions.get(req.vhost[0])} when starting remote`);
-        }
-    } else {
-        res.status(410).send('This remote instance is not available.');
-    }
-}
-
 export function initRemote() {
 	app = express();
-	
+	app.use('/', (req: any, res, next) => {
+		if (remotes.has(req.vhost[0])) {
+			const frontend = getVersion(remotesVersions.get(req.vhost[0]));
+			if (frontend) {
+				return express.static(
+frontend,
+					{ index: false }
+)(req, res, next);
+			}
+				res.status(500).send('Cannot find KMFrontend required version.');
+				sentry.error(`Unknown KM App version ${remotesVersions.get(req.vhost[0])} when starting remote`);
+		} else {
+			next();
+		}
+	});
 	app.use('/guests/', express.static(
 resolve(getState().appPath, 'assets/guestAvatars'),
 		{ index: false, fallthrough: false }
 ));
-	// Path-to-regex is a bitch
-	app.use('/', serveRemoteIndex);
-	app.use('/*path', serveRemoteIndex);
+	app.get('/*', async (req: any, res) => {
+		if (remotes.has(req.vhost[0])) {
+			const frontend = getVersion(remotesVersions.get(req.vhost[0]));
+			if (frontend) {
+				let kmfrontend = await fs.readFile(resolve(frontend, 'index.html'), 'utf-8');
+				kmfrontend = kmfrontend.toString().replace('NO-REMOTE', req.vhost[0]);
+				res.send(kmfrontend);
+			} else {
+				res.status(500).send('Cannot find KMFrontend required version.');
+				sentry.error(`Unknown KM App version ${remotesVersions.get(req.vhost[0])} when starting remote`);
+			}
+		} else {
+			res.status(410).send('This remote instance is not available.');
+		}
+	});
 	asyncCheckOrMkdir(resolvedPathRemoteRoot());
 	watchRemotes();
 	deleteOldRemote();
