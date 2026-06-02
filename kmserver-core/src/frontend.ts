@@ -50,6 +50,15 @@ export function initFrontend(listenPort: number) {
 		return ip === '127.0.0.1' ||
 			ip === '::ffff:127.0.0.1';
 	});
+
+	const server = createServer(app);
+	const ws = initWS(server);
+	
+	if (conf.Remote.Enabled) {
+		remoteSocketController(ws);
+		app.use(vhost(`*.${conf.Frontend.Host}`, initRemote()));
+	}
+	
 	// Remove double-slashes at the start of URLs
 	app.use((req, res, next) => {
 		if (/\/\//g.test(req.path)) res.redirect(req.path.replace(/\/\//g, '/'));
@@ -114,13 +123,6 @@ export function initFrontend(listenPort: number) {
 	}
 
 	const port = listenPort;
-	const server = createServer(app);
-
-	const ws = initWS(server);
-	if (conf.Remote.Enabled) {
-		remoteSocketController(ws);
-		app.use(vhost(`*.${conf.Frontend.Host}`, initRemote()));
-	}
 	// KMExplorer
 	if (conf.Frontend.Enabled) {
 		startKMExplorer(app);
