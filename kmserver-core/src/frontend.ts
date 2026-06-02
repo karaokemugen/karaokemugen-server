@@ -46,23 +46,24 @@ export function initFrontend(listenPort: number) {
 	const protocol = `http${conf.Frontend.Secure ? 's' : ''}:`;
 
 	// Trust our reverse proxy entirely
-	app.set('trust proxy', (ip: string) => {
-		return ip === '127.0.0.1' ||
-			ip === '::ffff:127.0.0.1';
-	});
+	app.set('trust proxy', true);
 
 	const server = createServer(app);
 	const ws = initWS(server);
-	
-	if (conf.Remote.Enabled) {
-		remoteSocketController(ws);
-		app.use(vhost(`*.${conf.Frontend.Host}`, initRemote()));
-	}
+
 	
 	// Remove double-slashes at the start of URLs
 	app.use((req, res, next) => {
 		if (/\/\//g.test(req.path)) res.redirect(req.path.replace(/\/\//g, '/'));
 		else next();
+	});
+	app.use((req, res, next) => {
+		res.setHeader('Access-Control-Allow-Origin', '*');
+		res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+		res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Authorization, Accept, Key');
+		req.method === 'OPTIONS'
+			? res.sendStatus(204)
+			: next();
 	});
 	app.use(helmet({
 		crossOriginResourcePolicy: conf.Frontend.Host === 'localhost' ? false : {
@@ -94,17 +95,12 @@ export function initFrontend(listenPort: number) {
 	// Server allows resuming file downloads :
 	app.use(range());
 
-	app.use((req, res, next) => {
-		res.setHeader('Access-Control-Allow-Origin', '*');
-		res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-		res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Authorization, Accept, Key');
-		req.method === 'OPTIONS'
-			? res.json()
-			: next();
-	});
-
 	// KMServer
 	// If static serve is enabled, we're serving all files from KMServer instead of our reverse proxy
+	if (conf.Remote.Enabled) {
+		remoteSocketController(ws);
+		app.use(vhost(`*.${conf.Frontend.Host}`, initRemote()));
+	}
 	if (state.opt.staticServe) {
 		app.use('/downloads', express.static(resolve(getState().dataPath, getConfig().System.Repositories[0].BaseDir)));
 		app.use('/downloads/medias', express.static(resolvedPathRepos('Medias')[0]));
