@@ -53,11 +53,7 @@ export function initFrontend(listenPort: number) {
 
 	const server = createServer(app);
 	const ws = initWS(server);
-	
-	if (conf.Remote.Enabled) {
-		remoteSocketController(ws);
-		app.use(vhost(`*.${conf.Frontend.Host}`, initRemote()));
-	}
+
 	
 	// Remove double-slashes at the start of URLs
 	app.use((req, res, next) => {
@@ -105,6 +101,10 @@ export function initFrontend(listenPort: number) {
 
 	// KMServer
 	// If static serve is enabled, we're serving all files from KMServer instead of our reverse proxy
+	if (conf.Remote.Enabled) {
+		remoteSocketController(ws);
+		app.use(vhost(`*.${conf.Frontend.Host}`, initRemote()));
+	}
 	if (state.opt.staticServe) {
 		app.use('/downloads', express.static(resolve(getState().dataPath, getConfig().System.Repositories[0].BaseDir)));
 		app.use('/downloads/medias', express.static(resolvedPathRepos('Medias')[0]));
