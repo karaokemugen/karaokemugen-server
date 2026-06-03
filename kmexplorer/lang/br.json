@@ -89,7 +89,8 @@
 			"contact_infos": "Titouroù darempred",
 			"songwriters_tooltip": "Sonazourien, kempennerien ha saverien pozioù.",
 			"login_required": "Ret eo deoc'h kevreañ da gas ur ganaouenn.",
-			"parents": "Kerent"
+			"parents": "Kerent",
+			"quota_count": "Gallout a rit kas {count} ganaouenn c'hoazh. | Gallout a rit kas {count} a ganaouennoù c'hoazh."
 		},
 		"player": {
 			"next": "Kanaouenn war-lerc'h (N)",
