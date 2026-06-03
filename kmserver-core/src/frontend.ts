@@ -24,9 +24,9 @@ import remoteSocketController from './controllers/ws/remote.js';
 import userSubSocketController from './controllers/ws/user.js';
 import { startKMExplorer } from './kmexplorer.js';
 import {
-	getConfig,
-	resolvedPath,
-	resolvedPathRepos
+        getConfig,
+        resolvedPath,
+        resolvedPathRepos
 } from './lib/utils/config.js';
 import logger from './lib/utils/logger.js';
 import { initWS } from './lib/utils/ws.js';
@@ -53,12 +53,7 @@ export function initFrontend(listenPort: number) {
 
 	const server = createServer(app);
 	const ws = initWS(server);
-	
-	if (conf.Remote.Enabled) {
-		remoteSocketController(ws);
-		app.use(vhost(`*.${conf.Frontend.Host}`, initRemote()));
-	}
-	
+
 	// Remove double-slashes at the start of URLs
 	app.use((req, res, next) => {
 		if (/\/\//g.test(req.path)) res.redirect(req.path.replace(/\/\//g, '/'));
@@ -102,6 +97,11 @@ export function initFrontend(listenPort: number) {
 			? res.json()
 			: next();
 	});
+
+	if (conf.Remote.Enabled) {
+		remoteSocketController(ws);
+		app.use(vhost(`*.${conf.Frontend.Host}`, initRemote()));
+	}
 
 	// KMServer
 	// If static serve is enabled, we're serving all files from KMServer instead of our reverse proxy
