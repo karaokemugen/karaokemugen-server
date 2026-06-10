@@ -1,7 +1,9 @@
 import { cloneDeep, isEqual } from 'lodash';
+import prettyBytes from 'pretty-bytes';
 
 import { selectAllKaras } from '../dao/kara.js';
 import { getSongSeriesSingers } from '../lib/services/kara.js';
+import { getRepoManifest } from '../lib/services/repo.js';
 import { DBUser } from '../lib/types/database/user.js';
 import { getConfig } from '../lib/utils/config.js';
 import { tagTypes } from '../lib/utils/constants.js';
@@ -14,7 +16,6 @@ import { SuggestionIssue } from '../types/suggestions.js';
 import sentry from '../utils/sentry.js';
 import { getAllKaras, getKara } from './kara.js';
 import { findUserByName, getAllUsers } from './user.js';
-import { getRepoManifest } from '../lib/services/repo.js';
 
 const service = 'Gitlab';
 
@@ -87,7 +88,10 @@ export async function buildIssue(kid: string, edit?: EditElement, username?: str
 
 `;
 			if (edit.modifiedLyrics) changes.push('LYRICS updated');
-			if (edit.modifiedMedia) changes.push('MEDIA updated');
+			if (edit.modifiedMedia) {
+				changes.push('MEDIA updated');
+				changes.push(`MEDIA SIZE updated : ${prettyBytes(edit.oldKara.mediasize)} => ${prettyBytes(kara.mediasize)}`);
+			}
 			if (edit.oldKara.from_display_type !== kara.from_display_type) changes.push(`FROM DISPLAY TYPE updated : ${edit.oldKara.from_display_type} => ${kara.from_display_type}`);
 			if (!isEqual(edit.oldKara.year, kara.year)) changes.push(`YEAR updated : ${edit.oldKara.year} => ${kara.year}`);
 			if (!isEqual(edit.oldKara.songorder, kara.songorder)) changes.push(`SONGORDER updated : ${edit.oldKara.songorder} => ${kara.songorder}`);
