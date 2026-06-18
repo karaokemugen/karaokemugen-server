@@ -14,7 +14,7 @@ import { deleteBan, deleteUser, insertBan, insertUser, selectAllUsers, selectBan
 import { DBUser } from '../lib/types/database/user.js';
 import { JWTTokenWithRoles, User } from '../lib/types/user.js';
 import { getConfig, resolvedPath } from '../lib/utils/config.js';
-import { asciiRegexp, tagTypes } from '../lib/utils/constants.js';
+import { tagTypes, userRegexp } from '../lib/utils/constants.js';
 import { ErrorKM } from '../lib/utils/error.js';
 import { detectFileType, fileExists, smartMove } from '../lib/utils/files.js';
 import logger from '../lib/utils/logger.js';
@@ -258,7 +258,7 @@ export async function createUser(user: User, opts: any = {}) {
 			user: true,
 			admin: opts.admin
 		};
-		if (!asciiRegexp.test(user.login) || user.login.includes('@')) throw new ErrorKM('USER_ASCII_CHARACTERS_ONLY', 400, false);
+		if (!userRegexp.test(user.login) || user.login.includes('@')) throw new ErrorKM('USER_ASCII_CHARACTERS_ONLY', 400, false);
 		if (!user.password) throw new ErrorKM('USER_EMPTY_PASSWORD', 400, false);
 		if (!user.login) throw new ErrorKM('USER_EMPTY_LOGIN', 400, false);
 		user.login = user.login.toLowerCase();
