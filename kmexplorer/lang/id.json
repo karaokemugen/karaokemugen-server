@@ -520,7 +520,6 @@
 	},
 	"toast": {
 		"LOG_ERROR": "Kredensial salah.",
-		"USER_ASCII_CHARACTERS_ONLY": "Mohon hanya menggunakan karakter alfanumerik di nama pengguna kamu (nanti kamu bisa mengubah nama panggilan kapan pun yang kamu mau).",
 		"USER_CREATED": "Pengguna berhasil dibuat",
 		"GENERATED_KARA": "Karaoke berhasil dikirim.",
 		"EDITED_KARA": "Suntingan berhasil dikirim.",

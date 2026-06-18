@@ -307,7 +307,7 @@
 		"FILE_UPLOADED": "Ficheiro carregado.",
 		"USER_EDITED": "Utilizador editado com sucesso",
 		"LOG_ERROR": "Credenciais incorrectas.",
-		"USER_ASCII_CHARACTERS_ONLY": "Apenas caracteres alfanuméricos no seu nome de utilizador (pode mudar o seu apelido mais tarde para o que quiser).",
+		"USER_LOGIN_INVALID": "Nome de usuário Inválido. Use apenas caracteres alfanuméricos (._- também são permitidos)",
 		"USER_CREATED": "Utilizador criado com sucesso",
 		"GENERATED_KARA": "Karaokê enviado com sucesso.",
 		"EDITED_KARA": "Modificação enviada com sucesso.",

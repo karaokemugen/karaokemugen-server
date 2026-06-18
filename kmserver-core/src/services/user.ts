@@ -258,7 +258,7 @@ export async function createUser(user: User, opts: any = {}) {
 			user: true,
 			admin: opts.admin
 		};
-		if (!userRegexp.test(user.login) || user.login.includes('@')) throw new ErrorKM('USER_ASCII_CHARACTERS_ONLY', 400, false);
+		if (!userRegexp.test(user.login) || user.login.includes('@')) throw new ErrorKM('USER_LOGIN_INVALID', 400, false);
 		if (!user.password) throw new ErrorKM('USER_EMPTY_PASSWORD', 400, false);
 		if (!user.login) throw new ErrorKM('USER_EMPTY_LOGIN', 400, false);
 		user.login = user.login.toLowerCase();

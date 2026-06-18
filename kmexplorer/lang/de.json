@@ -630,7 +630,7 @@
 		"ADD_FAVORITE_ERROR": "Dieser Song konnte nicht zu den Favoriten hinzugefügt werden",
 		"BAD_IMPORT_DATA_ERROR": "Fehler im Datenformat",
 		"PL_REMOVE_CONTRIBUTOR_ERROR": "Fehler beim löschen des Mitwirkendens",
-		"USER_ASCII_CHARACTERS_ONLY": "Bitte verwende im Benutzernamen nur alphanumerische Zeichen (Du kannst deinen Spitznamen später beliebig ändern).",
+		"USER_LOGIN_INVALID": "Ungültiger Nutzername. Bitte verwende nur alphanumerische Zeichen (._- sind auch erlaubt)",
 		"GET_USERS_ERROR": "Fehler beim abrufen der Benutzer-Liste",
 		"WRONG_BANNER_FILE_TYPE": "Ungültiges Dateiformat beim Banner",
 		"GET_FAVORITES_FROM_USER_FORBIDDEN_ERROR": "Dieser Benutzer möchte seine Favoriten nicht teilen",

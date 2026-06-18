@@ -251,7 +251,7 @@
 		"ADD_FAVORITE_ERROR": "Impossibile aggiungere questo brano ai tuoi preferiti",
 		"BAD_IMPORT_DATA_ERROR": "Errore del formato dati",
 		"PL_REMOVE_CONTRIBUTOR_ERROR": "Errore durante l'eliminazione dei collaboratori",
-		"USER_ASCII_CHARACTERS_ONLY": "Si prega di utilizzare solo caratteri alfanumerici nel nome utente (puoi impostare il soprannome che preferisci più tardi).",
+		"USER_LOGIN_INVALID": "Nome utente non valido. Si prega di utilizzare solo caratteri alfanumerici (sono consentiti anche ._-)",
 		"GET_USERS_ERROR": "Errore durante il recupero della lista utenti",
 		"WRONG_BANNER_FILE_TYPE": "Formato del file banner incompatibile",
 		"GET_FAVORITES_FROM_USER_FORBIDDEN_ERROR": "I preferiti di questo utente non sono pubblici",

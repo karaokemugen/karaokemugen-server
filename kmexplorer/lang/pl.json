@@ -538,7 +538,7 @@
 		"SUBFILE_PROCESS_ERROR": "Błąd podczas przetwarzania tekstu piosenki",
 		"PL_CREATE_ERROR": "Błąd podczas tworzenia listy odtwarzania",
 		"EDIT_USER_ERROR": "Błąd podczas edycji profilu",
-		"USER_ASCII_CHARACTERS_ONLY": "Proszę tylko znaki alfanumeryczne w nazwie użytkownika (możesz później zmienić swój pseudonim na dowolny).",
+		"USER_LOGIN_INVALID": "Nieprawidłowa nazwa użytkownika. Używaj tylko znaków alfanumerycznych (._- są również dozwolone)",
 		"IMPORT_KARA_ERROR": "Nie można wysłać karaoke.",
 		"CREATE_USER_ERROR": "Błąd podczas tworzenia użytkownika",
 		"EDIT_KARA_ERROR": "Nie można wysłać edycji.",
