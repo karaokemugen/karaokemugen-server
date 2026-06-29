@@ -7,6 +7,29 @@
         "RESET_PASSWORD_DONE": {
             "SUBJECT": "La contraseña se ha restablecido para Karaoke Mugen",
             "BODY": "Hola {{username}},\n\nTu contraseña ha sido restablecida con éxito en {{host}}.\n\n\n\nAhora debería poder iniciar sesión con su nueva contraseña."
+        },
+        "INBOX": {
+            "IN_REVIEW": {
+                "SUBJECT": "[{{instance}}] Canción pendiente de aprobación: {{songname}}",
+                "BODY": "Hola {{username}},\n\nTu canción {{songname}} está siendo revisada por el equipo de {{instance}}.\n\nPuede que esté:\n- Aceptada\n- Rechazada\n- Requiera cambios antes de ser aceptada.\n\nEn los dos últimos casos, recibirás una notificación con los motivos del rechazo temporal o definitivo."
+            },
+            "CHANGES_REQUESTED": {
+                "SUBJECT": " [{{instance}}] Se requieren cambios en tu canción: {{song name}}",
+                "BODY": "Hola {{username}},\n\ntras la revisión, se requieren cambios en tu canción {{songname}}:\n\n{{reason}}\n\nPuedes contactar al equipo de {{instance}} a través de:"
+            },
+            "ACCEPTED": {
+                "SUBJECT": "[{{instance}}] Canción añadida a la base de datos: {{songname}}",
+                "BODY": "Hola {{username}},\n\n¡Enhorabuena! Tu canción {{songname}} ha sido aceptada. Se añadirá a la base de datos de {{instance}} en breve.\n{{reason}}\n¡Gracias por contribuir a la base de datos de {{instance}}!",
+                "REASON": "\nEl equipo mantenedor ha dejado un mensaje sobre tu canción:\n\n{{reason}}\n"
+            },
+            "REJECTED": {
+                "SUBJECT": "[{{instance}}] Canción rechazada: {{songname}}",
+                "BODY": "Hola {{username}},\n\nTu canción {{songname}} ha sido rechazada. Estos son los motivos:\n\n{{reason}}\n\nSi deseas hablar sobre esto, puedes contactarnos a través de:"
+            },
+            "DISCORD": "\n- Discord: {{url}}\n",
+            "FORUM": "\n- Foro: {{url}}\n",
+            "GITLAB": "\n- Gitlab: {{url}}\n",
+            "CLEANUP_DAYS_ALERT": "\n\nSi no respondes a este correo electrónico, tu canción será eliminada después de {{days}} días."
         }
     }
 }
