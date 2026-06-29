@@ -670,7 +670,7 @@
 		"BANNER_BANNED": "This banner cannot be used",
 		"PASSWORD_TOO_SHORT": "Password too short",
 		"CHECK_YOUR_PRIVILEGES": "Insufficient rights",
-		"EDIT_USER_ERROR": "Erreur editing profile",
+		"EDIT_USER_ERROR": "Error editing profile",
 		"GITLAB_DISABLED": "Gitlab support is disabled",
 		"SUBFILE_FORMAT_UNKNOWN": "Unknown lyrics format",
 		"SUBFILE_PROCESS_ERROR": "Error processing lyrics",
