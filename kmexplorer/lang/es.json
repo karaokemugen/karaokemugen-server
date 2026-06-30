@@ -130,7 +130,6 @@
 		"CONTRIBUTOR_TRUST_LEVEL_UPDATED": "Nivel de confianza del colaborador actualizado.",
 		"DELETE_INBOX_ERROR": "Error al eliminar la bandeja de entrada",
 		"LOG_ERROR": "Credenciales incorrectas.",
-		"USER_ASCII_CHARACTERS_ONLY": "Su nombre de usuario debe contener únicamente caracteres alfanuméricos (puede cambiar su apodo más adelante por el que desee).",
 		"USER_CREATED": "Usuario creado con éxito",
 		"GENERATED_KARA": "Karaoke enviado con éxito.",
 		"EDITED_KARA": "Modificación enviada correctamente.",
