@@ -139,7 +139,8 @@
 		"FILE_UPLOADED": "Archivo subido.",
 		"USER_EDITED": "Usuario editado con éxito",
 		"PASSWORD_UPDATED": "Contraseña actualizada correctamente",
-		"ADD_FAVORITE_ERROR": "Incapaz de agregar esta canción a tus favoritos"
+		"ADD_FAVORITE_ERROR": "Incapaz de agregar esta canción a tus favoritos",
+		"USER_LOGIN_INVALID": "Nombre de usuario no válido. Utilice únicamente caracteres alfanuméricos (también se permiten ._-)"
 	},
 	"kara": {
 		"tagtypes": {
