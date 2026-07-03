@@ -126,7 +126,7 @@ export function hashPassword(password: string) {
 
 export async function findUserByName(username: string, opts: UserOptions = {}) {
 	try {
-		if (!username) throw new ErrorKM('NO_USER_PROVIDED', 400, false);
+		if (!username || typeof username !== 'string') throw new ErrorKM('NO_USER_PROVIDED', 400, false);
 		username = username.toLowerCase();
 		const user = (await selectAllUsers({ username }))[0];
 		if (!user) return null;
