@@ -121,7 +121,7 @@
 			"description": "Pomocí tohoto formuláře můžete týmu instance {instance} odeslat karaoke. Do databáze nebude zařazeno okamžitě, protože musí projít kontrolou. Buďte prosím trpěliví. Pokud karaoke nevyhovuje pravidlům týmu, může být upraveno.",
 			"attention": "UPOZORNĚNÍ:",
 			"check_in_progress": "Než nám skladbu odešlete, zkontrolujte seznam právě připravovaných karaoke titulků. Zabráníte tak duplicitní práci a svět bude zase o něco lepší.",
-			"documentation_link": "Před odesláním skladby si přečtěte pravidla instance {instance}.",
+			"documentation_link": "Před odesláním skladby si přečtěte pravidla instance {instance}!",
 			"in_progress_link": "Seznam rozpracovaných karaoke titulků",
 			"license_reminder": "Vaše karaoke bude zveřejněno pod licencí {name}",
 			"license_link": "Další informace o licenci zobrazíte kliknutím sem.",
@@ -133,7 +133,7 @@
 			"add_file_lyrics_error": "{name} není soubor s titulky",
 			"add_file_success": "Soubor {name} byl úspěšně přidán",
 			"comment": "Chcete přidat komentář?",
-			"comment_tooltip": "Zde můžete napsat zprávu týmu údržby nebo mu jednoduše poděkovat.",
+			"comment_tooltip": "Zde můžete napsat zprávu týmu údržby nebo mu jednoduše poděkovat!",
 			"submit": "Odeslat karaoke",
 			"media_file": "Multimediální soubor",
 			"media_file_edit": "Nahradit soubor média",
@@ -144,7 +144,7 @@
 			"lyrics_file_missing": "Chybí soubor s textem písně. To je v pořádku pouze při odesílání souboru MKV nebo karaoke bez textu (ano, i takové existuje).",
 			"title": "Název",
 			"title_required": "Zadejte název",
-			"title_tooltip": "Pokud název neznáte, zadejte také název série. Alternativní verzi pojmenujte například „Můj název ~ Disco verze“.",
+			"title_tooltip": "Pokud název neznáte, zadejte také název série. Alternativní verzi pojmenujte například „Můj název ~ Disco verze“",
 			"titles_aliases": "Alternativní názvy",
 			"titles_aliases_tooltip": "Zkrácené nebo alternativní názvy používané při hledání.",
 			"series_tooltip": "Televizní seriál, film, videohra apod.",
@@ -166,7 +166,7 @@
 			"creators_tooltip": "Subjekt, který vytvořil sérii, například animační, filmové nebo herní studio.",
 			"authors_tooltip": "Sem byste měli přidat sami sebe. ;)",
 			"authors_required": "Autor karaoke je povinný",
-			"groups_tooltip": "Skupiny, v jejichž balíčcích ke stažení bude skladba zahrnuta.",
+			"groups_tooltip": "Skupiny, v jejichž balíčcích ke stažení bude skladba zahrnuta",
 			"parents": "Nadřazené skladby",
 			"parents_tooltip": "Je-li nastavena nadřazená skladba, toto karaoke se zobrazí jako její alternativní verze.",
 			"created_at": "Datum vytvoření",
@@ -213,10 +213,10 @@
 		"results": "{count} výsledek | {count} výsledky | {count} výsledků",
 		"collections": "Instance {instance} nabízí mnoho kolekcí. Vyberte ty, které vás zajímají.",
 		"slogan": "Přijďte si zazpívat tuto skladbu s Karaoke Mugen!",
-		"end_users": "Dostali jste se na konec seznamu uživatelů. Gratulujeme!",
+		"end_users": "Dostali jste se na konec seznamu uživatelů (Gratulujeme!).",
 		"app_banner": {
 			"title": "Věděli jste?",
-			"description": "Karaoke Mugen je také aplikace pro Windows, macOS a Linux, se kterou můžete spravovat playlisty a karaoke akce s přáteli, na anime conech i během streamování.",
+			"description": "Karaoke Mugen je také aplikace pro Windows, macOS a Linux, se kterou můžete spravovat playlisty a karaoke akce s přáteli, na anime conech i během streamování!",
 			"more_features": "Nabízí mnohem více funkcí než instance {instance}!",
 			"link": "Aplikaci pro svůj počítač si můžete stáhnout na {link}.",
 			"website": "webu"
@@ -344,7 +344,7 @@
 		},
 		"login": {
 			"title": "Přihlášení",
-			"subtitle": "Přihlaste se, abyste mohli zobrazit oblíbené položky a upravit svůj profil.",
+			"subtitle": "Přihlaste se, abyste mohli zobrazit oblíbené položky a upravit svůj profil!",
 			"fields": {
 				"username": {
 					"label": "Uživatelské jméno",
@@ -631,7 +631,7 @@
 	},
 	"toast": {
 		"LOG_ERROR": "Nesprávné přihlašovací údaje.",
-		"USER_LOGIN_INVALID": "Neplatné uživatelské jméno. Používejte pouze písmena a číslice (povoleny jsou také znaky ._-).",
+		"USER_LOGIN_INVALID": "Neplatné uživatelské jméno. Používejte pouze písmena a číslice (povoleny jsou také znaky ._-)",
 		"USER_CREATED": "Uživatel byl úspěšně vytvořen",
 		"GENERATED_KARA": "Karaoke skladba byla úspěšně odeslána.",
 		"EDITED_KARA": "Úprava byla úspěšně odeslána.",
