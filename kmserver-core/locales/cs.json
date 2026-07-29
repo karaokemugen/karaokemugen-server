@@ -1,1 +1,35 @@
-{}
+{
+    "MAIL": {
+        "RESET_PASSWORD_REQUEST": {
+            "SUBJECT": "Obnovení hesla služby Karaoke Mugen",
+            "BODY": "Dobrý den, ${{username}},\n\nna webu {{host}} jste vy (nebo někdo jiný) požádali o obnovení hesla ke svému účtu. Pokud jste o obnovení hesla nežádali, tento e-mail ignorujte.\n\nNové heslo vytvoříte kliknutím na následující odkaz:\n\n{{url}}\n\nPlatnost odkazu vyprší za dvě hodiny."
+        },
+        "RESET_PASSWORD_DONE": {
+            "SUBJECT": "Heslo služby Karaoke Mugen bylo obnoveno",
+            "BODY": "Dobrý den, {{username}},\n\nheslo k vašemu účtu na webu {{host}} bylo úspěšně obnoveno.\n\n\n\nNyní se můžete přihlásit pomocí nového hesla."
+        },
+        "INBOX": {
+            "IN_REVIEW": {
+                "SUBJECT": "[{{instance}}] Skladba čeká na schválení: {{songname}}",
+                "BODY": "Dobrý den, {{username}},\n\nvaši skladbu {{songname}} právě kontroluje tým instance {{instance}}.\n\nSkladba může být:\n- schválena,\n- zamítnuta,\n- vrácena k úpravám před schválením.\n\nV posledních dvou případech obdržíte další oznámení s důvody dočasného nebo trvalého zamítnutí."
+            },
+            "CHANGES_REQUESTED": {
+                "SUBJECT": " [{{instance}}] Ve skladbě je nutné provést změny: {{songname}}",
+                "BODY": "Dobrý den, {{username}},\n\npo kontrole je nutné ve skladbě {{songname}} provést následující změny:\n\n{{reason}}\n\nTým instance {{instance}} můžete kontaktovat prostřednictvím:"
+            },
+            "ACCEPTED": {
+                "SUBJECT": "[{{instance}}] Skladba přidána do databáze: {{songname}}",
+                "BODY": "Dobrý den, {{username}},\n\ngratulujeme, vaše skladba {{songname}} byla schválena! Brzy bude přidána do databáze instance {{instance}}.\n{{reason}}\nDěkujeme, že přispíváte do databáze instance {{instance}}!",
+                "REASON": "\nTým údržby zanechal ke skladbě následující zprávu:\n\n{{reason}}\n"
+            },
+            "REJECTED": {
+                "SUBJECT": "[{{instance}}] Skladba zamítnuta: {{songname}}",
+                "BODY": "Dobrý den, {{username}},\n\nvaše skladba {{songname}} byla zamítnuta z následujících důvodů:\n\n{{reason}}\n\nPokud o nich chcete diskutovat, neváhejte nás kontaktovat prostřednictvím:"
+            },
+            "DISCORD": "\n- Discord: {{url}}\n",
+            "FORUM": "\n- Fórum: {{url}}\n",
+            "GITLAB": "\n- GitLab: {{url}}\n",
+            "CLEANUP_DAYS_ALERT": "\n\nPokud na tento e-mail neodpovíte, vaše skladba bude za {{days}} dní odstraněna."
+        }
+    }
+}
