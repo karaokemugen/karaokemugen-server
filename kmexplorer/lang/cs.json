@@ -1,1 +1,820 @@
-{}
+{
+	"actions": {
+		"import": "Importovat",
+		"choose_file": "Vybrat soubor"
+	},
+	"error": {
+		"generic": "Chyba",
+		"private_profile": "Profil je soukromý.",
+		"not_found_profile": "Tohoto uživatele se nepodařilo najít",
+		"not_found_playlist": "Tento playlist se nepodařilo najít",
+		"home": "Přejít na hlavní stránku",
+		"not_found_tag": "Štítek nebyl nalezen",
+		"remote": "Chyba při načítání seznamu vzdálených repozitářů",
+		"bans": "Chyba při načítání seznamu zákazů"
+	},
+	"kara": {
+		"phrase": "{songtype} ze série {series}",
+		"meta": "{songtitle} – {serieSinger}",
+		"notfound": "Karaoke nebylo nalezeno",
+		"tagtypes": {
+			"series": "Série",
+			"langs": "Jazyk | Jazyky | Jazyků",
+			"songtypes": "Typ skladby | Typy skladeb | Typů skladeb",
+			"singers": "Interpret | Interpreti | Interpretů",
+			"songwriters": "Autor skladby | Autoři skladeb | Autorů skladeb",
+			"families": "Obsah videa | Obsahy videí | Obsahů videí",
+			"origins": "Původ | Původy | Původů",
+			"genres": "Žánr | Žánry | Žánrů",
+			"platforms": "Platforma | Platformy | Platforem",
+			"creators": "Tvůrce | Tvůrci | Tvůrců",
+			"authors": "Autor karaoke | Autoři karaoke | Autorů karaoke",
+			"groups": "Skupina | Skupiny | Skupin",
+			"misc": "Ostatní",
+			"versions": "Verze | Verze | Verzí",
+			"warnings": "Upozornění | Upozornění | Upozornění",
+			"collections": "Kolekce | Kolekce | Kolekcí",
+			"singergroups": "Hudební skupina | Hudební skupiny | Hudebních skupin",
+			"franchises": "Franšíza | Franšízy | Franšíz",
+			"years": "Rok | Roky | Let",
+			"default": "Výchozí"
+		},
+		"singers_by": "Zpívá",
+		"songwriters_by": "Autor skladby",
+		"creators_by": "Tvůrce",
+		"authors_by": "Autor karaoke",
+		"singergroups_by": "Hudební skupina",
+		"duration": "Délka ",
+		"created_at": "Vytvořeno ",
+		"download": "Stáhnout",
+		"not_playable": "Web {instance} nepodporuje přehrávání této skladby v prohlížeči.",
+		"lyrics": {
+			"show": "Zobrazit text písně",
+			"hide": "Skrýt text písně"
+		},
+		"favorites": {
+			"add": "Přidat do oblíbených",
+			"remove": "Odebrat z oblíbených"
+		},
+		"set_banner": {
+			"btn": "Použít jako banner profilu",
+			"forbidden_label": "Toto karaoke nelze použít jako banner profilu."
+		},
+		"playlists": {
+			"add": "Přidat do playlistu",
+			"create": "Vytvořit nový playlist…",
+			"new_playlist_label": "Playlist uživatele {nickname}",
+			"add_success": "Karaoke bylo úspěšně přidáno do playlistu."
+		},
+		"problem": {
+			"title": "Je se skladbou {title} něco v nepořádku?",
+			"btn": {
+				"edit": "Navrhnout úpravu",
+				"media": "Problém s médiem",
+				"metadata": "Problém s metadaty",
+				"lyrics": "Problém s textem písně"
+			},
+			"form": {
+				"title": "Nahlásit problém",
+				"subtitle": "Snažíme se udržovat databázi ve vysoké kvalitě, ale občas se v ní přesto objeví problém. Děkujeme za pomoc!",
+				"song": "Skladba",
+				"type": {
+					"label": "Typ problému",
+					"media": "Problém s médiem",
+					"metadata": "Problém s metadaty",
+					"lyrics": "Problém s textem písně"
+				},
+				"comment": {
+					"label": "Komentář",
+					"placeholder": "Po dvou minutách přestane být text písně synchronizovaný."
+				},
+				"username": {
+					"label": "Vaše jméno",
+					"placeholder": "JsemPečlivka"
+				},
+				"submit": "Odeslat",
+				"thanks": {
+					"text": "Děkujeme! Problém co nejdříve opravíme: {url}",
+					"btn": "Zavřít"
+				}
+			}
+		},
+		"import": {
+			"login_required": "Chcete-li odeslat skladbu, musíte se přihlásit.",
+			"quota_count": "Stále můžete odeslat {count} skladbu. | Stále můžete odeslat {count} skladby. | Stále můžete odeslat {count} skladeb.",
+			"quota_reached": "Odeslali jste příliš mnoho skladeb. Než odešlete další, počkejte, až budou některé přijaty nebo odmítnuty.",
+			"sections": {
+				"files": "Soubory",
+				"parents": "Nadřazené skladby",
+				"titles": "Názvy",
+				"identity": "Identifikační údaje",
+				"categorization": "Zařazení",
+				"meta": "Metadata"
+			},
+			"desc": {
+				"parents": "Pokud je tato skladba alternativní verzí jiné skladby, vyberte nadřazené skladby, podle kterých se tento formulář předvyplní.",
+				"parents_public": "Když uživatel ve veřejném rozhraní vybere nadřazenou skladbu, uvidí také všechny její odvozené nebo alternativní verze.",
+				"titles": "Zadejte všechny názvy, které má skladba v různých jazycích. Obvykle má jen jeden název.",
+				"titles_default_language": "Jazyk výchozího názvu by měl odpovídat původnímu názvu skladby. U názvů psaných jiným než latinským písmem (čínským, japonským, arabským, korejským…) přidejte název „Přepis latinkou“ a nastavte jej jako výchozí.",
+				"aliases": "Pokud je skladba známá i pod jinými názvy, například zkratkami, zadejte je zde, aby ji lidé snáze našli. Není nutné uvádět slova, která již obsahují názvy skladby."
+			},
+			"description": "Pomocí tohoto formuláře můžete týmu instance {instance} odeslat karaoke. Do databáze nebude zařazeno okamžitě, protože musí projít kontrolou. Buďte prosím trpěliví. Pokud karaoke nevyhovuje pravidlům týmu, může být upraveno.",
+			"attention": "UPOZORNĚNÍ:",
+			"check_in_progress": "Než nám skladbu odešlete, zkontrolujte seznam právě připravovaných karaoke titulků. Zabráníte tak duplicitní práci a svět bude zase o něco lepší.",
+			"documentation_link": "Před odesláním skladby si přečtěte pravidla instance {instance}.",
+			"in_progress_link": "Seznam rozpracovaných karaoke titulků",
+			"license_reminder": "Vaše karaoke bude zveřejněno pod licencí {name}",
+			"license_link": "Další informace o licenci zobrazíte kliknutím sem.",
+			"add": "Přidat",
+			"create": "Vytvořit",
+			"show_hide": "Zobrazit/skrýt",
+			"add_file_media_error": "{name} není soubor média",
+			"add_file_media_not_supported_error": "{name} není podporovaný soubor média. Převeďte jej do některého z následujících formátů: {formats}",
+			"add_file_lyrics_error": "{name} není soubor s titulky",
+			"add_file_success": "Soubor {name} byl úspěšně přidán",
+			"comment": "Chcete přidat komentář?",
+			"comment_tooltip": "Zde můžete napsat zprávu týmu údržby nebo mu jednoduše poděkovat.",
+			"submit": "Odeslat karaoke",
+			"media_file": "Multimediální soubor",
+			"media_file_edit": "Nahradit soubor média",
+			"media_file_required": "Multimediální soubor je povinný",
+			"media_file_tooltip": "Podporované formáty souborů: {formats}",
+			"lyrics_file": "Soubor s textem písně",
+			"lyrics_file_tooltip": "Podporované formáty souborů: {formats}",
+			"lyrics_file_missing": "Chybí soubor s textem písně. To je v pořádku pouze při odesílání souboru MKV nebo karaoke bez textu (ano, i takové existuje).",
+			"title": "Název",
+			"title_required": "Zadejte název",
+			"title_tooltip": "Pokud název neznáte, zadejte také název série. Alternativní verzi pojmenujte například „Můj název ~ Disco verze“.",
+			"titles_aliases": "Alternativní názvy",
+			"titles_aliases_tooltip": "Zkrácené nebo alternativní názvy používané při hledání.",
+			"series_tooltip": "Televizní seriál, film, videohra apod.",
+			"series_singers_required": "Série, interpret a hudební skupina nemohou být současně prázdné.",
+			"franchises_tooltip": "Pokud je série součástí franšízy, například Gundam, Mario, Zelda nebo Naruto, zadejte ji zde.",
+			"songtypes_required": "Typ skladby je povinný",
+			"collections_required": "Musíte vybrat alespoň jednu kolekci",
+			"songorder": "Pořadí skladby",
+			"songorder_invalid": "Pořadí skladby není platné",
+			"songorder_tooltip": "Číslo úvodní nebo závěrečné znělky. Pokud je v sérii pouze jedna, ponechte pole prázdné.",
+			"langs_required": "Vyberte jazyk",
+			"year": "Rok uvedení",
+			"year_tooltip": "Rok vysílání série nebo vytvoření videa",
+			"year_required": "Rok uvedení je povinný",
+			"year_invalid": "Rok uvedení není platný",
+			"comment_required": "Komentář je povinný",
+			"singergroups_tooltip": "Pokud interpreti patří do hudební skupiny, přidejte ji sem. V přehrávači a seznamech skladeb se pak zobrazí hudební skupina místo jednotlivých interpretů.",
+			"songwriters_tooltip": "Skladatelé, aranžéři a textaři.",
+			"creators_tooltip": "Subjekt, který vytvořil sérii, například animační, filmové nebo herní studio.",
+			"authors_tooltip": "Sem byste měli přidat sami sebe. ;)",
+			"authors_required": "Autor karaoke je povinný",
+			"groups_tooltip": "Skupiny, v jejichž balíčcích ke stažení bude skladba zahrnuta.",
+			"parents": "Nadřazené skladby",
+			"parents_tooltip": "Je-li nastavena nadřazená skladba, toto karaoke se zobrazí jako její alternativní verze.",
+			"created_at": "Datum vytvoření",
+			"add_error": "Došlo k chybě a karaoke nebylo správně odesláno",
+			"i18n_select": "Přidat jazyk",
+			"i18n_delete": "Odebrat jazyk",
+			"romanization_warning": "Tento název nebo štítek obsahuje jinou než latinkovou abecedu. Musíte přidat také jazyk „Latinka (přepis)“, pokud text v jiné abecedě není úplným přepisem jiného jazyka.",
+			"default_language": "Výchozí jazyk",
+			"contact_infos_warning": "Vaše kontaktní údaje budou sdíleny se správci databáze, kteří se na vás mohou obrátit s dotazy k odeslanému karaoke.",
+			"contact_infos": "Kontaktní údaje",
+			"contact_infos_tooltip": "Zadejte kontaktní údaje, abychom se na vás mohli obrátit s případnými dotazy ke karaoke.",
+			"from_display_type": "Typ štítku zobrazovaný jako původ",
+			"from_display_type_tooltip": "Vyberte typ štítku, který se zobrazí u názvu skladby ve tvaru „[název] z [tento typ štítku]“."
+		},
+		"stats": {
+			"favorited": "Počet uživatelů s položkou v oblíbených: {number}",
+			"requested": "Počet přání: {number}",
+			"played": "Počet přehrání: {number}"
+		},
+		"siblings": "Podobné skladby",
+		"childrens": "Odvozené skladby",
+		"parents": "Nadřazené skladby",
+		"other_liked": "Lidem, kterým se líbilo toto, se také líbilo…",
+		"player": {
+			"previous": "Předchozí skladba (B)",
+			"next": "Další skladba (N)",
+			"theater_mode": "Režim kina (T)",
+			"fullscreen": "Celá obrazovka (F)",
+			"autoplay": "Automatické přehrávání",
+			"loop": "Opakování",
+			"description": "Toto video hostuje instance {instance}. Pokud plánujete akci nebo stream, zvažte použití aplikace!"
+		}
+	},
+	"layout": {
+		"loading": "Načítání…",
+		"empty": "Hledali jsme všude, ale nic jsme nenašli.",
+		"suggest": "Nemůžete najít, co hledáte?",
+		"suggest_open": "Navrhněte nám skladbu!",
+		"remove_tags": "Zkusili jste z hledání odebrat některé filtrovací štítky?",
+		"end_favorites": "Toto je konec oblíbených položek.",
+		"end_my_favorites": "Toto je konec vašich oblíbených položek.",
+		"end_playlists": "Zobrazit dalších {number} playlistů",
+		"explore": "Přidejte nějaké!",
+		"results": "{count} výsledek | {count} výsledky | {count} výsledků",
+		"collections": "Instance {instance} nabízí mnoho kolekcí. Vyberte ty, které vás zajímají.",
+		"slogan": "Přijďte si zazpívat tuto skladbu s Karaoke Mugen!",
+		"end_users": "Dostali jste se na konec seznamu uživatelů. Gratulujeme!",
+		"app_banner": {
+			"title": "Věděli jste?",
+			"description": "Karaoke Mugen je také aplikace pro Windows, macOS a Linux, se kterou můžete spravovat playlisty a karaoke akce s přáteli, na anime conech i během streamování.",
+			"more_features": "Nabízí mnohem více funkcí než instance {instance}!",
+			"link": "Aplikaci pro svůj počítač si můžete stáhnout na {link}.",
+			"website": "webu"
+		}
+	},
+	"footer": {
+		"home": "Domovská stránka projektu",
+		"api_documentation": "Dokumentace API",
+		"translation": "Přispět k překladům",
+		"software_under_license": "Licence softwaru",
+		"base_under_licence": "Licence databáze karaoke"
+	},
+	"stats": {
+		"karaokes": "Skladba | Skladby | Skladeb",
+		"all_duration": "Celková délka skladeb",
+		"last_generation": "Poslední aktualizace",
+		"media_size": "Velikost médií"
+	},
+	"duration": {
+		"days": "d",
+		"hours": "h",
+		"minutes": "min",
+		"seconds": "s"
+	},
+	"menu": {
+		"play_random_song": "Přehrát náhodnou skladbu",
+		"add_repository": "Přidat tento repozitář do aplikace",
+		"random": "Hodit kostkou",
+		"database": "Databáze",
+		"karas": "Skladby",
+		"songtypes": "Typy",
+		"tags": "Ostatní…",
+		"singergroups": "Kapely",
+		"misc": "Ostatní štítky",
+		"warnings": "Upozornění",
+		"groups": "Skupiny",
+		"families": "Obsah videa",
+		"origins": "Původ",
+		"genres": "Žánry",
+		"platforms": "Platformy",
+		"versions": "Verze",
+		"franchises": "Franšízy",
+		"singers": "Interpreti",
+		"series": "Série",
+		"songwriters": "Autoři skladeb",
+		"creators": "Tvůrci",
+		"authors": "Autoři karaoke",
+		"langs": "Jazyky",
+		"years": "Roky",
+		"community": "Komunita",
+		"playlists": "Playlisty",
+		"remotes": "Vzdálené repozitáře",
+		"administration": "Správa",
+		"dashboard": "Přehled",
+		"bans": "Zákazy",
+		"search_users": "Hledat uživatele",
+		"discord": "Discord",
+		"forum": "Fórum",
+		"kara_import": "Odeslat karaoke",
+		"kara_suggest": "Navrhnout karaoke",
+		"account": "Účet",
+		"anime_list": "Moje anime",
+		"submissions": "Moje příspěvky",
+		"login": "Přihlásit se",
+		"logout": "Odhlásit se",
+		"register": "Zaregistrovat se",
+		"connection": "Přihlášení",
+		"switch_language": "Přepnout jazyk"
+	},
+	"profile": {
+		"favorites": "Oblíbené",
+		"you": " (to jste vy!)",
+		"edit": "Upravit profil",
+		"shared_favorites": "Společné oblíbené položky",
+		"shared_favorites_number": "{count} společná oblíbená položka | {count} společné oblíbené položky | {count} společných oblíbených položek",
+		"private": "Váš profil je soukromý a vidíte jej pouze vy.",
+		"favorites_count": "{count} oblíbená položka | {count} oblíbené položky | {count} oblíbených položek",
+		"playlists_count": "{count} playlist | {count} playlisty | {count} playlistů",
+		"anime_list": "Moje anime",
+		"public_favorites": "Vaše oblíbené položky jsou veřejné. Kliknutím je skryjete.",
+		"private_favorites": "Vaše oblíbené položky jsou soukromé. Kliknutím je zveřejníte.",
+		"submissions": "Moje příspěvky"
+	},
+	"search": {
+		"placeholder": {
+			"kara": "Série, interpreti, názvy…",
+			"user": "Uživatelská jména…",
+			"tag": "Názvy štítků…",
+			"playlist": "Názvy, uživatelé…",
+			"submissions": "Názvy"
+		},
+		"sort": {
+			"a_z": "A–Z",
+			"kara_count": "Počet karaoke",
+			"recent": "Podle data vytvoření",
+			"most_played": "Nejčastěji přehrávané",
+			"most_played_recently": "Nejčastěji přehrávané v poslední době",
+			"most_favorites": "Nejčastěji v oblíbených",
+			"most_requested": "Nejčastěji na přání",
+			"most_requested_recently": "Nejčastěji na přání v poslední době",
+			"likes": "Nejvíce hodnocení To se mi líbí",
+			"languages": "Podle jazyků",
+			"duration": "Podle délky",
+			"username": "Podle uživatelských jmen",
+			"recent_modified": "Podle data změny",
+			"status": "Podle stavu",
+			"added_at": "Podle data přidání"
+		},
+		"next": "Další stránka",
+		"previous": "Předchozí stránka",
+		"aria": {
+			"goto": "Přejít na stránku {0}",
+			"page": "Stránka {0}",
+			"sort": "Řadit podle"
+		},
+		"types": {
+			"collections": "Kolekce",
+			"languages": "Jazyky"
+		}
+	},
+	"modal": {
+		"reset_password": {
+			"description": "Zadejte nové heslo",
+			"button": "Změnit heslo"
+		},
+		"login": {
+			"title": "Přihlášení",
+			"subtitle": "Přihlaste se, abyste mohli zobrazit oblíbené položky a upravit svůj profil.",
+			"fields": {
+				"username": {
+					"label": "Uživatelské jméno",
+					"placeholder": "LoveLiveFan93"
+				},
+				"password": {
+					"label": "Heslo",
+					"placeholder": "ActuallyIdolM{'@'}sterIsBetter"
+				},
+				"forgot_password": {
+					"label": "Zapomněli jste heslo?",
+					"error": "Heslo se nepodařilo obnovit. Kontaktujte: {email}.",
+					"error_fallback": "správce serveru, ke kterému váš účet patří",
+					"success": "Byl odeslán e-mail s odkazem pro obnovení hesla."
+				}
+			},
+			"submit": "Přihlásit se"
+		},
+		"signup": {
+			"title": "Registrace",
+			"subtitle": "Zaregistrujte se, abyste si mohli ukládat oblíbené položky a vytvořit profil.",
+			"fields": {
+				"username": {
+					"label": "Uživatelské jméno",
+					"placeholder": "LoveLiveFan93",
+					"char_not_allowed": "Znak „{char}“ není povolen"
+				},
+				"password": {
+					"label": "Heslo",
+					"placeholder": "ActuallyIdolM{'@'}sterIsBetter"
+				},
+				"password_confirmation": {
+					"label": "Potvrzení hesla",
+					"placeholder": "ActuallyIdolM{'@'}sterIsBetter"
+				},
+				"email": {
+					"label": "E-mail",
+					"placeholder": "test{'@'}shelter.moe"
+				}
+			},
+			"passwords_mismatch": "Hesla se neshodují",
+			"submit": "Zaregistrovat se"
+		},
+		"profile": {
+			"title": "Upravit profil",
+			"headers": {
+				"profile": "O mně",
+				"privacy": "Soukromí",
+				"lang": "Jazykové preference",
+				"password": "Změnit heslo"
+			},
+			"fields": {
+				"username": {
+					"label": "Uživatelské jméno"
+				},
+				"nickname": {
+					"label": "Přezdívka",
+					"placeholder": "LoveLiveFan93"
+				},
+				"password": {
+					"label": "Heslo",
+					"placeholder": "ReallyIPreferIdolM{'@'}ster"
+				},
+				"password_confirmation": {
+					"label": "Potvrzení hesla",
+					"placeholder": "ReallyIPreferIdolM{'@'}ster"
+				},
+				"email": {
+					"label": "E-mail",
+					"placeholder": "test{'@'}shelter.moe"
+				},
+				"url": {
+					"label": "Web",
+					"placeholder": "https://karaokes.moe"
+				},
+				"bio": {
+					"label": "Životopis",
+					"placeholder": "To je můj život"
+				},
+				"location": {
+					"label": "Místo"
+				},
+				"discord": {
+					"label": "Discord",
+					"placeholder": "Karak#1423"
+				},
+				"bluesky": {
+					"placeholder": "karaokemugen.bsky.social",
+					"label": "Bluesky"
+				},
+				"mastodon": {
+					"label": "Mastodon",
+					"placeholder": "karaokemugen{'@'}shelter.moe"
+				},
+				"instagram": {
+					"label": "Instagram",
+					"placeholder": "karaokemugen"
+				},
+				"twitch": {
+					"label": "Twitch",
+					"placeholder": "KaraokeLive"
+				},
+				"myanimelist": {
+					"label": "MyAnimeList",
+					"placeholder": "karaokemugen"
+				},
+				"anilist": {
+					"label": "AniList",
+					"placeholder": "karaokemugen"
+				},
+				"kitsu": {
+					"label": "Kitsu",
+					"placeholder": "karaokemugen"
+				},
+				"gitlab": {
+					"label": "GitLab",
+					"placeholder": "karaokemugen"
+				},
+				"anime_list_to_fetch": {
+					"label": "Seznam anime k načtení"
+				},
+				"banner": {
+					"label": "Banner",
+					"remove": "Obnovit výchozí banner",
+					"upload": "Nahrát banner",
+					"change": "Chcete-li banner změnit, přejděte na stránku některé karaoke skladby a klikněte na tlačítko „Použít jako banner profilu“. Plně přizpůsobitelné bannery jsou funkcí pro dárce.",
+					"donator": "Děkujeme za podporu, jste skvělí! Můžete nahrát vlastní banner nebo použít banner z libovolné karaoke skladby."
+				},
+				"flag_public": {
+					"label": "Veřejný profil",
+					"checkbox": "Zveřejnit můj profil",
+					"desc": "Ve výchozím nastavení je váš účet viditelný ve vyhledávání uživatelů a zobrazuje všechny výše uvedené údaje kromě e-mailové adresy. Pokud toto políčko zrušíte, váš účet se už nebude zobrazovat ve výsledcích vyhledávání (po přihlášení jej uvidíte pouze vy)."
+				},
+				"flag_contributor_emails": {
+					"label": "Moje příspěvky",
+					"checkbox": "Posílat e-maily o změnách stavu vašich příspěvků",
+					"desc": "Po zapnutí budete dostávat e-mail pokaždé, když se změní stav vámi odeslaných skladeb (přijato, odmítnuto, vyžádány změny apod.). Ke změnám stavu dochází, když správce databáze zkontroluje odeslané skladby."
+				},
+				"flag_displayfavorites": {
+					"label": "Oblíbené",
+					"checkbox": "Zobrazit mé oblíbené skladby",
+					"desc": "Spolu s veřejným profilem můžete všem ukázat také své oblíbené skladby, a tedy i svůj vkus. Tato možnost je ve výchozím nastavení vypnutá. Abyste mohli oblíbené skladby zobrazit, musí být váš profil nejprve veřejný."
+				},
+				"flag_sendstats": {
+					"label": "Statistiky",
+					"checkbox": "Používat mé oblíbené skladby a karaoke přání pro statistiky"
+				},
+				"lang_prefs": {
+					"main_song_name_lang": "Preferovaný jazyk názvu skladby",
+					"fallback_song_name_lang": "Záložní jazyk názvu skladby"
+				}
+			},
+			"passwords_mismatch": "Hesla se neshodují",
+			"submit": "Uložit",
+			"delete": "Smazat účet",
+			"select_avatar": "Vybrat avatar"
+		},
+		"add_repository": {
+			"button": "Repozitář:",
+			"label": "Přidejte si tento repozitář do aplikace Karaoke Mugen!",
+			"desc": "Tento repozitář můžete do aplikace Karaoke Mugen přidat kliknutím na tlačítko níže. Pokud Karaoke Mugen není v počítači nainstalován, tlačítko nebude mít žádný účinek.",
+			"download": "Aplikaci si můžete stáhnout zde.",
+			"manual": "Chcete-li repozitář přidat ručně, otevřete aplikaci Karaoke Mugen, přidejte do ní repozitář {repository} a zaškrtněte „{online}“.",
+			"online": "Online",
+			"add": "Přidat",
+			"cancel": "Zrušit"
+		},
+		"delete_account": {
+			"label_admin": "Opravdu chcete tento účet smazat?",
+			"label": "Opravdu chcete svůj účet smazat?",
+			"add": "Smazat účet",
+			"cancel": "Zrušit"
+		},
+		"suggest": {
+			"title": "Návrh",
+			"subtitle": "Nenašli jste, co jste hledali? Můžete odeslat návrh.",
+			"fields": {
+				"title": {
+					"label": "Název"
+				},
+				"series": {
+					"label": "Série"
+				},
+				"singer": {
+					"label": "Interpret"
+				},
+				"version": {
+					"label": "Verze"
+				},
+				"link": {
+					"label": "Odkaz na médium"
+				},
+				"lyrics_link": {
+					"label": "Text písně (odkaz)"
+				},
+				"comment": {
+					"label": "Komentář"
+				},
+				"name": {
+					"label": "Vaše jméno",
+					"placeholder": "Tajemný anonym"
+				}
+			},
+			"submit": "Odeslat",
+			"submitted": {
+				"subtitle": "Zprávu jsme přijali!",
+				"text": "Váš návrh jsme přijali. Jeho stav můžete zkontrolovat kliknutím {here}.",
+				"here": "zde",
+				"close": "Zavřít"
+			}
+		},
+		"import_suggestion": {
+			"subtitle": "Soubor musí být ve formátu CSV s hodnotami oddělenými středníky a v pořadí interpret;název;jazyk (jazyk ve formátu ISO 639-2).",
+			"source": "Zdroj",
+			"file": "Soubor"
+		},
+		"download": {
+			"label": "Stáhnout karaoke skladbu",
+			"cancel": "Zrušit",
+			"karabundle": "Stáhnout data (.json)",
+			"subtitles": "Stáhnout text písně (.{format})",
+			"media": "Stáhnout médium (.{format})",
+			"media_hardsub": "Stáhnout médium s vypálenými titulky (hardsub .mp4)"
+		},
+		"crop": {
+			"label": "Oříznout avatar",
+			"add": "Přidat",
+			"cancel": "Zrušit"
+		},
+		"join_kara": {
+			"label": "Připojit se ke karaoke párty",
+			"desc": "Zadejte kód pro připojení k existující karaoke párty",
+			"add": "Připojit se",
+			"cancel": "Zrušit",
+			"help": "Zadejte kód relace (obvykle 4 písmena) nebo adresu URL karaoke.",
+			"error": "Kód není platný. Zkontrolujte zadaný údaj."
+		},
+		"stats": {
+			"label": "Používat mé oblíbené skladby a karaoke přání pro statistiky",
+			"desc": "Vaše oblíbené skladby a skladby, které jste si během relace přáli, používáme k vytváření statistik využití (například ke zjištění nejoblíbenějších skladeb).",
+			"refuse_desc": "Pokud se těchto statistik využití nechcete účastnit ani anonymně, dejte nám vědět. Pokud odmítnete, server bude vaše údaje ignorovat a aplikace Karaoke Mugen je nebude odesílat.",
+			"change": "Toto nastavení můžete kdykoli změnit ve svém profilu. Souhlasíte s použitím svých údajů pro statistiky?",
+			"yes": "Ano",
+			"no": "Ne"
+		},
+		"set_banner": {
+			"label": "Vybrat banner",
+			"catch": "Přizpůsobte si profil nádherným bannerem! Projděte si bannery a potvrďte výběr.",
+			"cancel": "Zrušit",
+			"set": "Použít tento obrázek",
+			"next": "Další obrázek",
+			"previous": "Předchozí obrázek",
+			"one": "Pro skladby obsahující pouze zvuk je k dispozici jen jeden banner."
+		},
+		"create_edit_playlist": {
+			"title_create": "Vytvořit playlist",
+			"title_edit": "Upravit playlist",
+			"name": "Název",
+			"description": "Popis",
+			"contributors": "Přispěvatelé",
+			"public": "Veřejný",
+			"submit_create": "Uložit",
+			"submit_edit": "Upravit"
+		},
+		"delete_playlist": {
+			"label": "Opravdu chcete smazat playlist „{name}“?",
+			"add": "Smazat playlist",
+			"cancel": "Zrušit"
+		},
+		"add_duplicate_in_playlist": {
+			"label": "Tato karaoke skladba už v playlistu „{name}“ je.",
+			"add": "Přesto přidat",
+			"cancel": "Zrušit"
+		},
+		"create_tag": {
+			"title": "Rychlé vytvoření štítku",
+			"submit": "Uložit",
+			"name": "Název",
+			"types": "Typy štítků"
+		}
+	},
+	"titles": {
+		"home": "Domů"
+	},
+	"toast": {
+		"LOG_ERROR": "Nesprávné přihlašovací údaje.",
+		"USER_LOGIN_INVALID": "Neplatné uživatelské jméno. Používejte pouze písmena a číslice (povoleny jsou také znaky ._-).",
+		"USER_CREATED": "Uživatel byl úspěšně vytvořen",
+		"GENERATED_KARA": "Karaoke skladba byla úspěšně odeslána.",
+		"EDITED_KARA": "Úprava byla úspěšně odeslána.",
+		"IMPORT_KARA_ERROR": "Karaoke skladbu se nepodařilo odeslat.",
+		"USER_ALREADY_LIKED_SUGGESTION": "Pro tento návrh jste už hlasovali.",
+		"EDIT_KARA_ERROR": "Úpravu se nepodařilo odeslat.",
+		"FILE_UPLOADED": "Soubor byl nahrán.",
+		"USER_EDITED": "Uživatel byl úspěšně upraven",
+		"USER_DELETED": "Uživatel byl úspěšně smazán",
+		"PASSWORD_UPDATED": "Heslo bylo úspěšně aktualizováno",
+		"ADD_FAVORITE_ERROR": "Tuto skladbu se nepodařilo přidat do oblíbených",
+		"REMOVE_FAVORITE_ERROR": "Tuto skladbu se nepodařilo odebrat z oblíbených",
+		"POST_SUGGESTION_ERROR": "Návrh se nepodařilo odeslat",
+		"NO_KARA_FOUND": "Nebyla nalezena žádná skladba",
+		"GET_KARA_ERROR": "Chyba při načítání skladby",
+		"GET_KARAS_ERROR": "Chyba při načítání seznamu skladeb",
+		"GET_BASESTATS_ERROR": "Chyba při načítání statistik",
+		"GET_YEARS_ERROR": "Chyba při načítání seznamu let",
+		"GET_FAVORITES_FROM_USER_FORBIDDEN_ERROR": "Oblíbené skladby tohoto uživatele nejsou veřejné",
+		"GET_FAVORITES_FROM_USER_NOT_FOUND_ERROR": "Nebyl nalezen žádný uživatel",
+		"NEW_KARA_ISSUE_ERROR": "Problém se nepodařilo vytvořit",
+		"BAD_IMPORT_DATA_ERROR": "Chybný formát dat",
+		"GET_SUGGESTIONS_ERROR": "Návrhy se nepodařilo načíst",
+		"GET_SUGGESTIONS_LANGUAGES_ERROR": "Jazyky návrhů se nepodařilo načíst",
+		"UPDATE_SUGGESTION_LIKE_ERROR": "Pro tuto skladbu se nepodařilo hlasovat",
+		"ADD_SUGGESTION_ERROR": "Návrh se nepodařilo odeslat",
+		"REMOVE_SUGGESTION_ERROR": "Návrh se nepodařilo odebrat",
+		"GET_TAGS_ERROR": "Chyba při načítání štítků",
+		"GET_USER_ERROR": "Chyba při načítání uživatele",
+		"GET_USERS_ERROR": "Chyba při načítání seznamu uživatelů",
+		"CREATE_USER_ERROR": "Chyba při vytváření uživatele",
+		"WRONG_AVATAR_FILE_TYPE": "Nesprávný typ souboru avataru",
+		"AVATAR_ERROR": "Chyba při importu souboru avataru",
+		"WRONG_BANNER_FILE_TYPE": "Nesprávný typ souboru banneru",
+		"BANNER_NOT_GENERATED_YET": "Banner zatím nebyl vygenerován!",
+		"BANNER_BANNED": "Tento banner nelze použít",
+		"PASSWORD_TOO_SHORT": "Heslo je příliš krátké",
+		"CHECK_YOUR_PRIVILEGES": "Nedostatečná oprávnění",
+		"EDIT_USER_ERROR": "Chyba při úpravě profilu",
+		"GITLAB_DISABLED": "Podpora GitLabu je vypnutá",
+		"SUBFILE_FORMAT_UNKNOWN": "Neznámý formát textu písně",
+		"SUBFILE_PROCESS_ERROR": "Chyba při zpracování textu písně",
+		"UPLOADED_MEDIA_ERROR": "Chyba při zpracování média",
+		"UNKNOWN_PLAYLIST": "Neznámý playlist",
+		"PL_DELETE_ERROR": "Chyba při mazání playlistu",
+		"PL_EDIT_ERROR": "Chyba při úpravě playlistu",
+		"PL_CREATE_ERROR": "Chyba při vytváření playlistu",
+		"PL_GET_ERROR": "Chyba při načítání playlistů",
+		"PL_ADD_CONTRIBUTOR_NO_SELF_ERROR": "Nemůžete přidat sami sebe jako přispěvatele",
+		"PL_ADD_CONTRIBUTOR_ERROR": "Chyba při přidávání přispěvatelů",
+		"PL_REMOVE_CONTRIBUTOR_ERROR": "Chyba při odebírání přispěvatelů",
+		"PL_GET_CONTENTS_ERROR": "Chyba při načítání obsahu playlistu",
+		"UNKNOWN_SONG": "Neznámá skladba",
+		"PL_ADD_SONG_ERROR": "Chyba při přidávání skladby do playlistu",
+		"INVALID_DATA": "Neplatná data",
+		"PL_DELETE_SONG_ERROR": "Chyba při odebírání skladby z playlistu",
+		"PL_EDIT_SONG_ERROR": "Chyba při úpravě obsahu playlistu",
+		"PL_EXPORT_ERROR": "Chyba při exportu playlistu",
+		"PL_IMPORT_ERROR": "Chyba při importu playlistu",
+		"PL_SHARE_ERROR": "Chyba při sdílení playlistu",
+		"PL_SHARE_CLIPBOARD_SUCCESS": "Odkaz na playlist byl zkopírován do schránky",
+		"PL_SHARE_CLIPBOARD_FAIL": "Odkaz na playlist se nepodařilo zapsat do schránky",
+		"PL_SHUFFLE_ERROR": "Chyba při promíchávání playlistu",
+		"USER_INBOX_QUOTA_REACHED": "Dosáhli jste svého limitu.",
+		"CONTRIBUTOR_TRUST_LEVEL_UPDATED": "Úroveň důvěry přispěvatele byla aktualizována.",
+		"DELETE_INBOX_ERROR": "Chyba při mazání doručených položek"
+	},
+	"roles": {
+		"donator": "Dárce",
+		"contributor": "Přispěvatel",
+		"maintainer": "Správce",
+		"admin": "Administrátor"
+	},
+	"suggestions": {
+		"kara": {
+			"yes": "Ano!",
+			"ok": "Vše v pořádku!",
+			"remove": "Odebrat"
+		},
+		"header": {
+			"title": "Návrhy k importu",
+			"description": "Co to je?",
+			"purpose": "Zde jsou karaoke skladby připravené k importu. Můžete vyhledat konkrétní skladbu nebo stisknout tlačítko „Náhodně vybrat jiné skladby“. Karaoke skladbu můžete podpořit stisknutím tlačítka „Ano!“.",
+			"suggestion": "Pokud stále nemůžete najít hledanou skladbu, klikněte na „Odeslat návrh“.",
+			"random_selection": "Náhodně vybrat jiné skladby",
+			"send_suggestion": "Odeslat návrh",
+			"import_suggestion": "Importovat soubor návrhů"
+		},
+		"modal": {
+			"welcome": {
+				"title": "Kde to jsem?",
+				"text": "Existuje mnoho dalších karaoke databází, například pro programy UltraStar, Karawin nebo KaraFun. Zde proto najdete už dostupné skladby se synchronizovanými texty. Nemůžeme začlenit všechno najednou, a tak bychom rádi znali vaše priority!",
+				"text2": "Můžete něco vyhledat, nebo výběr nechat na náhodě. V obou případech vám budeme vděční za čas, který věnujete zlepšování našich databází. Děkujeme!",
+				"text3": "Pokud potřebujete pomoc, navštivte nás na platformě {discord}. Rádi si poslechneme vaše návrhy i připomínky.",
+				"discord": "Discord",
+				"btn": "Dobře!"
+			}
+		}
+	},
+	"remote": {
+		"code": "Kód",
+		"last_ip": "Poslední IP",
+		"last_use": "Poslední použití",
+		"permanent": "Trvalý",
+		"token": "Token",
+		"edit_button": "Upravit řádek",
+		"delete_button": "Smazat řádek",
+		"edit_success": "Vzdálený přístup byl úspěšně upraven",
+		"edit_error": "Chyba při úpravě vzdáleného přístupu",
+		"delete_error": "Chyba při mazání vzdáleného přístupu",
+		"yes": "Ano",
+		"no": "Ne"
+	},
+	"dashboard": {
+		"version": {
+			"tag": "Značka serveru Karaoke Mugen: {tag}",
+			"date": "Datum sestavení: {date}",
+			"commit": "Revize: {commit}"
+		},
+		"update_git": "Aktualizovat repozitář Git",
+		"update_git_triggered": "Aktualizace byla spuštěna.",
+		"generate_database": "Vygenerovat databázi",
+		"generation_triggered": "Generování bylo spuštěno.",
+		"generate_previews": "Vygenerovat náhledy",
+		"generate_hardsubs": "Vygenerovat vypálené titulky",
+		"trust_levels": "Úroveň důvěry přispěvatele",
+		"available_trust_levels": "Dostupné úrovně důvěry:",
+		"trust_level_submissions": "Úroveň {level}: počet odeslaných skladeb: {songs}",
+		"trust_level": "Úroveň {level}",
+		"submissions_status": "Do limitu se započítávají pouze příspěvky ve stavu „Odesláno“, „Kontroluje se“ a „Vyžádány změny“."
+	},
+	"playlists": {
+		"create": "Vytvořit nový playlist",
+		"import": "Importovat playlist",
+		"karacount": "Počet skladeb: {karacount}",
+		"duration": "Délka: {duration}",
+		"public": "Veřejný",
+		"private": "soukromý",
+		"export": "Exportovat",
+		"shuffle": "Promíchat",
+		"copy": "Kopírovat",
+		"copy_of": "Kopie playlistu {playlist}",
+		"edit": "Upravit",
+		"delete": "Smazat",
+		"share": "Sdílet",
+		"repeat": "Opakovat",
+		"add_karaoke": "Přidat karaoke skladbu do playlistu",
+		"by_owner": "od uživatele {nickname}",
+		"and_contributors": "(a {contributors})",
+		"and_contributors_more": "(a {contributors}, další: {count})",
+		"my_playlists": "Moje playlisty",
+		"community": "Komunita",
+		"favorites": "Oblíbené",
+		"app_banner": "Tento playlist už je pořádně dlouhý! Pokud plánujete akci nebo stream, zvažte použití aplikace namísto instance {instance}. Instance {instance} NENÍ online nepřetržitě."
+	},
+	"bans": {
+		"add": "Přidat nový zákaz",
+		"type": "Typ",
+		"value": "Hodnota",
+		"banned_at": "Zakázáno dne",
+		"reason": "Důvod",
+		"submit": "Přidat",
+		"delete": "Odebrat"
+	},
+	"languages": {
+		"qro": "Latinka (romanizace)"
+	},
+	"submissions": {
+		"status": {
+			"sent": "Odesláno",
+			"in_review": "Kontroluje se",
+			"changes_requested": "Vyžádány změny",
+			"accepted": "Přijato",
+			"rejected": "Odmítnuto"
+		},
+		"modified_at": "Upraveno dne {date}",
+		"reason_button": "Komentáře správce",
+		"reason": "Komentáře správce: {reason}",
+		"cleanup": "Příspěvky ve stavu „Odmítnuto“, „Přijato“ nebo „Vyžádány změny“, které jsou starší než {days} dnů, se automaticky mažou.",
+		"contact_maintainers": "Pokud potřebujete kontaktovat správce, můžete je zastihnout přes:",
+		"email": "E-mail",
+		"forum": "Fórum",
+		"discord": "Discord",
+		"quota": "Ještě můžete odeslat skladby: { songs } z { quota }."
+	}
+}
