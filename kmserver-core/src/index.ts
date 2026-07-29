@@ -35,7 +35,7 @@ const appPath = findWorkspaceRoot();
 const dataPath = resolve(appPath, 'app/');
 const resourcePath = resolve(appPath, 'kmserver-core/');
 
-const acceptedLanguages = ['en', 'fr', 'es', 'id', 'de', 'pt', 'it', 'pl', 'ta', 'br', 'ja'];
+const acceptedLanguages = ['en', 'fr', 'es', 'id', 'de', 'pt', 'it', 'pl', 'ta', 'br', 'ja', 'cs'];
 
 const pjson = JSON.parse(await readFile(resolve(resourcePath, 'package.json'), 'utf-8'));
 

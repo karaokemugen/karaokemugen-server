@@ -10,6 +10,7 @@ import plCountries from 'i18n-iso-countries/langs/pl.json';
 import taCountries from 'i18n-iso-countries/langs/ta.json';
 import brCountries from 'i18n-iso-countries/langs/br.json';
 import jaCountries from 'i18n-iso-countries/langs/ja.json';
+import csCountries from 'i18n-iso-countries/langs/cs.json';
 
 countries.registerLocale(enCountries);
 countries.registerLocale(frCountries);
@@ -22,6 +23,7 @@ countries.registerLocale(plCountries);
 countries.registerLocale(taCountries);
 countries.registerLocale(brCountries);
 countries.registerLocale(jaCountries);
+countries.registerLocale(csCountries);
 
 export function getListCountriesInLocale(userLang:string) {
 	const result = [];
