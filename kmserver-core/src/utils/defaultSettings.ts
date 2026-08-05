@@ -1,6 +1,6 @@
 import z from 'zod';
 
-import { zInt, zNonEmptyString, zUUID } from '../lib/utils/validators.js';
+import { zNonEmptyString, zUUID } from '../lib/utils/validators.js';
 import { Config } from '../types/config.js';
 
 // Karaoke Mugen default configuration file
@@ -401,10 +401,14 @@ export const configConstraints = z.object({
 			database: zNonEmptyString,
 		}),
 		Binaries: z.object({
-			ffmpeg: zNonEmptyString,
+			ffmpeg: z.object({
+				Linux: z.string().optional(),
+				OSX: z.string().optional(),
+				Windows: z.string().optional(),
+			})
 		})
 	}),
 	Frontend: z.object({
-		Port: zInt
+		Port: z.number().positive()
 	})
 })
