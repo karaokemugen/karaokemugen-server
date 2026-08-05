@@ -1,6 +1,4 @@
-import { pg as yesql } from 'yesql';
-
-import { buildClauses, db, transaction } from '../lib/dao/database.js';
+import { buildClauses, db, prepareNamedParamsQuery, transaction } from '../lib/dao/database.js';
 import { WhereClause } from '../lib/types/database.js';
 import { DBPLC, DBPLCBase, PLCInsert } from '../lib/types/database/playlist.js';
 import { PLCParams, PLParams } from '../lib/types/playlist.js';
@@ -12,7 +10,7 @@ import * as sql from './sqls/playlist.js';
 const service = 'PlaylistDAO';
 
 export function updatePlaylist(pl: DBPL) {
-	return db().query(yesql(sql.editPlaylist)(pl));
+	return db().query(prepareNamedParamsQuery(sql.editPlaylist)(pl));
 }
 
 export async function truncatePlaylist(plaid: string) {
@@ -20,11 +18,11 @@ export async function truncatePlaylist(plaid: string) {
 }
 
 export async function updatePLC(plc: DBPLCBase) {
-	await db().query(yesql(sql.updatePLC)(plc));
+	await db().query(prepareNamedParamsQuery(sql.updatePLC)(plc));
 }
 
 export function insertPlaylist(pl: DBPL) {
-	return db().query(yesql(sql.createPlaylist)(pl));
+	return db().query(prepareNamedParamsQuery(sql.createPlaylist)(pl));
 }
 
 export function deletePlaylist(id: string) {
@@ -36,14 +34,14 @@ export function updatePlaylistKaraCount(id: string) {
 }
 
 export function updatePlaylistLastEditTime(id: string) {
-	return db().query(yesql(sql.updatePlaylistLastEditTime)({
+	return db().query(prepareNamedParamsQuery(sql.updatePlaylistLastEditTime)({
 		plaid: id,
 		modified_at: new Date()
 	}));
 }
 
 export function shiftPosInPlaylist(id: string, pos: number, shift: number) {
-	return db().query(yesql(sql.shiftPosInPlaylist)({
+	return db().query(prepareNamedParamsQuery(sql.shiftPosInPlaylist)({
 		shift,
 		plaid: id,
 		pos
@@ -141,7 +139,7 @@ export async function selectPlaylists(params: PLParams): Promise<DBPL[]> {
 	}
 	const query = sql.selectPlaylists(joinClauses, whereClauses, filterClauses.sql, filterClauses.additionalFrom.join(''), orderClause, selectClauses, groupClauses);
 	const res = await db().query(
-		yesql(query)(yesqlPayload.params)
+		prepareNamedParamsQuery(query)(yesqlPayload.params)
 	);
 	return res.rows;
 }
@@ -167,7 +165,7 @@ export async function selectPlaylistContents(params: PLCParams): Promise<DBPLC[]
 		filterClauses.additionalFrom.join('')
 	);
 	const res = await db().query(
-		yesql(query)({
+		prepareNamedParamsQuery(query)({
 			plaid: params.plaid,
 			username: params.username,
 			...filterClauses.params,

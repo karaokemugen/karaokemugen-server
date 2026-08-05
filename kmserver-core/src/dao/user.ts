@@ -1,6 +1,4 @@
-import {pg as yesql} from 'yesql';
-
-import { db, paramWords } from '../lib/dao/database.js';
+import { db, paramWords, prepareNamedParamsQuery } from '../lib/dao/database.js';
 import { DBUser } from '../lib/types/database/user.js';
 import { User } from '../lib/types/user.js';
 import logger from '../lib/utils/logger.js';
@@ -50,7 +48,7 @@ export async function selectAllUsers(searchParams?: UserParams): Promise<DBUser[
 		limitClause = ` LIMIT :size`;
 	}
 	const res = await db().query(
-		yesql(sql.selectUser(searchParams.filter, whereClauses, offsetClause, limitClause, false))(searchParams)
+		prepareNamedParamsQuery(sql.selectUser(searchParams.filter, whereClauses, offsetClause, limitClause, false))(searchParams)
 	);
 	return res.rows;
 }

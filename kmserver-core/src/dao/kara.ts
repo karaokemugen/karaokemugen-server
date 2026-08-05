@@ -1,6 +1,4 @@
-import {pg as yesql} from 'yesql';
-
-import {buildClauses, buildTypeClauses, db, transaction} from '../lib/dao/database.js';
+import {buildClauses, buildTypeClauses, db, prepareNamedParamsQuery, transaction} from '../lib/dao/database.js';
 import { WhereClause } from '../lib/types/database.js';
 import { DBKara, DBMedia, DBStats, DBYear } from '../lib/types/database/kara.js';
 import { DBPLC } from '../lib/types/database/playlist.js';
@@ -185,8 +183,8 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 		q.withCTEs
 	);
 	const [res, resCount] = await Promise.all([
-		db().query(yesql(query)(q.params)),
-		db().query(yesql(countQuery)(q.params))
+		db().query(prepareNamedParamsQuery(query)(q.params)),
+		db().query(prepareNamedParamsQuery(countQuery)(q.params))
 	]);
 	if (res.rows?.length > 0 && res.rows[0] !== null) {
 		res.rows[0].count = resCount.rows[0].count;
@@ -217,7 +215,7 @@ export function makeKaraPretty(row: any, forPlayer = false): DBKara | DBPLC {
 
 export async function insertKara(kara: KaraFileV4) {
 	await db().query(
-		yesql(sql.insertKara)({
+		prepareNamedParamsQuery(sql.insertKara)({
 			karafile: kara.meta.karaFile,
 			mediafile: kara.medias[0].filename,
 			lyrics_infos: JSON.stringify(kara.medias[0].lyrics),
@@ -322,7 +320,7 @@ export async function updateKaraParents(kara: Kara) {
 		const pkara = await selectAllKIDs(pkid);
 		if (!pkara[0]) throw new Error(`Parent kara ${pkid} not in database!`);
 		await db().query(
-			yesql(sql.insertChildrenParentKara)({
+			prepareNamedParamsQuery(sql.insertChildrenParentKara)({
 				parent_kid: pkid,
 				child_kid: kara.kid,
 			})

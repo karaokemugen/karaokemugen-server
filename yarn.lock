@@ -14675,7 +14675,6 @@ __metadata:
     winston-daily-rotate-file: ^5.0.0
     winston-transport: ^4.9.0
     xregexp: ^5.1.2
-    yesql: ^7.0.0
     zod: ^4.4.3
   languageName: unknown
   linkType: soft
@@ -23153,13 +23152,6 @@ __metadata:
     buffer-crc32: ~0.2.3
     fd-slicer: ~1.1.0
   checksum: 7f21fe0bbad6e2cb130044a5d1d0d5a0e5bf3d8d4f8c4e6ee12163ce798fee3de7388d22a7a0907f563ac5f9d40f8699a223d3d5c1718da90b0156da6904022b
-  languageName: node
-  linkType: hard
-
-"yesql@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "yesql@npm:7.0.0"
-  checksum: 0736fd0675cb766f0299b7ce9a32b63f958b4c648d83569e8994ec92c4362c0789d7eb5789333dab4abaa4cd1b47f33a7db3f9b00b96f77e869f6194bf0a5b77
   languageName: node
   linkType: hard
 

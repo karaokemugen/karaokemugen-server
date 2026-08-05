@@ -118,7 +118,6 @@
     "winston-daily-rotate-file": "^5.0.0",
     "winston-transport": "^4.9.0",
     "xregexp": "^5.1.2",
-    "yesql": "^7.0.0",
     "zod": "^4.4.3"
   }
 }

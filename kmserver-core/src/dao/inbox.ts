@@ -1,6 +1,4 @@
-import {pg as yesql} from 'yesql';
-
-import {db} from '../lib/dao/database.js';
+import {db, prepareNamedParamsQuery} from '../lib/dao/database.js';
 import {DBInbox, InboxActions, InboxHistory} from '../lib/types/inbox.js';
 import * as sql from './sqls/inbox.js';
 
@@ -9,12 +7,12 @@ export async function selectInbox(inid?: string, byUser?: string): Promise<DBInb
 		inid,
 		byUser
 	};
-	const res = await db().query(yesql(sql.selectInbox(inid, byUser))(params));
+	const res = await db().query(prepareNamedParamsQuery(sql.selectInbox(inid, byUser))(params));
 	return res.rows;
 }
 
 export async function insertInbox(kara: DBInbox) {
-	return db().query(yesql(sql.insertInbox)(kara));
+	return db().query(prepareNamedParamsQuery(sql.insertInbox)(kara));
 }
 
 export async function updateInboxStatus(inid: string, status: InboxActions, inboxHistory: InboxHistory[], reject_reason?: string) {

@@ -1,6 +1,4 @@
-import {pg as yesql} from 'yesql';
-
-import {db, paramWords, transaction} from '../lib/dao/database.js';
+import {db, paramWords, prepareNamedParamsQuery, transaction} from '../lib/dao/database.js';
 import { Suggestion, SuggestionParams } from '../types/suggestions.js';
 import * as sql from './sqls/suggestions.js';
 
@@ -54,7 +52,7 @@ export async function selectSuggestions(params: SuggestionParams): Promise<Sugge
 		offsetClause,
 		yesqlPayload.additionalFrom,
 	);
-	const res = await db().query(yesql(query)(yesqlPayload.params));
+	const res = await db().query(prepareNamedParamsQuery(query)(yesqlPayload.params));
 	return res.rows;
 }
 

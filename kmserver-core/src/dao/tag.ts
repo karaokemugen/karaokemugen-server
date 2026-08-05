@@ -1,6 +1,4 @@
-import { pg as yesql } from 'yesql';
-
-import { databaseReady, db, newDBTask, paramWords } from '../lib/dao/database.js';
+import { databaseReady, db, newDBTask, paramWords, prepareNamedParamsQuery } from '../lib/dao/database.js';
 import { refreshTags } from '../lib/dao/tag.js';
 import { WhereClause } from '../lib/types/database.js';
 import { DBTag } from '../lib/types/database/tag.js';
@@ -64,7 +62,7 @@ filterClauses.additionalFrom,
 collectionClauses,
 whereClause
 );
-	const res = await db().query(yesql(query)(filterClauses.params));
+	const res = await db().query(prepareNamedParamsQuery(query)(filterClauses.params));
 	// FIXME : This should not happen, we should use LIMIT instead, but Erin's query planner isn't cooperative
 	// See https://gitlab.com/karaokemugen/code/karaokemugen-server/-/issues/265
 	if (params.size > 0) { 
