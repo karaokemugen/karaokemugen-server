@@ -1,3 +1,6 @@
+import z from 'zod';
+
+import { zInt, zNonEmptyString, zUUID } from '../lib/utils/validators.js';
 import { Config } from '../types/config.js';
 
 // Karaoke Mugen default configuration file
@@ -385,13 +388,23 @@ $username suggested a karaoke edit. You will find all the new files in the inbox
 	}
 };
 
-export const configConstraints = {
-	'App.JwtSecret': { presence: { allowEmpty: false } },
-	'App.InstanceID': { presence: { allowEmpty: false } },
-	'System.Database.username': { presence: { allowEmpty: false } },
-	'System.Database.password': { presence: true },
-	'System.Database.host': { presence: { allowEmpty: false } },
-	'System.Database.database': { presence: { allowEmpty: false } },
-	'System.Binaries.ffmpeg': { presence: { allowEmpty: false } },
-	'Frontend.Port': { numericality: true }
-};
+export const configConstraints = z.object({
+	App: {
+		JwtSecret: zNonEmptyString,
+		InstanceID: zUUID,
+	},
+	System: {
+		Database: {
+			username: zNonEmptyString,
+			password: zNonEmptyString,
+			host: zNonEmptyString,
+			database: zNonEmptyString,
+		},
+		Binaries: {
+			ffmpeg: zNonEmptyString,
+		}
+	},
+	Frontend: {
+		Port: zInt
+	}
+})

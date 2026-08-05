@@ -1,3 +1,5 @@
+import z from 'zod';
+
 import { refreshKaraStats } from '../dao/kara.js';
 import {
 	updateBanSession,
@@ -7,23 +9,47 @@ import {
 	upsertSessions,
 	wipeInstance} from '../dao/stats.js';
 import { JWTTokenWithRoles } from '../lib/types/user.js';
-import { uuidRegexp } from '../lib/utils/constants.js';
 import { ErrorKM } from '../lib/utils/error.js';
 import logger from '../lib/utils/logger.js';
-import { check, testJSON } from '../lib/utils/validators.js';
+import { check, testJSON, zBool, zInt, zJSON, zNonEmptyString, zUUID } from '../lib/utils/validators.js';
 import { PlayedCacheItem } from '../types/stats.js';
 import sentry from '../utils/sentry.js';
 
 const service = 'Stats';
 
-const payloadConstraints = {
-	'instance.instance_id': {presence: true, format: uuidRegexp},
-	'instance.version': {presence: {allowEmpty: false }},
-	'instance.config': {presence: {allowEmpty: false }},
-	viewcounts: {songItemValidator: true},
-	requests: {songItemValidator: true},
-	sessions: {sessionValidator: true}
-};
+const statItemPlayedConstraints = z.object({
+	kid: zUUID,
+	seid: zUUID,
+	played_at: z.iso.datetime()
+});
+
+const statItemRequestedConstraints = z.object({
+	kid: zUUID,
+	seid: zUUID,
+	requested_at: z.iso.datetime()
+});
+
+const statItemSessionConstraints = z.object({
+	seid: zUUID,
+	name: zNonEmptyString,
+	started_at: z.iso.datetime(),
+	ended_at: z.iso.datetime(),
+	played: zInt,
+	requested: zInt,
+	active: zBool,
+	private: zBool,
+});
+
+const payloadConstraints = z.object({
+	instance: z.object({
+		instance_id: zUUID,
+		version: zInt,
+		config: zJSON,
+	}).loose(),
+	viewcounts: z.array(statItemPlayedConstraints),
+	requests: z.array(statItemRequestedConstraints),
+	sessions: z.array(statItemSessionConstraints),
+});
 
 const playedCache: Map<string, PlayedCacheItem[]> = new Map();
 

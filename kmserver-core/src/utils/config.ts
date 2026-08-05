@@ -3,12 +3,12 @@ import { cloneDeep } from 'lodash';
 import {resolve} from 'path';
 
 import {exit} from '../index.js';
-import { configureIDs, configureLocale, getConfig, loadConfigFiles, setConfigConstraints } from '../lib/utils/config.js';
+import { configureIDs, configureLocale, getConfig, loadConfigFiles } from '../lib/utils/config.js';
 import {fileRequired} from '../lib/utils/files.js';
 import logger, { configureLogger } from '../lib/utils/logger.js';
 import {emit} from '../lib/utils/pubsub.js';
 import {BinariesConfig, Config} from '../types/config.js';
-import { configConstraints, defaults } from './defaultSettings.js';
+import { defaults } from './defaultSettings.js';
 import { getState, setState } from './state.js';
 
 const service = 'Config';
@@ -69,7 +69,6 @@ export function resolvedPathRemoteRoot() {
 /** Initializing configuration */
 export async function initConfig(argv: any) {
 	const dataPath = getState().dataPath;
-	setConfigConstraints(configConstraints);
 	await configureLogger(!!argv.debug || !!process.env.DEBUG, true);
 	await configureLocale();
 	await loadConfigFiles(dataPath, argv.config, defaults, getState().appPath);
