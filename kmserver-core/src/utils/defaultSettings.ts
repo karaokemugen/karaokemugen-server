@@ -389,22 +389,22 @@ $username suggested a karaoke edit. You will find all the new files in the inbox
 };
 
 export const configConstraints = z.object({
-	App: {
+	App: z.object({
 		JwtSecret: zNonEmptyString,
 		InstanceID: zUUID,
-	},
-	System: {
-		Database: {
+	}),
+	System: z.object({
+		Database: z.object({
 			username: zNonEmptyString,
 			password: zNonEmptyString,
 			host: zNonEmptyString,
 			database: zNonEmptyString,
-		},
-		Binaries: {
+		}),
+		Binaries: z.object({
 			ffmpeg: zNonEmptyString,
-		}
-	},
-	Frontend: {
+		})
+	}),
+	Frontend: z.object({
 		Port: zInt
-	}
+	})
 })
