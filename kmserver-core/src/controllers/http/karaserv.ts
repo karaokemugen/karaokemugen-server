@@ -6,6 +6,7 @@ import { APIMessage } from '../../lib/services/frontend.js';
 import { getRepoManifest } from '../../lib/services/repo.js';
 import { RepositoryManifest } from '../../lib/types/repo.js';
 import {getConfig} from '../../lib/utils/config.js';
+import { ErrorKM } from '../../lib/utils/error.js';
 import { getGitDiff, getLatestGitCommit } from '../../services/git.js';
 import { createKaraIssue, createSuggestionIssue } from '../../services/gitlab.js';
 import {getAllKaras, getAllMedias, getAllYears, getBaseStats, getHardsubsCache, getKara, getOtherLikedKIDs} from '../../services/kara.js';
@@ -105,8 +106,12 @@ export default function KSController(router: Router) {
 			}
 		});
 	router.route('/karas/suggest')
-		.post(async (req, res) => {
+		.post(optionalAuth, async (req: any, res) => {
 			try {
+				// If login needed, raise error if not logged in
+				if (!req.authToken?.username.toLowerCase() && getConfig().Frontend.Suggestions.LoginNeeded) {
+					throw new ErrorKM('LOGIN_NEEDED', 401, false);
+				}
 				if (getConfig().Gitlab.Enabled) {
 					const url = await createSuggestionIssue(req.body);
 					res.json(url);
@@ -170,8 +175,12 @@ export default function KSController(router: Router) {
 				: res.status(404).send();
 	});
 	router.route('/karas/:kid/problem')
-		.post(validateUUID('kid'), async (req: any, res) => {
+		.post(validateUUID('kid'), optionalAuth, async (req: any, res) => {
 			try {
+				// If login needed, raise error if not logged in
+				if (!req.authToken?.username.toLowerCase() && getConfig().Frontend.Problem.LoginNeeded) {
+					throw new ErrorKM('LOGIN_NEEDED', 401, false);
+				}
 				const url = await createKaraIssue(req.params.kid, req.body.type, req.body.comment, req.body.username);
 				res.status(200).json(url);
 			} catch (err) {

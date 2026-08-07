@@ -35,7 +35,14 @@ export interface Config {
 			ContributorTrustLevels?: Record<number, number>
 			CleanupDays?: number
 		},
-		Suggestions: boolean,
+		Suggestions: {
+			Enabled: boolean,
+			LoginNeeded: boolean,
+		},
+		Problem: {
+			Enabled: boolean,
+			LoginNeeded: boolean,
+		},
 		InProgressSongsList?: string,
 		SupportedMedias?: string[],
 		AddRepoModalInMenu: boolean,

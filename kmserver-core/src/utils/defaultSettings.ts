@@ -72,7 +72,14 @@ export const defaults: Config = {
 			],
 			LoginNeeded: false
 		},
-		Suggestions: true,
+		Suggestions: {
+			Enabled: true,
+			LoginNeeded: false
+		},
+		Problem: {
+			Enabled: true,
+			LoginNeeded: false
+		},
 		AddRepoModalInMenu: false,
 		Library: {
 			KaraLineDisplay: [

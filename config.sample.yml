@@ -63,7 +63,12 @@ Frontend:
       1 : 2
       2 : 5
       3 : 10
-  Suggestions: true
+  Suggestions:
+    Enabled: true
+    LoginNeeded: true
+  Problem:
+    Enabled: true
+    LoginNeeded: true
   InProgressSongsList: https://gitlab.com/karaokemugen/bases/mugenre-database/-/issues?scope=all&state=opened&label_name[]=Work in progress
   AddRepoModalInMenu: false
   ForumURL: https://discourse.karaokes.moe

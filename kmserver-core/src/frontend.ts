@@ -152,6 +152,6 @@ function api() {
 		favoritesController(apiRouter);
 		authController(apiRouter);
 	}
-	if (conf.Frontend.Suggestions) suggestionsController(apiRouter);
+	if (conf.Frontend.Suggestions.Enabled) suggestionsController(apiRouter);
 	return apiRouter;
 }

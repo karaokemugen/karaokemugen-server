@@ -173,7 +173,7 @@
 					{{ $t('menu.kara_import') }}
 				</nuxt-link>
 				<nuxt-link
-					v-if="config?.Frontend.Suggestions"
+					v-if="config?.Frontend.Suggestions.Enabled"
 					class="navbar-item"
 					to="/suggest"
 					@click="closeMenu"
@@ -932,7 +932,7 @@
 					</li>
 					<li>
 						<nuxt-link
-							v-if="config?.Frontend.Suggestions"
+							v-if="config?.Frontend.Suggestions.Enabled"
 							to="/suggest"
 							active-class="is-active"
 						>

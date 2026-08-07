@@ -33,7 +33,7 @@
 					<button
 						v-if="config?.Gitlab?.Enabled"
 						class="button is-success m-1"
-						@click="() => openModal('karaSuggest')"
+						@click="openKaraSuggest"
 					>
 						<span class="icon"><font-awesome-icon :icon="['fas', 'plus']" /></span>
 						<span>{{ $t('suggestions.header.send_suggestion') }}</span>
@@ -124,7 +124,7 @@
 	const { karaSuggest, importSuggest } = storeToRefs(useModalStore());
 	const { closeModal, openModal } = useModalStore();
 	const { config } = storeToRefs(useConfigStore());
-	const { user } = storeToRefs(useAuthStore());
+	const { user, loggedIn } = storeToRefs(useAuthStore());
 
 	const route = useRoute();
 
@@ -145,6 +145,14 @@
 	});
 
 	onBeforeUnmount(() => setSearch(''));
+
+	function openKaraSuggest() {
+		if (config?.value && config.value.Frontend.Suggestions.LoginNeeded && !loggedIn.value) {
+			openModal('auth')
+		} else {
+			openModal('karaSuggest');
+		}
+	}
 
 	async function fetchRandomKaras() {
 		loading.value = true;

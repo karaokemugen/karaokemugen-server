@@ -4,25 +4,28 @@
 			{{ $t('kara.problem.title', {title: title}) }}
 		</h4>
 		<button
+			v-if="config?.Frontend.Problem.Enabled"
 			class="button is-info"
 			:disabled="submitted"
-			@click="() => toggleModal('Media')"
+			@click="() => toggleProblemModal('Media')"
 		>
 			<font-awesome-icon :icon="['fas', 'film']" />
 			{{ $t('kara.problem.btn.media') }}
 		</button>
 		<button
+			v-if="config?.Frontend.Problem.Enabled"
 			class="button is-warning"
 			:disabled="submitted"
-			@click="() => toggleModal('Metadata')"
+			@click="() => toggleProblemModal('Metadata')"
 		>
 			<font-awesome-icon :icon="['fas', 'tag']" />
 			{{ $t('kara.problem.btn.metadata') }}
 		</button>
 		<button
+			v-if="config?.Frontend.Problem.Enabled"
 			class="button is-danger"
 			:disabled="submitted"
-			@click="() => toggleModal('Lyrics')"
+			@click="() => toggleProblemModal('Lyrics')"
 		>
 			<font-awesome-icon :icon="['fas', 'closed-captioning']" />
 			{{ $t('kara.problem.btn.lyrics') }}
@@ -199,6 +202,7 @@
 	import type { DBKara } from '%/lib/types/database/kara';
 	import { useAuthStore } from '~/store/auth';
 	import { useConfigStore } from '~/store/config';
+	import { useModalStore } from '~/store/modal';
 
 	type ProblemsType = 'Media' | 'Metadata' | 'Lyrics';
 
@@ -237,9 +241,18 @@
 		}
 	});
 
+	function toggleProblemModal(type?: ProblemsType) {
+		if (config?.value && config.value.Frontend.Problem.LoginNeeded && !loggedIn.value) {
+			openModal('auth')
+		} else {
+			toggleModal(type);
+		}
+	}
+
 	const { loggedIn, user } = storeToRefs(useAuthStore());
 	const { config } = storeToRefs(useConfigStore());
 	const title = computed(() => getTitleInLocale(props.karaoke.titles, props.karaoke.titles_default_language));
+	const { openModal } = useModalStore();
 
 	function toggleModal(type?: ProblemsType) {
 		if (type) {
