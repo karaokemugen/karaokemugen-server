@@ -266,11 +266,15 @@ export async function getAllKaras(params: KaraParams, token?: JWTTokenWithRoles,
 		if (token) token.username = token.username.toLowerCase();
 		// User seeking favorites from someone, check if that's okay or not.
 		if (params.favorites) {
-			const user = await findUserByName(params.favorites);
-			if (user) {
-				if (!user.flag_displayfavorites && user.login !== token?.username) throw new ErrorKM('GET_FAVORITES_FROM_USER_FORBIDDEN_ERROR', 403, false);
-			} else {
-				throw new ErrorKM('GET_FAVORITES_FROM_USER_NOT_FOUND_ERROR', 404, false);
+			try {
+				const user = await findUserByName(params.favorites);
+				if (user) {
+					if (!user.flag_displayfavorites && user.login !== token?.username) throw new ErrorKM('GET_FAVORITES_FROM_USER_FORBIDDEN_ERROR', 403, false);
+				} else {
+					throw new ErrorKM('GET_FAVORITES_FROM_USER_NOT_FOUND_ERROR', 404, false);
+				}
+			} catch (err) {
+				throw new ErrorKM('GET_FAVORITES_FROM_USER_NOT_FOUND_ERROR', 404, false)
 			}
 		}
 		if (params.forceCollections?.length > 0 && params.forceCollections[0]) {
