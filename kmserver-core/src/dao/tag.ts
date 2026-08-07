@@ -1,3 +1,5 @@
+import { isNumber } from 'lodash';
+
 import { databaseReady, db, newDBTask, paramWords, prepareNamedParamsQuery } from '../lib/dao/database.js';
 import { refreshTags } from '../lib/dao/tag.js';
 import { WhereClause } from '../lib/types/database.js';
@@ -18,6 +20,7 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 	let whereClause = '';
 	const collectionClauses = [];
 	if (params.type) {
+		if (!isNumber(+params.type)) throw 'Invalid type';
 		joinClauses = `LEFT   JOIN LATERAL (
 	   	SELECT elem->>'count' AS karacounttype
 	   	FROM   jsonb_array_elements(t_count.count_per_type::jsonb) a(elem)
