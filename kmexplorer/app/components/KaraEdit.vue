@@ -937,13 +937,13 @@
 					(progressEvent: ProgressEvent<EventTarget>) => {
 						uploading_media.value = Math.round((progressEvent.loaded * 100) / progressEvent.total);
 					},
-					(result: MediaInfo) => {
+					(result: {mediaInfo:MediaInfo, extractedEmbeddedSubtitleFileName: string}) => {
 						karaoke.value.medias = [{
 							version: determineVersion(karaoke.value.data.titles, karaoke.value.data.titles_default_language),
-							filename: result.filename,
-							loudnorm: result.loudnorm,
-							filesize: Number(result.size),
-							duration: result.duration,
+							filename: result.mediaInfo.filename,
+							loudnorm: result.mediaInfo.loudnorm,
+							filesize: Number(result.mediaInfo.size),
+							duration: result.mediaInfo.duration,
 							default: true,
 							lyrics: karaoke.value.medias[0]?.lyrics || []
 						}];
