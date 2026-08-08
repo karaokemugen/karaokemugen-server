@@ -43,7 +43,7 @@ const statItemSessionConstraints = z.object({
 const payloadConstraints = z.object({
 	instance: z.object({
 		instance_id: zUUID,
-		version: zInt,
+		version: zNonEmptyString,
 		config: zJSON,
 	}).loose(),
 	viewcounts: z.array(statItemPlayedConstraints),
