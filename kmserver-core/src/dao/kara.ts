@@ -78,6 +78,7 @@ function prepareKaraQuery(params: KaraParams) {
 		collectionClauses: [],
 		sensitiveTagsClause: '',
 		favoritedBy: '',
+		myUsername: '',
 	};
 	if (getState().sensitiveTags.length > 0) {
 		q.sensitiveTagsClause = `ARRAY[${getState().sensitiveTags.map(t => `'${t}'`).join(',')}] && ak.tid`;
@@ -85,13 +86,13 @@ function prepareKaraQuery(params: KaraParams) {
 		// No sensitive tags ever? All songs are flagged as not sensitive
 		q.sensitiveTagsClause = 'false';
 	}
+	// If username is specified, this is used to display flag_favorited or not
 	if (params.username) {
-		q.favoritedBy = q.params.username = params.username;
+		q.myUsername = q.params.myusername = params.username;
 	}
+	// This is if you want to see someone's favorites
 	if (params.favorites) {
-		q.joinClause += ' LEFT JOIN users_favorites AS fv ON fv.fk_kid = ak.pk_kid';
-		q.params.username_favs = params.favorites;
-		q.whereClauses.push('fv.fk_login = :username_favs');
+		q.favoritedBy = q.params.favoritedby = params.favorites;
 	}
 	if (params.safeOnly) {
 		q.withCTEs.push(`warning_tags AS (SELECT array_agg(pk_tid || '~${tagTypes.warnings}') tid FROM tag t WHERE t.types @> ARRAY[${tagTypes.warnings}])`);
@@ -136,10 +137,10 @@ function prepareKaraQuery(params: KaraParams) {
 	// If we're asking for random songs, here we modify the query to get them. We reset orderBy here because RANDOM() make all other criterias useless.
 	if (params.random > 0) {
 		q.orderClauses = ['RANDOM()'];
-		q.limitClause = `LIMIT ${params.random}`;
+		q.limitClause = `LIMIT ${+params.random}`;
 	}
-	if (params.from > 0) q.offsetClause = `OFFSET ${params.from} `;
-	if (params.size > 0) q.limitClause = `LIMIT ${params.size} `;
+	if (params.from > 0) q.offsetClause = `OFFSET ${+params.from} `;
+	if (params.size > 0) q.limitClause = `LIMIT ${+params.size} `;
 
 	if (!params.ignoreCollections) {
 		for (const collection of (params.forceCollections || getConfig().Frontend.DefaultCollections) || []) {
@@ -170,7 +171,8 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 		params.forPlayer,
 		getHardsubsBeingProcessed(),
 		params.random,
-		q.favoritedBy
+		q.favoritedBy,
+		q.myUsername
 	);
 	const countQuery = sql.getAllKarasCount(
 		q.sql,
