@@ -40,12 +40,18 @@ export const selectAllKaras = (
 	hardsubsInProgress: string[],
 	random: number,
 	favoritedBy: string,
+	myUsername: string,
 ) => `
 WITH 
 favorited AS (
     SELECT fk_kid 
 	FROM users_favorites
-	WHERE fk_login ${favoritedBy ? '= :username' : 'IS NULL'}
+	WHERE fk_login ${favoritedBy ? '= :favoritedby' : 'IS NULL'}
+),
+my_favorited AS (
+    SELECT fk_kid 
+	FROM users_favorites
+	WHERE fk_login ${myUsername ? '= :myusername' : 'IS NULL'}
 ),
 parents_agg AS (
     SELECT fk_kid_child AS pk_kid,
@@ -108,6 +114,7 @@ SELECT
 		ak.from_display_type AS from_display_type,
 		ksub.subchecksum AS subchecksum,
 		ak.songname as songname,
+		(mf.fk_kid IS NOT NULL) AS flag_favorites,
 		${sensitiveTagsClause} AS flag_sensitive_content,
 		COALESCE(pl.playlist_ids,  array[]::uuid[])      AS playlists,
     	COALESCE(pa.parent_ids,    array[]::uuid[])      AS parents,
@@ -120,11 +127,12 @@ ${random ? '' : `
 	LEFT JOIN kara_subchecksum ksub ON ksub.fk_kid = ak.pk_kid
 	LEFT OUTER JOIN all_karas_sortable AS aks ON aks.fk_kid = ak.pk_kid
 	${forPlayer ? '' : `
-		LEFT JOIN kara_stats         ks   ON ks.fk_kid  = ak.pk_kid
+		LEFT JOIN kara_stats         ks   ON ks.fk_kid   = ak.pk_kid
 		LEFT JOIN parents_agg        pa   ON pa.pk_kid   = ak.pk_kid
 		LEFT JOIN children_agg       ca   ON ca.pk_kid   = ak.pk_kid
 		LEFT JOIN siblings_agg       sa   ON sa.pk_kid   = ak.pk_kid
 		LEFT JOIN playlists_agg      pl   ON pl.pk_kid   = ak.pk_kid
+		LEFT JOIN my_favorited       mf   ON mf.fk_kid   = ak.pk_kid
 	`}
   `}
 ${joinClause}
