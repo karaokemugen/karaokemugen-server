@@ -80,7 +80,7 @@
 		controls: true,
 		fluid: !theaterMode.value && !fullscreen.value,
 		fill: true,
-		poster: `${hardsubUrl}/previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`,
+		poster: `${hardsubUrl}/previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.avif`,
 		controlBar: {
 			fullscreenToggle: false,
 			skipButtons: {

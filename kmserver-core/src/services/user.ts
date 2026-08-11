@@ -328,7 +328,8 @@ async function replaceBanner(preview: string) {
 	if (customBanner) {
 		fileType = await detectFileType(file);
 		if (fileType !== 'jpg' &&
-			fileType !== 'png') {
+			fileType !== 'png' &&
+			fileType !== 'avif') {
 			throw new ErrorKM('WRONG_BANNER_FILE_TYPE', 400, false);
 		}
 	}
