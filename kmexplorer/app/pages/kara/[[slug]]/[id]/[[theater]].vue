@@ -27,7 +27,7 @@
 				>
 					<div class="box">
 						<img
-							:src="`${hardsubUrl}/previews/${karaoke?.kid}.${karaoke?.mediasize}.25.jpg`"
+							:src="`${hardsubUrl}/previews/${karaoke?.kid}.${karaoke?.mediasize}.25.avif`"
 							alt=""
 						>
 						<div class="message is-info">
@@ -45,11 +45,11 @@
 					<div class="box">
 						<div class="imgGroup">
 							<img
-								:src="`${hardsubUrl}/previews/${karaoke?.kid}.${karaoke?.mediasize}.33.jpg`"
+								:src="`${hardsubUrl}/previews/${karaoke?.kid}.${karaoke?.mediasize}.33.avif`"
 								alt=""
 							>
 							<img
-								:src="`${hardsubUrl}/previews/${karaoke?.kid}.${karaoke?.mediasize}.50.jpg`"
+								:src="`${hardsubUrl}/previews/${karaoke?.kid}.${karaoke?.mediasize}.50.avif`"
 								alt=""
 							>
 						</div>
@@ -178,8 +178,8 @@
 			{ key: 'twitter:player', name: 'twitter:player', content: `${url.origin}${url.pathname}${url.pathname.endsWith('/theater') ? '' : '/theater'}` },
 			{ key: 'twitter:player:height', name: 'twitter:player:height', content: '720' },
 			{ key: 'twitter:player:width', name: 'twitter:player:width', content: '1280' },
-			{ key: 'og:image', property: 'og:image', content: karaoke.value?.warnings?.length ? `${url.origin}/banners/cropped.jpg` : `${hardsubUrl}/previews/${karaoke.value?.kid}.${karaoke.value?.mediasize}.25.jpg` },
-			{ key: 'twitter:image', name: 'twitter:image', content: karaoke.value?.warnings?.length ? `${url.origin}/banners/cropped.jpg` : `${hardsubUrl}/previews/${karaoke.value?.kid}.${karaoke.value?.mediasize}.25.jpg` },
+			{ key: 'og:image', property: 'og:image', content: karaoke.value?.warnings?.length ? `${url.origin}/banners/cropped.jpg` : `${hardsubUrl}/previews/${karaoke.value?.kid}.${karaoke.value?.mediasize}.25.avif` },
+			{ key: 'twitter:image', name: 'twitter:image', content: karaoke.value?.warnings?.length ? `${url.origin}/banners/cropped.jpg` : `${hardsubUrl}/previews/${karaoke.value?.kid}.${karaoke.value?.mediasize}.25.avif` },
 			// hardsub compatibility for apps that use youtube-dl for direct streaming (without breaking the card view as with og:type video) 
 			// twitter:player:stream assumes a raw stream and is checked before twitter:player https://github.com/ytdl-org/youtube-dl/blob/master/youtube_dl/extractor/generic.py#L3662
 			{ key: 'twitter:player:stream', name: 'twitter:player:stream', content: karaoke.value?.hardsubbed_mediafile && playable.value ? `${hardsubUrl}/hardsubs/${karaoke.value?.hardsubbed_mediafile}` : '' },

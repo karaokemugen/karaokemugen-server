@@ -76,14 +76,14 @@
 	const hardsubUrl = config?.value?.Hardsub?.Url ?? url.origin;
 
 	const previews = computed (() => {
-		const arr: string[] = [`${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`];
+		const arr: string[] = [`${props.karaoke.kid}.${props.karaoke.mediasize}.25.avif`];
 		if (supportedFiles?.value?.audio.some(extension => props.karaoke.mediafile.endsWith(extension))) {
 			return arr;
 		} else {
 			return [
 				...arr,
-				`${props.karaoke.kid}.${props.karaoke.mediasize}.33.jpg`,
-				`${props.karaoke.kid}.${props.karaoke.mediasize}.50.jpg`
+				`${props.karaoke.kid}.${props.karaoke.mediasize}.33.avif`,
+				`${props.karaoke.kid}.${props.karaoke.mediasize}.50.avif`
 			];
 		}
 	});

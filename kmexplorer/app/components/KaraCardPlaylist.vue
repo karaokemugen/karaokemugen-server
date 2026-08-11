@@ -87,10 +87,10 @@
 	});
 	const images = computed((): string[] => {
 		return supportedFiles?.value?.audio.some(extension => props.karaoke.mediafile.endsWith(extension))
-			? [`${hardsubUrl}/previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`]
+			? [`${hardsubUrl}/previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.avif`]
 			: [
-				`${hardsubUrl}/previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.jpg`,
-				`${hardsubUrl}/previews/${props.karaoke.kid}.${props.karaoke.mediasize}.33.jpg`,
+				`${hardsubUrl}/previews/${props.karaoke.kid}.${props.karaoke.mediasize}.25.avif`,
+				`${hardsubUrl}/previews/${props.karaoke.kid}.${props.karaoke.mediasize}.33.avif`,
 			];
 	});
 	const getSlug = computed((): string => {
