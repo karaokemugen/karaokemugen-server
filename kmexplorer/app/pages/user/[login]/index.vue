@@ -513,7 +513,7 @@
 	}
 
 	@media screen and (max-width: 768px) {
-		.favorite-button {
+		.favorite-button button {
 			white-space: wrap;
 			height: 3.5em;
 		}
