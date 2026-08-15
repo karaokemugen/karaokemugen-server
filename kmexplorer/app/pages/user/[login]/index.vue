@@ -235,10 +235,10 @@
 				</h1>
 				<div
 					v-if="viewingSelf"
-					class="title is-4 with-button favorite-button"
+					class="title is-4 with-button"
 				>
 					<button
-						class="button"
+						class="button favorite-button"
 						:class="{'is-loading': loading}"
 						:disabled="!user.flag_public"
 						:title="$t('modal.profile.fields.flag_displayfavorites.desc')"
@@ -513,7 +513,7 @@
 	}
 
 	@media screen and (max-width: 768px) {
-		.favorite-button button {
+		.favorite-button {
 			white-space: wrap;
 			height: 3.5em;
 		}
