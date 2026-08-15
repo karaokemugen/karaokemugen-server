@@ -2,7 +2,7 @@
 	<div>
 		<div v-if="user?.roles?.admin">
 			<div v-if="state?.version?.tag" class="mb-3">
-				<div >{{ $t('dashboard.version.tag', { tag: state.version.tag }) }}</div>
+				<div>{{ $t('dashboard.version.tag', { tag: state.version.tag }) }}</div>
 				<div>{{ $t('dashboard.version.date', { date: state.version.date }) }}</div>
 				<div>{{ $t('dashboard.version.commit', { commit: state.version.sha }) }}</div>
 			</div>
@@ -42,7 +42,9 @@
 			<div class="is-flex is-flex-direction-column mt-5">
 				<div v-for="contributor in contributors" :key="contributor.login" class="tile">
 					<div class="box is-flex is-justify-content-space-between">
-						{{ contributor.nickname }}
+						<nuxt-link :to="`/user/${contributor.login}`">
+							{{ contributor.nickname }}
+						</nuxt-link>
 						<select @change="(event) => updateContributorLevel(event, contributor)">
 							<option
 								v-for="key in Object.keys(config?.Frontend.Import.ContributorTrustLevels)"
@@ -123,7 +125,7 @@ async function getState() {
 }
 
 getContributors();
-if(import.meta.client && user?.value?.roles?.admin) getState()
+if (import.meta.client && user?.value?.roles?.admin) getState()
 </script>
 
 <style lang="scss">
