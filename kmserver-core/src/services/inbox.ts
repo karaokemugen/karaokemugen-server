@@ -97,7 +97,7 @@ export async function getLyricsDiffFromInbox(inid: string) {
 	const inbox = await getKaraInbox(inid);
 	if (!inbox) throw new ErrorKM('INBOX_UNKNOWN', 404, false);
 	const repoSubPath = resolvedPathRepos('Lyrics', getConfig().System.Repositories[0].Name);
-	const repoSubfile = resolve(repoSubPath[0], inbox.kara.data.medias[0].lyrics[0].filename);;
+	const repoSubfile = resolve(repoSubPath[0], inbox.kara.data.medias[0].lyrics[0].filename);
 	const stagingSubPath = resolvedPathRepos('Lyrics', 'Staging');
 	const stagingSubFile = resolve(stagingSubPath[0], inbox.lyrics_infos[0].filename);
 	const diff = await getGitFileDiff(repoSubfile, stagingSubFile);
@@ -114,7 +114,7 @@ async function removeDueDateAndLabelsFromIssue(issueNumber: number) {
 	await gitlabEditIssue(issueNumber, {
 		due_date: null,
 		remove_labels: getConfig().Gitlab.Labels?.ChangesRequested,
-	})
+	});
 }
 
 export async function setInboxStatus(inid: string, status: InboxActions, reason?: string, actor?: string) {
@@ -198,7 +198,7 @@ export async function setInboxStatus(inid: string, status: InboxActions, reason?
 				await gitlabEditIssue(issueNumber, {
 					due_date: dueDate,
 					add_labels: conf.Gitlab.Labels?.ChangesRequested,
-				})
+				});
 			}
 		} else if (status === 'sent') {
 			// Remove changes requested labels (if it was previously set)
@@ -336,7 +336,7 @@ export async function markKaraInboxAsDownloaded(inid: string, username: string) 
 		await updateInboxDownloaded(username, inid);
 		await setInboxStatus(inid, 'in_review');
 		const repo = getRepos()[0];
-		await assignIssue(getGitlabIssueNumber(inbox.gitlab_issue), repo.Name);
+		if (inbox.gitlab_issue) await assignIssue(getGitlabIssueNumber(inbox.gitlab_issue), repo.Name);
 	} catch (err) {
 		logger.error(`Failed to mark inbox item ${inid} as downloaded by ${username}`, { service, obj: err });
 		sentry.error(err);
@@ -384,7 +384,7 @@ export async function addKaraInInbox(
 			edited_kid,
 			username: contact.login ?? null,
 			mediafile: kara.medias[0].filename,
-			flag_fix: flag_fix || false
+			flag_fix: flag_fix || false,
 		});
 		return inid;
 	} catch (err) {
@@ -497,7 +497,7 @@ export async function clearProcessedInboxes(karas: KaraFileV4[]) {
 	try {
 		const inbox = await getInbox(false);
 		// Get a list of KIDs from the main repository (not including Staging then)
-		const kids = new Set(karas.filter((k) => k.data.repository !== 'Staging').map(k => k.data.kid));
+		const kids = new Set(karas.filter((k) => k.data.repository !== 'Staging').map((k) => k.data.kid));
 		for (const inboxItem of inbox) {
 			if (kids.has(inboxItem.kid)) {
 				await setInboxStatus(inboxItem.inid, 'accepted');
