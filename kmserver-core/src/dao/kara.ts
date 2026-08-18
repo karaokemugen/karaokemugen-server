@@ -25,6 +25,7 @@ export async function selectAllYears(params: { order: 'recent' | 'karacount', co
 	let orderClauses = 'year';
 	if (params.order === 'karacount') orderClauses = `karacount DESC, ${orderClauses}`;
 	const collectionsClauses = [];
+	// Prone to SQL injection if not validated upstream!
 	if (params.collections) for (const collection of params.collections) {
 		collectionsClauses.push(`'${collection}~${tagTypes.collections}' = ANY(ak.tid)`);
 	}
@@ -113,19 +114,19 @@ function prepareKaraQuery(params: KaraParams) {
 		q.params.username_anime_list = params.userAnimeList;
 	}
 	if (params.order === 'recent') {
-		q.orderClauses.push(`created_at ${params.direction === 'asc' ? '' : 'DESC'}`);
+		q.orderClauses.push(`created_at ${!params.direction || params.direction === 'asc' ? '' : 'DESC'}`);
 	 }else if (params.order === 'played') {
-		q.orderClauses.push(`ks.played ${params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
+		q.orderClauses.push(`ks.played ${!params.direction || params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
 	} else if (params.order === 'playedRecently') {
-		q.orderClauses.push(`ks.played_recently ${params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
+		q.orderClauses.push(`ks.played_recently ${!params.direction || params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
 	} else if (params.order === 'favorited_at') {
-		q.orderClauses.push(`fv.favorited_at ${params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
+		q.orderClauses.push(`fv.favorited_at ${!params.direction || params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
 	} else if (params.order === 'favorited') {
-		q.orderClauses.push(`ks.favorited ${params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
+		q.orderClauses.push(`ks.favorited ${!params.direction || params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
 	} else if (params.order === 'requested') {
-		q.orderClauses.push(`ks.requested ${params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
+		q.orderClauses.push(`ks.requested ${!params.direction || params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
 	} else if (params.order === 'requestedRecently') {
-		q.orderClauses.push(`ks.requested_recently ${params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
+		q.orderClauses.push(`ks.requested_recently ${!params.direction || params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
 	} else {
 		if (!params.random) {
 			// Build order here from config, only if not random.
@@ -137,10 +138,10 @@ function prepareKaraQuery(params: KaraParams) {
 	// If we're asking for random songs, here we modify the query to get them. We reset orderBy here because RANDOM() make all other criterias useless.
 	if (params.random > 0) {
 		q.orderClauses = ['RANDOM()'];
-		q.limitClause = `LIMIT ${+params.random}`;
-	}
-	if (params.from > 0) q.offsetClause = `OFFSET ${+params.from} `;
-	if (params.size > 0) q.limitClause = `LIMIT ${+params.size} `;
+		q.limitClause = `LIMIT :random`;
+	} 
+	if (params.from > 0) q.offsetClause = `OFFSET :from `;
+	if (params.size > 0) q.limitClause = `LIMIT :size `;
 
 	if (!params.ignoreCollections) {
 		for (const collection of (params.forceCollections || getConfig().Frontend.DefaultCollections) || []) {
