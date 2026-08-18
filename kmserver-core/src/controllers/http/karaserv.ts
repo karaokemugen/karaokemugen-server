@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { resolve } from 'path';
+import z from 'zod';
 
 import {getSettings} from '../../lib/dao/database.js';
 import { APIMessage } from '../../lib/services/frontend.js';
@@ -7,6 +8,7 @@ import { getRepoManifest } from '../../lib/services/repo.js';
 import { RepositoryManifest } from '../../lib/types/repo.js';
 import {getConfig} from '../../lib/utils/config.js';
 import { ErrorKM } from '../../lib/utils/error.js';
+import { check, zUuidList } from '../../lib/utils/validators.js';
 import { getGitDiff, getLatestGitCommit } from '../../services/git.js';
 import { createKaraIssue, createSuggestionIssue } from '../../services/gitlab.js';
 import {getAllKaras, getAllMedias, getAllYears, getBaseStats, getHardsubsCache, getKara, getOtherLikedKIDs} from '../../services/kara.js';
@@ -96,6 +98,12 @@ export default function KSController(router: Router) {
 	router.route('/karas/years')
 		.get(async (req, res) => {
 			try {
+				const schema = z.object({
+					order: z.enum(['recent', 'karacount']).optional(),
+					collections: zUuidList
+				});
+				const errors = check(req.query, schema);
+				if (errors) throw new ErrorKM('INVALID_DATA', 400, false);
 				const years = await getAllYears({
 					order: req.query.order as 'recent' | 'karacount',
 					collections: typeof req.query.collections === 'string' ? req.query.collections?.split(',') : undefined

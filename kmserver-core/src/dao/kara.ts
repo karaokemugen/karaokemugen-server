@@ -136,13 +136,20 @@ function prepareKaraQuery(params: KaraParams) {
 		}
 	}
 	// If we're asking for random songs, here we modify the query to get them. We reset orderBy here because RANDOM() make all other criterias useless.
-	if (params.random > 0) {
+	if (+params.from > 0) {
+		q.offsetClause = `OFFSET :from `;
+		q.params.from = +params.from;
+	}
+	if (+params.size > 0) {
+		q.limitClause = `LIMIT :size `;
+		q.params.size = +params.size;
+	}
+	if (+params.random > 0) {
 		q.orderClauses = ['RANDOM()'];
 		q.limitClause = `LIMIT :random`;
+		q.params.random = +params.random;
 	} 
-	if (params.from > 0) q.offsetClause = `OFFSET :from `;
-	if (params.size > 0) q.limitClause = `LIMIT :size `;
-
+	
 	if (!params.ignoreCollections) {
 		for (const collection of (params.forceCollections || getConfig().Frontend.DefaultCollections) || []) {
 			if (collection) q.collectionClauses.push(`'${collection}~${tagTypes.collections}' = ANY(ak.tid)`);
