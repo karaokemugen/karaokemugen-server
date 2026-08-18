@@ -38,12 +38,12 @@ export async function selectSuggestions(params: SuggestionParams): Promise<Sugge
 	if (params.order === 'likes') orderClauses = 'likes DESC';
 	if (params.order === 'az') orderClauses = 'song ASC';
 	if (params.order === 'language') orderClauses = 'language ASC';
-	if (params.from > 0) offsetClause = `OFFSET ${params.from} `;
-	if (params.size > 0) limitClause = `LIMIT ${params.size} `;
+	if (+params.from > 0) offsetClause = `OFFSET :from `;
+	if (+params.size > 0) limitClause = `LIMIT :size `;
 	// If we're asking for random songs, here we modify the query to get them.
-	if (params.random > 0) {
-		orderClauses = `RANDOM(), ${orderClauses}`;
-		limitClause = `LIMIT ${params.random}`;
+	if (+params.random > 0) {
+		orderClauses = `RANDOM()`;
+		limitClause = `LIMIT :random`;
 	}
 	const query = sql.selectSuggestions(
 		yesqlPayload.sql,
