@@ -1,10 +1,14 @@
 import { RequestHandler, Router } from 'express';
 import multer from 'multer';
 import { resolve } from 'path';
+import z from 'zod';
 
 import { APIMessage } from '../../lib/services/frontend.js';
+import { Role } from '../../lib/types/user.js';
 import { getConfig } from '../../lib/utils/config.js';
-import { unescape } from '../../lib/utils/validators.js';
+import { userTypes } from '../../lib/utils/constants.js';
+import { ErrorKM } from '../../lib/utils/error.js';
+import { check, unescape } from '../../lib/utils/validators.js';
 import { refreshAnimeList } from '../../services/animeList.js';
 import { getInbox } from '../../services/inbox.js';
 import { addBan, createUser, editUser, findUserByName, getAllUsers, getBans, removeBan, removeUser, resetPassword, resetPasswordRequest, setUserContributorTrustLevel } from '../../services/user.js';
@@ -74,20 +78,33 @@ export default function userController(router: Router) {
 	router.route('/users')
 		.get(optionalAuth, async (req: any, res) => {
 			try {
-				const roles = {};
-				if (req.query.roles) {
-				const arrRoles = req.query.roles.split(',');
-					for (const role of arrRoles) {
-						if (role.startsWith('+') || role.startsWith('-')) {
-							const val = role.startsWith('+');
-							const strRole = role.substring(1);
-							roles[strRole] = val;
+				const roleKeys = Object.keys(userTypes) as [Role, ...Role[]];
+				const RoleEnum = z.enum(roleKeys);
+				const rolesQuerySchema = z
+					.string()
+					.optional()
+					.transform((val) => (val ? val.split(',').map((s) => s.trim()).filter(Boolean) : []))
+					.pipe(z.array(z.string().regex(/^[+-]/)))
+					.transform((tokens) => {
+						const roles = {};
+						for (const token of tokens) {
+						roles[token.substring(1)] = token.startsWith('+');
 						}
-					}
-				}
+						return roles;
+					})
+					.pipe(z.record(RoleEnum, z.boolean()
+				));
+				const schema = z.object({
+					filter: z.string().optional(),
+					from: z.coerce.number().optional(),
+					size: z.coerce.number().optional(),
+					roles: rolesQuerySchema.optional(),
+				});
+				const errors = check(req.query, schema);
+				if (errors) throw new ErrorKM('INVALID_DATA', 400, false);
 				const info = await getAllUsers({
 					publicOnly: !req.authToken?.roles?.admin,
-					roles,
+					roles: req.query.roles,
 					filter: req.query.filter as string,
 					from: +req.query.from,
 					size: +req.query.size

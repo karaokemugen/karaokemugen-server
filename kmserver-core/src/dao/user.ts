@@ -23,8 +23,8 @@ export async function selectAllUsers(searchParams?: UserParams): Promise<DBUser[
 	if (searchParams?.publicOnly) {
 		whereClauses.push('flag_public = true');
 	}
-	// FIXME: We need to secure this so people don't randomly throw in weird role names. Maybe some typescript magic should occur here to define the roles in constants.ts and pick them in typescript
 	if (searchParams?.roles) {
+		// This needs to be validated upstream to avoid SQL injections!
 		const rolesClauses = [];
 		for (const role of Object.keys(searchParams.roles)) {
 			if (searchParams.roles[role] === true) rolesClauses.push(`roles @> '{ "${role}": true }'`);
@@ -41,10 +41,10 @@ export async function selectAllUsers(searchParams?: UserParams): Promise<DBUser[
 	if (searchParams?.nickname) {
 		whereClauses.push(`nickname = :nickname`);
 	}
-	if (!isNaN(searchParams.from)) {
+	if (+searchParams?.from) {
 		offsetClause = ` OFFSET :from`;
 	}
-	if (!isNaN(searchParams.size)) {
+	if (+searchParams?.size) {
 		limitClause = ` LIMIT :size`;
 	}
 	const res = await db().query(
@@ -134,6 +134,7 @@ export async function deleteBan(ban: Ban) {
 }
 
 export async function selectBans(type?: BanType) {
+	// This needs validation upstream to avoid SQL injections
 	const res = await db().query(sql.selectBans(type));
 	return res.rows;
 }
