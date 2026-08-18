@@ -1,11 +1,9 @@
-import { isNumber } from 'lodash';
-
 import { databaseReady, db, newDBTask, paramWords, prepareNamedParamsQuery } from '../lib/dao/database.js';
 import { refreshTags } from '../lib/dao/tag.js';
 import { WhereClause } from '../lib/types/database.js';
 import { DBTag } from '../lib/types/database/tag.js';
 import { Tag, TagParams } from '../lib/types/tag.js';
-import { tagTypes, uuidRegexp } from '../lib/utils/constants.js';
+import { tagTypes } from '../lib/utils/constants.js';
 import * as sql from './sqls/tag.js';
 
 export async function selectTags(params: TagParams): Promise<DBTag[]> {
@@ -13,22 +11,21 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 		? buildTagClauses(params.filter)
 		: {sql: [], params: {}, additionalFrom: []};
 	let stripClause = '';
-	const limitClause = '';
+	let limitClause = '';
 	let offsetClause = '';
 	let joinClauses = '';
 	let orderClause = 'name';
 	let whereClause = '';
 	const collectionClauses = [];
 	if (params.type) {
-		if (!isNumber(+params.type)) throw 'Invalid type';
 		joinClauses = `LEFT   JOIN LATERAL (
 	   	SELECT elem->>'count' AS karacounttype
 	   	FROM   jsonb_array_elements(t_count.count_per_type::jsonb) a(elem)
-	   	WHERE  elem->>'type' = '${params.type}'
+	   	WHERE  elem->>'type' = :type
 	   	) a ON true
 		`;
 		// Without this where condition, all tags are returned.
-		whereClause += ` AND ${params.type} = ANY(at.types)`;
+		whereClause += ` AND :type = ANY(at.types)`;
 		if (params.order === 'karacount') {
 			orderClause = 'karacounttype::int2 DESC NULLS LAST, name';
 		}
@@ -37,17 +34,16 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 		}
 	}
 	if (params.tid) {
-		if (!params.tid.match(uuidRegexp)) throw 'Invalid TID';
-		whereClause = `AND at.pk_tid = '${params.tid}'`;
+		whereClause = `AND at.pk_tid = :tid`;
 	}
-	if (params.from > 0) offsetClause = `OFFSET ${params.from} `;
+	if (params.from > 0) offsetClause = `OFFSET :from `;
 	if (params.size > 0) {
-		// Commenting this since on Erin, postgres' query planner seems to fuck up and not use LIMIT correctly.
-		// limitClause = `LIMIT ${params.size} `;
+		limitClause = `LIMIT :size`;
 	}
 	if (!params.includeStaging) {
 		filterClauses.sql.push('at.repository != \'Staging\'');
 	}
+	// This needs to be validated upstream to avoid SQL injections!
 	if (params.forceCollections) {
 		for (const collection of params.forceCollections) {
 			collectionClauses.push(`'${collection}~${tagTypes.collections}' = ANY(ak.tid)`);
@@ -65,7 +61,13 @@ filterClauses.additionalFrom,
 collectionClauses,
 whereClause
 );
-	const res = await db().query(prepareNamedParamsQuery(query)(filterClauses.params));
+	const res = await db().query(prepareNamedParamsQuery(query)({
+		from: params.from,
+		size: params.size,
+		tid: params.tid,
+		type: params.type,
+		...filterClauses.params
+	}));
 	// FIXME : This should not happen, we should use LIMIT instead, but Erin's query planner isn't cooperative
 	// See https://gitlab.com/karaokemugen/code/karaokemugen-server/-/issues/265
 	if (params.size > 0) { 

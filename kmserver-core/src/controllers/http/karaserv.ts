@@ -71,6 +71,18 @@ export default function KSController(router: Router) {
 	router.route('/karas/tags')
 		.get(async (req: any, res) => {
 			try {
+				const schema = z.object({
+					filter: z.string().optional(),
+					type: z.coerce.number().optional(),
+					from: z.coerce.number().optional(),
+					size: z.coerce.number().optional(),
+					order: z.enum(['karacount', 'az']).optional(),
+					stripEmpty: z.boolean().optional(),
+					forceCollections: zUuidList.optional(),
+					includeStaging: z.boolean().optional(),
+				});
+				const errors = check(req.query, schema);
+				if (errors) throw new ErrorKM('INVALID_DATA', 400, false);
 				const tags = await getTags({
 					filter: req.query.filter,
 					type: req.query.type,
@@ -100,7 +112,7 @@ export default function KSController(router: Router) {
 			try {
 				const schema = z.object({
 					order: z.enum(['recent', 'karacount']).optional(),
-					collections: zUuidList
+					collections: zUuidList.optional()
 				});
 				const errors = check(req.query, schema);
 				if (errors) throw new ErrorKM('INVALID_DATA', 400, false);
