@@ -77,9 +77,9 @@ export default function KSController(router: Router) {
 					from: z.coerce.number().optional(),
 					size: z.coerce.number().optional(),
 					order: z.enum(['karacount', 'az']).optional(),
-					stripEmpty: z.boolean().optional(),
+					stripEmpty: z.coerce.boolean().optional(),
 					forceCollections: zUuidList.optional(),
-					includeStaging: z.boolean().optional(),
+					includeStaging: z.coerce.boolean().optional(),
 				});
 				const errors = check(req.query, schema);
 				if (errors) throw new ErrorKM('INVALID_DATA', 400, false);
