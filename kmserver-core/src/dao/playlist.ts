@@ -151,10 +151,10 @@ export async function selectPlaylistContents(params: PLCParams): Promise<DBPLC[]
 	let limitClause = '';
 	let offsetClause = '';
 	let orderClause = 'pc.pos';
-	if (params.from > 0) offsetClause = `OFFSET ${params.from} `;
-	if (params.size > 0) limitClause = `LIMIT ${params.size} `;
+	if (+params.from > 0) offsetClause = `OFFSET :from `;
+	if (+params.size > 0) limitClause = `LIMIT :size`;
 	if (+params.random > 0) {
-		limitClause = ` LIMIT ${+params.random}`;
+		limitClause = ` LIMIT :random`;
 		orderClause = 'RANDOM()';
 	}
 	const query = sql.selectPlaylistContents(
@@ -168,6 +168,8 @@ export async function selectPlaylistContents(params: PLCParams): Promise<DBPLC[]
 		prepareNamedParamsQuery(query)({
 			plaid: params.plaid,
 			username: params.username,
+			limit: params.random || params.size,
+			offset: params.from,
 			...filterClauses.params,
 		})
 	);
@@ -203,7 +205,7 @@ export function deleteKaraFromPlaylist(karas: number[]) {
 }
 
 export async function updatePlaylistSearchVector(username?: string) {
-	logger.info(`Updating playlist search vector for ${username || 'all'}`, { service });
+	logger.info(`Updating playlist search vector for ${username || 'all users'}`, { service });
 	const params = [];
 	if (username) params.push(username);
 	await db().query(sql.updatePlaylistSearchVector(username), params);
