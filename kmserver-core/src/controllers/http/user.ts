@@ -7,7 +7,6 @@ import { APIMessage } from '../../lib/services/frontend.js';
 import { Role } from '../../lib/types/user.js';
 import { getConfig } from '../../lib/utils/config.js';
 import { userTypes } from '../../lib/utils/constants.js';
-import { ErrorKM } from '../../lib/utils/error.js';
 import { check, unescape } from '../../lib/utils/validators.js';
 import { refreshAnimeList } from '../../services/animeList.js';
 import { getInbox } from '../../services/inbox.js';
@@ -100,8 +99,7 @@ export default function userController(router: Router) {
 					size: z.coerce.number().optional(),
 					roles: rolesQuerySchema.optional(),
 				});
-				const errors = check(req.query, schema);
-				if (errors) throw new ErrorKM('INVALID_DATA', 400, false);
+				check(req.query, schema);
 				const info = await getAllUsers({
 					publicOnly: !req.authToken?.roles?.admin,
 					roles: req.query.roles,

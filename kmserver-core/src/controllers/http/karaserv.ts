@@ -71,7 +71,7 @@ export default function KSController(router: Router) {
 	router.route('/karas/tags')
 		.get(async (req: any, res) => {
 			try {
-				const schema = z.object({
+				check(req.query, z.object({
 					filter: z.string().optional(),
 					type: z.coerce.number().optional(),
 					from: z.coerce.number().optional(),
@@ -80,9 +80,7 @@ export default function KSController(router: Router) {
 					stripEmpty: z.coerce.boolean().optional(),
 					forceCollections: zUuidList.optional(),
 					includeStaging: z.coerce.boolean().optional(),
-				});
-				const errors = check(req.query, schema);
-				if (errors) throw new ErrorKM('INVALID_DATA', 400, false);
+				}));
 				const tags = await getTags({
 					filter: req.query.filter,
 					type: req.query.type,
@@ -110,12 +108,10 @@ export default function KSController(router: Router) {
 	router.route('/karas/years')
 		.get(async (req, res) => {
 			try {
-				const schema = z.object({
+				check(req.query, z.object({
 					order: z.enum(['recent', 'karacount']).optional(),
 					collections: zUuidList.optional()
-				});
-				const errors = check(req.query, schema);
-				if (errors) throw new ErrorKM('INVALID_DATA', 400, false);
+				}));
 				const years = await getAllYears({
 					order: req.query.order as 'recent' | 'karacount',
 					collections: typeof req.query.collections === 'string' ? req.query.collections?.split(',') : undefined

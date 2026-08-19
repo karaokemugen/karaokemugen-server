@@ -444,11 +444,7 @@ export async function importPlaylist(playlist: PlaylistExport, token: JWTTokenWi
 	try {
 		token.username = token.username.toLowerCase();
 		logger.debug('Importing playlist', {service, obj: playlist});
-		const validationErrors = check(playlist, PLImportConstraints);
-		if (validationErrors) {
-			logger.error(`Invalid data in playlist : ${JSON.stringify(validationErrors)}`);
-			throw new ErrorKM('INVALID_DATA', 400, false);
-		}
+		check(playlist, PLImportConstraints);
 		const playingKara: Partial<PLCInsert> = {
 			plaid: null
 		};
@@ -517,8 +513,7 @@ export async function importPlaylist(playlist: PlaylistExport, token: JWTTokenWi
 		};
 	} catch (err) {
 		logger.error(`Error importing playlist : ${err}`, { service });
-		sentry.error(err);
-		throw err instanceof ErrorKM ? err : new ErrorKM('PL_IMPORT_ERROR');
+		throw err instanceof ErrorKM ? err : new ErrorKM('PL_IMPORT_ERROR', 500);
 	}
 }
 

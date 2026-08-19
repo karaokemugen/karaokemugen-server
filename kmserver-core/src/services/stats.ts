@@ -91,8 +91,7 @@ export async function processStatsPayload(payload: any) {
 		// Payloads before version 3 are ignored
 		if (payload.payloadVersion < 3) return;
 
-		const validationErrors = check(payload, payloadConstraints);
-		if (validationErrors) throw new ErrorKM(`Payload is not valid: ${JSON.stringify(validationErrors)}`, 400, false);
+		check(payload, payloadConstraints);
 		await wipeInstance(payload.instance.instance_id);
 		await upsertInstance(payload.instance);
 		await upsertSessions(payload.instance.instance_id, payload.sessions);
@@ -105,7 +104,6 @@ export async function processStatsPayload(payload: any) {
 		logger.error(`Error with payload from ${payload?.instance?.instance_id}`, {service, obj: err});
 		logger.debug('Payload in error', {service, obj: payload});
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
-		sentry.error(err);
 		throw err;
 	}
 }
