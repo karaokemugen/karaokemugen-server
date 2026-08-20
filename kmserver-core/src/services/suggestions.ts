@@ -29,7 +29,7 @@ export async function getSuggestions(params: SuggestionParams) {
 	} catch (err) {
 		logger.error('Unable to fetch suggestions', {service, obj: err});
 		sentry.error(err);
-		throw new ErrorKM('GET_SUGGESTIONS_ERROR');
+		throw new ErrorKM('GET_SUGGESTIONS_ERROR', 500, true);
 	}
 }
 

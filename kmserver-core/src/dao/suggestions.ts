@@ -50,6 +50,7 @@ export async function selectSuggestions(params: SuggestionParams): Promise<Sugge
 	// If we're asking for random songs, here we modify the query to get them.
 	if (+params.random > 0) {
 		orderClauses = `RANDOM()`;
+		extraParams.random = +params.random
 		limitClause = `LIMIT :random`;
 	}
 	const query = sql.selectSuggestions(
