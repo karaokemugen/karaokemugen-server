@@ -276,7 +276,8 @@
 		"duration": "持続時間 {duration}",
 		"public": "公開",
 		"community": "コミュニティ",
-		"favorites": "お気に入り"
+		"favorites": "お気に入り",
+		"my_playlists": "私のすべてのプレイリスト"
 	},
 	"languages": {
 		"qro": "ローマ字"
