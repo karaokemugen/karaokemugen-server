@@ -79,25 +79,32 @@ export default function userController(router: Router) {
 			try {
 				const roleKeys = Object.keys(userTypes) as [Role, ...Role[]];
 				const RoleEnum = z.enum(roleKeys);
-				const rolesQuerySchema = z
-					.string()
+				const zRoles = z.string()
 					.optional()
 					.transform((val) => (val ? val.split(',').map((s) => s.trim()).filter(Boolean) : []))
 					.pipe(z.array(z.string().regex(/^[+-]/)))
-					.transform((tokens) => {
-						const roles = {};
-						for (const token of tokens) {
-						roles[token.substring(1)] = token.startsWith('+');
+					.transform((elems, err) => {
+						const roles: Record<string, boolean> = {};
+						for (const elem of elems) {
+							const role = elem.substring(1);
+							const parsed = RoleEnum.safeParse(role);
+							if (!parsed.success) {
+								err.addIssue({
+									code: 'custom',
+									message: `Invalid role: ${role}`,
+								});
+								return z.NEVER;
+							}
+							roles[role] = elem.startsWith('+');
 						}
 						return roles;
 					})
-					.pipe(z.record(RoleEnum, z.boolean()
-				));
+					.pipe(z.record(z.string(), z.boolean())); 
 				const schema = z.object({
 					filter: z.string().optional(),
 					from: z.coerce.number().optional(),
 					size: z.coerce.number().optional(),
-					roles: rolesQuerySchema.optional(),
+					roles: zRoles.optional(),
 				});
 				check(req.query, schema);
 				const info = await getAllUsers({
