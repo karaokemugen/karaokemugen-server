@@ -218,7 +218,8 @@
 		"favorites": {
 			"add": "お気に入りに追加する",
 			"remove": "お気に入りから削除する"
-		}
+		},
+		"authors_by": "カラオケ作成者"
 	},
 	"layout": {
 		"app_banner": {
@@ -243,7 +244,11 @@
 			"kara": "作品、歌手、名前⋯"
 		},
 		"sort": {
-			"most_favorites": "最もお気に入り"
+			"most_favorites": "最もお気に入り",
+			"languages": "言語で"
+		},
+		"types": {
+			"languages": "言語"
 		}
 	},
 	"titles": {
