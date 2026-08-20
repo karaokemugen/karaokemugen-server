@@ -25,6 +25,7 @@ import { setSensitiveTags } from './services/tag.js';
 import { createUser, initUsers } from './services/user.js';
 import { initConfig, resolvedPathRemoteRoot } from './utils/config.js';
 import { initHardsubGeneration } from './utils/hardsubs.js';
+import { removeJPGPreviews } from './utils/hokutoNoCode.js';
 import { initMailer } from './utils/mailer.js';
 import sentry from './utils/sentry.js';
 import { getState, setState } from './utils/state.js';
@@ -195,6 +196,9 @@ async function main() {
 	initRepos();
 	initUplink();
 	setSensitiveTags();
+	
+	// Hokuto No Code
+	removeJPGPreviews().catch(() => {});
 }
 
 function parseArgs() {
