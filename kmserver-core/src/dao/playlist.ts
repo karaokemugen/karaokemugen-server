@@ -168,8 +168,8 @@ export async function selectPlaylistContents(params: PLCParams): Promise<DBPLC[]
 		prepareNamedParamsQuery(query)({
 			plaid: params.plaid,
 			username: params.username,
-			limit: params.random || params.size,
-			offset: params.from,
+			size: params.random || params.size,
+			from: params.from,
 			...filterClauses.params,
 		})
 	);
