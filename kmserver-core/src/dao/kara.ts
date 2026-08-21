@@ -151,7 +151,7 @@ function prepareKaraQuery(params: KaraParams) {
 	} 
 	
 	if (!params.ignoreCollections) {
-		for (const collection of (params.forceCollections || getConfig().Frontend.DefaultCollections) || []) {
+		for (const collection of (params.collections || getConfig().Frontend.DefaultCollections) || []) {
 			if (collection) q.collectionClauses.push(`'${collection}~${tagTypes.collections}' = ANY(ak.tid)`);
 		}
 	}

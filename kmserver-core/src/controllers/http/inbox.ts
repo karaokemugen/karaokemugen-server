@@ -1,7 +1,10 @@
 import { Router } from 'express';
+import z from 'zod';
 
 import { APIMessage } from '../../lib/services/frontend.js';
+import { inboxStatuses } from '../../lib/utils/constants.js';
 import { assignIssue } from '../../lib/utils/gitlab.js';
+import { check } from '../../lib/utils/validators.js';
 import { getInbox, getKaraInbox, getLyricsDiffFromInbox, markKaraInboxAsDownloaded, markKaraInboxAsUnassigned, removeKaraFromInbox, setInboxStatus } from '../../services/inbox.js';
 import {optionalAuth, requireAuth, requireMaintainer, requireValidUser, updateLoginTime} from '../middlewares/auth.js';
 import { validateUUID } from '../middlewares/validation.js';
@@ -45,6 +48,11 @@ export default function inboxController(router: Router) {
 	router.route('/inbox/:inid/assignToUser')
 		.post(validateUUID('inid'), requireAuth, requireValidUser, requireMaintainer, updateLoginTime, async (req: any, res) => {
 			try {
+				check(req.body, z.object({
+					issue: z.coerce.number(),
+					repoName: z.string(),
+					gitlabUsername: z.string().optional(),
+				}))
 				await assignIssue(req.body.issue, req.body.repoName, req.body.gitlabUsername);
 				res.status(200).json();
 			} catch (err) {
@@ -54,6 +62,10 @@ export default function inboxController(router: Router) {
 	router.route('/inbox/:inid/status')
 		.post(validateUUID('inid'), requireAuth, requireValidUser, requireMaintainer, updateLoginTime, async (req: any, res) => {
 			try {
+				check(req.body, z.object({
+					status: z.enum(inboxStatuses),
+					reject_reason: z.string().optional(),
+				}))
 				await setInboxStatus(req.params.inid, req.body.status, req.body.reject_reason, req.authToken.username);
 				res.status(200).json();
 			} catch (err) {
@@ -72,6 +84,9 @@ export default function inboxController(router: Router) {
 	router.route('/inbox')
 		.get(optionalAuth, async (req: any, res) => {
 			try {
+				check(req.query, z.object({
+					byUser: z.string().optional(),
+				}))
 				const inbox = await getInbox(req.authToken?.roles?.admin || req.authToken?.roles?.maintainer, req.query.byUser);
 				res.status(200).json(inbox);
 			} catch (err) {

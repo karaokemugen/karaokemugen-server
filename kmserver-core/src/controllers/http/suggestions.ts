@@ -1,6 +1,8 @@
 import { Router } from 'express';
+import z from 'zod';
 
 import { APIMessage } from '../../lib/services/frontend.js';
+import { check } from '../../lib/utils/validators.js';
 import { addSuggestionsFromFile, getSuggestions, getSuggestionsLanguages, removeSuggestion, updateLike } from '../../services/suggestions.js';
 import {requireAdmin, requireAuth, requireMaintainer, requireValidUser} from '../middlewares/auth.js';
 
@@ -8,6 +10,10 @@ export default function suggestionsController(router: Router) {
 	router.route('/suggestions/import')
 		.post(requireAuth, requireValidUser, requireAdmin, async (req: any, res) => {
 			try {
+				check(req.body, z.object({
+					fileData: z.string(),
+					source: z.string(),
+				}));
 				await addSuggestionsFromFile(req.body.fileData, req.body.source);
 				res.status(200).json();
 			} catch (err) {
@@ -17,9 +23,13 @@ export default function suggestionsController(router: Router) {
 	router.route('/suggestions/random')
 		.get(async (req: any, res) => {
 			try {
+				check(req.query, z.object({
+					size: z.coerce.number().int().min(1),
+					languages: z.string().optional(),
+				}));
 				const suggestions = await getSuggestions({
 					random: req.query.size,
-					languages: req.query.languages
+					languages: req.query.languages?.split(',')
 				});
 				res.status(200).json(suggestions);
 			} catch (err) {

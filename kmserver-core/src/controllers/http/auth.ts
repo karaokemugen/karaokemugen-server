@@ -1,10 +1,12 @@
 import { Router } from 'express';
 import {sign} from 'jsonwebtoken';
+import z from 'zod';
 
 import { APIMessage } from '../../lib/services/frontend.js';
 import { Roles, TokenResponseWithRoles } from '../../lib/types/user.js';
 import {getConfig} from '../../lib/utils/config.js';
 import { ErrorKM } from '../../lib/utils/error.js';
+import { check } from '../../lib/utils/validators.js';
 import { refreshAnimeList } from '../../services/animeList.js';
 import {checkPassword, decodeJwtToken, findUserByName, updateUserLastLogin} from '../../services/user.js';
 import { requireAuth, requireValidUser } from '../middlewares/auth.js';
@@ -23,6 +25,10 @@ async function checkLogin(username: string, password: string): Promise<TokenResp
 export default function authController(router: Router) {
 	router.post('/auth/login', async (req, res) => {
 		try {
+			check(req.body, z.object({
+				username: z.string(),
+				password: z.string(),
+			}));
 			const token = await checkLogin(req.body.username, req.body.password);
 			updateUserLastLogin(req.body.username.toLowerCase());
 			refreshAnimeList(req.body.username.toLowerCase()).catch();

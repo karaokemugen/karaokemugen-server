@@ -17,7 +17,6 @@ import { KaraList, KaraParams } from '../lib/types/kara.js';
 import { JWTTokenWithRoles } from '../lib/types/user.js';
 import { ASSToLyrics } from '../lib/utils/ass.js';
 import { getConfig, resolvedPathRepos } from '../lib/utils/config.js';
-import {uuidRegexp} from '../lib/utils/constants.js';
 import { downloadFile } from '../lib/utils/downloader.js';
 import { ErrorKM } from '../lib/utils/error.js';
 import { resolveFileInDirs } from '../lib/utils/files.js';
@@ -275,14 +274,6 @@ export async function getAllKaras(params: KaraParams, token?: JWTTokenWithRoles,
 				}
 			} catch (err) {
 				throw new ErrorKM('GET_FAVORITES_FROM_USER_NOT_FOUND_ERROR', 404, false)
-			}
-		}
-		if (params.forceCollections?.length > 0 && params.forceCollections[0]) {
-			for (const collection of params.forceCollections) {
-				if (!uuidRegexp.test(collection)) {
-					logger.error(`Invalid collection in ${params.forceCollections.join(', ')}`, { service });
-					throw new ErrorKM('GET_KARA_COLLECTION_FORMAT_ERROR', 400, false);
-				}
 			}
 		}
 		let pl = await selectAllKaras(params, includeStaging);

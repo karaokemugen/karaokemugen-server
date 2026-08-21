@@ -12,6 +12,8 @@ export const adminToken: JWTTokenWithRoles = {
 	passwordLastModifiedAt: new Date().getTime().toString()
 };
 
+export const banType = ['email', 'nickname', 'username'];
+
 export const systemRepo: RepositoryWithManifest = {
 	Name: 'System',
 	Online: false,

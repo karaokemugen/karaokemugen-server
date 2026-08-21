@@ -11,45 +11,45 @@ import {
 import { JWTTokenWithRoles } from '../lib/types/user.js';
 import { ErrorKM } from '../lib/utils/error.js';
 import logger from '../lib/utils/logger.js';
-import { check, testJSON, zBool, zInt, zJSON, zNonEmptyString, zUUID } from '../lib/utils/validators.js';
+import { check, testJSON, zJSON, zNonEmptyString } from '../lib/utils/validators.js';
 import { PlayedCacheItem } from '../types/stats.js';
 import sentry from '../utils/sentry.js';
 
 const service = 'Stats';
 
 const statItemPlayedConstraints = z.object({
-	kid: zUUID,
-	seid: zUUID,
+	kid: z.uuidv4(),
+	seid: z.uuidv4(),
 	played_at: z.iso.datetime()
 });
 
 const statItemRequestedConstraints = z.object({
-	kid: zUUID,
-	seid: zUUID,
+	kid: z.uuidv4(),
+	seid: z.uuidv4(),
 	requested_at: z.iso.datetime()
 });
 
 const statItemSessionConstraints = z.object({
-	seid: zUUID,
+	seid: z.uuidv4(),
 	name: zNonEmptyString,
 	started_at: z.iso.datetime(),
-	ended_at: z.iso.datetime(),
-	played: zInt,
-	requested: zInt,
-	active: zBool,
-	private: zBool,
+	ended_at: z.iso.datetime().optional(),
+	played: z.coerce.number().int(),
+	requested: z.coerce.number().int(),
+	active: z.coerce.boolean().optional(),
+	private: z.coerce.boolean().optional(),
 });
 
 const payloadConstraints = z.object({
 	instance: z.object({
-		instance_id: zUUID,
+		instance_id: z.uuidv4(),
 		version: zNonEmptyString,
 		config: zJSON,
 	}).loose(),
 	viewcounts: z.array(statItemPlayedConstraints),
 	requests: z.array(statItemRequestedConstraints),
 	sessions: z.array(statItemSessionConstraints),
-});
+}).loose();
 
 const playedCache: Map<string, PlayedCacheItem[]> = new Map();
 

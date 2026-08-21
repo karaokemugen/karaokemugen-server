@@ -358,7 +358,7 @@
 			method: 'PATCH',
 			body: {
 				nickname: user.value?.nickname,
-				email: user.value?.email,
+				email: user.value?.email || null,
 				roles: user.value?.roles
 			}
 		}).then(() => {
