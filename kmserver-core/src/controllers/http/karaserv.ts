@@ -7,8 +7,9 @@ import { APIMessage } from '../../lib/services/frontend.js';
 import { getRepoManifest } from '../../lib/services/repo.js';
 import { RepositoryManifest } from '../../lib/types/repo.js';
 import {getConfig} from '../../lib/utils/config.js';
+import { orderParams } from '../../lib/utils/constants.js';
 import { ErrorKM } from '../../lib/utils/error.js';
-import { check, zUuidList } from '../../lib/utils/validators.js';
+import { check, zGitCommit, zQParam, zUUIDList } from '../../lib/utils/validators.js';
 import { getGitDiff, getLatestGitCommit } from '../../services/git.js';
 import { createKaraIssue, createSuggestionIssue } from '../../services/gitlab.js';
 import {getAllKaras, getAllMedias, getAllYears, getBaseStats, getHardsubsCache, getKara, getOtherLikedKIDs} from '../../services/kara.js';
@@ -38,20 +39,24 @@ export default function KSController(router: Router) {
 	router.route('/karas/search')
 		.get(optionalAuth, async (req: any, res) => {
 			try {
+				check(req.query, z.object({
+					filter: z.string().optional(),
+					from: z.coerce.number().int().min(0).optional(),
+					size: z.coerce.number().int().min(1).optional(),
+					q: zQParam.optional(),
+					order: z.enum(orderParams).optional(),
+					random: z.coerce.number().int().min(0).optional(),
+					favorites: z.string().optional(),
+					safeOnly: z.coerce.boolean().optional(),
+					userAnimeList: z.string().optional(),
+					forPlayer: z.coerce.boolean().optional(),
+					ignoreCollections: z.coerce.boolean().optional(),
+					collections: zUUIDList.optional()
+				}));
 				const karas = await getAllKaras({
-					filter: req.query.filter,
-					from: req.query.from,
-					size: req.query.size,
-					q: req.query.q,
+					...req.query,
 					username: req.authToken?.username,
-					order: req.query.order,
-					random: req.query.random,
-					favorites: req.query.favorites,
-					safeOnly: req.query.safeOnly,
-					userAnimeList: req.query.userAnimeList,
-					forPlayer: req.query.forPlayer,
-					ignoreCollections: req.query.ignoreCollections,
-					forceCollections: req.query.collections?.split(',')
+					collections: req.query.collections?.split(','),
 				}, req.authToken, req.query.includeStaging);
 				res.json(karas);
 			} catch (err) {
@@ -78,19 +83,10 @@ export default function KSController(router: Router) {
 					size: z.coerce.number().optional(),
 					order: z.enum(['karacount', 'az']).optional(),
 					stripEmpty: z.coerce.boolean().optional(),
-					forceCollections: zUuidList.optional(),
+					collections: zUUIDList.optional(),
 					includeStaging: z.coerce.boolean().optional(),
 				}));
-				const tags = await getTags({
-					filter: req.query.filter,
-					type: req.query.type,
-					from: req.query.from,
-					size: req.query.size,
-					order: req.query.order,
-					stripEmpty: Boolean(req.query.stripEmpty),
-					includeStaging: Boolean(req.query.includeStaging),
-					forceCollections: req.query.collections?.split(',')
-				});
+				const tags = await getTags(req.query);
 				res.json(tags);
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));
@@ -99,7 +95,10 @@ export default function KSController(router: Router) {
 	router.route('/karas/medias')
 		.post(async (req, res) => {
 			try {
-				const medias = await getAllMedias(req.body.collections);
+				check(req.body, z.object({
+					collections: zUUIDList.optional()
+				}));
+				const medias = await getAllMedias(req.body.collections.split(','));
 				res.json(medias);
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));
@@ -110,7 +109,7 @@ export default function KSController(router: Router) {
 			try {
 				check(req.query, z.object({
 					order: z.enum(['recent', 'karacount']).optional(),
-					collections: zUuidList.optional()
+					collections: zUUIDList.optional()
 				}));
 				const years = await getAllYears({
 					order: req.query.order as 'recent' | 'karacount',
@@ -129,6 +128,16 @@ export default function KSController(router: Router) {
 					throw new ErrorKM('LOGIN_NEEDED', 401, false);
 				}
 				if (getConfig().Gitlab.Enabled) {
+					check(req.body, z.object({
+						title: z.string(),
+						serie: z.string().optional(),
+						singer: z.string(),
+						version: z.string(),
+						link: z.url(),
+						lyricsLink: z.url().optional(),
+						comment: z.string().optional(),
+						username: z.string(),
+					}))
 					const url = await createSuggestionIssue(req.body);
 					res.json(url);
 				} else {
@@ -153,6 +162,9 @@ export default function KSController(router: Router) {
 	router.route('/karas/repository/diff')
 		.get(async (req: any, res) => {
 			try {
+				check(req.query, z.object({
+					commit: zGitCommit,
+				}));
 				const diff = await getGitDiff(req.query.commit);
 				res.status(200).type('text/plain').send(diff);
 			} catch (err) {
@@ -162,6 +174,9 @@ export default function KSController(router: Router) {
 	router.route('/karas/repository/diff/full')
 		.get(async (req: any, res) => {
 			try {
+				check(req.query, z.object({
+					commit: zGitCommit,
+				}));
 				const diff = await getGitDiff(req.query.commit, true);
 				res.status(200).json(diff);
 			} catch (err) {
@@ -197,6 +212,11 @@ export default function KSController(router: Router) {
 				if (!req.authToken?.username.toLowerCase() && getConfig().Frontend.Problem.LoginNeeded) {
 					throw new ErrorKM('LOGIN_NEEDED', 401, false);
 				}
+				check(req.body, z.object({
+					username: z.string(),
+					type: z.enum(['Media', 'Metadata', 'Lyrics']),
+					comment: z.string(),
+				}));
 				const url = await createKaraIssue(req.params.kid, req.body.type, req.body.comment, req.body.username);
 				res.status(200).json(url);
 			} catch (err) {
@@ -206,6 +226,9 @@ export default function KSController(router: Router) {
 	router.route('/karas/:kid/otherlikedsongs')
 		.get(validateUUID('kid'), async (req: any, res) => {
 			try {
+				check(req.query, z.object({
+					limit: z.coerce.number().int().min(1).optional()
+				}));
 				const kids = await getOtherLikedKIDs(req.params.kid, req.query.limit);
 				res.status(200).json(kids);
 			} catch (err) {

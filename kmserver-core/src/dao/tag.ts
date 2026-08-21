@@ -44,8 +44,8 @@ export async function selectTags(params: TagParams): Promise<DBTag[]> {
 		filterClauses.sql.push('at.repository != \'Staging\'');
 	}
 	// This needs to be validated upstream to avoid SQL injections!
-	if (params.forceCollections) {
-		for (const collection of params.forceCollections) {
+	if (params.collections) {
+		for (const collection of params.collections) {
 			collectionClauses.push(`'${collection}~${tagTypes.collections}' = ANY(ak.tid)`);
 		}
 	}

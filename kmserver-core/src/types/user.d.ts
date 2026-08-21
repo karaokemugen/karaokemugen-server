@@ -1,5 +1,6 @@
 import {DBList} from '../lib/types/database/database.js';
 import {DBUser} from '../lib/types/database/user.js';
+import { banType } from '../utils/constants.ts';
 
 export interface UserOptions {
     password?: boolean,
@@ -21,7 +22,7 @@ export interface UserList extends DBList {
 	content: DBUser[]
 }
 
-export type BanType = 'email' | 'nickname' | 'username';
+export type BanType = typeof banType[number];
 
 export interface Ban {
 	type: BanType;

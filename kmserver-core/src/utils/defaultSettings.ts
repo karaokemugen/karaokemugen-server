@@ -1,6 +1,6 @@
 import z from 'zod';
 
-import { zNonEmptyString, zUUID } from '../lib/utils/validators.js';
+import { zNonEmptyString } from '../lib/utils/validators.js';
 import { Config } from '../types/config.js';
 
 // Karaoke Mugen default configuration file
@@ -398,7 +398,7 @@ $username suggested a karaoke edit. You will find all the new files in the inbox
 export const configConstraints = z.object({
 	App: z.object({
 		JwtSecret: zNonEmptyString,
-		InstanceID: zUUID,
+		InstanceID: z.union([z.uuidv4(),z.literal('Change me')]),
 	}),
 	System: z.object({
 		Database: z.object({

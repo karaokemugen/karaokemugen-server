@@ -1,12 +1,18 @@
 import { Router } from 'express';
+import z from 'zod';
 
 import { APIMessage } from '../../lib/services/frontend.js';
+import { check } from '../../lib/utils/validators.js';
 import { addServer, getServers } from '../../services/server.js';
 
 export default function uplinkController(router: Router) {
 	router.route('/uplink/heartbeat')
 		.post(async (req: any, res) => {
 			try {
+				check(req.body, z.object({
+					sid: z.uuidv4(),
+					domain: z.string(),
+				}));
 				const ret = await addServer(req.body);
 				res.status(200).json(ret);
 			} catch (err) {
