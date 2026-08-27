@@ -93,7 +93,13 @@ function prepareKaraQuery(params: KaraParams) {
 	}
 	// This is if you want to see someone's favorites
 	if (params.favorites) {
-		q.favoritedBy = q.params.favoritedby = params.favorites;
+		q.withCTEs.push(`favorited AS (
+    SELECT fk_kid 
+	FROM users_favorites
+	WHERE fk_login = :favoritedby
+)`);
+		q.params.favoritedby = params.favorites;
+		q.joinClause = 'JOIN favorited          uf   ON uf.fk_kid   = ak.pk_kid';
 	}
 	if (params.safeOnly) {
 		q.withCTEs.push(`warning_tags AS (SELECT array_agg(pk_tid || '~${tagTypes.warnings}') tid FROM tag t WHERE t.types @> ARRAY[${tagTypes.warnings}])`);
@@ -179,7 +185,6 @@ export async function selectAllKaras(params: KaraParams, includeStaging = false)
 		params.forPlayer,
 		getHardsubsBeingProcessed(),
 		params.random,
-		q.favoritedBy,
 		q.myUsername
 	);
 	const countQuery = sql.getAllKarasCount(

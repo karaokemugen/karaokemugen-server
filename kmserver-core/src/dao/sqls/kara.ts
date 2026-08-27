@@ -39,15 +39,9 @@ export const selectAllKaras = (
 	forPlayer: boolean,
 	hardsubsInProgress: string[],
 	random: number,
-	favoritedBy: string,
 	myUsername: string,
 ) => `
 WITH 
-favorited AS (
-    SELECT fk_kid 
-	FROM users_favorites
-	WHERE fk_login ${favoritedBy ? '= :favoritedby' : 'IS NULL'}
-),
 my_favorited AS (
     SELECT fk_kid 
 	FROM users_favorites

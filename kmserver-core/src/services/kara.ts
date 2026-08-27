@@ -262,7 +262,9 @@ export async function getKara(params: KaraParams, token?: JWTTokenWithRoles) {
 
 export async function getAllKaras(params: KaraParams, token?: JWTTokenWithRoles, includeStaging = false): Promise<KaraList<DBKara>> {
 	try {
-		if (token) token.username = token.username.toLowerCase();
+		if (token) {
+			params.username = token.username = token.username.toLowerCase();
+		}
 		// User seeking favorites from someone, check if that's okay or not.
 		if (params.favorites) {
 			try {
