@@ -98,7 +98,7 @@
 			"fullscreen": "Skramm a-bezh (F)",
 			"theater_mode": "Mod Sinema (T)",
 			"autoplay": "Lenn emgefreek",
-			"loop": "Lenn dizehan",
+			"loop": "Dol",
 			"description": "Ar video-mañ zo herberc'hiet gant {instance}. Sonjit impijout hon arload ma vez aozet ur darvoud pe ur stream !"
 		},
 		"phrase": "{songtype} eus {series}",
