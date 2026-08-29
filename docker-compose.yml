@@ -12,6 +12,12 @@ services:
       - ./app:/srv/kmserver/app
     # - ./medias/:/srv/kmserver/app/repos/karaokebase/medias:ro # custom media path for default repository
     env_file: ".env"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "-m", "30", "-o", "/dev/null", "http://127.0.0.1:1350/api/health"]
+      interval: 30s
+      timeout: 35s
+      retries: 12
+      start_period: 600s # 10 minutes
     depends_on: # Start kmserver after the db is ready
       postgres:
         condition: service_healthy

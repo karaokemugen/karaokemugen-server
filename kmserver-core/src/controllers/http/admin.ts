@@ -28,6 +28,9 @@ export default async function adminController(router: Router) {
 		createHardsubs();
 		res.status(200).json();
 	});
+	router.get('/health', async (_, res) => {
+		res.status(200).json({ status: 'OK' });
+	});
 	router.get('/config', async (_, res) => {
 		res.status(200).json(getPublicConfig());
 	});
