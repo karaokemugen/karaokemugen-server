@@ -20,7 +20,18 @@ const service = 'KIController';
 
 export default function KIController(router: Router) {
 	const conf = getConfig();
-	const upload = multer({ dest: resolve(getState().dataPath, conf.System.Path.Temp)});
+	const upload = multer({ 
+		dest: resolve(getState().dataPath, conf.System.Path.Temp),
+		limits: { fileSize: 1024 * 1024 * 1024 * 2, files: 1  } // 2 GB
+	});
+	
+	const requireImportLogin = (req: any, res: any, next: any) => {
+		if (!req.authToken?.username && getConfig().Frontend.Import.LoginNeeded) {
+			res.status(401).json(APIMessage('LOGIN_NEEDED'));
+			return;
+		}
+		next();
+	};
 
 	router.route('/karas')
 		.post(optionalAuth, async (req: any, res: any) => {
@@ -36,7 +47,7 @@ export default function KIController(router: Router) {
 		}
 	});
 	
-	router.post('/karas/importMedia', upload.single('file'), async (req, res) => {
+	router.post('/karas/importMedia', optionalAuth, requireImportLogin, upload.single('file'), async (req, res) => {
 		try {
 			if (req.file) {
 				check(req.file, z.object({
@@ -52,7 +63,7 @@ export default function KIController(router: Router) {
 			res.status(err.code || 500).json(APIMessage(err.message));
 		}
 	});
-	router.post('/karas/importSub', upload.single('file'), async (req, res) => {
+	router.post('/karas/importSub', optionalAuth, requireImportLogin, upload.single('file'), async (req, res) => {
 		try {
 			if (req.file) {
 				check(req.file, z.object({
@@ -68,7 +79,7 @@ export default function KIController(router: Router) {
 			res.status(err.code || 500).json(APIMessage(err.message));
 		}
 	});
-	router.post('/tags/createStaging', async (req, res) => {
+	router.post('/tags/createStaging', optionalAuth, requireImportLogin, async (req, res) => {
 		try {
 			check(req.body, tagConstraintsV1);
 			await addTag(req.body, {forceRepo: 'Staging'});

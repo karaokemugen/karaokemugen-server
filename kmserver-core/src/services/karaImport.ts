@@ -66,7 +66,7 @@ async function heavyLifting(kara: KaraFileV4, contact: {name: string, login?: st
 		const filenames = determineMediaAndLyricsFilenames(kara, edit?.kid);
 		logger.debug(`mediafile: ${filenames.mediafile}`, { service });
 		logger.debug(`lyricsfile: ${filenames.lyricsfiles[0]}`, { service });
-		const mediaPath = resolve(resolvedPath('Temp'), kara.medias[0].filename);
+		const mediaPath = resolve(resolvedPath('Temp'), basename(kara.medias[0].filename));
 		logger.debug(`mediaPath: ${mediaPath}`, { service });
 		const mediaDest = resolve(resolvedPathRepos('Medias', kara.data.repository)[0], filenames.mediafile);
 		logger.debug(`mediaDest: ${mediaDest}`, { service });
@@ -83,7 +83,7 @@ async function heavyLifting(kara: KaraFileV4, contact: {name: string, login?: st
 			// Not lethal
 		}
 		if (kara.medias[0].lyrics[0]) {
-			const subPath = resolve(resolvedPath('Temp'), kara.medias[0].lyrics[0].filename);
+			const subPath = resolve(resolvedPath('Temp'), basename(kara.medias[0].lyrics[0].filename));
 			const subDest = resolve(resolvedPathRepos('Lyrics', kara.data.repository)[0], filenames.lyricsfiles[0]);
 			logger.debug(`subPath: ${subPath}`, { service });
 			logger.debug(`subDest: ${subDest}`, { service });
@@ -165,15 +165,15 @@ export async function editKara(editedKara: EditedKara, contact: string, login?: 
 		// Before the heavy lifting (tm), we should make copies of media and/or lyrics if they were not edited.
 		if (!editedKara.modifiedLyrics && kara.medias[0].lyrics.length > 0) {
 			await copy(
-				resolve(resolvedPathRepos('Lyrics', sourceRepoName)[0], kara.medias[0].lyrics[0].filename),
-				resolve(resolvedPath('Temp'), kara.medias[0].lyrics[0].filename),
+				resolve(resolvedPathRepos('Lyrics', sourceRepoName)[0], basename(kara.medias[0].lyrics[0].filename)),
+				resolve(resolvedPath('Temp'), basename(kara.medias[0].lyrics[0].filename)),
 				{ overwrite: true },
 			);
 		}
 		if (!editedKara.modifiedMedia) {
 			await copy(
-				resolve(resolvedPathRepos('Medias', sourceRepoName)[0], kara.medias[0].filename),
-				resolve(resolvedPath('Temp'), kara.medias[0].filename),
+				resolve(resolvedPathRepos('Medias', sourceRepoName)[0], basename(kara.medias[0].filename)),
+				resolve(resolvedPath('Temp'), basename(kara.medias[0].filename)),
 				{ overwrite: true },
 			);
 		}

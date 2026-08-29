@@ -174,7 +174,12 @@ export async function getPlaylistContents(plaid: string, token: JWTTokenWithRole
 		if (token) token.username = token.username.toLowerCase();
 		const plInfo = (await getPlaylists({plaid}, adminToken))[0];
 		if (!plInfo) throw new ErrorKM('UNKNOWN_PLAYLIST', 404, false);
-		if ((!token && !plInfo.flag_visible_online) && token && !token.roles.admin && plInfo.username !== token.username && !plInfo.contributors.find(c => c.username === token.username)) throw new ErrorKM('CHECK_YOUR_PRIVILEGES', 403, false);
+		if (!plInfo.flag_visible_online && 
+			(!token || 
+					(!token.roles.admin && 
+					plInfo.username !== token.username && 
+					!plInfo.contributors.find(c => c.username === token.username)
+		))) throw new ErrorKM('CHECK_YOUR_PRIVILEGES', 403, false);
 		const pl = await selectPlaylistContents({
 			plaid,
 			username: token?.username.toLowerCase() || null,
@@ -209,14 +214,6 @@ export async function addKaraToPlaylist(kids: string[], plaid: string, token: JW
 
 		if (karas.content.length !== new Set(kids).size) throw new ErrorKM('UNKNOWN_SONG', 404, false);
 
-		// Find duplicate kids
-		const duplicates = kids.filter((item, index) => kids.indexOf(item) !== index);
-		const duplicatesKaras = [];
-		// get karaoke content for every duplicate kid
-		duplicates.forEach(kid => duplicatesKaras.push(karas.content.find(kara => kara.kid === kid)));
-		// add them to existing kara list
-		karas.content.push(...duplicatesKaras);
-
 		logger.debug(`Adding ${kids.length} karaokes to playlist ${pl.name || 'unknown'} by ${token.username}...`, { service });
 
 		if (token.username !== pl.username && !pl.contributors.find(c => c.username === token.username)) {
@@ -224,9 +221,9 @@ export async function addKaraToPlaylist(kids: string[], plaid: string, token: JW
 		}
 		// Everything's daijokay, user is allowed to add a song.
 		const date_add = new Date();
-		const karaList: PLCInsert[] = karas.content.map(k => {
+		const karaList: PLCInsert[] = kids.map(kid => {
 			return {
-				kid: k.kid,
+				kid,
 				username: token.username.toLowerCase(),
 				nickname: user.nickname,
 				plaid,
@@ -389,7 +386,12 @@ export async function exportPlaylist(plaid: string, token: JWTTokenWithRoles) {
 		const pl = (await getPlaylists({plaid}, adminToken))[0];
 		if (!pl) throw new ErrorKM('UNKNOWN_PLAYLIST', 404, false);
 		// Auth is optional for exporting playlists
-		if ((!token && !pl.flag_visible_online) && token && token.roles.admin && token.username !== pl.username && !pl.contributors.find(c => c.username === token.username)) {
+		if (!pl.flag_visible_online && 
+			(!token || 
+				(!token.roles.admin && 
+				token.username !== pl.username && 
+				!pl.contributors.find(c => c.username === token.username)
+		))) {
 			throw new ErrorKM('CHECK_YOUR_PRIVILEGES', 403, false);
 		}
 		logger.debug(`Exporting playlist ${plaid}`, { service });
@@ -504,9 +506,13 @@ export async function importPlaylist(playlist: PlaylistExport, token: JWTTokenWi
 		} else {
 			pl = await createPlaylist(playlist.PlaylistInformation, token);
 		}
-		for (const plc of playlist.PlaylistContents.sort((a,b) => a.pos - b.pos)) {
-			await addKaraToPlaylist([plc.kid], pl.plaid, token, null, false);
-		}
+		await addKaraToPlaylist(
+			playlist.PlaylistContents.sort((a, b) => a.pos - b.pos).map(plc => plc.kid),
+			pl.plaid,
+			token,
+			null,
+			false
+		);
 		await refreshPlaylist(pl.plaid);
 		return {
 			plaid: pl.plaid,

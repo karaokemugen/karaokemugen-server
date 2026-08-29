@@ -45,7 +45,10 @@ export async function initHardsubGeneration(drainEvent = false) {
 async function wrappedGenerateHS(payload: [string, string, string, string, string, string]) {
 	const [mediaPath, subPath, outputFile, kid, loudnorm, fontsDir] = payload;
 	logger.info(`Creating hardsub for ${mediaPath}`, { service });
-	if (await fileExists(outputFile)) return;
+	if (await fileExists(outputFile)) {
+		hardsubsBeingProcessed.delete(kid);
+		return
+	};
 	const assPathTemp = subPath ? resolve(resolvedPath('Temp'), `${kid}.ass`) : null;
 	if (subPath) {
 		await fs.copyFile(subPath, assPathTemp);
@@ -58,6 +61,7 @@ async function wrappedGenerateHS(payload: [string, string, string, string, strin
 		logger.info(`${queue.length()} hardsubs left in queue`, { service });
 	} catch (err) {
 		logger.error(`Error creating hardsub for ${mediaPath} : ${err}`, { service, obj: err });
+		hardsubsBeingProcessed.delete(kid);
 		throw err;
 	} finally {
 		if (assPathTemp) await fs.unlink(assPathTemp);

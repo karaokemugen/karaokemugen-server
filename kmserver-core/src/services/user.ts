@@ -31,7 +31,11 @@ import { delPubUser, pubUser } from './userPubSub.js';
 
 const service = 'User';
 
-const passwordResetRequests = new Map();
+const passwordResetRequests = new Map<string, {	
+	code: string;
+	date: number;
+	attempts?: number;
+}>();
 
 export function getUserLanguage(user: User): string {
 	// Fallback to english if no user language recognized
@@ -74,7 +78,11 @@ export async function resetPassword(username: string, requestCode: string, newPa
 	try {
 		const request = passwordResetRequests.get(username);
 		if (!request) throw new ErrorKM('NO_REQUEST', 400);
-		if (request.code !== requestCode) throw new ErrorKM('WRONG_CODE', 400, false);
+		if (request.code !== requestCode) {
+			request.attempts = (request.attempts || 0) + 1;
+			if (request.attempts >= 5) passwordResetRequests.delete(username);
+			throw new ErrorKM('WRONG_CODE', 400, false);
+		};
 		const user = await findUserByName(username, {contact: true});
 		if (!user) throw new ErrorKM('USER_UNKNOWN', 404, false);
 		if (!user.email) throw new ErrorKM('USER_NO_MAIL', 500, false);
@@ -113,7 +121,7 @@ export async function initUsers() {
 
 function cleanupPasswordResetRequests() {
 	const now = +(new Date().getTime() / 1000).toFixed(0);
-	passwordResetRequests.forEach((user: string, request: any) => {
+	passwordResetRequests.forEach((request, user) => {
 		if ((request.date + (60 * 60 * 2)) < now) passwordResetRequests.delete(user);
 	});
 }
@@ -389,6 +397,7 @@ export async function editUser(username: string, user: User, avatar: Express.Mul
 		const currentUser = await findUserByName(username, { password: true });
 		if (!currentUser) throw new ErrorKM('USER_UNKNOWN', 404, false);
 		const mergedUser = merge(cloneDeep(currentUser), cloneDeep(user));
+		mergedUser.login = currentUser.login; // Always use current user instead of the user sent in body
 		delete mergedUser.password;
 		if (user.roles && !isLooselyEqual(user.roles, currentUser.roles) && token.roles && !token.roles.admin) throw new ErrorKM('CHECK_YOUR_PRIVILEGES', 403, false);
 		if (await checkForBans(mergedUser)) throw new ErrorKM('EDIT_USER_ERROR', 403, false);

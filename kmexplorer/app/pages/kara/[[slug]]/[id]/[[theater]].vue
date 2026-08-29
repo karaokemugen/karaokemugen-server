@@ -192,7 +192,25 @@
 
 	watch(() => [route.query, route.params], refresh);
 	
-	await refresh();
+	// Fetch in SSR and avoid duplicate requests
+	const { data: ssrData, error: ssrError } = await useAsyncData(
+		`kara-${route.params.id}-${route.params.theater}`,
+		async () => {
+			await refresh();
+			return {
+				karaoke: karaoke.value,
+				playlists: playlists.value,
+				otherLikedKIDs: otherLikedKIDs.value,
+			};
+		}
+	);
+
+	if (ssrError.value) throw ssrError.value;
+	if (ssrData.value) {
+		karaoke.value = ssrData.value.karaoke;
+		playlists.value = ssrData.value.playlists;
+		otherLikedKIDs.value = ssrData.value.otherLikedKIDs;
+	}
 
 	async function refresh() {
 		await fetch();

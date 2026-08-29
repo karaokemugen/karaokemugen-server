@@ -298,8 +298,21 @@
 	// Remove protocol if http(s) and trailing slash
 	const url = computed(() => user.value?.url?.replace(/^https?:\/\//i, '').replace(/\/$/, '') || '');
 
-	await fetch();
-	getPlaylists();
+	// Fetch in SSR and avoid duplicate requests
+	const { data: ssrData, error: ssrError } = await useAsyncData(
+		`user-${params.login}`,
+		async () => {
+			await fetch();
+			await getPlaylists();
+			return { user: user.value, playlists: playlists.value };
+		}
+	);
+
+	if (ssrError.value) throw ssrError.value;
+	if (ssrData.value) {
+		user.value = ssrData.value.user;
+		playlists.value = ssrData.value.playlists;
+	}
 
 	async function fetch() {
 		if (config?.value && !config.value.Users.Enabled) {
