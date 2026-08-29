@@ -118,6 +118,7 @@ body.has-navbar-fixed-top, html.has-navbar-fixed-top {
 @media (min-width: $desktop) {
 	.container.is-fluid.main {
 		margin-left: 210px;
+		margin-right: 0.75rem; // Same distance like on the left side
 	}
 	footer.footer {
 		margin-left: 210px;

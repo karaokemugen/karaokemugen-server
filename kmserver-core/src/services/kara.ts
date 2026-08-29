@@ -84,13 +84,12 @@ export async function updateRepo() {
 		generationInProgress = false;
 	}
 	const karas = await getAllKaras({ ignoreCollections: true }, undefined, true);
-	const promises = [createImagePreviews(karas, 'full', 1280)];
+	// Newer codecs like av1 in avif are more expensive to compute, so don't run previews and hardsubs in parallel
+	createImagePreviews(karas, 'full', 1280);
 	if (getConfig().Hardsub.Enabled) {
-		// Fuck you typescript.
-		promises.push(generateHardsubs(karas) as any) ;
+		await generateHardsubs(karas);
 		generateHardsubsCache(karas);
 	}
-	await Promise.all(promises);
 }
 
 export async function createPreviews() {
