@@ -17,7 +17,7 @@ WITH kara_available AS (
 	WHERE TRUE
 	${collectionClauses.length > 0 ? `AND (${collectionClauses.map(clause => `(${clause})`).join(' OR ')})` : ''}
 ),
-t_count MATERIALIZED AS (
+t_count AS MATERIALIZED (
 	SELECT a.fk_tid,
 		json_agg(json_build_object('type', a.type, 'count', a.c))::text AS count_per_type
 	FROM (SELECT all_kara_tag.fk_tid,
