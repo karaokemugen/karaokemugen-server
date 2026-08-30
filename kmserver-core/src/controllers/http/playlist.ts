@@ -3,7 +3,7 @@ import z from 'zod';
 
 import { APIMessage } from '../../lib/services/frontend.js';
 import { plOrderParam } from '../../lib/utils/constants.js';
-import { check, zUUIDArray } from '../../lib/utils/validators.js';
+import { check } from '../../lib/utils/validators.js';
 import { addContributorToPlaylist, addKaraToPlaylist, addPlaylistToFavorites, createPlaylist, editPlaylist, editPLC, emptyPlaylist, exportPlaylist, getPlaylistContents, getPlaylists, importPlaylist, removeContributorToPlaylist, removeKaraFromPlaylist, removePlaylist, removePlaylistFromFavorites, shufflePlaylist } from '../../services/playlist.js';
 import { optionalAuth, requireAuth, requireValidUser } from '../middlewares/auth.js';
 import { getLang } from '../middlewares/lang.js';
@@ -189,7 +189,7 @@ export default function PLController(router: Router) {
 		.post(validateUUID('plaid'), requireAuth, requireValidUser, async (req: any, res) => {
 			try {
 				check(req.body, z.object({
-					kids: zUUIDArray,
+					kids: z.array(z.uuidv4()),
 					pos: z.coerce.number().int().optional(),
 					description: z.string().optional(),
 					flag_visible: z.coerce.boolean().optional(),
