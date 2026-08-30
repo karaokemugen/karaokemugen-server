@@ -227,7 +227,7 @@
 			order: (sort.value[route.name] as OrderParam) || undefined,
 			favorites: props.favorites || undefined,
 			collections:
-				typeof route.query.collections === 'string' && acceptQueryCollection
+				typeof route.query.collections === 'string' && route.query.collections && acceptQueryCollection
 					? decodeURIComponent(route.query.collections).replaceAll(':', ',')
 					: (enabledCollections.value.length > 0 ? enabledCollections.value.join(',') : undefined),
 			userAnimeList: props.userAnimeList || undefined
