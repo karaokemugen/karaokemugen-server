@@ -78,7 +78,7 @@ export default function KSController(router: Router) {
 			try {
 				check(req.query, z.object({
 					filter: z.string().optional(),
-					type: z.coerce.number().optional(),
+					type: z.coerce.number(),
 					from: z.coerce.number().optional(),
 					size: z.coerce.number().optional(),
 					order: z.enum(['karacount', 'az']).optional(),
