@@ -4,11 +4,10 @@ export const selectTags = (filterClauses: string[], limitClause: string, offsetC
 WITH kara_available AS (
 	SELECT ak.pk_kid
 	FROM all_karas ak
-	LEFT JOIN all_kara_tag akt ON ak.pk_kid = akt.fk_kid
 	WHERE TRUE
 	${collectionClauses.length > 0 ? `AND (${collectionClauses.map(clause => `(${clause})`).join(' OR ')})` : ''}
 ),
-t_count AS (
+t_count MATERIALIZED AS (
 	SELECT a.fk_tid,
 		json_agg(json_build_object('type', a.type, 'count', a.c))::text AS count_per_type
 	FROM (SELECT all_kara_tag.fk_tid,
