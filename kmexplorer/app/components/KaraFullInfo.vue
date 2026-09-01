@@ -340,6 +340,8 @@
 </script>
 
 <style scoped lang="scss">
+	@use 'sass:color';
+
 	.tagList {
 		border-top: 1px solid #5e6d6f;
 		margin-bottom: 1.5rem;
@@ -386,7 +388,7 @@
 	}
 
 	.box.is-clear {
-		background-color: lighten(#373f40, 5);
+		background-color: color.adjust(#373f40, $lightness: 5%);
 		width: fit-content;
 		overflow-wrap: anywhere;
 	}

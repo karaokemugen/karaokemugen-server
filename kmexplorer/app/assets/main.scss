@@ -1,18 +1,20 @@
+@use 'sass:color';
+
+@use '@fortawesome/fontawesome-svg-core/styles';
+@use './lato';
+@use './al-icons';
+
 ////////////////////////////////////////////////
 // DARKLY
 ////////////////////////////////////////////////
 @import 'bulmaswatch/darkly/_variables';
 
-@import '@fortawesome/fontawesome-svg-core/styles.css';
-
 $bulmaswatch-import-font: false;
-@import "./lato";
-@import './al-icons';
 
 $background: #36393f;
 $footer-background-color: $background;
 $button-background-color: $background;
-$button-border-color: lighten($button-background-color, 15);
+$button-border-color: color.adjust($button-background-color, $lightness: 15%);
 
 $blue: #3771dc;
 $info: $blue;
@@ -21,18 +23,18 @@ $input-background-color: $background;
 $input-color: $grey-lighter;
 $input-icon-active-color: white;
 
-$box-background-color: darken($grey, 17);
+$box-background-color: color.adjust($grey, $lightness: -17%);
 $subtitle-color: $grey-lighter;
 $subtitle-strong-color: $grey-lighter;
 $subtitle-strong-color: $grey-lighter;
 
-$success: darken($green, 20);
+$success: color.adjust($green, $lightness: -20%);
 
-$link: lighten($turquoise, 15);
+$link: color.adjust($turquoise, $lightness: 15%);
 
-$warning: darken($orange, 15);
+$warning: color.adjust($orange, $lightness: -15%);
 
-$danger: darken($red, 20);
+$danger: color.adjust($red, $lightness: -20%);
 
 $purple: #8702a3;
 
@@ -56,7 +58,7 @@ body.has-navbar-fixed-top, html.has-navbar-fixed-top {
 }
 
 .input::placeholder, .taginput .taginput-container.is-focusable::placeholder, .select select::placeholder {
-	color: lighten($grey, 15);
+	color: color.adjust($grey, $lightness: 15%);
 }
 
 .button.is-static {
@@ -93,7 +95,7 @@ body.has-navbar-fixed-top, html.has-navbar-fixed-top {
 	background-color: $purple;
 	border-color: transparent;
 	&:hover {
-		background-color: scale-color($purple, $lightness: 7.5%);
+		background-color: color.scale($purple, $lightness: 7.5%);
 	}
 	&:focus {
 		color: unset;
@@ -104,7 +106,7 @@ body.has-navbar-fixed-top, html.has-navbar-fixed-top {
 	background-color: #7e6f18;
 	border-color: transparent;
 	&:hover {
-		background-color: scale-color(#7e6f18, $lightness: 7.5%);
+		background-color: color.scale(#7e6f18, $lightness: 7.5%);
 	}
 	&:focus {
 		color: unset;

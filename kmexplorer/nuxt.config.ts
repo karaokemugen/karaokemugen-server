@@ -125,6 +125,14 @@ const nuxtConfig = defineNuxtConfig({
 		build: {
 			chunkSizeWarningLimit: 600,
 		},
+		css: {
+			preprocessorOptions: {
+				scss: {
+					// Bulma uses import(), nothing to fix until the Bulma 1 migration
+					quietDeps: true,
+				},
+			},
+		},
 	},
 
 	modules: [
