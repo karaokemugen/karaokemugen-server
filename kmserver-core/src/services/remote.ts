@@ -125,8 +125,11 @@ export function stopRemote(socket: Socket, reason?: string) {
 		const code = remotesReverse.get(socket);
 		logger.debug(`Stop remote for ${code} (hosted by ${socket.handshake.address})`, {service, obj: reason});
 		remotesReverse.delete(socket);
-		remotesVersions.delete(code);
-		remotes.delete(code);
+		// Remote may have reconnected in the meantime, only delete our own connection
+		if (remotes.get(code) === socket) {
+			remotesVersions.delete(code);
+			remotes.delete(code);
+		}
 	}
 }
 
