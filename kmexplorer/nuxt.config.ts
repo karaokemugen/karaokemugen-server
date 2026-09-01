@@ -121,6 +121,12 @@ const nuxtConfig = defineNuxtConfig({
 		],
 	},
 
+	vite: {
+		build: {
+			chunkSizeWarningLimit: 600,
+		},
+	},
+
 	modules: [
 		// Doc: https://v8.i18n.nuxtjs.org/getting-started/setup
 		'@nuxtjs/i18n',

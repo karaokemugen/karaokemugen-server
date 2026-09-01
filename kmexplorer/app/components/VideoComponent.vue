@@ -10,7 +10,8 @@
 <script setup lang="ts">
 	import _ from 'lodash';
 	import { storeToRefs } from 'pinia';
-	import videojs from 'video.js';
+	// Not necessary to include additional protocols like HLS/DASH. Use core to reduce bundle size
+	import videojs from 'video.js/core';
 	import type Player from 'video.js/dist/types/player';
 	import type TitleBar from 'video.js/dist/types/title-bar';
 
