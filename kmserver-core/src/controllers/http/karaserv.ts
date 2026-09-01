@@ -67,8 +67,11 @@ export default function KSController(router: Router) {
 		.get(validateUUID('tid'), async (req: any, res) => {
 			try {
 				const tag = await getTag(req.params.tid);
-				if (tag) res.json(tag);
-				res.status(404);
+				if (tag) {
+					res.json(tag);
+				} else {
+					res.status(404).send();
+				}
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
