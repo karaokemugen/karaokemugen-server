@@ -94,7 +94,7 @@ function prepareKaraQuery(params: KaraParams) {
 	// This is if you want to see someone's favorites
 	if (params.favorites) {
 		q.withCTEs.push(`favorited AS (
-    SELECT fk_kid 
+    SELECT fk_kid, favorited_at
 	FROM users_favorites
 	WHERE fk_login = :favoritedby
 )`);
@@ -125,8 +125,9 @@ function prepareKaraQuery(params: KaraParams) {
 		q.orderClauses.push(`ks.played ${!params.direction || params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
 	} else if (params.order === 'playedRecently') {
 		q.orderClauses.push(`ks.played_recently ${!params.direction || params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
-	} else if (params.order === 'favorited_at') {
-		q.orderClauses.push(`fv.favorited_at ${!params.direction || params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
+	} else if (params.order === 'favorited_at' && params.favorites) {
+		// User-favorites "uf" is only joined when params.favorites is set
+		q.orderClauses.push(`uf.favorited_at ${!params.direction || params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
 	} else if (params.order === 'favorited') {
 		q.orderClauses.push(`ks.favorited ${!params.direction || params.direction === 'asc' ? '' : 'DESC'} NULLS LAST`);
 	} else if (params.order === 'requested') {
