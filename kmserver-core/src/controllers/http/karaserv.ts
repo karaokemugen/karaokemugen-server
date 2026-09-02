@@ -96,12 +96,12 @@ export default function KSController(router: Router) {
 			}
 		});
 	router.route('/karas/medias')
-		.post(async (req, res) => {
+		.post<object, unknown, { collections?: string[] } | undefined>(async (req, res) => {
 			try {
 				check(req.body, z.object({
 					collections: z.array(z.uuidv4()).optional()
 				}).optional());
-				const medias = await getAllMedias(req.body.collections.split(','));
+				const medias = await getAllMedias(req.body?.collections);
 				res.json(medias);
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));
