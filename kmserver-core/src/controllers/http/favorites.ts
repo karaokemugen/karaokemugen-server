@@ -36,7 +36,7 @@ export default function favoritesController(router: Router) {
 				// KID is already validated by Express middleware
 				check(req.body, z.object({
 					favorited_at: z.iso.datetime({ offset: true }).optional()
-				}));
+				}).optional());
 				await addFavorite(req.authToken, req.params.kid, req.body?.favorited_at);
 				res.status(200).json();
 			} catch (err) {

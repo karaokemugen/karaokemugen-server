@@ -99,8 +99,8 @@ export default function KSController(router: Router) {
 		.post(async (req, res) => {
 			try {
 				check(req.body, z.object({
-					collections: zUUIDList.optional()
-				}));
+					collections: z.array(z.uuidv4()).optional()
+				}).optional());
 				const medias = await getAllMedias(req.body.collections.split(','));
 				res.json(medias);
 			} catch (err) {
