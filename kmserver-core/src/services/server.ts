@@ -8,6 +8,7 @@ import logger from '../lib/utils/logger.js';
 const service = 'KMServerUplink';
 
 export async function addServer(kmServer: KMServer) {
+	if (kmServer.domain === 'localhost') throw new ErrorKM('INVALID_DATA', 400, false);
 	return upsertServer({
 		domain: kmServer.domain,
 		sid: kmServer.sid,
