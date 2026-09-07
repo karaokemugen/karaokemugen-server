@@ -1,3 +1,5 @@
+import { useAuthStore } from '~/store/auth';
+
 export const useUploadFile = (
 	path: string,
 	form: FormData,
@@ -5,9 +7,11 @@ export const useUploadFile = (
 	onUploadFinished: (result: any) => void,
 	onUploadError: (result: any) => void,
 ) => {
+	const auth = useAuthStore();
 	const xhr = new XMLHttpRequest();
 
 	xhr.open('POST', `${useRequestURL().origin}${path}`);
+	xhr.setRequestHeader('authorization', auth.token || '');
 
 	xhr.onreadystatechange = () => {
 		if (xhr.readyState === 4) {
