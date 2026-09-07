@@ -986,6 +986,7 @@
 					(result: string) => {
 						if (karaoke.value.medias[0]) {
 							karaoke.value.medias[0].lyrics = [{
+								...karaoke.value.medias[0].lyrics[0], // Keep values like announcePosition
 								filename: result,
 								default: true,
 								version: 'Default'

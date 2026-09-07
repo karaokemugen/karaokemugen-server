@@ -66,6 +66,7 @@ export function convertDBKaraToKaraFile(dbKara?: DBKara): KaraFileV4 {
 				lyrics: dbKara?.lyrics_infos[0]
 					? [
 						{
+							...dbKara.lyrics_infos[0], // Keep values like announcePosition
 							filename: dbKara.lyrics_infos[0].filename,
 							default: true,
 							version: 'Default'
