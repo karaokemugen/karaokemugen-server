@@ -1,14 +1,16 @@
 import { logger } from '@sentry/node';
+import { randomUUID } from 'crypto';
 import { Router } from 'express';
 import multer from 'multer';
-import {resolve} from 'path';
+import { resolve } from 'path';
 import z from 'zod';
 
 import { karaConstraintsV4 } from '../../lib/dao/karafile.js';
 import { tagConstraintsV1 } from '../../lib/dao/tagfile.js';
 import { APIMessage } from '../../lib/services/frontend.js';
 import { processUploadedMedia } from '../../lib/services/karaCreation.js';
-import {getConfig} from '../../lib/utils/config.js';
+import { getConfig } from '../../lib/utils/config.js';
+import { sanitizedFileExtension } from '../../lib/utils/files.js';
 import { check, zFilename } from '../../lib/utils/validators.js';
 import {createKara, editKara} from '../../services/karaImport.js';
 import { addTag } from '../../services/tag.js';
@@ -20,8 +22,12 @@ const service = 'KIController';
 
 export default function KIController(router: Router) {
 	const conf = getConfig();
-	const upload = multer({ 
-		dest: resolve(getState().dataPath, conf.System.Path.Temp),
+	const upload = multer({
+		storage: multer.diskStorage({
+			destination: resolve(getState().dataPath, conf.System.Path.Temp),
+			// Keep original extension for media type detection
+			filename: (_req, file, cb) => cb(null, `${randomUUID()}${sanitizedFileExtension(file.originalname)}`),
+		}),
 		limits: { fileSize: 1024 * 1024 * 1024 * 2, files: 1  } // 2 GB
 	});
 	
