@@ -1,0 +1,5 @@
+ALTER TABLE server
+ADD COLUMN stats JSONB;
+
+ALTER TABLE server
+ADD COLUMN manifest JSONB;

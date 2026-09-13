@@ -15,5 +15,7 @@ export function upsertServer(kmServer: KMServer) {
 	return db().query(sql.upsertServer, [
 		kmServer.domain,
 		kmServer.sid,
+		kmServer.stats,
+		kmServer.manifest,
 	]);
 }
