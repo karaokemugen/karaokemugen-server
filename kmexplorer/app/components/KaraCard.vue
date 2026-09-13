@@ -136,7 +136,7 @@
 </template>
 
 <script setup lang="ts">
-	import type { DBKara, DBKaraTag } from '%/lib/types/database/kara';
+	import type { DBKara } from '%/lib/types/database/kara';
 	import type { DBPL } from '%/types/database/playlist';
 	import { storeToRefs } from 'pinia';
 	import slug from 'slug';
@@ -145,6 +145,7 @@
 	import { useConfigStore } from '~/store/config';
 	import { useMenubarStore, type TagExtend } from '~/store/menubar';
 	import { useModalStore } from '~/store/modal';
+	import { getTagsToDisplay } from '~/utils/kara';
 
 	const props = defineProps<{
 		karaoke: DBKara
@@ -190,7 +191,7 @@
 		delete tagTypesSorted.collections; // Collections are not useful information
 		// Remove unused tagTypes in context
 		for (const tagType in tagTypesSorted) {
-			// @ts-expect-error
+			// @ts-expect-error Attribute with string array
 			if (props.karaoke[tagType].length === 0) {
 				delete tagTypesSorted[tagType];
 			}
@@ -198,40 +199,7 @@
 		return tagTypesSorted;
 	});
 	const tags = computed((): TagExtend[] => {
-		const tags: TagExtend[] = [];
-		for (const tagType in tagTypesSorted.value) {
-			let i = 0;
-			// @ts-expect-error
-			for (const tag of props.karaoke[tagType]) {
-				// Removing all tags mentioned in the karaphrase
-				if ((tag as DBKaraTag).priority >= -1 && !(
-					(props.karaoke.from_display_type === tagType && i === 0) ||
-					// Remove the first series
-					(tagType === 'series' && i === 0 &&
-						!props.karaoke.from_display_type) ||
-					// Remove the first songtype
-					(tagType === 'songtypes' && i === 0) ||
-					// Remove the first singergroups if the karaoke has no series
-					(tagType === 'singergroups' && i === 0 &&
-						props.karaoke.series.length === 0 &&
-						!props.karaoke.from_display_type) ||
-					// Remove the first singer if the karaoke has no singergroups and no series
-					(tagType === 'singers' &&
-						i === 0 &&
-						props.karaoke.singergroups.length === 0 &&
-						props.karaoke.series.length === 0 &&
-						!props.karaoke.from_display_type) ||
-					// Remove the next tags to avoid overflow
-					i > 1
-				)) {
-					tags.push({
-						type: tagType,
-						tag
-					});
-				}
-				i++;
-			}
-		}
+		const tags = getTagsToDisplay(props.karaoke, Object.keys(tagTypesSorted.value))
 		tags.push({
 			type: 'years',
 			tag: fakeYearTag(props.karaoke.year.toString()),

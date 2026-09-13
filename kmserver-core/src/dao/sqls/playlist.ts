@@ -214,7 +214,8 @@ SELECT
   pc.flag_refused AS flag_refused,
   pc.flag_accepted AS flag_accepted,
   COUNT(*) OVER()::integer AS count,
-  ak.repository AS repository
+  ak.repository AS repository,
+  ak.from_display_type AS from_display_type
 FROM all_karas AS ak
 LEFT OUTER JOIN kara k ON k.pk_kid = ak.pk_kid
 INNER JOIN playlist_content AS pc ON pc.fk_kid = ak.pk_kid
@@ -224,7 +225,7 @@ LEFT OUTER JOIN users_favorites uf ON uf.fk_kid = ak.pk_kid AND uf.fk_login = :u
 ${additionalFrom}
 WHERE pc.fk_plaid = :plaid
 ${filterClauses.map(clause => `AND (${clause})`).join(' ')}
-GROUP BY ak.pk_kid, ak.titles, ak.titles_aliases, ak.titles_default_language, ak.songorder, ak.tags, ak.lyrics_infos, ak.year, ak.mediafile, ak.karafile, ak.duration, ak.mediasize, pc.created_at, pc.nickname, ak.download_status, ksub.subchecksum, pc.fk_login, pc.pos, pc.pk_plcid, uf.fk_kid, u.avatar_file, ak.repository
+GROUP BY ak.pk_kid, ak.titles, ak.titles_aliases, ak.titles_default_language, ak.songorder, ak.tags, ak.lyrics_infos, ak.year, ak.mediafile, ak.karafile, ak.duration, ak.mediasize, pc.created_at, pc.nickname, ak.download_status, ksub.subchecksum, pc.fk_login, pc.pos, pc.pk_plcid, uf.fk_kid, u.avatar_file, ak.repository, ak.from_display_type
 ORDER BY ${orderClause}
 ${limitClause}
 ${offsetClause}

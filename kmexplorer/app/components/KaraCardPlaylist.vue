@@ -58,6 +58,7 @@
 	import { useAuthStore } from '~/store/auth';
 	import type { TagExtend } from '~/store/menubar';
 	import { useConfigStore } from '~/store/config';
+	import { getTagsToDisplay } from '~/utils/kara';
 
 	const props = defineProps<{
 		karaoke: DBPLC
@@ -98,39 +99,7 @@
 	});
 
 	const tags = computed((): TagExtend[] => {
-		const tags: TagExtend[] = [];
-		for (const tagType of ['langs', 'series', 'singers', 'singergroups', 'warnings']) {
-			let i = 0;
-			// @ts-expect-error
-			if (props.karaoke[tagType] && props.karaoke[tagType].length !== 0) {
-				// @ts-expect-error
-				for (const tag of props.karaoke[tagType]) {
-					// Removing all tags mentioned in the karaphrase
-					if (!(
-						// Remove the first series
-						(tagType === 'series' && i === 0) ||
-						// Remove the first songtype
-						(tagType === 'songtypes' && i === 0) ||
-						// Remove the first singergroups if the karaoke has no series
-						(tagType === 'singergroups' && i === 0 && props.karaoke.series.length === 0) ||
-						// Remove the first singer if the karaoke has no singergroups and no series
-						(tagType === 'singers' &&
-							i === 0 &&
-							props.karaoke.singergroups.length === 0 &&
-							props.karaoke.series.length === 0) ||
-						// Remove the next tags to avoid overflow
-						i > 1
-					)) {
-						tags.push({
-							type: tagType,
-							tag
-						});
-					}
-					i++;
-				}
-			}
-		}
-		return tags;
+		return getTagsToDisplay(props.karaoke, ['langs', 'series', 'singers', 'singergroups', 'warnings'])
 	});
 
 	const playable = computed(() => isPlayable(props.karaoke, user?.value?.roles?.admin));
