@@ -1,9 +1,11 @@
 import { selectServers, updateBanServer, upsertServer } from '../dao/server.js';
+import { getRepoManifest } from '../lib/services/repo.js';
 import { KMServer } from '../lib/types/database/servers.js';
 import { getConfig } from '../lib/utils/config.js';
 import { ErrorKM } from '../lib/utils/error.js';
 import HTTP from '../lib/utils/http.js';
 import logger from '../lib/utils/logger.js';
+import { getBaseStats } from './kara.js';
 
 const service = 'KMServerUplink';
 
@@ -11,7 +13,9 @@ export async function addServer(kmServer: KMServer) {
 	return upsertServer({
 		domain: kmServer.domain,
 		sid: kmServer.sid,
-		last_seen: null // is updated by postgres,
+		last_seen: null, // is updated by postgres
+		stats: kmServer.stats,
+		manifest: kmServer.manifest,
 	});
 }
 
@@ -35,12 +39,16 @@ export async function sendHeartbeat() {
 	const servers = conf.App.MasterServersUplink;
 	const sid = conf.App.InstanceID;
 	const domain = conf.Frontend.Host;
+	const manifest = getRepoManifest(conf.System.Repositories[0].Name);
+	const stats = await getBaseStats();
 	if (!servers) return;
 	for (const server of servers) {
 		try {
 			await HTTP.post(`https://${server}/api/uplink/heartbeat`, {
 				domain,
 				sid,
+				stats,
+				manifest,
 			});
 		} catch (err) {
 			logger.error(`Unable to send heartbeat to master server ${server} : ${err}`, { service });
