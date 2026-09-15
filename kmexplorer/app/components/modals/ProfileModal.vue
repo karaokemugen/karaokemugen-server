@@ -368,7 +368,7 @@
 									<input
 										id="kitsu"
 										v-model="editedUser.social_networks.kitsu"
-										type="text"
+										type="number"
 										name="kitsu"
 										class="input"
 										:placeholder="$t('modal.profile.fields.kitsu.placeholder')"
