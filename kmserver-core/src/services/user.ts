@@ -31,7 +31,7 @@ import { delPubUser, pubUser } from './userPubSub.js';
 
 const service = 'User';
 
-const passwordResetRequests = new Map<string, {	
+const passwordResetRequests = new Map<string, {
 	code: string;
 	date: number;
 	attempts?: number;
@@ -471,7 +471,7 @@ export async function canSubmitInbox(username: string) {
 	const songsAllowed = trustLevels[user.contributor_trust_level];
 	if (isNaN(songsAllowed)) return true;
 	const inboxesFromUser = await getInbox(true, username);
-	const pendingInboxes = inboxesFromUser.filter(i => i.status === 'changes_requested' || i.status === 'in_review' || i.status === 'sent');
+	const pendingInboxes = inboxesFromUser.filter(i => !i.flag_fix && (i.status === 'changes_requested' || i.status === 'in_review' || i.status === 'sent'));
 	if (pendingInboxes.length > songsAllowed) throw new ErrorKM('USER_INBOX_QUOTA_REACHED', 429, false);
 	return true;
 }

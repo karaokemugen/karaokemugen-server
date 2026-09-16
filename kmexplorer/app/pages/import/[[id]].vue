@@ -85,11 +85,13 @@
 	const data = await useCustomFetch<{ Manifest: RepositoryManifestV2 }>('/api/karas/repository');
 	manifest.value = data.Manifest;
 
-	if (!params?.id && config?.value && config.value.Frontend.Import.LoginNeeded && config.value.Frontend.Import.ContributorTrustLevels && user?.value?.contributor_trust_level) {
+	if (!params?.id && config?.value && config.value.Frontend.Import.LoginNeeded
+		&& config.value.Frontend.Import.ContributorTrustLevels && user?.value?.contributor_trust_level) {
 		const submissionInfo = await useCustomFetch<DBInbox[]>('/api/myaccount/inbox/submitted', {
 			method: 'POST',
 		});
-		inboxCount.value = (config.value.Frontend.Import.ContributorTrustLevels[user.value.contributor_trust_level] || 0) - submissionInfo.filter(i => i.status !== 'accepted' && i.status !== 'rejected').length;
+		inboxCount.value = (config.value.Frontend.Import.ContributorTrustLevels[user.value.contributor_trust_level] || 0)
+			- submissionInfo.filter((i: DBInbox) => !i.flag_fix && i.status !== 'accepted' && i.status !== 'rejected').length;
 		if (inboxCount.value === 0) {
 			showError({
 				statusCode: 403,
