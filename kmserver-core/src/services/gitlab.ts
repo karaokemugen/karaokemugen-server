@@ -184,6 +184,10 @@ async function gitlabCreateIssue(title: string, desc: string, labels: string[]):
 	try {
 		const conf = getConfig();
 		const manifest = getRepoManifest(conf.System.Repositories[0].Name);
+		if (!conf.Gitlab.Enabled) {
+			logger.info(`No gitlab issue because gitlab is disabled`, {service});
+			return;
+		}
 		if (!manifest?.projectID) {
 			logger.warn(`No gitlab issue was created due to project id missing`, {service});
 			return;
@@ -272,7 +276,7 @@ export async function createKaraIssue(kid: string, type: 'Media' | 'Metadata' | 
 		desc = desc.replace('$username', user ? user.nickname : (username || 'Anonymous'))
 			.replace('$comment', comment)
 			.replace('$url', `https://${getConfig().Frontend.Host}/kara/xxx/${kid}`);
-		if (conf.Gitlab.Enabled) return await gitlabCreateIssue(title, desc, issueTemplate.Labels);
+		return await gitlabCreateIssue(title, desc, issueTemplate.Labels);
 	} catch (err) {
 		logger.error(`Unable to create issue for song ${kid}`, {service, obj: err});
 		sentry.addErrorInfo('args', JSON.stringify(arguments, null, 2));
