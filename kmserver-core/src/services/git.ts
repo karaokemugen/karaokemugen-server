@@ -1,5 +1,6 @@
 import { execa } from 'execa';
 import { existsSync, promises as fs } from 'fs';
+import { scheduleJob } from 'node-schedule';
 import { resolve } from 'path';
 
 import { getConfig } from '../lib/utils/config.js';
@@ -14,6 +15,10 @@ const service = 'Git';
 
 function isGit(path: string) {
 	return fileExists(resolve(path, '.git'));
+}
+
+export async function initGitSystem() {
+	scheduleJob('0 */5 * * * *', gitFetch);
 }
 
 async function gitDiff(source: string, dest: string, gitDir: string, type: 'commits' | 'files' = 'commits'): Promise<string> {
@@ -44,6 +49,23 @@ async function gitPull(gitDir: string): Promise<string> {
 		cwd: gitDir
 	});
 	logger.info(`Git pull log : ${res.stdout}`, { service });
+	return res.stdout;
+}
+
+export async function gitFetch() {
+	const res = await execa(getState().binPath.git, ['fetch'], {
+		encoding: 'utf8',
+		cwd: resolve(getState().dataPath, getConfig().System.Repositories[0].BaseDir)
+	});
+	logger.info(`Git fetch log : ${res.stdout}`, { service });
+}
+
+export async function gitGetLatestOriginCommit(gitDir: string): Promise<string> {
+	const res = await execa(getState().binPath.git, ['rev-parse', 'origin/HEAD'], {
+		encoding: 'utf8',
+		cwd: gitDir
+	});
+	logger.info(`Git rev-parse log : ${res.stdout}`, { service });
 	return res.stdout;
 }
 

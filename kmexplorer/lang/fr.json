@@ -271,6 +271,7 @@
 		"remotes": "Remotes",
 		"administration": "Administration",
 		"dashboard": "Tableau de bord",
+		"logs": "Logs",
 		"bans": "Exclusions",
 		"search_users": "Utilisateurs",
 		"discord": "Discord",
@@ -750,6 +751,16 @@
 			"tag": "Tag de Karaoke Mugen Server : {tag}",
 			"date": "Date de construction : {date}",
 			"commit": "Commit : {commit}"
+		},
+		"repository": {
+			"latest_commit": "Dernier commit du dépôt : {commit}",
+			"latest_origin_commit": "Dernier commit en ligne du dépôt : {commit}",
+			"last_generation_date": "Date de la dernière génération : {date}",
+			"generation_in_progress": "Génération en cours",
+			"hardsubs": {
+				"queue_length": "Médias avec les sous-titres incrustés restants à encoder : {length}",
+				"queue": "Traitement du média avec les sous-titres incrustés pour {kid}, qui a débuté à {date}"
+			}
 		},
 		"update_git": "Mettre à jour le dépôt Git",
 		"update_git_triggered": "La mise à jour a été lancée.",

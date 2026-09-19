@@ -10997,6 +10997,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"engine.io-client@npm:~6.6.1":
+  version: 6.6.6
+  resolution: "engine.io-client@npm:6.6.6"
+  dependencies:
+    "@socket.io/component-emitter": ~3.1.0
+    debug: ~4.4.1
+    engine.io-parser: ~5.2.1
+    ws: ~8.21.0
+    xmlhttprequest-ssl: ~2.1.1
+  checksum: 45c24e975866f3561fc3839e66648459314f7012cb5e1634af193d7680d1e5eda1ea954cef0b1b3bba19db50ec59e82f039e9647a03e04bafa97a9915dbefdcb
+  languageName: node
+  linkType: hard
+
 "engine.io-parser@npm:~5.2.1":
   version: 5.2.3
   resolution: "engine.io-parser@npm:5.2.3"
@@ -14533,6 +14546,7 @@ __metadata:
     pretty-bytes: 7.1.0
     sass: ^1.100.0
     slug: ^11.0.1
+    socket.io-client: ^4.8.3
     uuid: ^14.0.0
     video.js: ^8.23.7
     vue-advanced-cropper: ^2.8.9
@@ -19916,6 +19930,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"socket.io-client@npm:^4.8.3":
+  version: 4.8.3
+  resolution: "socket.io-client@npm:4.8.3"
+  dependencies:
+    "@socket.io/component-emitter": ~3.1.0
+    debug: ~4.4.1
+    engine.io-client: ~6.6.1
+    socket.io-parser: ~4.2.4
+  checksum: d5b4b5bf78e2196927103c4bbbafe5f426c6dc162a2d8ec8e5c53272abf4557613aa37fb95b294fe6a475971f2f60e8bbd22b12a5ce3ca6824848da664c7e528
+  languageName: node
+  linkType: hard
+
 "socket.io-parser@npm:~4.2.4":
   version: 4.2.4
   resolution: "socket.io-parser@npm:4.2.4"
@@ -22958,6 +22984,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ws@npm:~8.21.0":
+  version: 8.21.3
+  resolution: "ws@npm:8.21.3"
+  peerDependencies:
+    bufferutil: ^4.0.1
+    utf-8-validate: ">=5.0.2"
+  peerDependenciesMeta:
+    bufferutil:
+      optional: true
+    utf-8-validate:
+      optional: true
+  checksum: 8a28a457a997e0d63b5bc4d35344c342c68038c207013196468c35a80f7220397665739026217e836abc40ea7432483de3fee47a64abdedb4e3d0e3f332dc37b
+  languageName: node
+  linkType: hard
+
 "wsl-utils@npm:^0.1.0":
   version: 0.1.0
   resolution: "wsl-utils@npm:0.1.0"
@@ -22995,6 +23036,13 @@ __metadata:
   version: 2.2.0
   resolution: "xmlchars@npm:2.2.0"
   checksum: 8c70ac94070ccca03f47a81fcce3b271bd1f37a591bf5424e787ae313fcb9c212f5f6786e1fa82076a2c632c0141552babcd85698c437506dfa6ae2d58723062
+  languageName: node
+  linkType: hard
+
+"xmlhttprequest-ssl@npm:~2.1.1":
+  version: 2.1.2
+  resolution: "xmlhttprequest-ssl@npm:2.1.2"
+  checksum: f8ecb894301dd024804669245888b3d5ceed2dfcdb4fddb0e38d811a07a2e3c227535f29b269eccf92005819457db3f270d2ff98df516abf95cfad1b9759512d
   languageName: node
   linkType: hard
 

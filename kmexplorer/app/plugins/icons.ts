@@ -88,7 +88,8 @@ import {
 	faCircleInfo,
 	faFileLines,
 	faMasksTheater,
-	faChalkboardUser
+	faChalkboardUser,
+	faBoxArchive
 } from '@fortawesome/free-solid-svg-icons';
 import {
 	faGitAlt,
@@ -198,6 +199,7 @@ library.add(
 	faFileLines,
 	faChalkboardUser,
 	faMasksTheater,
+	faBoxArchive,
 	faGitAlt);
 
 export default defineNuxtPlugin((nuxtApp) => {
