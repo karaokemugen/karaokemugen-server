@@ -154,6 +154,10 @@ export function proxyBroadcast(socket: Socket, data: any) {
 	}
 }
 
+export function isRemoteRegistered(socket: Socket) {
+	return remotesReverse.has(socket);
+}
+
 function deleteOldRemote() {
 	deleteOldRemoteTokens().then(() => {
 		logger.info('Cleaned up expired tokens', {service});

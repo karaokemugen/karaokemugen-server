@@ -2,7 +2,7 @@ import { APIData } from '../../lib/types/api.js';
 import { RemoteResponse, RemoteSettings } from '../../lib/types/remote.js';
 import logger from '../../lib/utils/logger.js';
 import { SocketIOApp } from '../../lib/utils/ws.js';
-import { proxyBroadcast, startRemote, stopRemote } from '../../services/remote.js';
+import { isRemoteRegistered, proxyBroadcast, startRemote, stopRemote } from '../../services/remote.js';
 import { WS_CMD } from '../../utils/ws.js';
 
 const service = 'WSRemote';
@@ -17,7 +17,8 @@ export default function remoteSocketController(app: SocketIOApp) {
 	});
 	app.route(WS_CMD.REMOTE_BROADCAST, async (socket, req: APIData) => {
 		setImmediate(proxyBroadcast, socket, req.body);
-		return true;
+		// Check if the current socket is registered because it could be overridden by re-connects
+		return isRemoteRegistered(socket);
 	});
 	app.route(WS_CMD.PING, async (socket, _req: APIData) => {
 		socket.emit('pong');
