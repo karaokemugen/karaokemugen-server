@@ -207,6 +207,18 @@
 					<nuxt-link
 						v-if="loggedIn && user?.roles?.admin"
 						class="navbar-item"
+						to="/administration/logs"
+						@click="closeMenu"
+					>
+						<font-awesome-icon
+							:icon="['fas', 'box-archive']"
+							:fixed-width="true"
+						/>
+						{{ $t('menu.logs') }}
+					</nuxt-link>
+					<nuxt-link
+						v-if="loggedIn && user?.roles?.admin"
+						class="navbar-item"
 						to="/administration/remote"
 						@click="closeMenu"
 					>
@@ -967,6 +979,17 @@
 									:fixed-width="true"
 								/>
 								{{ $t('menu.dashboard') }}
+							</nuxt-link>
+							<nuxt-link
+								v-if="loggedIn && user?.roles?.admin"
+								to="/administration/logs"
+								active-class="is-active"
+							>
+								<font-awesome-icon
+									:icon="['fas', 'box-archive']"
+									:fixed-width="true"
+								/>
+								{{ $t('menu.logs') }}
 							</nuxt-link>
 							<nuxt-link
 								v-if="loggedIn && user?.roles?.admin"

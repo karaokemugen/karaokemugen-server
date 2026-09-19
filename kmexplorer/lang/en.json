@@ -271,6 +271,7 @@
 		"remotes": "Remotes",
 		"administration": "Administration",
 		"dashboard": "Dashboard",
+		"logs": "Logs",
 		"bans": "Bans",
 		"search_users": "Search users",
 		"discord": "Discord",
@@ -750,6 +751,16 @@
 			"tag": "Karaoke Mugen Server Tag: {tag}",
 			"date": "Build date: {date}",
 			"commit": "Commit: {commit}"
+		},
+		"repository": {
+			"latest_commit": "Latest repository commit : {commit}",
+			"latest_origin_commit": "Latest online repository commit : {commit}",
+			"last_generation_date": "Last generation date : {date}",
+			"generation_in_progress": "Generation in progress",
+			"hardsubs": {
+				"queue_length": "Remaining hardsubs to be encoded : {length}",
+				"queue": "Processing hardsub for {kid}, which began on {date}"
+			}
 		},
 		"update_git": "Update Git repository",
 		"update_git_triggered": "Update has been triggered.",

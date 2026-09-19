@@ -17,7 +17,7 @@ import { updateWebmanifest } from './kmexplorer.js';
 import { configureLocale, getConfig, resolvedPath } from './lib/utils/config.js';
 import { asyncCheckOrMkdir } from './lib/utils/files.js';
 import { enableProfiling } from './lib/utils/logger.js';
-import { initGitRepos } from './services/git.js';
+import { initGitRepos, initGitSystem } from './services/git.js';
 import { generate } from './services/kara.js';
 import { initRepos } from './services/repo.js';
 import { banServer, initUplink } from './services/server.js';
@@ -194,6 +194,7 @@ async function main() {
 
 	configureLocale(acceptedLanguages);
 	initRepos();
+	initGitSystem();
 	initUplink();
 	setSensitiveTags();
 	

@@ -6,6 +6,26 @@
 				<div>{{ $t('dashboard.version.date', { date: state.version.date }) }}</div>
 				<div>{{ $t('dashboard.version.commit', { commit: state.version.sha }) }}</div>
 			</div>
+			<div class="mb-3">
+				<div>{{ $t('dashboard.repository.latest_commit', { commit: repository?.LatestCommit }) }}</div>
+				<div>{{ $t('dashboard.repository.latest_origin_commit', { commit: repository?.LatestOriginCommit }) }}
+				</div>
+				<div v-if="generation_in_progress" class="mt-2 has-text-warning has-text-weight-bold  is-size-5 ">
+					<FontAwesomeIcon class="icon has-text-warning" :icon="['fas', 'triangle-exclamation']" />
+					{{ $t('dashboard.repository.generation_in_progress') }}
+				</div>
+				<div>{{ $t('dashboard.repository.last_generation_date', {
+					date: last_generation ? new
+						Date(last_generation).toLocaleString() : '-'
+				}) }}</div>
+			</div>
+			<div class="mb-3">
+				<div>{{ $t('dashboard.repository.hardsubs.queue_length', { length: hardsub_queue_length }) }}</div>
+				<div v-if="current_hardsub_process">{{ $t('dashboard.repository.hardsubs.queue', {
+					kid:
+						current_hardsub_process, date: current_hardsub_process_start_date
+				}) }}</div>
+			</div>
 			<div class="is-flex">
 				<button class="button" @click="updateGit">
 					<font-awesome-icon fixed-width :icon="['fab', 'git-alt']" />
@@ -66,6 +86,7 @@
 import type { DBUser } from '%/lib/types/database/user';
 import type { State } from '%/types/state';
 import type { UserList } from '%/types/user';
+import { io } from 'socket.io-client';
 import * as Toast from 'vue-toastification';
 import { useAuthStore } from '~/store/auth';
 import { useConfigStore } from '~/store/config';
@@ -74,14 +95,67 @@ import { useConfigStore } from '~/store/config';
 const useToast = Toast.useToast ?? Toast.default.useToast;
 const { user } = storeToRefs(useAuthStore());
 
+const socket = io('localhost:1350');
 const { t } = useI18n();
 const toast = useToast();
 const { config } = storeToRefs(useConfigStore());
 
 const contributors = ref<DBUser[]>([]);
 const state = ref<State>();
+const repository = ref<{ LatestCommit: string, LatestOriginCommit: string }>();
+const generation_in_progress = ref(false);
+const last_generation = ref<string>()
+const hardsub_queue_length = ref(0);
+const current_hardsub_process = ref<string>();
+const current_hardsub_process_start_date = ref<string>();
 
 if (import.meta.client && !user?.value?.roles?.admin && !user?.value?.roles?.maintainer) throw createError({ statusCode: 404 });
+
+if (import.meta.client && user?.value?.roles?.admin) {
+	onMounted(() => {
+		socket.on("tasksUpdated", (tasks: [{ text: string }]) => {
+			if (!generation_in_progress.value && tasks.some(v => v.text === 'GENERATING')) generation_in_progress.value = true;
+		});
+		socket.on("statsRefresh", () => {
+			generation_in_progress.value = false;
+			getLastGeneration();
+		});
+		socket.on("hardsubQueueLengthUpdated", (queueLength: number) => {
+			hardsub_queue_length.value = queueLength;
+		});
+		socket.on("hardsubQueueUpdated", (queue: string[]) => {
+			if (queue.length > 0) {
+				current_hardsub_process.value = queue[0];
+				current_hardsub_process_start_date.value = new Date().toLocaleString();
+			} else {
+				current_hardsub_process.value = undefined;
+				current_hardsub_process_start_date.value = undefined;
+			}
+		});
+	});
+
+	onUnmounted(() => {
+		socket.off("tasksUpdated", (tasks: [{ text: string }]) => {
+			if (!generation_in_progress.value && tasks.some(v => v.text === 'GENERATING')) generation_in_progress.value = true;
+		});
+		socket.off("statsRefresh", () => {
+			generation_in_progress.value = false;
+			getLastGeneration();
+		});
+		socket.off("hardsubQueueLengthUpdated", (queueLength: number) => {
+			hardsub_queue_length.value = queueLength;
+		});
+		socket.off("hardsubQueueUpdated", (queue: string[]) => {
+			if (queue.length > 0) {
+				current_hardsub_process.value = queue[0];
+				current_hardsub_process_start_date.value = new Date().toLocaleString();
+			} else {
+				current_hardsub_process.value = undefined;
+				current_hardsub_process_start_date.value = undefined;
+			}
+		});
+	});
+}
 
 async function updateGit() {
 	await useCustomFetch('/api/git/update', { method: 'POST' });
@@ -120,12 +194,25 @@ async function updateContributorLevel(event: Event, contributor: DBUser) {
 	});
 }
 
+async function getLastGeneration() {
+	last_generation.value = await useCustomFetch<string>('/api/karas/lastUpdate');
+}
+
 async function getState() {
 	state.value = await useCustomFetch('/api/state');
 }
 
+async function getRepository() {
+	repository.value = await useCustomFetch('/api/karas/repository');
+}
+
 getContributors();
-if (import.meta.client && user?.value?.roles?.admin) getState()
+
+if (import.meta.client && user?.value?.roles?.admin) {
+	getRepository();
+	getLastGeneration();
+	getState();
+}
 </script>
 
 <style lang="scss">

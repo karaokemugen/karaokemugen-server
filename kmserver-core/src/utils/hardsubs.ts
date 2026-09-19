@@ -10,6 +10,7 @@ import { createHardsub } from '../lib/utils/ffmpeg.js';
 import { fileExists, resolveFileInDirs } from '../lib/utils/files.js';
 import logger, { profile } from '../lib/utils/logger.js';
 import { emit, once } from '../lib/utils/pubsub.js';
+import { emitWS } from '../lib/utils/ws.js';
 import { generateHardsubsCache, getAllKaras } from '../services/kara.js';
 import { Config } from '../types/config.js';
 import { getState } from './state.js';
@@ -59,6 +60,8 @@ async function wrappedGenerateHS(payload: [string, string, string, string, strin
 		hardsubsBeingProcessed.delete(kid);
 		logger.info(`Hardsub for ${mediaPath} created`, { service });
 		logger.info(`${queue.length()} hardsubs left in queue`, { service });
+		emitWS('hardsubQueueUpdated', [...hardsubsBeingProcessed]);
+		emitWS('hardsubQueueLengthUpdated', queue.length());
 	} catch (err) {
 		logger.error(`Error creating hardsub for ${mediaPath} : ${err}`, { service, obj: err });
 		hardsubsBeingProcessed.delete(kid);
@@ -159,6 +162,7 @@ export async function generateHardsubs(karas: KaraList) {
 			} catch (error) {
 				logger.error(`Error when creating hardsub for ${media.mediafile}: ${error}`, { service });
 			}
+			emitWS('hardsubQueueLengthUpdated', queue.length());
 		}
 		return hardsubsCount;
 	} catch (err) {

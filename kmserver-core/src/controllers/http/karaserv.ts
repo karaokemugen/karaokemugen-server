@@ -10,7 +10,7 @@ import {getConfig} from '../../lib/utils/config.js';
 import { orderParams } from '../../lib/utils/constants.js';
 import { ErrorKM } from '../../lib/utils/error.js';
 import { check, zGitCommit, zQParam, zUUIDList } from '../../lib/utils/validators.js';
-import { getGitDiff, getLatestGitCommit } from '../../services/git.js';
+import { getGitDiff, getLatestGitCommit, gitGetLatestOriginCommit } from '../../services/git.js';
 import { createKaraIssue, createSuggestionIssue } from '../../services/gitlab.js';
 import {getAllKaras, getAllMedias, getAllYears, getBaseStats, getHardsubsCache, getKara, getOtherLikedKIDs} from '../../services/kara.js';
 import {getTag, getTags} from '../../services/tag.js';
@@ -156,6 +156,7 @@ export default function KSController(router: Router) {
 				Git: getConfig().System.Repositories[0].Git?.URL,
 				FullArchiveURL: getConfig().System.Repositories[0].FullArchiveURL,
 				SourceArchiveURL: getConfig().System.Repositories[0].SourceArchiveURL,
+				LatestOriginCommit: await gitGetLatestOriginCommit(resolve(getState().dataPath, getConfig().System.Repositories[0].BaseDir)),
 				LatestCommit: await getLatestGitCommit(resolve(getState().dataPath, getConfig().System.Repositories[0].BaseDir), getConfig().System.Repositories[0].Git?.Branch),
 				// Remove in KM 11.0 : ProjectID shouldn't be returned anymore
 				ProjectID: getRepoManifest(getConfig().System.Repositories[0].Name)?.projectID,
@@ -238,4 +239,4 @@ export default function KSController(router: Router) {
 				res.status(err.code || 500).json(APIMessage(err.message));
 			}
 		});
-	}
+}

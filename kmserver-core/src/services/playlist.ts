@@ -12,7 +12,6 @@ import { ErrorKM } from '../lib/utils/error.js';
 import logger from '../lib/utils/logger.js';
 import { findUniqueSlug } from '../lib/utils/slug.js';
 import { check } from '../lib/utils/validators.js';
-import { emitWS } from '../lib/utils/ws.js';
 import { DBPL } from '../types/database/playlist.js';
 import { adminToken } from '../utils/constants.js';
 import sentry from '../utils/sentry.js';
@@ -33,7 +32,6 @@ export async function removePlaylist(plaid: string, token: JWTTokenWithRoles) {
 
 		logger.info(`Deleting playlist ${pl.name}`, { service });
 		await deletePlaylist(plaid);
-		emitWS('playlistsUpdated');
 	} catch (err) {
 		logger.error(`Error removing playlist ${plaid} : ${err}`, { service });
 		sentry.error(err);
@@ -59,8 +57,6 @@ export async function editPlaylist(plaid: string, playlist: DBPL, token?: JWTTok
 		newPlaylist.slug = findUniqueSlug(pls.filter(pla => pla.plaid !== pl.plaid).map(pl2 => pl2.slug), newPlaylist.name);
 		await updatePlaylist(newPlaylist);
 		updatePlaylistLastEditTime(plaid);
-		emitWS('playlistInfoUpdated', plaid);
-		emitWS('playlistsUpdated');
 		return newPlaylist;
 	} catch (err) {
 		logger.error(`Error editing playlist ${plaid} : ${err}`, { service });
@@ -79,7 +75,6 @@ export async function createPlaylist(pl: DBPL, token: JWTTokenWithRoles) {
 			pl.plaid === pla.plaid &&
 			(token.username === pla.username || pla.contributors.find(c => c.username === token.username)))) {
 			const epl = await editPlaylist(pl.plaid, pl, token);
-			emitWS('playlistsUpdated');
 			return epl;
 		}
 		const newPL: DBPL = {
@@ -97,7 +92,6 @@ export async function createPlaylist(pl: DBPL, token: JWTTokenWithRoles) {
 			flag_visible_online: pl.flag_visible_online === true
 		};
 		await insertPlaylist(newPL);
-		emitWS('playlistsUpdated');
 		return newPL;
 	} catch (err) {
 		logger.error(`Error creating playlist ${pl.name} : ${err}`, { service });
@@ -261,9 +255,6 @@ export async function refreshPlaylist(plaid: string) {
 		updatePlaylistDuration(plaid),
 		updatePlaylistKaraCount(plaid)
 	]);
-	emitWS('playlistsUpdated');
-	emitWS('playlistContentsUpdated', plaid);
-	emitWS('playlistInfoUpdated', plaid);
 }
 
 /** Remove song from a playlist */
@@ -292,12 +283,6 @@ export async function removeKaraFromPlaylist(plc_ids: number[], token: JWTTokenW
 		for (const plc of plcsNeedingDelete) {
 			KIDsNeedingUpdate.add(plc.kid);
 		}
-		emitWS('KIDUpdated', [...KIDsNeedingUpdate].map(kid => {
-			return {
-				kid,
-				plc_id: []
-			};
-		}));
 		for (const plaid of playlistsNeedingUpdate.values()) {
 			await Promise.all([
 				updatePlaylistDuration(plaid),
@@ -305,9 +290,6 @@ export async function removeKaraFromPlaylist(plc_ids: number[], token: JWTTokenW
 				reorderPlaylist(plaid)
 			]);
 			updatePlaylistLastEditTime(plaid);
-
-			emitWS('playlistContentsUpdated', plaid);
-			emitWS('playlistInfoUpdated', plaid);
 		}
 	} catch (err) {
 		logger.error(`Error removing songs from playlist : ${err}`, { service });
@@ -350,8 +332,6 @@ export async function editPLC(plc_ids: number[], params: PLCEditParams, token: J
 		}
 		for (const playlist_id of PLMap.keys()) {
 			updatePlaylistLastEditTime(playlist_id);
-			emitWS('playlistContentsUpdated', playlist_id);
-			emitWS('playlistInfoUpdated', playlist_id);
 		}
 	} catch (err) {
 		logger.error(`Error editing songs in playlist : ${err}`, { service });
@@ -371,7 +351,6 @@ export async function shufflePlaylist(plaid: string, token: JWTTokenWithRoles) {
 		const plcs = await getPlaylistContents(plaid, token);
 		plcs.content = shuffle(plcs.content);
 		await replacePlaylist(plcs.content as DBPLC[]);
-		emitWS('playlistContentsUpdated', plaid);
 	} catch (err) {
 		logger.error(`Error shuffling playlist ${plaid} : ${err}`, { service });
 		sentry.error(err);
@@ -430,8 +409,6 @@ export async function emptyPlaylist(plaid: string, token: JWTTokenWithRoles) {
 			updatePlaylistDuration(plaid)
 		]);
 		updatePlaylistLastEditTime(plaid);
-		// If our playlist is the public one, the frontend should reset all buttons on the song library so it shows + for everything all over again.
-		emitWS('playlistContentsUpdated', plaid);
 	} catch (err) {
 		logger.error(`Error emptying playlist ${plaid} : ${err}`, { service });
 		sentry.error(err);
@@ -530,9 +507,7 @@ export async function addPlaylistToFavorites(plaid: string, token: JWTTokenWithR
 		token.username = token.username.toLowerCase();
 		await insertPlaylistToFavorites(token.username, plaid);
 		// For now stats are refreshed every time a user does something. We'll move that to a cronjob later
-		refreshPlaylistStats().then(() => {
-			emitWS('playlistInfoUpdated', plaid);
-		});
+		refreshPlaylistStats();
 	} catch (err) {
 		logger.error(`Error adding playlist ${plaid} to favorites for ${token.username}: ${err}`, { service });
 		sentry.error(err);
@@ -547,9 +522,7 @@ export async function removePlaylistFromFavorites(plaid: string, token: JWTToken
 		token.username = token.username.toLowerCase();
 		await deletePlaylistFromFavorites(token.username, plaid);
 		// For now stats are refreshed every time a user does something. We'll move that to a cronjob later
-		refreshPlaylistStats().then(() => {
-			emitWS('playlistInfoUpdated', plaid);
-		});
+		refreshPlaylistStats();
 	} catch (err) {
 		logger.error(`Error adding playlist ${plaid} to favorites for ${token.username}: ${err}`, { service });
 		sentry.error(err);

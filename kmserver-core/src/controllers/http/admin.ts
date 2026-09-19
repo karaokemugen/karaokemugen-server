@@ -1,6 +1,8 @@
 import { Router } from 'express';
 
+import { APIMessage } from '../../lib/services/frontend.js';
 import { supportedAudioCodecs, supportedFiles, supportedVideoCodecs, supportedVideoColorSpaces } from '../../lib/utils/constants.js';
+import { readLog } from '../../lib/utils/logger.js';
 import { updateGit } from '../../services/git.js';
 import { createHardsubs, createPreviews, generate, updateRepo } from '../../services/kara.js';
 import { getPublicConfig } from '../../utils/config.js';
@@ -37,6 +39,14 @@ export default async function adminController(router: Router) {
 	router.get('/state', requireAuth, requireValidUser, requireAdmin, async (_, res) => {
 		res.status(200).json(getState());
 	});
+	router.post('/logs', requireAuth, requireValidUser, requireAdmin, async (req, res) => {
+		try {
+			// For now it doesn't auto-update, deal with it.
+			res.json(await readLog(req.body.level));
+		} catch (err) {
+			res.status(err.code || 500).json(APIMessage(err.message || 'ERROR_READING_LOGS'));
+		}
+	})
 	router.get('/supportedStuff', async (_, res) => {
 		res.status(200).json({
 			supportedFiles,
