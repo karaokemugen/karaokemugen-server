@@ -96,7 +96,7 @@ const useToast = Toast.useToast ?? Toast.default.useToast;
 const { user } = storeToRefs(useAuthStore());
 const { href } = useRequestURL();
 let socket;
-if (import.meta.dev) {
+if (href.includes('localhost')) {
 	socket = io('localhost:1350');
 } else {
 	socket = io(href);
