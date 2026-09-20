@@ -94,12 +94,12 @@ import { useConfigStore } from '~/store/config';
 // @ts-expect-error vue-toastification is not typed
 const useToast = Toast.useToast ?? Toast.default.useToast;
 const { user } = storeToRefs(useAuthStore());
-const { href } = useRequestURL();
+const { origin } = useRequestURL();
 let socket;
-if (href.includes('localhost')) {
+if (origin.includes('localhost')) {
 	socket = io('localhost:1350');
 } else {
-	socket = io(href);
+	socket = io(origin);
 }
 const { t } = useI18n();
 const toast = useToast();
