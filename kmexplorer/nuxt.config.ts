@@ -122,6 +122,19 @@ const nuxtConfig = defineNuxtConfig({
 	},
 
 	vite: {
+		optimizeDeps: {
+			include: [
+			'@karaokemugen/i18n-iso-languages', // CJS
+			'@oruga-ui/oruga-next',
+			'@oruga-ui/theme-bulma',
+			'i18n-iso-countries', // CJS
+			'lodash', // CJS
+			'slug',
+			'uuid',
+			'vue-advanced-cropper',
+			'vue-toastification',
+			]
+		},
 		build: {
 			chunkSizeWarningLimit: 600,
 		},
