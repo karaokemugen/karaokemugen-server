@@ -46,7 +46,8 @@
 		"administration": "Administrador",
 		"dashboard": "Panel",
 		"bans": "Bans",
-		"submissions": "Mis envíos"
+		"submissions": "Mis envíos",
+		"logs": "Logs"
 	},
 	"profile": {
 		"anime_list": "Mis animes",
@@ -788,7 +789,17 @@
 		"available_trust_levels": "Nivel de confianza disponible:",
 		"trust_level_submissions": "Nivel {level}: {songs} envíos",
 		"trust_level": "Nivel {level}",
-		"submissions_status": "Solo se contabilizan en la cuota las solicitudes en estado \"Enviado\", \"En revisión\" y \"Cambios solicitados\"."
+		"submissions_status": "Solo se contabilizan en la cuota las solicitudes en estado \"Enviado\", \"En revisión\" y \"Cambios solicitados\".",
+		"repository": {
+			"latest_commit": "Último commit del repositorio: {commit}",
+			"latest_origin_commit": "Último commit del repositorio en línea: {commit}",
+			"last_generation_date": "Fecha de la última generación: {date}",
+			"generation_in_progress": "Generación en curso",
+			"hardsubs": {
+				"queue_length": "Subtítulos incrustados pendientes de codificar: {length}",
+				"queue": "Procesando hardsub para {kid}, iniciado el {date}"
+			}
+		}
 	},
 	"playlists": {
 		"create": "Crear nueva lista de reproducción",
