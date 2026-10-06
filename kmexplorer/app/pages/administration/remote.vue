@@ -74,14 +74,18 @@
 <script setup lang="ts">
 	import type { RemoteAccessToken } from '%/lib/types/remote';
 	import * as Toast from 'vue-toastification';
+	import { useAuthStore } from '~/store/auth';
 
 	// @ts-expect-error vue-toastification is not typed
 	const useToast = Toast.useToast ?? Toast.default.useToast;
 
 	const remotesToken = ref<RemoteAccessToken[]>([]);
+	const { user } = storeToRefs(useAuthStore());
 
 	const { t } = useI18n();
 	const toast = useToast();
+
+	if (import.meta.client && !user?.value?.roles?.admin) throw createError({ statusCode: 404 });
 
 	fetch();
 

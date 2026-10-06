@@ -61,14 +61,18 @@
 
 <script setup lang="ts">
 	import type { Ban } from '%/types/user';
+	import { useAuthStore } from '~/store/auth';
 	import { useModalStore } from '~/store/modal';
 
 	const { addBans } = storeToRefs(useModalStore());
 	const { openModal, closeModal } = useModalStore();
 
 	const bans = ref<Ban[]>([]);
+	const { user } = storeToRefs(useAuthStore());
 
 	const { t } = useI18n();
+
+	if (import.meta.client && !user?.value?.roles?.admin) throw createError({ statusCode: 404 });
 
 	fetch();
 
