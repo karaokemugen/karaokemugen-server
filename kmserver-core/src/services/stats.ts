@@ -33,7 +33,7 @@ const statItemSessionConstraints = z.object({
 	seid: z.uuidv4(),
 	name: zNonEmptyString,
 	started_at: z.iso.datetime(),
-	ended_at: z.iso.datetime().optional(),
+	ended_at: z.iso.datetime().nullish(),
 	played: z.coerce.number().int(),
 	requested: z.coerce.number().int(),
 	active: z.coerce.boolean().optional(),
