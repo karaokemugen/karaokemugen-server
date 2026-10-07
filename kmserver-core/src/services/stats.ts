@@ -9,9 +9,8 @@ import {
 	upsertSessions,
 	wipeInstance} from '../dao/stats.js';
 import { JWTTokenWithRoles } from '../lib/types/user.js';
-import { ErrorKM } from '../lib/utils/error.js';
 import logger from '../lib/utils/logger.js';
-import { check, testJSON, zJSON, zNonEmptyString } from '../lib/utils/validators.js';
+import { check, testJSON, zNonEmptyString } from '../lib/utils/validators.js';
 import { PlayedCacheItem } from '../types/stats.js';
 import sentry from '../utils/sentry.js';
 
@@ -44,7 +43,7 @@ const payloadConstraints = z.object({
 	instance: z.object({
 		instance_id: z.uuidv4(),
 		version: zNonEmptyString,
-		config: zJSON,
+		config: z.refine(testJSON, { message: 'is invalid JSON' }),
 	}).loose(),
 	viewcounts: z.array(statItemPlayedConstraints),
 	requests: z.array(statItemRequestedConstraints),
@@ -86,8 +85,6 @@ export async function addPlayed(kid: string, ip: string, userToken?: JWTTokenWit
 
 export async function processStatsPayload(payload: any) {
 	try {
-		if (!testJSON(payload)) throw new ErrorKM('Syntax error in JSON data', 400);
-
 		// Payloads before version 3 are ignored
 		if (payload.payloadVersion < 3) return;
 
