@@ -40,7 +40,7 @@ function editHandler(userFromToken: boolean): RequestHandler {
 				twitch: z.string().nullish(),
 				anilist: z.string().nullish(),
 				myanimelist: z.string().nullish(),
-				kitsu: z.coerce.number().int().min(1).or(z.literal('')).nullish(),
+				kitsu: z.union([z.string().nullish(), z.coerce.number().int().min(1).or(z.literal('')).nullish()]),
 				gitlab: z.string().optional(),
 			}).loose().nullish(),
 			language: z.string().optional(),
@@ -138,7 +138,7 @@ export default function userController(router: Router) {
 							return roles;
 						}, {});
 				}
-					
+
 				const info = await getAllUsers({
 					publicOnly: !req.authToken?.roles?.admin,
 					roles,
@@ -160,7 +160,7 @@ export default function userController(router: Router) {
 			}
 		})
 		.post(async (req, res) => {
-			if(req.body.login) req.body.login = unescape(req.body.login.trim());
+			if (req.body.login) req.body.login = unescape(req.body.login.trim());
 
 			try {
 				// Login must not include @

@@ -95,8 +95,23 @@ export async function getAnimeListFromAnilist(name: string): Promise<number[]> {
 	}
 }
 
-export async function getAnimeListFromKitsu(userId: number): Promise<number[]> {
+export async function getAnimeListFromKitsu(userId: number | string): Promise<number[]> {
 	try {
+		if (typeof userId === 'number' || !isNaN(parseInt(userId))) {
+			const slug = userId;
+			const result = await kitsu.get('users', {
+				params: {
+					filter: {
+						slug,
+					},
+					fields: {
+						users: 'id',
+					},
+				},
+			});
+			if (result.data.length === 0) return;
+			userId = result.data[0].id;
+		}
 		let offset = 0;
 		const animeIds: number[] = [];
 		for (let i = 0; i < 10; i += 1) { // to avoid infinite loop
