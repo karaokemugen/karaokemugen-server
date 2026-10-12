@@ -26,6 +26,10 @@
                 "SUBJECT": "[{{instance}}] Song rejected: {{songname}}",
                 "BODY": "Hello {{username}},\n\nyour song {{songname}} has been rejected. Here are the reasons:\n\n{{reason}}\n\nIf you would like to discuss this, please feel free to contact us via:"
             },
+            "REMOVE_CHANGES_REQUESTED": {
+                "SUBJECT": "[{{instance}}] Song deleted: {{songname}}",
+                "BODY": "Hello {{username}},\n\nAs we haven't heard from you in {{cleanupdays}} days, this inbox is deleted.\n\nIf you adjust your submission later according to the feedback given, we would be very glad to receive your submission again via {{instance}}.\n\nAdditionally, we warmly welcome your interest in our database and hope to see you contributing again."
+            },
             "DISCORD": "\n- Discord: {{url}}\n",
             "FORUM": "\n- Forum: {{url}}\n",
             "GITLAB": "\n- Gitlab: {{url}}\n",

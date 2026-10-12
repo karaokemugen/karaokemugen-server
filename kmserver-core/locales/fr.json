@@ -26,6 +26,10 @@
                 "SUBJECT": "[{{instance}}] Chanson refusée : {{songname}}",
                 "BODY": "Bonjour {{username}},\n\nVotre chanson {{songname}} a été rejetée. Voici la ou les raisons :\n\n{{reason}}\n\nSi vous souhaitez en discuter, n'hésitez pas à nous contacter via :"
             },
+            "REMOVE_CHANGES_REQUESTED" : {
+                "SUBJECT" : "[{{instance}}] Chanson supprimée : {{songname}}",
+                "BODY": "Bonjour {{username}},\n\nComme nous n'avons pas eu de vos nouvelles depuis {{cleanupdays}} jours, cette chanson est supprimée.\n\nSi vous modifiez votre contribution ultérieurement en tenant compte des commentaires qui vous ont été fournis, nous serions ravis de la recevoir à nouveau via {{instance}}.\n\nPar ailleurs, nous vous remercions chaleureusement de l’intérêt que vous portez à notre base de données et espérons que vous contribuerez à nouveau."
+            },
             "DISCORD": "\n- Discord : {{url}}\n",
             "FORUM": "\n- Forum : {{url}}\n",
             "GITLAB": "\n- Gitlab : {{url}}\n",
