@@ -484,8 +484,32 @@ export async function clearInactiveInboxEntries() {
 	const inboxesToClear = inbox
 		.filter((i) => i.status === 'accepted' || i.status === 'rejected' || i.status === 'changes_requested')
 		.filter((i) => new Date(i.modified_at) < deletedDate);
+
+	const alertRemovingInbox = inboxesToClear.filter((i) => i.status === 'changes_requested').map(i => i.inid);
 	for (const inbox of inboxesToClear) {
 		removeKaraFromInbox(inbox.inid, adminToken);
+		if (alertRemovingInbox.includes(inbox.inid)) {
+			const repoName = conf.System.Repositories[0].Name;
+			const user = inbox.username ? await findUserByName(inbox.username, { contact: true }) : undefined;
+			if (user?.flag_contributor_emails) {
+			sendMail(
+					i18n.t('MAIL.INBOX.REMOVE_CHANGES_REQUESTED.SUBJECT', {
+						lng: getUserLanguage(user),
+						instance: repoName,
+						songname: inbox.name,
+					}),
+					i18n.t('MAIL.INBOX.REMOVE_CHANGES_REQUESTED.BODY', {
+						lng: getUserLanguage(user),
+						cleanupdays: conf.Frontend.Import.CleanupDays,
+						username: inbox.username,
+						songname: inbox.name,
+						instance: repoName,
+					}),
+					user.login,
+					user.email,
+				).catch();
+			}
+		}
 	}
 }
 
