@@ -1179,6 +1179,11 @@
 							{{ manifest?.license }}
 						</nuxt-link>
 					</template>
+					<template v-if="config?.Frontend?.PrivacyPolicy">
+						- <nuxt-link to="/privacy">
+							{{ $t('footer.privacy_policy') }}
+						</nuxt-link>
+					</template>
 				</p>
 			</div>
 		</footer>

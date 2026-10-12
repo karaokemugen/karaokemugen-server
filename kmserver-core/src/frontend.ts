@@ -113,6 +113,9 @@ export function initFrontend(listenPort: number) {
 
 	// API router
 	app.use('/api', api());
+	if (conf.Frontend.PrivacyPolicy) {
+		app.use('/api/privacypolicy', express.static(resolve(getState().dataPath, 'privacy_policy.md')));
+	}
 	if (conf.Users.Enabled) {
 		app.use('/avatars', express.static(resolvedPath('Avatars')));
 		app.use('/banners', express.static(resolvedPath('Banners')));
