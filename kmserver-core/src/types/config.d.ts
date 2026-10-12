@@ -52,6 +52,7 @@ export interface Config {
 			KaraLineSort?: KaraSortElement[];
 		};
 		SensitiveTags?: string[];
+		PrivacyPolicy?: boolean;
 	},
 	Hardsub: {
 		Enabled: boolean
