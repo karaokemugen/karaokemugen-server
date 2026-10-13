@@ -1,32 +1,78 @@
 // Tags SQL
 
-export const selectTags = (
-	filterClauses: string[], 
-	limitClause: string, 
-	offsetClause: string, 
-	joinClauses: string, 
-	orderClauses: string, 
-	stripClause: string, 
-	additionalFrom: string[], 
-	collectionClauses: string[], 
-	whereClause: string,
-) => `
-WITH kara_available AS (
-	SELECT ak.pk_kid
-	FROM all_karas ak
+const tagScopeCTEs = (o: {
+	filterClauses: string[];
+	withCollections: boolean;
+	singleType: boolean;
+	stripEmpty: boolean;
+	collectionType: number;
+}) => {
+	const parts: string[] = [];
+
+	if (o.withCollections) {
+		parts.push(`kara_available AS (
+	SELECT DISTINCT akt.fk_kid
+	FROM all_kara_tag akt
+	WHERE akt.type = ${o.collectionType}
+	  AND akt.fk_tid = ANY(:collections::uuid[])
+)`);
+	}
+
+	parts.push(`tags_filtered AS (
+	SELECT at.pk_tid
+	FROM all_tags at
 	WHERE TRUE
-	${collectionClauses.length > 0 ? `AND (${collectionClauses.map(clause => `(${clause})`).join(' OR ')})` : ''}
-),
-t_count AS MATERIALIZED (
-	SELECT a.fk_tid,
-		json_agg(json_build_object('type', a.type, 'count', a.c))::text AS count_per_type
-	FROM (SELECT all_kara_tag.fk_tid,
-				count(all_kara_tag.fk_kid) AS c,
-				all_kara_tag.type
+	  ${o.filterClauses.map(c => `AND (${c})`).join('\n\t  ')}
+)`);
+
+	const needsExists = o.withCollections || o.stripEmpty;
+	parts.push(`tags_scoped AS (
+	SELECT tf.pk_tid
+	FROM tags_filtered tf${needsExists ? `
+	WHERE EXISTS (
+		SELECT 1
+		FROM all_kara_tag akt
+		WHERE akt.fk_tid = tf.pk_tid
+		  ${o.singleType ? 'AND akt.type = :type' : ''}
+		  ${o.withCollections ? 'AND akt.fk_kid IN (SELECT fk_kid FROM kara_available)' : ''}
+	)` : ''}
+)`);
+
+	return parts.join(',\n');
+};
+
+export const selectTags = (o: {
+	filterClauses: string[];
+	withCollections: boolean;
+	singleType: boolean;
+	stripEmpty: boolean;
+	collectionType: number;
+	orderClause: string;
+	limitClause: string;
+	offsetClause: string;
+}) => `
+WITH ${tagScopeCTEs(o)},
+t_count AS (
+${o.singleType ? `
+	SELECT akt.fk_tid,
+		   count(*)::int AS karacounttype
+	FROM all_kara_tag akt
+	WHERE akt.type = :type
+	  AND akt.fk_tid IN (SELECT pk_tid FROM tags_scoped)
+	  ${o.withCollections ? 'AND akt.fk_kid IN (SELECT fk_kid FROM kara_available)' : ''}
+	GROUP BY akt.fk_tid
+` : `
+	SELECT akt.fk_tid,
+		   jsonb_agg(jsonb_build_object('type', akt.type, 'count', akt.c)) AS karacount
+	FROM (
+		SELECT fk_tid, type, count(*)::int AS c
 		FROM all_kara_tag
-		WHERE all_kara_tag.fk_kid IN (SELECT * FROM kara_available)
-		GROUP BY all_kara_tag.fk_tid, all_kara_tag.type) a
-	GROUP BY a.fk_tid
+		WHERE fk_tid IN (SELECT pk_tid FROM tags_scoped)
+		  ${o.withCollections ? 'AND fk_kid IN (SELECT fk_kid FROM kara_available)' : ''}
+		GROUP BY fk_tid, type
+	) akt
+	GROUP BY akt.fk_tid
+`}
 )
 SELECT at.pk_tid AS tid,
 	at.types,
@@ -39,21 +85,29 @@ SELECT at.pk_tid AS tid,
 	at.nolivedownload AS "noLiveDownload",
 	at.priority,
 	at.karafile_tag,
-    at.description,
+	at.description,
 	at.external_database_ids,
-	t_count.count_per_type::jsonb AS karacount,
-	count(at.pk_tid) OVER()::integer AS count
+	${o.singleType
+		? 'coalesce(t_count.karacounttype, 0) AS karacounttype'
+		: 't_count.karacount'}
 FROM all_tags at
-LEFT JOIN t_count ON at.pk_tid = t_count.fk_tid
-${joinClauses}
-${additionalFrom.join('')}
-WHERE TRUE
-  ${filterClauses.map(clause => `AND (${clause})`).reduce((a, b) => (`${a} ${b}`), '')}
-  ${stripClause}
-  ${whereClause}
-ORDER BY ${orderClauses}
-${limitClause}
-${offsetClause}
+LEFT JOIN t_count ON t_count.fk_tid = at.pk_tid
+WHERE at.pk_tid IN (SELECT pk_tid FROM tags_scoped)
+ORDER BY ${o.orderClause}
+${o.limitClause}
+${o.offsetClause}
+`;
+
+export const selectTagsCount = (o: {
+	filterClauses: string[];
+	withCollections: boolean;
+	singleType: boolean;
+	stripEmpty: boolean;
+	collectionType: number;
+}) => `
+WITH ${tagScopeCTEs(o)}
+SELECT count(*)::int AS count
+FROM tags_scoped
 `;
 
 export const insertTag = `

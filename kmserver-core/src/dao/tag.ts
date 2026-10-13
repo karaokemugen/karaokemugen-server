@@ -9,84 +9,82 @@ import * as sql from './sqls/tag.js';
 export async function selectTags(params: TagParams): Promise<DBTag[]> {
 	const filterClauses = params.filter
 		? buildTagClauses(params.filter)
-		: {sql: [], params: {}, additionalFrom: []};
-	let stripClause = '';
-	let limitClause = '';
-	let offsetClause = '';
-	let joinClauses = '';
-	let orderClause = 'name';
-	let whereClause = '';
-	const collectionClauses = [];
+		: { sql: [], params: {} };
+
+	if (!params.includeStaging) {
+		filterClauses.sql.push("at.repository != 'Staging'");
+	}
 	if (params.type) {
-		joinClauses = `LEFT   JOIN LATERAL (
-	   	SELECT elem->>'count' AS karacounttype
-	   	FROM   jsonb_array_elements(t_count.count_per_type::jsonb) a(elem)
-	   	WHERE  elem->>'type' = :type
-	   	) a ON true
-		`;
-		// Without this where condition, all tags are returned.
-		whereClause += ` AND :type = ANY(at.types)`;
-		if (params.order === 'karacount') {
-			orderClause = 'karacounttype::int2 DESC NULLS LAST, name';
-		}
-		if (params.stripEmpty) {
-			stripClause = 'AND karacounttype::int2 > 0';
-		}
+		filterClauses.sql.push('at.types @> ARRAY[:type::int]');
 	}
 	if (params.tid) {
-		whereClause = `AND at.pk_tid = :tid`;
+		filterClauses.sql.push('at.pk_tid = :tid');
 	}
-	if (params.from > 0) offsetClause = `OFFSET :from `;
-	if (params.size > 0) {
-		limitClause = `LIMIT :size`;
-	}
-	if (!params.includeStaging) {
-		filterClauses.sql.push('at.repository != \'Staging\'');
-	}
-	// This needs to be validated upstream to avoid SQL injections!
-	if (params.collections) {
-		for (const collection of params.collections) {
-			collectionClauses.push(`'${collection}~${tagTypes.collections}' = ANY(ak.tid)`);
-		}
-	}
-	
-	const query = sql.selectTags(
-filterClauses.sql,
-limitClause,
-offsetClause,
-joinClauses,
-orderClause,
-stripClause,
-filterClauses.additionalFrom,
-collectionClauses,
-whereClause
-);
-	const res = await db().query(prepareNamedParamsQuery(query)({
-		from: params.from,
-		size: params.size,
-		tid: params.tid,
-		type: params.type,
-		...filterClauses.params
-	}));
-	// FIXME : This should not happen, we should use LIMIT instead, but Erin's query planner isn't cooperative
-	// See https://gitlab.com/karaokemugen/code/karaokemugen-server/-/issues/265
-	if (params.size > 0) { 
-		res.rows = res.rows.slice(0, params.size);
-	}
-	res.rows.forEach((e: any, i: number) => {
-		const karacounts = e.karacount;
-		res.rows[i].karacount = {};
-		karacounts && karacounts.forEach((k: any) => res.rows[i].karacount[k.type] = k.count);
+
+	const collections = params.collections ?? [];
+	const withCollections = collections.length > 0;
+	const singleType = !!params.type;
+	const stripEmpty = !!params.stripEmpty;
+
+	const sharedOpts = {
+		filterClauses: filterClauses.sql,
+		withCollections,
+		singleType,
+		stripEmpty,
+		collectionType: tagTypes.collections,
+	};
+
+	const query = sql.selectTags({
+		...sharedOpts,
+		orderClause:
+			singleType && params.order === 'karacount'
+				? 'karacounttype DESC NULLS LAST, at.name'
+				: 'at.name',
+		limitClause: params.size > 0 ? 'LIMIT :size' : '',
+		offsetClause: params.from > 0 ? 'OFFSET :from' : '',
 	});
+	const countQuery = sql.selectTagsCount(sharedOpts);
+
+	const sharedParams = {
+		...filterClauses.params, 
+		tid: params.tid,
+		type: singleType ? params.type : undefined,
+		collections: withCollections ? collections : undefined,
+	};
+	const queryParams = {
+		...sharedParams,
+		...(params.size > 0 ? { size: params.size } : {}),
+		...(params.from > 0 ? { from: params.from } : {}),
+	};
+	const countParams = { ...sharedParams };
+
+	const [res, countRes] = await Promise.all([
+		db().query(prepareNamedParamsQuery(query)(queryParams)),
+		db().query(prepareNamedParamsQuery(countQuery)(countParams)),
+	]);
+
+	const count: number = countRes.rows[0]?.count ?? 0;
+
+	res.rows.forEach((e: any, i: number) => {
+		if (singleType) {
+			res.rows[i].karacount = { [+params.type]: e.karacounttype };
+			delete res.rows[i].karacounttype;
+		} else {
+			const karacounts = e.karacount;
+			res.rows[i].karacount = {};
+			karacounts?.forEach((k: any) => (res.rows[i].karacount[k.type] = k.count));
+		}
+		res.rows[i].count = count;
+	});
+
 	return res.rows;
 }
 
 function buildTagClauses(words: string): WhereClause {
-	const q = ['at.tag_search_vector @@ query'];
 	return {
-		sql: q,
-		params: {tsquery: paramWords(words).join(' & ')},
-		additionalFrom: [', to_tsquery(\'public.unaccent_conf\', :tsquery) as query, ts_rank_cd(at.tag_search_vector, query) as relevance']
+		sql: ["at.tag_search_vector @@ to_tsquery('public.unaccent_conf', :tsquery)"],
+		params: { tsquery: paramWords(words).join(' & ') },
+		additionalFrom: null,
 	};
 }
 
