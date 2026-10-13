@@ -6,13 +6,12 @@ import { resolve } from 'path';
 import z from 'zod';
 
 import { karaConstraintsV4 } from '../../lib/dao/karafile.js';
-import { tagConstraintsV1 } from '../../lib/dao/tagfile.js';
 import { APIMessage } from '../../lib/services/frontend.js';
 import { processUploadedMedia } from '../../lib/services/karaCreation.js';
 import { getConfig } from '../../lib/utils/config.js';
 import { sanitizedFileExtension } from '../../lib/utils/files.js';
 import { check, zFilename } from '../../lib/utils/validators.js';
-import {createKara, editKara} from '../../services/karaImport.js';
+import { createKara, editKara } from '../../services/karaImport.js';
 import { addTag } from '../../services/tag.js';
 import { getState } from '../../utils/state.js';
 import { optionalAuth } from '../middlewares/auth.js';
@@ -28,9 +27,9 @@ export default function KIController(router: Router) {
 			// Keep original extension for media type detection
 			filename: (_req, file, cb) => cb(null, `${randomUUID()}${sanitizedFileExtension(file.originalname)}`),
 		}),
-		limits: { fileSize: 1024 * 1024 * 1024 * 2, files: 1  } // 2 GB
+		limits: { fileSize: 1024 * 1024 * 1024 * 2, files: 1 } // 2 GB
 	});
-	
+
 	const requireImportLogin = (req: any, res: any, next: any) => {
 		if (!req.authToken?.username && getConfig().Frontend.Import.LoginNeeded) {
 			res.status(401).json(APIMessage('LOGIN_NEEDED'));
@@ -41,18 +40,18 @@ export default function KIController(router: Router) {
 
 	router.route('/karas')
 		.post(optionalAuth, async (req: any, res: any) => {
-		try {
-			check(req.body, z.object({
-				kara: karaConstraintsV4,
-				contact: z.string(),
-			}));
-			const url = await createKara(req.body.kara, req.body.contact, req.authToken?.username.toLowerCase());
-			res.status(200).json(APIMessage('GENERATED_KARA', url || ''));
-		} catch (err) {
-			res.status(err.code || 500).json(APIMessage(err.message));
-		}
-	});
-	
+			try {
+				check(req.body, z.object({
+					kara: karaConstraintsV4,
+					contact: z.string(),
+				}));
+				const url = await createKara(req.body.kara, req.body.contact, req.authToken?.username.toLowerCase());
+				res.status(200).json(APIMessage('GENERATED_KARA', url || ''));
+			} catch (err) {
+				res.status(err.code || 500).json(APIMessage(err.message));
+			}
+		});
+
 	router.post('/karas/importMedia', optionalAuth, requireImportLogin, upload.single('file'), async (req, res) => {
 		try {
 			if (req.file) {
@@ -87,8 +86,15 @@ export default function KIController(router: Router) {
 	});
 	router.post('/tags/createStaging', optionalAuth, requireImportLogin, async (req, res) => {
 		try {
-			check(req.body, tagConstraintsV1);
-			await addTag(req.body, {forceRepo: 'Staging'});
+			check(req.body, z
+				.object({
+					name: z.string().min(1),
+					tid: z.uuidv4(),
+					i18n: z.lazy(() => z.record(z.string(), z.string()).optional()),
+					types: z.array(z.number().int()),
+				})
+				.loose());
+			await addTag(req.body, { forceRepo: 'Staging' });
 			res.status(200).json();
 		} catch (err) {
 			res.status(err.code || 500).json(APIMessage(err.message));
@@ -96,18 +102,18 @@ export default function KIController(router: Router) {
 	});
 	router.route('/karas/:kid')
 		.put(validateUUID('kid'), optionalAuth, async (req: any, res: any) => {
-		try {
-			check(req.body, z.object({
-				kara: karaConstraintsV4,
-				modifiedLyrics: z.coerce.boolean(),
-				modifiedMedia: z.coerce.boolean(),
-				contact: z.string(),
-				inid: z.uuidv4().optional(),
-			}));
-			const url = await editKara(req.body, req.body.contact, req.authToken?.username.toLowerCase(), req.body.inid);
-			res.status(200).json(APIMessage('EDITED_KARA', url || ''));
-		} catch (err) {
-			res.status(err.code || 500).json(APIMessage(err.message));
-		}
-	});
+			try {
+				check(req.body, z.object({
+					kara: karaConstraintsV4,
+					modifiedLyrics: z.coerce.boolean(),
+					modifiedMedia: z.coerce.boolean(),
+					contact: z.string(),
+					inid: z.uuidv4().optional(),
+				}));
+				const url = await editKara(req.body, req.body.contact, req.authToken?.username.toLowerCase(), req.body.inid);
+				res.status(200).json(APIMessage('EDITED_KARA', url || ''));
+			} catch (err) {
+				res.status(err.code || 500).json(APIMessage(err.message));
+			}
+		});
 }
