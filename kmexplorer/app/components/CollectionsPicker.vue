@@ -1,6 +1,6 @@
 <template>
 	<o-dropdown
-		v-if="collections.length > 0"
+		v-if="collections?.length > 0"
 		v-model="enabledCollectionsModel"
 		aria-role="list"
 		multiple
@@ -31,18 +31,23 @@
 	import type { TagList } from '%/lib/types/tag';
 	import { storeToRefs } from 'pinia';
 	import { useLocalStorageStore } from '~/store/localStorage';
+	import { useConfigStore } from '~/store/config';
 
 	const { enabledCollections } = storeToRefs(useLocalStorageStore());
 	const { setEnabledCollections } = useLocalStorageStore();
-
+	const { collections } = storeToRefs(useConfigStore());
+	const { setCollections } = useConfigStore();
+	
 	const url = useRequestURL();
 
-	const collections = (await useCustomFetch<TagList>('/api/karas/tags', {
-		query: {
-			type: 16
-		},
-	})).content;
-	
+	if (collections.value.length === 0) {
+		setCollections((await useCustomFetch<TagList>('/api/karas/tags', {
+			query: {
+				type: 16
+			},
+		})).content);
+	}
+
 	const enabledCollectionsModel = computed({
 		get(): string[] {
 			return enabledCollections.value;

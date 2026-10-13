@@ -1,3 +1,4 @@
+import type { DBTag } from '%/lib/types/database/tag';
 import type { Config } from '~/../kmserver-core/src/types/config';
 
 export type supportedFilesType = {
@@ -9,13 +10,15 @@ export type supportedFilesType = {
 export type configStoreType = {
 	config?: Config;
 	supportedFiles?: supportedFilesType;
+	collections: DBTag[];
 };
 
 export const useConfigStore = defineStore('config', {
 	state: (): configStoreType => {
 		return {
 			config: undefined,
-			supportedFiles: undefined
+			supportedFiles: undefined,
+			collections: [],
 		};
 	},
 	getters: {},
@@ -25,6 +28,9 @@ export const useConfigStore = defineStore('config', {
 		},
 		setSupportedFiles(supportedFiles: supportedFilesType) {
 			this.supportedFiles = supportedFiles;
+		},
+		setCollections(collections: DBTag[]) {
+			this.collections = collections;
 		},
 	},
 	persist: {
