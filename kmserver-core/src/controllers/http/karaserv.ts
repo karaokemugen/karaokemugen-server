@@ -2,18 +2,18 @@ import { Router } from 'express';
 import { resolve } from 'path';
 import z from 'zod';
 
-import {getSettings} from '../../lib/dao/database.js';
+import { getSettings } from '../../lib/dao/database.js';
 import { APIMessage } from '../../lib/services/frontend.js';
 import { getRepoManifest } from '../../lib/services/repo.js';
 import { RepositoryManifest } from '../../lib/types/repo.js';
-import {getConfig} from '../../lib/utils/config.js';
+import { getConfig } from '../../lib/utils/config.js';
 import { orderParams } from '../../lib/utils/constants.js';
 import { ErrorKM } from '../../lib/utils/error.js';
 import { check, zGitCommit, zQParam, zUUIDList } from '../../lib/utils/validators.js';
 import { getGitDiff, getLatestGitCommit, gitGetLatestOriginCommit } from '../../services/git.js';
 import { createKaraIssue, createSuggestionIssue } from '../../services/gitlab.js';
-import {getAllKaras, getAllMedias, getAllYears, getBaseStats, getHardsubsCache, getKara, getOtherLikedKIDs} from '../../services/kara.js';
-import {getTag, getTags} from '../../services/tag.js';
+import { getAllKaras, getAllMedias, getAllYears, getBaseStats, getHardsubsCache, getKara, getOtherLikedKIDs } from '../../services/kara.js';
+import { getTag, getTags } from '../../services/tag.js';
 import { getState } from '../../utils/state.js';
 import { optionalAuth } from '../middlewares/auth.js';
 import { validateUUID } from '../middlewares/validation.js';
@@ -89,7 +89,10 @@ export default function KSController(router: Router) {
 					collections: zUUIDList.optional(),
 					includeStaging: z.coerce.boolean().optional(),
 				}));
-				const tags = await getTags(req.query);
+				const tags = await getTags({
+					...req.query,
+					collections: req.query.collections?.split(',')
+				});
 				res.json(tags);
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));
@@ -208,7 +211,7 @@ export default function KSController(router: Router) {
 			hardsubbedMediafile
 				? res.redirect(301, `/hardsubs/${hardsubbedMediafile}`)
 				: res.status(404).send();
-	});
+		});
 	router.route('/karas/:kid/problem')
 		.post(validateUUID('kid'), optionalAuth, async (req: any, res) => {
 			try {
