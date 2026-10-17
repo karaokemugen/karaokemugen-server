@@ -51,7 +51,7 @@ process.on('uncaughtException', (exception) => {
 });
 
 process.on('unhandledRejection', (error: any) => {
-	if (error?.message !== '[nuxt] instance unavailable') {
+	if (error?.message !== '[nuxt] instance unavailable' && error?.message !== 'Cannot read properties of undefined (reading \'_s\')') {
 		console.log(error);
 		sentry.error(new Error(JSON.stringify(error, null, 2)));
 	}

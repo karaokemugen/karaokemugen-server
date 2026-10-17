@@ -64,6 +64,7 @@ const nuxtConfig = defineNuxtConfig({
 						"document.querySelector('video').webkitPresentationMode",
 						'Request failed with status code 403',
 						'Request failed with status code 401',
+						'Cannot read properties of undefined (reading \'_s\')',
 					],
 				},
 			},
