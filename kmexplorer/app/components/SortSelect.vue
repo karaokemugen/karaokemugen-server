@@ -6,6 +6,9 @@
 					<option value="az" selected>{{ $t('search.sort.a_z') }}</option>
 					<option value="karacount">{{ $t('search.sort.kara_count') }}</option>
 				</template>
+				<template v-if="route.name === 'users'">
+					<option value="az" selected>{{ $t('search.sort.a_z') }}</option>
+				</template>
 				<template v-if="route.name === 'types-years'">
 					<option value="recent" selected>{{ $t('search.sort.recent') }}</option>
 					<option value="karacount">{{ $t('search.sort.kara_count') }}</option>
@@ -38,7 +41,7 @@
 					<option value="requestedRecently">{{ $t('search.sort.most_requested_recently') }}</option>
 				</template>
 				<template v-else-if="['search-query', 'user-login-animelist'].includes(route.name as string)">
-					<option value="az" selected>{{ $t('search.sort.a_z') }}</option>
+					<option value="" selected>{{ $t('search.sort.a_z') }}</option>
 					<option value="recent">{{ $t('search.sort.recent') }}</option>
 					<option value="played">{{ $t('search.sort.most_played') }}</option>
 					<option value="playedRecently">{{ $t('search.sort.most_played_recently') }}</option>
