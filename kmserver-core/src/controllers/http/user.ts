@@ -24,8 +24,8 @@ function editHandler(userFromToken: boolean): RequestHandler {
 		if (req.body.nickname) req.body.nickname = unescape(req.body.nickname.trim());
 		check(req.body, z.object({
 			bio: z.string().nullish(),
-			email: z.email().nullish(),
-			url: z.url().nullish(),
+			email: z.email().or(z.literal('')).nullish(),
+			url: z.url().or(z.literal('')).nullish(),
 			nickname: z.string().optional(),
 			password: z.string().optional(),
 			location: z.string().nullish(),
