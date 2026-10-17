@@ -65,7 +65,6 @@ export async function gitGetLatestOriginCommit(gitDir: string): Promise<string> 
 		encoding: 'utf8',
 		cwd: gitDir
 	});
-	logger.info(`Git rev-parse log : ${res.stdout}`, { service });
 	return res.stdout;
 }
 
