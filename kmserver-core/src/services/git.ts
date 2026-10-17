@@ -57,7 +57,7 @@ export async function gitFetch() {
 		encoding: 'utf8',
 		cwd: resolve(getState().dataPath, getConfig().System.Repositories[0].BaseDir)
 	});
-	logger.info(`Git fetch log : ${res.stdout}`, { service });
+	if (res?.stdout) logger.info(`Git fetch log : ${res.stdout}`, { service });
 }
 
 export async function gitGetLatestOriginCommit(gitDir: string): Promise<string> {
