@@ -21,7 +21,9 @@
 		},
 		"add_repository": {
 			"cancel": "キャンセル",
-			"online": "オンライン"
+			"online": "オンライン",
+			"button": "リポジトリ:",
+			"label": "このリポジトリをあなたのKaraoke Mugen アプリに追加しましょう!"
 		},
 		"stats": {
 			"yes": "はい",
@@ -40,6 +42,9 @@
 			"fields": {
 				"password": {
 					"label": "パスワード"
+				},
+				"username": {
+					"label": "ユーザー名"
 				}
 			},
 			"title": "ログイン",
@@ -51,11 +56,14 @@
 					"label": "パスワード"
 				},
 				"password_confirmation": {
-					"label": "パスワード確認"
+					"label": "パスワードの確認"
 				},
 				"email": {
 					"label": "メール",
 					"placeholder": "test{'@'}shelter.moe"
+				},
+				"username": {
+					"label": "ユーザー名"
 				}
 			}
 		},
@@ -68,7 +76,7 @@
 					"label": "パスワード"
 				},
 				"password_confirmation": {
-					"label": "パスワード確認"
+					"label": "パスワードの確認"
 				},
 				"email": {
 					"label": "メール",
@@ -111,6 +119,12 @@
 				"flag_displayfavorites": {
 					"label": "お気に入り",
 					"checkbox": "お気に入りを表示する"
+				},
+				"username": {
+					"label": "ユーザー名"
+				},
+				"nickname": {
+					"label": "ニックネーム"
 				}
 			},
 			"submit": "セーブ"
@@ -125,6 +139,12 @@
 				},
 				"series": {
 					"label": "作品"
+				},
+				"comment": {
+					"label": "コメント"
+				},
+				"version": {
+					"label": "バージョン"
 				}
 			},
 			"submitted": {
@@ -165,10 +185,16 @@
 		"random": "サイコロを振る",
 		"tags": "その他⋯",
 		"songwriters": "作曲家",
-		"community": "コミュニティ"
+		"community": "コミュニティ",
+		"platforms": "プラットフォーム",
+		"playlists": "プレイリスト",
+		"database": "データベース",
+		"genres": "ジャンル",
+		"creators": "作成者",
+		"groups": "グループ"
 	},
 	"toast": {
-		"PASSWORD_UPDATED": "パスワードが成功に更新された"
+		"PASSWORD_UPDATED": "パスワードを正常に更新しました"
 	},
 	"error": {
 		"generic": "エラー",
@@ -183,7 +209,8 @@
 			"years": "年代",
 			"warnings": "警告",
 			"versions": "バージョン",
-			"songwriters": "作曲家"
+			"songwriters": "作曲家",
+			"platforms": "プラットフォーム"
 		},
 		"lyrics": {
 			"show": "歌詞を表示",
@@ -200,7 +227,20 @@
 				},
 				"comment": {
 					"label": "コメント"
-				}
+				},
+				"type": {
+					"lyrics": "歌詞の問題",
+					"media": "動画の問題",
+					"metadata": "メタデータの問題"
+				},
+				"song": "曲"
+			},
+			"title": "{title} に問題がある?",
+			"btn": {
+				"edit": "編集を提案する",
+				"media": "動画の問題",
+				"metadata": "メタデータの問題",
+				"lyrics": "歌詞の問題"
 			}
 		},
 		"import": {
@@ -213,17 +253,33 @@
 			"title": "タイトル",
 			"show_hide": "表示/非表示"
 		},
-		"duration": "持続時間 ",
+		"duration": "長さ ",
 		"download": "ダウンロード",
 		"favorites": {
 			"add": "お気に入りに追加する",
 			"remove": "お気に入りから削除する"
 		},
-		"authors_by": "カラオケ作成者"
+		"authors_by": "カラオケ作成者",
+		"singers_by": "歌手",
+		"songwriters_by": "作曲者",
+		"created_at": "作成日時 ",
+		"phrase": "{series} の {songtype}",
+		"player": {
+			"autoplay": "自動再生",
+			"loop": "ループ",
+			"fullscreen": "全画面表示 (F)",
+			"previous": "前の曲 (B)",
+			"next": "次の曲 (N)",
+			"theater_mode": "シアターモード (T)"
+		}
 	},
 	"layout": {
 		"app_banner": {
-			"website": "ウェブサイト"
+			"website": "ウェブサイト",
+			"title": "知ってましたか?",
+			"description": "Karaoke Mugen はWindows、macOS、Linuxに対応したプレイリスト＆カラオケ管理のアプリケーションでもあるんです。使い方は様々―友達とのカラオケ大会、アニメイベント、あなたの配信にだって使えます!",
+			"more_features": "アプリは{instance}よりもっと多くの機能を備えています!",
+			"link": "コンピューターにアプリをダウンロードするには、{link}をご覧ください。"
 		}
 	},
 	"footer": {
@@ -248,7 +304,8 @@
 			"languages": "言語で"
 		},
 		"types": {
-			"languages": "言語"
+			"languages": "言語",
+			"collections": "コレクション"
 		}
 	},
 	"titles": {
@@ -273,16 +330,25 @@
 	"playlists": {
 		"copy": "コピーする",
 		"share": "シェアする",
-		"duration": "持続時間 {duration}",
+		"duration": "長さ {duration}",
 		"public": "公開",
 		"community": "コミュニティ",
 		"favorites": "お気に入り",
-		"my_playlists": "私のすべてのプレイリスト"
+		"my_playlists": "私のすべてのプレイリスト",
+		"karacount": "{karacount}曲",
+		"delete": "削除",
+		"edit": "編集",
+		"import": "プレイリストをインポート"
 	},
 	"languages": {
 		"qro": "ローマ字"
 	},
 	"profile": {
-		"favorites": "お気に入り"
+		"favorites": "お気に入り",
+		"playlists_count": "{count} プレイリスト"
+	},
+	"submissions": {
+		"email": "メール",
+		"discord": "Discord"
 	}
 }
