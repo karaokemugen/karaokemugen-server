@@ -29,7 +29,11 @@
             "DISCORD": "\n- Discord: {{url}}\n",
             "FORUM": "\n- Forum: {{url}}\n",
             "GITLAB": "\n- Gitlab: {{url}}\n",
-            "CLEANUP_DAYS_ALERT": "\n\nJeżeli nie odpowiesz na tego e-maila, Twoja piosenka zostanie usunięta po {{days}} dniach."
+            "CLEANUP_DAYS_ALERT": "\n\nJeżeli nie odpowiesz na tego e-maila, Twoja piosenka zostanie usunięta po {{days}} dniach.",
+            "REMOVE_CHANGES_REQUESTED": {
+                "BODY": "Witaj {{username}},\n\nPonieważ nie otrzymaliśmy od Ciebie odpowiedzi od {{cleanupdays}} dni, ta skrzynka odbiorcza została usunięta.\n\nJeśli później dostosujesz swoje zgłoszenie zgodnie z otrzymaną opinią, z przyjemnością otrzymamy je ponownie za pośrednictwem {{instance}}.\n\nCieszymy się również z Twojego zainteresowania naszą bazą danych i mamy nadzieję, że ponownie się do niej przyczynisz.",
+                "SUBJECT": "[{{instance}}] Utwór usunięty: {{songname}}"
+            }
         }
     }
 }
