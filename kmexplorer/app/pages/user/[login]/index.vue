@@ -264,7 +264,7 @@
 	import type { Roles } from '%/lib/types/user';
 	import { useModalStore } from '~/store/modal';
 	import { useAuthStore } from '~/store/auth';
-	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
+	import type { DBPL } from '%/types/database/playlist';
 	import { useConfigStore } from '~/store/config';
 
 	type RoleKey = keyof Roles;
@@ -298,6 +298,20 @@
 	// Remove protocol if http(s) and trailing slash
 	const url = computed(() => user.value?.url?.replace(/^https?:\/\//i, '').replace(/\/$/, '') || '');
 
+	const urlApi = viewingSelf.value
+		? '/api/myaccount'
+		: `/api/users/${params.login}`;
+	const apiUser = useCustomFetch<DBUser>(urlApi, {
+		params: {
+			forcePublic: loggedIn.value && !!userConnected?.value?.roles?.admin
+		}
+	});
+	const apiPlaylist = useCustomFetch<DBPL[]>('/api/playlist', {
+		params: {
+			byUsername: user?.value?.login
+		}
+	});
+	
 	// Fetch in SSR and avoid duplicate requests
 	const { data: ssrData, error: ssrError } = await useAsyncData(
 		`user-${params.login}`,
@@ -318,14 +332,7 @@
 		if (config?.value && !config.value.Users.Enabled) {
 			throw createError({ statusCode: 404 });
 		}
-		const url = viewingSelf.value
-			? '/api/myaccount'
-			: `/api/users/${params.login}`;
-		const res = await useCustomFetch<DBUser>(url, {
-			params: {
-				forcePublic: loggedIn.value && !!userConnected?.value?.roles?.admin
-			}
-		}).catch((err) => {
+		const res = await apiUser.catch((err) => {
 			if (err?.response?.status === 404) {
 				throw createError({ statusCode: 404, message: t('error.not_found_profile') });
 			}
@@ -342,11 +349,7 @@
 	}
 
 	async function getPlaylists() {
-		playlists.value = await useCustomFetch<DBPL[]>('/api/playlist', {
-			params: {
-				byUsername: user?.value?.login
-			}
-		});
+		playlists.value = await apiPlaylist
 	}
 
 	function openEdit() {
