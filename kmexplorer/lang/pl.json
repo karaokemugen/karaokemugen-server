@@ -173,7 +173,8 @@
 			"login_required": "Musisz się zalogować, aby wysłać piosenkę.",
 			"quota_count": "Nadal możesz wysłać {count} piosenek. | Nadal możesz wysłać {count} piosenek.",
 			"quota_reached": "Wysłano zbyt wiele piosenek. Przed wysłaniem kolejnej poczekaj, aż część z nich zostanie zaakceptowana lub odrzucona.",
-			"contact_infos_warning": "Twoje dane kontaktowe zostaną udostępnione administratorom bazy danych, którzy mogą się z Tobą skontaktować w razie pytań dotyczących przesłanego przez Ciebie nagrania karaoke."
+			"contact_infos_warning": "Twoje dane kontaktowe zostaną udostępnione administratorom bazy danych, którzy mogą się z Tobą skontaktować w razie pytań dotyczących przesłanego przez Ciebie nagrania karaoke.",
+			"comment_required": "Wymagany jest komentarz"
 		},
 		"stats": {
 			"favorited": "Dodane do ulubionych przez użytkowników {number}",
@@ -195,7 +196,9 @@
 		"set_banner": {
 			"btn": "Użyj jako banera profilu",
 			"forbidden_label": "Nie możesz użyć tego karaoke jako banera swojego profilu."
-		}
+		},
+		"not_playable": "Strona {instance} nie obsługuje odtwarzania tego utworu w Twojej przeglądarce.",
+		"other_liked": "Osoby, którym podobało się to, polubiły również…"
 	},
 	"modal": {
 		"profile": {
@@ -555,7 +558,9 @@
 		"GET_FAVORITES_FROM_USER_NOT_FOUND_ERROR": "Nie znaleziono użytkownika",
 		"GET_SUGGESTIONS_LANGUAGES_ERROR": "Nie można uzyskać sugestii języka",
 		"USER_INBOX_QUOTA_REACHED": "Osiągnąłeś swój limit.",
-		"CONTRIBUTOR_TRUST_LEVEL_UPDATED": "Zaktualizowano poziom zaufania współpracowników."
+		"CONTRIBUTOR_TRUST_LEVEL_UPDATED": "Zaktualizowano poziom zaufania współpracowników.",
+		"USER_ALREADY_LIKED_SUGGESTION": "Już zagłosowałeś na tę propozycję.",
+		"DELETE_INBOX_ERROR": "Błąd podczas usuwania skrzynki odbiorczej"
 	},
 	"roles": {
 		"donator": "Darczyńca",
@@ -666,7 +671,8 @@
 		"api_documentation": "Dokumentacja API",
 		"translation": "Weź udział w tłumaczeniach",
 		"software_under_license": "Oprogramowanie na licencji",
-		"base_under_licence": "Baza karaoke na licencji"
+		"base_under_licence": "Baza karaoke na licencji",
+		"privacy_policy": "Polityka prywatności"
 	},
 	"stats": {
 		"karaokes": "Piosenka | Piosenki",
@@ -723,7 +729,8 @@
 		"forum": "Forum",
 		"administration": "Administracja",
 		"dashboard": "Panel",
-		"submissions": "Moje zgłoszenia"
+		"submissions": "Moje zgłoszenia",
+		"logs": "Logi"
 	},
 	"profile": {
 		"favorites": "Ulubione",
@@ -758,10 +765,11 @@
 			"kara_count": "Liczba karaoke",
 			"most_requested": "Najbardziej poszukiwane",
 			"a_z": "A-Z",
-			"recent": "Według daty dodania",
+			"recent": "Według daty utworzenia",
 			"most_played": "Najczęściej grane",
 			"recent_modified": "Według daty modyfikacji",
-			"status": "Według stanu"
+			"status": "Według stanu",
+			"added_at": "Według daty dodania"
 		},
 		"next": "Następna strona",
 		"previous": "Poprzednia strona",
@@ -786,7 +794,22 @@
 		"available_trust_levels": "Dostępny poziom zaufania:",
 		"trust_level_submissions": "Poziom {level}: przesłanych {songs}",
 		"trust_level": "Poziom {level}",
-		"submissions_status": "Do limitu wliczane są tylko zgłoszenia ze statusem „Wysłane”, „W trakcie sprawdzania” i „Zażądano zmian”."
+		"submissions_status": "Do limitu wliczane są tylko zgłoszenia ze statusem „Wysłane”, „W trakcie sprawdzania” i „Zażądano zmian”.",
+		"version": {
+			"tag": "Tag serwera karaoke Mugen: {tag}",
+			"date": "Data budowy: {date}",
+			"commit": "Zatwierdź: {commit}"
+		},
+		"repository": {
+			"latest_commit": "Ostatni commit w repozytorium: {commit}",
+			"latest_origin_commit": "Ostatni commit w repozytorium online: {commit}",
+			"last_generation_date": "Data ostatniego wygenerowania: {date}",
+			"generation_in_progress": "Trwa generowanie",
+			"hardsubs": {
+				"queue_length": "Pozostałe napisy do wtopienia: {length}",
+				"queue": "Przetwarzanie twardych napisów dla {kid}, rozpoczęte {date}"
+			}
+		}
 	},
 	"submissions": {
 		"status": {
