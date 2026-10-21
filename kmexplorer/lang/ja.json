@@ -8,7 +8,12 @@
 			"cancel": "キャンセル"
 		},
 		"download": {
-			"cancel": "キャンセル"
+			"cancel": "キャンセル",
+			"label": "カラオケをダウンロード",
+			"karabundle": "データをダウンロード (.json)",
+			"subtitles": "歌詞をダウンロード (.{format})",
+			"media": "メディアをダウンロード (.{format})",
+			"media_hardsub": "メディアを字幕付きでダウンロード (焼き付き字幕 .mp4)"
 		},
 		"crop": {
 			"cancel": "キャンセル"
@@ -41,31 +46,48 @@
 		"login": {
 			"fields": {
 				"password": {
-					"label": "パスワード"
+					"label": "パスワード",
+					"placeholder": "HontoWaIdolM{'@'}sterGaSuki"
 				},
 				"username": {
-					"label": "ユーザー名"
+					"label": "ユーザー名",
+					"placeholder": "LoveLiveFan93"
+				},
+				"forgot_password": {
+					"error": "パスワードのリセットに失敗: {email} までご連絡ください。",
+					"label": "パスワードを忘れた?",
+					"success": "パスワードリセットのリンクを記載したメールを送信しました。",
+					"error_fallback": "アカウントが所属するサーバーの管理者"
 				}
 			},
 			"title": "ログイン",
-			"submit": "ログイン"
+			"submit": "ログイン",
+			"subtitle": "ログインするとお気に入りの閲覧やプロフィール編集ができます！"
 		},
 		"signup": {
 			"fields": {
 				"password": {
-					"label": "パスワード"
+					"label": "パスワード",
+					"placeholder": "HontoWaIdolM{'@'}sterGaSuki"
 				},
 				"password_confirmation": {
-					"label": "パスワードの確認"
+					"label": "パスワードの確認",
+					"placeholder": "HontoWaIdolM{'@'}sterGaSuki"
 				},
 				"email": {
 					"label": "メール",
 					"placeholder": "test{'@'}shelter.moe"
 				},
 				"username": {
-					"label": "ユーザー名"
+					"label": "ユーザー名",
+					"char_not_allowed": "「{char}」は入力できません",
+					"placeholder": "LoveLiveFan93"
 				}
-			}
+			},
+			"title": "新規登録",
+			"passwords_mismatch": "パスワードが一致しません",
+			"submit": "新規登録",
+			"subtitle": "登録するとお気に入りの保存やプロフィール作成ができます！"
 		},
 		"profile": {
 			"headers": {
@@ -73,10 +95,12 @@
 			},
 			"fields": {
 				"password": {
-					"label": "パスワード"
+					"label": "パスワード",
+					"placeholder": "HontoWaIdolM{'@'}sterGaSuki"
 				},
 				"password_confirmation": {
-					"label": "パスワードの確認"
+					"label": "パスワードの確認",
+					"placeholder": "HontoWaIdolM{'@'}sterGaSuki"
 				},
 				"email": {
 					"label": "メール",
@@ -99,19 +123,24 @@
 					"placeholder": "karaokemugen{'@'}shelter.moe"
 				},
 				"instagram": {
-					"label": "Instagram"
+					"label": "Instagram",
+					"placeholder": "karaokemugen"
 				},
 				"twitch": {
-					"label": "Twitch"
+					"label": "Twitch",
+					"placeholder": "KaraokeLive"
 				},
 				"myanimelist": {
-					"label": "MyAnimeList"
+					"label": "MyAnimeList",
+					"placeholder": "karaokemugen"
 				},
 				"anilist": {
-					"label": "AniList"
+					"label": "AniList",
+					"placeholder": "karaokemugen"
 				},
 				"gitlab": {
-					"label": "Gitlab"
+					"label": "Gitlab",
+					"placeholder": "karaokemugen"
 				},
 				"flag_public": {
 					"label": "公開プロフィール"
@@ -124,7 +153,11 @@
 					"label": "ユーザー名"
 				},
 				"nickname": {
-					"label": "ニックネーム"
+					"label": "ニックネーム",
+					"placeholder": "LoveLiveFan93"
+				},
+				"kitsu": {
+					"placeholder": "karaokemugen"
 				}
 			},
 			"submit": "セーブ"
@@ -135,7 +168,7 @@
 					"label": "歌手"
 				},
 				"link": {
-					"label": "リンク"
+					"label": "メディアのリンク"
 				},
 				"series": {
 					"label": "作品"
@@ -190,8 +223,16 @@
 		"playlists": "プレイリスト",
 		"database": "データベース",
 		"genres": "ジャンル",
-		"creators": "作成者",
-		"groups": "グループ"
+		"creators": "制作元",
+		"groups": "グループ",
+		"misc": "その他のタグ",
+		"search_users": "ユーザーを検索",
+		"franchises": "シリーズ",
+		"kara_import": "カラオケを投稿",
+		"play_random_song": "ランダムな曲を再生",
+		"forum": "フォーラム",
+		"logs": "ログ",
+		"administration": "管理"
 	},
 	"toast": {
 		"PASSWORD_UPDATED": "パスワードを正常に更新しました"
@@ -210,7 +251,9 @@
 			"warnings": "警告",
 			"versions": "バージョン",
 			"songwriters": "作曲家",
-			"platforms": "プラットフォーム"
+			"platforms": "プラットフォーム",
+			"misc": "その他",
+			"franchises": "シリーズ"
 		},
 		"lyrics": {
 			"show": "歌詞を表示",
@@ -245,13 +288,52 @@
 		},
 		"import": {
 			"sections": {
-				"files": "ファイル"
+				"files": "ファイル",
+				"titles": "曲名"
 			},
 			"comment": "コメントする？",
 			"langs_required": "言語を選んでください",
 			"songwriters_tooltip": "作曲家と編曲家と作詞家",
-			"title": "タイトル",
-			"show_hide": "表示/非表示"
+			"title": "曲名",
+			"show_hide": "表示/非表示",
+			"franchises_tooltip": "作品がシリーズ化されている（ガンダム、マリオ、ゼルダ、ナルトなど）場合は、ここに入力してください。",
+			"login_required": "曲を送るにはログインする必要があります。",
+			"add": "追加",
+			"create": "作成",
+			"add_file_lyrics_error": "{name} は字幕ファイルではありません",
+			"add_file_media_error": "{name} はメディアファイルではありません",
+			"submit": "カラオケを送る",
+			"media_file_required": "メディアファイルは必須です",
+			"lyrics_file": "歌詞ファイル",
+			"media_file_tooltip": "対応するファイル形式: {formats}",
+			"lyrics_file_tooltip": "対応するファイル形式: {formats}",
+			"year": "発表年",
+			"year_tooltip": "作品が放映された、または動画が制作された年",
+			"year_required": "発表年は必須です",
+			"year_invalid": "発表年が無効です",
+			"comment_required": "コメントは必須です",
+			"title_required": "曲名を入力してください",
+			"titles_aliases": "エイリアス",
+			"license_reminder": "あなたのカラオケは {name} ライセンスで公開されます",
+			"license_link": "このライセンスについて知るにはここをクリックしてください。",
+			"add_file_media_not_supported_error": "{name} は対応するメディアファイルではありません。次の形式のどれかに変換してください: {formats}",
+			"add_file_success": "{name} ファイルを正常に追加しました",
+			"media_file": "メディアファイル",
+			"media_file_edit": "メディアファイルを置き換える",
+			"titles_aliases_tooltip": "略称や別名で、検索に使用されます。",
+			"series_tooltip": "番組名、映画の作品名、ゲーム名など。",
+			"series_singers_required": "作品、歌手、バンド名は同時に空にできません。",
+			"singergroups_tooltip": "歌手がバンドに所属している場合は、ここに入力してください。プレイヤーと曲リストには、歌手一人ひとりの代わりにバンド名が表示されます。",
+			"created_at": "作成日",
+			"contact_infos": "連絡先",
+			"contact_infos_tooltip": "カラオケについて私たちが質問する際に連絡できるよう、連絡先を入力してください。",
+			"from_display_type_tooltip": "曲名と一緒に表示するタグの種類を選択してください。「[このタグの種類] の [曲名]」のように表示されます。",
+			"from_display_type": "表示するタグの種類",
+			"contact_infos_warning": "あなたの連絡先はデータベース管理者と共有され、カラオケの投稿に関して質問がある場合、管理者から連絡を行う場合があります。",
+			"add_error": "エラーが発生したため、カラオケが正常に送信されませんでした",
+			"authors_required": "カラオケ作成者は必須です",
+			"authors_tooltip": "自分をここに追加しましょう ;)",
+			"creators_tooltip": "作品を制作した組織。アニメーションスタジオ、映画スタジオ、ゲームスタジオなど。"
 		},
 		"duration": "長さ ",
 		"download": "ダウンロード",
@@ -271,7 +353,8 @@
 			"previous": "前の曲 (B)",
 			"next": "次の曲 (N)",
 			"theater_mode": "シアターモード (T)"
-		}
+		},
+		"singergroups_by": "バンド名"
 	},
 	"layout": {
 		"app_banner": {
@@ -280,7 +363,8 @@
 			"description": "Karaoke Mugen はWindows、macOS、Linuxに対応したプレイリスト＆カラオケ管理のアプリケーションでもあるんです。使い方は様々―友達とのカラオケ大会、アニメイベント、あなたの配信にだって使えます!",
 			"more_features": "アプリは{instance}よりもっと多くの機能を備えています!",
 			"link": "コンピューターにアプリをダウンロードするには、{link}をご覧ください。"
-		}
+		},
+		"loading": "読み込み中…"
 	},
 	"footer": {
 		"home": "プロジェクトホーム",
@@ -300,8 +384,14 @@
 			"kara": "作品、歌手、名前⋯"
 		},
 		"sort": {
-			"most_favorites": "最もお気に入り",
-			"languages": "言語で"
+			"most_favorites": "お気に入り数順",
+			"languages": "言語で",
+			"a_z": "アルファベット順",
+			"recent": "作成日順",
+			"most_played": "再生回数順",
+			"most_played_recently": "再生回数順（直近）",
+			"most_requested": "リクエスト数順",
+			"most_requested_recently": "リクエスト数順（直近）"
 		},
 		"types": {
 			"languages": "言語",
