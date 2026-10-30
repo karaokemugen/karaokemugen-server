@@ -633,6 +633,7 @@
 	},
 	"toast": {
 		"LOG_ERROR": "Identifiants incorrects.",
+		"REPOSITORY_MANIFEST_KARA_METADATA_RULE_VIOLATION_ERROR": "Les informations de la chanson ne sont pas conformes aux règles de ce dépôt",
 		"USER_LOGIN_INVALID": "Nom d'utilisateur invalide. N'utilisez que des caractères alphanumériques (ou avec ., _ ou -)",
 		"USER_CREATED": "Utilisateur créé avec succès",
 		"GENERATED_KARA": "Karaoké envoyé avec succès.",

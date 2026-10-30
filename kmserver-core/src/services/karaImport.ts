@@ -14,6 +14,7 @@ import { applyKaraHooks, refreshHooks } from '../lib/dao/hook.js';
 import { extractVideoSubtitles, trimKaraData, verifyKaraData, writeKara } from '../lib/dao/karafile.js';
 import { defineSongname, determineMediaAndLyricsFilenames, processSubfile } from '../lib/services/karaCreation.js';
 import { refreshKarasAfterDBChange, updateTags } from '../lib/services/karaManagement.js';
+import { checkKaraMetadata } from '../lib/services/karaValidation.js';
 import { consolidateTagsInRepo } from '../lib/services/tag.js';
 import { DBInbox, InboxActions } from '../lib/types/inbox.js';
 import { EditedKara, KaraFileV4 } from '../lib/types/kara.js';
@@ -41,6 +42,11 @@ async function preflight(kara: KaraFileV4): Promise<KaraFileV4> {
 	// No sentry triggered if validation fails
 	try {
 		verifyKaraData(kara);
+		try {
+			checkKaraMetadata([kara]);
+		} catch (err) {
+			throw new ErrorKM('REPOSITORY_MANIFEST_KARA_METADATA_RULE_VIOLATION_ERROR', 400, false);
+		}
 		return kara;
 	} catch (err) {
 		logger.error('Bad import data', { service, obj: { err, kara } });

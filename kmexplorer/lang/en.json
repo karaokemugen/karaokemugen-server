@@ -633,6 +633,7 @@
 	},
 	"toast": {
 		"LOG_ERROR": "Incorrect credentials.",
+		"REPOSITORY_MANIFEST_KARA_METADATA_RULE_VIOLATION_ERROR": "Song information does not comply with repository rules",
 		"USER_LOGIN_INVALID": "Invalid user name. Please only use alphanumeric characters (._- are allowed too)",
 		"USER_CREATED": "User successfully created",
 		"GENERATED_KARA": "Karaoke sent successfully.",
