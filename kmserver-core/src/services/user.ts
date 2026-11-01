@@ -5,7 +5,7 @@ import { copy } from 'fs-extra';
 import i18n from 'i18next';
 import { verify } from 'jsonwebtoken';
 import { cloneDeep, isObject, merge } from 'lodash';
-import { isAbsolute, resolve } from 'path';
+import { basename, isAbsolute, resolve, sep } from 'path';
 import randomstring from 'randomstring';
 
 import { createJwtToken } from '../controllers/http/auth.js';
@@ -256,7 +256,7 @@ export async function getBans(type?: BanType) {
 export async function createUser(user: User, opts: any = {}) {
 	try {
 		user.nickname = user.nickname || user.login;
-		user.avatar_file = user.avatar_file || 'blank.png';
+		user.avatar_file = 'blank.png'; // Avatar filename is only set when uploaded by editUser->replaceAvatar()
 		user.bio = user.bio || null;
 		user.url = user.url || null;
 		user.email = user.email || null;
@@ -309,15 +309,18 @@ async function replaceAvatar(oldImageFile: string, avatar: Express.Multer.File) 
 		const newAvatarFile = `${uuidV4()}.${fileType}`;
 		const avatarPath = resolve(resolvedPath('Avatars'));
 		const newAvatarPath = resolve(avatarPath, newAvatarFile);
-		const oldAvatarPath = resolve(avatarPath, oldImageFile);
-		if (await fileExists(oldAvatarPath) &&
-			oldImageFile !== 'blank.png') {
+		if (oldImageFile &&
+			oldImageFile !== 'blank.png' &&
+			basename(oldImageFile) === oldImageFile) {
+			const oldAvatarPath = resolve(avatarPath, oldImageFile);
+			if (oldAvatarPath.startsWith(avatarPath + sep) && await fileExists(oldAvatarPath)) {
 				try {
 					await fs.unlink(oldAvatarPath);
 				} catch (err) {
 					// This is allowed to fail.
 				}
 			}
+		}
 		await smartMove(avatar.path, newAvatarPath);
 		return newAvatarFile;
 	} catch (err) {
