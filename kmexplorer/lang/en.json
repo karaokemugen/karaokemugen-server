@@ -657,6 +657,7 @@
 		"GET_FAVORITES_FROM_USER_NOT_FOUND_ERROR": "No user found",
 		"NEW_KARA_ISSUE_ERROR": "Unable to create issue",
 		"BAD_IMPORT_DATA_ERROR": "Data format error",
+		"INBOX_EDIT_FORBIDDEN": "Only your own pending submissions can be edited",
 		"GET_SUGGESTIONS_ERROR": "Unable to get suggestions",
 		"GET_SUGGESTIONS_LANGUAGES_ERROR": "Unable to get suggestion languages",
 		"UPDATE_SUGGESTION_LIKE_ERROR": "Unable to like this song",

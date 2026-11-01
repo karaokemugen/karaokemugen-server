@@ -110,7 +110,7 @@ export default function KIController(router: Router) {
 					contact: z.string(),
 					inid: z.uuidv4().optional(),
 				}));
-				const url = await editKara(req.body, req.body.contact, req.authToken?.username.toLowerCase(), req.body.inid);
+				const url = await editKara(req.body, req.body.contact, req.params.kid, req.authToken, req.body.inid);
 				res.status(200).json(APIMessage('EDITED_KARA', url || ''));
 			} catch (err) {
 				res.status(err.code || 500).json(APIMessage(err.message));

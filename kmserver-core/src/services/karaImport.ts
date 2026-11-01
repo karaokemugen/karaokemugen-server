@@ -18,6 +18,7 @@ import { checkKaraMetadata } from '../lib/services/karaValidation.js';
 import { consolidateTagsInRepo } from '../lib/services/tag.js';
 import { DBInbox, InboxActions } from '../lib/types/inbox.js';
 import { EditedKara, KaraFileV4 } from '../lib/types/kara.js';
+import { JWTTokenWithRoles } from '../lib/types/user.js';
 import { getConfig, resolvedPath, resolvedPathRepos } from '../lib/utils/config.js';
 import { ErrorKM } from '../lib/utils/error.js';
 import { replaceExt, smartMove } from '../lib/utils/files.js';
@@ -146,8 +147,9 @@ async function heavyLifting(kara: KaraFileV4, contact: {name: string, login?: st
 	}
 }
 
-export async function editKara(editedKara: EditedKara, contact: string, login?: string, inid?: string): Promise<string> {
+export async function editKara(editedKara: EditedKara, contact: string, kid: string, token?: JWTTokenWithRoles, inid?: string): Promise<string> {
 	try {
+		const login = token?.username?.toLowerCase();
 		// If login needed, raise error if not logged in
 		if (!login && getConfig().Frontend.Import.LoginNeeded) {
 			throw new ErrorKM('LOGIN_NEEDED', 401, false);
@@ -157,6 +159,7 @@ export async function editKara(editedKara: EditedKara, contact: string, login?: 
 		const repoName = conf.System.Repositories.find((r) => r.Name !== 'Staging').Name;
 		const sourceRepoName = editedKara.kara.data.repository;
 		const edited_kid = kara.data.kid;
+		if (!edited_kid || edited_kid !== kid) throw new ErrorKM('BAD_IMPORT_DATA_ERROR', 400, false);
 		kara = await preflight(kara);
 		let inbox: DBInbox;
 		let fix = true;
@@ -164,9 +167,18 @@ export async function editKara(editedKara: EditedKara, contact: string, login?: 
 			const inboxes = await getInbox(false);
 			inbox = inboxes.filter(i => i.inid === inid)[0];
 			if (!inbox) throw new ErrorKM('INBOX_UNKNOWN_ERROR', 404, false);
+			// Only original submitter can edit an inbox
+			if (!login || !inbox.username || inbox.username.toLowerCase() !== login) {
+				throw new ErrorKM('INBOX_EDIT_FORBIDDEN', 403, false);
+			}
+			if (inbox.kid !== edited_kid) throw new ErrorKM('BAD_IMPORT_DATA_ERROR', 400, false);
 			kara.data.kid = inbox.kid;
 			// If an inbox id is set when calling, this isn't a fix of an existing song
 			fix = false;
+		} else {
+			// Normal edits must not be in staging repo
+			const existingKara = await getKara({ q: `k:${edited_kid}`, ignoreCollections: true });
+			if (existingKara.repository === 'Staging') throw new ErrorKM('INBOX_EDIT_FORBIDDEN', 403, false);
 		}
 		// Before the heavy lifting (tm), we should make copies of media and/or lyrics if they were not edited.
 		if (!editedKara.modifiedLyrics && kara.medias[0].lyrics.length > 0) {
