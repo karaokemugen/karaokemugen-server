@@ -700,7 +700,8 @@
 		"PL_SHUFFLE_ERROR": "Erreur lors du mélange de la liste de lecture",
 		"USER_INBOX_QUOTA_REACHED": "Vous avez atteint votre quota.",
 		"CONTRIBUTOR_TRUST_LEVEL_UPDATED": "Le niveau de confiance du contributeur a été mis à jour.",
-		"DELETE_INBOX_ERROR": "Erreur lors de la suppression de la soumission"
+		"DELETE_INBOX_ERROR": "Erreur lors de la suppression de la soumission",
+		"INBOX_EDIT_FORBIDDEN": "Seules vos propres soumissions en attente peuvent être modifiées"
 	},
 	"roles": {
 		"donator": "Donateur(-ice)",
