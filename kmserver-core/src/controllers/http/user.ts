@@ -22,39 +22,39 @@ function editHandler(userFromToken: boolean): RequestHandler {
 		if (req.body.email) req.body.email = unescape(req.body.email.trim());
 		if (req.body.url) req.body.url = unescape(req.body.url.trim());
 		if (req.body.nickname) req.body.nickname = unescape(req.body.nickname.trim());
-		check(req.body, z.object({
-			bio: z.string().nullish(),
-			email: z.email().or(z.literal('')).nullish(),
-			url: z.url().or(z.literal('')).nullish(),
-			nickname: z.string().optional(),
-			password: z.string().optional(),
-			location: z.string().nullish(),
-			flag_sendstats: z.coerce.boolean().optional(),
-			flag_public: z.coerce.boolean().optional(),
-			flag_displayfavorites: z.coerce.boolean().optional(),
-			social_networks: z.object({
-				mastodon: z.string().nullish(),
-				instagram: z.string().nullish(),
-				bluesky: z.string().nullish(),
-				discord: z.string().nullish(),
-				twitch: z.string().nullish(),
-				anilist: z.string().nullish(),
-				myanimelist: z.string().nullish(),
-				kitsu: z.union([z.string().nullish(), z.coerce.number().int().min(1).or(z.literal('')).nullish()]),
-				gitlab: z.string().optional(),
-			}).loose().nullish(),
-			language: z.string().optional(),
-			anime_list_to_fetch: z.enum(animeListProviders).nullish(),
-			flag_parentsonly: z.coerce.boolean().optional(),
-			flag_contributor_emails: z.coerce.boolean().optional(),
-			roles: zRoles.optional(),
-		}))
-		// Now we add user
-		let avatar: Express.Multer.File;
-		if (req.files?.avatarfile) avatar = req.files.avatarfile[0];
-		let banner: Express.Multer.File;
-		if (req.files?.bannerfile) banner = req.files.bannerfile[0];
 		try {
+			check(req.body, z.object({
+				bio: z.string().nullish(),
+				email: z.email().or(z.literal('')).nullish(),
+				url: z.url({ protocol: /^https?$/ }).or(z.literal('')).nullish(),
+				nickname: z.string().optional(),
+				password: z.string().optional(),
+				location: z.string().nullish(),
+				flag_sendstats: z.coerce.boolean().optional(),
+				flag_public: z.coerce.boolean().optional(),
+				flag_displayfavorites: z.coerce.boolean().optional(),
+				social_networks: z.object({
+					mastodon: z.string().nullish(),
+					instagram: z.string().nullish(),
+					bluesky: z.string().nullish(),
+					discord: z.string().nullish(),
+					twitch: z.string().nullish(),
+					anilist: z.string().nullish(),
+					myanimelist: z.string().nullish(),
+					kitsu: z.union([z.string().nullish(), z.coerce.number().int().min(1).or(z.literal('')).nullish()]),
+					gitlab: z.string().optional(),
+				}).loose().nullish(),
+				language: z.string().optional(),
+				anime_list_to_fetch: z.enum(animeListProviders).nullish(),
+				flag_parentsonly: z.coerce.boolean().optional(),
+				flag_contributor_emails: z.coerce.boolean().optional(),
+				roles: zRoles.optional(),
+			}))
+			// Now we add user
+			let avatar: Express.Multer.File;
+			if (req.files?.avatarfile) avatar = req.files.avatarfile[0];
+			let banner: Express.Multer.File;
+			if (req.files?.bannerfile) banner = req.files.bannerfile[0];
 			const response = await editUser(
 				userFromToken ? req.authToken.username : req.params.user,
 				req.body,
@@ -166,6 +166,7 @@ export default function userController(router: Router) {
 				// Login must not include @
 				check(req.body, z.object({
 					login: z.string().refine((val) => !val.includes('@')),
+					url: z.url({ protocol: /^https?$/ }).or(z.literal('')).nullish(),
 				}));
 				await createUser(req.body);
 				res.json(APIMessage('USER_CREATED'));
