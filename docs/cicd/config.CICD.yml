@@ -1,0 +1,27 @@
+System:
+  Database:
+    bundledPostgresBinary: false
+    connection: tcp
+    database: karaokemugen_app
+    host: postgres
+    password: musubi
+    port: 5432
+    superuser: karaokemugen_app
+    superuserPassword: musubi
+    username: karaokemugen_app
+  Binaries:
+    Player:
+      Linux: mpv
+    ffmpeg:
+      Linux: /usr/bin/ffmpeg
+    patch:
+      Linux: patch
+  Repositories:
+    - Name: kara.moe
+      Online: false
+      Enabled: true
+      MaintainerMode: true
+      BaseDir: repos/karaokebase
+      Path:
+        Medias:
+          - /storage/medias
