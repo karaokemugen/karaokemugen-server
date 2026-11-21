@@ -1,7 +1,9 @@
 {
 	"actions": {
 		"choose_file": "Dibabit ur restr",
-		"import": "Enporzhiañ"
+		"import": "Enporzhiañ",
+		"yes": "Ya",
+		"no": "Ket"
 	},
 	"kara": {
 		"tagtypes": {
@@ -472,10 +474,6 @@
 			"cancel": "Nullañ",
 			"label": "Krennañ avatar"
 		},
-		"stats": {
-			"yes": "Ya",
-			"no": "Ket"
-		},
 		"set_banner": {
 			"label": "Dibab ur banniel",
 			"next": "Skeudenn war-lerc'h",
@@ -568,8 +566,6 @@
 		"edit_success": "Kemmet eo bet ar remote gant berzh",
 		"edit_error": "Fazi o kemmañ ar remote",
 		"delete_error": "Fazi o dilemel ar remote",
-		"yes": "Ya",
-		"no": "Ket",
 		"last_ip": "Ip diwezhañ",
 		"last_use": "Implijet da ziwezhañ",
 		"permanent": "Peurzalc'hus"

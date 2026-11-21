@@ -1,7 +1,9 @@
 {
 	"actions": {
 		"choose_file": "Elige un archivo",
-		"import": "Importar"
+		"import": "Importar",
+		"yes": "Sí",
+		"no": "No"
 	},
 	"menu": {
 		"discord": "Discord",
@@ -695,9 +697,7 @@
 			"label": "Usar mis favoritos y solicitudes de canciones para estadísticas",
 			"desc": "Utilizamos tus canciones favoritas, así como las que has solicitado durante una sesión, para elaborar estadísticas de uso (por ejemplo, para averiguar cuáles son las canciones más populares).",
 			"refuse_desc": "Si no desea participar, aunque sea de forma anónima, en estas estadísticas de uso, por favor, háganoslo saber. Si se niega, el servidor ignorará sus datos y la aplicación Karaoke Mugen no los enviará.",
-			"change": "Puedes cambiar esto en cualquier momento en tu perfil. ¿Aceptas el uso de tus estadísticas?",
-			"yes": "Sí",
-			"no": "No"
+			"change": "Puedes cambiar esto en cualquier momento en tu perfil. ¿Aceptas el uso de tus estadísticas?"
 		}
 	},
 	"suggestions": {
@@ -754,8 +754,6 @@
 		"reason": "Motivo"
 	},
 	"remote": {
-		"yes": "Sí",
-		"no": "No",
 		"code": "Code",
 		"last_ip": "Última ip",
 		"last_use": "Último uso",

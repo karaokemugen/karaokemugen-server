@@ -1,6 +1,8 @@
 {
 	"actions": {
-		"choose_file": "Escolha um ficheiro"
+		"choose_file": "Escolha um ficheiro",
+		"yes": "Sim",
+		"no": "Não"
 	},
 	"error": {
 		"generic": "Erro",
@@ -430,9 +432,7 @@
 			"label": "Usar os meus favoritos e pedidos de karaokes para estatísticas",
 			"desc": "Utilizamos os seus favoritos, bem como os karaokes que solicitou durante uma sessão para fazer estatísticas de utilização (por exemplo, para descobrir os karaokes mais solicitados).",
 			"refuse_desc": "Se você não quiser participar, mesmo que seja anônimo, nestas estatísticas de uso, por favor, avise-nos. Se você recusar, os seus dados serão ignorados pelo servidor e não vão ser enviados pela aplicação do Karaoke Mugen.",
-			"change": "Você pode mudar isso a qualquer momento no seu perfil. Você aceita o uso das suas estatísticas?",
-			"yes": "Sim",
-			"no": "Não"
+			"change": "Você pode mudar isso a qualquer momento no seu perfil. Você aceita o uso das suas estatísticas?"
 		},
 		"set_banner": {
 			"label": "Escolha um banner",
@@ -693,8 +693,6 @@
 		"edit_success": "Editado remotamente com sucesso",
 		"edit_error": "Erro ao editar remotamente",
 		"delete_error": "Erro ao excluir remoto",
-		"yes": "Sim",
-		"no": "Não",
 		"edit_button": "Editar linha"
 	},
 	"languages": {

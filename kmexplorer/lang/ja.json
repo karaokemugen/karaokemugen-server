@@ -1,5 +1,5 @@
 {
-	"remote": {
+	"actions": {
 		"no": "いいえ",
 		"yes": "はい"
 	},
@@ -29,10 +29,6 @@
 			"online": "オンライン",
 			"button": "リポジトリ:",
 			"label": "このリポジトリをあなたのKaraoke Mugen アプリに追加しましょう!"
-		},
-		"stats": {
-			"yes": "はい",
-			"no": "いいえ"
 		},
 		"set_banner": {
 			"cancel": "キャンセル"

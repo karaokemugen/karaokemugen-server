@@ -1,6 +1,8 @@
 {
 	"actions": {
-		"choose_file": "Pilih berkas"
+		"choose_file": "Pilih berkas",
+		"yes": "Ya",
+		"no": "Tidak"
 	},
 	"kara": {
 		"phrase": "{songtype} dari {series}",
@@ -475,9 +477,7 @@
 			"label": "Gunakan permintaan favorit dan karaoke saya untuk statistik",
 			"desc": "Kami menggunakan favorit dan juga karaoke kamu yang kamu minta ketika sebuah sesi untuk membuat statistik penggunaan (sebagai contoh, untuk mencari tahu karaoke yang paling sering diminta).",
 			"refuse_desc": "Jika kamu tidak ingin berpartisipasi, meskipun awanama di statistik penggunaan tersebut, mohon beritahu kami. Jika kamu menolak, data kamu akan diabaikan oleh peladen dan tidak akan dikirimkan oleh aplikasi Karaoke Mugen.",
-			"change": "Kamu bisa mengubah ini kapan saja di profil kamu. Apakah kamu setuju tentang penggunaan statistik kamu?",
-			"yes": "Ya",
-			"no": "Tidak"
+			"change": "Kamu bisa mengubah ini kapan saja di profil kamu. Apakah kamu setuju tentang penggunaan statistik kamu?"
 		},
 		"set_banner": {
 			"label": "Pilih sebuah spanduk",
@@ -571,9 +571,7 @@
 		"permanent": "Permanen",
 		"edit_success": "Jarak jauh sukses disunting",
 		"last_use": "Penggunaan terakhir",
-		"last_ip": "IP terakhir",
-		"yes": "Ya",
-		"no": "Tidak"
+		"last_ip": "IP terakhir"
 	},
 	"languages": {
 		"qro": "Alfabet Latin (Romanisasi)"

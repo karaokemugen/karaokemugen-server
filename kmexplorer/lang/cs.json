@@ -1,7 +1,9 @@
 {
 	"actions": {
 		"import": "Importovat",
-		"choose_file": "Vybrat soubor"
+		"choose_file": "Vybrat soubor",
+		"yes": "Ano",
+		"no": "Ne"
 	},
 	"error": {
 		"generic": "Chyba",
@@ -586,9 +588,7 @@
 			"label": "Používat mé oblíbené skladby a karaoke přání pro statistiky",
 			"desc": "Vaše oblíbené skladby a skladby, které jste si během relace přáli, používáme k vytváření statistik využití (například ke zjištění nejoblíbenějších skladeb).",
 			"refuse_desc": "Pokud se těchto statistik využití nechcete účastnit ani anonymně, dejte nám vědět. Pokud odmítnete, server bude vaše údaje ignorovat a aplikace Karaoke Mugen je nebude odesílat.",
-			"change": "Toto nastavení můžete kdykoli změnit ve svém profilu. Souhlasíte s použitím svých údajů pro statistiky?",
-			"yes": "Ano",
-			"no": "Ne"
+			"change": "Toto nastavení můžete kdykoli změnit ve svém profilu. Souhlasíte s použitím svých údajů pro statistiky?"
 		},
 		"set_banner": {
 			"label": "Vybrat banner",
@@ -741,9 +741,7 @@
 		"delete_button": "Smazat řádek",
 		"edit_success": "Vzdálený přístup byl úspěšně upraven",
 		"edit_error": "Chyba při úpravě vzdáleného přístupu",
-		"delete_error": "Chyba při mazání vzdáleného přístupu",
-		"yes": "Ano",
-		"no": "Ne"
+		"delete_error": "Chyba při mazání vzdáleného přístupu"
 	},
 	"dashboard": {
 		"version": {

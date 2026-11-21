@@ -1,7 +1,9 @@
 {
 	"actions": {
 		"import": "Importer",
-		"choose_file": "Choisissez un fichier"
+		"choose_file": "Choisissez un fichier",
+		"yes": "Oui",
+		"no": "Non"
 	},
 	"error": {
 		"generic": "Erreur",
@@ -588,9 +590,7 @@
 			"label": "Utiliser mes favoris et demandes de chansons pour des statistiques",
 			"desc": "Nous utilisons vos favoris ainsi que les karaokés que vous avez demandé lors d'une session pour faire des statistiques d'utilisation (par exemple, permettre de connaître les karaokés les populaires).",
 			"refuse_desc": "Si vous ne voulez pas participer, même si c'est anonyme, à ces statistiques d'utilisation, merci de nous le dire. Si vous refusez, le serveur ignorera vos échantillons de statistiques et les applications Karaoke Mugen n'enverront pas vos données.",
-			"change": "Vous pouvez changer ceci à tout moment dans votre profil. Acceptez-vous cet usage des statistiques ?",
-			"yes": "Oui",
-			"no": "Non"
+			"change": "Vous pouvez changer ceci à tout moment dans votre profil. Acceptez-vous cet usage des statistiques ?"
 		},
 		"set_banner": {
 			"label": "Choisir une bannière",
@@ -745,9 +745,7 @@
 		"delete_button": "Supprimer la ligne",
 		"edit_success": "Edition du remote avec succès",
 		"edit_error": "Erreur lors de l'édition de l'accès à distance",
-		"delete_error": "Erreur lors de la suppression de l'accès à distance",
-		"yes": "Oui",
-		"no": "Non"
+		"delete_error": "Erreur lors de la suppression de l'accès à distance"
 	},
 	"dashboard": {
 		"version": {

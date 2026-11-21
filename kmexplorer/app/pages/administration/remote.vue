@@ -48,7 +48,7 @@
 			position="centered"
 			:custom-search="searchPermanent"
 		>
-			{{ props.row.permanent ? $t('remote.yes') : $t('remote.no') }}
+			{{ props.row.permanent ? $t('actions.yes') : $t('actions.no') }}
 		</o-table-column>
 		<o-table-column v-slot="props">
 			<div class="buttons">

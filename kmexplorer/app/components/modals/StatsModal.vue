@@ -2,8 +2,8 @@
 	<modal
 		:active="active"
 		:modal-title="$t('modal.stats.label')"
-		:cancel-label="$t('modal.stats.no')"
-		:submit-label="$t('modal.stats.yes')"
+		:cancel-label="$t('actions.no')"
+		:submit-label="$t('actions.yes')"
 		@submit="authorizeStats"
 		@cancel="refuseStats"
 		@close="closeModal"

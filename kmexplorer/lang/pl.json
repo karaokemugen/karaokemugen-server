@@ -1,7 +1,9 @@
 {
 	"actions": {
 		"choose_file": "Wybierz plik",
-		"import": "Import"
+		"import": "Import",
+		"yes": "Tak",
+		"no": "Nie"
 	},
 	"error": {
 		"generic": "Błąd",
@@ -393,8 +395,6 @@
 		"stats": {
 			"change": "Możesz to zmienić w dowolnym momencie w swoim profilu. Czy zgadzasz się na wykorzystanie swoich statystyk?",
 			"desc": "Używamy Twoich ulubionych, jak również utworów, o które prosiłeś podczas sesji, aby tworzyć statystyki użytkowania (na przykład, aby znaleźć najpopularniejsze utwory).",
-			"no": "Nie",
-			"yes": "Tak",
 			"label": "Użyj moich ulubionych i próśb o piosenki do statystyk",
 			"refuse_desc": "Jeśli nie chcesz brać udziału, nawet jeśli jest to anonimowe, w tych statystykach użytkowania, poinformuj nas o tym. Jeśli odmówisz, Twoje dane zostaną zignorowane przez serwer i nie zostaną wysłane przez Aplikację Karaoke Mugen."
 		},
@@ -603,8 +603,6 @@
 		"delete_button": "Usuń wiersz",
 		"edit_success": "Zdalna edycja z sukcesem",
 		"edit_error": "Błąd podczas edycji zdalnej",
-		"yes": "Tak",
-		"no": "Nie",
 		"code": "Kod",
 		"delete_error": "Błąd podczas usuwania zdalnego"
 	},
