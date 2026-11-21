@@ -140,8 +140,8 @@
 	import _ from 'lodash';
 	import { storeToRefs } from 'pinia';
 	import * as Toast from 'vue-toastification';
-	import type { DBPLC } from 'kmserver-core/src/lib/types/database/playlist';
-	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
+	import type { DBPLC } from '%/lib/types/database/playlist';
+	import type { DBPL } from '%/types/database/playlist';
 	import type { KaraList, KaraList as KaraListType } from '%/lib/types/kara';
 	import { useMenubarStore } from '~/store/menubar';
 	import { useAuthStore } from '~/store/auth';

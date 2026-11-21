@@ -247,7 +247,7 @@
 
 <script setup lang="ts">
 	import * as Toast from 'vue-toastification';
-	import type { TokenResponseWithRoles } from '~/../kmserver-core/src/lib/types/user';
+	import type { TokenResponseWithRoles } from '%/lib/types/user';
 	import { useAuthStore } from '~/store/auth';
 	import { useConfigStore } from '~/store/config';
 

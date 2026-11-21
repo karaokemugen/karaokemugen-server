@@ -138,7 +138,7 @@
 	import { v4 as UUIDv4 } from 'uuid';
 	import dayjs from 'dayjs';
 	import * as Toast from 'vue-toastification';
-	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
+	import type { DBPL } from '%/types/database/playlist';
 	import type { PlaylistExport } from '%/lib/types/playlist';
 	import { useAuthStore } from '~/store/auth';
 	import { useModalStore } from '~/store/modal';

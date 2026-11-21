@@ -94,8 +94,8 @@
 </template>
 
 <script setup lang="ts">
-	import type { OrderParam, PLParams } from 'kmserver-core/src/lib/types/playlist';
-	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
+	import type { OrderParam, PLParams } from '%/lib/types/playlist';
+	import type { DBPL } from '%/types/database/playlist';
 	import { storeToRefs } from 'pinia';
 	import { useAuthStore } from '~/store/auth';
 	import { useMenubarStore } from '~/store/menubar';

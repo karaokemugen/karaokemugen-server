@@ -30,10 +30,10 @@
 
 <script setup lang="ts">
 	import type { KaraList as KaraListType, KaraParams, OrderParam } from '%/lib/types/kara';
-	import type { DBPL } from '~/../kmserver-core/src/types/database/playlist';
+	import type { DBPL } from '%/types/database/playlist';
 	import _ from 'lodash';
 	import { storeToRefs } from 'pinia';
-	import type { DBTag } from '~/../kmserver-core/src/lib/types/database/tag';
+	import type { DBTag } from '%/lib/types/database/tag';
 	import { tagRegex, tagTypes, tagTypesMap } from '~/assets/constants';
 	import { useAuthStore } from '~/store/auth';
 	import { useLocalStorageStore } from '~/store/localStorage';

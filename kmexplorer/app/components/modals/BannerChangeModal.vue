@@ -53,7 +53,6 @@
 </template>
 
 <script setup lang="ts">
-	import Modal from './Modal.vue';
 	import type { DBKara } from '%/lib/types/database/kara';
 	import { useAuthStore } from '~/store/auth';
 	import { useConfigStore } from '~/store/config';

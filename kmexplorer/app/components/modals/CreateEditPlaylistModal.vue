@@ -133,7 +133,7 @@
 
 <script setup lang="ts">
 	import { storeToRefs } from 'pinia';
-	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
+	import type { DBPL } from '%/types/database/playlist';
 	import { useAuthStore } from '~/store/auth';
 	import { useModalStore } from '~/store/modal';
 

@@ -179,7 +179,7 @@
 </template>
 
 <script setup lang="ts">
-	import type { DBStats } from '%/../src/types/database/kara';
+	import type { DBStats } from '%/lib/types/database/kara';
 	import type { KaraList as KaraListType } from '%/lib/types/kara';
 	import { storeToRefs } from 'pinia';
 	import prettyBytes from 'pretty-bytes';

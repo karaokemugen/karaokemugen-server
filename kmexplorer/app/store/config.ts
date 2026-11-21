@@ -1,5 +1,5 @@
 import type { DBTag } from '%/lib/types/database/tag';
-import type { Config } from '~/../kmserver-core/src/types/config';
+import type { Config } from '%/types/config';
 
 export type supportedFilesType = {
 	video: string[];

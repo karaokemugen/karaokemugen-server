@@ -1,5 +1,5 @@
-import type { DBUser } from '~/../kmserver-core/src/lib/types/database/user';
-import type { TokenResponseWithRoles } from '~/../kmserver-core/src/lib/types/user';
+import type { DBUser } from '%/lib/types/database/user';
+import type { TokenResponseWithRoles } from '%/lib/types/user';
 import { useCustomFetch } from '~/composables/useCustomFetch';
 
 export const useAuthStore = defineStore('auth', {

@@ -57,7 +57,7 @@
 <script setup lang="ts">
 	import type { TagList, TagParams, TagTypeNum } from '%/lib/types/tag';
 	import { storeToRefs } from 'pinia';
-	import type { DBTag } from '~/../kmserver-core/src/lib/types/database/tag';
+	import type { DBTag } from '%/lib/types/database/tag';
 	import { tagTypes } from '~/assets/constants';
 	import { useLocalStorageStore } from '~/store/localStorage';
 	import { useMenubarStore } from '~/store/menubar';

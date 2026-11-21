@@ -94,7 +94,7 @@
 	import { useMenubarStore } from '~/store/menubar';
 	import { useModalStore } from '~/store/modal';
 	import { useLocalStorageStore } from '~/store/localStorage';
-	import type { Suggestion } from '~/../kmserver-core/src/types/suggestions';
+	import type { Suggestion } from '%/types/suggestions';
 	import { useConfigStore } from '~/store/config';
 	import { useAuthStore } from '~/store/auth';
 

@@ -52,7 +52,7 @@
 
 <script setup lang="ts">
 	import { storeToRefs } from 'pinia';
-	import type { Suggestion } from '~/../kmserver-core/src/types/suggestions';
+	import type { Suggestion } from '%/types/suggestions';
 	import { useAuthStore } from '~/store/auth';
 	import { useLocalStorageStore } from '~/store/localStorage';
 	import { useMenubarStore } from '~/store/menubar';

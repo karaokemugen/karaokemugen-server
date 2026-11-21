@@ -264,7 +264,7 @@
 	import type { Roles } from '%/lib/types/user';
 	import { useModalStore } from '~/store/modal';
 	import { useAuthStore } from '~/store/auth';
-	import type { DBPL } from 'kmserver-core/src/types/database/playlist';
+	import type { DBPL } from '%/types/database/playlist';
 	import { useConfigStore } from '~/store/config';
 
 	type RoleKey = keyof Roles;

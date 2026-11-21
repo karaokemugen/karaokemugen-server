@@ -1225,8 +1225,8 @@
 	import type { LocaleObject } from '@nuxtjs/i18n';
 	import { storeToRefs } from 'pinia';
 	import slug from 'slug';
-	import type { TokenResponseWithRoles } from '~/../kmserver-core/src/lib/types/user';
-	import type { Config } from '~/../kmserver-core/src/types/config';
+	import type { TokenResponseWithRoles } from '%/lib/types/user';
+	import type { Config } from '%/types/config';
 	import { useAuthStore } from '~/store/auth';
 	import { useConfigStore, type supportedFilesType } from '~/store/config';
 	import { useLocalStorageStore } from '~/store/localStorage';
