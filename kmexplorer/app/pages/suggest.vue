@@ -4,10 +4,12 @@
 			<div class="hero-body">
 				<div class="tile is-parent is-12 is-hidden-desktop">
 					<search-languages class="mb-2" />
-					<search-bar />
-					<div class="field is-expanded mt-2">
+					<div class="field is-expanded ml-2">
 						<languages-picker :label="$t('search.types.suggestions')" />
 					</div>
+				</div>
+				<div class="tile is-parent is-12 is-hidden-desktop">
+					<search-bar />
 				</div>
 				<div class="container">
 					<h1 class="title">
@@ -50,7 +52,7 @@
 			</div>
 		</section>
 		<div class="container">
-			<pagination
+			<ui-pagination
 				v-if="total > 1"
 				:page="page"
 				:last-page="total"
@@ -61,7 +63,7 @@
 				:key="kara.id"
 				:kara="kara"
 			/>
-			<pagination
+			<ui-pagination
 				v-if="total > 1"
 				:page="page"
 				:last-page="total"

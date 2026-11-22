@@ -429,7 +429,8 @@
 					"placeholder": "C'est la vie"
 				},
 				"location": {
-					"label": "Localisation"
+					"label": "Localisation",
+					"placeholder": "Animland"
 				},
 				"discord": {
 					"label": "Discord",

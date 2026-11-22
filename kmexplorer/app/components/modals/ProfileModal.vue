@@ -157,15 +157,13 @@
 						<div class="field-body">
 							<div class="field">
 								<div class="control">
-									<div class="select">
-										<o-autocomplete
-											v-model="location"
-											keep-first
-											open-on-focus
-											:data="getListCountries"
-											@select="(option: string) => editedUser.location = getCountryCode(option, locale)"
-										/>
-									</div>
+									<ui-combobox
+										v-model:model="location"
+										v-model:filter="filterLocation"
+										:items="getListCountries"
+										height="200px"
+										:placeholder="$t('modal.profile.fields.location.placeholder')"
+									/>
 								</div>
 							</div>
 						</div>
@@ -600,15 +598,12 @@
 						<div class="field-body">
 							<div class="field">
 								<div class="control">
-									<div class="select">
-										<o-autocomplete
-											v-model="main_series_lang_name"
-											keep-first
-											open-on-focus
-											:data="getListLangsMain"
-											@select="(option:string) => editedUser.main_series_lang = get3BCode(option, locale)"
-										/>
-									</div>
+									<ui-combobox
+										v-model:model="mainDisplayTypeLangName"
+										v-model:filter="mainDisplayTypeLangNameFilter"
+										:items="getListLangsMain"
+										height="200px"
+									/>
 								</div>
 							</div>
 						</div>
@@ -622,15 +617,12 @@
 						<div class="field-body">
 							<div class="field">
 								<div class="control">
-									<div class="select">
-										<o-autocomplete
-											v-model="fallback_series_lang_name"
-											keep-first
-											open-on-focus
-											:data="getListLangsFallback"
-											@select="(option:string) => editedUser.fallback_series_lang = get3BCode(option, locale)"
-										/>
-									</div>
+									<ui-combobox
+										v-model:model="fallbackDisplayTypeLangName"
+										v-model:filter="fallbackDisplayTypeLangNameFilter"
+										:items="getListLangsFallback"
+										height="200px"
+									/>
 								</div>
 							</div>
 						</div>
@@ -748,9 +740,12 @@
 
 	const { locale } = useI18n();
 
-	const location = ref('');
-	const main_series_lang_name = ref('');
-	const fallback_series_lang_name = ref('');
+	const location = ref<{label: string, value: string}>();
+	const filterLocation = ref('');
+	const mainDisplayTypeLangName = ref<{label: string, value: string}>();
+	const fallbackDisplayTypeLangName = ref<{label: string, value: string}>();
+	const mainDisplayTypeLangNameFilter = ref('');
+	const fallbackDisplayTypeLangNameFilter = ref('');
 	const loading = ref(false);
 	const crop_modal = ref<'avatar' | 'banner'>();
 	const image = ref('');
@@ -781,14 +776,18 @@
 		}
 	});
 
-	const getListLangsMain = computed(() => listLangs(main_series_lang_name.value || '', locale.value));
-	const getListLangsFallback = computed(() => listLangs(fallback_series_lang_name.value || '', locale.value));
 	const passwordNotEquals = computed(() => editedUser.value.password !== editedUser.value?.password_confirmation);
-	const getListCountries = computed(() => listCountries(location.value, locale.value));
+	const getListLangsMain = computed(() => listLangs(mainDisplayTypeLangNameFilter.value || '', locale.value));
+	const getListLangsFallback = computed(() => listLangs(fallbackDisplayTypeLangNameFilter.value || '', locale.value));
+	const getListCountries = computed(() => listCountries(filterLocation.value, locale.value));
 
 	watch(() => props.active, (now) => {
 		if(now) getUser();
 	});
+
+	watch(location, () => editedUser.value.location = location.value?.value || '');
+	watch(mainDisplayTypeLangName, () => editedUser.value.main_series_lang = mainDisplayTypeLangName.value?.value || '');
+	watch(fallbackDisplayTypeLangName, () => editedUser.value.fallback_series_lang = fallbackDisplayTypeLangName.value?.value || '');
 
 	getUser();
 
@@ -796,13 +795,13 @@
 		if (user?.value) {
 			editedUser.value = _.cloneDeep(user?.value);
 			if (user?.value.location) {
-				location.value = getCountriesInLocaleFromCode(user?.value.location, locale.value);
+				location.value = { label: getCountriesInLocaleFromCode(user?.value.location, locale.value), value: user?.value.location };
 			}
 			if (user?.value.main_series_lang) {
-				main_series_lang_name.value = getLanguagesInLocaleFromCode(user?.value.main_series_lang, locale.value) as string;
+				mainDisplayTypeLangName.value = { label: getLanguagesInLocaleFromCode(user?.value.main_series_lang, locale.value), value: user?.value.main_series_lang };
 			}
 			if (user?.value.fallback_series_lang) {
-				fallback_series_lang_name.value = getLanguagesInLocaleFromCode(user?.value.fallback_series_lang, locale.value) as string;
+				fallbackDisplayTypeLangName.value = { label: getLanguagesInLocaleFromCode(user?.value.fallback_series_lang, locale.value), value: user?.value.fallback_series_lang };
 			}
 			if (!editedUser.value.social_networks) {
 				editedUser.value.social_networks = {
@@ -908,10 +907,6 @@
 <style lang="scss" scoped>
 	.field-body {
 		flex-grow: 4;
-	}
-
-	.is-active {
-		color: #1dd2af;
 	}
 
 	h2.subtitle {

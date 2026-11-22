@@ -12,7 +12,7 @@
 			>
 				<search-tags class="mb-2" />
 				<search-bar />
-				<div class="field is-expanded">
+				<div class="field is-expanded ml-2">
 					<collections-picker :label="$t('search.types.karaokes')" />
 				</div>
 			</div>

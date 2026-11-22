@@ -20,17 +20,17 @@
 		</div>
 	</div>
 	<div v-if="inputVisible">
-		<o-autocomplete
-			ref="inputToFocus"
-			v-model="currentVal"
-			keep-first
-			open-on-focus
-			:data="availableUsers.filter(u => !props.params.find(user => user.username === u.login) && u.login !== user?.login)"
-			:loading="isFetching"
-			:custom-formatter="(user: User) => user.nickname"
-			:clear-on-select="true"
-			@typing="debouncedGetAsyncData"
-			@select="addValue"
+		<ui-combobox
+			v-model:model="model"
+			v-model:filter="filter"
+			:items="availableUsers
+				.filter((u: User) => !props.params.find(user => user.username === u.login) && u.login !== user?.login)
+				.map(u => {
+					return {label: u.nickname || u.login, value: u as never}
+				})"
+			height="200px"
+			:delete-button="false"
+			:clear-on-focus="true"
 		/>
 	</div>
 </template>
@@ -55,23 +55,23 @@
 	const availableUsers = ref<User[]>([]);
 	const values = ref<User[]>([]);
 	const inputVisible = ref(false);
-	const currentVal = ref('');
 	const isFetching = ref(false);
 	const loading = ref(false);
-	const debouncedGetAsyncData = ref();
-	const inputToFocus = ref<HTMLElement>();
+	const model = ref<{label: string, value: User}>();
+	const filter = ref('');
 
-	watch([props, inputVisible], ([_newProps, newInputVisible]) => {
-		if (newInputVisible) {
-			nextTick(() => {
-				inputToFocus.value?.focus();
-			});
-		}
+	watch([props, inputVisible], () => {
 		updateProps();
 	}, { deep: true });
 
+	watch(filter, () => debouncedGetAsyncData(filter.value));
+	watch(model, () => {
+		addValue(model.value as {label: string, value: User});
+	});
+
+	const debouncedGetAsyncData = _.debounce(getAsyncData, 500, { leading: true, trailing: true, maxWait: 750 });
+
 	onMounted(async () => {
-		debouncedGetAsyncData.value = _.debounce(getAsyncData, 500, { leading: true, trailing: true, maxWait: 750 });
 		updateProps();
 	});
 
@@ -97,7 +97,8 @@
 	async function getUsers(filter?: string): Promise<User[]> {
 		const { content } = await useCustomFetch<UserList>('/api/users', {
 			query: {
-				filter
+				filter,
+				size: 100
 			}
 		});
 		return content;
@@ -117,18 +118,17 @@
 				isFetching.value = false;
 			});
 	}
-	async function addValue(option: User) {
+	async function addValue(option: {label: string, value: User}) {
 		inputVisible.value = false;
-		currentVal.value = '';
-		if (option) {
+		if (option.value) {
 			loading.value = true;
-			await useCustomFetch(`/api/playlist/${props.plaid}/contributor/${option.login}`, {
+			await useCustomFetch(`/api/playlist/${props.plaid}/contributor/${option.value.login}`, {
 				method: 'POST'
 			}).finally(() => {
 				loading.value = false;
 			});
 			const valuesUpdated: User[] = values.value;
-			valuesUpdated.push(option);
+			valuesUpdated.push(option.value);
 			values.value = valuesUpdated;
 			emit('change', values.value.map((user: User) => {
 				return {

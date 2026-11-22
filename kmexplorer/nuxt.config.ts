@@ -5,7 +5,7 @@ const production = process.env.NODE_ENV === 'production';
 
 const nuxtConfig = defineNuxtConfig({
 	dev: !production,
-	compatibilityDate: '2025-10-04',
+	compatibilityDate: '2026-11-08',
 
 	components: [{ path: '~/components', pathPrefix: false }],
 
@@ -125,9 +125,10 @@ const nuxtConfig = defineNuxtConfig({
 	vite: {
 		optimizeDeps: {
 			include: [
+			'@dnd-kit/vue',
+			'@dnd-kit/vue/sortable',
 			'@karaokemugen/i18n-iso-languages', // CJS
-			'@oruga-ui/oruga-next',
-			'@oruga-ui/theme-bulma',
+			'@vue/devtools-core',
 			'i18n-iso-countries', // CJS
 			'lodash', // CJS
 			'slug',

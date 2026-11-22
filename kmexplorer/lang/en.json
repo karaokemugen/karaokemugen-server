@@ -429,7 +429,8 @@
 					"placeholder": "It' s my life"
 				},
 				"location": {
-					"label": "Location"
+					"label": "Location",
+					"placeholder": "Animland"
 				},
 				"discord": {
 					"label": "Discord",

@@ -50,11 +50,8 @@ export function getCountryCode(name: string, userLang: string): string {
 }
 
 export function listCountries(name: string, userLang: string) {
-	const listCountries: string[] = [];
-	for (const country of getListCountriesInLocale(userLang)) {
-		listCountries.push(country.label);
-	}
+	const listCountries = getListCountriesInLocale(userLang);
 	return listCountries.filter(value =>
-		value.toLowerCase().includes(name.toLowerCase())
+		value.value.toLowerCase().includes(name?.toLowerCase())
 	);
 }

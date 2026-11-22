@@ -12,14 +12,13 @@
   },
   "type": "module",
   "dependencies": {
+    "@dnd-kit/vue": "^0.5.3",
     "@fortawesome/fontawesome-svg-core": "^7.3.1",
     "@fortawesome/free-brands-svg-icons": "^7.3.1",
     "@fortawesome/free-solid-svg-icons": "^7.3.1",
     "@fortawesome/vue-fontawesome": "^3.3.3",
     "@karaokemugen/i18n-iso-languages": "^4.2.2",
     "@nuxtjs/i18n": "10.6.0",
-    "@oruga-ui/oruga-next": "^0.7.0",
-    "@oruga-ui/theme-bulma": "^0.2.11",
     "@pinia/nuxt": "1.0.3",
     "@sentry/nuxt": "^11.11.0",
     "bulma": "^0.9.4",
@@ -33,6 +32,7 @@
     "pinia": "^4.1.0",
     "pinia-plugin-persistedstate": "^4.7.1",
     "pretty-bytes": "7.2.0",
+    "reka-ui": "^2.11.0",
     "slug": "^12.0.1",
     "socket.io-client": "^4.8.4",
     "uuid": "^14.0.3",
@@ -48,7 +48,7 @@
     "eslint": "^10.14.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.7",
-    "nuxt": "4.4.8",
+    "nuxt": "4.6.4",
     "prettier": "3.9.10",
     "sass": "^1.108.1"
   }
