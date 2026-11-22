@@ -1,99 +1,72 @@
 <template>
 	<div>
 		<div class="buttons">
-			<button
-				class="button"
-				@click="() => openModal('addBans')"
-			>
+			<button class="button" @click="() => openModal('addBans')">
 				<font-awesome-icon :icon="['fas', 'plus']" />
 				<span>{{ $t('bans.add') }}</span>
 			</button>
 		</div>
-		<o-table :data="bans">
-			<o-table-column
-				v-slot="props"
-				field="type"
-				:label="$t('bans.type')"
-				searchable
-			>
-				{{ props.row.type }}
-			</o-table-column>
-			<o-table-column
-				v-slot="props"
-				field="value"
-				:label="$t('bans.value')"
-				searchable
-			>
-				{{ props.row.value }}
-			</o-table-column>
-			<o-table-column
-				v-slot="props"
-				field="banned_at"
-				:label="$t('bans.banned_at')"
-				searchable
-			>
-				{{ new Date(props.row.banned_at).toLocaleDateString() }}
-			</o-table-column>
-			<o-table-column
-				v-slot="props"
-				field="reason"
-				:label="$t('bans.reason')"
-				searchable
-			>
-				{{ props.row.reason }}
-			</o-table-column>
-			<o-table-column v-slot="props">
-				<button
-					class="button"
-					@click.prevent="() => deleteBan(props.row)"
-				>
+		<ui-table :fields="fields" :data="bans">
+			<template #banned_at="{ item }">
+				{{ new Date((item as Ban)?.banned_at as any as string)?.toLocaleDateString() }}
+			</template>
+			<template #button="{ item }">
+				<button class="button" @click.prevent="() => deleteBan(item as Ban)">
 					<font-awesome-icon :icon="['fas', 'trash']" />
 					<span>{{ $t('bans.delete') }}</span>
 				</button>
-			</o-table-column>
-		</o-table>
-		<add-bans-modal
-			:active="addBans"
-			@close="afterAddBan"
-		/>
+			</template>
+		</ui-table>
+		<add-bans-modal :active="addBans" @close="afterAddBan" />
 	</div>
 </template>
 
 <script setup lang="ts">
-	import type { Ban } from '%/types/user';
-	import { useAuthStore } from '~/store/auth';
-	import { useModalStore } from '~/store/modal';
 
-	const { addBans } = storeToRefs(useModalStore());
-	const { openModal, closeModal } = useModalStore();
+import type { Ban } from '%/types/user';
+import { useAuthStore } from '~/store/auth';
+import { useModalStore } from '~/store/modal';
 
-	const bans = ref<Ban[]>([]);
-	const { user } = storeToRefs(useAuthStore());
+const { addBans } = storeToRefs(useModalStore());
+const { openModal, closeModal } = useModalStore();
 
-	const { t } = useI18n();
+const bans = ref<Ban[]>([]);
 
-	if (import.meta.client && !user?.value?.roles?.admin) throw createError({ statusCode: 404 });
+const { user } = storeToRefs(useAuthStore());
 
-	fetch();
+const { t } = useI18n();
 
-	async function fetch() {
-		const res = await useCustomFetch<Ban[]>('/api/bans')
-			.catch(_err => {
-				throw createError({ statusCode: 404, message: t('error.bans') });
-			});
-		bans.value = res ? res : [];
-	}
+const fields = [
+	{ key: "type", label: t('bans.type'), searchable: true },
+	{ key: "value", label: t('bans.value'), searchable: true },
+	{ key: "banned_at", label: t('bans.banned_at') },
+	{ key: "reason", label: t('bans.reason'), searchable: true },
+	{ key: "button", label: '' },
+];
 
-	async function deleteBan(ban: Ban) {
-		await useCustomFetch('/api/bans', {
-			method: 'DELETE',
-			body: ban
+if (import.meta.client && !user?.value?.roles?.admin) throw createError({ statusCode: 404 });
+
+fetch();
+
+async function fetch() {
+	const res = await useCustomFetch<Ban[]>('/api/bans')
+		.catch(_err => {
+			throw createError({ statusCode: 404, message: t('error.bans') });
 		});
-		bans.value = bans.value.filter(value => value.type !== ban.type && value.value !== ban.value);
-	}
+	bans.value = res ? res : [];
+}
 
-	function afterAddBan() {
-		closeModal('addBans');
-		fetch();
-	}
+async function deleteBan(ban: Ban) {
+	await useCustomFetch('/api/bans', {
+		method: 'DELETE',
+		body: ban
+	});
+	fetch();
+}
+
+function afterAddBan() {
+	closeModal('addBans');
+	fetch();
+}
+
 </script>

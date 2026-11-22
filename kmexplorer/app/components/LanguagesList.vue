@@ -39,18 +39,15 @@
 				{{ $t('kara.import.i18n_select') }}
 			</label>
 			<div class="control">
-				<o-autocomplete
+				<ui-combobox
 					v-if="selectVisible"
-					v-model="langFilter"
-					open-on-focus
-					clear-on-select
-					:data="getListLanguages"
-					@select="addLang"
-				>
-					<template #default="language">
-						{{ language.option.label }} ({{ language.option.value.toUpperCase() }})
-					</template>
-				</o-autocomplete>
+					v-model:model="model"
+					v-model:filter="filter"
+					:items="getListLanguages"
+					:delete-button="false"
+					:clear-on-focus="true"
+					height="200px"
+				/>
 				<div
 					v-if="!selectVisible"
 					class="button tag is-small"
@@ -84,7 +81,7 @@
 							:value="lang.value"
 							:selected="defaultLanguage === lang.value"
 						>
-							{{ lang.label }} ({{ lang.value.toUpperCase() }})
+							{{ lang.label }}
 						</option>
 					</select>
 				</div>
@@ -107,7 +104,8 @@
 		(e: 'onDefaultLanguage', value: string): void
 	}>();
 
-	const langFilter = ref('');
+	const model = ref<{label: string, value: string}>();
+	const filter = ref('');
 	const i18n = ref(props.value);
 	const selectVisible = ref(false);
 	const defaultLanguage = ref(props.defaultLanguage);
@@ -115,7 +113,7 @@
 	const { locale } = useI18n();
 	const { loggedIn, user } = storeToRefs(useAuthStore());
 
-	const getListLanguages = computed(() => listLanguages(langFilter.value));
+	const getListLanguages = computed(() => listLanguages(filter.value));
 
 	watch([props], ([newProps]) => {
 		if (newProps.defaultLanguage) {
@@ -124,11 +122,11 @@
 		if (props.value !== i18n.value) i18n.value = props.value;
 	});
 
+	watch(model, () => addLang(model.value as {label: string, value: string}));
+
 	function listLanguages(lang: string): Array<{ value: string, label: string }> {
 		return getListLanguagesInLocale((loggedIn.value && user?.value?.language) || locale.value).filter(option => option.label.toString()
-			.toLowerCase().includes(lang.toLowerCase()) ||
-			option.value.toString()
-				.toLowerCase().includes(lang.toLowerCase()));
+			.toLowerCase().includes(lang.toLowerCase()));
 	}
 	function listDefaultLanguagesAvailable() {
 		return getListLanguagesInLocale((loggedIn.value && user?.value?.language) || locale.value).filter(value => Object.keys(i18n.value).includes(value.value));

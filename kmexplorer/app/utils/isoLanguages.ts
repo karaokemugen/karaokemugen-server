@@ -74,7 +74,7 @@ export const langWithRomanization = [
 
 export function getListLanguagesInLocale(userLang: string): Array<{ value: string; label: string }> {
 	if (import.meta.client) {
-		return getAlpha3BLanguagesLocalized(userLang).map((lang) => ({ label: lang.name, value: lang.alpha3B }));
+		return getAlpha3BLanguagesLocalized(userLang).map((lang) => ({ label: `${lang.name} (${lang.alpha3B.toUpperCase()})` , value: lang.alpha3B }));
 	}
 	return [];
 }
@@ -91,17 +91,20 @@ export function getLanguageIn3B(code: string) {
 	return i18nIsoLanguages.alpha2ToAlpha3B(code) || '';
 }
 
-export function listLangs(name: string, userLang: string): string[] {
+export function listLangs(name: string, userLang: string): {label: string, value: string}[] {
 	return getAlpha3BLanguagesLocalized(userLang)
-		.map((lang) => lang.name)
-		.filter((langName) => langName.toLowerCase().includes(name.toLowerCase()));
+		.map((lang) => {
+			return {label: lang.name, value: lang.alpha3B}
+		})
+		.filter((langName) => langName.value.toLowerCase().includes(name.toLowerCase()));
 }
-export function get3BCode(language: string, userLang: string): string {
+export function get3BCode(language: string, userLang: string): string | null {
 	const nuxt = useNuxtApp();
 	if (language === nuxt.$i18n.t('languages.qro')) return 'qro';
 	return (
 		(i18nIsoLanguages.getAlpha3BCode(language, userLang) as string) ||
-		(i18nIsoLanguages.getAlpha3BCode(language, 'en') as string)
+		(i18nIsoLanguages.getAlpha3BCode(language, 'en') as string) ||
+		null
 	);
 }
 

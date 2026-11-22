@@ -10,7 +10,7 @@
 				v-if="tagMaxPage > 1"
 				class="tile is-parent is-12"
 			>
-				<pagination
+				<ui-pagination
 					:page="page"
 					:last-page="tagMaxPage"
 					@page="p => page = p"
@@ -38,7 +38,7 @@
 				v-if="tagMaxPage > 1"
 				class="tile is-parent is-12"
 			>
-				<pagination
+				<ui-pagination
 					v-if="tagMaxPage > 1"
 					:page="page"
 					:last-page="tagMaxPage"

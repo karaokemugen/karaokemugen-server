@@ -137,14 +137,13 @@
 						/>
 					</span>
 				</div>
-				<o-autocomplete
-					v-model="currentParent"
-					open-on-focus
-					clear-on-select
-					:data="karaSearch"
-					field="label"
-					@typing="debouncedGetAsyncData"
-					@select="onParentKaraChange"
+				<ui-combobox
+					v-model:model="modelParent"
+					v-model:filter="filterParent"
+					:items="karaSearch"
+					:delete-button="false"
+					:clear-on-focus="true"
+					height="200px"
 				/>
 			</div>
 		</div>
@@ -458,21 +457,20 @@
 			<div  v-if="tagsCheckbox.get(13)?.length ?? 0 > 0" class="field">
 				<label class="label">{{ t('kara.tagtypes.platforms', karaoke.data.tags.platforms?.length || 0) }}</label>
 				<div class="control">
-					<o-collapse :open="false">
-						<template #trigger>
-							<div class="button tag is-small">
-								{{ t('kara.import.show_hide') }}
-							</div>
-						</template>
-						<editable-tag-group
-							class="show-hide"
-							:checkboxes="true"
-							:tag-type="13"
-							:params="karaoke.data.tags.platforms || []"
-							@change="(tags) => karaoke.data.tags.platforms = tags"
-							@create="(tag) => addTagToCreateList(tag)"
-						/>
-					</o-collapse>
+					<CollapsibleRoot>
+						<CollapsibleTrigger class="button tag is-small">
+							{{ t('kara.import.show_hide') }}
+						</CollapsibleTrigger>
+						<CollapsibleContent class="show-hide">
+							<editable-tag-group
+								:checkboxes="true"
+								:tag-type="13"
+								:params="karaoke.data.tags.platforms || []"
+								@change="(tags) => karaoke.data.tags.platforms = tags"
+								@create="(tag) => addTagToCreateList(tag)"
+							/>
+						</CollapsibleContent>
+					</CollapsibleRoot>
 				</div>
 			</div>
 			<div  v-if="tagsCheckbox.get(12)?.length ?? 0 > 0" class="field">
@@ -703,6 +701,7 @@
 	import { useConfigStore } from '~/store/config';
 	import type { DBTag } from '%/lib/types/database/tag';
 	import { useModalStore } from '~/store/modal';
+	import { CollapsibleContent, CollapsibleRoot, CollapsibleTrigger } from 'reka-ui'
 
 	const props = defineProps<{
 		kara?: DBKara
@@ -723,13 +722,13 @@
 	const uploading_media = ref<number | boolean>(false);
 	const uploading_sub = ref<number | boolean>(false);
 	const contactInfos = ref('');
-	const currentParent = ref<{ label: string; value: string }>();
 	const parents = ref<{ label: string; value: string }[]>([]);
 	const karaSearch = ref<{ label: string; value: string }[]>([]);
 	const tagsCheckbox = ref<Map<number, DBTag[]>>(new Map());
 	const tagsToCreateList = ref<DBTag[]>([]);
+	const modelParent = ref<{label: string, value: string}>();
+	const filterParent = ref('');
 
-	const debouncedGetAsyncData = ref();
 	const mediafileInput = ref<HTMLInputElement>();
 	const subfileInput = ref<HTMLInputElement>();
 
@@ -752,10 +751,13 @@
 		displayAuthIfLoginIsRequired();
 	}
 
-	onMounted(async () => {
-		debouncedGetAsyncData.value = _.debounce(getAsyncData, 500, { leading: true, trailing: true, maxWait: 750 });
+	watch(filterParent, () => debouncedGetAsyncData(filterParent.value));
+	watch(modelParent, () => {
+		onParentKaraChange(modelParent.value as {label: string, value: string});
 	});
-	
+
+	const debouncedGetAsyncData = _.debounce(getAsyncData, 500, { leading: true, trailing: true, maxWait: 750 });
+
 	const displayTypeOptions = computed(() => {
 		const tagtypes = ['']
 			.concat(Object.keys(tagTypes).filter(tagType => karaoke.value.data.tags[tagType.toLowerCase()]?.length || 0 > 0));
@@ -834,7 +836,7 @@
 	}
 
 	function onParentKaraChange(event: { label: string; value: string }) {
-		if (event?.value) {
+		if (event?.value && event.label !== event.value) {
 			applyFieldsFromKara(event.value);
 			parents.value?.push(event);
 		}

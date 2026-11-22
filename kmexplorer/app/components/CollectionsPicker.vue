@@ -1,69 +1,48 @@
 <template>
-	<o-dropdown
-		v-if="collections?.length > 0"
-		v-model="enabledCollectionsModel"
-		aria-role="list"
-		multiple
-	>
-		<template #trigger="{ active }">
-			<button class="button">
-				<font-awesome-icon
-					fixed-width
-					:icon="['fas', active ? 'chevron-up' : 'chevron-down']"
-				/>
-				{{ $t('search.types.collections') }}
-			</button>
-		</template>
-		<p>{{ $t('layout.collections', { instance: url.hostname }) }}</p>
-
-		<o-dropdown-item
-			v-for="collection in collections"
-			:key="collection.tid"
-			:value="collection.tid"
-			aria-role="listitem"
-		>
-			{{ getTagInLocale(collection) }} ({{ getDescriptionInLocale(collection) }})
-		</o-dropdown-item>
-	</o-dropdown>
+	<ui-select
+		v-if="collectionsList?.length > 0"
+		v-model:model="enabledCollectionsList"
+		:button-label="$t('search.types.collections')"
+		:items="collectionsList"
+		:description="$t('layout.collections', { instance: url.hostname })"
+		key-attribute="tid"
+		:is-disabled="(item: DBTag) => enabledCollections.length === 1 && enabledCollections.includes(item.tid)"
+	/>
 </template>
 
 <script setup lang="ts">
-	import type { TagList } from '%/lib/types/tag';
-	import { storeToRefs } from 'pinia';
-	import { useLocalStorageStore } from '~/store/localStorage';
-	import { useConfigStore } from '~/store/config';
+import type { TagList } from '%/lib/types/tag';
+import { storeToRefs } from 'pinia';
+import { useLocalStorageStore } from '~/store/localStorage';
+import { useConfigStore } from '~/store/config';
+import type { DBTag } from '%/lib/types/database/tag';
+const { enabledCollections } = storeToRefs(useLocalStorageStore());
+const { setEnabledCollections } = useLocalStorageStore();
+const { collections } = storeToRefs(useConfigStore());
+const { setCollections } = useConfigStore();
 
-	const { enabledCollections } = storeToRefs(useLocalStorageStore());
-	const { setEnabledCollections } = useLocalStorageStore();
-	const { collections } = storeToRefs(useConfigStore());
-	const { setCollections } = useConfigStore();
-	
-	const url = useRequestURL();
+const collectionsList = ref<{ label: string; value: DBTag; }[]>([]);
+const enabledCollectionsList = ref<{ label: string; value: DBTag; }[]>([]);
 
-	if (collections.value.length === 0) {
-		setCollections((await useCustomFetch<TagList>('/api/karas/tags', {
-			query: {
-				type: 16
-			},
-		})).content);
-	}
+const url = useRequestURL();
 
-	const enabledCollectionsModel = computed({
-		get(): string[] {
-			return enabledCollections.value;
+if (collections.value.length === 0) {
+	setCollections((await useCustomFetch<TagList>('/api/karas/tags', {
+		query: {
+			type: 16
 		},
-		set(collecs: string[]) {
-			setEnabledCollections(collecs);
-		}
-	});
-</script>
+	})).content);
+}
 
-<style scoped>
-.dropdown-content > p {
-	padding: .5em 1em;
-	min-width: 18em;
+watch(enabledCollectionsList, () => setEnabledCollections(enabledCollectionsList.value.map(c => c.value.tid)));
+watch(collections, fetch);
+
+function fetch() {
+	collectionsList.value = collections.value.map(c => {
+		return {label: `${getTagInLocale(c)} (${getDescriptionInLocale(c)})`, value: c };
+	})
+	enabledCollectionsList.value = collectionsList.value.filter(c => enabledCollections.value.includes(c.value.tid));
 }
-.dropdown-item {
-	font-size: 0.9rem;
-}
-</style>
+
+fetch();
+</script>

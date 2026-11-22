@@ -48,17 +48,14 @@
 				</div>
 			</div>
 			<div v-if="inputVisible">
-				<o-autocomplete
-					ref="inputToFocus"
-					v-model="currentVal"
-					keep-first
-					open-on-focus
-					:data="availableTags"
-					:loading="isFetching"
-					:custom-formatter="localizedName"
-					:clear-on-select="true"
-					@typing="debouncedGetAsyncData"
-					@select="addValue"
+				<ui-combobox
+					v-model:model="selectedItem"
+					v-model:filter="currentVal"
+					:items="availableTags.map(t => {
+						return {label: localizedName(t), value: t}
+					})"
+					height="200px"
+					:delete-button="false"
 				>
 					<template
 						v-if="!noCreate"
@@ -74,7 +71,7 @@
 							<span>{{ $t('kara.import.create') }}</span>
 						</button>
 					</template>
-				</o-autocomplete>
+				</ui-combobox>
 			</div>
 		</div>
 	</div>
@@ -91,10 +88,11 @@
 	import type { DBTag } from '%/lib/types/database/tag';
 	import type { KaraTag } from '%/lib/types/kara';
 	import { useModalStore } from '~/store/modal';
+	import type { TagTypeNum } from '%/lib/types/tag';
 
 	const props = withDefaults(defineProps<{
 		checkboxes?: boolean
-		tagType: number,
+		tagType: TagTypeNum,
 		params: string[],
 		noCreate?: boolean
 	}>(), {
@@ -108,25 +106,29 @@
 	const values = ref<DBTag[]>([]);
 	const inputVisible = ref(false);
 	const currentVal = ref('');
+	const selectedItem = ref<{label: string, value: DBTag}>();
 	const isFetching = ref(false);
 	const loading = ref(false);
-	const debouncedGetAsyncData = ref();
-	const inputToFocus = ref<HTMLElement>();
 
 	const { openModal } = useModalStore();
 	const { createTag } = storeToRefs(useModalStore());
 
-	watch([props, inputVisible], ([_newProps, newInputVisible]) => {
-		if (newInputVisible) {
-			nextTick(() => {
-				inputToFocus.value?.focus();
-			});
-		}
+	watch([props, inputVisible], () => {
 		updateProps();
 	}, { deep: true });
 
+	watch(currentVal, () => debouncedGetAsyncData(currentVal.value));
+	
+	watch(selectedItem, () => {
+		if(selectedItem.value) {
+			addValue(selectedItem.value);
+			selectedItem.value = undefined;
+		}
+	});
+
+	const debouncedGetAsyncData = _.debounce(getAsyncData, 500, { leading: true, trailing: true, maxWait: 750 });
+	
 	onMounted(async () => {
-		debouncedGetAsyncData.value = _.debounce(getAsyncData, 500, { leading: true, trailing: true, maxWait: 750 });
 		updateProps();
 	});
 
@@ -158,7 +160,7 @@
 				type,
 				filter,
 				includeStaging: true,
-				size: 1000
+				size: 100
 			}
 		});
 		return content;
@@ -189,19 +191,17 @@
 
 	function sendNewTag(option: DBTag) {
 		emit('create', option);
-		addValue(option);
+		addValue({label: '', value: option});
 	}
 
-	function addValue(option: DBTag) {
-		if (option) {
-			inputVisible.value = false;
-			currentVal.value = '';
-			if (option) {
-				const valuesUpdated: DBTag[] = values.value;
-				valuesUpdated.push(option);
-				values.value = valuesUpdated;
-				emit('change', values.value.map((t: DBTag) => t.tid));
-			}
+	function addValue(option: {label: string, value: DBTag}) {
+		inputVisible.value = false;
+		currentVal.value = '';
+		if (option.value) {
+			const valuesUpdated: DBTag[] = values.value;
+			valuesUpdated.push(option.value);
+			values.value = valuesUpdated;
+			emit('change', values.value.map((t: DBTag) => t.tid));
 		}
 	}
 

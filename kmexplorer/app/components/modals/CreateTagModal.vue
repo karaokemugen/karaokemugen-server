@@ -58,32 +58,11 @@
 						</div>
 						<div class="field-body">
 							<div class="control">
-								<o-dropdown  
-									v-model="types"
-									aria-role="list"
-									multiple
-									scrollable
-									:teleport="true"
-								>
-									<template #trigger="{ openTagTypes }">
-										<button class="button" type="button">
-											<font-awesome-icon
-												fixed-width
-												:icon="['fas', openTagTypes ? 'chevron-up':'chevron-down']"
-											/>
-											{{ $t('modal.create_tag.types') }}
-										</button>
-									</template>
-									<o-dropdown-item
-										v-for="tagType in creatableTagTypes"
-										:key="tagType.type"
-										:value="tagType.type"
-										aria-role="listitem"
-										class="label-option"
-									>
-										{{ $t(`kara.tagtypes.${tagType.name}`) }}
-									</o-dropdown-item>
-								</o-dropdown>
+								<ui-select
+									v-model:model="types"
+									:button-label="$t('modal.create_tag.types')"
+									:items="creatableTagTypes"
+								/>
 							</div>
 						</div>
 					</div>
@@ -101,47 +80,45 @@
 </template>
 
 <script setup lang="ts">
-	import { useModalStore } from '~/store/modal';
-	import type { DBTag } from '%/lib/types/database/tag';
-	import { tagTypes, type TagType } from '~/assets/constants';
-	import { useConfigStore } from '~/store/config';
-	import type { TagTypeNum } from '%/lib/types/tag';
-	import { v4 as UUIDv4 } from 'uuid';
+import { useModalStore } from '~/store/modal';
+import type { DBTag } from '%/lib/types/database/tag';
+import { tagTypes } from '~/assets/constants';
+import { useConfigStore } from '~/store/config';
+import type { TagTypeNum } from '%/lib/types/tag';
+import { v4 as UUIDv4 } from 'uuid';
 
 	const { config } = storeToRefs(useConfigStore());
 
 	const props = defineProps<{
 		active: boolean
-		initialTagTypes?: number[];
+		initialTagTypes?: TagTypeNum[];
 		initialName?: string;
 	}>();
 
-	const types = ref(props.initialTagTypes || []);
+	const creatableTagTypes: { label: string; value: TagTypeNum; }[] = Object.entries(tagTypes)
+		// Remove year type
+		.filter(e => e[1].type != 0)
+		.filter(e => config?.value && !config.value.Frontend.Import.LimitedTagTypes.includes(e[1].type as TagTypeNum))
+		.map(e => {
+			return {
+				label: $t(`kara.tagtypes.${e[0]}`),
+				value: e[1].type as TagTypeNum,
+			}
+		});
+
+	const types = ref(creatableTagTypes.filter(v => props.initialTagTypes?.includes(v.value)));
 	const name = ref(props.initialName);
 
 	const emit = defineEmits<{ (e: 'sendNewTag', tag: DBTag): void }>();
 
 	watch([props], ([_newProps]) => {
 		if (props.active) {
-			types.value = props.initialTagTypes || [];
+			types.value = creatableTagTypes.filter(v => props.initialTagTypes?.includes(v.value));
 			name.value = props.initialName;
 		}
 	}, { deep: true });
 
-
 	const { closeModal } = useModalStore();
-
-	const creatableTagTypes: TagType[] = Object.entries(tagTypes)
-		// Remove year type
-		.filter(e => e[1].type != 0)
-		.filter(e => config?.value && !config.value.Frontend.Import.LimitedTagTypes.includes(e[1].type as TagTypeNum))
-		// map into TagType
-		.map(e => {
-			return {
-			name: e[0],
-			...e[1],
-			}
-		});
 
 	function cancel(): void {
 		closeModal('createTag');
@@ -151,7 +128,7 @@
 			emit('sendNewTag', {
 				tid : UUIDv4(),
 				name: name.value,
-				types: types.value as unknown as TagTypeNum[],
+				types: types.value.map(t => t.value),
 				i18n: {
 					eng: name.value
 				}
@@ -173,9 +150,5 @@
 	.field:has(*:required) .label::before {
 		content: '* ';
 		color: red;
-	}
-
-	.label-option {
-		user-select: none;
 	}
 </style>
