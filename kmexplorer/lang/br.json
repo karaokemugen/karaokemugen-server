@@ -391,7 +391,8 @@
 					"placeholder": "Ma buhez zo"
 				},
 				"location": {
-					"label": "Chomlec'h"
+					"label": "Chomlec'h",
+					"placeholder": "Animland"
 				},
 				"flag_public": {
 					"label": "Profil foran"
